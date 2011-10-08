@@ -1,0 +1,18 @@
+{
+  "author": "Matt Mueller <mattmuelle@gmail.com> (mattmueller.me)",
+  "name": "cheerio",
+  "description": "jQuery-like wrapper for soupselect and node-htmlparser",
+  "version": "0.0.1",
+  "repository": {
+    "url": ""
+  },
+  "main": "./index.js",
+  "engines": {
+    "node": ">= 0.4.11"
+  },
+  "dependencies": {
+    "soupselect" : "0.2.x",
+    "htmlparser" : "1.x"
+  },
+  "devDependencies": {}
+}
