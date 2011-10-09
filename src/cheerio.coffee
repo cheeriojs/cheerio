@@ -1,3 +1,5 @@
+path = require "path"
+
 soupselect = require "soupselect"
 _ = require "underscore"
 
@@ -10,8 +12,17 @@ cheerio = (dom) ->
     # Create new instance
     if !(this instanceof arguments.callee)
       return new selector select
-        
-    @context =  soupselect.select dom, select
+    
+    if _.isString select    
+      @context =  soupselect.select dom, select
+      
+    
+    else if select.context
+      @context = select.context
+    # May do more ifs but for now assume it's an object otherwise and
+    # we want to wrap it.
+    else
+      @context = select
 
     if @context.length is 1
       @context = @context[0]
@@ -22,9 +33,11 @@ cheerio = (dom) ->
     PUBLIC METHODS
   ###  
   
+  selector::dom = () ->
+    return @context
+  
   selector::html = () ->
     return renderer.render @context
-    
   
   selector::text = (text, value) ->
     exists = (@context.children.length is 1 and @context.children[0].type is "text")
@@ -52,11 +65,17 @@ cheerio = (dom) ->
         @context.attribs[attribute] = value
         
       return this
+  
+  selector::remove = () ->
+    # Kind of a hacky way to remove an element
+    @context.raw = null
+    return this
         
   selector::each = (fn) ->
-    context = [@context] if !_.isArray context
+    context = if !_.isArray @context then [@context] else @context
     for elem, i in context
-      fn.call this, elem, i
+      selected = selector elem
+      fn.call selected, selected, i
     
     return this
 
@@ -72,8 +91,25 @@ cheerio = (dom) ->
 
   return selector
 
-module.exports = (file, callback) ->
-  parser.parse file, (err, dom) ->
+
+
+module.exports = (file, options, callback) ->
+  # Allow for two args
+  if not callback and _.isFunction options
+    callback = options
+  
+  
+  
+  done = (err, dom) ->
     throw err if err
     selector = cheerio dom
     callback.call null, err, selector
+  
+  path.exists file, (exists) ->
+    # It's a file
+    if exists
+      parser.parseFile file, done
+    # It's probably content
+    else
+      parser.parse file, done
+      

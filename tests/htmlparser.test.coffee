@@ -36,6 +36,12 @@ testSuite = suite.addBatch
       title = $('title').text()
       assert.equal title, 'Basic'
     
+    'test remove' : ($) ->
+      header = $('.header')
+      console.log $('body').html()
+      header.remove()
+      console.log '------'
+      console.log $('body').html()
     # 'can change an attribute' : ($) ->
     #   $('.header').attr('id', 'header1')
     #   headerHTML = $('.header').html()

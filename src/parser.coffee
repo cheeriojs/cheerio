@@ -1,14 +1,16 @@
 htmlparser = require "htmlparser"
 fs = require "fs"
-
-parse = exports.parse = (file, callback) ->
   
+parse = exports.parse = (content, callback) ->
   handler = new htmlparser.DefaultHandler (err, dom) ->
     throw err if err
     callback null, dom
     
-  fs.readFile file, "utf8", (err, html) ->
-    parser = new htmlparser.Parser handler
-    parser.parseComplete html
+  parser = new htmlparser.Parser handler
+  parser.parseComplete content
+
+parseFile = exports.parseFile = (file, callback) ->
+  fs.readFile file, "utf8", (err, content) ->
+    parse content, callback
   
 module.exports = exports

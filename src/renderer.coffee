@@ -10,21 +10,23 @@ render = exports.render = (dom, output = []) ->
 
   for elem in dom
     str = elem.name
+    # Used to remove elements
+    if elem.raw is null 
+      continue
+    
+    # A little hacky - allows ERB-like templates
+    data = elem.data
+    if data[0] is '%' and data[data.length-1] is '%'
+      # Not in types so closing tag not rendered
+      elem.type = "template"
     
     switch elem.type
     
-      when "directive", "tag", "script", "link"
+      when "directive", "tag", "script", "link", "template"
         output.push renderTag elem
       
       when "text"
         output.push renderText elem
-    #     
-    # 
-    # 
-    # if elem.type in types
-    #   output.push "<" + str + " " + utils.formatAttributes(elem.attribs) + ">"
-    # else
-    #   output.push str
 
     if elem.children
       output.push render elem.children
