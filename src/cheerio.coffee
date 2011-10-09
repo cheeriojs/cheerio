@@ -23,9 +23,6 @@ cheerio = (dom) ->
     # we want to wrap it.
     else
       @context = select
-
-    if @context.length is 1
-      @context = @context[0]
       
     return this
   
@@ -40,42 +37,48 @@ cheerio = (dom) ->
     return renderer.render @context
   
   selector::text = (text, value) ->
-    exists = (@context.children.length is 1 and @context.children[0].type is "text")
+    if @context.length is 1
+      elem = @context[0]
+    else
+      return ""
+
+    exists = (elem.children.length is 1 and elem.children[0].type is "text")
     if not value
       if exists
-        return @context.children[0].data
+        return elem.children[0].data
       else
         return ""
     else
       if exists
-        @context.children[0].data = value
+        elem.children[0].data = value
       else
         return this
       
   
   selector::attr = (attribute, value) ->
-    if not value
-      if @context.attribs and @context.attribs[attribute]
-        return @context.attribs[attribute]
-      else
-        return ""
+    this.each (elem) ->
+      if not value
+        if elem.attribs and elem.attribs[attribute]
+          return elem.attribs[attribute]
+        else
+          return ""
     
-    else
-      if @context.attribs
-        @context.attribs[attribute] = value
+      else
+        if elem.attribs
+          elem.attribs[attribute] = value
         
       return this
   
   selector::remove = () ->
-    # Kind of a hacky way to remove an element
-    @context.raw = null
+    this.each (elem) ->
+      elem.raw = null
+
     return this
         
   selector::each = (fn) ->
-    context = if !_.isArray @context then [@context] else @context
-    for elem, i in context
+    for elem, i in @context
       selected = selector elem
-      fn.call selected, selected, i
+      fn.call selected, elem, i
     
     return this
 
@@ -97,8 +100,6 @@ module.exports = (file, options, callback) ->
   # Allow for two args
   if not callback and _.isFunction options
     callback = options
-  
-  
   
   done = (err, dom) ->
     throw err if err
