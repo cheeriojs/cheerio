@@ -100,8 +100,8 @@ cheerio = (dom) ->
       return selector null
   
   selector::next = () ->
-    if elem.next
-      return selector elem.next
+    if @context[0].next
+      return selector @context[0].next
     else
       return selector null
   
