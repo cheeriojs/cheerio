@@ -1,8 +1,8 @@
 jsdom = require("jsdom").jsdom
-htmlparser = require("../htmlparser")
+cheerio = require("../src/cheerio")
 
 fs = require "fs"
-basic = fs.readFileSync "./initial/basic.html", 'utf8'
+basic = fs.readFileSync "./initial/yahoo.html", 'utf8'
 
 # Quick and dirty timer - shows htmlparser is about 8x faster than jsdom
 
@@ -26,13 +26,12 @@ createDOMinJSDOM = () ->
   console.log time.results()
   
 createDOMinHTMLPARSER = () ->
-  time = new timer "htmlparser parse"
+  time = new timer "cheerio parse"
   time.start()
-  htmlparser.parse basic, (err, dom) ->
-    throw err if err 
-    time.stop()
-    console.log time.results()
-
+  cheerio basic
+  time.stop()
+  console.log time.results()
+  
 createHTMLfromJSDOM = () ->
   time = new timer "jsdom render"
   dom = jsdom basic
@@ -42,15 +41,14 @@ createHTMLfromJSDOM = () ->
   console.log time.results()
 
 createHTMLfromHTMLPARSER = () ->
-  time = new timer "htmlparser render"
-  htmlparser.parse basic, (err, dom) ->
-    throw err if err 
-    time.start()
-    htmlparser.render(dom)
-    time.stop()
-    console.log time.results()
+  time = new timer "cheerio render"
+  $ = cheerio basic
+  time.start()
+  $.html()
+  time.stop()
+  console.log time.results()
 
-createDOMinJSDOM()      
+# createDOMinJSDOM()      
 createDOMinHTMLPARSER()
-createHTMLfromJSDOM()
+# createHTMLfromJSDOM()
 createHTMLfromHTMLPARSER()

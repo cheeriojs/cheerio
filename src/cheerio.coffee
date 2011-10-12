@@ -13,12 +13,15 @@ cheerio = (dom) ->
     if !(this instanceof arguments.callee)
       return new selector select
     
-    if _.isString select    
-      @context =  soupselect.select dom, select
+    if select is null
+      @context = []
       
-    
+    else if _.isString select    
+      @context =  soupselect.select dom, select
+          
     else if select.context
       @context = select.context
+
     # May do more ifs but for now assume it's an object otherwise and
     # we want to wrap it.
     else
@@ -82,6 +85,33 @@ cheerio = (dom) ->
     
     return this
 
+  selector::parent = () ->
+    if not this.singular() then return selector null
+    
+    if @context[0].parent
+      return selector @context[0].parent
+    else
+      return selector null
+
+  selector::prev = () ->
+    if elem.prev
+      return selector elem.parent
+    else
+      return selector null
+  
+  selector::next = () ->
+    if elem.next
+      return selector elem.next
+    else
+      return selector null
+  
+  selector::size = () ->
+    return @context.length
+    
+  selector::singular = () ->
+    if @.size() is 1
+      return true
+    else return false
   ###
     STATIC METHODS
   ###
@@ -96,21 +126,6 @@ cheerio = (dom) ->
 
 
 
-module.exports = (file, options, callback) ->
-  # Allow for two args
-  if not callback and _.isFunction options
-    callback = options
+module.exports = (content) ->
+  return cheerio parser.parse content
   
-  done = (err, dom) ->
-    throw err if err
-    selector = cheerio dom
-    callback.call null, err, selector
-  
-  path.exists file, (exists) ->
-    # It's a file
-    if exists
-      parser.parseFile file, done
-    # It's probably content
-    else
-      parser.parse file, done
-      
