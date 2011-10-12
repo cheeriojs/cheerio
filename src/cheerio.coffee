@@ -86,7 +86,6 @@ cheerio = (dom) ->
     return this
 
   selector::parent = () ->
-    if not this.singular() then return selector null
     
     if @context[0].parent
       return selector @context[0].parent
@@ -94,8 +93,9 @@ cheerio = (dom) ->
       return selector null
 
   selector::prev = () ->
-    if elem.prev
-      return selector elem.parent
+    
+    if @context[0].prev
+      return selector @context[0].parent
     else
       return selector null
   
