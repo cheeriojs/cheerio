@@ -70,7 +70,7 @@ cheerio = (dom) ->
         if elem.attribs
           elem.attribs[attribute] = value
         
-      return this
+        return this
   
   selector::remove = () ->
     this.each (elem) ->
@@ -112,6 +112,7 @@ cheerio = (dom) ->
     if @.size() is 1
       return true
     else return false
+    
   ###
     STATIC METHODS
   ###

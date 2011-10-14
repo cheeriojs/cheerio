@@ -49,7 +49,6 @@ testSuite = suite.addBatch
       html.should.not.include.string '<h2 class = "header">Hi there!</h2>'
       
     'has a parent' : ($) ->
-      console.log $('body .header')
       console.log $('body .header').parent().attr('class')
 
       topic : ($) ->
