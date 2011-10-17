@@ -17,18 +17,7 @@ cheerio = do ->
   # Used for trimming whitespace
   trimLeft = /^\s+/ 
   trimRight = /\s+$/
-  
-  # Save a reference to some core methods
-  toString = Object.prototype.toString
-  hasOwn = Object.prototype.hasOwnProperty
-  push = Array.prototype.push
-  slice = Array.prototype.slice
-  trim = String.prototype.trim
-  indexOf = Array.prototype.indexOf
-  
-  # [[Class]] -> type pairs
-  class2type = {}
-  
+
   cheerio.fn = cheerio.prototype =
     constructor: cheerio
     init: (selector, context, root) ->
@@ -37,6 +26,7 @@ cheerio = do ->
         return this
 
       if root
+        this.root = root
         if _.isString context
           selector = "#{context} #{selector}"
         context = root
@@ -54,17 +44,10 @@ cheerio = do ->
             # It's an HTML string
             return cheerio.merge this, parser.parse selector
           else 
-            console.log 'selector', selector
-            console.log 'root', root
             # Classes, IDs just defer to soupselect
             elems = soupselect.select context, selector
             this.selector = selector
             return cheerio.merge this, elems
-        
-
-        # console.log 'selector', selector
-        # console.log 'context', context
-        # console.log 'root', root
         
         # HANDLE: $(expr, $(...))
         if !context or context.cheerio
@@ -81,39 +64,11 @@ cheerio = do ->
         # return cheerio selector, parser.parse con
     
     cheerio : "0.0.1"     
-    length : 0
     selector : ""
-    root : null
-    size : () ->
-      this.length
-      
-    toArray : () ->
-      return slice.call this, 0
-    
-    # Get the Nth element in the matched element set OR
-    # Get the whole matched element set as a clean array
-    get : (num) ->
-      (if num == null then this.toArray() else (if num < 0 then this[this.length + num] else this[num]))
-    
-    pushStack : (elems, name, selector) ->
-      ret = this.constructor()
-      if cheerio.isArray(elems)
-        push.apply ret, elems
-      else
-        cheerio.merge ret, elems
-        
-      ret.prevObject = this
-      ret.context = this.context
-      
-      if name == "find"
-        ret.selector = this.selector + (if this.selector then " " else "") + selector
-      else 
-        ret.selector = this.selector + "." + name + "(" + selector + ")"  if name
-      
-      return ret
-      
     sort : [].sort
     splice : [].splice
+    length : 0
+    root : undefined
     
   # Give the init function the jQuery prototype for later instantiation
   cheerio.fn.init.prototype = cheerio.fn
@@ -122,54 +77,26 @@ cheerio = do ->
   cheerio.extend = cheerio.fn.extend = (obj) ->
     return _.extend this, obj
   
+  # Custom API
   cheerio.extend
     
-    type : ( obj ) ->
-    		if obj == null then String obj else class2type[ toString.call(obj) ] or "object"
-
-    isArray : (array) ->
-      return _(this).isArray()
-      
-    merge : (first, second) ->
-      i = first.length
-      j = 0
-      
-      if typeof second.length == "number"
-        l = second.length
-
-        while j < l
-          first[i++] = second[j]
-          j++
-          
-      else
-        while second[j] != undefined
-          first[i++] = second[j++]
-      
-      first.length = i
-      
-      return first
-  
-    makeArray : (array, results) ->
-      ret = results or []
-      if array?
-        type = cheerio.type(array)
-        if not array.length? or type == "string" or type == "function" or type == "regexp"
-          push.call ret, array
-        else
-          cheerio.merge ret, array
-          
-      return ret
-
     load : (html) ->
       root = parser.parse html
+      cheerio.extend 
+        'root' : root
       
-      return (selector, context) ->
+      fn = (selector, context) ->
         cheerio selector, context, root
-      
-
-  # Populate class2type map
-  _.each "Boolean Number String Function Array Date Regex Object".split(" "), (name, i) ->
-    class2type[ "[object #{name}]" ] = name.toLowerCase()
+        
+      return _(fn).extend cheerio
+  
+    html : (dom) ->
+      if dom isnt undefined and dom.type
+        return renderer.render dom
+      else if this.root
+        return renderer.render this.root
+      else
+        return ""
   
   # Actual API
   cheerio.fn.extend
@@ -180,14 +107,31 @@ cheerio = do ->
 
   return cheerio
 
+module.exports = cheerio
 
-fs = require "fs"
-basic = fs.readFileSync '../tests/initial/basic.html', 'utf8'
-$ = cheerio.load basic
-dom = parser.parse basic
-# console.log $('#footer', 'body') # works
+###
+  Plug in the API
+###
+api = [
+  'core'
+  'utils'
+  'attributes'
+  'traversing'
+  'manipulation'
+]
 
-# console.log $('#footer', dom)
+for plugin in api
+  require "./api/#{plugin}"
+
+
+# basic = require('fs').readFileSync '../tests/testdata/basic.html', 'utf8'
+
+
+# $ = cheerio.load basic
+# dom = parser.parse basic
+# # console.log $('#footer', 'body') # works
+# $('h2', dom).addClass("hi")
+
 
 # console.log cheerio dom
 # console.log cheerio "<h2>hihihi</h2"
@@ -203,5 +147,4 @@ dom = parser.parse basic
 #     console.log 'balh'
 
 
-module.exports = cheerio
   

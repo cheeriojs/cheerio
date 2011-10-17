@@ -38,10 +38,10 @@ render = exports.render = (dom, output = []) ->
   
 renderTag = (elem) ->
   tag = "<" + elem.name
-  
+
   if(elem.attribs)
     tag += " " + utils.formatAttributes elem.attribs
-  
+
   tag += ">"
   
   return tag

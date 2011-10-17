@@ -8,7 +8,7 @@ formatAttributes = exports.formatAttributes = (attributes) ->
       output.push key
     else
       output.push key + ' = "' + value + '"';
-    
+
   output.join " "
   
 module.exports = exports
