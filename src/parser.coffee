@@ -12,15 +12,13 @@ parse = exports.parse = (content) ->
   dom = connectDOM dom
   
   return dom
-  
 
 
 connectDOM = (dom, parent = null) ->
   prevIndex = -1
   lastElem = null
   for elem, i in dom
-    if elem.type isnt 'tag' then continue
-    
+
     # Set parent
     dom[i].parent = parent
     
