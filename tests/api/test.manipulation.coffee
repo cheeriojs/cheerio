@@ -17,15 +17,11 @@ exports =
   'empty' : 
     topic : (html) ->
       return cheerio.load html
-      
-    ###
-      TODO should be using children()
-    ###
+    
     'single element' : ($) ->
       lorem = $('#lorem')
-      
       lorem.empty()
-      lorem.get(0)['children'].should.have.length 0
+      lorem.children().should.have.length 0
   
   'html' : 
     topic : (html) ->
