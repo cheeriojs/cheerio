@@ -1,11 +1,13 @@
 should = require 'should'
 cheerio = require "../../src/cheerio"
 
+loadCheerio = (html) ->
+  return cheerio.load html
+
 exports = 
   
   'attr' : 
-    topic : (html) ->
-      return cheerio.load html
+    topic : loadCheerio
     
     'get single' : ($) ->
       
@@ -66,7 +68,23 @@ exports =
     
       footer.removeAttr 'id'
       should.not.exist footer[0].attribs['id']
-        
+
+  'hasClass' :
+    topic : loadCheerio
+
+    'single' : ($) ->
+      header = $('h2.header')
+      modal = $('#modal')
+
+      header.hasClass('header').should.be.ok
+      header.hasClass('headerz').should.not.be.ok
+
+      modal.hasClass('show').should.be.ok
+      modal.hasClass('blue').should.be.ok
+      modal.hasClass('green').should.not.be.ok
+
+    'no classes' : ($) ->
+      $('#lorem').find('strong').hasClass('whatever').should.not.be.ok
 module.exports = exports
   
   
