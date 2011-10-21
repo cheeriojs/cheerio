@@ -20,18 +20,16 @@ singleTag =
   embed: 1
 
 tagType = 
-  directive : 1
   tag : 1
   script : 1
   link : 1
+  style : 1
   template : 1
 
 render = exports.render = (dom, output = []) ->
   if !_.isArray(dom)
     dom = [dom]
     
-  types = ["directive", "tag", "script", "link"]
-
   for elem in dom
     str = elem.name
     # Used to remove elements
@@ -46,6 +44,8 @@ render = exports.render = (dom, output = []) ->
     
     if tagType[elem.type]
       output.push renderTag elem
+    else if elem.type is "directive"
+      output.push renderDirective elem
     else
       output.push renderText elem
 
@@ -70,6 +70,8 @@ renderTag = (elem) ->
   
   return tag
     
+renderDirective = (elem) ->
+  return "<" + elem.raw + ">"
 
 renderText = (elem) ->
   return elem.raw
