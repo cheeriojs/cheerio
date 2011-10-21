@@ -13,7 +13,6 @@ parse = exports.parse = (content) ->
   
   return dom
 
-
 connectDOM = (dom, parent = null) ->
   prevIndex = -1
   lastElem = null

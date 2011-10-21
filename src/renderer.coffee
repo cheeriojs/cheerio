@@ -2,6 +2,30 @@ _ = require "underscore"
 
 utils = require "./utils"
 
+# List from node-htmlparser (which I stole from jsdom ;-P)
+singleTag = 
+  area: 1
+  base: 1
+  basefont: 1
+  br: 1
+  col: 1
+  frame: 1
+  hr: 1
+  img: 1
+  input: 1
+  isindex: 1
+  link: 1
+  meta: 1
+  param: 1
+  embed: 1
+
+tagType = 
+  directive : 1
+  tag : 1
+  script : 1
+  link : 1
+  template : 1
+
 render = exports.render = (dom, output = []) ->
   if !_.isArray(dom)
     dom = [dom]
@@ -20,19 +44,16 @@ render = exports.render = (dom, output = []) ->
       # Not in types so closing tag not rendered
       elem.type = "template"
     
-    switch elem.type
-    
-      when "directive", "tag", "script", "link", "template"
-        output.push renderTag elem
-      
-      when "text"
-        output.push renderText elem
+    if tagType[elem.type]
+      output.push renderTag elem
+    else
+      output.push renderText elem
 
     if elem.children
       output.push render elem.children
-
-      if elem.type in types
-        output.push "</" + elem.name + ">"
+        
+    if !singleTag[elem.name] and tagType[elem.type]
+      output.push "</" + elem.name + ">"
 
   return output.join ""
   
@@ -42,7 +63,10 @@ renderTag = (elem) ->
   if(elem.attribs)
     tag += " " + utils.formatAttributes elem.attribs
 
-  tag += ">"
+  if !singleTag[elem.name]
+    tag += ">"
+  else
+    tag += "/>"
   
   return tag
     

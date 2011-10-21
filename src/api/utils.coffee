@@ -126,7 +126,7 @@ attr = exports.attr = (elem, name, value, pass) ->
     return undefined 
   
   if !elem.attribs
-    elem.attribs = {}
+    return undefined
   
   # Return the entire attribs object if no attribute specified
   if !name
