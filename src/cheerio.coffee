@@ -97,7 +97,15 @@ cheerio = do ->
         return renderer.render this.root
       else
         return ""
-  
+    
+    dom : (dom) ->
+      if dom isnt undefined and dom.type
+        return dom
+      else if this.root
+        return this.root
+      else
+        return ""
+    
   # Actual API
   cheerio.fn.extend
 
