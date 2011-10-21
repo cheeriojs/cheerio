@@ -1,1 +1,3 @@
 /node_modules/
+tests/rendering/diffs/*
+tests/rendering/renderings/*
