@@ -29,9 +29,9 @@ for file in testfiles
           $html = $.html()
           fs.writeFileSync "#{__dirname}/renderings/#{name}.basic.html", $html
           d = diff.diff html, $html, "#{__dirname}/diffs/#{name}.basic.html"
-          self.callback null, html, $html, d
+          self.callback null, html, $, d
 
-      "no difference" : (err, html, $html, d) ->
+      "no difference" : (err, html, $, d) ->
         d.should.have.length 1
         
 
