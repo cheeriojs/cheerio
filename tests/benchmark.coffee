@@ -2,7 +2,7 @@ jsdom = require("jsdom").jsdom
 cheerio = require("../src/cheerio")
 
 fs = require "fs"
-basic = fs.readFileSync "./testdata/basic.html", 'utf8'
+basic = fs.readFileSync "./files/basic/basic.html", 'utf8'
 
 # Quick and dirty timer - shows htmlparser is about 8x faster than jsdom
 
