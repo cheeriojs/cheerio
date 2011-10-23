@@ -14,5 +14,9 @@
     "soupselect" : "0.2.x",
     "htmlparser" : "1.x"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "coffee-script" : "1.1.x"
+    "vows" : "0.5.x"
+    "diff_match_patch" : "0.1.x"
+  }
 }
