@@ -1,7 +1,14 @@
+Cheerio is a server-side library that speaks and understands HTML.
 
 # cheerio
 
 Fast, minimal jQuery-like API for Tautologic's forgiving htmlparser. Wrote this library because JSdom was too strict and too slow. Plus I only need basic selectors and basic DOM manipulation. Ran some preliminary tests and found that cheerio is about 8x faster than JSdom in parsing, manipulating, and rendering. 
+  
+## What about JSDOM?!
+I decided to build this library because I had three frustrations with JSDOM:
+- JSDOM's built-in parser is too strict. Cannot parse many "real-world" websites. Just try and parse Yahoo.com with JSDOM.
+- JSDOM is too slow. Parsing big websites with JSDOM has noticeable delay.
+- Feature-heavy. The goal of JSDOM is to provide an identical DOM environment as what we see in the browser. It's an ambitious goal and JSDOM is the closest out there, the fact that you can actually load the jQuery library on the server is amazing. The problem is many of these features aren't relevant on the server (AJAX, browser inconcistencies) and most of us don't need all these features. We need a library that understands HTML. A library that can parse, manipulate and traverse HTML blazingly fast and render with high accuracy. This is the goal of cheerio.
   
 ## API
 
