@@ -12,6 +12,9 @@ toArray = exports.toArray = () ->
 get = exports.get = (num) ->
   (if num == null then this.toArray() else (if num < 0 then this[this.length + num] else this[num]))
 
+
+# Take an array of elements and push it onto the stack
+# (returning the new matched element set)
 pushStack = exports.pushStack = (elems, name, selector) ->
   ret = this.constructor()
   if cheerio.isArray(elems)
