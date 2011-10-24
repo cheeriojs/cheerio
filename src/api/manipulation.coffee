@@ -16,10 +16,11 @@ remove = exports.remove = (selector) ->
       removeChild this.parent, this
       delete this['parent']
 
+  return this
+
 empty = exports.empty = () ->
   this.each ->
-    if this.children
-      this.children = []
+    this.children = []
 
 html = exports.html = (htmlString) ->
   if htmlString is undefined
