@@ -26,6 +26,11 @@ html = exports.html = (htmlString) ->
     if this[0] and this[0].type is "tag"
       return $.html this[0]
 
+dom = exports.dom = (domObject) ->
+  if domObject is undefined
+    if this[0] and this[0].type is "tag"
+      return $.dom this[0]
+
 text = exports.text = (textString) ->
   if _.isFunction textString
     this.each (i) ->
