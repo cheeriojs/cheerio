@@ -45,3 +45,12 @@ print = exports.print = (dom, attr = null, depth = 0, out = []) ->
       print elem.children, attr, depth+1, out
       
   return out.join "\n" 
+  
+print_r = exports.print_r = (arr, attr = "name") ->
+  out = "[ "
+  
+  attributes = arr.map (elem) ->
+    return elem[attr]
+  out += attributes.join ", "
+  out += " ]"
+  return out
