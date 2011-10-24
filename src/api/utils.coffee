@@ -68,6 +68,12 @@ makeArray = exports.makeArray = (array, results) ->
       $.merge ret, array
       
   return ret
+	
+inArray = exports.inArray = (elem, array) ->
+  if !array
+    return -1
+  
+  return indexOf.call(array, elem)
 
 # Args is for internal usage only
 each = exports.each = (object, callback, args) ->
