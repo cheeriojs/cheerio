@@ -8,11 +8,14 @@ exports =
       return cheerio.load html
     
     'single element' : ($) ->
-      $('#footer').remove()
+      _$ = $('#footer').remove()
       $("#footer").should.have.length 0
+      should.exist _$.cheerio
     
     'with selector' : ($) ->
-      $("#lorem").remove('span')
+      _$ = $("#lorem").remove('span')
+      $("#lorem span").should.have.length 0
+      should.exist _$.cheerio
   
   'empty' : 
     topic : (html) ->
