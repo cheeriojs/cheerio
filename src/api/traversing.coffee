@@ -36,13 +36,37 @@ siblings = exports.siblings = (elem) ->
   
   return $(siblings)
 
-children = exports.children = (elem) ->
+children = exports.children = (selector) ->
   if this[0] and this[0].children
-    children = _.filter this[0].children, (elem) => 
+    children = _.filter this[0].children, (elem) ->
       elem.type is "tag"
-    return children
+
+    if selector isnt undefined
+      if _.isNumber selector
+        if children[selector]
+          return $(children[selector])
+        else 
+          return null
+      else
+        return $(children).find selector
+      
+    
+    return $(children)
   else
     return null
+
+# add = exports.add = (selector, context) ->
+#   set = if _.isString selector
+#           $(selector, context) 
+#         else 
+#           $.makeArray( if selector and selector.type then [selector] else selector)
+#           
+#   all = $.merge this.get(), set
+#   
+#   return _.unique all
+
+# filter = exports.filter = (selector) ->
+#   return this.find(selector)
 
 # Execute a callback for every element in the matched set.
 # (You can seed the arguments with an array of args, but this is
