@@ -23,7 +23,22 @@ exports =
       children.should.be.length 2
       children[0].name.should.equal "strong"
       children[1].name.should.equal "span"
-  
+    
+    'with index' : ($) ->
+      child = $('#lorem').children(0)
+      child.should.have.length 1
+      child[0].name.should.equal "strong"
+
+    'with selector' : ($) ->
+      child = $('#lorem').children('span')
+      child.should.have.length 1
+      child[0].name.should.equal "span"
+      
+    'with selector (no results)' : ($) ->
+      child = $('#lorem').children('em')
+      child.should.have.length 0
+      should.not.exist child[0]
+      
   'next' :
     topic : loadCheerio
     
@@ -53,6 +68,13 @@ exports =
       $('#lorem strong').siblings().should.have.length 1
       $('head meta').siblings().should.have.length 1
   
+  # 'add' : 
+  #   topic : loadCheerio
+  #   
+  #   'string' : ($) ->
+  #     group = $('#lorem').add('.header')
+  #     console.log group
+
   'each' : 
     topic : loadCheerio
     
