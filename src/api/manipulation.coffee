@@ -6,6 +6,78 @@ removeChild = (parent, elem) ->
    if elem is child
      parent.children.splice i, 1
 
+append = exports.append = (elems...) ->
+  dom = []
+  for elem in elems
+    dom.push $(elem).dom()
+  
+  this.each ->
+    if _.isFunction elems[0]
+      # Not yet supported
+    else        
+      if !this.children
+        this.children = []
+      
+      this.children = this.children.concat dom
+      $.updateDOM this.children, this
+    
+  return this
+
+prepend = exports.prepend = (elems...) ->
+  dom = []
+  for elem in elems
+    dom.push $(elem).dom()
+  
+  this.each ->
+    if _.isFunction elems[0]
+      # Not yet supported
+    else
+      if !this.children
+        this.children = []
+
+      this.children = dom.concat this.children
+      $.updateDOM this.children, this
+
+  return this
+
+updateArray = (arr) ->
+  arr.forEach (elem, i) ->
+    arr[i].prev = arr[i-1] or null
+    arr[i].next = arr[i+1] or null
+  return arr
+
+after = exports.after = (elems...) ->
+  doms = []
+  for elem in elems
+    doms.push $(elem).dom()
+    
+  this.each ->
+    # Update parent
+    parentsChildren = this.parent.children
+    pos = $.inArray(this, parentsChildren)
+    if pos >= 0
+      parentsChildren.splice.apply(parentsChildren, [pos + 1, 0].concat(doms))
+    # Update siblings
+    $.updateDOM parentsChildren, this.parent
+      
+  return this
+
+before = exports.before = (elems...) ->
+  doms = []
+  for elem in elems
+    doms.push $(elem).dom()
+    
+  this.each ->
+    parentsChildren = this.parent.children
+    pos = $.inArray(this, parentsChildren)
+    if pos >= 0
+      parentsChildren.splice.apply(parentsChildren, [pos, 0].concat(doms))
+    # Update siblings
+    $.updateDOM parentsChildren, this.parent
+    
+    
+  return this    
+
 remove = exports.remove = (selector) ->
   elems = this
   if selector
@@ -15,7 +87,7 @@ remove = exports.remove = (selector) ->
     if this.parent
       removeChild this.parent, this
       delete this['parent']
-
+      
   return this
 
 empty = exports.empty = () ->
