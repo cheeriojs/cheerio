@@ -1,5 +1,6 @@
 _ = require 'underscore'
 $ = require '../cheerio'
+parser = require '../parser'
 
 removeChild = (parent, elem) ->
  $.each parent.children, (i, child) ->
@@ -94,16 +95,21 @@ empty = exports.empty = () ->
   this.each ->
     this.children = []
 
-html = exports.html = (htmlString) ->
-  if htmlString is undefined
-    if this[0] and this[0].type is "tag"
-      return $.html this[0]
-
 dom = exports.dom = (domObject) ->
   if domObject is undefined
     if this[0] and this[0].type is "tag"
       return $.dom this[0]
 
+html = exports.html = (htmlString) ->
+  if typeof htmlString isnt "object" and htmlString isnt undefined
+    htmlElement = parser.parse htmlString
+    this.each (i) ->
+      if this.children
+        this.children = htmlElement
+      return this
+  else
+    return $.html this[0]
+  
 text = exports.text = (textString) ->
   if _.isFunction textString
     this.each (i) ->
@@ -112,8 +118,12 @@ text = exports.text = (textString) ->
   
   # Set the text
   if typeof textString isnt "object" and textString isnt undefined
-    console.log 'set text'
-  
-  return $.text this
+    textElement = parser.parse textString
+    this.each (i) ->
+      if this.children
+        this.children = textElement
+    return this
+  else  
+    return $.text this
   
 module.exports = $.fn.extend exports
