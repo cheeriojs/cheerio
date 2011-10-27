@@ -47,6 +47,7 @@ The goal of JSDOM is to provide an identical DOM environment as what we see in t
 ## API
 
 ### Markup example we'll be using:
+This is the HTML markup we will be selecting, traversing, and manipulating in all of the API examples.
 
     <ul id = "fruits">
       <li class = "apple">Apple</li>
