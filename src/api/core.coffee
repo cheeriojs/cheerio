@@ -10,8 +10,13 @@ toArray = exports.toArray = () ->
 # Get the Nth element in the matched element set OR
 # Get the whole matched element set as a clean array
 get = exports.get = (num) ->
-  (if num == null then this.toArray() else (if num < 0 then this[this.length + num] else this[num]))
-
+  if num is undefined
+    this.toArray() 
+  else
+    if num < 0
+      this[this.length + num] 
+    else 
+      this[num]
 
 # Take an array of elements and push it onto the stack
 # (returning the new matched element set)
