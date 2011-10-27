@@ -1,7 +1,6 @@
 # cheerio
 
-Tiny, fast, and elegant implementation of core jQuery built specifically for the server. 
-
+Tiny, fast, and elegant implementation of core jQuery designed specifically for the server. 
 
 ## Introduction
 Teach your server HTML.
@@ -31,7 +30,7 @@ __&#991; Blazingly fast:__
 Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient. Preliminary end-to-end benchmarks suggest that cheerio is about 8x faster than JSDOM.
 
 __&#10049; Insanely flexible:__
-Cheerio wraps around tautologies forgiving htmlparser. Cheerio can parse nearly any page or chunk of html.
+Cheerio wraps around @tautologistics forgiving htmlparser. Cheerio can parse nearly any page or chunk of html or xml.
 
 ## What about JSDOM?
 I wrote cheerio because I found myself increasingly frustrated with JSDOM. For me, there were three main sticking points that I kept running into again and again:
@@ -371,7 +370,7 @@ Merge the contents of two arrays together into the first array.
 
 This library stands on the shoulders of some incredible developers. A special thanks to:
 
-__&#8226; @tautologistics's node-htmlparser:__
+__&#8226; @tautologistics' node-htmlparser:__
 This HTML parser can parse anything! The parser produces really consistent results, even when the HTML string has errors. This man is a genius.
  
 __&#8226; @harryf's node-soupselect:__ 
