@@ -73,20 +73,6 @@ Or as the root:
 
     $ = require('cheerio')
     $('li', 'ul', '<ul id = "fruits">...</ul>')
-### Rendering
-When you're ready to render the document, you can use `html` utility function:
-
-    $.html()
-    =>  <ul id = "fruits">
-          <li class = "apple">Apple</li>
-          <li class = "orange">Orange</li>
-          <li class = "pear">Pear</li>
-        </ul>
-
-If you want to render just a piece of the document you can use selectors:
-
-    $('.pear').html()
-    => <li class = "pear">Pear</li>
 ### Selectors
 
 Cheerio's selector implementation is nearly identical to jQuery's, so the API is very similar.
@@ -301,6 +287,20 @@ Get the combined text contents of each element in the set of matched elements, i
         Orange
         Pear
 
+### Rendering
+When you're ready to render the document, you can use `html` utility function:
+
+    $.html()
+    =>  <ul id = "fruits">
+          <li class = "apple">Apple</li>
+          <li class = "orange">Orange</li>
+          <li class = "pear">Pear</li>
+        </ul>
+
+If you want to render just a piece of the document you can use selectors:
+
+    $('.pear').html()
+    => <li class = "pear">Pear</li>
 ### Miscellaneous 
 DOM element methods that don't fit anywhere else
 
