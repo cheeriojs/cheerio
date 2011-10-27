@@ -1,68 +1,387 @@
-Cheerio is a server-side library that speaks and understands HTML.
-
 # cheerio
 
-Fast, minimal jQuery-like API for Tautologic's forgiving htmlparser. Wrote this library because JSdom was too strict and too slow. Plus I only need basic selectors and basic DOM manipulation. Ran some preliminary tests and found that cheerio is about 8x faster than JSdom in parsing, manipulating, and rendering. 
+Tiny, fast, and elegant implementation of core jQuery built specifically for the server. 
+
+
+## Introduction
+Teach your server HTML.
+
+    var cheerio = require("cheerio"),
+        $ = cheerio.load("<h2 class = 'title'>Hello world</h2>")
   
-## What about JSDOM?!
-I decided to build this library because I had three frustrations with JSDOM:
-- JSDOM's built-in parser is too strict. Cannot parse many "real-world" websites. Just try and parse Yahoo.com with JSDOM.
-- JSDOM is too slow. Parsing big websites with JSDOM has noticeable delay.
-- Feature-heavy. The goal of JSDOM is to provide an identical DOM environment as what we see in the browser. It's an ambitious goal and JSDOM is the closest out there, the fact that you can actually load the jQuery library on the server is amazing. The problem is many of these features aren't relevant on the server (AJAX, browser inconcistencies) and most of us don't need all these features. We need a library that understands HTML. A library that can parse, manipulate and traverse HTML blazingly fast and render with high accuracy. This is the goal of cheerio.
-  
+    $('h2.title').text('Hello there!')
+    $('h2').addClass('welcome')
+
+    $.html() 
+    => <h2 class = "title welcome">Hello there!</h2>
+
+
+## Installation
+`npm install cheerio`
+
+... or to install the package globally:
+
+`npm install -g cheerio`
+
+## Features
+__&#10084; Familiar syntax:__
+Cheerio implements a subset of core jQuery. Cheerio removes all the DOM inconsistencies and browser cruft from the jQuery library, revealing a truly gorgeous API. 
+
+__&#991; Blazingly fast:__
+Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient. Preliminary end-to-end benchmarks suggest that cheerio is about 8x faster than JSDOM.
+
+__&#10049; Insanely flexible:__
+Cheerio wraps around tautologies forgiving htmlparser. Cheerio can parse nearly any page or chunk of html.
+
+## What about JSDOM?
+I wrote cheerio because I found myself increasingly frustrated with JSDOM. For me, there were three main sticking points that I kept running into again and again:
+
+__&#8226; JSDOM's built-in parser is too strict:__
+  JSDOM's bundled HTML parser cannot handle many popular sites out there today.
+
+__&#8226; JSDOM is too slow:__
+Parsing big websites with JSDOM has a noticeable delay.
+
+__&#8226; JSDOM feels too heavy:__
+The goal of JSDOM is to provide an identical DOM environment as what we see in the browser. I never really needed all this, I just wanted a simple, familiar way to do HTML manipulation.
+
 ## API
 
-### cheerio(html)
-Initializes the library, parsing html and returning the DOM wrapping in the cheerio API. Typically this command will be run like this `$ = cheerio(html)`. Alternatively, you can run `$(selector, html)`. It is recommended that you use `cheerio(html)` if you are going to be working with extensively, because it only has to parse the html once.
+### Markup example we'll be using:
 
-### $(selector)
-This will select your element from the DOM. This selection uses the wonderful *soupselect* library. Just like jQuery, you can manipulate and traverse the returned DOM element.
+    <ul id = "fruits">
+      <li class = "apple">Apple</li>
+      <li class = "orange">Orange</li>
+      <li class = "pear">Pear</li>
+    </ul>
 
-* Usage examples:
-  * $(".header")
-  * $("script")
-  * $("#footer")
-  * $("#footer a")
-  * $("style[link=*.css]")
-  * $(DOMElement)
 
-* Future support:
-  * $(".header, .footer")
+
+### Loading
+First you need to load in the HTML. This step in jQuery is implicit, since jQuery operates on the one, baked-in DOM. With Cheerio, we need to pass in the HTML document. 
+
+This is the preferred method:
+    
+    var cheerio = require('cheerio'),
+        $ = cheerio.load( '<ul id = "fruits">...</ul>' )
+
+Optionally, you can also load in the HTML by passing the string as the context:
+
+    $ = require('cheerio')
+    $('ul', '<ul id = "fruits">...</ul>')
+
+Or as the root:
+
+    $ = require('cheerio')
+    $('li', 'ul', '<ul id = "fruits">...</ul>')
+### Rendering
+When you're ready to render the document, you can use `html` utility function:
+
+    $.html()
+    =>  <ul id = "fruits">
+          <li class = "apple">Apple</li>
+          <li class = "orange">Orange</li>
+          <li class = "pear">Pear</li>
+        </ul>
+
+If you want to render just a piece of the document you can use selectors:
+
+    $('.pear').html()
+    => <li class = "pear">Pear</li>
+### Selectors
+
+Cheerio's selector implementation is nearly identical to jQuery's, so the API is very similar.
+
+#### $( selector, [context], [root] )
+`selector` searches within the `context` scope which searches within the `root` scope. `selector` and `context` can be an string expression, DOM Element, array of DOM elements, or cheerio object. `root` is typically the HTML document string. 
+
+This selector method is the starting point for traversing and manipulating the document. Like jQuery, it's the primary method for selecting elements in the document, but unlike jQuery it's built on top of the soup-select library, not the Sizzle engine. 
+
+__Examples:__
+
+    $(".apple", '#fruits').text()
+    => Apple
   
-> Note: In an effort to keep the library small, fancy selectors that can be replicated using the supported selectors will probably not be supported.
+    $('ul .pear').attr('class')
+    => pear
+  
+    $('li[class=orange]').html()
+    => <li class = "orange">Orange</li>
+
+
+> See http://api.jquery.com/jQuery/ for more information
+
+### Attributes
+Methods for getting and modifying attributes.
+
+#### .attr( name, value )
+Method for getting and setting attributes. May also use a `map` and `function` like jQuery. Gets the attribute value for only the first element in the matched set. If you set an attribute's value to `null`, you remove that attribute.
+
+    $('ul').attr('id')
+    => fruits
+
+    $('.apple').attr('id', 'favorite').html()
+    => <li class = "apple" id = "favorite">Apple</li>
+
+> See http://api.jquery.com/attr/ for more information
+
+#### .removeAttr( name )
+Method for removing attributes by `name`.
+
+    $('.pear').removeAttr('class').html()
+    => <li>Pear</li>
+
+#### .hasClass( className )
+Check to see if *any* of the matched elements have a given `className`.
+
+    $('.pear').hasClass('pear')
+    => true
+
+    $('apple').hasClass('fruit')
+    => false
+
+    $('li').hasClass('pear')
+    => true
+  
+#### addClass( className )
+Adds class(es) to all of the matched elements. Also accepts a `function` like jQuery.
+
+    $('.pear').addClass('fruit').html()
+    => <li class = "pear fruit">Pear</li>
+
+    $('.apple').addClass('fruit red').html()
+    => <li class = "apple fruit red">Apple</li>
+
+> See http://api.jquery.com/addClass/ for more information.
+
+#### removeClass( [className] )
+Removes one or more space-separated classes from the selected elements. If no `className` is defined, all classes will be removed. Also accepts a `function` like jQuery.
+
+    $('.pear').removeClass('pear').html()
+    => <li class = "">Pear</li>
+
+    $('.apple').addClass('red').removeClass().html()
+    => <li class = "">Apple</li>
+    
+> See http://api.jquery.com/removeClass/ for more information.
+
+
+### Traversing
+
+#### .parent()
+Gets the parent of the first selected element.
+
+    $('.pear').parent().attr('id')
+    => fruits
+
+#### .next()
+Gets the next sibling thats an element of the first selected element.
+
+    $('.apple').next().hasClass('orange')
+    => true
+    
+#### .prev()
+Gets the previous sibling thats an element of the first selected element.
+
+    $('.orange').prev().hasClass('apple')
+    => true
+
+#### .siblings()
+Gets the first selected element's siblings. Excludes itself.
+
+    $('.pear').siblings().length
+    => 2
+    
+#### .children()
+Gets the children of the first selected element.
+
+    $('#fruits').children().length
+    => 3
+
+#### .each( function(index, element) )
+Iterates over a cheerio object, executing a function for each matched element. When the callback is fired, the function is fired in the context of the DOM element, so `this` refers to the current element, same as `element`.
+
+    var fruits = [];
+    
+    $('li').each(function(i, elem) {
+      fruits[i] = $(this).text();
+    });
+    
+    fruits.join(', ');
+    => Apple, Orange, Pear
+
 
 ### Manipulation
+Methods for modifying the DOM structure.
 
-#### $(selector).attr(attribute, value)
-Gets an attribute from the selected element. If value is specified, it sets the attribute of the element and returns the selector.
+#### .append( content, [content, ...] )
+Inserts content as the *last* child of each of the selected elements.
 
-#### $(selector).text()
-Returns the text of an element.
+    $('ul').append('<li class = "plum">Plum</li>')
+    $.html()
+    =>  <ul id = "fruits">
+          <li class = "apple">Apple</li>
+          <li class = "orange">Orange</li>
+          <li class = "pear">Pear</li>
+          <li class = "plum">Plum</li>
+        </ul>
 
-#### $(selector).html()
-Renders the html for the selected element
+#### .prepend( content, [content, ...] )
+Inserts content as the *first* child of each of the selected elements.
 
-#### $(selector).remove()
-Removes the element from the DOM
+    $('ul').prepend('<li class = "plum">Plum</li>')
+    $.html()
+    =>  <ul id = "fruits">
+          <li class = "plum">Plum</li>
+          <li class = "apple">Apple</li>
+          <li class = "orange">Orange</li>
+          <li class = "pear">Pear</li>
+        </ul>
+        
+#### .after( content, [content, ...] )
+Insert content next to each element in the set of matched elements. 
 
-### Traversal
+    $('.apple').after('<li class = "plum">Plum</li>')
+    $.html()
+    =>  <ul id = "fruits">
+          <li class = "apple">Apple</li>
+          <li class = "plum">Plum</li>
+          <li class = "orange">Orange</li>
+          <li class = "pear">Pear</li>
+        </ul>
+        
+#### .before( content, [content, ...] )
+Insert content previous to each element in the set of matched elements. 
 
-#### $(selector).each(fn)
-Loops through each of the elements selected. Will issue the following callback `fn.call($(elem), elem, i)`. 
+    $('.apple').before('<li class = "plum">Plum</li>')
+    $.html()
+    =>  <ul id = "fruits">
+          <li class = "plum">Plum</li>
+          <li class = "apple">Apple</li>
+          <li class = "orange">Orange</li>
+          <li class = "pear">Pear</li>
+        </ul>
 
-#### $(selector).children(i)
-Returns a child element. If no index is specified, it will return all the children.
+#### .remove( [selector] )
+Removes the set of matched elements from the DOM and all their children. `selector` filters the set of matched elements to be removed.
 
+    $('.pear').remove()
+    $.html()
+    =>  <ul id = "fruits">
+          <li class = "plum">Plum</li>
+          <li class = "apple">Apple</li>
+          <li class = "orange">Orange</li>
+        </ul>
+        
+#### .empty()
+Empties an element, removing all it's children.
+
+    $('ul').empty()
+    $.html()
+    =>  <ul id = "fruits"></ul>
+    
+#### .html( [htmlString] )
+Gets an html content string from the first selected element. If `htmlString` is specified, each selected element's content is replaced by the new content.
+
+    $('.orange').html()
+    => <li class = "orange">Orange</li>
+    
+    $('ul#fruits').html('<li class = "mango">Mango</li>').html()
+    =>  <ul id="fruits">
+          <li class="mango">Mango</li>
+        </ul>
+        
+#### .text( [textString] )
+Get the combined text contents of each element in the set of matched elements, including their descendants.. If `textString` is specified, each selected element's content is replaced by the new text content.
+
+    $('.orange').text()
+    => Orange
+    
+    $('ul').text()
+    =>  Apple
+        Orange
+        Pear
+
+### Miscellaneous 
+DOM element methods that don't fit anywhere else
+
+#### .get( [index] )
+Retrieve the DOM elements matched by the cheerio object. If no index is specified, it will get an array of all matched elements.
+
+    $('li').get(0)
+    => { raw: 'li class="apple"', ... }
+    
+    $('li').get()
+    => [ {...}, {...}, {...} ]
+    
+#### .size()
+Return the number of elements in the cheerio object. Same as `length`.
+
+    $('li').size()
+    => 3
+    
+#### .toArray()
+Retrieve all the DOM elements contained in the jQuery set, as an array.
+
+    $('li').toArray()
+    => [ {...}, {...}, {...} ]
 ### Utilities
 
-#### $.html()
-Renders the entire DOM to HTML.
-
 #### $.dom()
-Returns a raw DOM object.
+Get the raw DOM of the parsed HTML document.
+
+    $.dom()
+    => [ { raw: 'ul id="fruits"',
+        data: 'ul id="fruits"',
+        type: 'tag',
+        name: 'ul',
+        attribs: { id: 'fruits' },
+        children: 
+         [ [Object],
+           [Object],
+           [Object],
+           [Object],
+           [Object],
+           [Object],
+           [Object] ],
+        parent: null,
+        prev: null,
+        next: null } ]
+
+#### $.isArray( array )
+Checks to see the passed argument is an array.
+
+    $.isArray( $.dom() )
+    => true
+
+#### $.inArray( elem, arr )
+Checks to see if the element is in the array
+
+#### $.makeArray( obj )
+Turns an array-like object (like $) into a native array.
+    
+#### $.each( obj, function(index, elem) )
+Generic iterator function.
+
+#### $.merge( one, two )
+Merge the contents of two arrays together into the first array.
 
 
+## Special Thanks
 
+This library stands on the shoulders of some incredible developers. A special thanks to:
+
+__&#8226; @tautologistics's node-htmlparser:__
+This HTML parser can parse anything! The parser produces really consistent results, even when the HTML string has errors. This man is a genius.
+ 
+__&#8226; @harryf's node-soupselect:__ 
+What an incredibly fast and precise CSS selector engine. Never really liked the feature-rich selector engines – this engine strikes a great balance.
+
+__&#8226; @jQuery team:__
+The core API is the best of it's class and despite dealing with all the browser inconsistencies the code base is extremely clean and easy to follow. Much of cheerio's implementation and documentation is from jQuery. Thanks guys.
+
+__&#8226; @visionmedia:__
+The style, the structure, the open-source"-ness" of this library comes from studying TJ's style and using many of his libraries. This dude consistently pumps out high-quality libraries and has always been more than willing to help or answer questions. You rock TJ.
 ## License 
 
 (The MIT License)
