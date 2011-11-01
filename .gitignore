@@ -1,4 +1,5 @@
 lib
 node_modules
+npm-debug.log
 tests/rendering/diffs/*
 tests/rendering/finals/*
