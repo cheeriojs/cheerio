@@ -28,10 +28,10 @@ for file in testfiles
           $ = cheerio.load html
           $html = $.html()
           if !path.existsSync "#{__dirname}/finals"
-            fs.mkdirSync "#{__dirname}/finals"
+            fs.mkdirSync "#{__dirname}/finals", 0755
           fs.writeFileSync "#{__dirname}/finals/#{name}.basic.html", $html
           if !path.existsSync "#{__dirname}/diffs"
-            fs.mkdirSync "#{__dirname}/diffs"
+            fs.mkdirSync "#{__dirname}/diffs", 0755
           d = diff.diff html, $html, "#{__dirname}/diffs/#{name}.basic.html"
           self.callback null, html, $, d
 
