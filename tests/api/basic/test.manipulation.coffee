@@ -1,6 +1,6 @@
 should = require 'should'
-cheerio = require "../../../src/cheerio"
-utils = require "../../../src/utils"
+cheerio = require "../../../lib/cheerio"
+utils = require "../../../lib/utils"
 
 exports =
   

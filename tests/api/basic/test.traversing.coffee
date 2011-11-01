@@ -1,5 +1,5 @@
 should = require 'should'
-cheerio = require "../../../src/cheerio"
+cheerio = require "../../../lib/cheerio"
 
 loadCheerio = (html) ->
   return cheerio.load html
