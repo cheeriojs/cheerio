@@ -2,9 +2,10 @@
   "author": "Matt Mueller <mattmuelle@gmail.com> (mattmueller.me)",
   "name": "cheerio",
   "description": "Tiny, fast, and elegant implementation of core jQuery designed specifically for the server",
-  "version": "0.0.3",
-  "repository": {
-    "url": ""
+  "version": "0.0.4",
+  "repository":   {
+    "type": "git",
+    "url": "git://github.com/MatthewMueller/cheerio.git"
   },
   "main": "./index.js",
   "engines": {
