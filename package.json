@@ -1,8 +1,8 @@
 {
   "author": "Matt Mueller <mattmuelle@gmail.com> (mattmueller.me)",
   "name": "cheerio",
-  "description": "jQuery-like wrapper for soupselect and node-htmlparser",
-  "version": "0.0.2",
+  "description": "Tiny, fast, and elegant implementation of core jQuery designed specifically for the server",
+  "version": "0.0.3",
   "repository": {
     "url": ""
   },
