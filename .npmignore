@@ -1,5 +1,5 @@
-src
-support
-tests
-examples
+src/
+support/
+tests/
+examples/
 *.sock
