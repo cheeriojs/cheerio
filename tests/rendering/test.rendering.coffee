@@ -27,7 +27,7 @@ for file in testfiles
           should.not.exist err
           $ = cheerio.load html
           $html = $.html()
-          fs.writeFileSync "#{__dirname}/renderings/#{name}.basic.html", $html
+          fs.writeFileSync "#{__dirname}/finals/#{name}.basic.html", $html
           d = diff.diff html, $html, "#{__dirname}/diffs/#{name}.basic.html"
           self.callback null, html, $, d
 

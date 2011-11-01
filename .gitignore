@@ -1,4 +1,4 @@
 lib
 node_modules
 tests/rendering/diffs/*
-tests/rendering/renderings/*
+tests/rendering/finals/*
