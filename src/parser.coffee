@@ -45,10 +45,3 @@ connectDOM = (dom, parent = null) ->
   return dom
 
 module.exports = exports
-
-# Quick test
-# basic = fs.readFileSync '../tests/initial/basic.html', 'utf8'
-# 
-# dom = parse basic
-# utils = require "./utils"
-# console.log utils.print dom, 'prev.attribs.class'

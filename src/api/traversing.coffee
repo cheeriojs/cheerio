@@ -55,27 +55,10 @@ children = exports.children = (selector) ->
   else
     return null
 
-# add = exports.add = (selector, context) ->
-#   set = if _.isString selector
-#           $(selector, context) 
-#         else 
-#           $.makeArray( if selector and selector.type then [selector] else selector)
-#           
-#   all = $.merge this.get(), set
-#   
-#   return _.unique all
-
-# filter = exports.filter = (selector) ->
-#   return this.find(selector)
-
 # Execute a callback for every element in the matched set.
 # (You can seed the arguments with an array of args, but this is
 # only used internally.)
 each = exports.each = (callback, args) ->
   return $.each this, callback, args
-  
-# filter = exports.filter = (selector)
-#   this.pushStack 
-
 
 module.exports = $.fn.extend exports

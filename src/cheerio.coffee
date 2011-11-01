@@ -131,28 +131,4 @@ api = [
 for plugin in api
   require "./api/#{plugin}"
 
-
-# basic = require('fs').readFileSync '../tests/testdata/basic.html', 'utf8'
-
-
-# $ = cheerio.load basic
-# dom = parser.parse basic
-# # console.log $('#footer', 'body') # works
-# $('h2', dom).addClass("hi")
-
-
-# console.log cheerio dom
-# console.log cheerio "<h2>hihihi</h2"
-# console.log cheerio('.header', 'body', basic)
-
-# console.log cheerio("body #footer", basic).get 0
-
-# cheerio.fn.addClass = () ->
-#   console.log 'hi'
-# 
-# cheerio.fn.extend
-#   blah : () ->
-#     console.log 'balh'
-
-
   
