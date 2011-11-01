@@ -1,6 +1,6 @@
 RENDERING_DIR = tests/rendering
 
-build:
+build: test
 	@coffee -o lib/ src/
 
 test: clean-tests
