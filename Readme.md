@@ -6,12 +6,12 @@ Tiny, fast, and elegant implementation of core jQuery designed specifically for 
 Teach your server HTML.
 
     var cheerio = require("cheerio"),
-        $ = cheerio.load("<h2 class = 'title'>Hello world</h2>")
+        $ = cheerio.load("<h2 class = 'title'>Hello world</h2>");
   
-    $('h2.title').text('Hello there!')
-    $('h2').addClass('welcome')
+    $('h2.title').text('Hello there!');
+    $('h2').addClass('welcome');
 
-    $.html() 
+    $.html();
     => <h2 class = "title welcome">Hello there!</h2>
 
 
@@ -24,13 +24,13 @@ Teach your server HTML.
 
 ## Features
 __&#10084; Familiar syntax:__
-Cheerio implements a subset of core jQuery. Cheerio removes all the DOM inconsistencies and browser cruft from the jQuery library, revealing a truly gorgeous API. 
+Cheerio implements a subset of core jQuery. Cheerio removes all the DOM inconsistencies and browser cruft from the jQuery library, revealing its truly gorgeous API. 
 
 __&#991; Blazingly fast:__
 Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient. Preliminary end-to-end benchmarks suggest that cheerio is about 8x faster than JSDOM.
 
 __&#10049; Insanely flexible:__
-Cheerio wraps around @tautologistics forgiving htmlparser. Cheerio can parse nearly any page or chunk of html or xml.
+Cheerio wraps around @tautologistics forgiving htmlparser. Cheerio can parse nearly any HTML or XML document.
 
 ## What about JSDOM?
 I wrote cheerio because I found myself increasingly frustrated with JSDOM. For me, there were three main sticking points that I kept running into again and again:
@@ -47,7 +47,6 @@ The goal of JSDOM is to provide an identical DOM environment as what we see in t
 ## API
 
 ### Markup example we'll be using:
-This is the HTML markup we will be selecting, traversing, and manipulating in all of the API examples.
 
     <ul id = "fruits">
       <li class = "apple">Apple</li>
@@ -55,6 +54,7 @@ This is the HTML markup we will be selecting, traversing, and manipulating in al
       <li class = "pear">Pear</li>
     </ul>
 
+This is the HTML markup we will be using in all of the API examples.
 
 
 ### Loading
@@ -63,17 +63,17 @@ First you need to load in the HTML. This step in jQuery is implicit, since jQuer
 This is the preferred method:
     
     var cheerio = require('cheerio'),
-        $ = cheerio.load( '<ul id = "fruits">...</ul>' )
+        $ = cheerio.load('<ul id = "fruits">...</ul>');
 
 Optionally, you can also load in the HTML by passing the string as the context:
 
-    $ = require('cheerio')
-    $('ul', '<ul id = "fruits">...</ul>')
+    $ = require('cheerio');
+    $('ul', '<ul id = "fruits">...</ul>');
 
 Or as the root:
 
-    $ = require('cheerio')
-    $('li', 'ul', '<ul id = "fruits">...</ul>')
+    $ = require('cheerio');
+    $('li', 'ul', '<ul id = "fruits">...</ul>');
 ### Selectors
 
 Cheerio's selector implementation is nearly identical to jQuery's, so the API is very similar.
@@ -82,8 +82,6 @@ Cheerio's selector implementation is nearly identical to jQuery's, so the API is
 `selector` searches within the `context` scope which searches within the `root` scope. `selector` and `context` can be an string expression, DOM Element, array of DOM elements, or cheerio object. `root` is typically the HTML document string. 
 
 This selector method is the starting point for traversing and manipulating the document. Like jQuery, it's the primary method for selecting elements in the document, but unlike jQuery it's built on top of the soup-select library, not the Sizzle engine. 
-
-__Examples:__
 
     $(".apple", '#fruits').text()
     => Apple
@@ -94,6 +92,7 @@ __Examples:__
     $('li[class=orange]').html()
     => <li class = "orange">Orange</li>
 
+> See https://github.com/harryf/node-soupselect for all available selectors
 
 > See http://api.jquery.com/jQuery/ for more information
 
@@ -101,7 +100,7 @@ __Examples:__
 Methods for getting and modifying attributes.
 
 #### .attr( name, value )
-Method for getting and setting attributes. May also use a `map` and `function` like jQuery. Gets the attribute value for only the first element in the matched set. If you set an attribute's value to `null`, you remove that attribute.
+Method for getting and setting attributes. Gets the attribute value for only the first element in the matched set. If you set an attribute's value to `null`, you remove that attribute. You may also pass a `map` and `function` like jQuery. 
 
     $('ul').attr('id')
     => fruits
@@ -118,7 +117,7 @@ Method for removing attributes by `name`.
     => <li>Pear</li>
 
 #### .hasClass( className )
-Check to see if *any* of the matched elements have a given `className`.
+Check to see if *any* of the matched elements have the given `className`.
 
     $('.pear').hasClass('pear')
     => true
@@ -173,7 +172,7 @@ Gets the previous sibling thats an element of the first selected element.
     => true
 
 #### .siblings()
-Gets the first selected element's siblings. Excludes itself.
+Gets the first selected element's siblings, excluding itself.
 
     $('.pear').siblings().length
     => 2
@@ -185,7 +184,7 @@ Gets the children of the first selected element.
     => 3
 
 #### .each( function(index, element) )
-Iterates over a cheerio object, executing a function for each matched element. When the callback is fired, the function is fired in the context of the DOM element, so `this` refers to the current element, same as `element`.
+Iterates over a cheerio object, executing a function for each matched element. When the callback is fired, the function is fired in the context of the DOM element, so `this` refers to the current element, which is equivalent to the function parameter `element`.
 
     var fruits = [];
     
@@ -272,7 +271,7 @@ Gets an html content string from the first selected element. If `htmlString` is 
     $('.orange').html()
     => <li class = "orange">Orange</li>
     
-    $('ul#fruits').html('<li class = "mango">Mango</li>').html()
+    $('#fruits').html('<li class = "mango">Mango</li>').html()
     =>  <ul id="fruits">
           <li class="mango">Mango</li>
         </ul>
@@ -366,16 +365,23 @@ Generic iterator function.
 #### $.merge( one, two )
 Merge the contents of two arrays together into the first array.
 
+## Testing
 
+To run the test suite, download the repository, then within the cheerio directory, run:
+    
+    npm install
+    npm test
+    
+This will download the development packages and run the test suite.
 ## Special Thanks
 
 This library stands on the shoulders of some incredible developers. A special thanks to:
 
 __&#8226; @tautologistics' node-htmlparser:__
-This HTML parser can parse anything! The parser produces really consistent results, even when the HTML string has errors. This man is a genius.
+This HTML parser can parse anything and produces really consistent results, even when the HTML string has errors. This man is a genius.
  
 __&#8226; @harryf's node-soupselect:__ 
-What an incredibly fast and precise CSS selector engine. Never really liked the feature-rich selector engines – this engine strikes a great balance.
+What an incredibly fast and precise CSS selector engine. I never really liked the feature-rich selector engines &#8212; I think this engine strikes a great balance.
 
 __&#8226; @jQuery team:__
 The core API is the best of it's class and despite dealing with all the browser inconsistencies the code base is extremely clean and easy to follow. Much of cheerio's implementation and documentation is from jQuery. Thanks guys.
