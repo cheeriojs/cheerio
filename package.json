@@ -2,7 +2,7 @@
   "author": "Matt Mueller <mattmuelle@gmail.com> (mattmueller.me)",
   "name": "cheerio",
   "description": "jQuery-like wrapper for soupselect and node-htmlparser",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": {
     "url": ""
   },
