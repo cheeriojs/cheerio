@@ -4,4 +4,4 @@ build:
 test: 
 	@./node_modules/vows/bin/vows ./tests/test.cheerio.coffee --spec
 
-PHONY: build
+PHONY: build test
