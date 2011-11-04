@@ -1,7 +1,9 @@
 _ = require "underscore"
 $ = require "../cheerio"
 
-  
+parser = require "../parser"
+renderer = require "../renderer"
+
 # [[Class]] -> type pairs
 class2type = {}
   
@@ -18,28 +20,14 @@ Node Types
   text : 3
   tag : 1
 ###
-  
 
 # Some regexs
 rboolean = /^(?:autofocus|autoplay|async|checked|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped|selected)$/i
   
-  
-  
 # Save a reference to some core methods
 toString = Object.prototype.toString
-hasOwn = Object.prototype.hasOwnProperty
 push = Array.prototype.push
-slice = Array.prototype.slice
-trim = String.prototype.trim
 indexOf = Array.prototype.indexOf
-
-updateDOM = exports.updateDOM = (arr, parent) ->
-  for elem, i in arr
-    arr[i].prev = arr[i-1] or null
-    arr[i].next = arr[i+1] or null
-    arr[i].parent = parent or null
-
-  return arr
 
 type = exports.type = ( obj ) ->
 		if obj == null then String obj else class2type[ toString.call(obj) ] or "object"
@@ -132,7 +120,6 @@ access = exports.access = (elems, key, value, exec, fn, pass) ->
   # Getting an attribute
   return (if length then fn(elems[0], key) else undefined)
 
-
 attr = exports.attr = (elem, name, value, pass) ->
   type = elem.type
   
@@ -178,5 +165,31 @@ text = exports.text = (elems) ->
       ret += text elem.children
   
   return ret
+
+load = exports.load = (html) ->
+  root = parser.parse html
+  $.extend 
+    'root' : root
+
+  fn = (selector, context) ->
+    $ selector, context, root
+
+  return _(fn).extend $
+
+html = exports.html = (dom) ->
+  if dom isnt undefined and dom.type
+    return renderer.render dom
+  else if this.root
+    return renderer.render this.root
+  else
+    return ""
+
+dom = exports.dom = (dom) ->
+  if dom isnt undefined and dom.type
+    return dom
+  else if this.root
+    return this.root
+  else
+    return ""
 
 module.exports = $.extend exports

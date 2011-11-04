@@ -7,6 +7,10 @@ $ = require "../cheerio"
   TODO : Make it more jQuery-like
 ###
 
+find = exports.find = (selector) ->
+  elem = soupselect.select this.toArray(), selector
+  return cheerio elem
+
 parent = exports.parent = (elem) ->
   return if (this[0] and this[0].parent) then $(this[0].parent) else null
 

@@ -3,9 +3,6 @@ path = require "path"
 soupselect = require "soupselect"
 _ = require "underscore"
 
-parser = require "./parser"
-renderer = require "./renderer"
-
 cheerio = do ->
   cheerio = (selector, context, root) ->
     return new cheerio.fn.init selector, context, root
@@ -77,42 +74,6 @@ cheerio = do ->
   cheerio.extend = cheerio.fn.extend = (obj) ->
     return _.extend this, obj
   
-  # Custom API
-  cheerio.extend
-    
-    load : (html) ->
-      root = parser.parse html
-      cheerio.extend 
-        'root' : root
-      
-      fn = (selector, context) ->
-        cheerio selector, context, root
-        
-      return _(fn).extend cheerio
-  
-    html : (dom) ->
-      if dom isnt undefined and dom.type
-        return renderer.render dom
-      else if this.root
-        return renderer.render this.root
-      else
-        return ""
-    
-    dom : (dom) ->
-      if dom isnt undefined and dom.type
-        return dom
-      else if this.root
-        return this.root
-      else
-        return ""
-    
-  # Actual API
-  cheerio.fn.extend
-
-    find : (selector) ->
-      elem = soupselect.select this.toArray(), selector
-      return cheerio elem
-
   return cheerio
 
 module.exports = cheerio
