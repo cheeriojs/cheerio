@@ -27,7 +27,7 @@ __&#10084; Familiar syntax:__
 Cheerio implements a subset of core jQuery. Cheerio removes all the DOM inconsistencies and browser cruft from the jQuery library, revealing its truly gorgeous API. 
 
 __&#991; Blazingly fast:__
-Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient. Preliminary end-to-end benchmarks suggest that cheerio is about 8x faster than JSDOM.
+Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient. Preliminary end-to-end benchmarks suggest that cheerio is about __8x__ faster than JSDOM.
 
 __&#10049; Insanely flexible:__
 Cheerio wraps around @tautologistics forgiving htmlparser. Cheerio can parse nearly any HTML or XML document.
@@ -60,7 +60,7 @@ This is the HTML markup we will be using in all of the API examples.
 ### Loading
 First you need to load in the HTML. This step in jQuery is implicit, since jQuery operates on the one, baked-in DOM. With Cheerio, we need to pass in the HTML document. 
 
-This is the preferred method:
+This is the _preferred_ method:
     
     var cheerio = require('cheerio'),
         $ = cheerio.load('<ul id = "fruits">...</ul>');
@@ -259,7 +259,6 @@ Removes the set of matched elements from the DOM and all their children. `select
     $('.pear').remove()
     $.html()
     =>  <ul id = "fruits">
-          <li class = "plum">Plum</li>
           <li class = "apple">Apple</li>
           <li class = "orange">Orange</li>
         </ul>
