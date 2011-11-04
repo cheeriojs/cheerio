@@ -18,6 +18,7 @@ cheerio = do ->
   trimRight = /\s+$/
 
   cheerio.fn = cheerio.prototype =
+    cheerio : "0.2.0"
     constructor: cheerio
     init: (selector, context, root) ->
       # Handle $(""), $(null), or $(undefined)
@@ -62,7 +63,6 @@ cheerio = do ->
       # if context
         # return cheerio selector, parser.parse con
     
-    cheerio : "0.0.1"     
     selector : ""
     sort : [].sort
     splice : [].splice
