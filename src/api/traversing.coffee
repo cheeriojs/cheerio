@@ -1,6 +1,7 @@
 _ = require "underscore"
-$ = require "../cheerio"
+soupselect = require "soupselect"
 
+$ = require "../cheerio"
 ###
   Stupidly simple traversal
   
@@ -9,7 +10,7 @@ $ = require "../cheerio"
 
 find = exports.find = (selector) ->
   elem = soupselect.select this.toArray(), selector
-  return cheerio elem
+  return $(elem)
 
 parent = exports.parent = (elem) ->
   return if (this[0] and this[0].parent) then $(this[0].parent) else null

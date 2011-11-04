@@ -6,6 +6,12 @@ loadCheerio = (html) ->
 
 exports = 
   
+  'find' :
+    topic : loadCheerio
+    
+    'find single' : ($) ->
+      $('body').find('#modal').hasClass('blue').should.be.ok
+  
   'parent' : 
     topic : loadCheerio
   

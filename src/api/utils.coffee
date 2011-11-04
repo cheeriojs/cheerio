@@ -29,6 +29,14 @@ toString = Object.prototype.toString
 push = Array.prototype.push
 indexOf = Array.prototype.indexOf
 
+updateDOM = exports.updateDOM = (arr, parent) ->
+  for elem, i in arr
+    arr[i].prev = arr[i-1] or null
+    arr[i].next = arr[i+1] or null
+    arr[i].parent = parent or null
+ 
+  return arr
+
 type = exports.type = ( obj ) ->
 		if obj == null then String obj else class2type[ toString.call(obj) ] or "object"
 

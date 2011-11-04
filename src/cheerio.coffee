@@ -3,6 +3,8 @@ path = require "path"
 soupselect = require "soupselect"
 _ = require "underscore"
 
+parser = require "./parser"
+
 cheerio = do ->
   cheerio = (selector, context, root) ->
     return new cheerio.fn.init selector, context, root

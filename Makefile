@@ -1,7 +1,7 @@
 build:
 	@coffee -o lib/ src/	
 
-test: 
+test: build 
 	@./node_modules/vows/bin/vows ./tests/test.cheerio.coffee --spec
 
-PHONY: build test
+.PHONY: test build
