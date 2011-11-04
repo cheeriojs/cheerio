@@ -9,8 +9,14 @@ exports =
   'find' :
     topic : loadCheerio
     
-    'find single' : ($) ->
+    'single' : ($) ->
       $('body').find('#modal').hasClass('blue').should.be.ok
+      
+    'many' : ($) ->
+      $('body').find('h2').text().should.equal "Hi there!Feet!"
+      
+    'many finds many (merged)' : ($) ->
+      $('p').find('strong').text().should.equal "consecteturjust"
   
   'parent' : 
     topic : loadCheerio
@@ -70,7 +76,7 @@ exports =
     topic : loadCheerio
     
     'get' : ($) ->
-      $('#lorem').siblings().should.have.length 3
+      $('#lorem').siblings().should.have.length 4
       $('#lorem strong').siblings().should.have.length 1
       $('head meta').siblings().should.have.length 1
   
