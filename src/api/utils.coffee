@@ -30,6 +30,9 @@ push = Array.prototype.push
 indexOf = Array.prototype.indexOf
 
 updateDOM = exports.updateDOM = (arr, parent) ->
+  if parent
+    parent.children = $(arr).get()
+  
   for elem, i in arr
     arr[i].prev = arr[i-1] or null
     arr[i].next = arr[i+1] or null
@@ -78,6 +81,22 @@ inArray = exports.inArray = (elem, array) ->
     return -1
   
   return indexOf.call(array, elem)
+
+
+siblingsAndMe = exports.siblingsAndMe = (elem) ->
+  siblings = []
+  raw = $(elem)[0]
+  element = raw
+  while element.prev
+    element = element.prev
+
+  siblings.push element
+  while element.next
+    element = element.next
+    if element.type is "tag"
+      siblings.push element
+
+  return $(null).pushStack siblings
 
 # Args is for internal usage only
 each = exports.each = (object, callback, args) ->

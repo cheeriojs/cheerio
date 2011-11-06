@@ -41,41 +41,36 @@ prepend = exports.prepend = (elems...) ->
 
   return this
 
-updateArray = (arr) ->
-  arr.forEach (elem, i) ->
-    arr[i].prev = arr[i-1] or null
-    arr[i].next = arr[i+1] or null
-  return arr
-
 after = exports.after = (elems...) ->
   doms = []
   for elem in elems
     doms.push $(elem).dom()
     
   this.each ->
-    # Update parent
-    parentsChildren = this.parent.children
-    pos = $.inArray(this, parentsChildren)
+    siblings = $.siblingsAndMe(this)
+    pos = $.inArray(this, siblings)
+
     if pos >= 0
-      parentsChildren.splice.apply(parentsChildren, [pos + 1, 0].concat(doms))
-    # Update siblings
-    $.updateDOM parentsChildren, this.parent
+      siblings.splice.apply(siblings, [pos + 1, 0].concat(doms))
       
+    # Update siblings
+    $.updateDOM siblings, this.parent
+
   return this
 
 before = exports.before = (elems...) ->
   doms = []
   for elem in elems
     doms.push $(elem).dom()
-    
+  
   this.each ->
-    parentsChildren = this.parent.children
-    pos = $.inArray(this, parentsChildren)
+    siblings = $.siblingsAndMe(this)
+    pos = $.inArray(this, siblings)
     if pos >= 0
-      parentsChildren.splice.apply(parentsChildren, [pos, 0].concat(doms))
-    # Update siblings
-    $.updateDOM parentsChildren, this.parent
+      siblings.splice.apply(siblings, [pos, 0].concat(doms))
     
+    # Update siblings
+    $.updateDOM siblings, this.parent
     
   return this    
 

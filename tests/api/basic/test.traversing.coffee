@@ -84,6 +84,9 @@ exports =
       $('#lorem strong').siblings().should.have.length 1
       $('head meta').siblings().should.have.length 1
   
+    'get (no parent)' : ($) ->
+      console.log $('html').siblings()
+  
   # 'add' : 
   #   topic : loadCheerio
   #   

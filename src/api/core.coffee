@@ -22,10 +22,10 @@ get = exports.get = (num) ->
 # (returning the new matched element set)
 pushStack = exports.pushStack = (elems, name, selector) ->
   ret = this.constructor()
-  if cheerio.isArray(elems)
+  if $.isArray(elems)
     push.apply ret, elems
   else
-    cheerio.merge ret, elems
+    $.merge ret, elems
     
   ret.prevObject = this
   ret.context = this.context

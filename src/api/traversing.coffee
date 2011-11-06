@@ -36,9 +36,14 @@ prev = exports.prev = (elem) ->
   return null
 
 siblings = exports.siblings = (elem) ->
-  siblings = _.filter this.parent().children(), (elem) =>
+  if this.parent()
+    sibs = this.parent().children()
+  else
+    sibs = $.siblingsAndMe(this)
+    
+  siblings = _.filter sibs, (elem) =>
     elem isnt this[0] and elem.type is "tag"
-  
+    
   return $(siblings)
 
 children = exports.children = (selector) ->
