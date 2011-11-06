@@ -1,6 +1,6 @@
 # cheerio
 
-Tiny, fast, and elegant implementation of core jQuery designed specifically for the server. 
+Fast, flexible, and lean implementation of core jQuery designed specifically for the server.
 
 ## Introduction
 Teach your server HTML.
