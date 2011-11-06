@@ -82,6 +82,10 @@ exports =
 
       should.exist _$.cheerio
 
+    'before (no parent)' : ($) ->
+      $('html').before("<h1 class = 'first'>Zomg, I'm before the html tag</h1>")
+      $('html').prev().attr('class').should.equal 'first'
+
     'multiple elements' : ($) ->
       # Works but not tested
 

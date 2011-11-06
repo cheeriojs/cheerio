@@ -61,12 +61,13 @@ exports =
     'get (no next)' : ($) ->
       should.not.exist $('#modal').next()
 
-  'prev' : loadCheerio
+  'prev' : 
+    topic : loadCheerio
     
     'get' : ($) ->
       $("#lorem").prev().attr('class').should.equal "header"
       $('#modal')
-        .prev().prev().prev()
+        .prev().prev().prev().prev()
         .attr('class')
         .should.equal "header"
         
