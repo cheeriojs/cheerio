@@ -46,6 +46,8 @@ render = exports.render = (dom, output = []) ->
       output.push renderTag elem
     else if elem.type is "directive"
       output.push renderDirective elem
+    else if elem.type is "comment"
+      output.push renderComment elem
     else
       output.push renderText elem
 
@@ -77,6 +79,8 @@ renderDirective = (elem) ->
 renderText = (elem) ->
   return elem.raw
 
+renderComment = (elem) ->
+  return '<!--' + elem.raw + '-->'
 
 module.exports = exports
 
