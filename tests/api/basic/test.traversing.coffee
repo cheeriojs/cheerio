@@ -72,6 +72,9 @@ exports =
         
       $('#lorem span').prev().get(0).name.should.equal "strong"
   
+    'get (top-level)' : ($) ->
+      should.not.exist $('html').prev()
+  
   'siblings' : 
     topic : loadCheerio
     
