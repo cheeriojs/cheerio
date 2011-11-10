@@ -14,7 +14,7 @@ removeAttr = exports.removeAttr = (name) ->
 hasClass = exports.hasClass = (selector) ->
   className = " " + selector + " "
   for elem in this
-    if elem.type is "tag" and elem.attribs and (" " + elem.attribs["class"] + " ").replace(rclass, " ").indexOf(className) > -1
+    if $.isTag(elem) and elem.attribs and (" " + elem.attribs["class"] + " ").replace(rclass, " ").indexOf(className) > -1
       return true
   
   return false
@@ -31,7 +31,7 @@ addClass = exports.addClass = (value) ->
     
     for elem in this
       $elem = $(elem)
-      if elem.type is "tag"
+      if $.isTag(elem)
         
         if !$elem.attr("class")
           $elem.attr('class', classNames.join(' ').trim())
@@ -62,7 +62,7 @@ removeClass = exports.removeClass = (value) ->
     
     for elem in this
       $elem = $(elem)
-      if elem.type is 'tag' and $elem.attr('class')
+      if $.isTag(elem) and $elem.attr('class')
         if value
           ret = (" " + $elem.attr('class') + " ").replace( rclass, " " )
           for className in classNames

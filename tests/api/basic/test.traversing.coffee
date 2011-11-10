@@ -60,6 +60,8 @@ exports =
       
     'get (no next)' : ($) ->
       should.not.exist $('#modal').next()
+    'get (script)' : ($) ->
+      $('#fruits').next().hasClass('whatever').should.be.ok
 
   'prev' : 
     topic : loadCheerio

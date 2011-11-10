@@ -29,6 +29,17 @@ toString = Object.prototype.toString
 push = Array.prototype.push
 indexOf = Array.prototype.indexOf
 
+tags =
+  'tag' : 1
+  'script' : 1
+  'style' : 1
+
+isTag = exports.isTag = (type) ->
+  if type.type
+    type = type.type
+
+  return if tags[type] then true else false
+
 updateDOM = exports.updateDOM = (arr, parent) ->
   if parent
     parent.children = $(arr).get()
@@ -206,16 +217,17 @@ load = exports.load = (html) ->
 html = exports.html = (dom) ->
   if dom isnt undefined and dom.type
     return renderer.render dom
-  else if this.root
-    return renderer.render this.root
+  else if $.root
+    return renderer.render $.root
   else
     return ""
 
 dom = exports.dom = (dom) ->
-  if dom isnt undefined and dom.type
-    return dom
-  else if this.root
-    return this.root
+  if dom isnt undefined
+    if dom.type
+      return dom
+  else if $.root
+    return $.root
   else
     return ""
 

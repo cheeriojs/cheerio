@@ -18,7 +18,8 @@ String::repeat = (times) ->
   
 print = exports.print = (dom, attr = null, depth = 0, out = []) ->
   for elem in dom
-    if elem.type isnt "tag" then continue
+    type = elem.type
+    if type is "tag" or type is "script" or type is "style" then continue
 
     str = '–'.repeat depth
     if depth > 0
