@@ -47,7 +47,7 @@ after = exports.after = (elems...) ->
     doms.push $(elem).dom()
     
   this.each ->
-    siblings = $.siblingsAndMe(this)
+    siblings = $(this).siblingsAndMe()
     pos = $.inArray(this, siblings)
 
     if pos >= 0
@@ -62,16 +62,16 @@ before = exports.before = (elems...) ->
   doms = []
   for elem in elems
     doms.push $(elem).dom()
-  
+
   this.each ->
-    siblings = $.siblingsAndMe(this)
+    siblings = $(this).siblingsAndMe()
     pos = $.inArray(this, siblings)
     if pos >= 0
       siblings.splice.apply(siblings, [pos, 0].concat(doms))
     
     # Update siblings
     $.updateDOM siblings, this.parent
-    
+
   return this    
 
 remove = exports.remove = (selector) ->
@@ -92,7 +92,7 @@ empty = exports.empty = () ->
 
 dom = exports.dom = (domObject) ->
   if domObject is undefined
-    if this[0] and this[0].type is "tag"
+    if this[0] and $.isTag(this[0])
       return $.dom this[0]
 
 html = exports.html = (htmlString) ->

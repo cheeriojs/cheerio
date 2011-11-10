@@ -20,7 +20,7 @@ next = exports.next = (elem) ->
   
   nextSibling = this[0].next
   while nextSibling
-    return $(nextSibling) if nextSibling.type is "tag"
+    return $(nextSibling) if $.isTag nextSibling
     nextSibling = nextSibling.next
   
   return null
@@ -30,7 +30,7 @@ prev = exports.prev = (elem) ->
   
   prevSibling = this[0].prev
   while prevSibling
-    return $(prevSibling) if prevSibling.type is "tag"
+    return $(prevSibling) if $.isTag prevSibling
     prevSibling = prevSibling.prev
     
   return null
@@ -39,17 +39,17 @@ siblings = exports.siblings = (elem) ->
   if this.parent()
     sibs = this.parent().children()
   else
-    sibs = $.siblingsAndMe(this)
+    sibs = this.siblingsAndMe()
     
   siblings = _.filter sibs, (elem) =>
-    elem isnt this[0] and elem.type is "tag"
+    elem isnt this[0] and $.isTag elem
     
   return $(siblings)
 
 children = exports.children = (selector) ->
   if this[0] and this[0].children
     children = _.filter this[0].children, (elem) ->
-      elem.type is "tag"
+      $.isTag elem
 
     if selector isnt undefined
       if _.isNumber selector

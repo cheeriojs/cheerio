@@ -29,7 +29,7 @@ toString = Object.prototype.toString
 push = Array.prototype.push
 indexOf = Array.prototype.indexOf
 
-tags =
+tags = 
   'tag' : 1
   'script' : 1
   'style' : 1
@@ -37,19 +37,25 @@ tags =
 isTag = exports.isTag = (type) ->
   if type.type
     type = type.type
-
+    
   return if tags[type] then true else false
 
 updateDOM = exports.updateDOM = (arr, parent) ->
-  if parent
-    parent.children = $(arr).get()
+  # normalize 
+  arr = $(arr).get()
   
+  if !parent
+    $.setRoot(arr)
+    parent = $.root
+    
   for elem, i in arr
     arr[i].prev = arr[i-1] or null
     arr[i].next = arr[i+1] or null
     arr[i].parent = parent or null
- 
-  return arr
+  
+  parent.children = arr
+  
+  return undefined
 
 type = exports.type = ( obj ) ->
 		if obj == null then String obj else class2type[ toString.call(obj) ] or "object"
@@ -92,22 +98,6 @@ inArray = exports.inArray = (elem, array) ->
     return -1
   
   return indexOf.call(array, elem)
-
-
-siblingsAndMe = exports.siblingsAndMe = (elem) ->
-  siblings = []
-  raw = $(elem)[0]
-  element = raw
-  while element.prev
-    element = element.prev
-
-  siblings.push element
-  while element.next
-    element = element.next
-    if element.type is "tag"
-      siblings.push element
-
-  return $(null).pushStack siblings
 
 # Args is for internal usage only
 each = exports.each = (object, callback, args) ->
@@ -161,7 +151,7 @@ access = exports.access = (elems, key, value, exec, fn, pass) ->
 attr = exports.attr = (elem, name, value, pass) ->
   type = elem.type
   
-  if (!elem or elem.type isnt "tag")
+  if (!elem or !$.isTag(elem))
     return undefined 
   
   if !elem.attribs
@@ -204,12 +194,25 @@ text = exports.text = (elems) ->
   
   return ret
 
-load = exports.load = (html) ->
-  root = parser.parse html
-  $.extend 
+setRoot = exports.setRoot = (html) ->
+  if _.isString html
+    root = parser.parse html
+  else if html.length
+    root = html
+    
+  $.extend
     'root' : root
+  
+  return root
+  
 
-  fn = (selector, context) ->
+load = exports.load = (html) ->
+  root = setRoot html
+
+  fn = (selector, context, r) ->
+    if r
+      root = setRoot r
+      
     $ selector, context, root
 
   return _(fn).extend $
@@ -223,7 +226,7 @@ html = exports.html = (dom) ->
     return ""
 
 dom = exports.dom = (dom) ->
-  if dom isnt undefined
+  if dom isnt undefined 
     if dom.type
       return dom
   else if $.root

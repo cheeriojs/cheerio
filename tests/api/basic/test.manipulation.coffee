@@ -32,7 +32,7 @@ exports =
       $lorem.children(0).parent().attr('id').should.equal "lorem"
       $lorem.children(0).hasClass('emphy').should.be.ok
       should.exist _$.cheerio
-
+  
       'multiple elements' : ($) ->
         # Works but not tested
       'function' : ($) ->
@@ -80,6 +80,7 @@ exports =
 
       # DOM was updated
       $emphy = $lorem.parent().find('.emphy')
+      
       $emphy.parent().should.eql $parent
       $emphy.next().should.eql $lorem
       $emphy.prev().should.eql $before
@@ -89,7 +90,7 @@ exports =
     'before (no parent)' : ($) ->
       $('html').before("<h1 class = 'first'>Zomg, I'm before the html tag</h1>")
       $('html').prev().attr('class').should.equal 'first'
-
+      
     'multiple elements' : ($) ->
       # Works but not tested
 
@@ -153,6 +154,9 @@ exports =
       text = $('#lorem').text()
       
       text.should.equal expected
+    
+    'get (no child)' : ($) ->
+      
       
     'set' : ($) ->
       ###
