@@ -59,7 +59,8 @@ exports =
       $('.header').next().next().attr('id').should.equal "footer"
       
     'get (no next)' : ($) ->
-      should.not.exist $('#modal').next()
+      should.not.exist $('#fruits pear').next()
+
     'get (script)' : ($) ->
       $('#fruits').next().hasClass('whatever').should.be.ok
 
@@ -68,26 +69,21 @@ exports =
     
     'get' : ($) ->
       $("#lorem").prev().attr('class').should.equal "header"
-      $('#modal')
-        .prev().prev().prev().prev()
-        .attr('class')
-        .should.equal "header"
-        
       $('#lorem span').prev().get(0).name.should.equal "strong"
   
     'get (top-level)' : ($) ->
       should.not.exist $('html').prev()
-  
+        
   'siblings' : 
     topic : loadCheerio
     
     'get' : ($) ->
-      $('#lorem').siblings().should.have.length 4
+      $('.apple').siblings().should.have.length 2
       $('#lorem strong').siblings().should.have.length 1
       $('head meta').siblings().should.have.length 1
   
     'get (no parent)' : ($) ->
-      console.log $('html').siblings()
+      $('html').siblings().should.have.length 0
   
   # 'add' : 
   #   topic : loadCheerio

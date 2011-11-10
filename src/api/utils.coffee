@@ -186,6 +186,9 @@ removeAttr = exports.removeAttr = (elem, name) ->
 text = exports.text = (elems) ->
   ret = ""
   
+  if !elems
+    return ret
+  
   for elem in elems
     if elem.type is "text"
       ret += elem.data

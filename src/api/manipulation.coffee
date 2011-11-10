@@ -115,8 +115,7 @@ text = exports.text = (textString) ->
   if typeof textString isnt "object" and textString isnt undefined
     textElement = parser.parse textString
     this.each (i) ->
-      if this.children
-        this.children = textElement
+      this.children = textElement
     return this
   else  
     return $.text this
