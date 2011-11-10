@@ -18,7 +18,7 @@ cheerio = do ->
   trimRight = /\s+$/
 
   cheerio.fn = cheerio.prototype =
-    cheerio : "0.2.1"
+    cheerio : "0.2.2"
     constructor: cheerio
     init: (selector, context, root) ->
       # Handle $(""), $(null), or $(undefined)
