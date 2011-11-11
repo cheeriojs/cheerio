@@ -128,7 +128,7 @@ Check to see if *any* of the matched elements have the given `className`.
     $('li').hasClass('pear')
     => true
   
-#### addClass( className )
+#### .addClass( className )
 Adds class(es) to all of the matched elements. Also accepts a `function` like jQuery.
 
     $('.pear').addClass('fruit').html()
@@ -139,7 +139,7 @@ Adds class(es) to all of the matched elements. Also accepts a `function` like jQ
 
 > See http://api.jquery.com/addClass/ for more information.
 
-#### removeClass( [className] )
+#### .removeClass( [className] )
 Removes one or more space-separated classes from the selected elements. If no `className` is defined, all classes will be removed. Also accepts a `function` like jQuery.
 
     $('.pear').removeClass('pear').html()
@@ -372,6 +372,12 @@ Generic iterator function.
 
 #### $.merge( one, two )
 Merge the contents of two arrays together into the first array.
+
+## Screencasts
+
+http://vimeo.com/31950192
+
+> This video tutorial is a follow-up to Nettut's "How to Scrape Web Pages with Node.js and jQuery", using cheerio instead of JSDOM + jQuery. This video shows how easy it is to use cheerio and how much faster cheerio is than JSDOM + jQuery.
 
 ## Testing
 
