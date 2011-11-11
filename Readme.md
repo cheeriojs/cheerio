@@ -183,11 +183,14 @@ Gets the first selected element's siblings, excluding itself.
     $('.pear').siblings().length
     => 2
     
-#### .children()
+#### .children( selector )
 Gets the children of the first selected element.
 
     $('#fruits').children().length
     => 3
+    
+    $('#fruits').children('.pear').text()
+    => Pear
 
 #### .each( function(index, element) )
 Iterates over a cheerio object, executing a function for each matched element. When the callback is fired, the function is fired in the context of the DOM element, so `this` refers to the current element, which is equivalent to the function parameter `element`.
