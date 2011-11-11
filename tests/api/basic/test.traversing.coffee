@@ -46,6 +46,10 @@ exports =
       child.should.have.length 1
       child[0].name.should.equal "span"
       
+      child = $('#fruits').children('.pear')
+      child.should.have.length 1
+      child.text().should.equal "Pear"
+      
     'with selector (no results)' : ($) ->
       child = $('#lorem').children('em')
       child.should.have.length 0
