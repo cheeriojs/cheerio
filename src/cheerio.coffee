@@ -26,7 +26,8 @@ cheerio = do ->
         return this
 
       if root
-        this.root = root
+        cheerio.extend
+          'root' : root
         if _.isString context
           selector = "#{context} #{selector}"
         context = root
@@ -67,7 +68,6 @@ cheerio = do ->
     sort : [].sort
     splice : [].splice
     length : 0
-    root : undefined
     
   # Give the init function the jQuery prototype for later instantiation
   cheerio.fn.init.prototype = cheerio.fn
@@ -75,6 +75,10 @@ cheerio = do ->
   # Use underscores extend
   cheerio.extend = cheerio.fn.extend = (obj) ->
     return _.extend this, obj
+  
+  # Add in the static variables
+  cheerio.extend
+    root : undefined
   
   return cheerio
 

@@ -43,19 +43,20 @@ isTag = exports.isTag = (type) ->
 updateDOM = exports.updateDOM = (arr, parent) ->
   # normalize 
   arr = $(arr).get()
-  
+
   if !parent
     $.setRoot(arr)
     parent = $.root
-    
+
+  # console.log arr
   for elem, i in arr
     arr[i].prev = arr[i-1] or null
     arr[i].next = arr[i+1] or null
     arr[i].parent = parent or null
-  
+
   parent.children = arr
   
-  return undefined
+  return parent
 
 type = exports.type = ( obj ) ->
 		if obj == null then String obj else class2type[ toString.call(obj) ] or "object"
@@ -104,7 +105,6 @@ each = exports.each = (object, callback, args) ->
   length = object.length
   i = 0
   isObj = length is undefined or _.isFunction object
-  
   if args
     if isObj
       for name of object
@@ -117,11 +117,11 @@ each = exports.each = (object, callback, args) ->
   else
     if isObj
       for name of object
-        break  if callback.call(object[name], name, object[name]) is false
+        break if callback.call(object[name], name, object[name]) is false
     else
       while i < length
-        break  if callback.call(object[i], i, object[i++]) is false
-        
+        break if callback.call(object[i], i, object[i++]) is false
+
   return object
 
 # Multifunctional method to get and set values to a collection

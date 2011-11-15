@@ -44,7 +44,7 @@ prepend = exports.prepend = (elems...) ->
 after = exports.after = (elems...) ->
   doms = []
   for elem in elems
-    doms.push $(elem).dom()
+    doms = doms.concat $(elem).dom()
     
   this.each ->
     siblings = $(this).siblingsAndMe()
@@ -61,16 +61,17 @@ after = exports.after = (elems...) ->
 before = exports.before = (elems...) ->
   doms = []
   for elem in elems
-    doms.push $(elem).dom()
+    doms = doms.concat $(elem).dom()
 
   this.each ->
     siblings = $(this).siblingsAndMe()
     pos = $.inArray(this, siblings)
+
     if pos >= 0
       siblings.splice.apply(siblings, [pos, 0].concat(doms))
-    
+
     # Update siblings
-    $.updateDOM siblings, this.parent
+    this.parent = $.updateDOM siblings, this.parent
 
   return this    
 

@@ -42,6 +42,7 @@ pushStack = exports.pushStack = (elems, name, selector) ->
 siblingsAndMe = exports.siblingsAndMe = () ->
   siblings = []
   raw = this[0]
+
   element = raw
   while element.prev
     element = element.prev
@@ -50,7 +51,7 @@ siblingsAndMe = exports.siblingsAndMe = () ->
   while element.next
     element = element.next
     siblings.push element
-
+    
   return siblings  
 
 module.exports = $.fn.extend exports
