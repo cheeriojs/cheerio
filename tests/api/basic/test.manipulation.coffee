@@ -94,7 +94,6 @@ exports =
 
     'before (no parent)' : ($) ->
       $('html').before("<h1 class = 'first'>Zomg, I'm before the html tag</h1>")
-      console.log $
       $('html').prev().attr('class').should.equal 'first'
       ###
         Due to async behavior in vows, this won't work, even though functionally correct - 

@@ -10,7 +10,7 @@ removeChild = (parent, elem) ->
 append = exports.append = (elems...) ->
   dom = []
   for elem in elems
-    dom.push $(elem).dom()
+    dom = dom.concat $(elem).get()
   
   this.each ->
     if _.isFunction elems[0]
@@ -27,7 +27,7 @@ append = exports.append = (elems...) ->
 prepend = exports.prepend = (elems...) ->
   dom = []
   for elem in elems
-    dom.push $(elem).dom()
+    dom = dom.concat $(elem).get()
   
   this.each ->
     if _.isFunction elems[0]
@@ -42,16 +42,16 @@ prepend = exports.prepend = (elems...) ->
   return this
 
 after = exports.after = (elems...) ->
-  doms = []
+  dom = []
   for elem in elems
-    doms = doms.concat $(elem).dom()
+    dom = dom.concat $(elem).get()
     
   this.each ->
     siblings = $(this).siblingsAndMe()
     pos = $.inArray(this, siblings)
 
     if pos >= 0
-      siblings.splice.apply(siblings, [pos + 1, 0].concat(doms))
+      siblings.splice.apply(siblings, [pos + 1, 0].concat(dom))
       
     # Update siblings
     $.updateDOM siblings, this.parent
@@ -59,16 +59,16 @@ after = exports.after = (elems...) ->
   return this
 
 before = exports.before = (elems...) ->
-  doms = []
+  dom = []
   for elem in elems
-    doms = doms.concat $(elem).dom()
-
+    dom = dom.concat $(elem).get()
+    
   this.each ->
     siblings = $(this).siblingsAndMe()
     pos = $.inArray(this, siblings)
 
     if pos >= 0
-      siblings.splice.apply(siblings, [pos, 0].concat(doms))
+      siblings.splice.apply(siblings, [pos, 0].concat(dom))
 
     # Update siblings
     this.parent = $.updateDOM siblings, this.parent
@@ -90,11 +90,6 @@ remove = exports.remove = (selector) ->
 empty = exports.empty = () ->
   this.each ->
     this.children = []
-
-dom = exports.dom = (domObject) ->
-  if domObject is undefined
-    if this[0] and $.isTag(this[0])
-      return $.dom this[0]
 
 html = exports.html = (htmlString) ->
   if typeof htmlString isnt "object" and htmlString isnt undefined

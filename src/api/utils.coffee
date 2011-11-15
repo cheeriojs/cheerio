@@ -48,7 +48,6 @@ updateDOM = exports.updateDOM = (arr, parent) ->
     $.setRoot(arr)
     parent = $.root
 
-  # console.log arr
   for elem, i in arr
     arr[i].prev = arr[i-1] or null
     arr[i].next = arr[i+1] or null
