@@ -58,8 +58,9 @@ exports =
       should.exist _$.cheerio
       
     'after (no parent)' : ($) ->
-      $('html').after("<h1 class = 'first'>Zomg, I'm before the html tag</h1>")
+      $('html').after("<h1 class = 'first'>Zomg, I'm after the html tag</h1>")
       $('html').next().attr('class').should.equal 'first'
+      $.html().should.include.string '</html><h1 class = "first">Zomg, I\'m after the html tag</h1>'
       
     'multiple elements' : ($) ->
       # Works but not tested
@@ -90,6 +91,7 @@ exports =
     'before (no parent)' : ($) ->
       $('html').before("<h1 class = 'first'>Zomg, I'm before the html tag</h1>")
       $('html').prev().attr('class').should.equal 'first'
+      $.html().should.include.string '<h1 class = "first">Zomg, I\'m before the html tag</h1><html>'
       
     'multiple elements' : ($) ->
       # Works but not tested
