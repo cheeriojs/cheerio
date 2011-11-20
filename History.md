@@ -1,3 +1,11 @@
+0.3.0 / 2011-11-19
+=================
+* Now using htmlparser2 for parsing (2x speed increase, cleaner, actively developed)
+* Added benchmark directory for future speed tests
+* $("...").dom() was funky, so it was removed in favor of $("...").get(). $.dom() still works the same.
+* $.root now correctly static across all instances of $
+* Added a screencast
+
 0.2.2 / 2011-11-9
 =================
 
