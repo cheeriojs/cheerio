@@ -14,14 +14,15 @@
   },
   "dependencies": {
     "soupselect" : "0.2.x",
-    "htmlparser" : "1.x",
+    "htmlparser2" : "1.x",
     "underscore" : "1.x"
   },
   "devDependencies": {
     "coffee-script" : "1.1.x",
     "vows" : "0.5.x",
     "diff_match_patch" : "0.1.x",
-    "should" : "0.x"
+    "should" : "0.x",
+    "request" : "2.x"
   },
   "scripts": {
     "prepublish": "coffee -o lib/ src/",
