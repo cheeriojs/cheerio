@@ -3,3 +3,4 @@ support/
 tests/
 examples/
 *.sock
+*.tmproj
