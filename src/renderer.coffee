@@ -18,6 +18,7 @@ singleTag =
   meta: 1
   param: 1
   embed: 1
+  include: 1
 
 tagType = 
   tag : 1
