@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "soupselect" : "0.2.x",
-    "htmlparser" : "1.x",
+    "htmlparser2" : "1.x",
     "underscore" : "1.x"
   },
   "devDependencies": {

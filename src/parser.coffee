@@ -1,4 +1,4 @@
-htmlparser = require "htmlparser"
+htmlparser = require "htmlparser2"
 fs = require "fs"
   
 parse = exports.parse = (content) ->
