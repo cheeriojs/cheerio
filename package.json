@@ -13,7 +13,7 @@
     "node": ">= 0.4.11"
   },
   "dependencies": {
-    "soupselect" : "0.2.x",
+    "cheerio-soupselect" : "0.0.x",
     "htmlparser2" : "1.x",
     "underscore" : "1.x"
   },

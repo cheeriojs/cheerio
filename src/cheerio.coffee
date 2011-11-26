@@ -1,6 +1,6 @@
 path = require "path"
 
-soupselect = require "soupselect"
+soupselect = require "cheerio-soupselect"
 _ = require "underscore"
 
 parser = require "./parser"

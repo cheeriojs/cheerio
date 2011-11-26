@@ -1,5 +1,5 @@
 _ = require "underscore"
-soupselect = require "soupselect"
+soupselect = require "cheerio-soupselect"
 
 $ = require "../cheerio"
 ###
