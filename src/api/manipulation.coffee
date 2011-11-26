@@ -11,17 +11,16 @@ append = exports.append = (elems...) ->
   dom = []
   for elem in elems
     dom = dom.concat $(elem).get()
-  
+
   this.each ->
     if _.isFunction elems[0]
       # Not yet supported
     else        
       if !this.children
         this.children = []
-      
       this.children = this.children.concat dom
       $.updateDOM this.children, this
-    
+
   return this
 
 prepend = exports.prepend = (elems...) ->
@@ -47,15 +46,16 @@ after = exports.after = (elems...) ->
     dom = dom.concat $(elem).get()
     
   this.each ->
-    siblings = $(this).siblingsAndMe()
-    pos = $.inArray(this, siblings)
+    siblings = this.parent.children
+    index = siblings.indexOf(this)
 
-    if pos >= 0
-      siblings.splice.apply(siblings, [pos + 1, 0].concat(dom))
+    if index >= 0
+      siblings.splice.apply(siblings, [index + 1, 0].concat(dom))
       
     # Update siblings
     $.updateDOM siblings, this.parent
-
+    this.parent.children = siblings
+    
   return this
 
 before = exports.before = (elems...) ->
@@ -64,14 +64,15 @@ before = exports.before = (elems...) ->
     dom = dom.concat $(elem).get()
     
   this.each ->
-    siblings = $(this).siblingsAndMe()
-    pos = $.inArray(this, siblings)
+    siblings = this.parent.children
+    index = siblings.indexOf(this)
 
-    if pos >= 0
-      siblings.splice.apply(siblings, [pos, 0].concat(dom))
+    if index >= 0
+      siblings.splice.apply(siblings, [index, 0].concat(dom))
 
     # Update siblings
-    this.parent = $.updateDOM siblings, this.parent
+    $.updateDOM siblings, this.parent
+    this.parent.children = siblings
 
   return this    
 
@@ -81,11 +82,27 @@ remove = exports.remove = (selector) ->
     elems = this.find(selector)
     
   elems.each ->
-    if this.parent
-      removeChild this.parent, this
-      delete this['parent']
-      
+    siblings = this.parent.children
+    index = siblings.indexOf(this)
+    siblings.splice index, 1
+    
+    $.updateDOM siblings, this.parent
+    this.parent.children = siblings
+    
   return this
+
+replaceWith = exports.replaceWith = (content) ->
+  elems = $(content).get()
+
+  this.each ->
+    siblings = this.parent.children
+    index = siblings.indexOf(this)
+    
+    # siblings.slice(index, 1, elem1, elem2, elem3, ...)
+    siblings.splice.apply(siblings, [index, 1].concat(elems))
+    
+    $.updateDOM siblings, this.parent
+    this.parent.children = siblings
 
 empty = exports.empty = () ->
   this.each ->
