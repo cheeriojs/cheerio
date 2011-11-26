@@ -43,7 +43,8 @@ cheerio = do ->
         if match && (match[1] || !context)
           if match[1]
             # It's an HTML string
-            return cheerio.merge this, parser.parse selector
+            root = parser.parse selector
+            return cheerio.merge this, root.children
           else 
             # Classes, IDs just defer to soupselect
             elems = soupselect.select context, selector
@@ -76,10 +77,6 @@ cheerio = do ->
   cheerio.extend = cheerio.fn.extend = (obj) ->
     return _.extend this, obj
   
-  # Add in the static variables
-  cheerio.extend
-    root : undefined
-  
   return cheerio
 
 module.exports = cheerio
@@ -98,4 +95,3 @@ api = [
 for plugin in api
   require "./api/#{plugin}"
 
-  

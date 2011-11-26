@@ -1,21 +1,36 @@
 htmlparser = require "htmlparser2"
 fs = require "fs"
-  
+splice = [].splice
+
 parse = exports.parse = (content) ->
   handler = new htmlparser.DefaultHandler()
   parser = new htmlparser.Parser handler
   
   parser.includeLocation = false
   parser.parseComplete content
-  
   dom = handler.dom
-  dom = connectDOM dom
+    
+  root = {
+    type : 'root'
+    name : 'root'
+    parent : null
+    prev : null
+    next : null
+    children : []
+  }
   
-  return dom
+  root.children = createTree dom, root
+  # 
+  # for elem in root.children
+  #   elem.parent = root
 
-connectDOM = (dom, parent = null) ->
+
+  return root
+
+createTree = (dom, parent = null) ->
   prevIndex = -1
   lastElem = null
+
   for elem, i in dom
 
     # Set parent
@@ -35,7 +50,7 @@ connectDOM = (dom, parent = null) ->
     
     # Run through the children
     if dom[i].children
-      connectDOM dom[i].children, dom[i]
+      createTree dom[i].children, dom[i]
     
     # Get ready for next elem
     prevIndex = i

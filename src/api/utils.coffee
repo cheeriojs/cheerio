@@ -44,15 +44,14 @@ updateDOM = exports.updateDOM = (arr, parent) ->
   # normalize 
   arr = $(arr).get()
 
-  if !parent
-    $.setRoot(arr)
-    parent = $.root
-
   for elem, i in arr
     arr[i].prev = arr[i-1] or null
     arr[i].next = arr[i+1] or null
     arr[i].parent = parent or null
 
+  if !parent.children
+    parent.children = []
+    
   parent.children = arr
   
   return parent
@@ -196,25 +195,28 @@ text = exports.text = (elems) ->
   
   return ret
 
-setRoot = exports.setRoot = (html) ->
-  if _.isString html
-    root = parser.parse html
-  else if html.length
-    root = html
-    
-  $.extend
-    'root' : root
-  
-  return root
+# setRoot = (html) ->
+#   if _.isString html
+#     root = parser.parse html
+#   else if html.length
+#     root = html
+#     
+#   $.extend
+#     'root' : root
+#   
+#   return root
   
 
 load = exports.load = (html) ->
-  root = setRoot html
+  root = parser.parse html
 
+  $.extend
+    'root' : root
+  
   fn = (selector, context, r) ->
     if r
-      root = setRoot r
-      
+      root = parser.parse r
+    
     $ selector, context, root
 
   return _(fn).extend $
@@ -222,8 +224,8 @@ load = exports.load = (html) ->
 html = exports.html = (dom) ->
   if dom isnt undefined and dom.type
     return renderer.render dom
-  else if $.root
-    return renderer.render $.root
+  else if this.root and this.root.children
+    return renderer.render this.root.children
   else
     return ""
 
@@ -231,8 +233,8 @@ dom = exports.dom = (dom) ->
   if dom isnt undefined 
     if dom.type
       return dom
-  else if $.root
-    return $.root
+  else if this.root and this.root.children
+    return this.root.children
   else
     return ""
 
