@@ -1,4 +1,4 @@
-0.3.1 / 2011-11-19
+0.3.1 / 2011-11-25
 =================
 * Now relying on cheerio-soupselect instead of node-soupselect
 * Removed all lingering htmlparser dependencies
