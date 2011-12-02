@@ -126,10 +126,19 @@ text = exports.text = (textString) ->
   
   # Set the text
   if typeof textString isnt "object" and textString isnt undefined
-    textElement = parser.parse textString
+    
+    textElement = 
+      raw : textString
+      data : textString
+      type : "text"
+      parent : null
+      prev : null
+      next : null
+      children : []
+    
     this.each (i) ->
-      this.children = textElement.children
-      $.updateDOM this.children, this      
+      this.children = textElement
+      $.updateDOM this.children, this
     return this
   else  
     return $.text this

@@ -139,10 +139,15 @@ exports =
       $('#footer').html().should.equal expected
       
     'set' : ($) ->
-      ###
-        TODO finish set
-      ###
-  
+      $modal = $('#modal')
+      beforeText = $modal.text()
+      beforeText.should.equal "\n      This is a modal\n    "
+      
+      $modal.text('hi there!')
+      console.log $modal.text()
+      $modal.text().should.equal('hi there!')
+      # $('#modal').text().should.equal('hi there!')
+    
   'text' : 
     topic : (html) ->
       return cheerio.load html
