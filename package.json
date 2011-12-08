@@ -10,7 +10,7 @@
   },
   "main": "./index.js",
   "engines": {
-    "node": ">= 0.4.11"
+    "node": ">= 0.4.7"
   },
   "dependencies": {
     "cheerio-soupselect" : "0.0.x",
