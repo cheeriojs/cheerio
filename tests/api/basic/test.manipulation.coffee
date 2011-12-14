@@ -144,9 +144,11 @@ exports =
       beforeText.should.equal "\n      This is a modal\n    "
       
       $modal.text('hi there!')
-      console.log $modal.text()
       $modal.text().should.equal('hi there!')
       # $('#modal').text().should.equal('hi there!')
+    
+    'only text' : ($) ->
+      $ = $.load('hi there whaddup')
     
   'text' : 
     topic : (html) ->

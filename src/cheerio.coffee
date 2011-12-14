@@ -51,9 +51,12 @@ cheerio = do ->
             this.selector = selector
             return cheerio.merge this, elems
         
+        ###
+          Refactor
+        ###
         # HANDLE: $(expr, $(...))
         if !context or context.cheerio
-          return (context or root).find selector
+          return this.constructor(context or root).find selector
           
         # HANDLE: $(expr, context)
         else
