@@ -42,8 +42,11 @@ prepend = exports.prepend = (elems...) ->
 
 after = exports.after = (elems...) ->
   dom = []
+  console.log 'lol'
   for elem in elems
     dom = dom.concat $(elem).get()
+  
+  console.log 'hi'
     
   this.each ->
     siblings = this.parent.children

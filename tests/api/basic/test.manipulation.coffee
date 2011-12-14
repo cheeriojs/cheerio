@@ -148,6 +148,9 @@ exports =
       $modal.text().should.equal('hi there!')
       # $('#modal').text().should.equal('hi there!')
     
+    'only text' : ($) ->
+      $ = $.load('hi there whaddup')
+    
   'text' : 
     topic : (html) ->
       return cheerio.load html

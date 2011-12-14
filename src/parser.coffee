@@ -19,7 +19,7 @@ parse = exports.parse = (content) ->
     children : []
   }
   
-  root.children = createTree dom, root
+  root.children = eval dom, root
   # 
   # for elem in root.children
   #   elem.parent = root
@@ -27,7 +27,7 @@ parse = exports.parse = (content) ->
 
   return root
 
-createTree = (dom, parent = null) ->
+eval = exports.eval = (dom, parent = null) ->
   prevIndex = -1
   lastElem = null
 
@@ -50,7 +50,7 @@ createTree = (dom, parent = null) ->
     
     # Run through the children
     if dom[i].children
-      createTree dom[i].children, dom[i]
+      eval dom[i].children, dom[i]
     
     # Get ready for next elem
     prevIndex = i
