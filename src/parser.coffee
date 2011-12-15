@@ -2,13 +2,17 @@ htmlparser = require "htmlparser2"
 fs = require "fs"
 splice = [].splice
 
-parse = exports.parse = (content) ->
+eval = exports.eval = (content) ->
   handler = new htmlparser.DefaultHandler()
   parser = new htmlparser.Parser handler
   
   parser.includeLocation = false
   parser.parseComplete content
-  dom = handler.dom
+  
+  return handler.dom
+
+parse = exports.parse = (content) ->
+  dom = eval content
     
   root = {
     type : 'root'
@@ -20,14 +24,10 @@ parse = exports.parse = (content) ->
   }
   
   root.children = createTree dom, root
-  # 
-  # for elem in root.children
-  #   elem.parent = root
-
 
   return root
 
-createTree = (dom, parent = null) ->
+createTree = exports.createTree = (dom, parent = null) ->
   prevIndex = -1
   lastElem = null
 

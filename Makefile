@@ -4,4 +4,7 @@ build:
 test: build 
 	@./node_modules/vows/bin/vows ./tests/test.cheerio.coffee --spec
 
-.PHONY: test build
+mate:
+	@mate src/
+
+.PHONY: test build mate

@@ -19,6 +19,7 @@ singleTag =
   param: 1
   embed: 1
   include: 1
+  yield: 1
 
 tagType = 
   tag : 1

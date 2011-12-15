@@ -173,8 +173,8 @@ attr = exports.attr = (elem, name, value, pass) ->
     return elem.attribs[name]
       
 removeAttr = exports.removeAttr = (elem, name) ->
-  if elem.type is 'tag' and elem.attribs
-    
+  if isTag(elem.type) and elem.attribs
+
     if elem.attribs[name]
       if rboolean.test elem.attribs[name]
         elem.attribs[name] = false
