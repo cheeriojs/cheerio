@@ -28,6 +28,20 @@ describe 'cheerio', ->
   it '$(selector) with no context or root should be empty', ->
     $('.h2').should.be.empty
   
+  it 'should be able to create html without a root or context', ->
+    $h2 = $('<h2>')
+    $h2.should.not.be.empty
+    $h2.should.have.length 1
+    $h2[0].name.should.equal 'h2'
+    
+  it 'should be able to create complicated html', ->
+    $script = $('<script src = "script.js" type = "text/javascript"></script>')
+    $script.should.not.be.empty
+    $script.should.have.length 1
+    $script[0].attribs.src.should.equal 'script.js'
+    $script[0].attribs.type.should.equal 'text/javascript'
+    $script[0].children.should.be.empty
+  
   testAppleSelect = ($apple) ->
     $apple.should.have.length 1
     
@@ -51,8 +65,13 @@ describe 'cheerio', ->
     $fruits = $('#fruits', null, fruits)
     $fruits.should.have.length 1
     $fruits[0].attribs.id.should.equal 'fruits'
-    
+
   it 'should be able to select a tag', ->
+    $ul = $('ul', fruits)
+    $ul.should.have.length 1
+    $ul[0].name.should.equal 'ul'
+  
+  it 'should be able to select multiple tags', ->
     $fruits = $('li', null, fruits)
     $fruits.should.have.length 3
     
@@ -60,6 +79,18 @@ describe 'cheerio', ->
     $fruits.each (i, $fruit) ->
       $fruit.attribs.class.should.equal classes[i]
   
+  it 'should be able to do: $("#fruits .apple")', ->
+    $apple = $('#fruits .apple', fruits)
+    testAppleSelect $apple
+    
+  it 'should be able to do: $("li.apple")', ->
+    $apple = $('li.apple', fruits)
+    testAppleSelect $apple
+    
+  it 'should be able to select by attributes', ->
+    $apple = $('li[class=apple]', fruits)
+    testAppleSelect $apple
+    
   
     
   
