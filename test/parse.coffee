@@ -1,4 +1,4 @@
-parse = require '../lib/parse'
+parse = require('../').parse
 should = require 'should'
 
 ###

@@ -1,8 +1,8 @@
 _ = require "underscore"
 $ = require "../cheerio"
 
-parser = require "../parser"
-renderer = require "../renderer"
+parse = require "../parse"
+render = require "../render"
 
 # [[Class]] -> type pairs
 class2type = {}
@@ -83,7 +83,7 @@ merge = exports.merge = (first, second) ->
 
 makeArray = exports.makeArray = (array, results) ->
   ret = results or []
-  if array?
+  if array
     type = $.type(array)
     if not array.length? or type == "string" or type == "function" or type == "regexp"
       push.call ret, array
@@ -208,14 +208,14 @@ text = exports.text = (elems) ->
   
 
 load = exports.load = (html) ->
-  root = parser.parse html
+  root = parse html
 
   $.extend
     'root' : root
   
   fn = (selector, context, r) ->
     if r
-      root = parser.parse r
+      root = parse r
     
     $ selector, context, root
 
@@ -223,9 +223,9 @@ load = exports.load = (html) ->
 
 html = exports.html = (dom) ->
   if dom isnt undefined and dom.type
-    return renderer.render dom
+    return render dom
   else if this.root and this.root.children
-    return renderer.render this.root.children
+    return render this.root.children
   else
     return ""
 

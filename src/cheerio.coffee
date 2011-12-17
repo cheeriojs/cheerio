@@ -3,7 +3,7 @@ path = require "path"
 soupselect = require "cheerio-soupselect"
 _ = require "underscore"
 
-parser = require "./parser"
+parse = require "./parse"
 
 cheerio = do ->
   cheerio = (selector, context, root) ->
@@ -24,7 +24,7 @@ cheerio = do ->
       # Handle $(""), $(null), or $(undefined)
       if not selector
         return this
-
+      
       if root
         cheerio.extend
           'root' : root
@@ -43,7 +43,7 @@ cheerio = do ->
         if match && (match[1] || !context)
           if match[1]
             # It's an HTML string
-            root = parser.parse selector
+            root = parse selector
             return cheerio.merge this, root.children
           else 
             # Classes, IDs just defer to soupselect
@@ -61,12 +61,10 @@ cheerio = do ->
         # HANDLE: $(expr, context)
         else
           if _.isString context
-            context = parser.parse context
+            context = parse context
           return this.constructor(context).find selector
 
       return cheerio.makeArray( selector, this );    
-      # if context
-        # return cheerio selector, parser.parse con
     
     selector : ""
     sort : [].sort
@@ -79,7 +77,7 @@ cheerio = do ->
   # Use underscores extend
   cheerio.extend = cheerio.fn.extend = (obj) ->
     return _.extend this, obj
-  
+
   return cheerio
 
 module.exports = cheerio

@@ -1,6 +1,6 @@
 _ = require 'underscore'
 $ = require '../cheerio'
-parser = require '../parser'
+parse = require '../parse'
 
 removeChild = (parent, elem) ->
  $.each parent.children, (i, child) ->
@@ -10,7 +10,7 @@ removeChild = (parent, elem) ->
 append = exports.append = (elems...) ->
   dom = []
   for elem in elems
-    dom = dom.concat parser.eval(elem)
+    dom = dom.concat parse.eval(elem)
 
   this.each ->
     if _.isFunction elems[0]
@@ -26,7 +26,7 @@ append = exports.append = (elems...) ->
 prepend = exports.prepend = (elems...) ->
   dom = []
   for elem in elems
-    dom = dom.concat parser.eval(elem)
+    dom = dom.concat parse.eval(elem)
   
   this.each ->
     if _.isFunction elems[0]
@@ -43,7 +43,7 @@ prepend = exports.prepend = (elems...) ->
 after = exports.after = (elems...) ->
   dom = []
   for elem in elems
-    dom = dom.concat parser.eval(elem)
+    dom = dom.concat parse.eval(elem)
 
   this.each ->
     siblings = this.parent.children
@@ -61,7 +61,7 @@ after = exports.after = (elems...) ->
 before = exports.before = (elems...) ->
   dom = []
   for elem in elems
-    dom = dom.concat parser.eval(elem)
+    dom = dom.concat parse.eval(elem)
     
   this.each ->
     siblings = this.parent.children
@@ -92,7 +92,7 @@ remove = exports.remove = (selector) ->
   return this
 
 replaceWith = exports.replaceWith = (content) ->
-  elems = parser.eval(content)
+  elems = parse.eval(content)
 
   this.each ->
     siblings = this.parent.children
@@ -110,7 +110,7 @@ empty = exports.empty = () ->
 
 html = exports.html = (htmlString) ->
   if typeof htmlString isnt "object" and htmlString isnt undefined
-    htmlElement = parser.eval htmlString
+    htmlElement = parse.eval htmlString
 
     this.each (i) ->
       this.children = htmlElement
