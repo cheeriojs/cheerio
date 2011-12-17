@@ -2,7 +2,7 @@ $ = require('../')
 should = require 'should'
 
 ###
-  Tests
+  Examples
 ###
 
 fruits = '''
@@ -12,7 +12,14 @@ fruits = '''
   <li class = "pear">Pear</li>
 </ul>  
 '''.replace /(\n|\s{2})/g, ''
-# Replace \n and exactly 2 spaces with ''
+
+script = '<script src = "script.js" type = "text/javascript"></script>'
+
+multiclass = '<p><a class = "btn primary" href = "#">Save</a></p>'
+
+###
+  Tests
+###
 
 describe 'cheerio', ->
   
@@ -35,7 +42,7 @@ describe 'cheerio', ->
     $h2[0].name.should.equal 'h2'
     
   it 'should be able to create complicated html', ->
-    $script = $('<script src = "script.js" type = "text/javascript"></script>')
+    $script = $(script)
     $script.should.not.be.empty
     $script.should.have.length 1
     $script[0].attribs.src.should.equal 'script.js'
@@ -91,6 +98,11 @@ describe 'cheerio', ->
     $apple = $('li[class=apple]', fruits)
     testAppleSelect $apple
     
-  
+  it 'should be able to select multiple classes: $(".btn.primary")', ->
+    $a = $('.btn.primary', multiclass)
+    $a.should.have.length 1
+    $a[0].children[0].data.should.equal 'Save' 
+    
+    
     
   
