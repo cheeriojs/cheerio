@@ -18,8 +18,9 @@
     "underscore" : "1.x"
   },
   "devDependencies": {
+		"mocha" : "0.x",
     "coffee-script" : "1.1.x",
-    "should" : "0.x"
+    "should" : "*"
   },
   "scripts": {
     "prepublish": "coffee -o lib/ src/",

@@ -2,9 +2,9 @@ build:
 	@coffee -o lib/ src/	
 
 test: build 
-	@./node_modules/vows/bin/vows ./tests/test.cheerio.coffee --spec
+	@./node_modules/.bin/mocha
 
 mate:
-	@mate src/
+	@mate src/ test/
 
 .PHONY: test build mate
