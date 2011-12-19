@@ -1,3 +1,7 @@
+0.4.1 / 2011-12-19
+==================
+* Minor packaging changes to allow `make test` to work from npm installation
+
 0.4.0 / 2011-12-19
 ==================
 
