@@ -13,12 +13,12 @@
     "node": ">= 0.4.7"
   },
   "dependencies": {
-    "cheerio-soupselect" : "0.0.x",
+    "cheerio-soupselect" : "*",
     "htmlparser2" : "2.x",
     "underscore" : "1.x"
   },
   "devDependencies": {
-		"mocha" : "0.x",
+    "mocha" : "0.x",
     "should" : "*"
   },
   "scripts": {
