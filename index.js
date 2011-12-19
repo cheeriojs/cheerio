@@ -1,6 +1,7 @@
 // Use source if we have coffeescript otherwise use lib
 try {
-  require('coffee-script');
+  // Need to have coffeescript installed locally in order to run from src
+  require('./node_modules/coffee-script');
   base = './src/'
 } catch (e) {
   base = './lib/'

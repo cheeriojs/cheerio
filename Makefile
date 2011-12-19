@@ -1,7 +1,7 @@
 build:
 	@coffee -o lib/ src/	
 
-test: build 
+test: 
 	@./node_modules/.bin/mocha
 
 mate:
