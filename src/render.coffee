@@ -28,22 +28,18 @@ tagType =
   style : 1
   template : 1
 
-render = exports.render = (dom, output = []) ->
+render = exports = module.exports = (dom, output = []) ->
   if !_.isArray(dom)
     dom = [dom]
-    
+  
   for elem in dom
     str = elem.name
     # Used to remove elements
-    if elem.raw is null 
-      continue
-    
     # A little hacky - allows ERB-like templates
-    data = elem.data
-    if data[0] is '%' and data[data.length-1] is '%'
-      # Not in types so closing tag not rendered
-      elem.type = "template"
-    
+    # data = elem.data
+    # if data[0] is '%' and data[data.length-1] is '%'
+    #   # Not in types so closing tag not rendered
+    #   elem.type = "template"
     if tagType[elem.type]
       output.push renderTag elem
     else if elem.type is "directive"
@@ -61,7 +57,7 @@ render = exports.render = (dom, output = []) ->
 
   return output.join ""
   
-renderTag = (elem) ->
+renderTag = exports.renderTag = (elem) ->
   tag = "<" + elem.name
 
   if(elem.attribs and _.size(elem.attribs) > 0)
@@ -76,13 +72,13 @@ renderTag = (elem) ->
   return tag
     
 renderDirective = (elem) ->
-  return "<" + elem.raw + ">"
+  return "<" + elem.data + ">"
 
 renderText = (elem) ->
-  return elem.raw
+  return elem.data
 
 renderComment = (elem) ->
-  return '<!--' + elem.raw + '-->'
+  return '<!--' + elem.data + '-->'
 
 module.exports = exports
 

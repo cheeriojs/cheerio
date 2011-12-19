@@ -1,6 +1,9 @@
 htmlparser = require "htmlparser2"
 
-exports = module.exports = (content) ->
+###
+  parser
+###
+parser = exports = module.exports = (content) ->
   dom = eval content
     
   root = {
