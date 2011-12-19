@@ -15,7 +15,7 @@ singleWrong = '<br>'
 
 # Children
 children = '<html><br /></html>'
-li = '<li class = "durian">Durian<li>'
+li = '<li class = "durian">Durian</li>'
 
 # Attributes
 attributes = '<img src = "hello.png" alt = "man waving">'
@@ -80,9 +80,8 @@ describe 'parse', ->
     
     it "should handle tags with children: #{li}", ->
       tag = parse.eval(li)[0]
-      console.log tag.children
-      # tag.children.should.have.length 2
-      
+      tag.children.should.have.length 1
+      tag.children[0].data.should.equal 'Durian'
     
     it "should handle tags with attributes: #{attributes}", ->
       attrs = parse.eval(attributes)[0].attribs
