@@ -20,9 +20,12 @@ fruits = '''
 describe '$(...)', ->
   describe '.append', ->
     
-    it '() : should do nothing'
+    it '() : should do nothing', ->
+      $('#fruits', fruits).append()[0].name.should.equal 'ul'
     
-    it '(html) : should add element as last child'
+    it '(html) : should add element as last child', ->
+      $('#fruits', fruits).append('<li class = "plum">Plum</li>')
+      $('#fruits', fruits).children(3).hasClass('plum').should.be.ok
     
     it '($(...)) : should add element as last child'
     
