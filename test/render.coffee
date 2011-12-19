@@ -2,6 +2,12 @@ render = require('../').render
 should = require 'should'
 
 ###
+  
+  TODO: Write tests for render
+  
+###
+
+###
   Examples
 ###
 
