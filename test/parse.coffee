@@ -23,6 +23,7 @@ noValueAttribute = '<textarea disabled></textarea>'
 
 # Comments
 comment = '<!-- sexy -->'
+conditional = '<!--[if IE 8]><html class="no-js ie8" lang="en"><![endif]-->'
 
 # Text
 text = 'lorem ipsum'
@@ -98,7 +99,12 @@ describe 'parse', ->
       elem = parse.eval(comment)[0]
       elem.type.should.equal 'comment'
       elem.data.should.equal ' sexy '
-      
+    
+    it "should handle conditional comments: #{conditional}", ->
+      elem = parse.eval(conditional)[0]
+      elem.type.should.equal 'comment'
+      elem.data.should.equal conditional.replace('<!--', '').replace('-->', '')
+    
     it "should handle text: #{text}", ->
       text = parse.eval(text)[0]
       text.type.should.equal 'text'
@@ -213,7 +219,7 @@ describe 'parse', ->
       # Should not exist at all
       should.not.exist elem.children
       should.not.exist elem.attribs
-      
+    
     it "should fill in some empty attributes for text: #{text}", ->
       text = create(text)[0]
 
