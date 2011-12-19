@@ -1,3 +1,13 @@
+0.4.0 / 2011-12-19
+==================
+
+    * Rewrote all unit tests as cheerio transitioned from vows -> mocha
+    * Internally, renderer.render -> render(...), parser.parse -> parse(...)
+    * Append, prepend, html, before, after all work with only text (no tags)
+    * Bugfix: Attributes can now be removed from script and style tags
+    * Added yield as a single tag
+    * Cheerio now compatible with node >=0.4.7
+
 0.3.2 / 2011-12-1
 =================
 
