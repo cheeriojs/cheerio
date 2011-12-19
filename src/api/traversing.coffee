@@ -9,6 +9,9 @@ $ = require "../cheerio"
 ###
 
 find = exports.find = (selector) ->
+  if !selector
+    return this
+    
   elem = soupselect.select this.toArray(), selector
   return $(elem)
 

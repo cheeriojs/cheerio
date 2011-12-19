@@ -34,7 +34,8 @@ describe 'cheerio', ->
     
   it '$(selector) with no context or root should be empty', ->
     $('.h2').should.be.empty
-  
+    $('#fruits').should.be.empty
+    
   it 'should be able to create html without a root or context', ->
     $h2 = $('<h2>')
     $h2.should.not.be.empty
@@ -59,7 +60,7 @@ describe 'cheerio', ->
     
     $apple.children.should.have.length 1
     $apple.children[0].data.should.equal 'Apple'
-    
+  
   it 'should be able to select .apple with only a context', ->
     $apple = $('.apple', fruits)
     testAppleSelect $apple
@@ -102,7 +103,5 @@ describe 'cheerio', ->
     $a = $('.btn.primary', multiclass)
     $a.should.have.length 1
     $a[0].children[0].data.should.equal 'Save' 
-    
-    
     
   

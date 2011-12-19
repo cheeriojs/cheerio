@@ -45,7 +45,7 @@ cheerio = do ->
             # It's an HTML string
             root = parse selector
             return cheerio.merge this, root.children
-          else 
+          else if context
             # Classes, IDs just defer to soupselect
             elems = soupselect.select context, selector
             this.selector = selector
