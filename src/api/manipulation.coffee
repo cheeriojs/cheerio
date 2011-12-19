@@ -123,10 +123,10 @@ empty = exports.empty = () ->
 html = exports.html = (htmlString) ->
   if typeof htmlString isnt "object" and htmlString isnt undefined
     htmlElement = parse.eval htmlString
-    console.log this[0].children
+
     this.each (i) ->
       this.children = htmlElement
-    console.log this[0].children
+
     return this
   else
     return $.html this[0]
