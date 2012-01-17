@@ -104,4 +104,10 @@ describe 'cheerio', ->
     $a.should.have.length 1
     $a[0].children[0].data.should.equal 'Save' 
     
+  it 'should be able to select multiple elements: $(".apple, #fruits")', ->
+    $elems = $('.apple, #fruits', fruits)
+    $elems.should.have.length 2
+    testAppleSelect $($elems[0])
+    $elems[1].attribs.id.should.equal 'fruits'
+    
   
