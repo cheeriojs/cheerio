@@ -1,3 +1,10 @@
+0.4.2 / 2012-01-16
+==================
+
+* Multiple selectors support: $('.apple, .orange'). Thanks @siddMahen!
+* Update package.json to always use latest cheerio-soupselect
+* Fix memory leak in index.js
+
 0.4.1 / 2011-12-19
 ==================
 * Minor packaging changes to allow `make test` to work from npm installation

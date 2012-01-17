@@ -18,7 +18,7 @@ cheerio = do ->
   trimRight = /\s+$/
 
   cheerio.fn = cheerio.prototype =
-    cheerio : "0.4.1"
+    cheerio : "0.4.2"
     constructor: cheerio
     init: (selector, context, root) ->
       # Handle $(""), $(null), or $(undefined)
@@ -39,7 +39,7 @@ cheerio = do ->
           match = [ null, selector, null ]
         else
           match = quickExpr.exec selector
-        
+
         if match && (match[1] || !context)
           if match[1]
             # It's an HTML string
