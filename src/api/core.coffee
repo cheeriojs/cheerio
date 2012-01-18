@@ -3,7 +3,7 @@ $ = require '../cheerio'
 
 size = exports.size = () ->
   this.length
-  
+
 toArray = exports.toArray = () ->
   return Array.prototype.slice.call this, 0
 
@@ -11,11 +11,11 @@ toArray = exports.toArray = () ->
 # Get the whole matched element set as a clean array
 get = exports.get = (num) ->
   if num is undefined
-    this.toArray() 
+    this.toArray()
   else
     if num < 0
-      this[this.length + num] 
-    else 
+      this[this.length + num]
+    else
       this[num]
 
 # Take an array of elements and push it onto the stack
@@ -26,15 +26,15 @@ pushStack = exports.pushStack = (elems, name, selector) ->
     push.apply ret, elems
   else
     $.merge ret, elems
-    
+
   ret.prevObject = this
   ret.context = this.context
-  
+
   if name == "find"
     ret.selector = this.selector + (if this.selector then " " else "") + selector
-  else 
+  else
     ret.selector = this.selector + "." + name + "(" + selector + ")"  if name
-  
+
   return ret
 
 
@@ -51,7 +51,7 @@ siblingsAndMe = exports.siblingsAndMe = () ->
   while element.next
     element = element.next
     siblings.push element
-    
-  return siblings  
+
+  return siblings
 
 module.exports = $.fn.extend exports
