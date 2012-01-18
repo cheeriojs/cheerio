@@ -5,7 +5,7 @@ htmlparser = require "htmlparser2"
 ###
 parser = exports = module.exports = (content) ->
   dom = eval content
-    
+
   root = {
     type : 'root'
     name : 'root'
@@ -14,18 +14,18 @@ parser = exports = module.exports = (content) ->
     next : null
     children : []
   }
-  
+
   root.children = connect dom, root
 
   return root
 
 eval = exports.eval = (content) ->
-  handler = new htmlparser.DefaultHandler()
+  handler = new htmlparser.DefaultHandler({ ignoreWhitespace: true })
   parser = new htmlparser.Parser handler
-  
+
   parser.includeLocation = false
   parser.parseComplete content
-  
+
   return handler.dom
 
 isTag = (type) ->
@@ -33,7 +33,7 @@ isTag = (type) ->
     return true
   else
     return false
-  
+
 connect = exports.connect = (dom, parent = null) ->
   prevIndex = -1
   lastElem = null
@@ -42,10 +42,10 @@ connect = exports.connect = (dom, parent = null) ->
     # If tag and no attributes, add empty object
     if isTag(dom[i].type) and dom[i].attribs is undefined
       dom[i].attribs = {}
-      
+
     # Set parent
     dom[i].parent = parent
-    
+
     # Previous sibling
     prev = dom[prevIndex]
     if prev
@@ -57,19 +57,19 @@ connect = exports.connect = (dom, parent = null) ->
     dom[i].next = null
     if lastElem
       lastElem.next = dom[i]
-    
+
     # Run through the children
     if dom[i].children
       connect dom[i].children, dom[i]
     # Otherwise instantiate it if its a tag
     else if isTag(dom[i].type)
       dom[i].children = []
-    
+
     # Get ready for next elem
     prevIndex = i
     lastElem = dom[i]
-    
-      
+
+
   return dom
 
 module.exports = exports

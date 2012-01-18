@@ -16,7 +16,7 @@ hasClass = exports.hasClass = (selector) ->
   for elem in this
     if $.isTag(elem) and elem.attribs and (" " + elem.attribs["class"] + " ").replace(rclass, " ").indexOf(className) > -1
       return true
-  
+
   return false
 
 addClass = exports.addClass = (value) ->
@@ -25,41 +25,41 @@ addClass = exports.addClass = (value) ->
       $this = $(this)
       className = $this.attr('class') or ""
       $this.addClass value.call(this, i, className)
-  
+
   if value and _.isString value
     classNames = value.split rspace
-    
+
     for elem in this
       $elem = $(elem)
       if $.isTag(elem)
-        
+
         if !$elem.attr("class")
           $elem.attr('class', classNames.join(' ').trim())
-        
+
         else
           setClass = " " + $elem.attr("class") + " "
-          
+
           for className in classNames
-            
+
             if !~setClass.indexOf(" " + className + " ")
               setClass += className + " "
-    
+
           $elem.attr('class', setClass.trim())
-    
-    
+
+
   return this
 
 removeClass = exports.removeClass = (value) ->
-  
+
   if _.isFunction value
     return this.each (j) ->
       $this = $(this)
       className = $this.attr('class') or ""
       $this.removeClass value.call(this, j, className)
-        
+
   if (value and _.isString value) or value is undefined
     classNames = (value || "").split rspace
-    
+
     for elem in this
       $elem = $(elem)
       if $.isTag(elem) and $elem.attr('class')
@@ -67,11 +67,11 @@ removeClass = exports.removeClass = (value) ->
           ret = (" " + $elem.attr('class') + " ").replace( rclass, " " )
           for className in classNames
             ret = ret.replace( " " + className + " ", " ")
-    
+
           $elem.attr('class', ret.trim())
-        else 
+        else
           $elem.attr('class', '');
-            
+
   return this
 
 module.exports = $.fn.extend exports

@@ -18,7 +18,7 @@ append = exports.append = (elems...) ->
   this.each ->
     if _.isFunction elems[0]
       # Not yet supported
-    else        
+    else
       if !this.children
         this.children = []
       this.children = this.children.concat dom
@@ -33,7 +33,7 @@ prepend = exports.prepend = (elems...) ->
       dom = dom.concat elem.toArray()
     else
       dom = dom.concat parse.eval(elem)
-  
+
   this.each ->
     if _.isFunction elems[0]
       # Not yet supported
@@ -60,11 +60,11 @@ after = exports.after = (elems...) ->
 
     if index >= 0
       siblings.splice.apply(siblings, [index + 1, 0].concat(dom))
-      
+
     # Update siblings
     $.updateDOM siblings, this.parent
     this.parent.children = siblings
-    
+
   return this
 
 before = exports.before = (elems...) ->
@@ -74,7 +74,7 @@ before = exports.before = (elems...) ->
       dom = dom.concat elem.toArray()
     else
       dom = dom.concat parse.eval(elem)
-    
+
   this.each ->
     siblings = this.parent.children
     index = siblings.indexOf(this)
@@ -86,21 +86,21 @@ before = exports.before = (elems...) ->
     $.updateDOM siblings, this.parent
     this.parent.children = siblings
 
-  return this    
+  return this
 
 remove = exports.remove = (selector) ->
   elems = this
   if selector
     elems = this.find(selector)
-    
+
   elems.each ->
     siblings = this.parent.children
     index = siblings.indexOf(this)
     siblings.splice index, 1
-    
+
     $.updateDOM siblings, this.parent
     this.parent.children = siblings
-    
+
   return this
 
 replaceWith = exports.replaceWith = (content) ->
@@ -109,10 +109,10 @@ replaceWith = exports.replaceWith = (content) ->
   this.each ->
     siblings = this.parent.children
     index = siblings.indexOf(this)
-    
+
     # siblings.slice(index, 1, elem1, elem2, elem3, ...)
     siblings.splice.apply(siblings, [index, 1].concat(elems))
-    
+
     $.updateDOM siblings, this.parent
     this.parent.children = siblings
 
@@ -130,17 +130,17 @@ html = exports.html = (htmlString) ->
     return this
   else
     return $.html this[0]
-  
+
 text = exports.text = (textString) ->
   if _.isFunction textString
     this.each (i) ->
       self = $(this)
       self.text textString.call this, i, self.text()
-  
+
   # Set the text
   if typeof textString isnt "object" and textString isnt undefined
-    
-    textElement = 
+
+    textElement =
       raw : textString
       data : textString
       type : "text"
@@ -148,12 +148,12 @@ text = exports.text = (textString) ->
       prev : null
       next : null
       children : []
-    
+
     this.each (i) ->
       this.children = textElement
       $.updateDOM this.children, this
     return this
-  else  
+  else
     return $.text this
-  
+
 module.exports = $.fn.extend exports
