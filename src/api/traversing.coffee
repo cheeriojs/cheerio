@@ -4,14 +4,14 @@ soupselect = require "cheerio-soupselect"
 $ = require "../cheerio"
 ###
   Stupidly simple traversal
-  
+
   TODO : Make it more jQuery-like
 ###
 
 find = exports.find = (selector) ->
   if !selector
     return this
-    
+
   elem = soupselect.select this.toArray(), selector
   return $(elem)
 
@@ -20,22 +20,22 @@ parent = exports.parent = (elem) ->
 
 next = exports.next = (elem) ->
   return null if not this[0]
-  
+
   nextSibling = this[0].next
   while nextSibling
     return $(nextSibling) if $.isTag nextSibling
     nextSibling = nextSibling.next
-  
+
   return null
-  
+
 prev = exports.prev = (elem) ->
   return null if not this[0]
-  
+
   prevSibling = this[0].prev
   while prevSibling
     return $(prevSibling) if $.isTag prevSibling
     prevSibling = prevSibling.prev
-    
+
   return null
 
 siblings = exports.siblings = (elem) ->
@@ -43,10 +43,10 @@ siblings = exports.siblings = (elem) ->
     sibs = this.parent().children()
   else
     sibs = this.siblingsAndMe()
-    
+
   siblings = _.filter sibs, (elem) =>
     elem isnt this[0] and $.isTag elem
-    
+
   return $(siblings)
 
 children = exports.children = (selector) ->
@@ -58,12 +58,12 @@ children = exports.children = (selector) ->
       if _.isNumber selector
         if children[selector]
           return $(children[selector])
-        else 
+        else
           return null
       else
         return $(children).find selector
-      
-    
+
+
     return $(children)
   else
     return null

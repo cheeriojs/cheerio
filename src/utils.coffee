@@ -1,7 +1,7 @@
 formatAttributes = exports.formatAttributes = (attributes) ->
-  if !attributes 
+  if !attributes
     return ""
-    
+
   output = []
   for key, value of attributes
     if key is value
@@ -10,12 +10,12 @@ formatAttributes = exports.formatAttributes = (attributes) ->
       output.push key + ' = "' + value + '"';
 
   output.join " "
-  
+
 module.exports = exports
 
 String::repeat = (times) ->
   return new Array( times + 1).join( this );
-  
+
 print = exports.print = (dom, attr = null, depth = 0, out = []) ->
   for elem in dom
     type = elem.type
@@ -26,7 +26,7 @@ print = exports.print = (dom, attr = null, depth = 0, out = []) ->
       str += str + " " + elem.name
     else
       str += elem.name
-      
+
     if attr
       attrs = attr.split "."
       val = elem
@@ -36,20 +36,20 @@ print = exports.print = (dom, attr = null, depth = 0, out = []) ->
         if not val
           passback = false
           break
-          
+
       if passback
         str += "   ( "+ attr + " : " + val + " )"
-        
-    out.push str 
-    
+
+    out.push str
+
     if elem.children
       print elem.children, attr, depth+1, out
-      
-  return out.join "\n" 
-  
+
+  return out.join "\n"
+
 print_r = exports.print_r = (arr, attr = "name") ->
   out = "[ "
-  
+
   attributes = arr.map (elem) ->
     return elem[attr]
   out += attributes.join ", "
