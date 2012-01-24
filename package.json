@@ -3,7 +3,7 @@
   "name": "cheerio",
   "description": "Tiny, fast, and elegant implementation of core jQuery designed specifically for the server",
   "keywords": ["htmlparser", "jquery", "selector", "scraper"],
-  "version": "0.3.2",
+  "version": "0.4.2",
   "repository":   {
     "type": "git",
     "url": "git://github.com/MatthewMueller/cheerio.git"
@@ -13,16 +13,13 @@
     "node": ">= 0.4.7"
   },
   "dependencies": {
-    "cheerio-soupselect" : "0.0.x",
-    "htmlparser2" : "1.x",
+    "cheerio-soupselect" : "*",
+    "htmlparser2" : "2.x",
     "underscore" : "1.x"
   },
   "devDependencies": {
-    "coffee-script" : "1.1.x",
-    "vows" : "0.5.x",
-    "diff_match_patch" : "0.1.x",
-    "should" : "0.x",
-    "request" : "2.x"
+    "mocha" : "0.x",
+    "should" : "*"
   },
   "scripts": {
     "prepublish": "coffee -o lib/ src/",

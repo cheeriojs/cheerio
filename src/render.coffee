@@ -3,7 +3,7 @@ _ = require "underscore"
 utils = require "./utils"
 
 # List from node-htmlparser (which I stole from jsdom ;-P)
-singleTag = 
+singleTag =
   area: 1
   base: 1
   basefont: 1
@@ -21,29 +21,25 @@ singleTag =
   include: 1
   yield: 1
 
-tagType = 
+tagType =
   tag : 1
   script : 1
   link : 1
   style : 1
   template : 1
 
-render = exports.render = (dom, output = []) ->
+render = exports = module.exports = (dom, output = []) ->
   if !_.isArray(dom)
     dom = [dom]
-    
+
   for elem in dom
     str = elem.name
     # Used to remove elements
-    if elem.raw is null 
-      continue
-    
     # A little hacky - allows ERB-like templates
-    data = elem.data
-    if data[0] is '%' and data[data.length-1] is '%'
-      # Not in types so closing tag not rendered
-      elem.type = "template"
-    
+    # data = elem.data
+    # if data[0] is '%' and data[data.length-1] is '%'
+    #   # Not in types so closing tag not rendered
+    #   elem.type = "template"
     if tagType[elem.type]
       output.push renderTag elem
     else if elem.type is "directive"
@@ -55,34 +51,34 @@ render = exports.render = (dom, output = []) ->
 
     if elem.children
       output.push render elem.children
-        
+
     if !singleTag[elem.name] and tagType[elem.type]
       output.push "</" + elem.name + ">"
 
   return output.join ""
-  
-renderTag = (elem) ->
+
+renderTag = exports.renderTag = (elem) ->
   tag = "<" + elem.name
 
   if(elem.attribs and _.size(elem.attribs) > 0)
-    
+
     tag += " " + utils.formatAttributes elem.attribs
 
   if !singleTag[elem.name]
     tag += ">"
   else
     tag += "/>"
-  
+
   return tag
-    
+
 renderDirective = (elem) ->
-  return "<" + elem.raw + ">"
+  return "<" + elem.data + ">"
 
 renderText = (elem) ->
-  return elem.raw
+  return elem.data
 
 renderComment = (elem) ->
-  return '<!--' + elem.raw + '-->'
+  return '<!--' + elem.data + '-->'
 
 module.exports = exports
 

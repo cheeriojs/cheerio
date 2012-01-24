@@ -3,22 +3,22 @@ path = require "path"
 soupselect = require "cheerio-soupselect"
 _ = require "underscore"
 
-parser = require "./parser"
+parse = require "./parse"
 
 cheerio = do ->
   cheerio = (selector, context, root) ->
     return new cheerio.fn.init selector, context, root
-    
+
   # A simple way to check for HTML strings or ID strings
   # Prioritize #id over <tag> to avoid XSS via location.hash (#9521)
   quickExpr = /^(?:[^#<]*(<[\w\W]+>)[^>]*$|#([\w\-]*)$)/
-  
+
   # Used for trimming whitespace
-  trimLeft = /^\s+/ 
+  trimLeft = /^\s+/
   trimRight = /\s+$/
 
   cheerio.fn = cheerio.prototype =
-    cheerio : "0.3.2"
+    cheerio : "0.4.2"
     constructor: cheerio
     init: (selector, context, root) ->
       # Handle $(""), $(null), or $(undefined)
@@ -39,47 +39,45 @@ cheerio = do ->
           match = [ null, selector, null ]
         else
           match = quickExpr.exec selector
-        
+
         if match && (match[1] || !context)
           if match[1]
             # It's an HTML string
-            root = parser.parse selector
+            root = parse selector
             return cheerio.merge this, root.children
-          else 
+          else if context
             # Classes, IDs just defer to soupselect
             elems = soupselect.select context, selector
             this.selector = selector
             return cheerio.merge this, elems
-        
+
         ###
           Refactor
         ###
         # HANDLE: $(expr, $(...))
         if !context or context.cheerio
           return this.constructor(context or root).find selector
-          
+
         # HANDLE: $(expr, context)
         else
           if _.isString context
-            context = parser.parse context
+            context = parse context
           return this.constructor(context).find selector
 
-      return cheerio.makeArray( selector, this );    
-      # if context
-        # return cheerio selector, parser.parse con
-    
+      return cheerio.makeArray( selector, this );
+
     selector : ""
     sort : [].sort
     splice : [].splice
     length : 0
-    
+
   # Give the init function the jQuery prototype for later instantiation
   cheerio.fn.init.prototype = cheerio.fn
-  
+
   # Use underscores extend
   cheerio.extend = cheerio.fn.extend = (obj) ->
     return _.extend this, obj
-  
+
   return cheerio
 
 module.exports = cheerio
