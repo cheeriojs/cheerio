@@ -382,8 +382,8 @@ http://vimeo.com/31950192
 
 To run the test suite, download the repository, then within the cheerio directory, run:
 
-    npm install
-    npm test
+    npm install .
+    make test
 
 This will download the development packages and run the test suite.
 ## Special Thanks

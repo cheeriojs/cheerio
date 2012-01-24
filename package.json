@@ -23,6 +23,5 @@
   },
   "scripts": {
     "prepublish": "coffee -o lib/ src/",
-    "test": "coffee -o lib/ src/ && vows tests/test.cheerio.coffee --spec"
   }
 }
