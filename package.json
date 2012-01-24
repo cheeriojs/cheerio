@@ -22,6 +22,6 @@
     "should" : "*"
   },
   "scripts": {
-    "prepublish": "coffee -o lib/ src/",
+    "prepublish": "coffee -o lib/ src/"
   }
 }
