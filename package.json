@@ -19,9 +19,10 @@
   },
   "devDependencies": {
     "mocha" : "0.x",
-    "should" : "*"
+    "should" : "*",
+	"coffee-script": "*"
   },
   "scripts": {
-    "prepublish": "coffee -o lib/ src/",
+    "prepublish": "coffee -o lib/ src/"
   }
 }
