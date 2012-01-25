@@ -1,3 +1,4 @@
+parse = require('../').parse
 render = require('../').render
 should = require 'should'
 
@@ -28,5 +29,12 @@ should = require 'should'
 ###
 
 describe 'render', ->
+  
   describe '(html)', ->
     
+    it 'should render <br> tags correctly', (done) ->
+      br = "<br />"
+      dom = parse br
+      render(dom).should.equal '<br />'
+      done()
+      

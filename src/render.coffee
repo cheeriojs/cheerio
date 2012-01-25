@@ -67,6 +67,7 @@ renderTag = exports.renderTag = (elem) ->
   if !singleTag[elem.name]
     tag += ">"
   else
+    tag = tag.trim().replace(/\/$/, '')
     tag += "/>"
 
   return tag
