@@ -28,13 +28,22 @@ should = require 'should'
   Tests
 ###
 
+html = (str) ->
+  dom = parse(str)
+  return render(dom)
+
 describe 'render', ->
   
   describe '(html)', ->
     
     it 'should render <br> tags correctly', (done) ->
-      br = "<br />"
-      dom = parse br
-      render(dom).should.equal '<br />'
+      str = "<br />"
+      html(str).should.equal '<br />'
       done()
+      
+    it 'should display empty strings for undefined attribs', ->
+      # str = '<link rel="stylesheet" media = "" href="" />'
+      # html(str).should.equal str
+      # 
+      # done()
       
