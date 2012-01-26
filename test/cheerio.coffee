@@ -110,4 +110,11 @@ describe 'cheerio', ->
     testAppleSelect $($elems[0])
     $elems[1].attribs.id.should.equal 'fruits'
     
+  it 'should select first element $(:first)', ->
+    $elem = $(':first', fruits)
+    h2 = $('<h2>fruits</h2>')
+    console.log $elem.before('hi')
+    console.log $elem.before(h2)
+
+
   
