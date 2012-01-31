@@ -40,10 +40,14 @@ describe 'render', ->
       str = "<br />"
       html(str).should.equal '<br />'
       done()
+  
+    it 'should shorten the \'checked\' attribute when it contains the value \'checked\'', (done) ->
+      str = '<input checked = "checked"/>'
+      html(str).should.equal '<input checked/>'
+      done()
       
-    it 'should display empty strings for undefined attribs', ->
-      # str = '<link rel="stylesheet" media = "" href="" />'
-      # html(str).should.equal str
-      # 
-      # done()
-      
+    it 'should not shorten the \'name\' attribute when it contains the value \'name\'', (done) ->
+      str = '<input name = "name"/>'
+      html(str).should.equal '<input name = "name"/>'
+      done()
+
