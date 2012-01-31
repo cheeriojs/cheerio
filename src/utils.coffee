@@ -1,10 +1,25 @@
+booleanAttributes = 
+  checked  : true
+  selected : true
+  disabled : true
+  readonly : true
+  multiple : true
+  ismap    : true
+  defer    : true
+  declare  : true
+  noresize : true
+  nowrap   : true
+  noshade  : true
+  compact  : true
+
+
 formatAttributes = exports.formatAttributes = (attributes) ->
   if !attributes
     return ""
 
   output = []
   for key, value of attributes
-    if key is value
+    if key is value and (booleanAttributes[key] or key is '/') # TODO: '/' should not be an attribute, but the current implementation let's it slip in
       output.push key
     else
       output.push key + ' = "' + value + '"';
