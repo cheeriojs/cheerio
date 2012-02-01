@@ -86,6 +86,7 @@ var removeClass = exports.removeClass = function(value) {
     });
   }
 
+  // If value isnt undefined and also not a string
   if(value !== undefined && !_.isString(value)) return this;
 
   var classNames = (value || "").split(rspace),
