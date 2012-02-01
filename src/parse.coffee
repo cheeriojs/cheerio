@@ -23,7 +23,6 @@ eval = exports.eval = (content) ->
   handler = new htmlparser.DefaultHandler({ ignoreWhitespace: true })
   parser = new htmlparser.Parser handler
 
-  parser.includeLocation = false
   parser.parseComplete content
 
   return handler.dom
