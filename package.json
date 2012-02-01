@@ -19,10 +19,10 @@
   },
   "devDependencies": {
     "mocha" : "0.x",
-    "should" : "*"
+    "should" : "*",
+	"coffee-script": "*"
   },
   "scripts": {
-    "prepublish": "coffee -o lib/ src/",
-    "test": "coffee -o lib/ src/ && vows tests/test.cheerio.coffee --spec"
+    "prepublish": "coffee -o lib/ src/"
   }
 }
