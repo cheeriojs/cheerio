@@ -1,6 +1,3 @@
-build:
-	@coffee -o lib/ src/
-
 test:
 	@./node_modules/.bin/mocha
 
