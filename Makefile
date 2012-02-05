@@ -2,6 +2,6 @@ test:
 	@./node_modules/.bin/mocha
 
 mate:
-	@mate src/ test/
+	@mate lib/ test/
 
 .PHONY: test build mate
