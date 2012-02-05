@@ -21,8 +21,5 @@
     "mocha" : "0.x",
     "should" : "*",
 	"coffee-script": "*"
-  },
-  "scripts": {
-    "prepublish": "coffee -o lib/ src/"
   }
 }
