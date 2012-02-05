@@ -54,14 +54,11 @@ var children = exports.children = function(selector) {
   if(!this[0] || !this[0].children) return null;
 
   var children = _.filter(this[0].children, function(elem) {
-    return $.isTag(elem);
+    return ($.isTag(elem));
   });
 
-  if(!selector) return $(children);
-
-  // remove depth
-  for(var i = 0; i < children.length; i++)
-    delete children.children;
+  if(selector === undefined) return $(children);
+  else if(_.isNumber(selector)) return $(children[selector]);
 
   return $(children).find(selector);
 };
