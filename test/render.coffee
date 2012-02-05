@@ -51,3 +51,7 @@ describe 'render', ->
       html(str).should.equal '<input name = "name"/>'
       done()
 
+    it 'should render comments correctly', (done) ->
+      str = '<!-- comment -->'
+      html(str).should.equal '<!-- comment -->'
+      done()
