@@ -35,6 +35,7 @@ describe '$(...)', ->
 
       $pear = $('.pear', $fruits).attr('id', 'pear')
       $('#pear', $fruits).should.have.length 1
+      should.exist $pear.cheerio
       
     it '(map) : object map should set multiple attributes', ->
       $fruits = $(fruits)
@@ -47,7 +48,7 @@ describe '$(...)', ->
       attrs.id.should.equal 'apple'  
       attrs.style.should.equal 'color:red;'
       attrs['data-url'].should.equal 'http://apple.com'
-    
+        
   describe '.removeAttr', ->
     
     it '(key) : should remove a single attr', ->
@@ -57,7 +58,9 @@ describe '$(...)', ->
       $('ul', $fruits).removeAttr('id')
       should.not.exist $('ul', $fruits).attr('id')
       
-      
+    it 'should return cheerio object', ->
+      should.exist $('ul', fruits).removeAttr('id').cheerio
+    
   describe '.hasClass', ->
     
     it '(valid class) : should return true', ->
