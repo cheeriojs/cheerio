@@ -1,3 +1,8 @@
+0.5.1 / 2012-02-05
+==================
+
+* Fixed regression: HTML pages with comments would fail
+
 0.5.0 / 2012-02-04
 ==================
 
