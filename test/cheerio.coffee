@@ -23,6 +23,9 @@ multiclass = '<p><a class = "btn primary" href = "#">Save</a></p>'
 
 describe 'cheerio', ->
   
+  it 'should get the version', ->
+    /\d\.\d\.\d/.test($.version).should.be.ok
+  
   it '$(null) should return be empty', ->
     $(null).should.be.empty
 
