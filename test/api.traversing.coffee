@@ -42,9 +42,6 @@ describe '$(...)', ->
     it '() : should get all children', ->
       $('ul', fruits).children().should.have.length 3
     
-    it '(index) : should get child at index', ->
-      $('ul', fruits).children(1).hasClass('orange').should.be.ok
-    
     it '(selector) : should return children matching selector', ->
       $('ul', fruits).children('.orange').hasClass('orange').should.be.ok
       
