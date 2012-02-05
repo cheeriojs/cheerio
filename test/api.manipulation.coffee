@@ -176,4 +176,14 @@ describe '$(...)', ->
       $('.apple', $fruits).text('Granny Smith Apple')
       $('.apple', $fruits)[0].children[0].data.should.equal 'Granny Smith Apple'
     
+    it 'should allow functions as arguments', ->
+      $fruits = $(fruits)
+      $('.apple', $fruits).text (i, content) ->
+        i.should.equal 0
+        content.should.equal 'Apple'
+        return 'whatever mate'
+      
+      $('.apple', $fruits)[0].children[0].data.should.equal 'whatever mate'
+      
+      
     
