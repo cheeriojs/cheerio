@@ -45,7 +45,7 @@ var formatAttrs = exports.formatAttrs = function(attributes) {
     }
   }
   
-  return output.join(" ");
+  return output.join(' ');
 };
 
 module.exports = exports;
