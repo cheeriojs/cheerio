@@ -70,7 +70,7 @@ var renderTag = exports.renderTag = function(elem) {
   var tag = '<' + elem.name;
   
   if(elem.attribs && _.size(elem.attribs)) {
-    tag += ' ' + utils.formatAttributes(elem.attribs);
+    tag += ' ' + utils.formatAttrs(elem.attribs);
   }
   
   if(!singleTag[elem.name]) {
