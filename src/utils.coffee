@@ -12,6 +12,13 @@ booleanAttributes =
   noshade  : true
   compact  : true
 
+tags = { tag : 1, script : 1, style : 1 };
+
+isTag = exports.isTag = (type) ->
+  if(type.type) 
+    type = type.type;
+    
+  return if (tags[type]) then true else false;
 
 formatAttributes = exports.formatAttributes = (attributes) ->
   if !attributes

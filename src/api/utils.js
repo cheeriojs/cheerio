@@ -4,7 +4,9 @@
 var _ = require("underscore"),
     $ = require("../cheerio"),
     parse = require("../parse"),
-    render = require("../render");
+    render = require("../render"),
+    utils = require('../utils'),
+    isTag = utils.isTag;
     
 var class2type = {},
     types = 'Boolean Number String Function Array Date Regex Object',
@@ -13,7 +15,6 @@ var class2type = {},
     push = Array.prototype.push,
     indexOf = Array.prototype.indexOf,
     tags = { tag : 1, script : 1, style : 1 };
-
 
 /*
 Node Types
@@ -30,11 +31,7 @@ _.each(types.split(' '), function(name) {
   class2type['[object '+ name +']'] = name.toLowerCase();
 });
 
-
-var isTag = exports.isTag = function(type) {
-  if(type.type) type = type.type;
-  return (tags[type]);
-};
+exports.isTag = isTag;
 
 var updateDOM = exports.updateDOM = function(arr, parent) {
   // normalize
@@ -194,7 +191,7 @@ var access = exports.access = function( elems, key, value, exec, fn, pass ) {
 var attr = exports.attr = function( elem, name, value, pass ) {
 	var type = elem.type;
 
-  if (!elem || !$.isTag(elem))
+  if (!elem || !isTag(elem))
     return undefined;
 
   if (!elem.attribs) {
