@@ -1,3 +1,21 @@
+0.5.1 / 2012-02-05
+==================
+
+* Fixed minor regression: $(...).text(fn) would fail
+
+0.5.1 / 2012-02-05
+==================
+
+* Fixed regression: HTML pages with comments would fail
+
+0.5.0 / 2012-02-04
+==================
+
+* Transitioned from Coffeescript back to Javascript
+* Parser now ignores whitespace
+* Fixed issue with double slashes on self-enclosing tags
+* Added boolean attributes to html rendering
+
 0.4.2 / 2012-01-16
 ==================
 

@@ -1,19 +1,18 @@
-// Use source if we have coffeescript otherwise use lib
-var base;
-try {
-  // Need to have coffeescript installed locally in order to run from src
-  require('./node_modules/coffee-script');
-  base = './src/';
-} catch (e) {
-  base = './lib/';
-}
-
-exports = module.exports = require(base + 'cheerio');
-
-exports.parse = require(base + 'parse');
-exports.render = require(base + 'render');
-exports.utils = require(base + 'utils');
+exports = module.exports = require('./lib/cheerio');
 
 /*
-  Attach other modules on here, this will allow testing to be done in mocha without recompiling
+  Attach objects to cheerio
 */
+exports.parse = require('./lib/parse');
+exports.render = require('./lib/render');
+exports.utils = require('./lib/utils');
+
+/*
+  Export the version
+*/
+var version = function() {
+  var pkg = require('fs').readFileSync(__dirname + '/package.json', 'utf8');
+  return JSON.parse(pkg).version;
+};
+
+exports.__defineGetter__('version', version);

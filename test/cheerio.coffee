@@ -23,6 +23,9 @@ multiclass = '<p><a class = "btn primary" href = "#">Save</a></p>'
 
 describe 'cheerio', ->
   
+  it 'should get the version', ->
+    /\d\.\d\.\d/.test($.version).should.be.ok
+  
   it '$(null) should return be empty', ->
     $(null).should.be.empty
 
@@ -110,4 +113,11 @@ describe 'cheerio', ->
     testAppleSelect $($elems[0])
     $elems[1].attribs.id.should.equal 'fruits'
     
+  it 'should select first element $(:first)' #, ->
+    # $elem = $(':first', fruits)
+    # h2 = $('<h2>fruits</h2>')
+    # console.log $elem.before('hi')
+    # console.log $elem.before(h2)
+
+
   

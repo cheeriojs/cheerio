@@ -42,16 +42,21 @@ describe '$(...)', ->
     it '() : should get all children', ->
       $('ul', fruits).children().should.have.length 3
     
-    it '(index) : should get child at index', ->
-      $('ul', fruits).children(1).hasClass('orange').should.be.ok
-    
     it '(selector) : should return children matching selector', ->
       $('ul', fruits).children('.orange').hasClass('orange').should.be.ok
       
     it '(invalid selector) : should return empty', ->
       $('ul', fruits).children('.lulz').should.have.length 0
       
-    it 'should only match immediate children, not ancestors'
+    it 'should only match immediate children, not ancestors'#, ->
+      # $fruits = $.load(fruits)
+      # $fruits('.pear').append('<h2 class = "green">Green</h2>');
+      # 
+      # $test = $('ul', $fruits.html())
+      # 
+      # console.log $test.children()
+      # $test.children('.green').length.should.equal 0
+      # console.log $test.children()
     
   describe '.next', ->
     
