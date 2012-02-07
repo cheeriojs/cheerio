@@ -158,7 +158,7 @@ text = exports.text = (textString) ->
 
 clone = exports.clone = () ->
   result = []
-  result = result.concat(parse.eval($.html elem).toArray) for elem in this;
+  result = result.concat(parse.eval($.html elem)) for elem in this;
   return $(result)
 
 module.exports = $.fn.extend exports
