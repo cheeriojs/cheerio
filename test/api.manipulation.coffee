@@ -156,13 +156,19 @@ describe '$(...)', ->
   describe '.html', ->
     it '() : should get the html for an element', ->
       $fruits = $(fruits)
-      $('#fruits', $fruits).html().should.equal fruits
+      items = ['<li class = "apple">Apple</li>',
+               '<li class = "orange">Orange</li>',
+               '<li class = "pear">Pear</li>']
+                 
+      items = items.join('')
+      
+      $('#fruits', $fruits).html().should.equal items
     
     it '(html) : should set the html for its children', ->
       $fruits = $(fruits)
       $('#fruits', $fruits).html('<li class = "durian">Durian</li>')
       html = $('#fruits', $fruits).html()
-      html.should.equal '<ul id = "fruits"><li class = "durian">Durian</li></ul>'
+      html.should.equal '<li class = "durian">Durian</li>'
     
   describe '.text', ->
     it '() : gets the text for a single element', ->
