@@ -104,17 +104,17 @@ remove = exports.remove = (selector) ->
   return this
 
 replaceWith = exports.replaceWith = (content) ->
-  elems = parse.eval(content)
-
+  elems = if typeof content isnt "object" then parse.eval(content) else content
   this.each ->
     siblings = this.parent.children
     index = siblings.indexOf(this)
 
     # siblings.slice(index, 1, elem1, elem2, elem3, ...)
-    siblings.splice.apply(siblings, [index, 1].concat(elems))
+    siblings.splice.apply(siblings, [index, 1].concat(elems.toArray()))
 
     $.updateDOM siblings, this.parent
     this.parent.children = siblings
+  return elems
 
 empty = exports.empty = () ->
   this.each ->
@@ -155,5 +155,10 @@ text = exports.text = (textString) ->
     return this
   else
     return $.text this
+
+clone = exports.clone = () ->
+  result = []
+  result = result.concat(parse.eval($.html elem).toArray) for elem in this;
+  return $(result)
 
 module.exports = $.fn.extend exports

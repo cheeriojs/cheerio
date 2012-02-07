@@ -68,6 +68,12 @@ children = exports.children = (selector) ->
   else
     return null
 
+first = exports.first = () ->
+    return if this[0] then $(this[0]) else null;
+
+last = exports.last = () ->
+    return if this[0] then $(this[this.length-1]) else null;
+
 # Execute a callback for every element in the matched set.
 # (You can seed the arguments with an array of args, but this is
 # only used internally.)
