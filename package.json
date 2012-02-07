@@ -14,12 +14,12 @@
   },
   "dependencies": {
     "cheerio-soupselect" : "*",
-    "htmlparser2" : "2.x",
+    "htmlparser2" : "2.0.1 - 2.2.2",
     "underscore" : "1.x"
   },
   "devDependencies": {
     "mocha" : "0.x",
     "should" : "*",
-	"coffee-script": "*"
+	  "coffee-script": "*"
   }
 }
