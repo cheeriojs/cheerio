@@ -36,7 +36,7 @@ describe 'render', ->
   
   describe '(html)', ->
     
-    it 'should render <br> tags correctly', (done) ->
+    it 'should render <br /> tags correctly', (done) ->
       str = "<br />"
       html(str).should.equal '<br />'
       done()

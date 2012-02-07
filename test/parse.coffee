@@ -47,9 +47,11 @@ describe 'parse', ->
 
     it "should parse basic empty tags: #{basic}", ->
       tag = parse.eval(basic)[0]
+      
       tag.type.should.equal 'tag'
       tag.name.should.equal 'html'
-      should.not.exist tag.children
+      
+      tag.children.should.be.empty
     
     it "should handle sibling tags: #{siblings}", ->
       dom = parse.eval siblings
@@ -62,15 +64,19 @@ describe 'parse', ->
     
     it "should handle single tags: #{single}", ->
       tag = parse.eval(single)[0]
+      
       tag.type.should.equal 'tag'
       tag.name.should.equal 'br'
-      should.not.exist tag.children
+      
+      tag.children.should.be.empty
       
     it "should handle malformatted single tags: #{singleWrong}", ->
       tag = parse.eval(singleWrong)[0]
+      
       tag.type.should.equal 'tag'
       tag.name.should.equal 'br'
-      should.not.exist tag.children
+      
+      tag.children.should.be.empty
       
     it "should handle tags with children: #{children}", ->
       tag = parse.eval(children)[0]

@@ -46,6 +46,13 @@ describe '$(...)', ->
       
     it '(fn) : should add returned element as last child'
     
+    it 'should maintain correct object state (Issue: #10)', ->
+      should.exist $("<div></div>")
+        .append("<div><div></div></div>")
+        .children()
+        .children()
+        .parent()
+    
   describe '.prepend', ->
     
     it '() : should do nothing', ->
@@ -154,15 +161,29 @@ describe '$(...)', ->
       $('#fruits', $fruits).children().should.have.length 0
     
   describe '.html', ->
-    it '() : should get the html for an element', ->
+    it '() : should get the innerHTML for an element', ->
       $fruits = $(fruits)
-      $('#fruits', $fruits).html().should.equal fruits
+      items = ['<li class = "apple">Apple</li>',
+               '<li class = "orange">Orange</li>',
+               '<li class = "pear">Pear</li>']
+                 
+      items = items.join('')
+      
+      $('#fruits', $fruits).html().should.equal items
+    
+    it '() : should get innerHTML even if its just text', ->
+      item = '<li class = "pear">Pear</li>'
+      $('.pear', item).html().should.equal 'Pear'
+    
+    it '() : should return empty string if nothing inside', ->
+      item = '<li></li>'
+      $('li', item).html().should.equal ''
     
     it '(html) : should set the html for its children', ->
       $fruits = $(fruits)
       $('#fruits', $fruits).html('<li class = "durian">Durian</li>')
       html = $('#fruits', $fruits).html()
-      html.should.equal '<ul id = "fruits"><li class = "durian">Durian</li></ul>'
+      html.should.equal '<li class = "durian">Durian</li>'
     
   describe '.text', ->
     it '() : gets the text for a single element', ->
