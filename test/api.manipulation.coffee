@@ -161,7 +161,7 @@ describe '$(...)', ->
       $('#fruits', $fruits).children().should.have.length 0
     
   describe '.html', ->
-    it '() : should get the html for an element', ->
+    it '() : should get the innerHTML for an element', ->
       $fruits = $(fruits)
       items = ['<li class = "apple">Apple</li>',
                '<li class = "orange">Orange</li>',
@@ -170,6 +170,14 @@ describe '$(...)', ->
       items = items.join('')
       
       $('#fruits', $fruits).html().should.equal items
+    
+    it '() : should get innerHTML even if its just text', ->
+      item = '<li class = "pear">Pear</li>'
+      $('.pear', item).html().should.equal 'Pear'
+    
+    it '() : should return empty string if nothing inside', ->
+      item = '<li></li>'
+      $('li', item).html().should.equal ''
     
     it '(html) : should set the html for its children', ->
       $fruits = $(fruits)
