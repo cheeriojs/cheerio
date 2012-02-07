@@ -1,3 +1,11 @@
+0.6.0 / 2012-02-07
+==================
+
+* *Important:* `$(...).html()` now returns inner HTML, which is in line with the jQuery spec
+* `$.html()` returns the full HTML string. `$.html([cheerioObject])` will return the outer(selected element's tag) and inner HTML of that object
+* Fixed bug that prevented HTML strings with depth (eg. `append("<ul><li><li></ul>")`) from getting `parent`, `next`, `prev` attributes.
+* Halted [htmlparser2](https://github.com/FB55/node-htmlparser) at v2.2.2 until single attributes bug gets fixed.
+
 0.5.1 / 2012-02-05
 ==================
 
