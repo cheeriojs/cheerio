@@ -65,6 +65,12 @@ This is the _preferred_ method:
     var cheerio = require('cheerio'),
         $ = cheerio.load('<ul id = "fruits">...</ul>');
 
+You can override the default parsing options by passing them as a second parameter:
+
+    $ = cheerio.load('<ul id = "fruits">...</ul>', { ignoreWhitespace: false });
+
+The default parsing option is `{ ignoreWhitespace: true }`.
+
 Optionally, you can also load in the HTML by passing the string as the context:
 
     $ = require('cheerio');
