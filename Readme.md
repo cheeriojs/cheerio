@@ -65,11 +65,9 @@ This is the _preferred_ method:
     var cheerio = require('cheerio'),
         $ = cheerio.load('<ul id = "fruits">...</ul>');
 
-You can override the default parsing options by passing them as a second parameter:
+By default, cheerio's parser will ignore whitespace, you can override this default by setting the second parameter:
 
     $ = cheerio.load('<ul id = "fruits">...</ul>', { ignoreWhitespace: false });
-
-The default parsing option is `{ ignoreWhitespace: true }`.
 
 Optionally, you can also load in the HTML by passing the string as the context:
 
@@ -209,6 +207,17 @@ Iterates over a cheerio object, executing a function for each matched element. W
     fruits.join(', ');
     => Apple, Orange, Pear
 
+#### .first()
+Will select the first element of a cheerio object
+
+    $('#fruits').children().first().text()
+    => Apple
+
+#### .last()
+Will select the last element of a cheerio object
+
+    $('#fruits').children().last().text()
+    => Pear
 
 ### Manipulation
 Methods for modifying the DOM structure.
@@ -337,6 +346,12 @@ Retrieve all the DOM elements contained in the jQuery set, as an array.
 
     $('li').toArray()
     => [ {...}, {...}, {...} ]
+    
+#### .clone() ####
+Clone the cheerio object.
+
+    var moreFruit = $('#fruits').clone()
+    
 ### Utilities
 
 #### $.dom()
