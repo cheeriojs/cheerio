@@ -57,7 +57,7 @@ describe '$(...)', ->
       # console.log $test.children()
       # $test.children('.green').length.should.equal 0
       # console.log $test.children()
-    
+  
   describe '.next', ->
     
     it '() : should return next element', ->
@@ -90,5 +90,48 @@ describe '$(...)', ->
       items[1].attribs.class.should.equal 'orange'
       items[2].attribs.class.should.equal 'pear'
     
+  describe '.first', ->
+    it '() : should return the first item', ->
+      src = $("<span>foo</span><span>bar</span><span>baz</span>")
+      elem = src.first()
+
+      elem.length.should.equal 1
+      elem.html().should.equal 'foo'
+      
+    it '() : should return an empty object for an empty object', ->
+      src = $();
+      first = src.first();
+      
+      first.length.should.equal 0
+      should.not.exist first.html()
+      
+  describe '.last', ->
+    it '() : should return the last element', ->
+      src = $("<span>foo</span><span>bar</span><span>baz</span>");
+      elem = src.last();
+
+      elem.length.should.equal 1
+      elem.html().should.equal 'baz'
+      
+    it '() : should return an empty object for an empty object', ->
+      src = $();
+      last = src.last();
+      
+      last.length.should.equal 0
+      should.not.exist last.html()
     
+  describe '.first & .last', ->
+    it '() : should return same object if only one object', ->
+      src = $("<span>bar</span>");
+      first = src.first();
+      last = src.last();
+
+      first.html().should.equal last.html()
+      first.length.should.equal 1
+      first.html().should.equal 'bar'
+      
+      last.length.should.equal 1
+      last.html().should.equal 'bar'
+      
+      
     
