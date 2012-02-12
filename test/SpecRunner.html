@@ -2,51 +2,31 @@
   "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-  <title>Jasmine Spec Runner</title>
+  <title>Mocha Runner</title>
 
-  <link rel="stylesheet" type="text/css" href="http://ironchefpython.github.com/jasmine/jasmine.css">
-  <script type="text/javascript" src="http://ironchefpython.github.com/jasmine/jasmine.js"></script>
-  <script type="text/javascript" src="http://ironchefpython.github.com/jasmine/jasmine-html.js"></script>
-
-  <!-- include source files here... -->
-  
   <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.js"></script>
 
+  <link rel="stylesheet" href="https://raw.github.com/visionmedia/mocha/master/mocha.css" />
+  <script src="https://raw.github.com/LearnBoost/expect.js/d38dfc2afaf51bf30140c1a4c3331b5f793b58f1/expect.js"></script>
+  <script src="https://raw.github.com/visionmedia/mocha/master/mocha.js"></script>
+  <script>mocha.setup('bdd')</script>
+  
+
 <!-- include spec files here... -->
-  <script type="text/javascript" src="pull41.js"></script>
+  <script type="text/javascript" src="pull41Spec.js"></script>
 
 
-  <script type="text/javascript">
-    (function() {
-      var jasmineEnv = jasmine.getEnv();
-      jasmineEnv.updateInterval = 1000;
-
-      var trivialReporter = new jasmine.TrivialReporter();
-
-      jasmineEnv.addReporter(trivialReporter);
-
-      jasmineEnv.specFilter = function(spec) {
-        return trivialReporter.specFilter(spec);
-      };
-
-      var currentWindowOnload = window.onload;
-
-      window.onload = function() {
-        if (currentWindowOnload) {
-          currentWindowOnload();
-        }
-        execJasmine();
-      };
-
-      function execJasmine() {
-        jasmineEnv.execute();
-      }
-
-    })();
-  </script>
+<script>
+  $(function () {
+    mocha
+      .run()
+      .globals() // acceptable globals
+  })
+</script>
 
 </head>
 
 <body>
+  <div id="mocha"></div>
 </body>
 </html>

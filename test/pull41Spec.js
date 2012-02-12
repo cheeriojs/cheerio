@@ -1,6 +1,6 @@
 if (typeof jQuery == "undefined" || $ != jQuery) {  // not running in the browser
     var $ = require('../');
-    var should = require('should');
+    var expect = require('expect');
 }
   
 describe('.first() and .last()', function() {
@@ -9,8 +9,8 @@ describe('.first() and .last()', function() {
         var src = $("<span>foo</span><span>bar</span><span>baz</span>");
         var elem = src.first();
           
-        elem.html().should.equal('foo');
-        elem.length.should.equal(1);
+        expect(elem.length).to.be(1);
+        expect(elem.html()).to.be('foo');
 //        $.html(elem).should.equal('<span>foo</span>');
     });
 
@@ -18,8 +18,8 @@ describe('.first() and .last()', function() {
         var src = $("<span>foo</span><span>bar</span><span>baz</span>");
         var elem = src.last();
           
-        elem.html().should.equal('baz');
-        elem.length.should.equal(1);
+        expect(elem.length).to.be(1);
+        expect(elem.html()).to.be('baz');
 //        $.html(elem).should.equal('<span>baz</span>');
     });
 
@@ -28,9 +28,11 @@ describe('.first() and .last()', function() {
         var first = src.first();
         var last = src.last();
           
-        first.html().should.equal('bar');
-        last.html().should.equal('bar');
-        last.length.should.equal(1);
+        expect(first.toArray()).to.eql(last.toArray());
+        expect(first.length).to.be(1);
+        expect(first.html()).to.be('bar');
+        expect(last.length).to.be(1);
+        expect(last.html()).to.be('bar');
     });
 
     it('first() and last() should return an empty object for an empty object', function() {
@@ -38,23 +40,32 @@ describe('.first() and .last()', function() {
         var first = src.first();
         var last = src.last();
           
-        first.html().should.equal('');
-        last.html().should.equal('');
-        first.length.should.equal(0);
-        last.length.should.equal(0);
+        expect(first.toArray()).to.eql(last.toArray());
+        expect(first.length).to.be(0);
+        expect(first.html()).to.be(null);
+        expect(last.length).to.be(0);
+        expect(last.html()).to.be(null);
     });
 
 });
 
-describe('.clone', function() {
+describe('.clone()', function() {
 
     it('clone should return a copy', function() {
         var src = $("<div><span>foo</span><span>bar</span><span>baz</span></div>").children();
         var elem = src.clone();
           
-        elem.html().should.equal('foo');
-        elem.length.should.equal(3);
+        expect(elem.length).to.be(3);
+        expect(elem.parent().length).to.be(0);
     });
+});
 
+describe('.html()', function() {
 
+    it('html(<value>) should be able to set to an empty string', function() {
+        var elem = $("<span>foo</span>").children();
+        elem.html("");
+          
+        expect(elem.html()).to.be(null);
+    });
 });
