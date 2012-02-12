@@ -1,3 +1,13 @@
+0.6.1 / 2012-02-12
+==================
+
+* Added .first(), .last(), and .clone() commands.
+* Option to parse using whitespace added to `.load`.
+* Many bug fixes to make cheerio more aligned with jQuery.
+* Added $(':root') to select the highest level element.
+
+Many thanks to the contributors that made this release happen: @ironchefpython and @siddMahen
+
 0.6.0 / 2012-02-07
 ==================
 
