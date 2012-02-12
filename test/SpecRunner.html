@@ -3,30 +3,15 @@
 <html>
 <head>
   <title>Mocha Runner</title>
-
   <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.js"></script>
-
   <link rel="stylesheet" href="https://raw.github.com/visionmedia/mocha/master/mocha.css" />
   <script src="https://raw.github.com/LearnBoost/expect.js/d38dfc2afaf51bf30140c1a4c3331b5f793b58f1/expect.js"></script>
   <script src="https://raw.github.com/visionmedia/mocha/master/mocha.js"></script>
-  <script>mocha.setup('bdd')</script>
+  <script>mocha.setup('bdd'); $(function() { mocha.run().globals(); })</script>
   
-
-<!-- include spec files here... -->
+<!-- include spec files below... -->
   <script type="text/javascript" src="pull41Spec.js"></script>
 
 
-<script>
-  $(function () {
-    mocha
-      .run()
-      .globals() // acceptable globals
-  })
-</script>
 
-</head>
-
-<body>
-  <div id="mocha"></div>
-</body>
-</html>
+</head><body><div id="mocha"></div></body></html>
