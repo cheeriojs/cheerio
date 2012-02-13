@@ -152,7 +152,41 @@ describe '$(...)', ->
       $fruits = $(fruits)
       $('li', $fruits).remove('.apple')
       $fruits.find('.apple').should.have.length 0
-    
+  
+  
+  describe '.replaceWith', ->
+    it '(elem) : should replace the selected element with given element', ->
+      src = $('<ul></ul>')
+      elem = $('<h2>hi <span>there</span></h2>')
+      
+      replaced = src.replaceWith(elem)
+      replaced[0].parent.type.should.equal 'root'
+      $.html(replaced).should.equal '<h2>hi <span>there</span></h2>'
+      
+    it '(elem) : should replace the single selected element with given element', ->
+      src = $('<br />')
+      elem = $('<h2>hi <span>there</span></h2>')
+
+      replaced = src.replaceWith(elem)
+      replaced[0].parent.type.should.equal 'root'
+      $.html(replaced).should.equal '<h2>hi <span>there</span></h2>'
+      
+    it '(str) : should accept strings', ->
+      src = $('<br />')
+
+      replaced = src.replaceWith('<h2>hi <span>there</span></h2>')
+      replaced[0].parent.type.should.equal 'root'
+      $.html(replaced).should.equal '<h2>hi <span>there</span></h2>'
+      
+    it 'should return multiple instances of replaced content', ->
+      src = $('<li></li><li></li>')
+      elem = $('<h2>hi <span>there</span></h2>')
+      
+      replaced = src.replaceWith(elem)
+      replaced.length.should.equal 2
+      $.html(replaced[0]).should.equal '<h2>hi <span>there</span></h2>'
+      $.html(replaced[1]).should.equal '<h2>hi <span>there</span></h2>'
+
   describe '.empty', ->
     
     it '() : should remove all children from selected elements', ->
