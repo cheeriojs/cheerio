@@ -155,6 +155,13 @@ describe '$(...)', ->
   
   
   describe '.replaceWith', ->
+    it '(elem) : should replace one <li> tag with another', ->
+      $fruits = $(fruits)
+      plum = $('<li class = "plum">Plum</li>')
+      $('.pear', $fruits).replaceWith(plum)
+      $('.orange', $fruits).next().hasClass('plum').should.be.ok
+      $('.orange', $fruits).next().html().should.equal 'Plum'
+      
     it '(elem) : should replace the selected element with given element', ->
       src = $('<ul></ul>')
       elem = $('<h2>hi <span>there</span></h2>')
@@ -170,7 +177,7 @@ describe '$(...)', ->
       replaced = src.replaceWith(elem)
       replaced[0].parent.type.should.equal 'root'
       $.html(replaced).should.equal '<h2>hi <span>there</span></h2>'
-      
+          
     it '(str) : should accept strings', ->
       src = $('<br />')
 

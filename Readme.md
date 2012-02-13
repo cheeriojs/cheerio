@@ -280,6 +280,18 @@ Removes the set of matched elements from the DOM and all their children. `select
           <li class = "orange">Orange</li>
         </ul>
 
+#### .replaceWith( content )
+Replaces matched elements with `content`.
+
+    var plum = $('<li class = "plum">Plum</li>')
+    $('.pear').replaceWith(plum)
+    $.html()
+    => <ul id = "fruits">
+         <li class = "apple">Apple</li>
+         <li class = "orange">Orange</li>
+         <li class = "plum">Plum</li>
+       </ul>      
+
 #### .empty()
 Empties an element, removing all it's children.
 
