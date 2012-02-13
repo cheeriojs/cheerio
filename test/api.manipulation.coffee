@@ -168,7 +168,9 @@ describe '$(...)', ->
       
       replaced = src.replaceWith(elem)
       replaced[0].parent.type.should.equal 'root'
-      $.html(replaced).should.equal '<h2>hi <span>there</span></h2>'
+      
+      $.html(replaced[0].parent).should.equal '<h2>hi <span>there</span></h2>'
+      $.html(replaced).should.equal '<ul></ul>'
       
     it '(elem) : should replace the single selected element with given element', ->
       src = $('<br />')
@@ -176,23 +178,18 @@ describe '$(...)', ->
 
       replaced = src.replaceWith(elem)
       replaced[0].parent.type.should.equal 'root'
-      $.html(replaced).should.equal '<h2>hi <span>there</span></h2>'
+      $.html(replaced[0].parent).should.equal '<h2>hi <span>there</span></h2>'
+      
+      $.html(replaced).should.equal '<br />'
           
     it '(str) : should accept strings', ->
       src = $('<br />')
 
       replaced = src.replaceWith('<h2>hi <span>there</span></h2>')
       replaced[0].parent.type.should.equal 'root'
-      $.html(replaced).should.equal '<h2>hi <span>there</span></h2>'
-      
-    it 'should return multiple instances of replaced content', ->
-      src = $('<li></li><li></li>')
-      elem = $('<h2>hi <span>there</span></h2>')
-      
-      replaced = src.replaceWith(elem)
-      replaced.length.should.equal 2
-      $.html(replaced[0]).should.equal '<h2>hi <span>there</span></h2>'
-      $.html(replaced[1]).should.equal '<h2>hi <span>there</span></h2>'
+
+      $.html(replaced[0].parent).should.equal '<h2>hi <span>there</span></h2>'
+      $.html(replaced).should.equal '<br />'
 
   describe '.empty', ->
     
