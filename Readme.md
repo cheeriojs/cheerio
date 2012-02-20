@@ -14,7 +14,6 @@ Teach your server HTML.
     $.html();
     => <h2 class = "title welcome">Hello there!</h2>
 
-
 ## Installation
 `npm install cheerio`
 
@@ -56,7 +55,6 @@ The goal of JSDOM is to provide an identical DOM environment as what we see in t
 
 This is the HTML markup we will be using in all of the API examples.
 
-
 ### Loading
 First you need to load in the HTML. This step in jQuery is implicit, since jQuery operates on the one, baked-in DOM. With Cheerio, we need to pass in the HTML document.
 
@@ -64,10 +62,6 @@ This is the _preferred_ method:
 
     var cheerio = require('cheerio'),
         $ = cheerio.load('<ul id = "fruits">...</ul>');
-
-By default, cheerio's parser will ignore whitespace, you can override this default by setting the second parameter:
-
-    $ = cheerio.load('<ul id = "fruits">...</ul>', { ignoreWhitespace: false });
 
 Optionally, you can also load in the HTML by passing the string as the context:
 
@@ -78,6 +72,19 @@ Or as the root:
 
     $ = require('cheerio');
     $('li', 'ul', '<ul id = "fruits">...</ul>');
+
+You can also pass an extra object to `.load()` if you need to modify any
+of the default parsing options:
+
+    $ = cheerio.load('<ul id = "fruits">...</ul>', { ignoreWhitespace: false, xmlMode: true });
+
+These parsing options are taken directly from htmlparser, therefore any options that can be used in htmlparser
+are valid in cheerio as well. The default options are:
+
+    { ignoreWhitespace: true, xmlMode: false, lowerCaseTags: false }
+
+For a list of options and their effects, see [this]("https://github.com/FB55/node-htmlparser/wiki/DOMHandler") and [this]("https://github.com/FB55/node-htmlparser/wiki/Parser-options").
+
 ### Selectors
 
 Cheerio's selector implementation is nearly identical to jQuery's, so the API is very similar.
