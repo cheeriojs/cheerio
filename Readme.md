@@ -83,7 +83,8 @@ are valid in cheerio as well. The default options are:
 
     { ignoreWhitespace: true, xmlMode: false, lowerCaseTags: false }
 
-For a list of options and their effects, see [this]("https://github.com/FB55/node-htmlparser/wiki/DOMHandler") and [this]("https://github.com/FB55/node-htmlparser/wiki/Parser-options").
+For a list of options and their effects, see [this](https://github.com/FB55/node-htmlparser/wiki/DOMHandler) and 
+[this](https://github.com/FB55/node-htmlparser/wiki/Parser-options).
 
 ### Selectors
 
@@ -103,7 +104,7 @@ This selector method is the starting point for traversing and manipulating the d
     $('li[class=orange]').html()
     => <li class = "orange">Orange</li>
 
-See [cheerio-soupselect]("https://github.com/MatthewMueller/cheerio-soupselect") for a list of all available selectors,
+See [cheerio-soupselect](https://github.com/MatthewMueller/cheerio-soupselect) for a list of all available selectors,
 as well as more detailed documentation regarding what is supported and what isn't.
 
 ### Attributes
