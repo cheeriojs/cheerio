@@ -39,10 +39,6 @@ styleEmpty = '<style></style>'
 # Directives
 directive = '<!doctype html>'
 
-# Options
-xml = '<link>foo</link>'
-lowerTags = '<TITLE>bar</TITLE>'
-
 ###
   Tests
 ###
@@ -146,16 +142,6 @@ describe 'parse', ->
       elem.data.should.equal '!doctype html'
       elem.name.should.equal '!doctype'
       
-    it "should handle the xmlMode option: #{xml}", ->
-      elem = parse.eval(xml, { xmlMode: true })[0]
-      elem.children.should.have.length 1
-      elem.children[0].type.should.equal 'text'
-      elem.children[0].data.should.equal 'foo'
-      
-    it "should handle the lowerCaseTags option: #{lowerTags}", ->
-      elem = parse.eval(lowerTags, { lowerCaseTags: true })[0]
-      elem.name.should.equal 'title'
-
   describe '.connect', ->
     create = (html) ->
       dom = parse.eval html
