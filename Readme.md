@@ -43,6 +43,10 @@ Parsing big websites with JSDOM has a noticeable delay.
 __&#8226; JSDOM feels too heavy:__
 The goal of JSDOM is to provide an identical DOM environment as what we see in the browser. I never really needed all this, I just wanted a simple, familiar way to do HTML manipulation.
 
+## When I would still use JSDOM
+
+Cheerio will not solve all your problems. I would still use JSDOM if I to work with browser events, particularly if I wanted to automate functional tests.
+
 ## API
 
 ### Markup example we'll be using:
