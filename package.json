@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "mocha" : "*",
-    "expect" : "*",
+    "expect.js" : "*",
 	  "coffee-script": "*"
   },
   "scripts": {
