@@ -1,4 +1,4 @@
-# cheerio
+# cheerio [![Build Status](https://secure.travis-ci.org/MatthewMueller/cheerio.png?branch=master)](http://travis-ci.org/MatthewMueller/cheerio)
 
 Fast, flexible, and lean implementation of core jQuery designed specifically for the server.
 
