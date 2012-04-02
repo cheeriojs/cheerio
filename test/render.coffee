@@ -1,6 +1,6 @@
 parse = require('../').parse
 render = require('../').render
-should = require 'should'
+expect = require 'expect.js'
 
 ###
   
@@ -38,20 +38,20 @@ describe 'render', ->
     
     it 'should render <br /> tags correctly', (done) ->
       str = "<br />"
-      html(str).should.equal '<br />'
+      expect(html(str)).to.equal '<br />'
       done()
   
     it 'should shorten the \'checked\' attribute when it contains the value \'checked\'', (done) ->
       str = '<input checked = "checked"/>'
-      html(str).should.equal '<input checked/>'
+      expect(html(str)).to.equal '<input checked/>'
       done()
       
     it 'should not shorten the \'name\' attribute when it contains the value \'name\'', (done) ->
       str = '<input name = "name"/>'
-      html(str).should.equal '<input name = "name"/>'
+      expect(html(str)).to.equal '<input name="name"/>'
       done()
 
     it 'should render comments correctly', (done) ->
       str = '<!-- comment -->'
-      html(str).should.equal '<!-- comment -->'
+      expect(html(str)).to.equal '<!-- comment -->'
       done()

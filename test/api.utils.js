@@ -1,5 +1,5 @@
 var $ = require('../'),
-    should = require('should');
+    expect = require('expect.js');
 
 /*
   Examples
@@ -14,27 +14,27 @@ describe('$', function() {
       var div  = $('div', '<div><span>foo</span><span>bar</span></div>'),
           span = div.children().get(1);
           
-      $(span).html().should.equal('bar');
-      $.html(span).should.equal('<span>bar</span>');
+      expect($(span).html()).to.equal('bar');
+      expect($.html(span)).to.equal('<span>bar</span>');
     });
 
     it('(<obj>) : should accept an object, an array, or a cheerio object', function() {
       var span = $("<span>foo</span>");
           
-      $.html(span.get(0)).should.equal('<span>foo</span>');
-      $.html(span.get()).should.equal('<span>foo</span>');
-      $.html(span).should.equal('<span>foo</span>');
+      expect($.html(span.get(0))).to.equal('<span>foo</span>');
+      expect($.html(span.get())).to.equal('<span>foo</span>');
+      expect($.html(span)).to.equal('<span>foo</span>');
     });
     
     it('(<value>) : should be able to set to an empty string', function() {
         var elem = $("<span>foo</span>");
         
         elem.html('');
-        $.html(elem).should.equal('<span></span>');
+        expect($.html(elem)).to.equal('<span></span>');
     });
     
     it('() : of empty cheerio object should return null', function() {
-      should.not.exist($().html());
+      expect($().html()).to.be(null);
     });
     
   });
@@ -45,8 +45,8 @@ describe('$', function() {
         var src = $("<div><span>foo</span><span>bar</span><span>baz</span></div>").children(),
             elem = src.clone();
 
-        elem.length.should.equal(3);
-        elem.parent().length.should.equal(0);
+        expect(elem.length).to.equal(3);
+        expect(elem.parent().length).to.equal(0);
     });
     
   });
