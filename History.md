@@ -1,3 +1,14 @@
+0.7.0 / 2012-04-08
+==================
+
+* Now testing with node v0.7.7
+* Added travis-ci integration
+* Replaced should.js with expect.js. Browser testing to come
+* Fixed spacing between attributes and their values
+* Added HTML pretty print
+* Exposed node-htmlparser2 parsing options
+* Revert .replaceWith(...) to be consistent with jQuery
+
 0.6.2 / 2012-02-12
 ==================
 
