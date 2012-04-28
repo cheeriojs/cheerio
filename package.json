@@ -13,7 +13,7 @@
     "node": ">= 0.4.7"
   },
   "dependencies": {
-    "cheerio-soupselect" : "0.0.x",
+    "cheerio-soupselect" : "https://github.com/Siedrix/node-soupselect/tarball/master",
     "htmlparser2" : "2.x",
     "underscore" : "1.x"
   },
