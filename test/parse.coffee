@@ -99,7 +99,7 @@ describe 'parse', ->
     it "should handle value-less attributes: #{noValueAttribute}", ->
       attrs = parse.eval(noValueAttribute)[0].attribs
       expect(attrs).to.be.ok
-      expect(attrs.disabled).to.equal 'disabled'
+      expect(attrs.disabled).to.equal ''
      
     it "should handle comments: #{comment}", ->
       elem = parse.eval(comment)[0]
