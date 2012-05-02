@@ -1,7 +1,7 @@
 test:
 	@./node_modules/mocha/bin/mocha --compilers coffee:coffee-script --reporter dot
 
-mate:
-	@mate lib/ test/
+subl:
+	@subl lib/ test/ package.json index.js
 
-.PHONY: test build mate
+.PHONY: test build subl
