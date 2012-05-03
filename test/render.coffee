@@ -38,11 +38,11 @@ describe 'render', ->
     
     it 'should render <br /> tags correctly', (done) ->
       str = "<br />"
-      expect(html(str)).to.equal '<br />'
+      expect(html(str)).to.equal '<br/>'
       done()
   
     it 'should shorten the \'checked\' attribute when it contains the value \'checked\'', (done) ->
-      str = '<input checked = "checked"/>'
+      str = '<input checked/>'
       expect(html(str)).to.equal '<input checked/>'
       done()
       
