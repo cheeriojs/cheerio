@@ -1,5 +1,6 @@
 $ = require('../')
 expect = require 'expect.js'
+_ = require 'underscore'
 
 ###
   Examples
@@ -110,8 +111,15 @@ describe 'cheerio', ->
   it 'should be able to select multiple elements: $(".apple, #fruits")', ->
     $elems = $('.apple, #fruits', fruits)
     expect($elems).to.have.length 2
-    testAppleSelect $($elems[0])
-    expect($elems[1].attribs.id).to.equal 'fruits'
+    
+    $apple = _($elems).filter (elem) ->
+      return (elem.attribs.class is 'apple')
+
+    $fruits = _($elems).filter (elem) ->
+      return (elem.attribs.id is 'fruits')
+
+    testAppleSelect $($apple)
+    expect($fruits[0].attribs.id).to.equal 'fruits'
     
   it 'should select first element $(:first)' #, ->
     # $elem = $(':first', fruits)

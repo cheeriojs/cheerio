@@ -1,2 +1,3 @@
 --reporter list
 --growl
+--compilers coffee:coffee-script
