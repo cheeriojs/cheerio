@@ -13,7 +13,7 @@
     "node": ">= 0.6"
   },
   "dependencies": {
-    "cheerio-select" : ">= 0.0.1",
+    "cheerio-select" : "*",
     "htmlparser2" : "2.x",
     "underscore" : "*"
   },
