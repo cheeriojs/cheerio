@@ -378,6 +378,10 @@ Clone the cheerio object.
     
 ### Utilities
 
+#### $.root
+
+Sometimes you need to work with the top-level root element. To query it, you can use `$($.root)` which is similar to jQuery's `$(document)`
+
 #### $.dom()
 Get the raw DOM of the parsed HTML document.
 

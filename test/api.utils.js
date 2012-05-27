@@ -50,4 +50,14 @@ describe('$', function() {
     });
     
   });
+
+  describe('.root', function() {
+
+    it('() : should return a cheerio-wrapped root object', function() {
+      var $html = $.load("<div><span>foo</span><span>bar</span></div>");
+      $($html.root).append("<div id = 'test'></div>");
+      expect($html.html()).to.equal('<div><span>foo</span><span>bar</span></div><div id="test"></div>');
+    });
+
+  });
 });
