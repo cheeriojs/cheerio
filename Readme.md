@@ -231,10 +231,13 @@ Will select the last element of a cheerio object
     $('#fruits').children().last().text()
     => Pear
 
-#### .eq()
-Reduce the set of matched elements to the one at the specified index.
+#### .eq( i )
+Reduce the set of matched elements to the one at the specified index. Use `.eq(-i)` to count backwards from the last selected element. 
 
-    $('li').eq(2).text()
+    $('li').eq(0).text()
+    => Apple
+
+    $('li').eq(-1).text()
     => Pear
 
 ### Manipulation

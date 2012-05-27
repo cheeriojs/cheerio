@@ -127,7 +127,7 @@ describe '$(...)', ->
 
   describe '.eq', ->
 
-    it '(idx) : should return the element at the specified index', ->
+    it '(i) : should return the element at the specified index', ->
       expect($('li', fruits).eq(0).text()).to.equal 'Apple'
       expect($('li', fruits).eq(1).text()).to.equal 'Orange'
       expect($('li', fruits).eq(2).text()).to.equal 'Pear'
