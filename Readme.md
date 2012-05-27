@@ -87,7 +87,7 @@ are valid in cheerio as well. The default options are:
 
     { ignoreWhitespace: true, xmlMode: false, lowerCaseTags: false }
 
-For a list of options and their effects, see [this](https://github.com/FB55/node-htmlparser/wiki/DOMHandler) and 
+For a list of options and their effects, see [this](https://github.com/FB55/node-htmlparser/wiki/DOMHandler) and
 [this](https://github.com/FB55/node-htmlparser/wiki/Parser-options).
 
 ### Selectors
@@ -231,6 +231,12 @@ Will select the last element of a cheerio object
     $('#fruits').children().last().text()
     => Pear
 
+#### .eq()
+Reduce the set of matched elements to the one at the specified index.
+
+    $('li').eq(2).text()
+    => Pear
+
 ### Manipulation
 Methods for modifying the DOM structure.
 
@@ -302,7 +308,7 @@ Replaces matched elements with `content`.
          <li class = "apple">Apple</li>
          <li class = "orange">Orange</li>
          <li class = "plum">Plum</li>
-       </ul>      
+       </ul>
 
 #### .empty()
 Empties an element, removing all it's children.
@@ -370,12 +376,12 @@ Retrieve all the DOM elements contained in the jQuery set, as an array.
 
     $('li').toArray()
     => [ {...}, {...}, {...} ]
-    
+
 #### .clone() ####
 Clone the cheerio object.
 
     var moreFruit = $('#fruits').clone()
-    
+
 ### Utilities
 
 #### $.root
