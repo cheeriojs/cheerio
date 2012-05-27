@@ -234,7 +234,7 @@ Will select the last element of a cheerio object
 #### .eq()
 Reduce the set of matched elements to the one at the specified index.
 
-    $('li').eq(2).text('')
+    $('li').eq(2).text()
     => Pear
 
 ### Manipulation
