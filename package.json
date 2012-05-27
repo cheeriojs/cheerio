@@ -10,10 +10,10 @@
   },
   "main": "./index.js",
   "engines": {
-    "node": ">= 0.4.7"
+    "node": ">= 0.6"
   },
   "dependencies": {
-    "cheerio-select" : "*",
+    "cheerio-select" : ">= 0.0.1",
     "htmlparser2" : "2.x",
     "underscore" : "*"
   },
