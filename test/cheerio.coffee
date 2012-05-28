@@ -127,5 +127,41 @@ describe 'cheerio', ->
     # console.log $elem.before('hi')
     # console.log $elem.before(h2)
 
+  it 'should be able to select immediate children: $("#fruits > .pear")', ->
+    $fruitsWithMorePear = $('.pear', fruits).append('<li class = "pear">Another Pear!</li>');
+    expect($('#fruits .pear', $fruitsWithMorePear)).to.have.length 2
+    $elem = $('#fruits > .pear', $fruitsWithMorePear)
+    expect($elem).to.have.length 1
+    expect($elem.attr('class')).to.equal('pear');
 
-  
+  it 'should be able to select immediate children: $(".apple + .pear")', ->
+    $elem = $('.apple + li', fruits)
+    expect($elem).to.have.length 2
+    # TODO: Might need to be revisited
+    # $fruitsWithMorePear = $('#fruits', fruits).append('<li class = "pear">Another Pear!</li>');
+    $elem = $('.apple + .pear', fruits)
+    expect($elem).to.have.length 1
+    expect($elem.attr('class')).to.equal('pear');
+
+  it 'should be able to select immediate children: $(".apple ~ .pear")', ->
+    $elem = $('.apple ~ li', fruits)
+    expect($elem).to.have.length 2
+    $elem = $('.apple ~ .pear', fruits)
+    expect($elem.attr('class')).to.equal('pear');
+
+  it 'should handle wildcards on attributes: $("li[class*=r]")', ->
+    $elem = $("li[class*=r]", fruits)
+    expect($elem).to.have.length 2
+    expect($elem.eq(0).attr('class')).to.equal 'orange';
+    expect($elem.eq(1).attr('class')).to.equal 'pear';
+
+  it 'should handle beginning of attr selectors: $("li[class^=o]")', ->
+    $elem = $("li[class^=o]", fruits)
+    expect($elem).to.have.length 1
+    expect($elem.eq(0).attr('class')).to.equal 'orange';
+
+  it 'should handle beginning of attr selectors: $("li[class$=e]")', ->
+    $elem = $("li[class$=e]", fruits)
+    expect($elem).to.have.length 2
+    expect($elem.eq(0).attr('class')).to.equal 'apple';
+    expect($elem.eq(1).attr('class')).to.equal 'orange';

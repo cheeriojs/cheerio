@@ -28,8 +28,8 @@ expect = require 'expect.js'
   Tests
 ###
 
-html = (str) ->
-  dom = parse(str)
+html = (str, options = {}) ->
+  dom = parse(str, options)
   return render(dom)
 
 describe 'render', ->
@@ -54,4 +54,14 @@ describe 'render', ->
     it 'should render comments correctly', (done) ->
       str = '<!-- comment -->'
       expect(html(str)).to.equal '<!-- comment -->'
+      done()
+
+    it 'should render whitespace by default', (done) ->
+      str = '<a href="./haha.html">hi</a> <a href="./blah.html">blah</a>'
+      expect(html(str)).to.equal str
+      done()
+
+    it 'should ignore whitespace if specified', (done) ->
+      str = '<a href="./haha.html">hi</a> <a href="./blah.html">blah  </a>'
+      expect(html(str, ignoreWhitespace : true)).to.equal '<a href="./haha.html">hi</a><a href="./blah.html">blah  </a>'
       done()
