@@ -136,12 +136,12 @@ describe 'cheerio', ->
 
   it 'should be able to select immediate children: $(".apple + .pear")', ->
     $elem = $('.apple + li', fruits)
-    expect($elem).to.have.length 2
-    # TODO: Might need to be revisited
-    # $fruitsWithMorePear = $('#fruits', fruits).append('<li class = "pear">Another Pear!</li>');
-    $elem = $('.apple + .pear', fruits)
     expect($elem).to.have.length 1
-    expect($elem.attr('class')).to.equal('pear');
+    $elem = $('.apple + .pear', fruits)
+    expect($elem).to.have.length 0
+    $elem = $('.apple + .orange', fruits)
+    expect($elem).to.have.length 1
+    expect($elem.attr('class')).to.equal('orange');
 
   it 'should be able to select immediate children: $(".apple ~ .pear")', ->
     $elem = $('.apple ~ li', fruits)
