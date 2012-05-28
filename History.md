@@ -1,3 +1,14 @@
+0.8.0 / 2012-05-27
+==================
+
+* Updated CSS parser to use FB55/CSSselect. Cheerio now supports most CSS3 psuedo selectors thanks to @FB55.
+* ignoreWhitespace now on by default again. See #55 for context.
+* Changed $(":root") to $.root(), cleaned up $.clone()
+* Support for .eq(i) thanks to @alexbardas
+* Removed support for node 0.4.x
+* Fixed memory leak where package.json was continually loaded
+* Tons more tests
+
 0.7.0 / 2012-04-08
 ==================
 
