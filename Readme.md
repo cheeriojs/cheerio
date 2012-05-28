@@ -389,14 +389,16 @@ Clone the cheerio object.
 
 #### $.root
 
-Sometimes you need to work with the top-level root element. To query it, you can use `$($.root)` which is similar to jQuery's `$(document)`
+Sometimes you need to work with the top-level root element. To query it, you can use `$.root()`.
+
+    $.root().append('<ul id="vegetables"></ul>').html();
+    => <ul id="fruits">...</ul><ul id="vegetables"></ul>
 
 #### $.dom()
 Get the raw DOM of the parsed HTML document.
 
     $.dom()
-    => [ { raw: 'ul id="fruits"',
-        data: 'ul id="fruits"',
+    => [{ 
         type: 'tag',
         name: 'ul',
         attribs: { id: 'fruits' },
@@ -410,7 +412,8 @@ Get the raw DOM of the parsed HTML document.
            [Object] ],
         parent: null,
         prev: null,
-        next: null } ]
+        next: null 
+       }]
 
 #### $.isArray( array )
 Checks to see the passed argument is an array.

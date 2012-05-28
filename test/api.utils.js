@@ -46,7 +46,11 @@ describe('$', function() {
             elem = src.clone();
 
         expect(elem.length).to.equal(3);
-        expect(elem.parent().length).to.equal(0);
+        expect(elem.parent().length).to.equal(1);
+        expect(elem.parent()[0].type).to.equal('root');
+        expect(elem.text()).to.equal(src.text());
+        src.text('rofl');
+        expect(elem.text()).to.not.equal(src.text());
     });
     
   });
@@ -55,7 +59,7 @@ describe('$', function() {
 
     it('() : should return a cheerio-wrapped root object', function() {
       var $html = $.load("<div><span>foo</span><span>bar</span></div>");
-      $($html.root).append("<div id = 'test'></div>");
+      $html.root().append("<div id = 'test'></div>");
       expect($html.html()).to.equal('<div><span>foo</span><span>bar</span></div><div id="test"></div>');
     });
 
