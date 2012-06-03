@@ -82,12 +82,12 @@ Or as the root:
 You can also pass an extra object to `.load()` if you need to modify any
 of the default parsing options:
 
-    $ = cheerio.load('<ul id = "fruits">...</ul>', { ignoreWhitespace: false, xmlMode: true });
+    $ = cheerio.load('<ul id = "fruits">...</ul>', { ignoreWhitespace: true, xmlMode: true });
 
 These parsing options are taken directly from htmlparser, therefore any options that can be used in htmlparser
 are valid in cheerio as well. The default options are:
 
-    { ignoreWhitespace: true, xmlMode: false, lowerCaseTags: false }
+    { ignoreWhitespace: false, xmlMode: false, lowerCaseTags: false }
 
 For a list of options and their effects, see [this](https://github.com/FB55/node-htmlparser/wiki/DOMHandler) and
 [this](https://github.com/FB55/node-htmlparser/wiki/Parser-options).
