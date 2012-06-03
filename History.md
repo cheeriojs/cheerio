@@ -1,3 +1,9 @@
+0.8.1 / 2012-06-02
+==================
+
+* fixed regression where if you created an element, it would update the root
+* compatible with node 4.x (again)
+
 0.8.0 / 2012-05-27
 ==================
 
