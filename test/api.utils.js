@@ -64,4 +64,13 @@ describe('$', function() {
     });
 
   });
+
+  describe('.load', function() {
+    it('(html) : should retain original root after creating a new node', function() {
+      var $html = $.load('<body><ul id = "fruits"></ul></body>');
+      expect($html('body')).to.have.length(1);
+      var script = $html('<script>');
+      expect($html('body')).to.have.length(1);
+    });
+  });
 });
