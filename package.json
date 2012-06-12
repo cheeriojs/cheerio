@@ -15,7 +15,8 @@
   "dependencies": {
     "cheerio-select" : "*",
     "htmlparser2" : "2.x",
-    "underscore" : "*"
+    "underscore" : "*",
+    "entities" : "1.x"
   },
   "devDependencies": {
     "mocha" : "*",

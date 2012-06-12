@@ -246,5 +246,10 @@ describe '$(...)', ->
       
       expect($('.apple', $fruits)[0].children[0].data).to.equal 'whatever mate'
       
-      
+    it 'should decode special chars', ->
+      text = $('<p>M&amp;M</p>').text()
+      expect(text).to.equal('M&M');
     
+    it 'should work with special chars added as strings', ->
+      text = $('<p>M&M</p>').text()
+      expect(text).to.equal('M&M');
