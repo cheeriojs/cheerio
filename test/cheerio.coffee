@@ -166,4 +166,9 @@ describe 'cheerio', ->
     expect($elem.eq(0).attr('class')).to.equal 'apple';
     expect($elem.eq(1).attr('class')).to.equal 'orange';
 
+  it 'should gracefully degrade on complex, unmatched queries', ->
+    $elem  = $('Eastern States Cup #8-fin&nbsp;<br>Downhill&nbsp;');
+    expect($elem).to.be.an(Array);
+    expect($elem).to.have.length(0); # []
+
     
