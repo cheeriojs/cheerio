@@ -1,3 +1,10 @@
+0.8.2 / 2012-06-11 
+==================
+
+* Now fails gracefully in cases that involve special chars, which is inline with jQuery (closes #59)
+* text() now decode special entities (closes #52)
+* updated travis.yml to test node 4.x
+
 0.8.1 / 2012-06-02
 ==================
 
