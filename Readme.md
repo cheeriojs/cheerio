@@ -183,13 +183,13 @@ Gets the parent of the first selected element.
     => fruits
 
 #### .next()
-Gets the next sibling thats an element of the first selected element.
+Gets the next sibling of the first selected element.
 
     $('.apple').next().hasClass('orange')
     => true
 
 #### .prev()
-Gets the previous sibling thats an element of the first selected element.
+Gets the previous sibling of the first selected element.
 
     $('.orange').prev().hasClass('apple')
     => true
