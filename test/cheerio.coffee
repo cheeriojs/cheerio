@@ -128,11 +128,11 @@ describe 'cheerio', ->
     # console.log $elem.before(h2)
 
   it 'should be able to select immediate children: $("#fruits > .pear")', ->
-    $fruitsWithMorePear = $('.pear', fruits).append('<li class = "pear">Another Pear!</li>');
+    $fruitsWithMorePear = $('.pear', fruits).append('<li class = "pear">Another Pear!</li>')
     expect($('#fruits .pear', $fruitsWithMorePear)).to.have.length 2
     $elem = $('#fruits > .pear', $fruitsWithMorePear)
     expect($elem).to.have.length 1
-    expect($elem.attr('class')).to.equal('pear');
+    expect($elem.attr('class')).to.equal('pear')
 
   it 'should be able to select immediate children: $(".apple + .pear")', ->
     $elem = $('.apple + li', fruits)
@@ -141,34 +141,34 @@ describe 'cheerio', ->
     expect($elem).to.have.length 0
     $elem = $('.apple + .orange', fruits)
     expect($elem).to.have.length 1
-    expect($elem.attr('class')).to.equal('orange');
+    expect($elem.attr('class')).to.equal('orange')
 
   it 'should be able to select immediate children: $(".apple ~ .pear")', ->
     $elem = $('.apple ~ li', fruits)
     expect($elem).to.have.length 2
     $elem = $('.apple ~ .pear', fruits)
-    expect($elem.attr('class')).to.equal('pear');
+    expect($elem.attr('class')).to.equal('pear')
 
   it 'should handle wildcards on attributes: $("li[class*=r]")', ->
     $elem = $('li[class*=r]', fruits)
     expect($elem).to.have.length 2
-    expect($elem.eq(0).attr('class')).to.equal 'orange';
-    expect($elem.eq(1).attr('class')).to.equal 'pear';
+    expect($elem.eq(0).attr('class')).to.equal 'orange'
+    expect($elem.eq(1).attr('class')).to.equal 'pear'
 
   it 'should handle beginning of attr selectors: $("li[class^=o]")', ->
     $elem = $('li[class^=o]', fruits)
     expect($elem).to.have.length 1
-    expect($elem.eq(0).attr('class')).to.equal 'orange';
+    expect($elem.eq(0).attr('class')).to.equal 'orange'
 
   it 'should handle beginning of attr selectors: $("li[class$=e]")', ->
     $elem = $('li[class$=e]', fruits)
     expect($elem).to.have.length 2
-    expect($elem.eq(0).attr('class')).to.equal 'apple';
-    expect($elem.eq(1).attr('class')).to.equal 'orange';
+    expect($elem.eq(0).attr('class')).to.equal 'apple'
+    expect($elem.eq(1).attr('class')).to.equal 'orange'
 
   it 'should gracefully degrade on complex, unmatched queries', ->
-    $elem  = $('Eastern States Cup #8-fin&nbsp;<br>Downhill&nbsp;');
-    expect($elem).to.be.an(Array);
-    expect($elem).to.have.length(0); # []
+    $elem  = $('Eastern States Cup #8-fin&nbsp;<br>Downhill&nbsp;')
+    expect($elem).to.be.an(Array)
+    expect($elem).to.have.length(0) # []
 
 

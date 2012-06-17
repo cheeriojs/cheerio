@@ -248,8 +248,8 @@ describe '$(...)', ->
 
     it 'should decode special chars', ->
       text = $('<p>M&amp;M</p>').text()
-      expect(text).to.equal('M&M');
+      expect(text).to.equal('M&M')
 
     it 'should work with special chars added as strings', ->
       text = $('<p>M&M</p>').text()
-      expect(text).to.equal('M&M');
+      expect(text).to.equal('M&M')
