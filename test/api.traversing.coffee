@@ -84,7 +84,7 @@ describe '$(...)', ->
 
   describe '.first', ->
     it '() : should return the first item', ->
-      src = $("<span>foo</span><span>bar</span><span>baz</span>")
+      src = $('<span>foo</span><span>bar</span><span>baz</span>')
       elem = src.first()
 
       expect(elem.length).to.equal 1
@@ -99,7 +99,7 @@ describe '$(...)', ->
 
   describe '.last', ->
     it '() : should return the last element', ->
-      src = $("<span>foo</span><span>bar</span><span>baz</span>");
+      src = $('<span>foo</span><span>bar</span><span>baz</span>');
       elem = src.last();
 
       expect(elem.length).to.equal 1
@@ -114,7 +114,7 @@ describe '$(...)', ->
 
   describe '.first & .last', ->
     it '() : should return same object if only one object', ->
-      src = $("<span>bar</span>");
+      src = $('<span>bar</span>');
       first = src.first();
       last = src.last();
 

@@ -7,6 +7,6 @@ request 'http://yahoo.com', (err, response, body) ->
     $ = cheerio.load body
     end = (new Date())
 
-    console.log "ops took: " + (end.getTime() - start.getTime()) + " ms"
+    console.log 'ops took: ' + (end.getTime() - start.getTime()) + ' ms'
 
     # console.log $.html()

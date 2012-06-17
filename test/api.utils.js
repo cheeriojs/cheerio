@@ -19,7 +19,7 @@ describe('$', function() {
     });
 
     it('(<obj>) : should accept an object, an array, or a cheerio object', function() {
-      var span = $("<span>foo</span>");
+      var span = $('<span>foo</span>');
 
       expect($.html(span.get(0))).to.equal('<span>foo</span>');
       expect($.html(span.get())).to.equal('<span>foo</span>');
@@ -27,7 +27,7 @@ describe('$', function() {
     });
 
     it('(<value>) : should be able to set to an empty string', function() {
-        var elem = $("<span>foo</span>");
+        var elem = $('<span>foo</span>');
 
         elem.html('');
         expect($.html(elem)).to.equal('<span></span>');
@@ -42,7 +42,7 @@ describe('$', function() {
   describe('.clone', function() {
 
     it('() : should return a copy', function() {
-        var src = $("<div><span>foo</span><span>bar</span><span>baz</span></div>").children(),
+        var src = $('<div><span>foo</span><span>bar</span><span>baz</span></div>').children(),
             elem = src.clone();
 
         expect(elem.length).to.equal(3);
@@ -58,8 +58,8 @@ describe('$', function() {
   describe('.root', function() {
 
     it('() : should return a cheerio-wrapped root object', function() {
-      var $html = $.load("<div><span>foo</span><span>bar</span></div>");
-      $html.root().append("<div id = 'test'></div>");
+      var $html = $.load('<div><span>foo</span><span>bar</span></div>');
+      $html.root().append('<div id = "test"></div>');
       expect($html.html()).to.equal('<div><span>foo</span><span>bar</span></div><div id="test"></div>');
     });
 

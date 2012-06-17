@@ -47,8 +47,8 @@ describe '$(...)', ->
     it '(fn) : should add returned element as last child'
 
     it 'should maintain correct object state (Issue: #10)', ->
-      obj = $("<div></div>")
-        .append("<div><div></div></div>")
+      obj = $('<div></div>')
+        .append('<div><div></div></div>')
         .children()
         .children()
         .parent()

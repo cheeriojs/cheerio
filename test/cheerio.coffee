@@ -150,18 +150,18 @@ describe 'cheerio', ->
     expect($elem.attr('class')).to.equal('pear');
 
   it 'should handle wildcards on attributes: $("li[class*=r]")', ->
-    $elem = $("li[class*=r]", fruits)
+    $elem = $('li[class*=r]', fruits)
     expect($elem).to.have.length 2
     expect($elem.eq(0).attr('class')).to.equal 'orange';
     expect($elem.eq(1).attr('class')).to.equal 'pear';
 
   it 'should handle beginning of attr selectors: $("li[class^=o]")', ->
-    $elem = $("li[class^=o]", fruits)
+    $elem = $('li[class^=o]', fruits)
     expect($elem).to.have.length 1
     expect($elem.eq(0).attr('class')).to.equal 'orange';
 
   it 'should handle beginning of attr selectors: $("li[class$=e]")', ->
-    $elem = $("li[class$=e]", fruits)
+    $elem = $('li[class$=e]', fruits)
     expect($elem).to.have.length 2
     expect($elem.eq(0).attr('class')).to.equal 'apple';
     expect($elem.eq(1).attr('class')).to.equal 'orange';

@@ -37,7 +37,7 @@ describe 'render', ->
   describe '(html)', ->
 
     it 'should render <br /> tags correctly', (done) ->
-      str = "<br />"
+      str = '<br />'
       expect(html(str)).to.equal '<br/>'
       done()
 
