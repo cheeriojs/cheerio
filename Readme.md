@@ -7,8 +7,8 @@ Fast, flexible, and lean implementation of core jQuery designed specifically for
 ## Introduction
 Teach your server HTML.
 
-    var cheerio = require("cheerio"),
-        $ = cheerio.load("<h2 class = 'title'>Hello world</h2>");
+    var cheerio = require('cheerio'),
+        $ = cheerio.load('<h2 class = "title">Hello world</h2>');
 
     $('h2.title').text('Hello there!');
     $('h2').addClass('welcome');
@@ -101,7 +101,7 @@ Cheerio's selector implementation is nearly identical to jQuery's, so the API is
 
 This selector method is the starting point for traversing and manipulating the document. Like jQuery, it's the primary method for selecting elements in the document, but unlike jQuery it's built on top of the soup-select library, not the Sizzle engine.
 
-    $(".apple", '#fruits').text()
+    $('.apple', '#fruits').text()
     => Apple
 
     $('ul .pear').attr('class')
@@ -234,7 +234,7 @@ Will select the last element of a cheerio object
     => Pear
 
 #### .eq( i )
-Reduce the set of matched elements to the one at the specified index. Use `.eq(-i)` to count backwards from the last selected element. 
+Reduce the set of matched elements to the one at the specified index. Use `.eq(-i)` to count backwards from the last selected element.
 
     $('li').eq(0).text()
     => Apple
@@ -400,7 +400,7 @@ Sometimes you need to work with the top-level root element. To query it, you can
 Get the raw DOM of the parsed HTML document.
 
     $.dom()
-    => [{ 
+    => [{
         type: 'tag',
         name: 'ul',
         attribs: { id: 'fruits' },
@@ -414,7 +414,7 @@ Get the raw DOM of the parsed HTML document.
            [Object] ],
         parent: null,
         prev: null,
-        next: null 
+        next: null
        }]
 
 #### $.isArray( array )

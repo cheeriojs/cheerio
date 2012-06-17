@@ -84,39 +84,39 @@ describe '$(...)', ->
 
   describe '.first', ->
     it '() : should return the first item', ->
-      src = $("<span>foo</span><span>bar</span><span>baz</span>")
+      src = $('<span>foo</span><span>bar</span><span>baz</span>')
       elem = src.first()
 
       expect(elem.length).to.equal 1
       expect(elem.html()).to.equal 'foo'
 
     it '() : should return an empty object for an empty object', ->
-      src = $();
-      first = src.first();
+      src = $()
+      first = src.first()
 
       expect(first.length).to.equal 0
-      expect(first.html()).to.be(null)
+      expect(first.html()).to.be null
 
   describe '.last', ->
     it '() : should return the last element', ->
-      src = $("<span>foo</span><span>bar</span><span>baz</span>");
-      elem = src.last();
+      src = $('<span>foo</span><span>bar</span><span>baz</span>')
+      elem = src.last()
 
       expect(elem.length).to.equal 1
       expect(elem.html()).to.equal 'baz'
 
     it '() : should return an empty object for an empty object', ->
-      src = $();
-      last = src.last();
+      src = $()
+      last = src.last()
 
       expect(last.length).to.equal 0
-      expect(last.html()).to.be(null)
+      expect(last.html()).to.be null
 
   describe '.first & .last', ->
     it '() : should return same object if only one object', ->
-      src = $("<span>bar</span>");
-      first = src.first();
-      last = src.last();
+      src = $('<span>bar</span>')
+      first = src.first()
+      last = src.last()
 
       expect(first.html()).to.equal last.html()
       expect(first.length).to.equal 1

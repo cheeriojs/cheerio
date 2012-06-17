@@ -3,7 +3,7 @@
 
 * Fixed minor package regression (closes #60)
 
-0.8.2 / 2012-06-11 
+0.8.2 / 2012-06-11
 ==================
 
 * Now fails gracefully in cases that involve special chars, which is inline with jQuery (closes #59)
@@ -21,7 +21,7 @@
 
 * Updated CSS parser to use FB55/CSSselect. Cheerio now supports most CSS3 psuedo selectors thanks to @FB55.
 * ignoreWhitespace now on by default again. See #55 for context.
-* Changed $(":root") to $.root(), cleaned up $.clone()
+* Changed $(':root') to $.root(), cleaned up $.clone()
 * Support for .eq(i) thanks to @alexbardas
 * Removed support for node 0.4.x
 * Fixed memory leak where package.json was continually loaded
@@ -58,7 +58,7 @@ Many thanks to the contributors that made this release happen: @ironchefpython a
 
 * *Important:* `$(...).html()` now returns inner HTML, which is in line with the jQuery spec
 * `$.html()` returns the full HTML string. `$.html([cheerioObject])` will return the outer(selected element's tag) and inner HTML of that object
-* Fixed bug that prevented HTML strings with depth (eg. `append("<ul><li><li></ul>")`) from getting `parent`, `next`, `prev` attributes.
+* Fixed bug that prevented HTML strings with depth (eg. `append('<ul><li><li></ul>')`) from getting `parent`, `next`, `prev` attributes.
 * Halted [htmlparser2](https://github.com/FB55/node-htmlparser) at v2.2.2 until single attributes bug gets fixed.
 
 0.5.1 / 2012-02-05
@@ -118,7 +118,7 @@ Many thanks to the contributors that made this release happen: @ironchefpython a
 
 * Now using htmlparser2 for parsing (2x speed increase, cleaner, actively developed)
 * Added benchmark directory for future speed tests
-* $("...").dom() was funky, so it was removed in favor of $("...").get(). $.dom() still works the same.
+* $('...').dom() was funky, so it was removed in favor of $('...').get(). $.dom() still works the same.
 * $.root now correctly static across all instances of $
 * Added a screencast
 
