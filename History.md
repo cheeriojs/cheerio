@@ -3,7 +3,7 @@
 
 * Fixed minor package regression (closes #60)
 
-0.8.2 / 2012-06-11 
+0.8.2 / 2012-06-11
 ==================
 
 * Now fails gracefully in cases that involve special chars, which is inline with jQuery (closes #59)

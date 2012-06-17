@@ -234,7 +234,7 @@ Will select the last element of a cheerio object
     => Pear
 
 #### .eq( i )
-Reduce the set of matched elements to the one at the specified index. Use `.eq(-i)` to count backwards from the last selected element. 
+Reduce the set of matched elements to the one at the specified index. Use `.eq(-i)` to count backwards from the last selected element.
 
     $('li').eq(0).text()
     => Apple
@@ -400,7 +400,7 @@ Sometimes you need to work with the top-level root element. To query it, you can
 Get the raw DOM of the parsed HTML document.
 
     $.dom()
-    => [{ 
+    => [{
         type: 'tag',
         name: 'ul',
         attribs: { id: 'fruits' },
@@ -414,7 +414,7 @@ Get the raw DOM of the parsed HTML document.
            [Object] ],
         parent: null,
         prev: null,
-        next: null 
+        next: null
        }]
 
 #### $.isArray( array )
