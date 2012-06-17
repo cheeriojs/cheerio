@@ -95,7 +95,7 @@ describe '$(...)', ->
       first = src.first()
 
       expect(first.length).to.equal 0
-      expect(first.html()).to.be(null)
+      expect(first.html()).to.be null
 
   describe '.last', ->
     it '() : should return the last element', ->
@@ -110,7 +110,7 @@ describe '$(...)', ->
       last = src.last()
 
       expect(last.length).to.equal 0
-      expect(last.html()).to.be(null)
+      expect(last.html()).to.be null
 
   describe '.first & .last', ->
     it '() : should return same object if only one object', ->

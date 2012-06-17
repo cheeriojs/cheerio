@@ -151,9 +151,9 @@ describe 'parse', ->
       tag = create(basic)[0]
 
       # Should exist but be null
-      expect(tag.parent).to.be(null)
-      expect(tag.next).to.be(null)
-      expect(tag.prev).to.be(null)
+      expect(tag.parent).to.be null
+      expect(tag.next).to.be null
+      expect(tag.prev).to.be null
 
       # Should exist but not empty
       expect(tag.children).to.be.empty
@@ -163,9 +163,9 @@ describe 'parse', ->
       script = create(scriptEmpty)[0]
 
       # Should exist but be null
-      expect(script.parent).to.be(null)
-      expect(script.next).to.be(null)
-      expect(script.prev).to.be(null)
+      expect(script.parent).to.be null
+      expect(script.next).to.be null
+      expect(script.prev).to.be null
 
       # Should exist but not empty
       expect(script.children).to.be.empty
@@ -175,9 +175,9 @@ describe 'parse', ->
       style = create(styleEmpty)[0]
 
       # Should exist but be null
-      expect(style.parent).to.be(null)
-      expect(style.next).to.be(null)
-      expect(style.prev).to.be(null)
+      expect(style.parent).to.be null
+      expect(style.next).to.be null
+      expect(style.prev).to.be null
 
       # Should exist but not empty
       expect(style.children).to.be.empty
@@ -189,8 +189,8 @@ describe 'parse', ->
       p   = dom[1]
 
       # No parents
-      expect(h2.parent).to.be(null)
-      expect(p.parent).to.be(null)
+      expect(h2.parent).to.be null
+      expect(p.parent).to.be null
 
       # Neighbors
       expect(h2.next.name).to.equal 'p'
@@ -218,9 +218,9 @@ describe 'parse', ->
       elem = create(comment)[0]
 
       # Should exist but be null
-      expect(elem.parent).to.be(null)
-      expect(elem.next).to.be(null)
-      expect(elem.prev).to.be(null)
+      expect(elem.parent).to.be null
+      expect(elem.next).to.be null
+      expect(elem.prev).to.be null
 
       # Should not exist at all
       expect(elem.children).to.not.be.ok
@@ -230,9 +230,9 @@ describe 'parse', ->
       text = create(text)[0]
 
       # Should exist but be null
-      expect(text.parent).to.be(null)
-      expect(text.next).to.be(null)
-      expect(text.prev).to.be(null)
+      expect(text.parent).to.be null
+      expect(text.next).to.be null
+      expect(text.prev).to.be null
 
       # Should not exist at all
       expect(text.children).to.not.be.ok
@@ -242,9 +242,9 @@ describe 'parse', ->
       elem = create(directive)[0]
 
       # Should exist but be null
-      expect(elem.parent).to.be(null)
-      expect(elem.next).to.be(null)
-      expect(elem.prev).to.be(null)
+      expect(elem.parent).to.be null
+      expect(elem.next).to.be null
+      expect(elem.prev).to.be null
 
       # Should not exist at all
       expect(elem.children).to.not.be.ok
@@ -255,9 +255,9 @@ describe 'parse', ->
       expect(root.name).to.equal 'root'
 
       # Should exist but be null
-      expect(root.next).to.be(null)
-      expect(root.prev).to.be(null)
-      expect(root.parent).to.be(null)
+      expect(root.next).to.be null
+      expect(root.prev).to.be null
+      expect(root.parent).to.be null
 
       child = root.children[0]
       expect(child.parent).to.equal root

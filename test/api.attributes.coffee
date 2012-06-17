@@ -22,21 +22,21 @@ describe '$(...)', ->
 
     it '() : should get all the attributes', ->
       attrs = $('ul', fruits).attr()
-      expect(attrs.id).to.equal('fruits')
+      expect(attrs.id).to.equal 'fruits'
 
     it '(invalid key) : invalid attr should get undefined', ->
       attr = $('.apple', fruits).attr('lol')
-      expect(attr).to.be(undefined)
+      expect(attr).to.be undefined
 
     it '(valid key) : valid attr should get value', ->
       cls = $('.apple', fruits).attr('class')
-      expect(cls).to.equal('apple')
+      expect(cls).to.equal 'apple'
 
     it '(key, value) : should set attr', ->
       $fruits = $(fruits)
       $pear = $('.pear', $fruits).attr('id', 'pear')
-      expect($('#pear', $fruits)).to.have.length(1)
-      expect($pear.cheerio).to.not.be(undefined)
+      expect($('#pear', $fruits)).to.have.length 1
+      expect($pear.cheerio).to.not.be undefined
 
     it '(map) : object map should set multiple attributes', ->
       $fruits = $(fruits)
@@ -46,18 +46,18 @@ describe '$(...)', ->
         'data-url' : 'http://apple.com'
 
       attrs = $('.apple', $fruits).attr()
-      expect(attrs.id).to.equal('apple')
-      expect(attrs.style).to.equal('color:red;')
-      expect(attrs['data-url']).to.equal('http://apple.com')
+      expect(attrs.id).to.equal 'apple'
+      expect(attrs.style).to.equal 'color:red;'
+      expect(attrs['data-url']).to.equal 'http://apple.com'
 
   describe '.removeAttr', ->
 
     it '(key) : should remove a single attr', ->
       $fruits = $(fruits)
 
-      expect($('ul', $fruits).attr('id')).to.not.be(undefined)
+      expect($('ul', $fruits).attr('id')).to.not.be undefined
       $('ul', $fruits).removeAttr('id')
-      expect($('ul', $fruits).attr('id')).to.be(undefined)
+      expect($('ul', $fruits).attr('id')).to.be undefined
 
     it 'should return cheerio object', ->
       obj = $('ul', fruits).removeAttr('id').cheerio
@@ -112,7 +112,7 @@ describe '$(...)', ->
       $fruits = $(fruits)
       $('.pear', $fruits).addClass 'fruit'
       $('.pear', $fruits).removeClass()
-      expect($('.pear', $fruits).attr('class')).to.be(undefined)
+      expect($('.pear', $fruits).attr('class')).to.be undefined
 
     it '(invalid class) : should not remove anything', ->
       $fruits = $(fruits)

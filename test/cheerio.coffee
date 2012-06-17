@@ -59,7 +59,7 @@ describe 'cheerio', ->
 
     $apple = $apple[0]
     expect($apple.parent.name).to.equal 'ul'
-    expect($apple.prev).to.be(null)
+    expect($apple.prev).to.be null
     expect($apple.next.attribs.class).to.equal 'orange'
 
     expect($apple.children).to.have.length 1
@@ -132,7 +132,7 @@ describe 'cheerio', ->
     expect($('#fruits .pear', $fruitsWithMorePear)).to.have.length 2
     $elem = $('#fruits > .pear', $fruitsWithMorePear)
     expect($elem).to.have.length 1
-    expect($elem.attr('class')).to.equal('pear')
+    expect($elem.attr('class')).to.equal 'pear'
 
   it 'should be able to select immediate children: $(".apple + .pear")', ->
     $elem = $('.apple + li', fruits)
@@ -141,13 +141,13 @@ describe 'cheerio', ->
     expect($elem).to.have.length 0
     $elem = $('.apple + .orange', fruits)
     expect($elem).to.have.length 1
-    expect($elem.attr('class')).to.equal('orange')
+    expect($elem.attr('class')).to.equal 'orange'
 
   it 'should be able to select immediate children: $(".apple ~ .pear")', ->
     $elem = $('.apple ~ li', fruits)
     expect($elem).to.have.length 2
     $elem = $('.apple ~ .pear', fruits)
-    expect($elem.attr('class')).to.equal('pear')
+    expect($elem.attr('class')).to.equal 'pear'
 
   it 'should handle wildcards on attributes: $("li[class*=r]")', ->
     $elem = $('li[class*=r]', fruits)
@@ -168,7 +168,7 @@ describe 'cheerio', ->
 
   it 'should gracefully degrade on complex, unmatched queries', ->
     $elem  = $('Eastern States Cup #8-fin&nbsp;<br>Downhill&nbsp;')
-    expect($elem).to.be.an(Array)
-    expect($elem).to.have.length(0) # []
+    expect($elem).to.be.an Array
+    expect($elem).to.have.length 0 # []
 
 

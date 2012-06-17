@@ -21,7 +21,7 @@ describe '$(...)', ->
   describe '.append', ->
 
     it '() : should do nothing', ->
-      expect($('#fruits', fruits).append()[0].name).to.equal('ul')
+      expect($('#fruits', fruits).append()[0].name).to.equal 'ul'
 
     it '(html) : should add element as last child', ->
       $fruits = $(fruits)
@@ -58,7 +58,7 @@ describe '$(...)', ->
   describe '.prepend', ->
 
     it '() : should do nothing', ->
-      expect($('#fruits', fruits).prepend()[0].name).to.equal('ul')
+      expect($('#fruits', fruits).prepend()[0].name).to.equal 'ul'
 
     it '(html) : should add element as first child', ->
       $fruits = $(fruits)
@@ -248,8 +248,8 @@ describe '$(...)', ->
 
     it 'should decode special chars', ->
       text = $('<p>M&amp;M</p>').text()
-      expect(text).to.equal('M&M')
+      expect(text).to.equal 'M&M'
 
     it 'should work with special chars added as strings', ->
       text = $('<p>M&M</p>').text()
-      expect(text).to.equal('M&M')
+      expect(text).to.equal 'M&M'
