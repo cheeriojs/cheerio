@@ -59,7 +59,7 @@ describe('$', function() {
 
     it('() : should return a cheerio-wrapped root object', function() {
       var $html = $.load('<div><span>foo</span><span>bar</span></div>');
-      $html.root().append('<div id = "test"></div>');
+      $html.root().append('<div id="test"></div>');
       expect($html.html()).to.equal('<div><span>foo</span><span>bar</span></div><div id="test"></div>');
     });
 
@@ -67,7 +67,7 @@ describe('$', function() {
 
   describe('.load', function() {
     it('(html) : should retain original root after creating a new node', function() {
-      var $html = $.load('<body><ul id = "fruits"></ul></body>');
+      var $html = $.load('<body><ul id="fruits"></ul></body>');
       expect($html('body')).to.have.length(1);
       var script = $html('<script>');
       expect($html('body')).to.have.length(1);

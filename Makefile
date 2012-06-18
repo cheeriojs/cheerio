@@ -1,5 +1,5 @@
 test:
-	@./node_modules/mocha/bin/mocha --compilers coffee:coffee-script --reporter dot
+	@./node_modules/mocha/bin/mocha --reporter dot
 
 subl:
 	@subl lib/ test/ package.json index.js
