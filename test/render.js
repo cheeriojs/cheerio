@@ -42,7 +42,7 @@ describe('render', function() {
       done();
     });
 
-    it('should not shorten the \'name\' attribute when it contains the value \'name\'', function(done) {
+    it('should not shorten the "name" attribute when it contains the value "name"', function(done) {
       var str = '<input name="name"/>';
       expect(html(str)).to.equal('<input name="name"/>');
       done();
