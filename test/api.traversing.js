@@ -133,7 +133,7 @@ describe('$(...)', function() {
 
   describe('.first & .last', function() {
 
-    it('() : should return same object if only one object', function() {
+    it('() : should return equivalent collections if only one element', function() {
       var $src = $('<span>bar</span>');
       var $first = $src.first();
       var $last = $src.last();
@@ -141,6 +141,7 @@ describe('$(...)', function() {
       expect($first.html()).to.equal('bar');
       expect($last.length).to.equal(1);
       expect($last.html()).to.equal('bar');
+      expect($first[0]).to.equal($last[0]);
     });
 
   });
