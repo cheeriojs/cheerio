@@ -31,7 +31,7 @@ __&#991; Blazingly fast:__
 Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient. Preliminary end-to-end benchmarks suggest that cheerio is about __8x__ faster than JSDOM.
 
 __&#10049; Insanely flexible:__
-Cheerio wraps around @tautologistics forgiving htmlparser. Cheerio can parse nearly any HTML or XML document.
+Cheerio wraps around @FB55's forgiving htmlparser. Cheerio can parse nearly any HTML or XML document.
 
 ## What about JSDOM?
 I wrote cheerio because I found myself increasingly frustrated with JSDOM. For me, there were three main sticking points that I kept running into again and again:
@@ -99,7 +99,7 @@ Cheerio's selector implementation is nearly identical to jQuery's, so the API is
 #### $( selector, [context], [root] )
 `selector` searches within the `context` scope which searches within the `root` scope. `selector` and `context` can be an string expression, DOM Element, array of DOM elements, or cheerio object. `root` is typically the HTML document string.
 
-This selector method is the starting point for traversing and manipulating the document. Like jQuery, it's the primary method for selecting elements in the document, but unlike jQuery it's built on top of the soup-select library, not the Sizzle engine.
+This selector method is the starting point for traversing and manipulating the document. Like jQuery, it's the primary method for selecting elements in the document, but unlike jQuery it's built on top of the CSSSelect library, which implements most of the Sizzle selectors.
 
     $('.apple', '#fruits').text()
     => Apple
@@ -109,9 +109,6 @@ This selector method is the starting point for traversing and manipulating the d
 
     $('li[class=orange]').html()
     => <li class = "orange">Orange</li>
-
-See [cheerio-soupselect](https://github.com/MatthewMueller/cheerio-soupselect) for a list of all available selectors,
-as well as more detailed documentation regarding what is supported and what isn't.
 
 ### Attributes
 Methods for getting and modifying attributes.
@@ -449,21 +446,39 @@ To run the test suite, download the repository, then within the cheerio director
     make test
 
 This will download the development packages and run the test suite.
+
+## Contributors
+
+These are some of the contributors that have made cheerio possible:
+
+    project: cheerio
+    commits: 292
+    active : 78 days
+    files  : 26
+    authors: 
+      223  Matt Mueller            76.4%
+       33  Matthew Mueller         11.3%
+       15  Siddharth Mahendraker   5.1%
+       10  David Chambers          3.4%
+        4  ironchefpython          1.4%
+        3  Jos Shepherd            1.0%
+        2  alexbardas              0.7%
+        1  mattym                  0.3%
+        1  Chris O'Hara            0.3%
+
 ## Special Thanks
 
 This library stands on the shoulders of some incredible developers. A special thanks to:
 
-__&#8226; @tautologistics' node-htmlparser:__
-This HTML parser can parse anything and produces really consistent results, even when the HTML string has errors. This man is a genius.
+__&#8226; @FB55 for node-htmlparser2 & CSSSelect:__
+Felix has a knack for writing speedy parsing engines. He completely re-wrote both @tautologistic's `node-htmlparser` and @harry's `node-soupselect` from the ground up, making both of them much faster and more flexible. Cheerio would not be possible without his foundational work
 
-__&#8226; @harryf's node-soupselect:__
-What an incredibly fast and precise CSS selector engine. I never really liked the feature-rich selector engines &#8212; I think this engine strikes a great balance.
-
-__&#8226; @jQuery team:__
+__&#8226; @jQuery team for jQuery:__
 The core API is the best of it's class and despite dealing with all the browser inconsistencies the code base is extremely clean and easy to follow. Much of cheerio's implementation and documentation is from jQuery. Thanks guys.
 
 __&#8226; @visionmedia:__
 The style, the structure, the open-source"-ness" of this library comes from studying TJ's style and using many of his libraries. This dude consistently pumps out high-quality libraries and has always been more than willing to help or answer questions. You rock TJ.
+
 ## License
 
 (The MIT License)
