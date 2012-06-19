@@ -125,9 +125,9 @@ describe('cheerio', function() {
 
   it('should select first element $(:first)');
     // var $elem = $(':first', fruits);
-    // var h2 = $('<h2>fruits</h2>');
+    // var $h2 = $('<h2>fruits</h2>');
     // console.log($elem.before('hi'));
-    // console.log($elem.before(h2));
+    // console.log($elem.before($h2));
 
   it('should be able to select immediate children: $("#fruits > .pear")', function() {
     var $fruitsWithMorePear = $('.pear', fruits).append('<li class="pear">Another Pear!</li>');
