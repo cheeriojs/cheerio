@@ -1,26 +1,10 @@
-var expect = require('expect.js');
-
-var cheerio = require('../');
-var parse = cheerio.parse;
-var render = cheerio.render;
-
-
-// TODO: Write tests for render
-
-// Tags
-
-// Text
-
-// Directives
-
-// Style
-
-// Script
-
-// Comments
+var expect = require('expect.js'),
+    cheerio = require('../'),
+    parse = cheerio.parse,
+    render = cheerio.render;
 
 var html = function(str, options) {
-  if (options == null) options = {};
+  if (options === null) options = {};
   var dom = parse(str, options);
   return render(dom);
 };

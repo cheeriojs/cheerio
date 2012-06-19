@@ -1,6 +1,5 @@
-var expect = require('expect.js');
-
-var $ = require('../');
+var expect = require('expect.js'),
+    $ = require('../');
 
 
 describe('$', function() {

@@ -1,7 +1,6 @@
-var expect = require('expect.js');
-
-var $ = require('../');
-var fruits = require('./fixtures').fruits;
+var expect = require('expect.js'),
+    $ = require('../'),
+    fruits = require('./fixtures').fruits;
 
 
 describe('$(...)', function() {
@@ -39,7 +38,7 @@ describe('$(...)', function() {
     });
 
     it('(selector) : should return children matching selector', function() {
-      expect($('ul', fruits).children('.orange').hasClass('orange')).to.be.ok;
+      expect($('ul', fruits).children('.orange').hasClass('orange')).to.be.ok();
     });
 
     it('(invalid selector) : should return empty', function() {
@@ -53,7 +52,7 @@ describe('$(...)', function() {
   describe('.next', function() {
 
     it('() : should return next element', function() {
-      expect($('.orange', fruits).next().hasClass('pear')).to.be.ok;
+      expect($('.orange', fruits).next().hasClass('pear')).to.be.ok();
     });
 
     it('(no next) : should return null (?)');
@@ -63,7 +62,7 @@ describe('$(...)', function() {
   describe('.prev', function() {
 
     it('() : should return previous element', function() {
-      expect($('.orange', fruits).prev().hasClass('apple')).to.be.ok;
+      expect($('.orange', fruits).prev().hasClass('apple')).to.be.ok();
     });
 
     it('(no prev) : should return null (?)');

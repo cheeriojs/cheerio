@@ -1,6 +1,5 @@
-var expect = require('expect.js');
-
-var parse = require('../').parse;
+var expect = require('expect.js'),
+    parse = require('../').parse;
 
 
 // Tags
@@ -46,14 +45,15 @@ describe('parse', function() {
       var tag = parse['eval'](basic)[0];
       expect(tag.type).to.equal('tag');
       expect(tag.name).to.equal('html');
-      expect(tag.children).to.be.empty;
+      expect(tag.children).to.be.empty();
     });
 
     it('should handle sibling tags: ' + siblings, function() {
-      var dom = parse['eval'](siblings);
+      var dom = parse['eval'](siblings),
+          h2 = dom[0],
+          p = dom[1];
+
       expect(dom).to.have.length(2);
-      var h2 = dom[0];
-      var p = dom[1];
       expect(h2.name).to.equal('h2');
       expect(p.name).to.equal('p');
     });
@@ -62,21 +62,21 @@ describe('parse', function() {
       var tag = parse['eval'](single)[0];
       expect(tag.type).to.equal('tag');
       expect(tag.name).to.equal('br');
-      expect(tag.children).to.be.empty;
+      expect(tag.children).to.be.empty();
     });
 
     it('should handle malformatted single tags: ' + singleWrong, function() {
       var tag = parse['eval'](singleWrong)[0];
       expect(tag.type).to.equal('tag');
       expect(tag.name).to.equal('br');
-      expect(tag.children).to.be.empty;
+      expect(tag.children).to.be.empty();
     });
 
     it('should handle tags with children: ' + children, function() {
       var tag = parse['eval'](children)[0];
       expect(tag.type).to.equal('tag');
       expect(tag.name).to.equal('html');
-      expect(tag.children).to.be.ok;
+      expect(tag.children).to.be.ok();
       expect(tag.children).to.have.length(1);
     });
 
@@ -88,14 +88,14 @@ describe('parse', function() {
 
     it('should handle tags with attributes: ' + attributes, function() {
       var attrs = parse['eval'](attributes)[0].attribs;
-      expect(attrs).to.be.ok;
+      expect(attrs).to.be.ok();
       expect(attrs.src).to.equal('hello.png');
       expect(attrs.alt).to.equal('man waving');
     });
 
     it('should handle value-less attributes: ' + noValueAttribute, function() {
       var attrs = parse['eval'](noValueAttribute)[0].attribs;
-      expect(attrs).to.be.ok;
+      expect(attrs).to.be.ok();
       expect(attrs.disabled).to.equal('');
     });
 
@@ -162,8 +162,8 @@ describe('parse', function() {
       expect(tag.prev).to.be(null);
 
       // Should exist but be empty
-      expect(tag.children).to.be.empty;
-      expect(tag.attribs).to.be.ok;
+      expect(tag.children).to.be.empty();
+      expect(tag.attribs).to.be.ok();
     });
 
     it('should should fill in empty attributes for scripts: ' + scriptEmpty, function() {
@@ -175,8 +175,8 @@ describe('parse', function() {
       expect(script.prev).to.be(null);
 
       // Should exist but be empty
-      expect(script.children).to.be.empty;
-      expect(script.attribs).to.be.ok;
+      expect(script.children).to.be.empty();
+      expect(script.attribs).to.be.ok();
     });
 
     it('should should fill in empty attributes for styles: ' + styleEmpty, function() {
@@ -188,14 +188,14 @@ describe('parse', function() {
       expect(style.prev).to.be(null);
 
       // Should exist but be empty
-      expect(style.children).to.be.empty;
-      expect(style.attribs).to.be.ok;
+      expect(style.children).to.be.empty();
+      expect(style.attribs).to.be.ok();
     });
 
     it('should have next and prev siblings: ' + siblings, function() {
-      var dom = create(siblings);
-      var h2 = dom[0];
-      var p = dom[1];
+      var dom = create(siblings),
+          h2 = dom[0],
+          p = dom[1];
 
       // No parents
       expect(h2.parent).to.be(null);
@@ -206,21 +206,21 @@ describe('parse', function() {
       expect(p.prev.name).to.equal('h2');
 
       // Should exist but be empty
-      expect(h2.children).to.be.empty;
-      expect(h2.attribs).to.be.ok;
-      expect(p.children).to.be.empty;
-      expect(p.attribs).to.be.ok;
+      expect(h2.children).to.be.empty();
+      expect(h2.attribs).to.be.ok();
+      expect(p.children).to.be.empty();
+      expect(p.attribs).to.be.ok();
     });
 
     it('should connect child with parent: ' + children, function() {
-      var html = create(children)[0];
+      var html = create(children)[0],
+          br = html.children[0];
 
       // html has 1 child and it's <br>
       expect(html.children).to.have.length(1);
       expect(html.children[0].name).to.equal('br');
 
       // br's parent is html
-      var br = html.children[0];
       expect(br.parent.name).to.equal('html');
     });
 
@@ -233,8 +233,8 @@ describe('parse', function() {
       expect(elem.prev).to.be(null);
 
       // Should not exist at all
-      expect(elem.children).to.not.be.ok;
-      expect(elem.attribs).to.not.be.ok;
+      expect(elem.children).to.not.be.ok();
+      expect(elem.attribs).to.not.be.ok();
     });
 
     it('should fill in some empty attributes for text: ' + text, function() {
@@ -246,8 +246,8 @@ describe('parse', function() {
       expect(text.prev).to.be(null);
 
       // Should not exist at all
-      expect(text.children).to.not.be.ok;
-      expect(text.attribs).to.not.be.ok;
+      expect(text.children).to.not.be.ok();
+      expect(text.attribs).to.not.be.ok();
     });
 
     it('should fill in some empty attributes for directives: ' + directive, function() {
@@ -259,15 +259,16 @@ describe('parse', function() {
       expect(elem.prev).to.be(null);
 
       // Should not exist at all
-      expect(elem.children).to.not.be.ok;
-      expect(elem.attribs).to.not.be.ok;
+      expect(elem.children).to.not.be.ok();
+      expect(elem.attribs).to.not.be.ok();
     });
 
   });
 
   describe('.parse', function() {
 
-    var rootTest = function(root) {
+    // root test utility
+    function rootTest(root) {
       expect(root.name).to.equal('root');
 
       // Should exist but be null
@@ -277,7 +278,7 @@ describe('parse', function() {
 
       var child = root.children[0];
       expect(child.parent).to.equal(root);
-    };
+    }
 
     it('should add root to: ' + basic, function() {
       var root = parse(basic);
