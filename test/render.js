@@ -4,7 +4,7 @@ var expect = require('expect.js'),
     render = cheerio.render;
 
 var html = function(str, options) {
-  if (options === null) options = {};
+  options = options || {};
   var dom = parse(str, options);
   return render(dom);
 };
