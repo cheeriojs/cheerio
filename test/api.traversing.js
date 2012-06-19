@@ -98,17 +98,17 @@ describe('$(...)', function() {
   describe('.first', function() {
 
     it('() : should return the first item', function() {
-      var src = $('<span>foo</span><span>bar</span><span>baz</span>');
-      var elem = src.first();
-      expect(elem.length).to.equal(1);
-      expect(elem.html()).to.equal('foo');
+      var $src = $('<span>foo</span><span>bar</span><span>baz</span>');
+      var $elem = $src.first();
+      expect($elem.length).to.equal(1);
+      expect($elem.html()).to.equal('foo');
     });
 
     it('() : should return an empty object for an empty object', function() {
-      var src = $();
-      var first = src.first();
-      expect(first.length).to.equal(0);
-      expect(first.html()).to.be(null);
+      var $src = $();
+      var $first = $src.first();
+      expect($first.length).to.equal(0);
+      expect($first.html()).to.be(null);
     });
 
   });
@@ -116,17 +116,17 @@ describe('$(...)', function() {
   describe('.last', function() {
 
     it('() : should return the last element', function() {
-      var src = $('<span>foo</span><span>bar</span><span>baz</span>');
-      var elem = src.last();
-      expect(elem.length).to.equal(1);
-      expect(elem.html()).to.equal('baz');
+      var $src = $('<span>foo</span><span>bar</span><span>baz</span>');
+      var $elem = $src.last();
+      expect($elem.length).to.equal(1);
+      expect($elem.html()).to.equal('baz');
     });
 
     it('() : should return an empty object for an empty object', function() {
-      var src = $();
-      var last = src.last();
-      expect(last.length).to.equal(0);
-      expect(last.html()).to.be(null);
+      var $src = $();
+      var $last = $src.last();
+      expect($last.length).to.equal(0);
+      expect($last.html()).to.be(null);
     });
 
   });
@@ -134,13 +134,13 @@ describe('$(...)', function() {
   describe('.first & .last', function() {
 
     it('() : should return same object if only one object', function() {
-      var src = $('<span>bar</span>');
-      var first = src.first();
-      var last = src.last();
-      expect(first.length).to.equal(1);
-      expect(first.html()).to.equal('bar');
-      expect(last.length).to.equal(1);
-      expect(last.html()).to.equal('bar');
+      var $src = $('<span>bar</span>');
+      var $first = $src.first();
+      var $last = $src.last();
+      expect($first.length).to.equal(1);
+      expect($first.html()).to.equal('bar');
+      expect($last.length).to.equal(1);
+      expect($last.html()).to.equal('bar');
     });
 
   });
