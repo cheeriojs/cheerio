@@ -56,7 +56,7 @@ describe('$(...)', function() {
 
     it('should return cheerio object', function() {
       var obj = $('ul', fruits).removeAttr('id').cheerio;
-      expect(obj).to.be.ok;
+      expect(obj).to.be.ok();
     });
 
   });
@@ -66,12 +66,12 @@ describe('$(...)', function() {
     it('(valid class) : should return true', function() {
       var $fruits = $(fruits);
       var cls = $('.apple', $fruits).hasClass('apple');
-      expect(cls).to.be.ok;
+      expect(cls).to.be.ok();
     });
 
     it('(invalid class) : should return false', function() {
       var cls = $('#fruits', fruits).hasClass('fruits');
-      expect(cls).to.not.be.ok;
+      expect(cls).to.not.be.ok();
     });
 
   });
@@ -82,31 +82,31 @@ describe('$(...)', function() {
       var $fruits = $(fruits);
       $('#fruits', $fruits).addClass('fruits');
       var cls = $('#fruits', $fruits).hasClass('fruits');
-      expect(cls).to.be.ok;
+      expect(cls).to.be.ok();
     });
 
     it('(single class) : should add the class to the element', function() {
       var $fruits = $(fruits);
       $('.apple', $fruits).addClass('fruit');
       var cls = $('.apple', $fruits).hasClass('fruit');
-      expect(cls).to.be.ok;
+      expect(cls).to.be.ok();
     });
 
     it('(class): adds classes to many selected items', function() {
       var $fruits = $(fruits);
       $('li', $fruits).addClass('fruit');
-      expect($('.apple', $fruits).hasClass('fruit')).to.be.ok;
-      expect($('.orange', $fruits).hasClass('fruit')).to.be.ok;
-      expect($('.pear', $fruits).hasClass('fruit')).to.be.ok;
+      expect($('.apple', $fruits).hasClass('fruit')).to.be.ok();
+      expect($('.orange', $fruits).hasClass('fruit')).to.be.ok();
+      expect($('.pear', $fruits).hasClass('fruit')).to.be.ok();
     });
 
     it('(class class class) : should add multiple classes to the element', function() {
       var $fruits = $(fruits);
       $('.apple', $fruits).addClass('fruit red tasty');
-      expect($('.apple', $fruits).hasClass('apple')).to.be.ok;
-      expect($('.apple', $fruits).hasClass('fruit')).to.be.ok;
-      expect($('.apple', $fruits).hasClass('red')).to.be.ok;
-      expect($('.apple', $fruits).hasClass('tasty')).to.be.ok;
+      expect($('.apple', $fruits).hasClass('apple')).to.be.ok();
+      expect($('.apple', $fruits).hasClass('fruit')).to.be.ok();
+      expect($('.apple', $fruits).hasClass('red')).to.be.ok();
+      expect($('.apple', $fruits).hasClass('tasty')).to.be.ok();
     });
 
     it('(fn) : should add classes returned from the function');
@@ -125,32 +125,32 @@ describe('$(...)', function() {
     it('(invalid class) : should not remove anything', function() {
       var $fruits = $(fruits);
       $('.pear', $fruits).removeClass('fruit');
-      expect($('.pear', $fruits).hasClass('pear')).to.be.ok;
+      expect($('.pear', $fruits).hasClass('pear')).to.be.ok();
     });
 
     it('(single class) : should remove a single class from the element', function() {
       var $fruits = $(fruits);
       $('.pear', $fruits).addClass('fruit');
-      expect($('.pear', $fruits).hasClass('fruit')).to.be.ok;
+      expect($('.pear', $fruits).hasClass('fruit')).to.be.ok();
       $('.pear', $fruits).removeClass('fruit');
-      expect($('.pear', $fruits).hasClass('fruit')).to.not.be.ok;
-      expect($('.pear', $fruits).hasClass('pear')).to.be.ok;
+      expect($('.pear', $fruits).hasClass('fruit')).to.not.be.ok();
+      expect($('.pear', $fruits).hasClass('pear')).to.be.ok();
     });
 
     it('(class class class) : should remove multiple classes from the element', function() {
       var $fruits = $(fruits);
 
       $('.apple', $fruits).addClass('fruit red tasty');
-      expect($('.apple', $fruits).hasClass('apple')).to.be.ok;
-      expect($('.apple', $fruits).hasClass('fruit')).to.be.ok;
-      expect($('.apple', $fruits).hasClass('red')).to.be.ok;
-      expect($('.apple', $fruits).hasClass('tasty')).to.be.ok;
+      expect($('.apple', $fruits).hasClass('apple')).to.be.ok();
+      expect($('.apple', $fruits).hasClass('fruit')).to.be.ok();
+      expect($('.apple', $fruits).hasClass('red')).to.be.ok();
+      expect($('.apple', $fruits).hasClass('tasty')).to.be.ok();
 
       $('.apple', $fruits).removeClass('apple red tasty');
-      expect($('.fruit', $fruits).hasClass('apple')).to.not.be.ok;
-      expect($('.fruit', $fruits).hasClass('red')).to.not.be.ok;
-      expect($('.fruit', $fruits).hasClass('tasty')).to.not.be.ok;
-      expect($('.fruit', $fruits).hasClass('fruit')).to.be.ok;
+      expect($('.fruit', $fruits).hasClass('apple')).to.not.be.ok();
+      expect($('.fruit', $fruits).hasClass('red')).to.not.be.ok();
+      expect($('.fruit', $fruits).hasClass('tasty')).to.not.be.ok();
+      expect($('.fruit', $fruits).hasClass('fruit')).to.be.ok();
     });
 
     it('(fn) : should remove classes returned from the function');
