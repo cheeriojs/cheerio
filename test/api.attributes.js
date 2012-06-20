@@ -74,6 +74,19 @@ describe('$(...)', function() {
       expect(cls).to.not.be.ok();
     });
 
+    it('should check multiple classes', function() {
+      var $fruits = $(fruits);
+
+      // Add a class
+      $('.apple', $fruits).addClass('red');
+      expect($('.apple', $fruits).hasClass('apple')).to.be.ok();
+      expect($('.apple', $fruits).hasClass('red')).to.be.ok();
+
+      // Remove one and test again
+      $('.apple', $fruits).removeClass('apple');
+      expect($('li', $fruits).eq(0).hasClass('apple')).to.not.be.ok();
+      expect($('li', $fruits).eq(0).hasClass('red')).to.be.ok();
+    });
   });
 
   describe('.addClass', function() {
