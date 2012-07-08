@@ -280,6 +280,12 @@ describe('$(...)', function() {
       expect($apple.text()).to.equal('blah <script>alert("XSS!")</script> blah');
     });
 
+    it('(str) should encode then decode unsafe characters', function() {
+      var $apple = $('.apple', fruits);
+      $apple.text('blah <script>alert("XSS!")</script> blah');
+      expect($apple.html()).to.not.contain('<script>alert("XSS!")</script>');
+    });
+
   });
 
 });
