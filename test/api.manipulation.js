@@ -235,6 +235,13 @@ describe('$(...)', function() {
       expect(html).to.equal('<li class="durian">Durian</li>');
     });
 
+    it('(elem) : should set the html for its children with element', function() {
+      var $fruits = $(fruits);
+      $('#fruits', $fruits).html($('<li class="durian">Durian</li>'));
+      var html = $('#fruits', $fruits).html();
+      expect(html).to.equal('<li class="durian">Durian</li>');
+    });
+
   });
 
   describe('.text', function() {
