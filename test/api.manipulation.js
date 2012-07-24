@@ -235,6 +235,13 @@ describe('$(...)', function() {
       expect(html).to.equal('<li class="durian">Durian</li>');
     });
 
+    it('(elem) : should set the html for its children with element', function() {
+      var $fruits = $(fruits);
+      $('#fruits', $fruits).html($('<li class="durian">Durian</li>'));
+      var html = $('#fruits', $fruits).html();
+      expect(html).to.equal('<li class="durian">Durian</li>');
+    });
+
   });
 
   describe('.text', function() {
@@ -278,6 +285,12 @@ describe('$(...)', function() {
       $apple.text('blah <script>alert("XSS!")</script> blah');
       expect($apple.get(0).children[0].data).to.equal('blah &lt;script&gt;alert&lpar;&quot;XSS&excl;&quot;&rpar;&lt;&sol;script&gt; blah');
       expect($apple.text()).to.equal('blah <script>alert("XSS!")</script> blah');
+    });
+
+    it('(str) should encode then decode unsafe characters', function() {
+      var $apple = $('.apple', fruits);
+      $apple.text('blah <script>alert("XSS!")</script> blah');
+      expect($apple.html()).to.not.contain('<script>alert("XSS!")</script>');
     });
 
   });
