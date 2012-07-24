@@ -1,3 +1,13 @@
+0.9.0 / 2012-07-24 
+==================
+
+* Added node 8.x support
+* Removed node 4.x support
+* Add html(dom) support (@wvl)
+* fixed xss vulnerabilities on .attr(), .text(), & .html() (@benatkin, @FB55)
+* Rewrote tests into javascript, removing coffeescript dependency (@davidchambers)
+* Tons of cleanup (@davidchambers)
+
 0.8.3 / 2012-06-12
 ==================
 
