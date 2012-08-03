@@ -2,8 +2,6 @@
 
 Fast, flexible, and lean implementation of core jQuery designed specifically for the server.
 
-> Note: 0.8.0 brings tons of features and improvements, but also deprecates a few existing features. Please refer to the [changelog](https://github.com/MatthewMueller/cheerio/blob/master/History.md) for details.
-
 ## Introduction
 Teach your server HTML.
 
