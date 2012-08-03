@@ -1,3 +1,9 @@
+
+0.9.1 / 2012-08-03
+==================
+
+* fixed bug causing options not to make it to the parser
+
 0.9.0 / 2012-07-24 
 ==================
 
