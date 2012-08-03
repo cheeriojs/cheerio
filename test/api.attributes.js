@@ -175,6 +175,11 @@ describe('$(...)', function() {
       expect($('.fruit', $fruits).hasClass('fruit')).to.be.ok();
     });
 
+    it('(class) : should remove all occurrences of a class name', function() {
+      var $div = $('<div class="x x y x z"></div>');
+      expect($div.removeClass('x').hasClass('x')).to.be(false);
+    });
+
     it('(fn) : should remove classes returned from the function');
 
   });
