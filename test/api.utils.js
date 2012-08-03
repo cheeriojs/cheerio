@@ -65,6 +65,23 @@ describe('$', function() {
       expect($html('body')).to.have.length(1);
     });
 
+    it('(html) : should handle lowercase tag options', function() {
+      var $html = $.load('<BODY><ul id="fruits"></ul></BODY>', { lowerCaseTags : true });
+      expect($html.html()).to.be('<body><ul id="fruits"></ul></body>');
+    });
+
+    it('(html) : should handle the ignore whitepace option', function() {
+      var $html = $.load('<body><a href="http://yahoo.com">Yahoo</a> <a href="http://google.com">Google</a></body>', { ignoreWhitespace : true });
+      expect($html.html()).to.be('<body><a href="http://yahoo.com">Yahoo</a><a href="http://google.com">Google</a></body>');
+    });
+
+    // TODO: 
+    // it('(html) : should handle xml tag option', function() {
+    //   var $html = $.load('<body><script>oh hai</script></body>', { xmlMode : true });
+    //   console.log($html('script')[0].type);
+    //   expect($html('script')[0].type).to.be('tag');
+    // });
+
   });
 
 });
