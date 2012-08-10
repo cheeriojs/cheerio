@@ -96,18 +96,15 @@ describe('$(...)', function() {
 
   describe('.map', function() {
     it('(fn) : should return an array of mapped items', function() {
-      var mapping = $('li', fruits).map(function(i, el) {
+      var classes = $('li', fruits).map(function(i, el) {
         expect(this).to.be(el);
         expect(el.name).to.be('li');
         expect(i).to.be.a('number');
 
-        return el.attribs['class'] += ' fruit';
-      });
+        return $(this).attr('class');
+      }).join(', ');
 
-      expect(mapping).to.have.length(3);
-      expect(mapping[0]).to.be('apple fruit');
-      expect(mapping[1]).to.be('orange fruit');
-      expect(mapping[2]).to.be('pear fruit');
+      expect(classes).to.be('apple, orange, pear');
     });
   });
 
