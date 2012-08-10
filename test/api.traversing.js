@@ -2,7 +2,6 @@ var expect = require('expect.js'),
     $ = require('../'),
     fruits = require('./fixtures').fruits;
 
-
 describe('$(...)', function() {
 
   describe('.find', function() {
@@ -93,6 +92,23 @@ describe('$(...)', function() {
       expect(items[2].attribs['class']).to.equal('pear');
     });
 
+  });
+
+  describe('.map', function() {
+    it('(fn) : should return an array of mapped items', function() {
+      var mapping = $('li', fruits).map(function(i, el) {
+        expect(this).to.be(el);
+        expect(el.name).to.be('li');
+        expect(i).to.be.a('number');
+
+        return el.attribs['class'] += ' fruit';
+      });
+
+      expect(mapping).to.have.length(3);
+      expect(mapping[0]).to.be('apple fruit');
+      expect(mapping[1]).to.be('orange fruit');
+      expect(mapping[2]).to.be('pear fruit');
+    });
   });
 
   describe('.first', function() {
