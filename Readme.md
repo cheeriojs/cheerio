@@ -219,7 +219,7 @@ Iterates over a cheerio object, executing a function for each matched element. W
 #### .map( function(index, element) )
 Iterates over a cheerio object, executing a function for each selected element. Map will return an `array` of return values from each of the functions it iterated over. The function is fired in the context of the DOM element, so `this` refers to the current element, which is equivalent to the function parameter `element`.
 
-    var classes = $('li').map(function(i, el) {
+    $('li').map(function(i, el) {
       // this === el
       return $(this).attr('class');
     }).join(', ');
