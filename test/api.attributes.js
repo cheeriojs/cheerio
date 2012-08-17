@@ -153,12 +153,10 @@ describe('$(...)', function() {
     it('(no class attribute) : should not throw an exception', function() {
       var $vegetables = $(vegetables);
       var thrown = null;
-      try { 
-      $('li', $vegetables).removeClass('vegetable');
-      } catch (ex) {
-        thrown = ex;
-      }
-      expect(!thrown).to.be.ok();
+      expect(function() {
+        $('li', $vegetables).removeClass('vegetable');
+      })
+      .to.not.throwException();
     });
 
     it('(single class) : should remove a single class from the element', function() {
