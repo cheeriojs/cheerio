@@ -2,7 +2,7 @@ var expect = require('expect.js');
 
 var $ = require('../');
 var fruits = require('./fixtures').fruits;
-
+var vegetables = require('./fixtures').vegetables;
 
 describe('$(...)', function() {
 
@@ -148,6 +148,15 @@ describe('$(...)', function() {
       var $fruits = $(fruits);
       $('.pear', $fruits).removeClass('fruit');
       expect($('.pear', $fruits).hasClass('pear')).to.be.ok();
+    });
+
+    it('(no class attribute) : should not throw an exception', function() {
+      var $vegetables = $(vegetables);
+      var thrown = null;
+      expect(function() {
+        $('li', $vegetables).removeClass('vegetable');
+      })
+      .to.not.throwException();
     });
 
     it('(single class) : should remove a single class from the element', function() {

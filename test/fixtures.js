@@ -5,3 +5,10 @@ exports.fruits = [
     '<li class="pear">Pear</li>',
   '</ul>'
 ].join('');
+
+exports.vegetables = [
+  '<ul id="vegetables">',
+    '<li>Carrot</li>',
+    '<li>Sweetcorn</li>',
+  '</ul>'
+].join('');
