@@ -54,10 +54,10 @@ Cheerio will not solve all your problems. I would still use JSDOM if I needed to
 ### Markup example we'll be using:
 
 ```html
-<ul id = "fruits">
-  <li class = "apple">Apple</li>
-  <li class = "orange">Orange</li>
-  <li class = "pear">Pear</li>
+<ul id="fruits">
+  <li class="apple">Apple</li>
+  <li class="orange">Orange</li>
+  <li class="pear">Pear</li>
 </ul>
 ```
 
