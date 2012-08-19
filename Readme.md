@@ -189,6 +189,13 @@ Gets the previous sibling of the first selected element.
     $('.orange').prev().hasClass('apple')
     => true
 
+#### .prevAll()
+Gets all the previous sibling of the first selected element.
+
+    $('.pear').prevAll().length
+    => 2
+
+
 #### .siblings()
 Gets the first selected element's siblings, excluding itself.
 
@@ -203,6 +210,15 @@ Gets the children of the first selected element.
 
     $('#fruits').children('.pear').text()
     => Pear
+
+#### .slice( start, [end] )
+Gets the elements matching the specified range
+		
+    $('li').slice(1).length
+    => 2
+
+    $('li').slice(1, 2).length
+    => 1
 
 #### .each( function(index, element) )
 Iterates over a cheerio object, executing a function for each matched element. When the callback is fired, the function is fired in the context of the DOM element, so `this` refers to the current element, which is equivalent to the function parameter `element`.
