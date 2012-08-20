@@ -1,4 +1,11 @@
 
+0.9.2 / 2012-08-10 
+==================
+
+* added $(...).map(fn)
+* manipulation: refactor `makeCheerioArray`
+* make .removeClass() remove *all* occurrences (#64)
+
 0.9.1 / 2012-08-03
 ==================
 
