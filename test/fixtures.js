@@ -6,7 +6,7 @@ exports.fruits = [
   '</ul>'
 ].join('');
 exports.inputs = [
-	'<select id="one"><option value="option_not_selected">Option not selected</option><option value="option_selected" selected>Option selected</option></select>',
+	'<select id="one"><option value="option_not_selected">Option not selected</option><option value="option_selected" selected>Option is selected</option></select>',
 	'<input type="text" value="input_text" />',
 	'<input type="checkbox" name="checkbox_off" value="off" /><input type="checkbox" name="checkbox_on" value="on" checked />',
 	'<input type="radio" value="off" name="radio" /><input type="radio" name="radio" value="on" checked />',
