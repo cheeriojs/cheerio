@@ -2,10 +2,52 @@ var expect = require('expect.js');
 
 var $ = require('../');
 var fruits = require('./fixtures').fruits;
+var inputs = require('./fixtures').inputs;
 
 
 describe('$(...)', function() {
-
+	describe('.val', function() {
+		it('.val(): on select should get value', function() {
+			var val = $('select#one', inputs).val();
+			expect(val).to.equal('option_selected');
+		});
+		it('.val(): on text input should get value', function() {
+			var val = $('input[type="text"]', inputs).val();
+			expect(val).to.equal('input_text');
+		});
+		it('.val(): on checked checkbox should get value', function() {
+			var val = $('input[name="checkbox_on"]', inputs).val();
+			expect(val).to.equal('on');
+		});
+		it('.val(): on unchecked checkbox should get null', function() {
+			var val = $('input[name="checkbox_off"]', inputs).val();
+			expect(val).to.equal(null);
+		});
+		it('.val(): on radio should get value', function() {
+			var val = $('input[type="radio"]', inputs).val();
+			expect(val).to.equal('on');
+		});
+		it('.val(): on multiple select should get an array of values', function() {
+			var val = $('select#multi', inputs).val();
+			expect(val).to.have.length(2);
+		});
+		it('.val(value): on input text should set value', function() {
+			var element = $('input[type="text"]', inputs).val('test');
+			expect(element.val()).to.equal('test');
+		});
+		it('.val(value): on select should set value', function() {
+			var element = $('select#one', inputs).val('option_not_selected');
+			expect(element.val()).to.equal('option_not_selected');
+		});
+		it('.val(value): on radio should set value', function() {
+			var element = $('input[name="radio"]', inputs).val('off');
+			expect(element.val()).to.equal('off');
+		});
+		it('.val(values): on multiple select should set multiple values', function() {
+			var element = $('select#multi', inputs).val(['1', '3', '4']);
+			expect(element.val()).to.have.length(3);
+		});
+	});
   describe('.attr', function() {
 
     it('() : should get all the attributes', function() {
