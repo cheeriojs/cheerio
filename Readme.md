@@ -111,6 +111,16 @@ This selector method is the starting point for traversing and manipulating the d
 ### Attributes
 Methods for getting and modifying attributes.
 
+#### .val(value)
+Method for getting and setting the value of input, select, and textarea. Note: Support for map, and functions have not been added yet.
+
+    $('input[type="text"]').val()
+    => input_text
+    
+    $('input[type="text"]').val('test').html()
+    => <input type="text" value="test"/>
+    
+
 #### .attr( name, value )
 Method for getting and setting attributes. Gets the attribute value for only the first element in the matched set. If you set an attribute's value to `null`, you remove that attribute. You may also pass a `map` and `function` like jQuery.
 
