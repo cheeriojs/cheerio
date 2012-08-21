@@ -112,7 +112,7 @@ This selector method is the starting point for traversing and manipulating the d
 Methods for getting and modifying attributes.
 
 #### .val(value)
-Method for getting and setting the value of input, select, and textarea. Note: Support for map, and functions have not been added yet.
+Method for getting and setting the value of input, select, and textarea. Note: Support for `map`, and `function` has not been added yet.
 
     $('input[type="text"]').val()
     => input_text
