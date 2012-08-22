@@ -37,7 +37,8 @@ describe('$(...)', function() {
     });
 
     it('(selector) : should return children matching selector', function() {
-      expect($('ul', fruits).children('.orange').hasClass('orange')).to.be.ok();
+      var cls = $('ul', fruits).children('.orange')[0].attribs['class'];
+      expect(cls).to.equal('orange');
     });
 
     it('(invalid selector) : should return empty', function() {
@@ -51,7 +52,8 @@ describe('$(...)', function() {
   describe('.next', function() {
 
     it('() : should return next element', function() {
-      expect($('.orange', fruits).next().hasClass('pear')).to.be.ok();
+      var cls = $('.orange', fruits).next()[0].attribs['class'];
+      expect(cls).to.equal('pear');
     });
 
     it('(no next) : should return null (?)');
@@ -61,7 +63,8 @@ describe('$(...)', function() {
   describe('.prev', function() {
 
     it('() : should return previous element', function() {
-      expect($('.orange', fruits).prev().hasClass('apple')).to.be.ok();
+      var cls = $('.orange', fruits).prev()[0].attribs['class'];
+      expect(cls).to.equal('apple');
     });
 
     it('(no prev) : should return null (?)');
@@ -97,11 +100,10 @@ describe('$(...)', function() {
   describe('.map', function() {
     it('(fn) : should return an array of mapped items', function() {
       var classes = $('li', fruits).map(function(i, el) {
-        expect(this).to.be(el);
+        expect(this[0]).to.be(el);
         expect(el.name).to.be('li');
         expect(i).to.be.a('number');
-
-        return $(this).attr('class');
+        return el.attribs['class'];
       }).join(', ');
 
       expect(classes).to.be('apple, orange, pear');
