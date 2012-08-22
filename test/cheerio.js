@@ -3,7 +3,7 @@ var expect = require('expect.js'),
     $ = require('../'),
     fruits = require('./fixtures').fruits;
 
-
+console.log($);
 // HTML
 var script = '<script src="script.js" type="text/javascript"></script>',
     multiclass = '<p><a class="btn primary" href="#">Save</a></p>';
