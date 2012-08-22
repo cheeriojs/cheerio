@@ -116,14 +116,14 @@ describe('$(...)', function() {
       var $src = $('<span>foo</span><span>bar</span><span>baz</span>');
       var $elem = $src.first();
       expect($elem.length).to.equal(1);
-      expect($elem.html()).to.equal('foo');
+      expect($elem[0].children[0].data).to.equal('foo');
     });
 
     it('() : should return an empty object for an empty object', function() {
       var $src = $();
       var $first = $src.first();
       expect($first.length).to.equal(0);
-      expect($first.html()).to.be(null);
+      expect($first[0]).to.be(undefined);
     });
 
   });
@@ -134,14 +134,14 @@ describe('$(...)', function() {
       var $src = $('<span>foo</span><span>bar</span><span>baz</span>');
       var $elem = $src.last();
       expect($elem.length).to.equal(1);
-      expect($elem.html()).to.equal('baz');
+      expect($elem[0].children[0].data).to.equal('baz');
     });
 
     it('() : should return an empty object for an empty object', function() {
       var $src = $();
       var $last = $src.last();
       expect($last.length).to.equal(0);
-      expect($last.html()).to.be(null);
+      expect($last[0]).to.be(undefined);
     });
 
   });
@@ -153,9 +153,9 @@ describe('$(...)', function() {
       var $first = $src.first();
       var $last = $src.last();
       expect($first.length).to.equal(1);
-      expect($first.html()).to.equal('bar');
+      expect($first[0].children[0].data).to.equal('bar');
       expect($last.length).to.equal(1);
-      expect($last.html()).to.equal('bar');
+      expect($last[0].children[0].data).to.equal('bar');
       expect($first[0]).to.equal($last[0]);
     });
 
@@ -163,12 +163,18 @@ describe('$(...)', function() {
 
   describe('.eq', function() {
 
+    function getText(el) {
+      if(!el.length) return '';
+      return el[0].children[0].data;
+    }
+
     it('(i) : should return the element at the specified index', function() {
-      expect($('li', fruits).eq(0).text()).to.equal('Apple');
-      expect($('li', fruits).eq(1).text()).to.equal('Orange');
-      expect($('li', fruits).eq(2).text()).to.equal('Pear');
-      expect($('li', fruits).eq(3).text()).to.equal('');
-      expect($('li', fruits).eq(-1).text()).to.equal('Pear');
+      console.log($('li', fruits).eq(3));
+      expect(getText($('li', fruits).eq(0))).to.equal('Apple');
+      expect(getText($('li', fruits).eq(1))).to.equal('Orange');
+      expect(getText($('li', fruits).eq(2))).to.equal('Pear');
+      expect(getText($('li', fruits).eq(3))).to.equal('');
+      expect(getText($('li', fruits).eq(-1))).to.equal('Pear');
     });
 
   });
