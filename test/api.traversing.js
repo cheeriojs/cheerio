@@ -169,7 +169,6 @@ describe('$(...)', function() {
     }
 
     it('(i) : should return the element at the specified index', function() {
-      console.log($('li', fruits).eq(3));
       expect(getText($('li', fruits).eq(0))).to.equal('Apple');
       expect(getText($('li', fruits).eq(1))).to.equal('Orange');
       expect(getText($('li', fruits).eq(2))).to.equal('Pear');
