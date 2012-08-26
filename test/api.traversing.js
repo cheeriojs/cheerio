@@ -70,7 +70,9 @@ describe('$(...)', function() {
 
   describe('.prevAll', function() {
 		it('() : should return all preceding siblings', function () {
-			expect($('.pear', fruits).prevAll()).to.have.length(2);
+      expect($('.apple', fruits).prevAll()).to.have.length(0);
+      expect($('.orange', fruits).prevAll()).to.have.length(1);
+      expect($('.pear', fruits).prevAll()).to.have.length(2);
 		});
 		it('(selector) : should return all preceding siblings that match the selector', function () {
 			expect($('.pear', fruits).prevAll('li')).to.have.length(2);
