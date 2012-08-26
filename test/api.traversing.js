@@ -68,6 +68,18 @@ describe('$(...)', function() {
 
   });
 
+  describe('.prevAll', function() {
+		it('() : should return all preceding siblings', function () {
+      expect($('.apple', fruits).prevAll()).to.have.length(0);
+      expect($('.orange', fruits).prevAll()).to.have.length(1);
+      expect($('.pear', fruits).prevAll()).to.have.length(2);
+		});
+		it('(selector) : should return all preceding siblings that match the selector', function () {
+			expect($('.pear', fruits).prevAll('li')).to.have.length(2);
+			expect($('.pear', fruits).prevAll('.orange')).to.have.length(1);
+		});
+  });
+
   describe('.siblings', function() {
 
     it('() : should get all the siblings', function() {
@@ -93,6 +105,17 @@ describe('$(...)', function() {
     });
 
   });
+
+  describe('.slice', function() {
+    it('(start) : should return all elements after the given index', function() {
+      expect($('li', fruits).slice(1)).to.have.length(2);
+    });
+
+    it('(start, end) : should return all elements matching the given range', function() {
+      expect($('li', fruits).slice(1, 2)).to.have.length(1);
+    });
+
+	});
 
   describe('.map', function() {
     it('(fn) : should return an array of mapped items', function() {
