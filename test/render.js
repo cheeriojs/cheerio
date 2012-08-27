@@ -1,14 +1,12 @@
 var expect = require('expect.js'),
-    cheerio = require('../'),
-    parse = cheerio.parse,
-    render = cheerio.render;
+    parse = require('../lib/parse'),
+    render = require('../lib/render');
 
 var html = function(str, options) {
   options = options || {};
   var dom = parse(str, options);
   return render(dom);
 };
-
 
 describe('render', function() {
 
@@ -22,13 +20,13 @@ describe('render', function() {
 
     it('should shorten the "checked" attribute when it contains the value "checked"', function(done) {
       var str = '<input checked/>';
-      expect(html(str)).to.equal('<input checked/>');
+      expect(html(str)).to.equal('<input checked>');
       done();
     });
 
     it('should not shorten the "name" attribute when it contains the value "name"', function(done) {
       var str = '<input name="name"/>';
-      expect(html(str)).to.equal('<input name="name"/>');
+      expect(html(str)).to.equal('<input name="name">');
       done();
     });
 
