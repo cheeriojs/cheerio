@@ -1,5 +1,5 @@
 var expect = require('expect.js'),
-    parse = require('../').parse;
+    parse = require('../');
 
 
 // Tags

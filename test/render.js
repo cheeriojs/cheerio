@@ -16,7 +16,7 @@ describe('render', function() {
 
     it('should render <br /> tags correctly', function(done) {
       var str = '<br />';
-      expect(html(str)).to.equal('<br/>');
+      expect(html(str)).to.equal('<br>');
       done();
     });
 

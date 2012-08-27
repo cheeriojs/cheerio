@@ -1,3 +1,7 @@
+0.10.0 / 2012-08-27
+===================
+
+* Deprecated self-closing tags (HTML5 doesn't require them)
 
 0.9.2 / 2012-08-10 
 ==================
