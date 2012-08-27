@@ -176,7 +176,6 @@ describe('cheerio', function() {
 
   it('should gracefully degrade on complex, unmatched queries', function() {
     var $elem = $('Eastern States Cup #8-fin&nbsp;<br>Downhill&nbsp;');
-    console.log(typeof $elem.find('.haha'));
     expect($elem).to.have.length(0); // []
   });
 
