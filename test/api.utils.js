@@ -84,14 +84,6 @@ describe('$', function() {
       expect($html.html()).to.equal('<div><span>foo</span><span>bar</span></div><div id="test"></div>');
     });
 
-    it('() : shouldz return a cheerio-wrapped root object', function() {
-      var $html = $.load('<div><span>foo</span><span>bar</span></div>');
-      // console.log($html('span'));
-      // console.log($html('span').root());
-      //$html('span').root().append('<div id="test"></div>');
-      //expect($html.html()).to.equal('<div><span>foo</span><span>bar</span></div><div id="test"></div>');
-    });
-
   });
 
 });
