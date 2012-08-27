@@ -86,9 +86,11 @@ describe('$(...)', function() {
   describe('.each', function() {
 
     it('( (i, elem) -> ) : should loop selected returning fn with (i, elem)', function() {
-      var items = [];
+      var items = [],
+          classes = ['apple', 'orange', 'pear'];
       $('li', fruits).each(function(idx, elem) {
         items[idx] = elem;
+        expect(this[0].attribs['class']).to.equal(classes[idx]);
       });
       expect(items[0].attribs['class']).to.equal('apple');
       expect(items[1].attribs['class']).to.equal('orange');
