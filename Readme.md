@@ -537,6 +537,10 @@ http://vimeo.com/31950192
 
 > This video tutorial is a follow-up to Nettut's "How to Scrape Web Pages with Node.js and jQuery", using cheerio instead of JSDOM + jQuery. This video shows how easy it is to use cheerio and how much faster cheerio is than JSDOM + jQuery.
 
+## Test Coverage
+
+Cheerio has high-test coverage, you can view the report [here](https://s3.amazonaws.com/MattMueller/Coverage/cheerio.html).
+
 ## Testing
 
 To run the test suite, download the repository, then within the cheerio directory, run:
@@ -553,20 +557,26 @@ This will download the development packages and run the test suite.
 These are some of the contributors that have made cheerio possible:
 
 ```
-project: cheerio
-commits: 292
-active : 78 days
-files  : 26
-authors: 
-  223  Matt Mueller            76.4%
-   33  Matthew Mueller         11.3%
-   15  Siddharth Mahendraker   5.1%
-   10  David Chambers          3.4%
-    4  ironchefpython          1.4%
-    3  Jos Shepherd            1.0%
-    2  alexbardas              0.7%
-    1  mattym                  0.3%
-    1  Chris O'Hara            0.3%
+project  : cheerio
+repo age : 12 months ago
+commits  : 369
+active   : 99 days
+files    : 26
+authors  : 
+  245 Matt Mueller            66.4%
+   68 Matthew Mueller         18.4%
+   24 David Chambers          6.5%
+   15 Siddharth Mahendraker   4.1%
+    4 ironchefpython          1.1%
+    3 Jos Shepherd            0.8%
+    2 alexbardas              0.5%
+    2 Rob Ashton              0.5%
+    1 mattym                  0.3%
+    1 Chris O'Hara            0.3%
+    1 Rob "Hurricane" Ashton  0.3%
+    1 Sindre Sorhus           0.3%
+    1 Wayne Larsen            0.3%
+    1 Ben Atkin               0.3%
 ```
 
 ## Special Thanks
