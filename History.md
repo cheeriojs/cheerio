@@ -1,6 +1,8 @@
-0.10.0 / 2012-08-27
+0.10.0 / 2012-09-24
 ===================
 
+* Greatly simplified and reorganized the library
+* New test coverage
 * Deprecated self-closing tags (HTML5 doesn't require them)
 
 0.9.2 / 2012-08-10 
