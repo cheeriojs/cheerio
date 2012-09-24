@@ -1,6 +1,8 @@
 var fs = require('fs');
 
-exports = module.exports = require('./lib/cheerio');
+exports = module.exports = process.env.EXPRESS_COV
+  ? require('./lib-cov/cheerio')
+  : require('./lib/cheerio');
 
 /*
   Export the version

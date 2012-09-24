@@ -1,4 +1,7 @@
 node_modules
 npm-debug.log
-tests/rendering/diffs/*
-tests_old
+coverage.html
+.DS_Store
+lib-cov
+.coverage_data
+cover_html
