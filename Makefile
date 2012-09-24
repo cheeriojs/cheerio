@@ -7,7 +7,7 @@ subl:
 	@subl lib/ test/ package.json index.js
 
 test-cov: lib-cov
-	@EXPRESS_COV=1 $(MAKE) test REPORTER=html-cov > coverage.html
+	@CHEERIO_COV=1 $(MAKE) test REPORTER=html-cov > coverage.html
 
 lib-cov:
 	@jscoverage lib lib-cov

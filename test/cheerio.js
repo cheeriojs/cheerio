@@ -10,7 +10,7 @@ var script = '<script src="script.js" type="text/javascript"></script>',
 describe('cheerio', function() {
 
   it('should get the version', function() {
-    expect(/\d\.\d\.\d/.test($.version)).to.be.ok();
+    expect(/\d+\.\d+\.\d+/.test($.version)).to.be.ok();
   });
 
   it('$(null) should return be empty', function() {
