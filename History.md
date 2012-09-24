@@ -1,9 +1,10 @@
 0.10.0 / 2012-09-24
 ===================
 
-* Greatly simplified and reorganized the library
-* New test coverage
+* Greatly simplified and reorganized the library, reducing the loc by 30%
+* Now supports mocha's test-coverage
 * Deprecated self-closing tags (HTML5 doesn't require them)
+* Fixed error thrown in removeClass(...) @robashton
 
 0.9.2 / 2012-08-10 
 ==================
