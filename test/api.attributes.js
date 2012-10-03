@@ -52,6 +52,13 @@ describe('$(...)', function() {
       $apple.attr('href', 'http://github.com/"><script>alert("XSS!")</script><br');
       expect($apple.html()).to.not.contain('<script>alert("XSS!")</script>');
     });
+    
+    it('(key, value) : should coerce values to a string', function() {
+      var $apple = $('.apple', fruits);
+      $apple.attr('data-test', 1);
+      expect($apple[0].attribs['data-test']).to.equal('1');
+      expect($apple.attr('data-test')).to.equal('1');
+    });    
   });
 
   describe('.removeAttr', function() {
