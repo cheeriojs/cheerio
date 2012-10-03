@@ -78,6 +78,15 @@ describe('cheerio', function() {
     expect($ul[0].name).to.equal('ul');
   });
 
+  it('should be able to filter down using the context', function() {
+    var q = $.load(fruits),
+        apple = q('.apple', 'ul'),
+        lis = q('li', 'ul');
+
+    expect(apple).to.have.length(1);
+    expect(lis).to.have.length(3);
+  });
+
   it('should be able to select multiple tags', function() {
     var $fruits = $('li', null, fruits);
     expect($fruits).to.have.length(3);
