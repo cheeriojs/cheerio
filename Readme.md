@@ -202,7 +202,7 @@ $('.apple').addClass('red').removeClass().html()
 Get a set of descendants filtered by `selector` of each element in the current set of matched elements.
 
 ```js
-$('#fruits').find('li').size()
+$('#fruits').find('li').length
 //=> 3
 ```
 
