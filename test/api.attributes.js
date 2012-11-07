@@ -175,6 +175,19 @@ describe('$(...)', function() {
       expect($('.pear', $fruits).hasClass('pear')).to.be.ok();
     });
 
+    it('(single class) : should remove a single class from multiple classes on the element', function() {
+      var $fruits = $(fruits);
+      $('.pear', $fruits).addClass('fruit green tasty');
+      expect($('.pear', $fruits).hasClass('fruit')).to.be.ok();
+      expect($('.pear', $fruits).hasClass('green')).to.be.ok();
+      expect($('.pear', $fruits).hasClass('tasty')).to.be.ok();
+
+      $('.pear', $fruits).removeClass('green');
+      expect($('.pear', $fruits).hasClass('fruit')).to.be.ok();
+      expect($('.pear', $fruits).hasClass('green')).to.not.be.ok();
+      expect($('.pear', $fruits).hasClass('tasty')).to.be.ok();
+    });
+
     it('(class class class) : should remove multiple classes from the element', function() {
       var $fruits = $(fruits);
 
