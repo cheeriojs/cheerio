@@ -111,6 +111,21 @@ describe('$(...)', function() {
       expect(classes).to.be('apple, orange, pear');
     });
   });
+  
+  describe('.filter', function() {
+    it('(selector) : should reduce the set of matched elements to those that match the selector', function() {
+      var pear = $('li', fruits).filter('.pear').text();
+      expect(pear).to.be('Pear');
+    });
+    
+    it('(fn) : should reduce the set of matched elements to those that pass the function\'s test', function() {
+      var orange = $('li', fruits).filter(function(i) {
+        return 'orange' === $(this).attr('class');
+      }).text();
+
+      expect(orange).to.be('Orange');
+    });
+  });
 
   describe('.first', function() {
 

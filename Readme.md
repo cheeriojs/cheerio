@@ -263,7 +263,7 @@ fruits.join(', ');
 //=> Apple, Orange, Pear
 ```
 
-#### .map( function(index, element) )
+#### .map( function(index) )
 Iterates over a cheerio object, executing a function for each selected element. Map will return an `array` of return values from each of the functions it iterated over. The function is fired in the context of the DOM element, so `this` refers to the current element, which is equivalent to the function parameter `element`.
 
 ```js
@@ -273,6 +273,29 @@ $('li').map(function(i, el) {
 }).join(', ');
 //=> apple, orange, pear
 ```
+
+#### .filter( selector ) <br /> .filter( function(index) ) 
+
+
+Iterates over a cheerio object, reducing the set of selector elements to those that match the selector or pass the function's test. If using the function method, the function is executed in the context of the selected element, so `this` refers to the current element.
+
+Selector:
+
+```js
+$('li').filter('.orange').attr('class');
+//=> orange
+```
+
+Function:
+
+```js
+$('li').filter(function(i) {
+  // this === el
+  return 'orange' === $(this).attr('class');
+}).attr('class')
+//=> orange
+```
+
 
 #### .first()
 Will select the first element of a cheerio object
