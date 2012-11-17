@@ -1,3 +1,14 @@
+
+0.10.2 / 2012-11-17
+==================
+
+  * Added a toString() method (@bensheldon)
+  * use `_.each` and `_.map` to simplify cheerio namesakes (@davidchambers)
+  * Added filter() with tests and updated readme (@bensheldon & @davidchambers)
+  * Added spaces between attributes rewritten by removeClass (@jos3000)
+  * updated docs to remove reference to size method (@ironchefpython)
+  * removed tidy from cheerio
+
 0.10.1 / 2012-10-04
 ===================
 
@@ -11,7 +22,7 @@
 * Deprecated self-closing tags (HTML5 doesn't require them)
 * Fixed error thrown in removeClass(...) @robashton
 
-0.9.2 / 2012-08-10 
+0.9.2 / 2012-08-10
 ==================
 
 * added $(...).map(fn)
@@ -23,7 +34,7 @@
 
 * fixed bug causing options not to make it to the parser
 
-0.9.0 / 2012-07-24 
+0.9.0 / 2012-07-24
 ==================
 
 * Added node 8.x support
