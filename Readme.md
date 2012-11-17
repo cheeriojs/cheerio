@@ -274,6 +274,27 @@ $('li').map(function(i, el) {
 //=> apple, orange, pear
 ```
 
+#### .filter( selector ) <br /> .filter( function(index) ) 
+
+Iterates over a cheerio object, reducing the set of selector elements to those that match the selector or pass the function's test. If using the function method, the function is executed in the context of the selected element, so `this` refers to the current element.
+
+Selector:
+
+```js
+$('li').filter('.orange').attr('class');
+//=> orange
+```
+
+Function:
+
+```js
+$('li').filter(function(i, el) {
+  // this === el
+  return $(this).attr('class') === 'orange';
+}).attr('class')
+//=> orange
+```
+
 #### .first()
 Will select the first element of a cheerio object
 
