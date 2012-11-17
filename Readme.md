@@ -263,7 +263,7 @@ fruits.join(', ');
 //=> Apple, Orange, Pear
 ```
 
-#### .map( function(index) )
+#### .map( function(index, element) )
 Iterates over a cheerio object, executing a function for each selected element. Map will return an `array` of return values from each of the functions it iterated over. The function is fired in the context of the DOM element, so `this` refers to the current element, which is equivalent to the function parameter `element`.
 
 ```js
