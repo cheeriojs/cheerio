@@ -119,8 +119,11 @@ describe('$(...)', function() {
     });
     
     it('(fn) : should reduce the set of matched elements to those that pass the function\'s test', function() {
-      var orange = $('li', fruits).filter(function(i) {
-        return 'orange' === $(this).attr('class');
+      var orange = $('li', fruits).filter(function(i, el) {
+        expect(this[0]).to.be(el);
+        expect(el.name).to.be('li');
+        expect(i).to.be.a('number');
+        return this.attr('class') === 'orange';
       }).text();
 
       expect(orange).to.be('Orange');
