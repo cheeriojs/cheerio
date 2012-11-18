@@ -19,10 +19,6 @@ $.html();
 ## Installation
 `npm install cheerio`
 
-... or to install the package globally:
-
-`npm install -g cheerio`
-
 ## Features
 __&#10084; Familiar syntax:__
 Cheerio implements a subset of core jQuery. Cheerio removes all the DOM inconsistencies and browser cruft from the jQuery library, revealing its truly gorgeous API.
