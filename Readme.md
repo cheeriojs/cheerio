@@ -421,12 +421,10 @@ Gets an html content string from the first selected element. If `htmlString` is 
 
 ```js
 $('.orange').html()
-//=> <li class = "orange">Orange</li>
+//=> Orange
 
 $('#fruits').html('<li class = "mango">Mango</li>').html()
-//=>  <ul id="fruits">
-//      <li class="mango">Mango</li>
-//    </ul>
+//=> <li class="mango">Mango</li>
 ```
 
 #### .text( [textString] )
@@ -454,10 +452,10 @@ $.html()
 //    </ul>
 ```
 
-If you want to render just a piece of the document you can use selectors:
+If you want to return the outerHTML you can use `$.html(selector)`:
 
 ```js
-$('.pear').html()
+$.html('.pear')
 //=> <li class = "pear">Pear</li>
 ```
 
