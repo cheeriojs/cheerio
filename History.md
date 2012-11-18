@@ -1,13 +1,19 @@
 
-0.10.2 / 2012-11-17
-==================
+0.10.3 / 2012-11-18
+===================
 
-  * Added a toString() method (@bensheldon)
-  * use `_.each` and `_.map` to simplify cheerio namesakes (@davidchambers)
-  * Added filter() with tests and updated readme (@bensheldon & @davidchambers)
-  * Added spaces between attributes rewritten by removeClass (@jos3000)
-  * updated docs to remove reference to size method (@ironchefpython)
-  * removed tidy from cheerio
+* fixed outer html bug
+* Updated documentation for $(...).html() and $.html()
+
+0.10.2 / 2012-11-17
+===================
+
+* Added a toString() method (@bensheldon)
+* use `_.each` and `_.map` to simplify cheerio namesakes (@davidchambers)
+* Added filter() with tests and updated readme (@bensheldon & @davidchambers)
+* Added spaces between attributes rewritten by removeClass (@jos3000)
+* updated docs to remove reference to size method (@ironchefpython)
+* removed tidy from cheerio
 
 0.10.1 / 2012-10-04
 ===================
