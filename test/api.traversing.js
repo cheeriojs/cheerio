@@ -24,6 +24,10 @@ describe('$(...)', function() {
       expect($('ul', fruits).find('blah')).to.have.length(0);
     });
 
+    it('(invalid single) : should query descendants only', function() {
+      expect($('#fruits', fruits).find('ul')).to.have.length(0);
+    });
+
     it('should return empty if search already empty result', function() {
       expect($('#fruits').find('li')).to.have.length(0);
     });
