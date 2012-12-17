@@ -1,4 +1,10 @@
 
+0.10.4 / 2012-12-16
+==================
+
+* $.find should query descendants only (@jugglinmike)
+* Tighter underscore dependency
+
 0.10.3 / 2012-11-18
 ===================
 
