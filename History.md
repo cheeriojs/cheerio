@@ -1,3 +1,7 @@
+0.10.5 / 2012-12-18
+===================
+
+* Fixed botched publish from 0.10.4 - changes should now be present
 
 0.10.4 / 2012-12-16
 ==================
