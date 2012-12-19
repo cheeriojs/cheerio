@@ -507,6 +507,9 @@ $.dom()
 //   }]
 ```
 
+#### $.contains( container, contained )
+Checks to see if the `contained` DOM element is a descendent of the `container` DOM element.
+
 #### $.isArray( array )
 Checks to see the passed argument is an array.
 
