@@ -101,6 +101,17 @@ describe('$(...)', function() {
       expect(items[2].attribs['class']).to.equal('pear');
     });
 
+    it('( (i, elem) -> ) : should break iteration when the iterator function returns false', function() {
+
+        var iterationCount = 0;
+        $('li', fruits).each(function(idx, elem) {
+          iterationCount++;
+          return idx < 1;
+        });
+
+        expect(iterationCount).to.equal(2);
+    });
+
   });
 
   describe('.map', function() {
