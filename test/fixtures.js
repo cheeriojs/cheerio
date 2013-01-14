@@ -12,3 +12,10 @@ exports.vegetables = [
     '<li>Sweetcorn</li>',
   '</ul>'
 ].join('');
+
+exports.food = [
+  '<ul id="food">',
+    exports.fruits,
+    exports.vegetables,
+  '</ul>'
+].join('');
