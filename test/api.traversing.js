@@ -1,5 +1,6 @@
 var expect = require('expect.js'),
     $ = require('../'),
+    food = require('./fixtures').food,
     fruits = require('./fixtures').fruits;
 
 describe('$(...)', function() {
@@ -38,6 +39,10 @@ describe('$(...)', function() {
 
     it('() : should get all children', function() {
       expect($('ul', fruits).children()).to.have.length(3);
+    });
+
+    it('() : should return children of all matched elements', function() {
+      expect($('ul ul', food).children()).to.have.length(5);
     });
 
     it('(selector) : should return children matching selector', function() {
