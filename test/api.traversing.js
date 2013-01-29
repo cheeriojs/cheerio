@@ -1,5 +1,6 @@
 var expect = require('expect.js'),
     $ = require('../'),
+    food = require('./fixtures').food,
     fruits = require('./fixtures').fruits;
 
 describe('$(...)', function() {
@@ -38,6 +39,10 @@ describe('$(...)', function() {
 
     it('() : should get all children', function() {
       expect($('ul', fruits).children()).to.have.length(3);
+    });
+
+    it('() : should return children of all matched elements', function() {
+      expect($('ul ul', food).children()).to.have.length(5);
     });
 
     it('(selector) : should return children matching selector', function() {
@@ -99,6 +104,17 @@ describe('$(...)', function() {
       expect(items[0].attribs['class']).to.equal('apple');
       expect(items[1].attribs['class']).to.equal('orange');
       expect(items[2].attribs['class']).to.equal('pear');
+    });
+
+    it('( (i, elem) -> ) : should break iteration when the iterator function returns false', function() {
+
+        var iterationCount = 0;
+        $('li', fruits).each(function(idx, elem) {
+          iterationCount++;
+          return idx < 1;
+        });
+
+        expect(iterationCount).to.equal(2);
     });
 
   });

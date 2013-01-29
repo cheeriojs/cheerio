@@ -246,7 +246,7 @@ $('#fruits').children('.pear').text()
 ```
 
 #### .each( function(index, element) )
-Iterates over a cheerio object, executing a function for each matched element. When the callback is fired, the function is fired in the context of the DOM element, so `this` refers to the current element, which is equivalent to the function parameter `element`.
+Iterates over a cheerio object, executing a function for each matched element. When the callback is fired, the function is fired in the context of the DOM element, so `this` refers to the current element, which is equivalent to the function parameter `element`. To break out of the `each` loop early, return with `false`.
 
 ```js
 var fruits = [];
@@ -506,6 +506,9 @@ $.dom()
 //    next: null
 //   }]
 ```
+
+#### $.contains( container, contained )
+Checks to see if the `contained` DOM element is a descendent of the `container` DOM element.
 
 #### $.isArray( array )
 Checks to see the passed argument is an array.
