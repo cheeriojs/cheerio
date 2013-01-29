@@ -270,7 +270,7 @@ $('li').map(function(i, el) {
 //=> apple, orange, pear
 ```
 
-#### .filter( selector ) <br /> .filter( function(index) ) 
+#### .filter( selector ) <br /> .filter( function(index) )
 
 Iterates over a cheerio object, reducing the set of selector elements to those that match the selector or pass the function's test. If using the function method, the function is executed in the context of the selected element, so `this` refers to the current element.
 
@@ -554,25 +554,27 @@ These are some of the contributors that have made cheerio possible:
 
 ```
 project  : cheerio
-repo age : 12 months ago
-commits  : 369
-active   : 99 days
+repo age : 1 year, 4 months ago
+commits  : 416
+active   : 118 days
 files    : 26
-authors  : 
-  245 Matt Mueller            66.4%
-   68 Matthew Mueller         18.4%
-   24 David Chambers          6.5%
-   15 Siddharth Mahendraker   4.1%
-    4 ironchefpython          1.1%
-    3 Jos Shepherd            0.8%
+authors  :
+  278 Matt Mueller            66.8%
+   68 Matthew Mueller         16.3%
+   27 David Chambers          6.5%
+   15 Siddharth Mahendraker   3.6%
+    7 ironchefpython          1.7%
+    5 Jos Shepherd            1.2%
+    5 Ben Sheldon             1.2%
     2 alexbardas              0.5%
     2 Rob Ashton              0.5%
-    1 mattym                  0.3%
-    1 Chris O'Hara            0.3%
-    1 Rob "Hurricane" Ashton  0.3%
-    1 Sindre Sorhus           0.3%
-    1 Wayne Larsen            0.3%
-    1 Ben Atkin               0.3%
+    1 mattym                  0.2%
+    1 Chris O'Hara            0.2%
+    1 Mike Pennisi            0.2%
+    1 Rob "Hurricane" Ashton  0.2%
+    1 Sindre Sorhus           0.2%
+    1 Wayne Larsen            0.2%
+    1 Ben Atkin               0.2%
 ```
 
 ## Special Thanks
