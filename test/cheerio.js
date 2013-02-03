@@ -1,7 +1,8 @@
 var expect = require('expect.js'),
     _ = require('underscore'),
     $ = require('../'),
-    fruits = require('./fixtures').fruits;
+    fruits = require('./fixtures').fruits,
+    food = require('./fixtures').food;
 
 // HTML
 var script = '<script src="script.js" type="text/javascript"></script>',
@@ -136,6 +137,24 @@ describe('cheerio', function() {
     // var $h2 = $('<h2>fruits</h2>');
     // console.log($elem.before('hi'));
     // console.log($elem.before($h2));
+
+  it('should be able to select elements not having class $("li:not(.pear)")', function() {
+    var $fruitsNotPear = $('li:not(.pear)', fruits);
+    expect($fruitsNotPear).to.have.length(2);
+  });
+
+  it('should be able to select top level elements $("ul:not(ul ul)")', function() {
+    var $topLevel = $('ul:not(ul ul)', food);
+    expect($topLevel).to.have.length(1);
+    expect($topLevel[0].attribs.id).to.equal('food');
+  });
+
+  it('should be able to select top level elements in context', function() {
+    var q = $.load(food),
+      fruitsAndVegetables = q('ul:not(ul ul)', '#food');
+
+    expect(fruitsAndVegetables).to.have.length(2);
+  });
 
   it('should be able to select immediate children: $("#fruits > .pear")', function() {
     var $fruitsWithMorePear = $('.pear', fruits).append('<li class="pear">Another Pear!</li>');
