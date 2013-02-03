@@ -502,7 +502,7 @@ Cheerio has high-test coverage, you can view the report [here](https://s3.amazon
 To run the test suite, download the repository, then within the cheerio directory, run:
 
 ```shell
-npm install .
+make setup
 make test
 ```
 
