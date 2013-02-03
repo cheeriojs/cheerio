@@ -484,51 +484,8 @@ $.root().append('<ul id="vegetables"></ul>').html();
 //=> <ul id="fruits">...</ul><ul id="vegetables"></ul>
 ```
 
-#### $.dom()
-Get the raw DOM of the parsed HTML document.
-
-```js
-$.dom()
-//=> [{
-//    type: 'tag',
-//    name: 'ul',
-//    attribs: { id: 'fruits' },
-//    children:
-//     [ [Object],
-//       [Object],
-//       [Object],
-//       [Object],
-//       [Object],
-//       [Object],
-//       [Object] ],
-//    parent: null,
-//    prev: null,
-//    next: null
-//   }]
-```
-
 #### $.contains( container, contained )
 Checks to see if the `contained` DOM element is a descendent of the `container` DOM element.
-
-#### $.isArray( array )
-Checks to see the passed argument is an array.
-
-```js
-$.isArray( $.dom() )
-//=> true
-```
-
-#### $.inArray( elem, arr )
-Checks to see if the element is in the array
-
-#### $.makeArray( obj )
-Turns an array-like object (like $) into a native array.
-
-#### $.each( obj, function(index, elem) )
-Generic iterator function.
-
-#### $.merge( one, two )
-Merge the contents of two arrays together into the first array.
 
 ## Screencasts
 
