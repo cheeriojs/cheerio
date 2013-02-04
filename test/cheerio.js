@@ -143,10 +143,14 @@ describe('cheerio', function() {
     expect($fruitsNotPear).to.have.length(2);
   });
 
+  it('should be able to chain not selectors', function() {
+    var $fruitsNotPearOrOrange = $('li:not(.pear):not(.orange)', fruits);
+    expect($fruitsNotPearOrOrange).to.have.length(1);
+  });
+
   it('should be able to select top level elements $("ul:not(ul ul)")', function() {
     var $topLevel = $('ul:not(ul ul)', food);
     expect($topLevel).to.have.length(1);
-    expect($topLevel[0].attribs.id).to.equal('food');
   });
 
   it('should be able to select top level elements in context', function() {
@@ -154,6 +158,13 @@ describe('cheerio', function() {
       fruitsAndVegetables = q('ul:not(ul ul)', '#food');
 
     expect(fruitsAndVegetables).to.have.length(2);
+  });
+
+  it('should be able to use multiple not selectors in context', function() {
+    var q = $.load(food),
+      vegetables = q('li:not(#fruits li):not(ul ul li)', '#food');
+
+    expect(vegetables).to.have.length(2);
   });
 
   it('should be able to select immediate children: $("#fruits > .pear")', function() {
