@@ -137,6 +137,11 @@ describe('$(...)', function() {
       var pear = $('li', fruits).filter('.pear').text();
       expect(pear).to.be('Pear');
     });
+
+    it('(selector) : should not consider nested elements', function() {
+      var lis = $(fruits).filter('li');
+      expect(lis).to.have.length(0);
+    });
     
     it('(fn) : should reduce the set of matched elements to those that pass the function\'s test', function() {
       var orange = $('li', fruits).filter(function(i, el) {
