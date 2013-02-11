@@ -1,4 +1,10 @@
 
+0.10.7 / 2013-02-10
+==================
+
+* Code & doc cleanup (davidchambers)
+* Fixed bug in filter (jugglinmike)
+
 0.10.6 / 2013-01-29
 ==================
 
