@@ -1,7 +1,8 @@
 var expect = require('expect.js'),
     $ = require('../'),
     food = require('./fixtures').food,
-    fruits = require('./fixtures').fruits;
+    fruits = require('./fixtures').fruits,
+    vegetables = require('./fixtures').vegetables;
 
 describe('$(...)', function() {
 
@@ -119,6 +120,18 @@ describe('$(...)', function() {
 
   });
 
+  describe('.contents', function() {
+    it('(fn) : should return the children of each element in the set of matched elements, including text and comment nodes', function() {
+      var textNodes = [];
+      $('ul', vegetables).contents().each(function(i, el) {
+        if (el.type === 'text') {
+          textNodes.push(el.data);
+        }
+      });
+      expect(textNodes.join('')).to.be('Sweet Potato');
+    });
+  });
+  
   describe('.map', function() {
     it('(fn) : should return an array of mapped items', function() {
       var classes = $('li', fruits).map(function(i, el) {

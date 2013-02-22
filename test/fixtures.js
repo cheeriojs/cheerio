@@ -10,6 +10,7 @@ exports.vegetables = [
   '<ul id="vegetables">',
     '<li>Carrot</li>',
     '<li>Sweetcorn</li>',
+	'Sweet Potato',
   '</ul>'
 ].join('');
 
