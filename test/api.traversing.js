@@ -223,4 +223,32 @@ describe('$(...)', function() {
 
   });
 
+  describe('.slice', function() {
+
+    function getText(el) {
+      if(!el.length) return '';
+      return el[0].children[0].data;
+    }
+
+    it('(start) : should return all elements after the given index', function() {
+      var sliced = $('li', fruits).slice(1);
+      expect(sliced).to.have.length(2);
+      expect(getText(sliced.eq(0))).to.equal('Orange');
+      expect(getText(sliced.eq(1))).to.equal('Pear');
+    });
+
+    it('(start, end) : should return all elements matching the given range', function() {
+      var sliced = $('li', fruits).slice(1, 2);
+      expect(sliced).to.have.length(1);
+      expect(getText(sliced.eq(0))).to.equal('Orange');
+    });
+
+    it('(-start) : should return element matching the offset from the end', function() {
+      var sliced = $('li', fruits).slice(-1);
+      expect(sliced).to.have.length(1);
+      expect(getText(sliced.eq(0))).to.equal('Pear');
+    });
+
+  });
+
 });
