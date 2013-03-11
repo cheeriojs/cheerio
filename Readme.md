@@ -226,6 +226,17 @@ $('.orange').prev().hasClass('apple')
 //=> true
 ```
 
+#### .slice( start, [end] )
+Gets the elements matching the specified range
+
+```js
+$('li').slice(1).eq(0).text()
+//=> 'Orange'
+
+$('li').slice(1, 2).length
+//=> 1
+```
+
 #### .siblings()
 Gets the first selected element's siblings, excluding itself.
 
