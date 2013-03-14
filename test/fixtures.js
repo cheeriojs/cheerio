@@ -19,3 +19,10 @@ exports.food = [
     exports.vegetables,
   '</ul>'
 ].join('');
+
+exports.form = [
+	'<form>',
+		'<input id="txtUser" value="cheerio" />',
+		'<input id="txtMail" />',
+	'</form>'
+].join('');
