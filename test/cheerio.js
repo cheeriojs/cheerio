@@ -9,6 +9,20 @@ var script = '<script src="script.js" type="text/javascript"></script>',
 
 describe('cheerio', function() {
 
+	var methods = 'add,addClass,after,append,appendTo,attr,before,children,clone,closest,concat,contents,css,data,each,empty,eq,filter,find,first,forEach,get,has,hasClass,height,hide,html,index,indexOf,insertAfter,insertBefore,is,last,map,next,not,offset,offsetParent,parent,parents,pluck,position,prepend,prependTo,prev,prop,push,ready,reduce,remove,removeAttr,removeClass,replaceWith,show,siblings,size,slice,text,toggle,toggleClass,unwrap,val,width,wrap,wrapAll,wrapInner'.split(",");
+
+	//scrollTop
+	var $ele = $(fruits);
+	var index = 0;
+	methods.forEach(function(name, i){
+		if(!_.isFunction($ele[name])){
+			index ++;
+			console.log("[%s] is unfinished.", name);
+		}
+	});
+	console.log("Total: %d, Unfinish: %d, finished: %d",
+		methods.length, index, methods.length - index);
+
   it('should get the version', function() {
     expect(/\d+\.\d+\.\d+/.test($.version)).to.be.ok();
   });

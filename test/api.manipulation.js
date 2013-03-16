@@ -309,4 +309,29 @@ describe('$(...)', function() {
     });
   });
 
+	describe('.show', function(){
+		it('Should set display as block.', function(){
+			var $fruits = $(fruits);
+			$fruits.show();
+
+			expect($fruits.attr("style")).to.contain('block');
+		});
+	});
+
+	describe('.hide', function(){
+		it('Should set display as none.', function(){
+			var $fruits = $(fruits);
+			$fruits.hide();
+
+			expect($fruits.attr("style")).to.contain('none');
+		});
+	});
+
+	describe('.width', function(){
+		it('Should set & get width.', function(){
+			var $fruits = $(fruits);
+			$fruits.css("width", 10);
+			expect($fruits.width()).to.equal(10);
+		});
+	});
 });
