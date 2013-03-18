@@ -334,4 +334,25 @@ describe('$(...)', function() {
 			expect($fruits.width()).to.equal(10);
 		});
 	});
+
+	describe('.toggleClass', function(){
+		it('.toggleClass(name)', function(){
+			var klass = "apple";
+			var $apple = $("." + klass, fruits);
+			$apple.toggleClass(klass);
+			expect($apple.hasClass(klass)).to.not.be.ok();
+		});
+	});
+
+	describe('.get', function(){
+		it('.get(): Should return an array.', function(){
+			var $ele = $(fruits);
+			expect($ele.get()).to.have.length(1);
+		});
+
+		it('.get(0): Should return an object.', function(){
+			var $ele = $(fruits);
+			expect($ele.get(0).name).to.not.be.empty();
+		});
+	});
 });
