@@ -355,4 +355,20 @@ describe('$(...)', function() {
 			expect($ele.get(0).name).to.not.be.empty();
 		});
 	});
+
+	describe('.add', function(){
+		it('.add()', function(){
+			var $fruits = $(fruits);
+			$fruits.add('<span class="cherry"></span>');
+			expect($fruits.parent().find('.cherry')).to.have.length(1);
+		});
+	});
+
+	describe('.appendTo', function(){
+		it('.appendTo(): Should append li to ul', function(){
+			var target = $("<ul></ul>")
+			$('<li class="apple">new list item</li>').appendTo(target);
+			expect(target.find(".apple")).to.have.length(1);
+		});
+	});
 });
