@@ -255,6 +255,7 @@ describe('$(...)', function() {
 			};
 			$ele.css(styles);
 
+
 			expect($ele.css('z-index')).to.be('10');
 			expect($ele.css('font-size')).to.be('20px');
 			expect($ele.css('color')).to.be('green');

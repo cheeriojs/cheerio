@@ -27,6 +27,7 @@ describe('$().data', function() {
 		expect($ele.data("version")).to.eql(data.version);
 	});
 
+
 	it('.removeData(): should remove data.', function(){
 		var $ele = $(fixtures.fruits);
 		var key = 'project', value = 'cheerio';

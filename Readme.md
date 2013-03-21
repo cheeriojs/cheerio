@@ -191,7 +191,6 @@ $('.apple').addClass('red').removeClass().html()
 
 > See http://api.jquery.com/removeClass/ for more information.
 
-
 ### Traversing
 
 #### .find(selector)

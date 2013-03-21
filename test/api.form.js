@@ -38,6 +38,7 @@ describe('.serializeArray', function(){
 	});
 });
 
+
 describe('.serializeArray', function(){
 	it('$(form).serializeArray: Should get serialize values', function(){
 		var $forms = $(form);

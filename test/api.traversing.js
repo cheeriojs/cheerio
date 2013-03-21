@@ -227,6 +227,7 @@ describe('$(...)', function() {
 		var obj = $('li:nth-child(2)', fruits);
 		expect(obj.index()).to.equal(1);
 
+
 		//$(require('./fixtures').form).serializeArray();
 	});
 

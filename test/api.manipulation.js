@@ -412,6 +412,7 @@ describe('$(...)', function() {
 			var $list = $('p', paragraph);
 			$list.wrap('<div></div>');
 			console.log($list.parent().html());
+
 			//var $result = $ele.wrapInner($frame);
 			//expect($frame.html()).to.be.equal(innerHTML);
 		});
