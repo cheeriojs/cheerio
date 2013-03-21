@@ -24,5 +24,6 @@ exports.form = [
 	'<form>',
 		'<input id="txtUser" value="cheerio" />',
 		'<input id="txtMail" />',
+		'<textarea id="txtMemo">something</textarea>"',
 	'</form>'
 ].join('');

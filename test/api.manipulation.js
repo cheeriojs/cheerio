@@ -1,5 +1,8 @@
 var expect = require('expect.js'),
     $ = require('../'),
+		Cheerio = require('../lib/cheerio'),
+		utils = require('../lib/utils'),
+		_ = require('underscore'),
     fruits = require('./fixtures').fruits;
 
 describe('$(...)', function() {
@@ -369,6 +372,48 @@ describe('$(...)', function() {
 			var target = $("<ul></ul>")
 			$('<li class="apple">new list item</li>').appendTo(target);
 			expect(target.find(".apple")).to.have.length(1);
+		});
+	});
+
+	describe('.insertBefore', function(){
+		it('.insertBefore(): Should insert li.other to li.orange before.', function(){
+			var $fruits = $(fruits);
+			var target = $(".orange", $fruits);
+			$('<li class="other">Other</li>').insertBefore(target);
+			expect($fruits.find(".other").index()).to.be.equal(1);
+		});
+	});
+
+	describe('.wrapAll', function(){
+		it('wrapAll(structure): Should wrap all elements in a single structure', function(){
+			var html = '<span>inner</span>';
+			var $frame = $('<div id="buttons" />');
+			var $ele = $(html);
+			var $result = $ele.wrapAll($frame);
+			expect($frame.html()).to.be.equal(html);
+		});
+	});
+
+
+	describe('.wrapInner', function(){
+		it('wrapInner(structure): Wrap the contents of each element separately in a structure', function(){
+			var innerHTML = 'inner <!--comment--><strong>text</strong>';
+			var html = '<div class="inner">' + innerHTML + '</div>';
+			var $frame = $('<div id="buttons" />');
+			var $ele = $(html);
+			var $result = $ele.wrapInner($frame);
+			expect($frame.html()).to.be.equal(innerHTML);
+		});
+	});
+
+	describe('.wrap', function(){
+		it('wrap(structure): Wrap each element of the collection separately in a DOM structure', function(){
+			var paragraph = '<div><p>paragraph 1</p><p>paragraph 2</p></div>';
+			var $list = $('p', paragraph);
+			$list.wrap('<div></div>');
+			console.log($list.parent().html());
+			//var $result = $ele.wrapInner($frame);
+			//expect($frame.html()).to.be.equal(innerHTML);
 		});
 	});
 });

@@ -215,28 +215,6 @@ describe('$(...)', function() {
 
   });
 
-	describe('.val', function(){
-		it('() : should get the value', function() {
-			var value = $('#txtUser', form).val();
-			expect(value).to.equal('cheerio');
-		});
-
-		it('(value) : should set value', function() {
-			var $mail = $('#txtMail', form);
-			var value = 'cheerio@domain.com';
-			$mail.val(value);
-			expect($mail.val()).to.equal(value);
-		});
-
-		it('(value) : should set multiple attributes', function(){
-			var $eles = $('input', form);
-			var value = 'cheerio';
-			$eles.val(value);
-			expect($('#txtUser', $eles).val()).to.equal(value);
-			expect($('#txtMail', $eles).val()).to.equal(value);
-		});
-	})
-
 	describe('.css', function(){
 
 		var elStyle = '<div style="color: red; font-size: 12px;"></div>';
