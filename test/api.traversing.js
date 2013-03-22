@@ -234,9 +234,11 @@ describe('$(...)', function() {
 
 	describe('.has', function(){
 		it('', function(){
-			var html = '<p>first</p><p class="red">second</p><p>third</p>';
-			var list = $("p", html).has(".red");
-			console.log(list);
+			var html = '<div><p>first</p></div><div><p class="red">second</p></div><div><p>third</p></div>';
+			var list = $(html).has(".red");
+			var review = '<div><p class="red">second</p></div>';
+			expect(list.toString()).to.be.equal(review);
+			//console.log(list);
 		});
 	});
 
