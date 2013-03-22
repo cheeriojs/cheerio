@@ -411,10 +411,20 @@ describe('$(...)', function() {
 			var paragraph = '<div><p>paragraph 1</p><p>paragraph 2</p></div>';
 			var $list = $('p', paragraph);
 			$list.wrap('<div></div>');
-			console.log($list.parent().html());
+			//console.log("Result: %s", $list.toString());
+			//console.log($list.parent().html());
 
 			//var $result = $ele.wrapInner($frame);
 			//expect($frame.html()).to.be.equal(innerHTML);
+		});
+	});
+
+	describe('.prependTo', function(){
+		it('.prependTo(target)', function(){
+			var target = $('<div class="wrap"><span>something</span></div>');
+			$('<h1>title</h1>').prependTo(target);
+			var review = '<div class="wrap"><h1>title</h1><span>something</span></div>';
+			expect(target.toString()).to.be.equal(review);
 		});
 	});
 });
