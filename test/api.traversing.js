@@ -1,7 +1,8 @@
 var expect = require('expect.js'),
     $ = require('../'),
     food = require('./fixtures').food,
-    fruits = require('./fixtures').fruits;
+    fruits = require('./fixtures').fruits,
+		form = require('./fixtures').form;
 
 describe('$(...)', function() {
 
@@ -231,4 +232,19 @@ describe('$(...)', function() {
 		//$(require('./fixtures').form).serializeArray();
 	});
 
+	describe('.has', function(){
+		it('', function(){
+			var html = '<p>first</p><p class="red">second</p><p>third</p>';
+			var list = $("p", html).has(".red");
+			console.log(list);
+		});
+	});
+
+	describe('.not', function(){
+		it('.not(): Filter the current collection to get a new collection of elements that don’t match the CSS selector. ', function(){
+			var html = '<p>first</p><p class="red">second</p><p>third</p>';
+			var list = $("p", html).not(".red");
+			expect(list.toString()).to.be.equal('<p>first</p><p>third</p>');
+		});
+	});
 });
