@@ -22,7 +22,7 @@ exports.food = [
 
 exports.form = [
 	'<form>',
-		'<input id="txtUser" value="cheerio" />',
+		'<input id="txtUser" value="cheerio" class="input" />',
 		'<input id="txtMail" />',
 		'<textarea id="txtMemo">something</textarea>"',
 	'</form>'

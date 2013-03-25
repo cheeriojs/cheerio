@@ -427,4 +427,27 @@ describe('$(...)', function() {
 			expect(target.toString()).to.be.equal(review);
 		});
 	});
+
+	describe('.unwrap', function(){
+		it('.unwrap()', function(){
+			var inner = '<span>something</span>';
+			var $ele = $('<div class="wrap">' + inner + '</div>');
+		});
+	});
+
+	describe('closest', function(){
+		var html = ['<ul id="menu" style="width:100px;">',
+			'<li>',
+			'<ul class="inner" id="inner">',
+			'<li>',
+			'<a href="#">Home</a>',
+			'</li>',
+			'</ul>',
+			'</li>',
+			'<li>End</li>',
+			'</ul>'].join("");
+
+		var $obj = $("a", html);
+		$obj.closest("ul");
+	})
 });

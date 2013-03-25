@@ -317,6 +317,24 @@ $('li').eq(-1).text()
 //=> Pear
 ```
 
+#### .wrapInner()
+Wrap an HTML structure around the content of each element in the set of matched elements.
+
+#### .wrapAll()
+Wrap an HTML structure around all elements in the set of matched elements.
+
+#### ~~.wrap()~~
+Wrap an HTML structure around each element in the set of matched elements.
+
+#### .push()
+Add elements to the end of the current collection.
+
+#### .concat(nodes, [node2, ...])
+Modify the collection by adding elements to it. If any of the arguments is an array, its elements are merged into the current collection.
+
+#### .reduce()
+Identical to Array.reduce that iterates over current collection.
+
 ### Manipulation
 Methods for modifying the DOM structure.
 
@@ -435,6 +453,88 @@ $('ul').text()
 //    Pear
 ```
 
+#### .val([value]);
+Get or set the value of form controls. When no value is given, return the value of the first element. For <select multiple>, an array of values is returend. When a value is given, set all elements to this value.
+
+```js
+$('input').val();
+//=> Cheerio
+
+$('#txtMail').val('test@test.com');
+
+```
+
+#### .css(property[, value])
+Read or set CSS properties on DOM elements. When no value is given, returns the CSS property from the first element in the collection. When a value is given, sets the property to that value on each element of the collection. Multiple properties can be set by passing an object to the method.
+
+```js
+$('h1').css('background-color');
+//=> red
+
+$('h1').css('background-color', 'green');
+//=> The background-color property has been changed to green
+
+$('h1').css({'background-color': 'green', 'color': '#FFFFFF'});
+```
+
+#### .show()
+Restore the default value for the “display” property of each element in the array, effectively showing them if they were hidden with hide.
+
+#### .hide()
+Hide elements in this collection by setting their display CSS property to none.
+
+#### .add()
+Modify the current collection by adding the results of performing the CSS selector on the whole document, or, if context is given, just inside context elements.
+
+#### .width()
+Get the width of the first element in the collection; or set the width of all elements in the collection.
+
+#### .data([value])
+Store arbitrary data associated with the matched elements or return the value at the named data store for the first element in the set of matched elements.
+
+#### .removeData(names)
+Remove a previously-stored piece of data.
+
+#### .not([selector])
+Remove elements from the set of matched elements.
+
+#### .insertBefore(target)
+Insert every element in the set of matched elements before the target.
+
+#### .insertAfter()
+Insert every element in the set of matched elements after the target.
+
+#### .index()
+Search for a given element from among the matched elements.
+
+#### .has()
+Reduce the set of matched elements to those that have a descendant that matches the selector or DOM element.
+
+#### .get()
+Retrieve the DOM elements matched by the jQuery object.
+
+#### .map()
+Pass each element in the current matched set through a function, producing a new jQuery object containing the return values.
+
+#### .size()
+Return the number of elements in the jQuery object.
+
+#### .slice()
+Reduce the set of matched elements to a subset specified by a range of indices.
+
+#### .toggleClass()
+Add or remove one or more classes from each element in the set of matched elements, depending on either the class’s presence or the value of the switch argument.
+
+#### .toggle()
+Display or hide the matched elements.
+
+
+#### .serializeArray()
+Encode a set of form elements as an array of names and values.
+
+#### .serialize()
+Encode a set of form elements as a string for submission.
+
 ### Rendering
 When you're ready to render the document, you can use `html` utility function:
 
@@ -485,6 +585,33 @@ $.root().append('<ul id="vegetables"></ul>').html();
 
 #### $.contains( container, contained )
 Checks to see if the `contained` DOM element is a descendent of the `container` DOM element.
+
+#### $.grep
+Finds the elements of an array which satisfy a filter function. The original array is not affected.
+
+#### $.inArray
+Search for a specified value within an array and return its index (or -1 if not found).
+
+#### $.isArray
+Determine whether the argument is an array.
+
+#### $.isFunction
+Determine if the argument passed is a Javascript function object.
+
+#### $.isPlainObject()
+Check to see if an object is a plain object (created using “{}” or “new Object”).
+
+#### $.map
+Translate all items in an array or object to new array of items.
+
+#### $.parseJSON
+Takes a well-formed JSON string and returns the resulting JavaScript object.
+
+#### $.trim
+Remove the whitespace from the beginning and end of a string.
+
+#### $.type
+Determine the internal JavaScript [[Class]] of an object.
 
 ## Screencasts
 
