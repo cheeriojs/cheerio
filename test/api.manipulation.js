@@ -448,6 +448,6 @@ describe('$(...)', function() {
 			'</ul>'].join("");
 
 		var $obj = $("a", html);
-		$obj.closest("ul");
+		//$obj.closest("ul");
 	})
 });

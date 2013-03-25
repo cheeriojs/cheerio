@@ -192,6 +192,8 @@ $('.apple').addClass('red').removeClass().html()
 > See http://api.jquery.com/removeClass/ for more information.
 
 ### Traversing
+#### .add()
+Modify the current collection by adding the results of performing the CSS selector on the whole document, or, if context is given, just inside context elements.
 
 #### .find(selector)
 Get a set of descendants filtered by `selector` of each element in the current set of matched elements.
@@ -483,8 +485,6 @@ Restore the default value for the “display” property of each element in the 
 #### .hide()
 Hide elements in this collection by setting their display CSS property to none.
 
-#### .add()
-Modify the current collection by adding the results of performing the CSS selector on the whole document, or, if context is given, just inside context elements.
 
 #### .width()
 Get the width of the first element in the collection; or set the width of all elements in the collection.
@@ -528,6 +528,7 @@ Add or remove one or more classes from each element in the set of matched elemen
 #### .toggle()
 Display or hide the matched elements.
 
+## Form
 
 #### .serializeArray()
 Encode a set of form elements as an array of names and values.
