@@ -249,4 +249,29 @@ describe('$(...)', function() {
 			expect(list.toString()).to.be.equal('<p>first</p><p>third</p>');
 		});
 	});
+
+	describe('.is', function(){
+		it('.is()', function(){
+			var html = '<p id="wrapper">first</p><p class="red">second</p><p>third</p>';
+			var $ele = $(html);
+			expect($ele.is('#wrapper')).to.be.ok();
+		});
+	});
+
+	describe('closest', function(){
+		var html = ['<ul id="menu" style="width:100px;">',
+			'<li>',
+			'<ul class="inner" id="inner">',
+			'<li>',
+			'<a href="#">Home</a>',
+			'</li>',
+			'</ul>',
+			'</li>',
+			'<li>End</li>',
+			'</ul>'].join("");
+
+		var $obj = $("a", html);
+		var $find = $obj.closest("ul");
+		expect($find.attr("class")).to.be.equal('inner');
+	})
 });
