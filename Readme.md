@@ -203,6 +203,9 @@ $('#fruits').find('li').length
 //=> 3
 ```
 
+#### .closest(selector, [context])
+Traverse upwards from the current element to find the first element that matches the selector. If context node is given, consider only elements that are its descendants. This method is similar to parents(selector), but it only returns the first ancestor matched.
+
 #### .parent()
 Gets the parent of the first selected element.
 
@@ -319,6 +322,9 @@ $('li').eq(-1).text()
 //=> Pear
 ```
 
+#### .forEach
+Iterate through every element of the collection. Similar to each, but the arguments for the iterator functions are different, and returning false from the iterator won’t stop the iteration.
+
 #### .wrapInner()
 Wrap an HTML structure around the content of each element in the set of matched elements.
 
@@ -328,6 +334,9 @@ Wrap an HTML structure around all elements in the set of matched elements.
 #### ~~.wrap()~~
 Wrap an HTML structure around each element in the set of matched elements.
 
+#### .unwrap()
+Remove immediate parent nodes of each element in the collection and put their children in their place. Basically, this method removes one level of ancestry while keeping current elements in the DOM.
+
 #### .push()
 Add elements to the end of the current collection.
 
@@ -336,6 +345,9 @@ Modify the collection by adding elements to it. If any of the arguments is an ar
 
 #### .reduce()
 Identical to Array.reduce that iterates over current collection.
+
+#### .is()
+Check if the first element of the current collection matches the CSS selector. For basic support of jQuery’s non-standard pseudo-selectors such as :visible, include the optional “selector” module.
 
 ### Manipulation
 Methods for modifying the DOM structure.
@@ -367,6 +379,12 @@ $.html()
 //      <li class = "pear">Pear</li>
 //    </ul>
 ```
+
+#### appendTo
+Append elements from the current collection to the target element. This is like append, but with reversed operands.
+
+#### .prependTo(target)
+Prepend elements of the current collection inside each of the target elements. This is like prepend, only with reversed operands.
 
 #### .after( content, [content, ...] )
 Insert content next to each element in the set of matched elements.
@@ -507,6 +525,9 @@ Insert every element in the set of matched elements after the target.
 #### .index()
 Search for a given element from among the matched elements.
 
+#### .indexOf()
+Get the position of an element in the current collection. If fromIndex number is given, search only from that position onwards. Returns the 0-based position when found and -1 if not found. Use of index is recommended over this method.
+
 #### .has()
 Reduce the set of matched elements to those that have a descendant that matches the selector or DOM element.
 
@@ -527,6 +548,9 @@ Add or remove one or more classes from each element in the set of matched elemen
 
 #### .toggle()
 Display or hide the matched elements.
+
+#### .contents()
+Get the children of each element in the collection, including text and comment nodes.
 
 ## Form
 
