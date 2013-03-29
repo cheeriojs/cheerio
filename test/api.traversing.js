@@ -96,10 +96,20 @@ describe('$(...)', function() {
 
     it('() : should get all the siblings', function() {
       expect($('.orange', fruits).siblings()).to.have.length(2);
+      expect($('#fruits', fruits).siblings()).to.have.length(0);
     });
 
     it('(selector) : should get all siblings that match the selector', function() {
-      expect($('.orange', fruits).siblings('li')).to.have.length(2);
+      expect($('.orange', fruits).siblings('.apple')).to.have.length(1);
+      expect($('.orange', fruits).siblings('.peach')).to.have.length(0);
+    });
+
+    it('(selector) : should throw a SyntaxError if given an invalid selector', function() {
+      expect(function() {
+        $('.orange', fruits).siblings(':bah');
+      }).to.throwException(function(err) {
+        expect(err).to.be.a(SyntaxError);
+      });
     });
 
   });
