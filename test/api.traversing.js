@@ -87,7 +87,7 @@ describe('$(...)', function() {
     });
 
     it('(selector) : should get all siblings that match the selector', function() {
-      expect($('.orange', fruits).siblings('li')).to.have.length(2);
+      expect($('.orange', fruits).siblings('.pear')).to.have.length(1);
     });
 
   });
