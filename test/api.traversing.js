@@ -7,8 +7,8 @@ describe('$(...)', function() {
 
   describe('.find', function() {
 
-    it('() : should return this', function() {
-      expect($('ul', fruits).find()[0].name).to.equal('ul');
+    it('() : should find nothing', function() {
+      expect($('ul', fruits).find()).to.have.length(0);
     });
 
     it('(single) : should find one descendant', function() {
