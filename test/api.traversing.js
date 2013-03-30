@@ -33,6 +33,14 @@ describe('$(...)', function() {
       expect($('#fruits').find('li')).to.have.length(0);
     });
 
+    it('should throw a SyntaxError if given an invalid selector', function() {
+      expect(function() {
+        $('#fruits').find(':bah');
+      }).to.throwException(function(err) {
+        expect(err).to.be.a(SyntaxError);
+      });
+    });
+
   });
 
   describe('.children', function() {
