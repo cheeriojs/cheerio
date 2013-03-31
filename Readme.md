@@ -519,35 +519,6 @@ make test
 
 This will download the development packages and run the test suite.
 
-## Contributors
-
-These are some of the contributors that have made cheerio possible:
-
-```
-project  : cheerio
-repo age : 1 year, 4 months ago
-commits  : 416
-active   : 118 days
-files    : 26
-authors  :
-  278 Matt Mueller            66.8%
-   68 Matthew Mueller         16.3%
-   27 David Chambers          6.5%
-   15 Siddharth Mahendraker   3.6%
-    7 ironchefpython          1.7%
-    5 Jos Shepherd            1.2%
-    5 Ben Sheldon             1.2%
-    2 alexbardas              0.5%
-    2 Rob Ashton              0.5%
-    1 mattym                  0.2%
-    1 Chris O'Hara            0.2%
-    1 Mike Pennisi            0.2%
-    1 Rob "Hurricane" Ashton  0.2%
-    1 Sindre Sorhus           0.2%
-    1 Wayne Larsen            0.2%
-    1 Ben Atkin               0.2%
-```
-
 ## Special Thanks
 
 This library stands on the shoulders of some incredible developers. A special thanks to:
