@@ -65,7 +65,9 @@ describe('$(...)', function() {
       expect(cls).to.equal('pear');
     });
 
-    it('(no next) : should return null (?)');
+    it('(no next) : should return empty for last child', function() {
+      expect($('.pear', fruits).next()).to.have.length(0);
+    });
 
   });
 
@@ -76,7 +78,9 @@ describe('$(...)', function() {
       expect(cls).to.equal('apple');
     });
 
-    it('(no prev) : should return null (?)');
+    it('(no prev) : should return empty for first child', function() {
+      expect($('.apple', fruits).prev()).to.have.length(0);
+    });
 
   });
 
