@@ -94,12 +94,28 @@ describe('$(...)', function() {
 
   describe('.siblings', function() {
 
-    it('() : should get all the siblings', function() {
-      expect($('.orange', fruits).siblings()).to.have.length(2);
+    it('() : should find no siblings', function() {
+      expect($('<li>').siblings()).to.have.length(0);
+    });
+
+    it('() : should find all siblings', function() {
+      expect($('<ul><li id=a><li id=b><li></ul>').find("#a").siblings()).to.have.length(2);
     });
 
     it('(selector) : should get all siblings that match the selector', function() {
-      expect($('.orange', fruits).siblings('li')).to.have.length(2);
+      expect($('<ul><li id=a><li id=b><li></ul>').find('#a').siblings('#b')).to.have.length(1);
+    });
+    
+    it('(selector) : should get no siblings that match the selector', function() {
+      expect($('<ul><li id=a><li id=b><li></ul>').find('#a').siblings('#z')).to.have.length(0);
+    });
+
+    it('(selector) should throw a SyntaxError if given an invalid selector', function() {
+      expect(function() { 
+        $('<ul><li id=a><li id=b><li></ul>').siblings(':bah');
+      }).to.throwException(function(err) {
+        expect(err).to.be.a(SyntaxError);
+      });
     });
 
   });
