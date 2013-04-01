@@ -7,8 +7,8 @@ describe('$(...)', function() {
 
   describe('.find', function() {
 
-    it('() : should return this', function() {
-      expect($('ul', fruits).find()[0].name).to.equal('ul');
+    it('() : should find nothing', function() {
+      expect($('ul', fruits).find()).to.have.length(0);
     });
 
     it('(single) : should find one descendant', function() {
@@ -31,6 +31,14 @@ describe('$(...)', function() {
 
     it('should return empty if search already empty result', function() {
       expect($('#fruits').find('li')).to.have.length(0);
+    });
+
+    it('should throw a SyntaxError if given an invalid selector', function() {
+      expect(function() {
+        $('#fruits').find(':bah');
+      }).to.throwException(function(err) {
+        expect(err).to.be.a(SyntaxError);
+      });
     });
 
   });
@@ -65,7 +73,9 @@ describe('$(...)', function() {
       expect(cls).to.equal('pear');
     });
 
-    it('(no next) : should return null (?)');
+    it('(no next) : should return empty for last child', function() {
+      expect($('.pear', fruits).next()).to.have.length(0);
+    });
 
   });
 
@@ -76,7 +86,9 @@ describe('$(...)', function() {
       expect(cls).to.equal('apple');
     });
 
-    it('(no prev) : should return null (?)');
+    it('(no prev) : should return empty for first child', function() {
+      expect($('.apple', fruits).prev()).to.have.length(0);
+    });
 
   });
 
