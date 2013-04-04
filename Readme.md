@@ -143,7 +143,7 @@ $('.apple').attr('id', 'favorite').html()
 
 > See http://api.jquery.com/attr/ for more information
 
-#### .val(value)
+#### .val( [value] )
 Method for getting and setting the value of input, select, and textarea. Note: Support for `map`, and `function` has not been added yet.
 
     $('input[type="text"]').val()
