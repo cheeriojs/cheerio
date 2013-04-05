@@ -114,6 +114,17 @@ describe('$(...)', function() {
 
   });
 
+  describe('.parents', function() {
+    it('() : should get all of the parents', function(){
+      expect($('.orange', food).parents()).to.have.length(2);
+      expect($('#food', food).parents()).to.have.length(1);
+    })
+    it('(selector) : should get all of the parents that match the selector', function() {
+      expect($('.orange', food).parents('#fruits')).to.have.length(1);
+      expect($('.orange', food).parents('ul')).to.have.length(2);
+    })
+  });
+
   describe('.each', function() {
 
     it('( (i, elem) -> ) : should loop selected returning fn with (i, elem)', function() {
@@ -153,7 +164,7 @@ describe('$(...)', function() {
       expect(classes).to.be('apple, orange, pear');
     });
   });
-  
+
   describe('.filter', function() {
     it('(selector) : should reduce the set of matched elements to those that match the selector', function() {
       var pear = $('li', fruits).filter('.pear').text();
@@ -164,7 +175,7 @@ describe('$(...)', function() {
       var lis = $(fruits).filter('li');
       expect(lis).to.have.length(0);
     });
-    
+
     it('(fn) : should reduce the set of matched elements to those that pass the function\'s test', function() {
       var orange = $('li', fruits).filter(function(i, el) {
         expect(this[0]).to.be(el);
