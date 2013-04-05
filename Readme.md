@@ -220,7 +220,7 @@ $('.pear').parent().attr('id')
 //=> fruits
 ```
 
-#### .parents(selector)
+#### .parents([selector])
 Get a set of parents filtered by `selector` of each element in the current set of match elements.
 ```js
 $('.orange').parents().length
