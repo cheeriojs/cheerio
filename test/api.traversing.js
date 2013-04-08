@@ -115,13 +115,23 @@ describe('$(...)', function() {
   });
 
   describe('.parents', function() {
-    it('() : should get all of the parents', function(){
-      expect($('.orange', food).parents()).to.have.length(2);
-      expect($('#food', food).parents()).to.have.length(1);
+    it('() : should get all of the parents in logical order', function(){
+      var result = $('.orange', food).parents();
+      expect(result).to.have.length(2);
+      expect(result[0].attribs.id).to.be('fruits');
+      expect(result[1].attribs.id).to.be('food');
+      result = $('#food', food).parents()
+      expect(result).to.have.length(1);
+      expect(result[0].attribs.id).to.be('food');
     })
-    it('(selector) : should get all of the parents that match the selector', function() {
-      expect($('.orange', food).parents('#fruits')).to.have.length(1);
-      expect($('.orange', food).parents('ul')).to.have.length(2);
+    it('(selector) : should get all of the parents that match the selector in logical order', function() {
+      var result = $('.orange', food).parents('#fruits');
+      expect(result).to.have.length(1);
+      expect(result[0].attribs.id).to.be('fruits');
+      result = $('.orange', food).parents('ul');
+      expect(result).to.have.length(2);
+      expect(result[0].attribs.id).to.be('fruits');
+      expect(result[1].attribs.id).to.be('food');
     })
   });
 
