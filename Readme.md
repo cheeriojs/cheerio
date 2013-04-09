@@ -104,8 +104,8 @@ are valid in cheerio as well. The default options are:
 }
 ```
 
-For a list of options and their effects, see [this](https://github.com/FB55/node-htmlparser/wiki/DOMHandler) and
-[this](https://github.com/FB55/node-htmlparser/wiki/Parser-options).
+For a list of options and their effects, see [this](https://github.com/fb55/DomHandler) and
+[this](https://github.com/fb55/htmlparser2/wiki/Parser-options).
 
 ### Selectors
 
