@@ -500,6 +500,15 @@ $('li').toArray()
 //=> [ {...}, {...}, {...} ]
 ```
 
+#### .toCheerioArray()
+Converts a Cheerio object to an array of Cheerio objects. Order is preserved.
+
+```js
+$('li').toCheerioArray()
+//=>[{Cheerio}, {Cheerio}, {Cheerio}]
+```
+
+
 #### .clone() ####
 Clone the cheerio object.
 
