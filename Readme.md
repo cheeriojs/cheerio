@@ -229,6 +229,20 @@ $('.orange').parents('#fruits').length
 // => 1
 ```
 
+#### .closest(selector)
+Get the closest element that matches the selector by searching through the element and the elements parents.
+
+```js
+$('.orange').closest()
+// => []
+$('.orange').closest('.apple')
+// => []
+$('.orange').closest('li')
+// => [<li class="orange">Orange</li>]
+$('.orange').closest('#fruits')
+// => [<ul id="fruits"> ... </ul>]
+```
+
 #### .next()
 Gets the next sibling of the first selected element.
 
