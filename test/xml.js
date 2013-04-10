@@ -14,7 +14,7 @@ describe('render', function() {
 
     it('should render <media:thumbnail /> tags correctly', function(done) {
       var str = '<media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123" />';
-      expect(xml(str)).to.equal('<media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123"></media:thumbnail>');
+      expect(xml(str)).to.equal('<media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123"/>');
       done();
     });
 
