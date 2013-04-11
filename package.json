@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "cheerio-select" : "*",
-    "htmlparser2" : "2.x",
+    "htmlparser2" : "3.x",
     "underscore" : "~1.4",
     "entities" : "0.x"
   },
