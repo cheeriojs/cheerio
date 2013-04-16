@@ -135,6 +135,24 @@ describe('$(...)', function() {
     })
   });
 
+  describe('.closest', function() {
+    it('() : should return an empty array', function () {
+      var result = $('.orange', fruits).closest();
+      expect(result).to.have.length(0);
+    })
+    
+    it('(selector) : should find the closest element that matches the selector, searching through its ancestors and itself', function() {
+      expect($('.orange', fruits).closest('.apple')).to.have.length(0);
+      var result = $('.orange', food).closest('#food');
+      expect(result[0].attribs['id']).to.be('food');
+      result = $('.orange', food).closest('ul');
+      expect(result[0].attribs['id']).to.be('fruits');
+      result = $('.orange', food).closest('li');
+      expect(result[0].attribs['class']).to.be('orange');
+    })
+    
+  });
+
   describe('.each', function() {
 
     it('( (i, elem) -> ) : should loop selected returning fn with (i, elem)', function() {
