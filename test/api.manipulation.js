@@ -243,6 +243,23 @@ describe('$(...)', function() {
     });
 
   });
+  
+  describe('.toString', function() {
+    it('() : should get the outerHTML for an element', function() {
+      var $fruits = $(fruits);
+      expect($fruits.toString()).to.equal(fruits);
+    });
+    
+    it('() : should return an html string for a set of elements', function() {
+      var $fruits = $(fruits);
+      expect($fruits.find('li').toString()).to.equal('<li class="apple">Apple</li><li class="orange">Orange</li><li class="pear">Pear</li>');
+    });
+    
+    it('() : should be called implicitly', function() {
+      var string = [$("<foo>"), $("<bar>"), $("<baz>")].join("");
+      expect(string).to.equal('<foo></foo><bar></bar><baz></baz>');
+    });
+  });
 
   describe('.text', function() {
 

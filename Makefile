@@ -3,6 +3,9 @@ REPORTER = dot
 test:
 	@./node_modules/mocha/bin/mocha --reporter $(REPORTER)
 
+setup:
+	@npm install
+
 subl:
 	@subl lib/ test/ package.json index.js
 
@@ -12,4 +15,4 @@ test-cov: lib-cov
 lib-cov:
 	@jscoverage lib lib-cov
 
-.PHONY: test build subl
+.PHONY: test build setup subl

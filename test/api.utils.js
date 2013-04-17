@@ -1,4 +1,5 @@
 var expect = require('expect.js'),
+    fixtures = require('./fixtures'),
     $ = require('../');
 
 
@@ -28,6 +29,10 @@ describe('$', function() {
       expect($().html()).to.be(null);
     });
 
+    it('(selector) : should return the outerHTML of the selected element', function() {
+      var _$ = $.load(fixtures.fruits);
+      expect(_$.html('.pear')).to.equal('<li class="pear">Pear</li>');
+    });
   });
 
 

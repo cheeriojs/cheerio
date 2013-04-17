@@ -3,6 +3,7 @@ var expect = require('expect.js');
 var $ = require('../');
 var fruits = require('./fixtures').fruits;
 var vegetables = require('./fixtures').vegetables;
+var inputs = require('./fixtures').inputs;
 
 describe('$(...)', function() {
 
@@ -59,6 +60,49 @@ describe('$(...)', function() {
       expect($apple[0].attribs['data-test']).to.equal('1');
       expect($apple.attr('data-test')).to.equal('1');
     });    
+  });
+
+  describe('.val', function() {
+		it('.val(): on select should get value', function() {
+			var val = $('select#one', inputs).val();
+			expect(val).to.equal('option_selected');
+		});
+		it('.val(): on text input should get value', function() {
+			var val = $('input[type="text"]', inputs).val();
+			expect(val).to.equal('input_text');
+		});
+		it('.val(): on checked checkbox should get value', function() {
+			var val = $('input[name="checkbox_on"]', inputs).val();
+			expect(val).to.equal('on');
+		});
+		it('.val(): on unchecked checkbox should get null', function() {
+			var val = $('input[name="checkbox_off"]', inputs).val();
+			expect(val).to.equal(null);
+		});
+		it('.val(): on radio should get value', function() {
+			var val = $('input[type="radio"]', inputs).val();
+			expect(val).to.equal('on');
+		});
+		it('.val(): on multiple select should get an array of values', function() {
+			var val = $('select#multi', inputs).val();
+			expect(val).to.have.length(2);
+		});
+		it('.val(value): on input text should set value', function() {
+			var element = $('input[type="text"]', inputs).val('test');
+			expect(element.val()).to.equal('test');
+		});
+		it('.val(value): on select should set value', function() {
+			var element = $('select#one', inputs).val('option_not_selected');
+			expect(element.val()).to.equal('option_not_selected');
+		});
+		it('.val(value): on radio should set value', function() {
+			var element = $('input[name="radio"]', inputs).val('off');
+			expect(element.val()).to.equal('off');
+		});
+		it('.val(values): on multiple select should set multiple values', function() {
+			var element = $('select#multi', inputs).val(['1', '3', '4']);
+			expect(element.val()).to.have.length(3);
+		});
   });
 
   describe('.removeAttr', function() {
@@ -173,6 +217,19 @@ describe('$(...)', function() {
       $('.pear', $fruits).removeClass('fruit');
       expect($('.pear', $fruits).hasClass('fruit')).to.not.be.ok();
       expect($('.pear', $fruits).hasClass('pear')).to.be.ok();
+    });
+
+    it('(single class) : should remove a single class from multiple classes on the element', function() {
+      var $fruits = $(fruits);
+      $('.pear', $fruits).addClass('fruit green tasty');
+      expect($('.pear', $fruits).hasClass('fruit')).to.be.ok();
+      expect($('.pear', $fruits).hasClass('green')).to.be.ok();
+      expect($('.pear', $fruits).hasClass('tasty')).to.be.ok();
+
+      $('.pear', $fruits).removeClass('green');
+      expect($('.pear', $fruits).hasClass('fruit')).to.be.ok();
+      expect($('.pear', $fruits).hasClass('green')).to.not.be.ok();
+      expect($('.pear', $fruits).hasClass('tasty')).to.be.ok();
     });
 
     it('(class class class) : should remove multiple classes from the element', function() {

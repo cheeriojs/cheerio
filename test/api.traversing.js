@@ -1,13 +1,14 @@
 var expect = require('expect.js'),
     $ = require('../'),
+    food = require('./fixtures').food,
     fruits = require('./fixtures').fruits;
 
 describe('$(...)', function() {
 
   describe('.find', function() {
 
-    it('() : should return this', function() {
-      expect($('ul', fruits).find()[0].name).to.equal('ul');
+    it('() : should find nothing', function() {
+      expect($('ul', fruits).find()).to.have.length(0);
     });
 
     it('(single) : should find one descendant', function() {
@@ -24,8 +25,20 @@ describe('$(...)', function() {
       expect($('ul', fruits).find('blah')).to.have.length(0);
     });
 
+    it('(invalid single) : should query descendants only', function() {
+      expect($('#fruits', fruits).find('ul')).to.have.length(0);
+    });
+
     it('should return empty if search already empty result', function() {
       expect($('#fruits').find('li')).to.have.length(0);
+    });
+
+    it('should throw a SyntaxError if given an invalid selector', function() {
+      expect(function() {
+        $('#fruits').find(':bah');
+      }).to.throwException(function(err) {
+        expect(err).to.be.a(SyntaxError);
+      });
     });
 
   });
@@ -34,6 +47,10 @@ describe('$(...)', function() {
 
     it('() : should get all children', function() {
       expect($('ul', fruits).children()).to.have.length(3);
+    });
+
+    it('() : should return children of all matched elements', function() {
+      expect($('ul ul', food).children()).to.have.length(5);
     });
 
     it('(selector) : should return children matching selector', function() {
@@ -56,7 +73,9 @@ describe('$(...)', function() {
       expect(cls).to.equal('pear');
     });
 
-    it('(no next) : should return null (?)');
+    it('(no next) : should return empty for last child', function() {
+      expect($('.pear', fruits).next()).to.have.length(0);
+    });
 
   });
 
@@ -67,7 +86,9 @@ describe('$(...)', function() {
       expect(cls).to.equal('apple');
     });
 
-    it('(no prev) : should return null (?)');
+    it('(no prev) : should return empty for first child', function() {
+      expect($('.apple', fruits).prev()).to.have.length(0);
+    });
 
   });
 
@@ -75,11 +96,61 @@ describe('$(...)', function() {
 
     it('() : should get all the siblings', function() {
       expect($('.orange', fruits).siblings()).to.have.length(2);
+      expect($('#fruits', fruits).siblings()).to.have.length(0);
     });
 
     it('(selector) : should get all siblings that match the selector', function() {
-      expect($('.orange', fruits).siblings('li')).to.have.length(2);
+      expect($('.orange', fruits).siblings('.apple')).to.have.length(1);
+      expect($('.orange', fruits).siblings('.peach')).to.have.length(0);
     });
+
+    it('(selector) : should throw a SyntaxError if given an invalid selector', function() {
+      expect(function() {
+        $('.orange', fruits).siblings(':bah');
+      }).to.throwException(function(err) {
+        expect(err).to.be.a(SyntaxError);
+      });
+    });
+
+  });
+
+  describe('.parents', function() {
+    it('() : should get all of the parents in logical order', function(){
+      var result = $('.orange', food).parents();
+      expect(result).to.have.length(2);
+      expect(result[0].attribs.id).to.be('fruits');
+      expect(result[1].attribs.id).to.be('food');
+      result = $('#food', food).parents()
+      expect(result).to.have.length(1);
+      expect(result[0].attribs.id).to.be('food');
+    })
+    it('(selector) : should get all of the parents that match the selector in logical order', function() {
+      var result = $('.orange', food).parents('#fruits');
+      expect(result).to.have.length(1);
+      expect(result[0].attribs.id).to.be('fruits');
+      result = $('.orange', food).parents('ul');
+      expect(result).to.have.length(2);
+      expect(result[0].attribs.id).to.be('fruits');
+      expect(result[1].attribs.id).to.be('food');
+    })
+  });
+
+  describe('.closest', function() {
+
+    it('() : should return an empty array', function() {
+      var result = $('.orange', fruits).closest();
+      expect(result).to.have.length(0);
+    })
+
+    it('(selector) : should find the closest element that matches the selector, searching through its ancestors and itself', function() {
+      expect($('.orange', fruits).closest('.apple')).to.have.length(0);
+      var result = $('.orange', food).closest('#food');
+      expect(result[0].attribs['id']).to.be('food');
+      result = $('.orange', food).closest('ul');
+      expect(result[0].attribs['id']).to.be('fruits');
+      result = $('.orange', food).closest('li');
+      expect(result[0].attribs['class']).to.be('orange');
+    })
 
   });
 
@@ -97,6 +168,17 @@ describe('$(...)', function() {
       expect(items[2].attribs['class']).to.equal('pear');
     });
 
+    it('( (i, elem) -> ) : should break iteration when the iterator function returns false', function() {
+
+        var iterationCount = 0;
+        $('li', fruits).each(function(idx, elem) {
+          iterationCount++;
+          return idx < 1;
+        });
+
+        expect(iterationCount).to.equal(2);
+    });
+
   });
 
   describe('.map', function() {
@@ -109,6 +191,29 @@ describe('$(...)', function() {
       }).join(', ');
 
       expect(classes).to.be('apple, orange, pear');
+    });
+  });
+
+  describe('.filter', function() {
+    it('(selector) : should reduce the set of matched elements to those that match the selector', function() {
+      var pear = $('li', fruits).filter('.pear').text();
+      expect(pear).to.be('Pear');
+    });
+
+    it('(selector) : should not consider nested elements', function() {
+      var lis = $(fruits).filter('li');
+      expect(lis).to.have.length(0);
+    });
+
+    it('(fn) : should reduce the set of matched elements to those that pass the function\'s test', function() {
+      var orange = $('li', fruits).filter(function(i, el) {
+        expect(this[0]).to.be(el);
+        expect(el.name).to.be('li');
+        expect(i).to.be.a('number');
+        return this.attr('class') === 'orange';
+      }).text();
+
+      expect(orange).to.be('Orange');
     });
   });
 
@@ -176,6 +281,34 @@ describe('$(...)', function() {
       expect(getText($('li', fruits).eq(2))).to.equal('Pear');
       expect(getText($('li', fruits).eq(3))).to.equal('');
       expect(getText($('li', fruits).eq(-1))).to.equal('Pear');
+    });
+
+  });
+
+  describe('.slice', function() {
+
+    function getText(el) {
+      if(!el.length) return '';
+      return el[0].children[0].data;
+    }
+
+    it('(start) : should return all elements after the given index', function() {
+      var sliced = $('li', fruits).slice(1);
+      expect(sliced).to.have.length(2);
+      expect(getText(sliced.eq(0))).to.equal('Orange');
+      expect(getText(sliced.eq(1))).to.equal('Pear');
+    });
+
+    it('(start, end) : should return all elements matching the given range', function() {
+      var sliced = $('li', fruits).slice(1, 2);
+      expect(sliced).to.have.length(1);
+      expect(getText(sliced.eq(0))).to.equal('Orange');
+    });
+
+    it('(-start) : should return element matching the offset from the end', function() {
+      var sliced = $('li', fruits).slice(-1);
+      expect(sliced).to.have.length(1);
+      expect(getText(sliced.eq(0))).to.equal('Pear');
     });
 
   });
