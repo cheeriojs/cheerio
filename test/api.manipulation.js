@@ -12,24 +12,24 @@ describe('$(...)', function() {
 
     it('(html) : should add element as last child', function() {
       var $fruits = $(fruits);
-      $('#fruits', $fruits).append('<li class="plum">Plum</li>');
-      expect($('#fruits', $fruits).children(3).hasClass('plum')).to.be.ok();
+      $fruits.append('<li class="plum">Plum</li>');
+      expect($fruits.children(3).hasClass('plum')).to.be.ok();
     });
 
     it('($(...)) : should add element as last child', function() {
       var $fruits = $(fruits);
       var $plum = $('<li class="plum">Plum</li>');
-      $('#fruits', $fruits).append($plum);
-      expect($('#fruits', $fruits).children(3).hasClass('plum')).to.be.ok();
+      $fruits.append($plum);
+      expect($fruits.children(3).hasClass('plum')).to.be.ok();
     });
 
     it('($(...), html) : should add multiple elements as last children', function() {
       var $fruits = $(fruits);
       var $plum = $('<li class="plum">Plum</li>');
       var grape = '<li class="grape">Grape</li>';
-      $('#fruits', $fruits).append($plum, grape);
-      expect($('#fruits', $fruits).children(3).hasClass('plum')).to.be.ok();
-      expect($('#fruits', $fruits).children(4).hasClass('grape')).to.be.ok();
+      $fruits.append($plum, grape);
+      expect($fruits.children(3).hasClass('plum')).to.be.ok();
+      expect($fruits.children(4).hasClass('grape')).to.be.ok();
     });
 
     it('(fn) : should add returned element as last child');
@@ -53,24 +53,24 @@ describe('$(...)', function() {
 
     it('(html) : should add element as first child', function() {
       var $fruits = $(fruits);
-      $('#fruits', $fruits).prepend('<li class="plum">Plum</li>');
-      expect($('#fruits', $fruits).children(0).hasClass('plum')).to.be.ok();
+      $fruits.prepend('<li class="plum">Plum</li>');
+      expect($fruits.children(0).hasClass('plum')).to.be.ok();
     });
 
     it('($(...)) : should add element as first child', function() {
       var $fruits = $(fruits);
       var $plum = $('<li class="plum">Plum</li>');
-      $('#fruits', $fruits).prepend($plum);
-      expect($('#fruits', $fruits).children(0).hasClass('plum')).to.be.ok();
+      $fruits.prepend($plum);
+      expect($fruits.children(0).hasClass('plum')).to.be.ok();
     });
 
     it('(html, $(...), html) : should add multiple elements as first children', function() {
       var $fruits = $(fruits);
       var $plum = $('<li class="plum">Plum</li>');
       var grape = '<li class="grape">Grape</li>';
-      $('#fruits', $fruits).prepend($plum, grape);
-      expect($('#fruits', $fruits).children(0).hasClass('plum')).to.be.ok();
-      expect($('#fruits', $fruits).children(1).hasClass('grape')).to.be.ok();
+      $fruits.prepend($plum, grape);
+      expect($fruits.children(0).hasClass('plum')).to.be.ok();
+      expect($fruits.children(1).hasClass('grape')).to.be.ok();
     });
 
     it('(fn) : should add returned element as first child');
@@ -211,7 +211,7 @@ describe('$(...)', function() {
 
     it('() : should get the innerHTML for an element', function() {
       var $fruits = $(fruits);
-      expect($('#fruits', $fruits).html()).to.equal([
+      expect($fruits.html()).to.equal([
         '<li class="apple">Apple</li>',
         '<li class="orange">Orange</li>',
         '<li class="pear">Pear</li>'
@@ -230,15 +230,15 @@ describe('$(...)', function() {
 
     it('(html) : should set the html for its children', function() {
       var $fruits = $(fruits);
-      $('#fruits', $fruits).html('<li class="durian">Durian</li>');
-      var html = $('#fruits', $fruits).html();
+      $fruits.html('<li class="durian">Durian</li>');
+      var html = $fruits.html();
       expect(html).to.equal('<li class="durian">Durian</li>');
     });
 
     it('(elem) : should set the html for its children with element', function() {
       var $fruits = $(fruits);
-      $('#fruits', $fruits).html($('<li class="durian">Durian</li>'));
-      var html = $('#fruits', $fruits).html();
+      $fruits.html($('<li class="durian">Durian</li>'));
+      var html = $fruits.html();
       expect(html).to.equal('<li class="durian">Durian</li>');
     });
 

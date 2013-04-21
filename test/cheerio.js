@@ -1,7 +1,9 @@
 var expect = require('expect.js'),
     _ = require('underscore'),
     $ = require('../'),
-    fruits = require('./fixtures').fruits;
+    fixtures = require('./fixtures'),
+    fruits = fixtures.fruits,
+    food = fixtures.food;
 
 // HTML
 var script = '<script src="script.js" type="text/javascript"></script>',
@@ -87,6 +89,14 @@ describe('cheerio', function() {
     expect(lis).to.have.length(3);
   });
 
+  it('should select only elements inside given context (Issue #193)', function() {
+    var q = $.load(food),
+        fruits = q('#fruits'),
+        fruitElements = q('li', fruits);
+
+    expect(fruitElements).to.have.length(3);
+  });
+
   it('should be able to select multiple tags', function() {
     var $fruits = $('li', null, fruits);
     expect($fruits).to.have.length(3);
@@ -127,7 +137,7 @@ describe('cheerio', function() {
     var $fruits = _($elems).filter(function(elem) {
       return elem.attribs.id === 'fruits';
     });
-    testAppleSelect($($apple));
+    testAppleSelect($apple);
     expect($fruits[0].attribs.id).to.equal('fruits');
   });
 
@@ -138,9 +148,10 @@ describe('cheerio', function() {
     // console.log($elem.before($h2));
 
   it('should be able to select immediate children: $("#fruits > .pear")', function() {
-    var $fruitsWithMorePear = $('.pear', fruits).append('<li class="pear">Another Pear!</li>');
-    expect($('#fruits .pear', $fruitsWithMorePear)).to.have.length(2);
-    var $elem = $('#fruits > .pear', $fruitsWithMorePear);
+    var $food = $(food);
+    $('.pear', $food).append('<li class="pear">Another Pear!</li>');
+    expect($('#fruits .pear', $food)).to.have.length(2);
+    var $elem = $('#fruits > .pear', $food);
     expect($elem).to.have.length(1);
     expect($elem.attr('class')).to.equal('pear');
   });
