@@ -1,7 +1,11 @@
 var expect = require('expect.js'),
     _ = require('underscore'),
     $ = require('../'),
-    fruits = require('./fixtures').fruits;
+    fixtures = require('./fixtures'),
+    fruits = fixtures.fruits,
+    food = fixtures.food;
+
+
 
 // HTML
 var script = '<script src="script.js" type="text/javascript"></script>',
@@ -85,6 +89,14 @@ describe('cheerio', function() {
 
     expect(apple).to.have.length(1);
     expect(lis).to.have.length(3);
+  });
+
+  it('should select only elements inside given context', function() {
+    var q = $.load(food),
+        fruits = q('#fruits'),
+        fruitElements = q('li', fruits);
+
+    expect(fruitElements).to.have.length(3);
   });
 
   it('should be able to select multiple tags', function() {
