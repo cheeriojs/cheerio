@@ -109,7 +109,7 @@ describe('$(...)', function() {
 
     it('(key) : should remove a single attr', function() {
       var $fruits = $(fruits);
-      expect($('ul', $fruits).attr('id')).to.not.be(undefined);
+      expect($('ul', $fruits.parent()).attr('id')).to.not.be(undefined);
       $('ul', $fruits).removeAttr('id');
       expect($('ul', $fruits).attr('id')).to.be(undefined);
     });
@@ -153,8 +153,8 @@ describe('$(...)', function() {
 
     it('(first class) : should add the class to the element', function() {
       var $fruits = $(fruits);
-      $('#fruits', $fruits).addClass('fruits');
-      var cls = $('#fruits', $fruits).hasClass('fruits');
+      $($fruits).addClass('fruits');
+      var cls = $($fruits).hasClass('fruits');
       expect(cls).to.be.ok();
     });
 

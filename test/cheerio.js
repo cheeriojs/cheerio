@@ -91,7 +91,7 @@ describe('cheerio', function() {
     expect(lis).to.have.length(3);
   });
 
-  it('should select only elements inside given context', function() {
+  it('should select only elements inside given context (Issue #193)', function() {
     var q = $.load(food),
         fruits = q('#fruits'),
         fruitElements = q('li', fruits);
@@ -150,9 +150,10 @@ describe('cheerio', function() {
     // console.log($elem.before($h2));
 
   it('should be able to select immediate children: $("#fruits > .pear")', function() {
-    var $fruitsWithMorePear = $('.pear', fruits).append('<li class="pear">Another Pear!</li>');
-    expect($('#fruits .pear', $fruitsWithMorePear)).to.have.length(2);
-    var $elem = $('#fruits > .pear', $fruitsWithMorePear);
+    var $food = $(food);
+    $('.pear', $food).append('<li class="pear">Another Pear!</li>');
+    expect($('#fruits .pear', $food)).to.have.length(2);
+    var $elem = $('#fruits > .pear', $food);
     expect($elem).to.have.length(1);
     expect($elem.attr('class')).to.equal('pear');
   });
