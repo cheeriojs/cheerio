@@ -284,10 +284,15 @@ describe('$(...)', function() {
       var testElem = $('<div>this is a test</div>');
       testElem.data('c', false);
       testElem.data({'a': 1, 'b': '2'});
-      
+
       expect(testElem.data('a')).to.be(1);
       expect(testElem.data('b')).to.be('2');
       expect(testElem.data('c')).to.be(false);
+    });
+
+    it('(valid key) : valid data attribute should get value', function() {
+      var testElem = $('<div data-pow="boom"/>');
+      expect(testElem.data('pow')).to.be("boom");
     });
 
   });
