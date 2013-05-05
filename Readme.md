@@ -201,6 +201,10 @@ $('.apple').addClass('red').removeClass().html()
 
 > See http://api.jquery.com/removeClass/ for more information.
 
+#### .is( selector )
+#### .is( function(index) )
+Checks the current list of elements and returns `true` if _any_ of the elements match the selector. If using a predicate function, the function is executed in the context of the selected element, so `this` refers to the current element.
+
 
 ### Traversing
 
