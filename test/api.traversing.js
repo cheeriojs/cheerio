@@ -133,6 +133,10 @@ describe('$(...)', function() {
       expect(result[0].attribs.id).to.be('fruits');
       expect(result[1].attribs.id).to.be('food');
     })
+    it('() : should not break if the selector does not have any results', function() {
+      var result = $('.saladbar', food).parents();
+      expect(result).to.have.length(0);
+    })
   });
 
   describe('.closest', function() {
@@ -150,6 +154,11 @@ describe('$(...)', function() {
       expect(result[0].attribs['id']).to.be('fruits');
       result = $('.orange', food).closest('li');
       expect(result[0].attribs['class']).to.be('orange');
+    })
+
+    it('() : should not break if the selector does not have any results', function() {
+      var result = $('.saladbar', food).closest('ul');
+      expect(result).to.have.length(0);
     })
 
   });
