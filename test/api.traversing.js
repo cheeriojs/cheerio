@@ -156,6 +156,11 @@ describe('$(...)', function() {
       expect(result[0].attribs['class']).to.be('orange');
     })
 
+    it('() : should not break if the selector does not have any results', function() {
+      var result = $('.saladbar', food).closest('ul');
+      expect(result).to.have.length(0);
+    })
+
   });
 
   describe('.each', function() {
