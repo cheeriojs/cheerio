@@ -75,9 +75,9 @@ describe('$(...)', function() {
 			var val = $('input[name="checkbox_on"]', inputs).val();
 			expect(val).to.equal('on');
 		});
-		it('.val(): on unchecked checkbox should get null', function() {
+		it('.val(): on unchecked checkbox should get value', function() {
 			var val = $('input[name="checkbox_off"]', inputs).val();
-			expect(val).to.equal(null);
+			expect(val).to.equal('off');
 		});
 		it('.val(): on radio should get value', function() {
 			var val = $('input[type="radio"]', inputs).val();
