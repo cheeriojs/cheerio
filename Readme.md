@@ -7,13 +7,13 @@ Teach your server HTML.
 
 ```js
 var cheerio = require('cheerio'),
-    $ = cheerio.load('<h2 class = "title">Hello world</h2>');
+    $ = cheerio.load('<h2 class="title">Hello world</h2>');
 
 $('h2.title').text('Hello there!');
 $('h2').addClass('welcome');
 
 $.html();
-//=> <h2 class = "title welcome">Hello there!</h2>
+//=> <h2 class="title welcome">Hello there!</h2>
 ```
 
 ## Installation
@@ -66,28 +66,28 @@ This is the _preferred_ method:
 
 ```js
 var cheerio = require('cheerio'),
-    $ = cheerio.load('<ul id = "fruits">...</ul>');
+    $ = cheerio.load('<ul id="fruits">...</ul>');
 ```
 
 Optionally, you can also load in the HTML by passing the string as the context:
 
 ```js
 $ = require('cheerio');
-$('ul', '<ul id = "fruits">...</ul>');
+$('ul', '<ul id="fruits">...</ul>');
 ```
 
 Or as the root:
 
 ```js
 $ = require('cheerio');
-$('li', 'ul', '<ul id = "fruits">...</ul>');
+$('li', 'ul', '<ul id="fruits">...</ul>');
 ```
 
 You can also pass an extra object to `.load()` if you need to modify any
 of the default parsing options:
 
 ```js
-$ = cheerio.load('<ul id = "fruits">...</ul>', {
+$ = cheerio.load('<ul id="fruits">...</ul>', {
     ignoreWhitespace: true,
     xmlMode: true
 });
@@ -104,8 +104,8 @@ are valid in cheerio as well. The default options are:
 }
 ```
 
-For a list of options and their effects, see [this](https://github.com/FB55/node-htmlparser/wiki/DOMHandler) and
-[this](https://github.com/FB55/node-htmlparser/wiki/Parser-options).
+For a list of options and their effects, see [this](https://github.com/fb55/DomHandler) and
+[this](https://github.com/fb55/htmlparser2/wiki/Parser-options).
 
 ### Selectors
 
@@ -124,7 +124,7 @@ $('ul .pear').attr('class')
 //=> pear
 
 $('li[class=orange]').html()
-//=> <li class = "orange">Orange</li>
+//=> <li class="orange">Orange</li>
 ```
 
 ### Attributes
@@ -138,10 +138,20 @@ $('ul').attr('id')
 //=> fruits
 
 $('.apple').attr('id', 'favorite').html()
-//=> <li class = "apple" id = "favorite">Apple</li>
+//=> <li class="apple" id="favorite">Apple</li>
 ```
 
 > See http://api.jquery.com/attr/ for more information
+
+#### .val( [value] )
+Method for getting and setting the value of input, select, and textarea. Note: Support for `map`, and `function` has not been added yet.
+
+    $('input[type="text"]').val()
+    => input_text
+
+    $('input[type="text"]').val('test').html()
+    => <input type="text" value="test"/>
+
 
 #### .removeAttr( name )
 Method for removing attributes by `name`.
@@ -170,10 +180,10 @@ Adds class(es) to all of the matched elements. Also accepts a `function` like jQ
 
 ```js
 $('.pear').addClass('fruit').html()
-//=> <li class = "pear fruit">Pear</li>
+//=> <li class="pear fruit">Pear</li>
 
 $('.apple').addClass('fruit red').html()
-//=> <li class = "apple fruit red">Apple</li>
+//=> <li class="apple fruit red">Apple</li>
 ```
 
 > See http://api.jquery.com/addClass/ for more information.
@@ -183,10 +193,10 @@ Removes one or more space-separated classes from the selected elements. If no `c
 
 ```js
 $('.pear').removeClass('pear').html()
-//=> <li class = "">Pear</li>
+//=> <li class="">Pear</li>
 
 $('.apple').addClass('red').removeClass().html()
-//=> <li class = "">Apple</li>
+//=> <li class="">Apple</li>
 ```
 
 > See http://api.jquery.com/removeClass/ for more information.
@@ -214,6 +224,29 @@ $('.pear').parent().attr('id')
 //=> fruits
 ```
 
+#### .parents([selector])
+Get a set of parents filtered by `selector` of each element in the current set of match elements.
+```js
+$('.orange').parents().length
+// => 2
+$('.orange').parents('#fruits').length
+// => 1
+```
+
+#### .closest(selector)
+Get the closest element that matches the selector by searching through the element and the elements parents.
+
+```js
+$('.orange').closest()
+// => []
+$('.orange').closest('.apple')
+// => []
+$('.orange').closest('li')
+// => [<li class="orange">Orange</li>]
+$('.orange').closest('#fruits')
+// => [<ul id="fruits"> ... </ul>]
+```
+
 #### .next()
 Gets the next sibling of the first selected element.
 
@@ -230,12 +263,27 @@ $('.orange').prev().hasClass('apple')
 //=> true
 ```
 
-#### .siblings()
+#### .slice( start, [end] )
+Gets the elements matching the specified range
+
+```js
+$('li').slice(1).eq(0).text()
+//=> 'Orange'
+
+$('li').slice(1, 2).length
+//=> 1
+```
+
+#### .siblings( selector )
 Gets the first selected element's siblings, excluding itself.
 
 ```js
 $('.pear').siblings().length
 //=> 2
+
+$('.pear').siblings('.orange').length
+//=> 1
+
 ```
 
 #### .children( selector )
@@ -356,13 +404,13 @@ Methods for modifying the DOM structure.
 Inserts content as the *last* child of each of the selected elements.
 
 ```js
-$('ul').append('<li class = "plum">Plum</li>')
+$('ul').append('<li class="plum">Plum</li>')
 $.html()
-//=>  <ul id = "fruits">
-//      <li class = "apple">Apple</li>
-//      <li class = "orange">Orange</li>
-//      <li class = "pear">Pear</li>
-//      <li class = "plum">Plum</li>
+//=>  <ul id="fruits">
+//      <li class="apple">Apple</li>
+//      <li class="orange">Orange</li>
+//      <li class="pear">Pear</li>
+//      <li class="plum">Plum</li>
 //    </ul>
 ```
 
@@ -370,13 +418,13 @@ $.html()
 Inserts content as the *first* child of each of the selected elements.
 
 ```js
-$('ul').prepend('<li class = "plum">Plum</li>')
+$('ul').prepend('<li class="plum">Plum</li>')
 $.html()
-//=>  <ul id = "fruits">
-//      <li class = "plum">Plum</li>
-//      <li class = "apple">Apple</li>
-//      <li class = "orange">Orange</li>
-//      <li class = "pear">Pear</li>
+//=>  <ul id="fruits">
+//      <li class="plum">Plum</li>
+//      <li class="apple">Apple</li>
+//      <li class="orange">Orange</li>
+//      <li class="pear">Pear</li>
 //    </ul>
 ```
 
@@ -390,13 +438,13 @@ Prepend elements of the current collection inside each of the target elements. T
 Insert content next to each element in the set of matched elements.
 
 ```js
-$('.apple').after('<li class = "plum">Plum</li>')
+$('.apple').after('<li class="plum">Plum</li>')
 $.html()
-//=>  <ul id = "fruits">
-//      <li class = "apple">Apple</li>
-//      <li class = "plum">Plum</li>
-//      <li class = "orange">Orange</li>
-//      <li class = "pear">Pear</li>
+//=>  <ul id="fruits">
+//      <li class="apple">Apple</li>
+//      <li class="plum">Plum</li>
+//      <li class="orange">Orange</li>
+//      <li class="pear">Pear</li>
 //    </ul>
 ```
 
@@ -404,13 +452,13 @@ $.html()
 Insert content previous to each element in the set of matched elements.
 
 ```js
-$('.apple').before('<li class = "plum">Plum</li>')
+$('.apple').before('<li class="plum">Plum</li>')
 $.html()
-//=>  <ul id = "fruits">
-//      <li class = "plum">Plum</li>
-//      <li class = "apple">Apple</li>
-//      <li class = "orange">Orange</li>
-//      <li class = "pear">Pear</li>
+//=>  <ul id="fruits">
+//      <li class="plum">Plum</li>
+//      <li class="apple">Apple</li>
+//      <li class="orange">Orange</li>
+//      <li class="pear">Pear</li>
 //    </ul>
 ```
 
@@ -420,9 +468,9 @@ Removes the set of matched elements from the DOM and all their children. `select
 ```js
 $('.pear').remove()
 $.html()
-//=>  <ul id = "fruits">
-//      <li class = "apple">Apple</li>
-//      <li class = "orange">Orange</li>
+//=>  <ul id="fruits">
+//      <li class="apple">Apple</li>
+//      <li class="orange">Orange</li>
 //    </ul>
 ```
 
@@ -430,13 +478,13 @@ $.html()
 Replaces matched elements with `content`.
 
 ```js
-var plum = $('<li class = "plum">Plum</li>')
+var plum = $('<li class="plum">Plum</li>')
 $('.pear').replaceWith(plum)
 $.html()
-//=> <ul id = "fruits">
-//     <li class = "apple">Apple</li>
-//     <li class = "orange">Orange</li>
-//     <li class = "plum">Plum</li>
+//=> <ul id="fruits">
+//     <li class="apple">Apple</li>
+//     <li class="orange">Orange</li>
+//     <li class="plum">Plum</li>
 //   </ul>
 ```
 
@@ -446,7 +494,7 @@ Empties an element, removing all it's children.
 ```js
 $('ul').empty()
 $.html()
-//=>  <ul id = "fruits"></ul>
+//=>  <ul id="fruits"></ul>
 ```
 
 #### .html( [htmlString] )
@@ -456,7 +504,7 @@ Gets an html content string from the first selected element. If `htmlString` is 
 $('.orange').html()
 //=> Orange
 
-$('#fruits').html('<li class = "mango">Mango</li>').html()
+$('#fruits').html('<li class="mango">Mango</li>').html()
 //=> <li class="mango">Mango</li>
 ```
 
@@ -565,10 +613,10 @@ When you're ready to render the document, you can use `html` utility function:
 
 ```js
 $.html()
-//=>  <ul id = "fruits">
-//      <li class = "apple">Apple</li>
-//      <li class = "orange">Orange</li>
-//      <li class = "pear">Pear</li>
+//=>  <ul id="fruits">
+//      <li class="apple">Apple</li>
+//      <li class="orange">Orange</li>
+//      <li class="pear">Pear</li>
 //    </ul>
 ```
 
@@ -576,7 +624,7 @@ If you want to return the outerHTML you can use `$.html(selector)`:
 
 ```js
 $.html('.pear')
-//=> <li class = "pear">Pear</li>
+//=> <li class="pear">Pear</li>
 ```
 
 ### Miscellaneous
@@ -665,27 +713,32 @@ These are some of the contributors that have made cheerio possible:
 
 ```
 project  : cheerio
-repo age : 1 year, 4 months ago
-commits  : 416
-active   : 118 days
-files    : 26
+repo age : 1 year, 7 months ago
+commits  : 474
+active   : 141 days
+files    : 27
 authors  :
-  278 Matt Mueller            66.8%
-   68 Matthew Mueller         16.3%
-   27 David Chambers          6.5%
-   15 Siddharth Mahendraker   3.6%
-    7 ironchefpython          1.7%
-    5 Jos Shepherd            1.2%
-    5 Ben Sheldon             1.2%
-    2 alexbardas              0.5%
-    2 Rob Ashton              0.5%
+  286 Matt Mueller            60.3%
+   80 Matthew Mueller         16.9%
+   42 David Chambers          8.9%
+   15 Siddharth Mahendraker   3.2%
+    7 Adam Bretz              1.5%
+    7 ironchefpython          1.5%
+    6 Mike Pennisi            1.3%
+    5 Jos Shepherd            1.1%
+    5 Ryan Schmukler          1.1%
+    5 Ben Sheldon             1.1%
+    3 jeremy.dentel           0.6%
+    2 alexbardas              0.4%
+    2 Rob Ashton              0.4%
+    2 Wayne Larsen            0.4%
     1 mattym                  0.2%
-    1 Chris O'Hara            0.2%
-    1 Mike Pennisi            0.2%
-    1 Rob "Hurricane" Ashton  0.2%
-    1 Sindre Sorhus           0.2%
-    1 Wayne Larsen            0.2%
     1 Ben Atkin               0.2%
+    1 Chris O'Hara            0.2%
+    1 Felix Böhm              0.2%
+    1 Rob "Hurricane" Ashton  0.2%
+    1 Simon Boudrias          0.2%
+    1 Sindre Sorhus           0.2%
 ```
 
 ## Special Thanks

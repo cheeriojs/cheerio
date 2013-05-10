@@ -1,4 +1,19 @@
 
+0.11.0 / 2013-04-22
+==================
+
+* Added: .closest() (@jeremy-dentel)
+* Added: .parents() (@zero21xxx)
+* Added: .val() (@rschmukler & @leahciMic)
+* Added: Travis support for node 0.10.0 (@jeremy-dentel)
+* Fixed: .find() if no selector (@davidchambers)
+* Fixed: Propagate syntax errors caused by invalid selectors (@davidchambers)
+
+0.10.8 / 2013-03-11
+==================
+
+* Add slice method (SBoudrias)
+
 0.10.7 / 2013-02-10
 ==================
 
