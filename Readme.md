@@ -229,7 +229,7 @@ $('.orange').parents('#fruits').length
 // => 1
 ```
 
-#### .closest(selector)
+#### .closest([selector])
 Get the closest element that matches the selector by searching through the element and the elements parents.
 
 ```js
