@@ -535,6 +535,25 @@ $.root().append('<ul id="vegetables"></ul>').html();
 #### $.contains( container, contained )
 Checks to see if the `contained` DOM element is a descendent of the `container` DOM element.
 
+
+#### $.extend( [deep ], target, object1 [, objectN ] )
+
+Merge the contents of two or more objects together into the first object..
+@deep {Boolean}, If true, the merge becomes recursive (aka. deep copy).
+@target {Object}, The object to extend. It will receive the new properties.
+@object1, {Object}, An object containing additional properties to merge in.
+@objectN, {Object}, Additional objects containing properties to merge in.
+
+```js
+var target = { one: 'patridge' },
+    source = { two: 'turtle doves' }
+
+$.extend(target, source)
+//=> { one: 'patridge',
+//     two: 'turtle doves' }
+```
+
+
 ## Screencasts
 
 http://vimeo.com/31950192
