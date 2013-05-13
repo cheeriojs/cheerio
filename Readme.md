@@ -535,6 +535,26 @@ $.root().append('<ul id="vegetables"></ul>').html();
 #### $.contains( container, contained )
 Checks to see if the `contained` DOM element is a descendent of the `container` DOM element.
 
+
+#### $.extend( [deep ], target, object1 [, objectN ] )
+
+Merge the contents of two or more objects together into the first object.. <br />
+$.extend utility method (use the iterative way rather than the recursive one used in both jquery and zepto) to avoid potential exceeds maximum call stack size limit. <br />
+> @deep {Boolean}, If true, the merge becomes recursive (aka. deep copy). <br />
+> @target {Object}, The object to extend. It will receive the new properties.  <br />
+> @object1, {Object}, An object containing additional properties to merge in.  <br />
+> @objectN, {Object}, Additional objects containing properties to merge in.  <br />
+
+```js
+var target = { one: 'patridge' },
+    source = { two: 'turtle doves' }
+
+$.extend(target, source)
+//=> { one: 'patridge',
+//     two: 'turtle doves' }
+```
+
+
 ## Screencasts
 
 http://vimeo.com/31950192
