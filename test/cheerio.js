@@ -8,6 +8,32 @@ var script = '<script src="script.js" type="text/javascript"></script>',
     multiclass = '<p><a class="btn primary" href="#">Save</a></p>';
 
 describe('cheerio', function() {
+	/*
+
+	var methods = 'add,addClass,after,append,appendTo,attr,before,children,clone,closest,concat,contents,css,data,each,empty,eq,filter,find,first,forEach,get,has,hasClass,height,hide,html,index,indexOf,insertAfter,insertBefore,is,last,map,next,not,offset,offsetParent,parent,parents,pluck,position,prepend,prependTo,prev,prop,push,ready,reduce,remove,removeAttr,removeClass,replaceWith,show,siblings,size,slice,text,toggle,toggleClass,unwrap,val,width,wrap,wrapAll,wrapInner,on,delegate,die,live,off,on,one,trigger,triggerHandler,unbind,undelegate,serialize,serializeArray,submit'.split(",");
+	var $methods = 'camelCase,contains,each,extend,fn,grep,inArray,isArray,isFunction,isPlainObject,isWindow,map,parseJSON,trim,type,Event,proxy'.split(',');
+
+	//scrollTop
+	var $ele = $(fruits);
+	var index = 0;
+	methods.forEach(function(name, i){
+		if(!_.isFunction($ele[name])){
+			index ++;
+			console.log("[%s] is unfinished.", name);
+		};
+	});
+
+	$methods.forEach(function(name, i){
+		if(!_.isFunction($[name])){
+			index ++;
+			console.log("[%s] is unfinished.", name);
+		};
+	});
+
+	var total = methods.length + $methods.length;
+	console.log("Total: %d, Unfinish: %d, finished: %d",
+		total, index, total - index);
+	//*/
 
   it('should get the version', function() {
     expect(/\d+\.\d+\.\d+/.test($.version)).to.be.ok();

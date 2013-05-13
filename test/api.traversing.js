@@ -1,7 +1,8 @@
 var expect = require('expect.js'),
     $ = require('../'),
     food = require('./fixtures').food,
-    fruits = require('./fixtures').fruits;
+    fruits = require('./fixtures').fruits,
+		form = require('./fixtures').form;
 
 describe('$(...)', function() {
 
@@ -294,6 +295,41 @@ describe('$(...)', function() {
 
   });
 
+
+	describe('.index', function(){
+		var obj = $('li:nth-child(2)', fruits);
+		expect(obj.index()).to.equal(1);
+
+
+		//$(require('./fixtures').form).serializeArray();
+	});
+
+	describe('.has', function(){
+		it('', function(){
+			var html = '<div><p>first</p></div><div><p class="red">second</p></div><div><p>third</p></div>';
+			var list = $(html).has(".red");
+			var review = '<div><p class="red">second</p></div>';
+			expect(list.toString()).to.be.equal(review);
+			//console.log(list);
+		});
+	});
+
+	describe('.not', function(){
+		it('.not(): Filter the current collection to get a new collection of elements that don’t match the CSS selector. ', function(){
+			var html = '<p>first</p><p class="red">second</p><p>third</p>';
+			var list = $("p", html).not(".red");
+			expect(list.toString()).to.be.equal('<p>first</p><p>third</p>');
+		});
+	});
+
+	describe('.is', function(){
+		it('.is()', function(){
+			var html = '<p id="wrapper">first</p><p class="red">second</p><p>third</p>';
+			var $ele = $(html);
+			expect($ele.is('#wrapper')).to.be.ok();
+		});
+	});
+
   describe('.slice', function() {
 
     function getText(el) {
@@ -321,5 +357,6 @@ describe('$(...)', function() {
     });
 
   });
+
 
 });

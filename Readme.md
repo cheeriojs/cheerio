@@ -201,8 +201,9 @@ $('.apple').addClass('red').removeClass().html()
 
 > See http://api.jquery.com/removeClass/ for more information.
 
-
 ### Traversing
+#### .add()
+Modify the current collection by adding the results of performing the CSS selector on the whole document, or, if context is given, just inside context elements.
 
 #### .find(selector)
 Get a set of descendants filtered by `selector` of each element in the current set of matched elements.
@@ -211,6 +212,9 @@ Get a set of descendants filtered by `selector` of each element in the current s
 $('#fruits').find('li').length
 //=> 3
 ```
+
+#### .closest(selector, [context])
+Traverse upwards from the current element to find the first element that matches the selector. If context node is given, consider only elements that are its descendants. This method is similar to parents(selector), but it only returns the first ancestor matched.
 
 #### .parent()
 Gets the parent of the first selected element.
@@ -366,6 +370,33 @@ $('li').eq(-1).text()
 //=> Pear
 ```
 
+#### .forEach
+Iterate through every element of the collection. Similar to each, but the arguments for the iterator functions are different, and returning false from the iterator won’t stop the iteration.
+
+#### .wrapInner()
+Wrap an HTML structure around the content of each element in the set of matched elements.
+
+#### .wrapAll()
+Wrap an HTML structure around all elements in the set of matched elements.
+
+#### ~~.wrap()~~
+Wrap an HTML structure around each element in the set of matched elements.
+
+#### .unwrap()
+Remove immediate parent nodes of each element in the collection and put their children in their place. Basically, this method removes one level of ancestry while keeping current elements in the DOM.
+
+#### .push()
+Add elements to the end of the current collection.
+
+#### .concat(nodes, [node2, ...])
+Modify the collection by adding elements to it. If any of the arguments is an array, its elements are merged into the current collection.
+
+#### .reduce()
+Identical to Array.reduce that iterates over current collection.
+
+#### .is()
+Check if the first element of the current collection matches the CSS selector. For basic support of jQuery’s non-standard pseudo-selectors such as :visible, include the optional “selector” module.
+
 ### Manipulation
 Methods for modifying the DOM structure.
 
@@ -396,6 +427,12 @@ $.html()
 //      <li class="pear">Pear</li>
 //    </ul>
 ```
+
+#### appendTo
+Append elements from the current collection to the target element. This is like append, but with reversed operands.
+
+#### .prependTo(target)
+Prepend elements of the current collection inside each of the target elements. This is like prepend, only with reversed operands.
 
 #### .after( content, [content, ...] )
 Insert content next to each element in the set of matched elements.
@@ -484,6 +521,93 @@ $('ul').text()
 //    Pear
 ```
 
+#### .val([value]);
+Get or set the value of form controls. When no value is given, return the value of the first element. For <select multiple>, an array of values is returend. When a value is given, set all elements to this value.
+
+```js
+$('input').val();
+//=> Cheerio
+
+$('#txtMail').val('test@test.com');
+
+```
+
+#### .css(property[, value])
+Read or set CSS properties on DOM elements. When no value is given, returns the CSS property from the first element in the collection. When a value is given, sets the property to that value on each element of the collection. Multiple properties can be set by passing an object to the method.
+
+```js
+$('h1').css('background-color');
+//=> red
+
+$('h1').css('background-color', 'green');
+//=> The background-color property has been changed to green
+
+$('h1').css({'background-color': 'green', 'color': '#FFFFFF'});
+```
+
+#### .show()
+Restore the default value for the “display” property of each element in the array, effectively showing them if they were hidden with hide.
+
+#### .hide()
+Hide elements in this collection by setting their display CSS property to none.
+
+
+#### .width()
+Get the width of the first element in the collection; or set the width of all elements in the collection.
+
+#### .data([value])
+Store arbitrary data associated with the matched elements or return the value at the named data store for the first element in the set of matched elements.
+
+#### .removeData(names)
+Remove a previously-stored piece of data.
+
+#### .not([selector])
+Remove elements from the set of matched elements.
+
+#### .insertBefore(target)
+Insert every element in the set of matched elements before the target.
+
+#### .insertAfter()
+Insert every element in the set of matched elements after the target.
+
+#### .index()
+Search for a given element from among the matched elements.
+
+#### .indexOf()
+Get the position of an element in the current collection. If fromIndex number is given, search only from that position onwards. Returns the 0-based position when found and -1 if not found. Use of index is recommended over this method.
+
+#### .has()
+Reduce the set of matched elements to those that have a descendant that matches the selector or DOM element.
+
+#### .get()
+Retrieve the DOM elements matched by the jQuery object.
+
+#### .map()
+Pass each element in the current matched set through a function, producing a new jQuery object containing the return values.
+
+#### .size()
+Return the number of elements in the jQuery object.
+
+#### .slice()
+Reduce the set of matched elements to a subset specified by a range of indices.
+
+#### .toggleClass()
+Add or remove one or more classes from each element in the set of matched elements, depending on either the class’s presence or the value of the switch argument.
+
+#### .toggle()
+Display or hide the matched elements.
+
+#### .contents()
+Get the children of each element in the collection, including text and comment nodes.
+
+## Form
+
+#### .serializeArray()
+Encode a set of form elements as an array of names and values.
+
+#### .serialize()
+Encode a set of form elements as a string for submission.
+
 ### Rendering
 When you're ready to render the document, you can use `html` utility function:
 
@@ -534,6 +658,33 @@ $.root().append('<ul id="vegetables"></ul>').html();
 
 #### $.contains( container, contained )
 Checks to see if the `contained` DOM element is a descendent of the `container` DOM element.
+
+#### $.grep
+Finds the elements of an array which satisfy a filter function. The original array is not affected.
+
+#### $.inArray
+Search for a specified value within an array and return its index (or -1 if not found).
+
+#### $.isArray
+Determine whether the argument is an array.
+
+#### $.isFunction
+Determine if the argument passed is a Javascript function object.
+
+#### $.isPlainObject()
+Check to see if an object is a plain object (created using “{}” or “new Object”).
+
+#### $.map
+Translate all items in an array or object to new array of items.
+
+#### $.parseJSON
+Takes a well-formed JSON string and returns the resulting JavaScript object.
+
+#### $.trim
+Remove the whitespace from the beginning and end of a string.
+
+#### $.type
+Determine the internal JavaScript [[Class]] of an object.
 
 ## Screencasts
 

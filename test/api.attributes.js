@@ -1,9 +1,10 @@
 var expect = require('expect.js');
 
 var $ = require('../');
-var fruits = require('./fixtures').fruits;
-var vegetables = require('./fixtures').vegetables;
-var inputs = require('./fixtures').inputs;
+var fixtures = require('./fixtures');
+var fruits = fixtures.fruits;
+var vegetables = fixtures.vegetables;
+var inputs = fixtures.inputs;
 
 describe('$(...)', function() {
 
@@ -257,4 +258,50 @@ describe('$(...)', function() {
 
   });
 
+	describe('.css', function(){
+
+		var elStyle = '<div style="color: red; font-size: 12px;"></div>';
+
+		it('(property) : should get the value', function(){
+			var $ele = $(elStyle);
+			expect($ele.css('color')).to.equal('red');
+			expect($ele.css('font-size')).to.equal('12px');
+		});
+
+		it('(property, value) : should set the value', function(){
+			var $ele = $(elStyle);
+			$ele.css("text-align", 'left');
+			expect($ele.css('text-align')).to.equal('left');
+		});
+
+		it('(property, value) : should set px', function(){
+			var $ele = $(elStyle);
+			$ele.css("width", 10);
+			expect($ele.css('width')).to.equal('10px');
+		});
+
+		it('(property) : should set camelCase property', function(){
+			var $ele = $(elStyle);
+			var styles = {
+				zIndex: 10
+			};
+			$ele.css(styles);
+			expect($ele.css('z-index')).to.be('10');
+		});
+
+		it('(property) : should set a object', function(){
+			var $ele = $(elStyle);
+			var styles = {
+				zIndex: 10,
+				fontSize: 20,
+				color: 'green'
+			};
+			$ele.css(styles);
+
+
+			expect($ele.css('z-index')).to.be('10');
+			expect($ele.css('font-size')).to.be('20px');
+			expect($ele.css('color')).to.be('green');
+		});
+	});
 });

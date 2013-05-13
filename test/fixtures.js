@@ -20,6 +20,15 @@ exports.food = [
   '</ul>'
 ].join('');
 
+
+exports.form = [
+	'<form>',
+		'<input id="txtUser" value="cheerio" class="input" />',
+		'<input id="txtMail" />',
+		'<textarea id="txtMemo">something</textarea>"',
+	'</form>'
+].join('');
+
 exports.inputs = [
 	'<select id="one"><option value="option_not_selected">Option not selected</option><option value="option_selected" selected>Option selected</option></select>',
 	'<input type="text" value="input_text" />',
