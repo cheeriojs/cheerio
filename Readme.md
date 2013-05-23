@@ -50,10 +50,10 @@ Cheerio will not solve all your problems. I would still use JSDOM if I needed to
 ### Markup example we'll be using:
 
 ```html
-<ul id="fruits">
-  <li class="apple">Apple</li>
-  <li class="orange">Orange</li>
-  <li class="pear">Pear</li>
+<ul id="fruits" data-origin="USA">
+  <li class="apple" data-origin="NY">Apple</li>
+  <li class="orange" data-origin="FL">Orange</li>
+  <li class="pear" data-origin="WA">Pear</li>
 </ul>
 ```
 
@@ -142,6 +142,19 @@ $('.apple').attr('id', 'favorite').html()
 ```
 
 > See http://api.jquery.com/attr/ for more information
+
+#### .data( name, value )
+Method for getting and setting data attributes. Gets the data attribute value for only the first element in the matched set. If you set a data attribute's value to `null`, you remove that data attribute. You may also pass a `map` and `function` like jQuery.
+
+```js
+$('ul').data('origin')
+//=> USA
+
+$('.apple').data('origin', 'MI').html()
+//=> <li class="apple" data-origin="MI">Apple</li>
+```
+
+> See http://api.jquery.com/data/ for more information
 
 #### .val( [value] )
 Method for getting and setting the value of input, select, and textarea. Note: Support for `map`, and `function` has not been added yet.
