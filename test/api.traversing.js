@@ -79,6 +79,21 @@ describe('$(...)', function() {
 
   });
 
+  describe('.nextAll', function() {
+
+    it('() : should return all next elements after apple', function() {
+      var nextElems = $('.apple', fruits).nextAll();
+      expect(nextElems).to.have.length(2);
+      expect(nextElems[0].attribs['class']).to.equal('orange');
+      expect(nextElems[1].attribs['class']).to.equal('pear');
+    });
+
+    it('(no next) : should return empty for last child', function() {
+      expect($('.pear', fruits).nextAll()).to.have.length(0);
+    });
+
+  });
+
   describe('.prev', function() {
 
     it('() : should return previous element', function() {
@@ -88,6 +103,21 @@ describe('$(...)', function() {
 
     it('(no prev) : should return empty for first child', function() {
       expect($('.apple', fruits).prev()).to.have.length(0);
+    });
+
+  });
+
+  describe('.prevAll', function() {
+
+    it('() : should return all next elements after apple', function() {
+      var nextElems = $('.pear', fruits).prevAll();
+      expect(nextElems).to.have.length(2);
+      expect(nextElems[0].attribs['class']).to.equal('orange');
+      expect(nextElems[1].attribs['class']).to.equal('apple');
+    });
+
+    it('(no next) : should return empty for first child', function() {
+      expect($('.apple', fruits).prevAll()).to.have.length(0);
     });
 
   });

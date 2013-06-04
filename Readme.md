@@ -251,12 +251,28 @@ $('.apple').next().hasClass('orange')
 //=> true
 ```
 
+#### .nextAll()
+Gets the all next siblings of the first selected element.
+
+```js
+$('.apple').nextAll()
+//=> [<li class="orange">Orange</li>, <li class="pear">Pear</li>]
+```
+
 #### .prev()
 Gets the previous sibling of the first selected element.
 
 ```js
 $('.orange').prev().hasClass('apple')
 //=> true
+```
+
+#### .prevAll()
+Gets the all previous siblings of the first selected element.
+
+```js
+$('.pear').prevAll()
+//=> [<li class="orange">Orange</li>, <li class="apple">Apple</li>]
 ```
 
 #### .slice( start, [end] )
