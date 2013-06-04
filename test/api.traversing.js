@@ -79,6 +79,21 @@ describe('$(...)', function() {
 
   });
 
+  describe('.nextAll', function() {
+
+    it('() : should return all following siblings', function() {
+      var elems = $('.apple', fruits).nextAll();
+      expect(elems).to.have.length(2);
+      expect(elems[0].attribs['class']).to.equal('orange');
+      expect(elems[1].attribs['class']).to.equal('pear');
+    });
+
+    it('(no next) : should return empty for last child', function() {
+      expect($('.pear', fruits).nextAll()).to.have.length(0);
+    });
+
+  });
+
   describe('.prev', function() {
 
     it('() : should return previous element', function() {
@@ -88,6 +103,21 @@ describe('$(...)', function() {
 
     it('(no prev) : should return empty for first child', function() {
       expect($('.apple', fruits).prev()).to.have.length(0);
+    });
+
+  });
+
+  describe('.prevAll', function() {
+
+    it('() : should return all preceding siblings', function() {
+      var elems = $('.pear', fruits).prevAll();
+      expect(elems).to.have.length(2);
+      expect(elems[0].attribs['class']).to.equal('orange');
+      expect(elems[1].attribs['class']).to.equal('apple');
+    });
+
+    it('(no prev) : should return empty for first child', function() {
+      expect($('.apple', fruits).prevAll()).to.have.length(0);
     });
 
   });
