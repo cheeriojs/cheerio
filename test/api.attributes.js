@@ -53,13 +53,13 @@ describe('$(...)', function() {
       $apple.attr('href', 'http://github.com/"><script>alert("XSS!")</script><br');
       expect($apple.html()).to.not.contain('<script>alert("XSS!")</script>');
     });
-    
+
     it('(key, value) : should coerce values to a string', function() {
       var $apple = $('.apple', fruits);
       $apple.attr('data-test', 1);
       expect($apple[0].attribs['data-test']).to.equal('1');
       expect($apple.attr('data-test')).to.equal('1');
-    });    
+    });
   });
 
   describe('.val', function() {
@@ -256,5 +256,29 @@ describe('$(...)', function() {
     it('(fn) : should remove classes returned from the function');
 
   });
+
+  describe('.is', function () {
+    it('() should return false', function  () {
+      expect($('li.apple', fruits).is()).to.be(false)
+    })
+    it('(true selector) should return true', function () {
+      expect($('#vegetables', vegetables).is('ul')).to.be(true)
+    })
+    it('(false selector) should return false', function () {
+      expect($('#vegetables', vegetables).is('div')).to.be(false)
+    })
+    it('(true predicate) should return true', function () {
+      var result = $('li', fruits).is(function() {
+        return this.hasClass('pear')
+      })
+      expect(result).to.be(true)
+    })
+    it('(false predicate) should return false', function () {
+      var result = $('li', fruits).last().is(function() {
+        return this.name === 'ul'
+      })
+      expect(result).to.be(false)
+    })
+  })
 
 });
