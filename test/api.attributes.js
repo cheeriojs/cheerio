@@ -31,6 +31,12 @@ describe('$(...)', function() {
       expect($pear.cheerio).to.not.be(undefined);
     });
 
+    it('(key, value) : should return an empty object for an empty object', function() {
+      var $src = $().attr('key', 'value');
+      expect($src.length).to.equal(0);
+      expect($src[0]).to.be(undefined);
+    });
+
     it('(map) : object map should set multiple attributes', function() {
       var $fruits = $(fruits);
       $('.apple', $fruits).attr({
