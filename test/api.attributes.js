@@ -32,7 +32,7 @@ describe('$(...)', function() {
     });
 
     it('(key, value) : should return an empty object for an empty object', function() {
-      var $src = $().attr('test', 'test');
+      var $src = $().attr('key', 'value');
       expect($src.length).to.equal(0);
       expect($src[0]).to.be(undefined);
     });
