@@ -1,4 +1,16 @@
 
+0.12.0 / 2013-06-09
+===================
+
+  * Breaking Change: Changed context from parent to the actual passed one (@swissmanu)
+  * Fixed: jquery checkbox val behavior (@jhubble)
+  * Added: output xml with $.xml() (@Maciek416)
+  * Bumped: htmlparser2 to 3.1.1
+  * Fixed: bug in attr(key, val) on empty objects (@farhadi)
+  * Added: prevAll, nextAll (@lessmind)
+  * Fixed: Safety check in parents and closest (@zero21xxx)
+  * Added: .is(sel) (@zero21xxx)
+
 0.11.0 / 2013-04-22
 ==================
 
