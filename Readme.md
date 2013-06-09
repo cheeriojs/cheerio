@@ -505,7 +505,7 @@ $('ul').text()
 ```
 
 ### Rendering
-When you're ready to render the document, you can use `html` utility function:
+When you're ready to render the document, you can use the `html` utility function:
 
 ```js
 $.html()
@@ -522,6 +522,20 @@ If you want to return the outerHTML you can use `$.html(selector)`:
 $.html('.pear')
 //=> <li class="pear">Pear</li>
 ```
+
+By default, `html` will leave some tags open. Sometimes you may instead want to render a valid XML document. For example, you might parse the following XML snippet:
+
+```xml
+$ = cheerio.load('<media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123"/>');
+```
+
+... and later want to render to XML. To do this, you can use the 'xml' utility function:
+
+```js
+$.xml()
+//=>  <media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123"/>
+```
+
 
 ### Miscellaneous
 DOM element methods that don't fit anywhere else
