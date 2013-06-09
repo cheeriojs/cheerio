@@ -1,9 +1,11 @@
 var expect = require('expect.js');
 
 var $ = require('../');
+var _ = require('underscore');
 var fruits = require('./fixtures').fruits;
 var vegetables = require('./fixtures').vegetables;
 var inputs = require('./fixtures').inputs;
+var colors = require('./fixtures').colors;
 
 describe('$(...)', function() {
 
@@ -60,6 +62,62 @@ describe('$(...)', function() {
       expect($apple[0].attribs['data-test']).to.equal('1');
       expect($apple.attr('data-test')).to.equal('1');
     });    
+  });
+
+  describe('.data', function() {
+
+    var markup = '<div id="color" color="yellow" data-color="orange" data-taste="sweet"></div>';
+
+    it('() : should get all data attributes', function() {
+
+      var data = $(markup).data();
+      
+      expect(data).to.eql({
+        color: 'orange',
+        taste: 'sweet'
+      });
+      
+    });
+
+    it('(invalid key) : invalid data attribute should get an empty object', function() {
+
+      var data = $(markup).data('lol');
+
+      expect(data).to.be(undefined);
+
+    });
+
+    it('(valid key) : valid data attribute should get value', function() {
+
+      var color = $(markup).data('color');
+      var taste = $(markup).data('taste');
+
+      expect(color).to.equal('orange');
+      expect(taste).to.equal('sweet');
+
+    });
+
+    it('(key, value) : should set data attribute', function() {
+      // Adding as object.
+      var a = $(markup, '#color').data({foo: 'bar'})['0']['data'];
+      // Adding as string.
+      var b = $(markup, '#color').data('lorem', 'ipsum')['0']['data'];
+
+      expect(a.foo).to.eql('bar');
+      expect(b.lorem).to.eql('ipsum');
+    });
+
+    it('(map) : object map should set multiple data attributes', function() {
+      var data = $(markup).data({
+        id: 'apple',
+        founder: 'Steve Jobs',
+        url: 'http://apple.com'
+      })['0']['data'];
+      
+      expect(data.id).to.equal('apple');
+      expect(data.founder).to.equal('Steve Jobs');
+      expect(data.url).to.equal('http://apple.com');
+    });
   });
 
   describe('.val', function() {
