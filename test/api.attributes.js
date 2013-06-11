@@ -99,9 +99,9 @@ describe('$(...)', function() {
 
     it('(key, value) : should set data attribute', function() {
       // Adding as object.
-      var a = $(markup, '#color').data({foo: 'bar'})['0']['data'];
+      var a = $(markup, '#color').data({foo: 'bar'})['0'].data;
       // Adding as string.
-      var b = $(markup, '#color').data('lorem', 'ipsum')['0']['data'];
+      var b = $(markup, '#color').data('lorem', 'ipsum')['0'].data;
 
       expect(a.foo).to.eql('bar');
       expect(b.lorem).to.eql('ipsum');
@@ -112,7 +112,7 @@ describe('$(...)', function() {
         id: 'apple',
         founder: 'Steve Jobs',
         url: 'http://apple.com'
-      })['0']['data'];
+      })['0'].data;
       
       expect(data.id).to.equal('apple');
       expect(data.founder).to.equal('Steve Jobs');
