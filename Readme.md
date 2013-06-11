@@ -338,6 +338,14 @@ $('li').map(function(i, el) {
 //=> apple, orange, pear
 ```
 
+For compatibility, cheerio (as of 0.13.0) mirrors jQuery's questionable
+handling of return values:
+
+> The function can return an individual data item or an array of data items
+> to be inserted into the resulting set. If an array is returned, the elements
+> inside the array are inserted into the set. If the function returns null or
+> undefined, no element will be inserted.
+
 #### .filter( selector ) <br /> .filter( function(index) )
 
 Iterates over a cheerio object, reducing the set of selector elements to those that match the selector or pass the function's test. If using the function method, the function is executed in the context of the selected element, so `this` refers to the current element.

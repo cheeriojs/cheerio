@@ -231,6 +231,20 @@ describe('$(...)', function() {
 
       expect(classes).to.be('apple, orange, pear');
     });
+
+    it('(fn) : should unpack items from any array returned', function() {
+      var result = $('li', food).map(function(idx) {
+        return [[1, 2, 3], [4, 5], [6], 7, [[8]]][idx];
+      });
+      expect(result).to.eql([1, 2, 3, 4, 5, 6, 7, [8]]);
+    });
+
+    it('(fn) : should omit null/undefined return values', function() {
+      var result = $('li', food).map(function(idx) {
+        return [null, 2, 3, undefined, 5][idx];
+      });
+      expect(result).to.eql([2, 3, 5]);
+    });
   });
 
   describe('.filter', function() {
