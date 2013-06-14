@@ -73,6 +73,10 @@ describe('$(...)', function() {
 			var val = $('select#one', inputs).val();
 			expect(val).to.equal('option_selected');
 		});
+		it('.val(): on option should get value', function() {
+			var val = $('select#one option', inputs).eq(0).val();
+			expect(val).to.equal('option_not_selected');
+		});
 		it('.val(): on text input should get value', function() {
 			var val = $('input[type="text"]', inputs).val();
 			expect(val).to.equal('input_text');
@@ -100,6 +104,10 @@ describe('$(...)', function() {
 		it('.val(value): on select should set value', function() {
 			var element = $('select#one', inputs).val('option_not_selected');
 			expect(element.val()).to.equal('option_not_selected');
+		});
+		it('.val(value): on option should set value', function() {
+			var element = $('select#one option', inputs).eq(0).val('option_changed');
+			expect(element.val()).to.equal('option_changed');
 		});
 		it('.val(value): on radio should set value', function() {
 			var element = $('input[name="radio"]', inputs).val('off');
