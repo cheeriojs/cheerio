@@ -72,8 +72,7 @@ describe('$', function() {
       var $src = $('<div><span>foo</span><span>bar</span><span>baz</span></div>').children();
       var $elem = $src.clone();
       expect($elem.length).to.equal(3);
-      expect($elem.parent().length).to.equal(1);
-      expect($elem.parent()[0].type).to.equal('root');
+      expect($elem.parent()).to.have.length(0);
       expect($elem.text()).to.equal($src.text());
       $src.text('rofl');
       expect($elem.text()).to.not.equal($src.text());
