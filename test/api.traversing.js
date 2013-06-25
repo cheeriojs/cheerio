@@ -174,6 +174,7 @@ describe('$(...)', function() {
     it('() : should return an empty array', function() {
       var result = $('.orange', fruits).closest();
       expect(result).to.have.length(0);
+      expect(result).to.be.a($);
     })
 
     it('(selector) : should find the closest element that matches the selector, searching through its ancestors and itself', function() {
@@ -185,6 +186,11 @@ describe('$(...)', function() {
       result = $('.orange', food).closest('li');
       expect(result[0].attribs['class']).to.be('orange');
     })
+
+    it('(selector) : should find the closest element of each item, removing duplicates', function() {
+      var result = $('li', food).closest('ul');
+      expect(result).to.have.length(2);
+    });
 
     it('() : should not break if the selector does not have any results', function() {
       var result = $('.saladbar', food).closest('ul');
