@@ -95,7 +95,7 @@ describe('$', function() {
       expect($.parseHTML('')).to.equal(null);
     });
 
-    it('(largeHtmlString) : ', function() {
+    it('(largeHtmlString) : parses large HTML strings', function() {
       var html = new Array(10).join('<div></div>');
       var nodes = $.parseHTML(html);
 
