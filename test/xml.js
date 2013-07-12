@@ -12,16 +12,14 @@ describe('render', function() {
 
   describe('(xml)', function() {
 
-    it('should render <media:thumbnail /> tags correctly', function(done) {
+    it('should render <media:thumbnail /> tags correctly', function() {
       var str = '<media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123" />';
       expect(xml(str)).to.equal('<media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123"/>');
-      done();
     });
 
-    it('should render <link /> tags (RSS) correctly', function(done) {
+    it('should render <link /> tags (RSS) correctly', function() {
       var str = '<link>http://www.github.com/</link>';
       expect(xml(str)).to.equal('<link>http://www.github.com/</link>');
-      done();
     });
 
   });
