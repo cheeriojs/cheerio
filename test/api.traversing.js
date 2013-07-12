@@ -77,6 +77,10 @@ describe('$(...)', function() {
       expect($('.pear', fruits).next()).to.have.length(0);
     });
 
+    it('(next on empty object) : should return empty', function() {
+      expect($('.banana', fruits).next()).to.have.length(0);
+    });
+
   });
 
   describe('.nextAll', function() {
@@ -92,6 +96,10 @@ describe('$(...)', function() {
       expect($('.pear', fruits).nextAll()).to.have.length(0);
     });
 
+    it('(nextAll on empty object) : should return empty', function() {
+      expect($('.banana', fruits).next()).to.have.length(0);
+    });
+
   });
 
   describe('.prev', function() {
@@ -103,6 +111,10 @@ describe('$(...)', function() {
 
     it('(no prev) : should return empty for first child', function() {
       expect($('.apple', fruits).prev()).to.have.length(0);
+    });
+
+    it('(prev on empty object) : should return empty', function() {
+      expect($('.banana', fruits).next()).to.have.length(0);
     });
 
   });
@@ -118,6 +130,10 @@ describe('$(...)', function() {
 
     it('(no prev) : should return empty for first child', function() {
       expect($('.apple', fruits).prevAll()).to.have.length(0);
+    });
+
+    it('(prevAll on empty object) : should return empty', function() {
+      expect($('.banana', fruits).next()).to.have.length(0);
     });
 
   });
