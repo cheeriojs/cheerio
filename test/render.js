@@ -17,6 +17,16 @@ describe('render', function() {
       expect(html(str)).to.equal('<br>');
     });
 
+    it('should handle double quotes within single quoted attributes properly', function() {
+      var str = "<hr class='an \"edge\" case' />";
+      expect(html(str)).to.equal('<hr class="an &quot;edge&quot; case">');
+    });
+
+    it('should retain encoded HTML content within attributes', function() {
+      var str = '<hr class="cheerio &amp; node = happy parsing" />';
+      expect(html(str)).to.equal('<hr class="cheerio &amp; node = happy parsing">');
+    });
+
     it('should shorten the "checked" attribute when it contains the value "checked"', function() {
       var str = '<input checked/>';
       expect(html(str)).to.equal('<input checked>');
