@@ -216,8 +216,8 @@ $('#fruits').find('li').length
 //=> 3
 ```
 
-#### .parent()
-Gets the parent of the first selected element.
+#### .parent([selector])
+Get the parent of each element in the current set of matched elements, optionally filtered by a selector.
 
 ```js
 $('.pear').parent().attr('id')

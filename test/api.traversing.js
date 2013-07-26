@@ -185,6 +185,39 @@ describe('$(...)', function() {
     })
   });
 
+  describe('.parent', function() {
+
+    it('() : should return the parent of each matched element', function() {
+      var result = $('.orange', fruits).parent();
+      expect(result).to.have.length(1);
+      expect(result[0].attribs.id).to.be('fruits');
+      result = $('li', food).parent();
+      expect(result).to.have.length(2);
+      expect(result[0].attribs.id).to.be('fruits');
+      expect(result[1].attribs.id).to.be('vegetables');
+    });
+
+    it('() : should return an empty object for top-level elements', function() {
+      var result = $('ul', fruits).parent();
+      expect(result).to.have.length(0);
+    });
+
+    it('() : should not contain duplicate elements', function() {
+      var result = $('li', fruits).parent();
+      expect(result).to.have.length(1);
+    });
+
+    it('(selector) : should filter the matched parent elements by the selector', function() {
+      var result = $('.orange', fruits).parent();
+      expect(result).to.have.length(1);
+      expect(result[0].attribs.id).to.be('fruits');
+      result = $('li', food).parent('#fruits');
+      expect(result).to.have.length(1);
+      expect(result[0].attribs.id).to.be('fruits');
+    });
+
+  });
+
   describe('.closest', function() {
 
     it('() : should return an empty array', function() {
