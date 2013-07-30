@@ -123,9 +123,9 @@ describe('$(...)', function() {
 
     it('(key) : should remove a single attr', function() {
       var $fruits = $(fruits);
-      expect($('ul', $fruits.parent()).attr('id')).to.not.be(undefined);
-      $('ul', $fruits).removeAttr('id');
-      expect($('ul', $fruits).attr('id')).to.be(undefined);
+      expect($fruits.attr('id')).to.not.be(undefined);
+      $fruits.removeAttr('id');
+      expect($fruits.attr('id')).to.be(undefined);
     });
 
     it('should return cheerio object', function() {
