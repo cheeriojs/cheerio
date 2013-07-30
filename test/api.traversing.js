@@ -166,7 +166,7 @@ describe('$(...)', function() {
       expect(result).to.have.length(2);
       expect(result[0].attribs.id).to.be('fruits');
       expect(result[1].attribs.id).to.be('food');
-      result = $('#food', food).parents()
+      result = $('#fruits', food).parents()
       expect(result).to.have.length(1);
       expect(result[0].attribs.id).to.be('food');
     })
@@ -183,6 +183,10 @@ describe('$(...)', function() {
       var result = $('.saladbar', food).parents();
       expect(result).to.have.length(0);
     })
+    it('() : should return an empty set for top-level elements', function() {
+      var result = $('#food', food).parents();
+      expect(result).to.have.length(0);
+    });
   });
 
   describe('.parent', function() {
