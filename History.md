@@ -1,4 +1,14 @@
 
+0.12.1 / 2013-07-30
+==================
+
+ * Correct behavior of `Cheerio#parents` (@jugglinmike)
+ * Double quotes inside attributes kills HTML (@khoomeister)
+ * Making next({}) and prev({}) return empty object (@absentTelegraph)
+ * Implement $.parseHTML (@jugglinmike)
+ * Correct bug in jQuery.fn.closest (@jugglinmike)
+ * Correct behavior of $.fn.val on 'option' elements (@jugglinmike)
+
 0.12.0 / 2013-06-09
 ===================
 
