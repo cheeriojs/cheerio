@@ -599,32 +599,40 @@ These are some of the contributors that have made cheerio possible:
 
 ```
 project  : cheerio
-repo age : 1 year, 7 months ago
-commits  : 474
-active   : 141 days
-files    : 27
+repo age : 1 year, 10 months
+active   : 169 days
+commits  : 513
+files    : 28
 authors  :
-  286 Matt Mueller            60.3%
-   80 Matthew Mueller         16.9%
-   42 David Chambers          8.9%
-   15 Siddharth Mahendraker   3.2%
-    7 Adam Bretz              1.5%
-    7 ironchefpython          1.5%
-    6 Mike Pennisi            1.3%
-    5 Jos Shepherd            1.1%
-    5 Ryan Schmukler          1.1%
-    5 Ben Sheldon             1.1%
-    3 jeremy.dentel           0.6%
+  292 Matt Mueller            56.9%
+   86 Matthew Mueller         16.8%
+   44 David Chambers          8.6%
+   15 Siddharth Mahendraker   2.9%
+   13 Mike Pennisi            2.5%
+   11 Adam Bretz              2.1%
+    7 ironchefpython          1.4%
+    5 Ryan Schmukler          1.0%
+    5 Ben Sheldon             1.0%
+    5 Jos Shepherd            1.0%
+    4 Maciej Adwent           0.8%
+    3 jeremy.dentel@brandingbrand.com 0.6%
+    2 Felix Böhm             0.4%
+    2 Ali Farhadi             0.4%
+    2 Chris Khoo              0.4%
+    2 Wayne Larsen            0.4%
     2 alexbardas              0.4%
     2 Rob Ashton              0.4%
-    2 Wayne Larsen            0.4%
-    1 mattym                  0.2%
+    1 nevermind               0.2%
+    1 Felix Böhm            0.2%
+    1 Jeremy Hubble           0.2%
+    1 Manuel Alabor           0.2%
+    1 Matt Liegey             0.2%
     1 Ben Atkin               0.2%
-    1 Chris O'Hara            0.2%
-    1 Felix Böhm              0.2%
     1 Rob "Hurricane" Ashton  0.2%
     1 Simon Boudrias          0.2%
     1 Sindre Sorhus           0.2%
+    1 mattym                  0.2%
+    1 Chris O'Hara            0.2%
 ```
 
 ## Special Thanks
