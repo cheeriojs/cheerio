@@ -10,6 +10,11 @@ describe('$(...)', function(){
       expect(el.css()).to.eql({ hai: 'there', wassup: 0 });
     })
 
+    it('(undefined): should retrun all styles as object', function(){
+      var el = $('<li style="color: white">');
+      expect(el.css()).to.eql({ color: 'white' });
+    })
+
     it('(prop): should return a css property value', function(){
       var el = $('<li style="hai: there">');
       expect(el.css('hai')).to.equal('there');
