@@ -50,6 +50,17 @@ describe('$(...)', function() {
       expect(attrs['data-url']).to.equal('http://apple.com');
     });
 
+    it('(key, function) : should call the function and update the attribute with the return value', function() {
+      var $fruits = $(fruits);
+      $fruits.attr('id', function(index, value) {
+        expect(index).to.equal(0);
+        expect(value).to.equal('fruits');
+        return 'ninja';
+      });
+      var attrs = $fruits.attr();
+      expect(attrs.id).to.equal('ninja');
+    });
+
     it('(key, value) : should correctly encode then decode unsafe values', function() {
       var $apple = $('.apple', fruits);
       $apple.attr('href', 'http://github.com/"><script>alert("XSS!")</script><br');
