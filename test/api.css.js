@@ -5,7 +5,6 @@ var $ = require('..');
 describe('$(...)', function(){
 
   describe('.css', function(){
-
     it('(): should get all styles as object', function(){
       var el = $('<li style="hai: there; wassup: 0;">');
       expect(el.css()).to.eql({ hai: 'there', wassup: 0 });
@@ -26,6 +25,13 @@ describe('$(...)', function(){
       var el = $('<li>');
       el.css({ foo: 0 });
       expect(el.attr('style')).to.equal('foo: 0;');
+    })
+
+    describe('parser', function(){
+      it('should allow any whitespace between declarations', function(){
+        var el = $('<li style="one \t:\n 0;\n two \f\r:\v 1">');
+        expect(el.css()).to.eql({ one: 0, two: 1 });
+      })
     })
   })
 
