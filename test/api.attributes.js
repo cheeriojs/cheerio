@@ -1,8 +1,10 @@
 var expect = require('expect.js');
 
 var $ = require('../');
+var _ = require('underscore');
 var fruits = require('./fixtures').fruits;
 var vegetables = require('./fixtures').vegetables;
+var chocolates = require('./fixtures').chocolates;
 var inputs = require('./fixtures').inputs;
 
 describe('$(...)', function() {
@@ -78,6 +80,71 @@ describe('$(...)', function() {
       expect($apple.attr('data-test')).to.equal('1');
     });
   });
+
+  describe('.data', function() {
+
+    it('() : should get all data attributes', function() {
+      var data = $('.linth', chocolates).data();
+      expect(data).to.eql({
+        highlight: 'Lindor',
+        origin: 'swiss'
+      });
+    });
+
+    it('() : no data attribute should return an empty object', function() {
+      var data = $('.cailler', chocolates).data();
+      expect(data).to.be.empty();
+    });
+
+    it('(invalid key) : invalid data attribute should return `undefined` ', function() {
+      var data = $('.frey', chocolates).data('lol');
+      expect(data).to.be(undefined);
+    });
+
+    it('(valid key) : valid data attribute should get value', function() {
+      var highlight = $('.linth', chocolates).data('highlight');
+      var origin = $('.linth', chocolates).data('origin');
+
+      expect(highlight).to.equal('Lindor');
+      expect(origin).to.equal('swiss');
+    });
+
+    it('(hyphen key) : data addribute with hyphen should be camelized ;-)', function() {
+      var data = $('.frey', chocolates).data();
+      expect(data).to.eql({
+        taste: 'sweet',
+        bestCollection: 'Mahony'
+      });
+    });
+
+    it('(key, value) : should set data attribute', function() {
+      // Adding as object.
+      var a = $('.frey', chocolates).data({
+        balls: 'giandor'
+      })['0'].data;
+      // Adding as string.
+      var b = $('.linth', chocolates).data('snack', 'chocoletti')['0'].data;
+
+      expect(a.balls).to.eql('giandor');
+      expect(b.snack).to.eql('chocoletti');
+    });
+
+    it('(map) : object map should set multiple data attributes', function() {
+      var data = $('.linth', chocolates).data({
+        id: 'Cailler',
+        flop: 'Pippilotti Rist',
+        top: 'Frigor',
+        url: 'http://www.cailler.ch/'
+      })['0'].data;
+
+      expect(data.id).to.equal('Cailler');
+      expect(data.flop).to.equal('Pippilotti Rist');
+      expect(data.top).to.equal('Frigor');
+      expect(data.url).to.equal('http://www.cailler.ch/');
+    });
+
+  });
+
 
   describe('.val', function() {
 		it('.val(): on select should get value', function() {
