@@ -343,6 +343,25 @@ describe('$(...)', function() {
       expect(text).to.equal('M&M');
     });
 
+    it('( undefined ) : should act as an accessor', function() {
+      var $div = $('<div>test</div>');
+      expect($div.text(undefined)).to.be.a('string');
+      expect($div.text()).to.be('test');
+    });
+
+    it('( "" ) : should convert to string', function() {
+      var $div = $('<div>test</div>');
+      expect($div.text('').text()).to.equal('');
+    });
+
+    it('( null ) : should convert to string', function() {
+      expect($('<div>').text(null).text()).to.equal('null');
+    });
+
+    it('( 0 ) : should convert to string', function() {
+      expect($('<div>').text(0).text()).to.equal('0');
+    });
+
     it('(str) should encode then decode unsafe characters', function() {
       var $apple = $('.apple', fruits);
       
