@@ -3,7 +3,7 @@
   "name": "cheerio",
   "description": "Tiny, fast, and elegant implementation of core jQuery designed specifically for the server",
   "keywords": ["htmlparser", "jquery", "selector", "scraper"],
-  "version": "0.12.1",
+  "version": "0.12.2",
   "repository":   {
     "type": "git",
     "url": "git://github.com/MatthewMueller/cheerio.git"

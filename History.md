@@ -1,4 +1,12 @@
 
+0.12.2 / 2013-09-04 
+==================
+
+ * Correct implementation of `$.fn.text` (@jugglinmike)
+ * Refactor Cheerio array creation (@jugglinmike)
+ * Extend manipulation methods to accept Arrays (@jugglinmike)
+ * support .attr(attributeName, function(index, attr)) (@xiaohwan)
+
 0.12.1 / 2013-07-30
 ==================
 
