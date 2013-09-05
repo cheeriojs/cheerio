@@ -147,14 +147,15 @@ $('.apple').attr('id', 'favorite').html()
 Method for getting and setting data attributes. Gets or sets the data attribute value for only the first element in the matched set. 
 
 ```js
-$('<div data-foo-bar="desert"></div>').data()
-//=> {fooBar: 'desert'}
+$('<div data-apple-color="red"></div>').data()
+//=> { appleColor: 'red' }
 
-$('<div data-foo-bar="desert"></div>').data('data-foo-bar')
-//=> 'desert'
+$('<div data-apple-color="red"></div>').data('data-apple-color')
+//=> 'red'
 
-var b = $('.linth', chocolates).data('snack', 'chocoletti')['0'].data;
-//=> b.snack == 'chocoletti'
+var apple = $('.apple').data('kind', 'mac')
+apple.data('kind')
+//=> 'mac'
 ```
 
 > See http://api.jquery.com/data/ for more information

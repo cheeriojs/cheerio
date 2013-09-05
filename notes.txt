@@ -1,0 +1,34 @@
+jQuery 2.0.0 Verhalten:
+
+var b = $("body")
+-> undefined
+b.data("lol")
+-> undefined
+b.data()
+-> Object {}
+
+
+jQuery difference:
+
+
+cheerio: numbers are returned as string with attr() as well as data()
+jQuery: returns numbers (not string)
+
+it('(number) : number attribute values should be returned as number', function() {
+  var fooBar = $('<div data-foo-bar="42">Total Foo</div>').attr('data-foo-bar');
+  expect(fooBar).to.equal(42);
+});
+-> returns '42'
+
+
+it('(hyphen key) : data addribute with hyphen should be camelized ;-)', function() {
+  var fooBar = $('<div data-foo-bar="42">Total Foo</div>').data()
+  expect(fooBar).to.equal({fooBar: 42});
+});
+-> returns {fooBar: '42'}
+
+
+missing .removeData() function
+
+
+http://jsfiddle.net/intesso/QxAjD/

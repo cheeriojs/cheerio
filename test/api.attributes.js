@@ -1,7 +1,6 @@
 var expect = require('expect.js');
 
 var $ = require('../');
-var _ = require('underscore');
 var fruits = require('./fixtures').fruits;
 var vegetables = require('./fixtures').vegetables;
 var chocolates = require('./fixtures').chocolates;
@@ -121,12 +120,12 @@ describe('$(...)', function() {
       // Adding as object.
       var a = $('.frey', chocolates).data({
         balls: 'giandor'
-      })['0'].data;
+      });
       // Adding as string.
-      var b = $('.linth', chocolates).data('snack', 'chocoletti')['0'].data;
+      var b = $('.linth', chocolates).data('snack', 'chocoletti');
 
-      expect(a.balls).to.eql('giandor');
-      expect(b.snack).to.eql('chocoletti');
+      expect(a.data('balls')).to.eql('giandor');
+      expect(b.data('snack')).to.eql('chocoletti');
     });
 
     it('(map) : object map should set multiple data attributes', function() {
