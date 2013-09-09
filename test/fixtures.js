@@ -27,3 +27,8 @@ exports.inputs = [
 	'<input type="radio" value="off" name="radio" /><input type="radio" name="radio" value="on" checked />',
 	'<select id="multi" multiple><option value="1">1</option><option value="2" selected>2</option><option value="3" selected>3</option><option value="4">4</option></select>'
 ].join('');
+
+exports.text = [
+  '<p>Apples, <b>oranges</b> and pears.</p>',
+  '<p>Carrots and <b>sweetcorn</b></p>'
+].join('');
