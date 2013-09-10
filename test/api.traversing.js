@@ -2,6 +2,7 @@ var expect = require('expect.js'),
     $ = require('../'),
     food = require('./fixtures').food,
     fruits = require('./fixtures').fruits;
+    text = require('./fixtures').text;
 
 describe('$(...)', function() {
 
@@ -64,6 +65,18 @@ describe('$(...)', function() {
 
     it('should only match immediate children, not ancestors');
 
+  });
+  
+  describe('.contents', function() {
+  
+    it('() : should get all contents', function() {
+      expect($('p', text).contents()).to.have.length(5);
+    });
+    
+    it('() : should include text nodes', function() {
+      expect($('p', text).contents().first()[0].type).to.equal('text');
+    });
+    
   });
 
   describe('.next', function() {
