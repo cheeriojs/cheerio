@@ -156,6 +156,7 @@ describe('$(...)', function() {
     it('() : should get all the siblings', function() {
       expect($('.orange', fruits).siblings()).to.have.length(2);
       expect($('#fruits', fruits).siblings()).to.have.length(0);
+      expect($('.apple, .carrot', food).siblings()).to.have.length(3);
     });
 
     it('(selector) : should get all siblings that match the selector', function() {
