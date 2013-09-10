@@ -8,8 +8,8 @@ exports.fruits = [
 
 exports.vegetables = [
   '<ul id="vegetables">',
-    '<li>Carrot</li>',
-    '<li>Sweetcorn</li>',
+    '<li class="carrot">Carrot</li>',
+    '<li class="sweetcorn">Sweetcorn</li>',
   '</ul>'
 ].join('');
 
