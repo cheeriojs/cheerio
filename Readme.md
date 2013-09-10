@@ -202,8 +202,10 @@ $('.apple').addClass('red').removeClass().html()
 > See http://api.jquery.com/removeClass/ for more information.
 
 #### .is( selector )
+#### .is( element )
+#### .is( selection )
 #### .is( function(index) )
-Checks the current list of elements and returns `true` if _any_ of the elements match the selector. If using a predicate function, the function is executed in the context of the selected element, so `this` refers to the current element.
+Checks the current list of elements and returns `true` if _any_ of the elements match the selector. If using an element or Cheerio selection, returns `true` if _any_ of the elements match. If using a predicate function, the function is executed in the context of the selected element, so `this` refers to the current element.
 
 
 ### Traversing
@@ -338,9 +340,9 @@ $('li').map(function(i, el) {
 //=> apple, orange, pear
 ```
 
-#### .filter( selector ) <br /> .filter( function(index) )
+#### .filter( selector ) <br /> .filter( selection ) <br /> .filter( element ) <br /> .filter( function(index) )
 
-Iterates over a cheerio object, reducing the set of selector elements to those that match the selector or pass the function's test. If using the function method, the function is executed in the context of the selected element, so `this` refers to the current element.
+Iterates over a cheerio object, reducing the set of selector elements to those that match the selector or pass the function's test. When a Cheerio selection is specified, return only the elements contained in that selection. When an element is specified, return only that element (if it is contained in the original selection). If using the function method, the function is executed in the context of the selected element, so `this` refers to the current element.
 
 Selector:
 

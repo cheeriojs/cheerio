@@ -316,6 +316,18 @@ describe('$(...)', function() {
       expect(lis).to.have.length(0);
     });
 
+    it('(selection) : should reduce the set of matched elements to those that are contained in the provided selection', function() {
+      var $fruits = $('li', fruits);
+      var $pear = $fruits.filter('.pear, .apple');
+      expect($fruits.filter($pear)).to.have.length(2);
+    });
+
+    it('(element) : should reduce the set of matched elements to those that specified directly', function() {
+      var $fruits = $('li', fruits);
+      var pear = $fruits.filter('.pear')[0];
+      expect($fruits.filter(pear)).to.have.length(1);
+    });
+
     it('(fn) : should reduce the set of matched elements to those that pass the function\'s test', function() {
       var orange = $('li', fruits).filter(function(i, el) {
         expect(this[0]).to.be(el);

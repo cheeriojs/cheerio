@@ -283,27 +283,53 @@ describe('$(...)', function() {
   });
 
   describe('.is', function () {
-    it('() should return false', function  () {
-      expect($('li.apple', fruits).is()).to.be(false)
-    })
-    it('(true selector) should return true', function () {
-      expect($('#vegetables', vegetables).is('ul')).to.be(true)
-    })
-    it('(false selector) should return false', function () {
-      expect($('#vegetables', vegetables).is('div')).to.be(false)
-    })
-    it('(true predicate) should return true', function () {
+    it('() : should return false', function() {
+      expect($('li.apple', fruits).is()).to.be(false);
+    });
+
+    it('(true selector) : should return true', function() {
+      expect($('#vegetables', vegetables).is('ul')).to.be(true);
+    });
+
+    it('(false selector) : should return false', function() {
+      expect($('#vegetables', vegetables).is('div')).to.be(false);
+    });
+
+    it('(true selection) : should return true', function() {
+      var $vegetables = $('li', vegetables);
+      expect($vegetables.is($vegetables.eq(1))).to.be(true);
+    });
+
+    it('(false selection) : should return false', function() {
+      var $vegetableList = $(vegetables);
+      var $vegetables = $vegetableList.find('li');
+      expect($vegetables.is($vegetableList)).to.be(false);
+    });
+
+    it('(true element) : should return true', function() {
+      var $vegetables = $('li', vegetables);
+      expect($vegetables.is($vegetables[0])).to.be(true);
+    });
+
+    it('(false element) : should return false', function() {
+      var $vegetableList = $(vegetables);
+      var $vegetables = $vegetableList.find('li');
+      expect($vegetables.is($vegetableList[0])).to.be(false);
+    });
+
+    it('(true predicate) : should return true', function() {
       var result = $('li', fruits).is(function() {
-        return this.hasClass('pear')
-      })
-      expect(result).to.be(true)
-    })
-    it('(false predicate) should return false', function () {
+        return this.hasClass('pear');
+      });
+      expect(result).to.be(true);
+    });
+
+    it('(false predicate) : should return false', function () {
       var result = $('li', fruits).last().is(function() {
-        return this.name === 'ul'
-      })
-      expect(result).to.be(false)
-    })
-  })
+        return this.name === 'ul';
+      });
+      expect(result).to.be(false);
+    });
+  });
 
 });
