@@ -32,3 +32,11 @@ exports.text = [
   '<p>Apples, <b>oranges</b> and pears.</p>',
   '<p>Carrots and <b>sweetcorn</b></p>'
 ].join('');
+
+exports.form = [
+  '<form>',
+    '<input id="txtUser" value="cheerio" class="input" />',
+    '<input id="txtMail" />',
+    '<textarea id="txtMemo">something</textarea>"',
+  '</form>'
+].join('');
