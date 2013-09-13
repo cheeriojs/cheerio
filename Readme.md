@@ -315,6 +315,14 @@ $('#fruits').children('.pear').text()
 //=> Pear
 ```
 
+#### .contents()
+Gets the children of each element in the set of matched elements, including text and comment nodes.
+
+```js
+$('#fruits').contents().length
+//=> 3
+```
+
 #### .each( function(index, element) )
 Iterates over a cheerio object, executing a function for each matched element. When the callback is fired, the function is fired in the context of the DOM element, so `this` refers to the current element, which is equivalent to the function parameter `element`. To break out of the `each` loop early, return with `false`.
 
