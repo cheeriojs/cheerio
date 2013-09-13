@@ -77,6 +77,10 @@ describe('$(...)', function() {
       expect($('p', text).contents().first()[0].type).to.equal('text');
     });
 
+    it('() : should include comment nodes', function() {
+      expect($('p', text).contents().last()[0].type).to.equal('comment');
+    });
+
   });
 
   describe('.next', function() {
