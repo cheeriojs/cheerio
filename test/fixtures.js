@@ -13,6 +13,14 @@ exports.vegetables = [
   '</ul>'
 ].join('');
 
+exports.chocolates = [
+  '<ul id="chocolates">',
+    '<li class="linth" data-highlight="Lindor" data-origin="swiss">Linth</li>',
+    '<li class="frey" data-taste="sweet" data-best-collection="Mahony">Frey</li>',
+    '<li class="cailler">Cailler</li>',
+  '</ul>'  
+].join('');
+
 exports.food = [
   '<ul id="food">',
     exports.fruits,
