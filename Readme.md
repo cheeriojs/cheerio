@@ -143,6 +143,23 @@ $('.apple').attr('id', 'favorite').html()
 
 > See http://api.jquery.com/attr/ for more information
 
+#### .data( name, value )
+Method for getting and setting data attributes. Gets or sets the data attribute value for only the first element in the matched set. 
+
+```js
+$('<div data-apple-color="red"></div>').data()
+//=> { appleColor: 'red' }
+
+$('<div data-apple-color="red"></div>').data('data-apple-color')
+//=> 'red'
+
+var apple = $('.apple').data('kind', 'mac')
+apple.data('kind')
+//=> 'mac'
+```
+
+> See http://api.jquery.com/data/ for more information
+
 #### .val( [value] )
 Method for getting and setting the value of input, select, and textarea. Note: Support for `map`, and `function` has not been added yet.
 
