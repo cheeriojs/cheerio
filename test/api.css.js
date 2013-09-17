@@ -26,6 +26,12 @@ describe('$(...)', function() {
       expect(el.eq(1).attr('style')).to.equal('color: red;');
     });
 
+    it('(prop, ""): should unset a css property', function() {
+      var el = $('<li style="padding: 1px; margin: 0;">');
+      el.css('padding', '');
+      expect(el.attr('style')).to.equal('margin: 0;');
+    });
+
     it('(obj): should set each key and val', function() {
       var el = $('<li style="padding: 0;"></li><li></li>');
       el.css({ foo: 0 });
