@@ -19,6 +19,11 @@ describe('$(...)', function() {
       expect(el.css('hai')).to.equal('there');
     });
 
+    it('([prop1, prop2]): should return the specified property values as an object', function() {
+      var el = $('<li style="margin: 1px; padding: 2px; color: blue;">');
+      expect(el.css(['margin', 'color'])).to.eql({ margin: '1px', color: 'blue' });
+    });
+
     it('(prop, val): should set a css property', function() {
       var el = $('<li style="margin: 0;"></li><li></li>');
       el.css('color', 'red');
