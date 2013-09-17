@@ -20,15 +20,17 @@ describe('$(...)', function() {
     });
 
     it('(prop, val): should set a css property', function() {
-      var el = $('<li>');
-      el.css('wassup', 0);
-      expect(el.attr('style')).to.equal('wassup: 0;');
+      var el = $('<li style="margin: 0;"></li><li></li>');
+      el.css('color', 'red');
+      expect(el.attr('style')).to.equal('margin: 0; color: red;');
+      expect(el.eq(1).attr('style')).to.equal('color: red;');
     });
 
     it('(obj): should set each key and val', function() {
-      var el = $('<li>');
+      var el = $('<li style="padding: 0;"></li><li></li>');
       el.css({ foo: 0 });
-      expect(el.attr('style')).to.equal('foo: 0;');
+      expect(el.eq(0).attr('style')).to.equal('padding: 0; foo: 0;');
+      expect(el.eq(1).attr('style')).to.equal('foo: 0;');
     });
 
     describe('parser', function(){
