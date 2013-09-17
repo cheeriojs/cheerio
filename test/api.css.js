@@ -37,6 +37,34 @@ describe('$(...)', function() {
       expect(el.attr('style')).to.equal('margin: 0;');
     });
 
+    describe('(prop, function):', function() {
+      beforeEach(function() {
+        this.$el = $('<div style="margin: 0;"></div><div style="margin: 0;"></div><div style="margin: 0;">');
+      });
+
+      it('should iterate over the selection', function() {
+        var count = 0;
+        var $el = this.$el;
+        this.$el.css('margin', function(idx, elem) {
+          expect(idx).to.equal(count);
+          expect(elem).to.equal($el[count]);
+          expect(this).to.equal($el[count]);
+          count++;
+        });
+        expect(count).to.equal(3);
+      });
+
+      it('should set each attribute independently', function() {
+        var values = ['4px', '', undefined];
+        this.$el.css('margin', function(idx) {
+          return values[idx];
+        });
+        expect(this.$el.eq(0).attr('style')).to.equal('margin: 4px;');
+        expect(this.$el.eq(1).attr('style')).to.equal('');
+        expect(this.$el.eq(2).attr('style')).to.equal('margin: 0;');
+      });
+    });
+
     it('(obj): should set each key and val', function() {
       var el = $('<li style="padding: 0;"></li><li></li>');
       el.css({ foo: 0 });
