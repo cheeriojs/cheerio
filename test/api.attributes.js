@@ -348,6 +348,54 @@ describe('$(...)', function() {
 
   });
 
+  describe('.toggleClass', function() {
+
+    it('(class class) : should toggle multiple classes from the element', function() {
+      var $fruits = $(fruits);
+
+      $('.apple', $fruits).addClass('fruit');
+      expect($('.apple', $fruits).hasClass('apple')).to.be.ok();
+      expect($('.apple', $fruits).hasClass('fruit')).to.be.ok();
+      expect($('.apple', $fruits).hasClass('red')).to.not.be.ok();
+
+      $('.apple', $fruits).toggleClass('apple red');
+      expect($('.fruit', $fruits).hasClass('apple')).to.not.be.ok();
+      expect($('.fruit', $fruits).hasClass('red')).to.be.ok();
+      expect($('.fruit', $fruits).hasClass('fruit')).to.be.ok();
+    });
+
+    it('(class class, true) : should add multiple classes from the element', function() {
+      var $fruits = $(fruits);
+
+      $('.apple', $fruits).addClass('fruit');
+      expect($('.apple', $fruits).hasClass('apple')).to.be.ok();
+      expect($('.apple', $fruits).hasClass('fruit')).to.be.ok();
+      expect($('.apple', $fruits).hasClass('red')).to.not.be.ok();
+
+      $('.apple', $fruits).toggleClass('apple red', true);
+      expect($('.fruit', $fruits).hasClass('apple')).to.be.ok();
+      expect($('.fruit', $fruits).hasClass('red')).to.be.ok();
+      expect($('.fruit', $fruits).hasClass('fruit')).to.be.ok();
+    });
+
+    it('(class class, false) : should remove multiple classes from the element', function() {
+      var $fruits = $(fruits);
+
+      $('.apple', $fruits).addClass('fruit');
+      expect($('.apple', $fruits).hasClass('apple')).to.be.ok();
+      expect($('.apple', $fruits).hasClass('fruit')).to.be.ok();
+      expect($('.apple', $fruits).hasClass('red')).to.not.be.ok();
+
+      $('.apple', $fruits).toggleClass('apple red', false);
+      expect($('.fruit', $fruits).hasClass('apple')).to.not.be.ok();
+      expect($('.fruit', $fruits).hasClass('red')).to.not.be.ok();
+      expect($('.fruit', $fruits).hasClass('fruit')).to.be.ok();
+    });
+
+    it('(fn) : should toggle classes returned from the function');
+
+  });
+
   describe('.is', function () {
     it('() : should return false', function() {
       expect($('li.apple', fruits).is()).to.be(false);
