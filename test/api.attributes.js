@@ -3,6 +3,7 @@ var expect = require('expect.js');
 var $ = require('../');
 var fruits = require('./fixtures').fruits;
 var vegetables = require('./fixtures').vegetables;
+var food = require('./fixtures').food;
 var chocolates = require('./fixtures').chocolates;
 var inputs = require('./fixtures').inputs;
 
@@ -345,6 +346,79 @@ describe('$(...)', function() {
     });
 
     it('(fn) : should remove classes returned from the function');
+
+  });
+
+  describe('.toggleClass', function() {
+
+    it('(class class) : should toggle multiple classes from the element', function() {
+      var $fruits = $(fruits);
+
+      $('.apple', $fruits).addClass('fruit');
+      expect($('.apple', $fruits).hasClass('apple')).to.be.ok();
+      expect($('.apple', $fruits).hasClass('fruit')).to.be.ok();
+      expect($('.apple', $fruits).hasClass('red')).to.not.be.ok();
+
+      $('.apple', $fruits).toggleClass('apple red');
+      expect($('.fruit', $fruits).hasClass('apple')).to.not.be.ok();
+      expect($('.fruit', $fruits).hasClass('red')).to.be.ok();
+      expect($('.fruit', $fruits).hasClass('fruit')).to.be.ok();
+    });
+
+    it('(class class, true) : should add multiple classes to the element', function() {
+      var $fruits = $(fruits);
+
+      $('.apple', $fruits).addClass('fruit');
+      expect($('.apple', $fruits).hasClass('apple')).to.be.ok();
+      expect($('.apple', $fruits).hasClass('fruit')).to.be.ok();
+      expect($('.apple', $fruits).hasClass('red')).to.not.be.ok();
+
+      $('.apple', $fruits).toggleClass('apple red', true);
+      expect($('.fruit', $fruits).hasClass('apple')).to.be.ok();
+      expect($('.fruit', $fruits).hasClass('red')).to.be.ok();
+      expect($('.fruit', $fruits).hasClass('fruit')).to.be.ok();
+    });
+
+    it('(class class, false) : should remove multiple classes from the element', function() {
+      var $fruits = $(fruits);
+
+      $('.apple', $fruits).addClass('fruit');
+      expect($('.apple', $fruits).hasClass('apple')).to.be.ok();
+      expect($('.apple', $fruits).hasClass('fruit')).to.be.ok();
+      expect($('.apple', $fruits).hasClass('red')).to.not.be.ok();
+
+      $('.apple', $fruits).toggleClass('apple red', false);
+      expect($('.fruit', $fruits).hasClass('apple')).to.not.be.ok();
+      expect($('.fruit', $fruits).hasClass('red')).to.not.be.ok();
+      expect($('.fruit', $fruits).hasClass('fruit')).to.be.ok();
+    });
+
+    it('(fn) : should toggle classes returned from the function', function() {
+      var $food = $(food);
+
+      $('.apple', $food).addClass('fruit');
+      $('.carrot', $food).addClass('vegetable');
+      expect($('.apple', $food).hasClass('fruit')).to.be.ok();
+      expect($('.apple', $food).hasClass('vegetable')).to.not.be.ok();
+      expect($('.orange', $food).hasClass('fruit')).to.not.be.ok();
+      expect($('.orange', $food).hasClass('vegetable')).to.not.be.ok();
+      expect($('.carrot', $food).hasClass('fruit')).to.not.be.ok();
+      expect($('.carrot', $food).hasClass('vegetable')).to.be.ok();
+      expect($('.sweetcorn', $food).hasClass('fruit')).to.not.be.ok();
+      expect($('.sweetcorn', $food).hasClass('vegetable')).to.not.be.ok();
+
+      $('li', $food).toggleClass(function(index, className, switchVal) {
+        return $(this).parent().is('#fruits') ? 'fruit' : 'vegetable';
+      });
+      expect($('.apple', $food).hasClass('fruit')).to.not.be.ok();
+      expect($('.apple', $food).hasClass('vegetable')).to.not.be.ok();
+      expect($('.orange', $food).hasClass('fruit')).to.be.ok();
+      expect($('.orange', $food).hasClass('vegetable')).to.not.be.ok();
+      expect($('.carrot', $food).hasClass('fruit')).to.not.be.ok();
+      expect($('.carrot', $food).hasClass('vegetable')).to.not.be.ok();
+      expect($('.sweetcorn', $food).hasClass('fruit')).to.not.be.ok();
+      expect($('.sweetcorn', $food).hasClass('vegetable')).to.be.ok();
+    });
 
   });
 

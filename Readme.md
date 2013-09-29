@@ -218,6 +218,19 @@ $('.apple').addClass('red').removeClass().html()
 
 > See http://api.jquery.com/removeClass/ for more information.
 
+#### .toggleClass( className, [switch] )
+Add or remove class(es) from the matched elements, depending on either the class's presence or the value of the switch argument. Also accepts a `function` like jQuery.
+
+```js
+$('.apple.green').toggleClass('fruit green red').html()
+//=> <li class="apple fruit red">Apple</li>
+
+$('.apple.green').toggleClass('fruit green red', true).html()
+//=> <li class="apple green fruit red">Apple</li>
+```
+
+> See http://api.jquery.com/toggleClass/ for more information.
+
 #### .is( selector )
 #### .is( element )
 #### .is( selection )
