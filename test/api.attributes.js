@@ -3,6 +3,7 @@ var expect = require('expect.js');
 var $ = require('../');
 var fruits = require('./fixtures').fruits;
 var vegetables = require('./fixtures').vegetables;
+var food = require('./fixtures').food;
 var chocolates = require('./fixtures').chocolates;
 var inputs = require('./fixtures').inputs;
 
@@ -364,7 +365,7 @@ describe('$(...)', function() {
       expect($('.fruit', $fruits).hasClass('fruit')).to.be.ok();
     });
 
-    it('(class class, true) : should add multiple classes from the element', function() {
+    it('(class class, true) : should add multiple classes to the element', function() {
       var $fruits = $(fruits);
 
       $('.apple', $fruits).addClass('fruit');
@@ -392,7 +393,32 @@ describe('$(...)', function() {
       expect($('.fruit', $fruits).hasClass('fruit')).to.be.ok();
     });
 
-    it('(fn) : should toggle classes returned from the function');
+    it('(fn) : should toggle classes returned from the function', function() {
+      var $food = $(food);
+
+      $('.apple', $food).addClass('fruit');
+      $('.carrot', $food).addClass('vegetable');
+      expect($('.apple', $food).hasClass('fruit')).to.be.ok();
+      expect($('.apple', $food).hasClass('vegetable')).to.not.be.ok();
+      expect($('.orange', $food).hasClass('fruit')).to.not.be.ok();
+      expect($('.orange', $food).hasClass('vegetable')).to.not.be.ok();
+      expect($('.carrot', $food).hasClass('fruit')).to.not.be.ok();
+      expect($('.carrot', $food).hasClass('vegetable')).to.be.ok();
+      expect($('.sweetcorn', $food).hasClass('fruit')).to.not.be.ok();
+      expect($('.sweetcorn', $food).hasClass('vegetable')).to.not.be.ok();
+
+      $('li', $food).toggleClass(function(index, className, switchVal) {
+        return $(this).parent().is('#fruits') ? 'fruit' : 'vegetable';
+      });
+      expect($('.apple', $food).hasClass('fruit')).to.not.be.ok();
+      expect($('.apple', $food).hasClass('vegetable')).to.not.be.ok();
+      expect($('.orange', $food).hasClass('fruit')).to.be.ok();
+      expect($('.orange', $food).hasClass('vegetable')).to.not.be.ok();
+      expect($('.carrot', $food).hasClass('fruit')).to.not.be.ok();
+      expect($('.carrot', $food).hasClass('vegetable')).to.not.be.ok();
+      expect($('.sweetcorn', $food).hasClass('fruit')).to.not.be.ok();
+      expect($('.sweetcorn', $food).hasClass('vegetable')).to.be.ok();
+    });
 
   });
 
