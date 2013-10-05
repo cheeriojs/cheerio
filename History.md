@@ -1,4 +1,15 @@
 
+0.12.3 / 2013-10-04 
+===================
+
+ * Add .toggleClass() function (@cyberthom)
+ * Add contributing guidelines (@jugglinmike)
+ * Fix bug in `siblings` (@jugglinmike)
+ * Correct the implementation `filter` and `is` (@jugglinmike)
+ * add .data() function (@andi-neck)
+ * add .css() (@yields)
+ * Implements contents() (@jlep)
+
 0.12.2 / 2013-09-04 
 ==================
 
