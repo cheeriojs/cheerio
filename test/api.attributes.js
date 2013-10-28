@@ -287,6 +287,12 @@ describe('$(...)', function() {
       expect($('.pear', $fruits).attr('class')).to.be(undefined);
     });
 
+    it('("") : should not modify class list', function() {
+      var $fruits = $(fruits);
+      $fruits.children().removeClass('');
+      expect($('.apple', $fruits)).to.have.length(1);
+    });
+
     it('(invalid class) : should not remove anything', function() {
       var $fruits = $(fruits);
       $('.pear', $fruits).removeClass('fruit');
