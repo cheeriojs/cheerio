@@ -40,7 +40,7 @@ please try to maintain consistency with the code base.
     Cheerio instance, simply define a named function within the module it is
     needed.
   - *Instance methods*: If the functionality requires a reference to a Cheerio
-    insance, informally define the method as "private" using the following
+    instance, informally define the method as "private" using the following
     conventions:
     - Define the method as a function on the Cheerio prototype
     - Prefix the method name with an underscore (`_`) character
