@@ -274,7 +274,33 @@ describe('$(...)', function() {
       expect($('.apple', $fruits).hasClass('tasty')).to.be.ok();
     });
 
-    it('(fn) : should add classes returned from the function');
+    it('(fn) : should add classes returned from the function', function() {
+      var $fruits = $(fruits).children();
+      var args = [];
+      var thisVals = [];
+      var toAdd = ['apple red', '', undefined];
+
+      $fruits.addClass(function(idx, currentClass) {
+        args.push(arguments);
+        thisVals.push(this);
+        return toAdd[idx];
+      });
+
+      expect(args).to.eql([
+        [0, 'apple'],
+        [1, 'orange'],
+        [2, 'pear']
+      ]);
+      expect(thisVals).to.eql([
+        $fruits[0],
+        $fruits[1],
+        $fruits[2]
+      ]);
+      expect($fruits.eq(0).hasClass('apple')).to.be.ok();
+      expect($fruits.eq(0).hasClass('red')).to.be.ok();
+      expect($fruits.eq(1).hasClass('orange')).to.be.ok();
+      expect($fruits.eq(2).hasClass('pear')).to.be.ok();
+    });
 
   });
 
