@@ -34,3 +34,14 @@ please try to maintain consistency with the code base.
   - [End each file with a newline
     character.](https://github.com/editorconfig/editorconfig/wiki/Newline-at-End-of-File-Support)
 - Terminate every statement with a semicolon
+- Private functionality (for re-using functionality that isn't part of the
+  jQuery API)
+  - *Static methods*: If the functionality does not require a reference to a
+    Cheerio instance, simply define a named function within the module it is
+    needed.
+  - *Instance methods*: If the functionality requires a reference to a Cheerio
+    insance, informally define the method as "private" using the following
+    conventions:
+    - Define the method as a function on the Cheerio prototype
+    - Prefix the method name with an underscore (`_`) character
+    - Include `@api private` in the code comment the documents the method
