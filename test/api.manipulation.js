@@ -530,6 +530,56 @@ describe('$(...)', function() {
       expect($.html($replaced)).to.equal('<br>');
     });
 
+    it('(fn) : should invoke the callback with the correct argument and context', function() {
+      var $fruits = $(fruits);
+      var origChildren = $fruits.children().toArray();
+      var args = [];
+      var thisValues = [];
+
+      $fruits.children().replaceWith(function() {
+        args.push(arguments);
+        thisValues.push(this);
+        return '<li class="first">';
+      });
+
+      expect(args).to.eql([[0], [1], [2]]);
+      expect(thisValues).to.eql([
+        origChildren[0],
+        origChildren[1],
+        origChildren[2]
+      ]);
+    });
+
+    it('(fn) : should replace the selected element with the returned string', function() {
+      var $fruits = $(fruits);
+
+      $fruits.children().replaceWith(function() {
+        return '<li class="first">';
+      });
+
+      expect($fruits.find('.first')).to.have.length(3);
+    });
+
+    it('(fn) : should replace the selected element with the returned Cheerio object', function() {
+      var $fruits = $(fruits);
+
+      $fruits.children().replaceWith(function() {
+        return $('<li class="second">');
+      });
+
+      expect($fruits.find('.second')).to.have.length(3);
+    });
+
+    it('(fn) : should replace the selected element with the returned node', function() {
+      var $fruits = $(fruits);
+
+      $fruits.children().replaceWith(function() {
+        return $('<li class="third">')[0];
+      });
+
+      expect($fruits.find('.third')).to.have.length(3);
+    });
+
   });
 
   describe('.empty', function() {
