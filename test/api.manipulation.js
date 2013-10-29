@@ -48,7 +48,78 @@ describe('$(...)', function() {
       expect($fruits.children(4).hasClass('grape')).to.be.ok();
     });
 
-    it('(fn) : should add returned element as last child');
+    it('(fn) : should invoke the callback with the correct argument and context', function() {
+      var $fruits = $(fruits).children();
+      var args = [];
+      var thisValues = [];
+
+      $fruits.append(function() {
+        args.push(arguments);
+        thisValues.push(this);
+      });
+
+      expect(args).to.eql([
+        [0, 'Apple'],
+        [1, 'Orange'],
+        [2, 'Pear']
+      ]);
+      expect(thisValues).to.eql([
+        $fruits[0],
+        $fruits[1],
+        $fruits[2]
+      ]);
+    });
+
+    it('(fn) : should add returned string as last child', function() {
+      var $fruits = $(fruits).children();
+      var $apple, $orange, $pear;
+
+      $fruits.append(function() {
+        return '<div class="first">';
+      });
+
+      $apple = $fruits.eq(0);
+      $orange = $fruits.eq(1);
+      $pear = $fruits.eq(2);
+
+      expect($apple.find('.first')[0]).to.equal($apple.contents()[1]);
+      expect($orange.find('.first')[0]).to.equal($orange.contents()[1]);
+      expect($pear.find('.first')[0]).to.equal($pear.contents()[1]);
+    });
+
+    it('(fn) : should add returned Cheerio object as last child', function() {
+      var $fruits = $(fruits).children();
+      var $apple, $orange, $pear;
+
+      $fruits.append(function() {
+        return $('<div class="second">');
+      });
+
+      $apple = $fruits.eq(0);
+      $orange = $fruits.eq(1);
+      $pear = $fruits.eq(2);
+
+      expect($apple.find('.second')[0]).to.equal($apple.contents()[1]);
+      expect($orange.find('.second')[0]).to.equal($orange.contents()[1]);
+      expect($pear.find('.second')[0]).to.equal($pear.contents()[1]);
+    });
+
+    it('(fn) : should add returned Node as last child', function() {
+      var $fruits = $(fruits).children();
+      var $apple, $orange, $pear;
+
+      $fruits.append(function() {
+        return $('<div class="third">')[0];
+      });
+
+      $apple = $fruits.eq(0);
+      $orange = $fruits.eq(1);
+      $pear = $fruits.eq(2);
+
+      expect($apple.find('.third')[0]).to.equal($apple.contents()[1]);
+      expect($orange.find('.third')[0]).to.equal($orange.contents()[1]);
+      expect($pear.find('.third')[0]).to.equal($pear.contents()[1]);
+    });
 
     it('should maintain correct object state (Issue: #10)', function() {
       var $obj = $('<div></div>')
@@ -105,7 +176,78 @@ describe('$(...)', function() {
       expect($fruits.children(1).hasClass('grape')).to.be.ok();
     });
 
-    it('(fn) : should add returned element as first child');
+    it('(fn) : should invoke the callback with the correct argument and context', function() {
+      var $fruits = $(fruits).children();
+      var args = [];
+      var thisValues = [];
+
+      $fruits.prepend(function() {
+        args.push(arguments);
+        thisValues.push(this);
+      });
+
+      expect(args).to.eql([
+        [0, 'Apple'],
+        [1, 'Orange'],
+        [2, 'Pear']
+      ]);
+      expect(thisValues).to.eql([
+        $fruits[0],
+        $fruits[1],
+        $fruits[2]
+      ]);
+    });
+
+    it('(fn) : should add returned string as first child', function() {
+      var $fruits = $(fruits).children();
+      var $apple, $orange, $pear;
+
+      $fruits.prepend(function() {
+        return '<div class="first">';
+      });
+
+      $apple = $fruits.eq(0);
+      $orange = $fruits.eq(1);
+      $pear = $fruits.eq(2);
+
+      expect($apple.find('.first')[0]).to.equal($apple.contents()[0]);
+      expect($orange.find('.first')[0]).to.equal($orange.contents()[0]);
+      expect($pear.find('.first')[0]).to.equal($pear.contents()[0]);
+    });
+
+    it('(fn) : should add returned Cheerio object as first child', function() {
+      var $fruits = $(fruits).children();
+      var $apple, $orange, $pear;
+
+      $fruits.prepend(function() {
+        return $('<div class="second">');
+      });
+
+      $apple = $fruits.eq(0);
+      $orange = $fruits.eq(1);
+      $pear = $fruits.eq(2);
+
+      expect($apple.find('.second')[0]).to.equal($apple.contents()[0]);
+      expect($orange.find('.second')[0]).to.equal($orange.contents()[0]);
+      expect($pear.find('.second')[0]).to.equal($pear.contents()[0]);
+    });
+
+    it('(fn) : should add returned Node as first child', function() {
+      var $fruits = $(fruits).children();
+      var $apple, $orange, $pear;
+
+      $fruits.prepend(function() {
+        return $('<div class="third">')[0];
+      });
+
+      $apple = $fruits.eq(0);
+      $orange = $fruits.eq(1);
+      $pear = $fruits.eq(2);
+
+      expect($apple.find('.third')[0]).to.equal($apple.contents()[0]);
+      expect($orange.find('.third')[0]).to.equal($orange.contents()[0]);
+      expect($pear.find('.third')[0]).to.equal($pear.contents()[0]);
+    });
 
   });
 
