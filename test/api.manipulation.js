@@ -23,6 +23,13 @@ describe('$(...)', function() {
       expect($fruits.children(3).hasClass('plum')).to.be.ok();
     });
 
+    it('(Node) : should add element as last child', function() {
+      var $fruits = $(fruits);
+      var plum = $('<li class="plum">Plum</li>')[0];
+      $fruits.append(plum);
+      expect($fruits.children(3).hasClass('plum')).to.be.ok();
+    });
+
     it('($(...), html) : should add multiple elements as last children', function() {
       var $fruits = $(fruits);
       var $plum = $('<li class="plum">Plum</li>');
@@ -70,6 +77,13 @@ describe('$(...)', function() {
       var $fruits = $(fruits);
       var $plum = $('<li class="plum">Plum</li>');
       $fruits.prepend($plum);
+      expect($fruits.children(0).hasClass('plum')).to.be.ok();
+    });
+
+    it('(Node) : should add node as first child', function() {
+      var $fruits = $(fruits);
+      var plum = $('<li class="plum">Plum</li>')[0];
+      $fruits.prepend(plum);
       expect($fruits.children(0).hasClass('plum')).to.be.ok();
     });
 
@@ -124,6 +138,13 @@ describe('$(...)', function() {
       expect($('.apple', $fruits).next().hasClass('plum')).to.be.ok();
     });
 
+    it('(Node) : should add element as next sibling', function() {
+      var $fruits = $(fruits);
+      var plum = $('<li class="plum">Plum</li>')[0];
+      $('.apple', $fruits).after(plum);
+      expect($('.apple', $fruits).next().hasClass('plum')).to.be.ok();
+    });
+
     it('($(...), html) : should add multiple elements as next siblings', function() {
       var $fruits = $(fruits);
       var $plum = $('<li class="plum">Plum</li>');
@@ -154,6 +175,13 @@ describe('$(...)', function() {
       var $fruits = $(fruits);
       var $plum = $('<li class="plum">Plum</li>');
       $('.apple', $fruits).before($plum);
+      expect($('.apple', $fruits).prev().hasClass('plum')).to.be.ok();
+    });
+
+    it('(Node) : should add element as previous sibling', function() {
+      var $fruits = $(fruits);
+      var plum = $('<li class="plum">Plum</li>');
+      $('.apple', $fruits).before(plum);
       expect($('.apple', $fruits).prev().hasClass('plum')).to.be.ok();
     });
 
@@ -219,6 +247,15 @@ describe('$(...)', function() {
       var $src = $('<ul></ul>');
       var $elem = $('<h2>hi <span>there</span></h2>');
       var $replaced = $src.replaceWith($elem);
+      expect($replaced[0].parent.type).to.equal('root');
+      expect($.html($replaced[0].parent)).to.equal('<h2>hi <span>there</span></h2>');
+      expect($.html($replaced)).to.equal('<ul></ul>');
+    });
+
+    it('(Node) : should replace the selected element with given element', function() {
+      var $src = $('<ul></ul>');
+      var elem = $('<h2>hi <span>there</span></h2>');
+      var $replaced = $src.replaceWith(elem);
       expect($replaced[0].parent.type).to.equal('root');
       expect($.html($replaced[0].parent)).to.equal('<h2>hi <span>there</span></h2>');
       expect($.html($replaced)).to.equal('<ul></ul>');
