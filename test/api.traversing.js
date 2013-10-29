@@ -20,7 +20,9 @@ describe('$(...)', function() {
       expect($('#fruits', fruits).find('li')).to.have.length(3);
     });
 
-    it('(many) : should merge all selected elems with matching descendants');
+    it('(many) : should merge all selected elems with matching descendants', function() {
+      expect($('#fruits, #food', food).find('.apple')).to.have.length(1);
+    });
 
     it('(invalid single) : should return empty if cant find', function() {
       expect($('ul', fruits).find('blah')).to.have.length(0);
