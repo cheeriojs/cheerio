@@ -400,7 +400,62 @@ describe('$(...)', function() {
       expect($('.grape', $fruits).prev().hasClass('plum')).to.be.ok();
     });
 
-    it('(fn) : should add returned element as previous sibling');
+    it('(fn) : should invoke the callback with the correct argument and context', function() {
+      var $fruits = $(fruits).children();
+      var args = [];
+      var thisValues = [];
+
+      $fruits.before(function() {
+        args.push(arguments);
+        thisValues.push(this);
+      });
+
+      expect(args).to.eql([[0], [1], [2]]);
+      expect(thisValues).to.eql([
+        $fruits[0],
+        $fruits[1],
+        $fruits[2]
+      ]);
+    });
+
+    it('(fn) : should add returned string as previous sibling', function() {
+      var $list = $(fruits);
+      var $fruits = $list.children();
+
+      $fruits.before(function() {
+        return '<li class="first">';
+      });
+
+      expect($list.find('.first')[0]).to.equal($list.contents()[0]);
+      expect($list.find('.first')[1]).to.equal($list.contents()[2]);
+      expect($list.find('.first')[2]).to.equal($list.contents()[4]);
+    });
+
+    it('(fn) : should add returned Cheerio object as previous sibling', function() {
+      var $list = $(fruits);
+      var $fruits = $list.children();
+
+      $fruits.before(function() {
+        return $('<li class="second">');
+      });
+
+      expect($list.find('.second')[0]).to.equal($list.contents()[0]);
+      expect($list.find('.second')[1]).to.equal($list.contents()[2]);
+      expect($list.find('.second')[2]).to.equal($list.contents()[4]);
+    });
+
+    it('(fn) : should add returned Node as previous sibling', function() {
+      var $list = $(fruits);
+      var $fruits = $list.children();
+
+      $fruits.before(function() {
+        return $('<li class="third">')[0];
+      });
+
+      expect($list.find('.third')[0]).to.equal($list.contents()[0]);
+      expect($list.find('.third')[1]).to.equal($list.contents()[2]);
+      expect($list.find('.third')[2]).to.equal($list.contents()[4]);
+    });
 
   });
 
