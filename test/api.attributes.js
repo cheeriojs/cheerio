@@ -274,7 +274,33 @@ describe('$(...)', function() {
       expect($('.apple', $fruits).hasClass('tasty')).to.be.ok();
     });
 
-    it('(fn) : should add classes returned from the function');
+    it('(fn) : should add classes returned from the function', function() {
+      var $fruits = $(fruits).children();
+      var args = [];
+      var thisVals = [];
+      var toAdd = ['apple red', '', undefined];
+
+      $fruits.addClass(function(idx, currentClass) {
+        args.push(arguments);
+        thisVals.push(this);
+        return toAdd[idx];
+      });
+
+      expect(args).to.eql([
+        [0, 'apple'],
+        [1, 'orange'],
+        [2, 'pear']
+      ]);
+      expect(thisVals).to.eql([
+        $fruits[0],
+        $fruits[1],
+        $fruits[2]
+      ]);
+      expect($fruits.eq(0).hasClass('apple')).to.be.ok();
+      expect($fruits.eq(0).hasClass('red')).to.be.ok();
+      expect($fruits.eq(1).hasClass('orange')).to.be.ok();
+      expect($fruits.eq(2).hasClass('pear')).to.be.ok();
+    });
 
   });
 
@@ -285,6 +311,12 @@ describe('$(...)', function() {
       $('.pear', $fruits).addClass('fruit');
       $('.pear', $fruits).removeClass();
       expect($('.pear', $fruits).attr('class')).to.be(undefined);
+    });
+
+    it('("") : should not modify class list', function() {
+      var $fruits = $(fruits);
+      $fruits.children().removeClass('');
+      expect($('.apple', $fruits)).to.have.length(1);
     });
 
     it('(invalid class) : should not remove anything', function() {
@@ -345,7 +377,33 @@ describe('$(...)', function() {
       expect($div.removeClass('x').hasClass('x')).to.be(false);
     });
 
-    it('(fn) : should remove classes returned from the function');
+    it('(fn) : should remove classes returned from the function', function() {
+      var $fruits = $(fruits).children();
+      var args = [];
+      var thisVals = [];
+      var toAdd = ['apple red', '', undefined];
+
+      $fruits.removeClass(function(idx, currentClass) {
+        args.push(arguments);
+        thisVals.push(this);
+        return toAdd[idx];
+      });
+
+      expect(args).to.eql([
+        [0, 'apple'],
+        [1, 'orange'],
+        [2, 'pear']
+      ]);
+      expect(thisVals).to.eql([
+        $fruits[0],
+        $fruits[1],
+        $fruits[2]
+      ]);
+      expect($fruits.eq(0).hasClass('apple')).to.not.be.ok();
+      expect($fruits.eq(0).hasClass('red')).to.not.be.ok();
+      expect($fruits.eq(1).hasClass('orange')).to.be.ok();
+      expect($fruits.eq(2).hasClass('pear')).to.be.ok();
+    });
 
   });
 
