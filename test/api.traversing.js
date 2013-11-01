@@ -1,7 +1,7 @@
 var expect = require('expect.js'),
   $ = require('../'),
   food = require('./fixtures').food,
-  fruits = require('./fixtures').fruits;
+  fruits = require('./fixtures').fruits,
   text = require('./fixtures').text;
 
 describe('$(...)', function() {
