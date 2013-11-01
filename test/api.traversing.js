@@ -186,10 +186,10 @@ describe('$(...)', function() {
       expect(result).to.have.length(2);
       expect(result[0].attribs.id).to.be('fruits');
       expect(result[1].attribs.id).to.be('food');
-      result = $('#fruits', food).parents()
+      result = $('#fruits', food).parents();
       expect(result).to.have.length(1);
       expect(result[0].attribs.id).to.be('food');
-    })
+    });
     it('(selector) : should get all of the parents that match the selector in logical order', function() {
       var result = $('.orange', food).parents('#fruits');
       expect(result).to.have.length(1);
@@ -198,11 +198,11 @@ describe('$(...)', function() {
       expect(result).to.have.length(2);
       expect(result[0].attribs.id).to.be('fruits');
       expect(result[1].attribs.id).to.be('food');
-    })
+    });
     it('() : should not break if the selector does not have any results', function() {
       var result = $('.saladbar', food).parents();
       expect(result).to.have.length(0);
-    })
+    });
     it('() : should return an empty set for top-level elements', function() {
       var result = $('#food', food).parents();
       expect(result).to.have.length(0);
@@ -248,17 +248,17 @@ describe('$(...)', function() {
       var result = $('.orange', fruits).closest();
       expect(result).to.have.length(0);
       expect(result).to.be.a($);
-    })
+    });
 
     it('(selector) : should find the closest element that matches the selector, searching through its ancestors and itself', function() {
       expect($('.orange', fruits).closest('.apple')).to.have.length(0);
       var result = $('.orange', food).closest('#food');
-      expect(result[0].attribs['id']).to.be('food');
+      expect(result[0].attribs.id).to.be('food');
       result = $('.orange', food).closest('ul');
-      expect(result[0].attribs['id']).to.be('fruits');
+      expect(result[0].attribs.id).to.be('fruits');
       result = $('.orange', food).closest('li');
       expect(result[0].attribs['class']).to.be('orange');
-    })
+    });
 
     it('(selector) : should find the closest element of each item, removing duplicates', function() {
       var result = $('li', food).closest('ul');
@@ -268,7 +268,7 @@ describe('$(...)', function() {
     it('() : should not break if the selector does not have any results', function() {
       var result = $('.saladbar', food).closest('ul');
       expect(result).to.have.length(0);
-    })
+    });
 
   });
 
