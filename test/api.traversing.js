@@ -1,8 +1,8 @@
 var expect = require('expect.js'),
-    $ = require('../'),
-    food = require('./fixtures').food,
-    fruits = require('./fixtures').fruits;
-    text = require('./fixtures').text;
+  $ = require('../'),
+  food = require('./fixtures').food,
+  fruits = require('./fixtures').fruits;
+  text = require('./fixtures').text;
 
 describe('$(...)', function() {
 
@@ -287,14 +287,13 @@ describe('$(...)', function() {
     });
 
     it('( (i, elem) -> ) : should break iteration when the iterator function returns false', function() {
+      var iterationCount = 0;
+      $('li', fruits).each(function(idx, elem) {
+        iterationCount++;
+        return idx < 1;
+      });
 
-        var iterationCount = 0;
-        $('li', fruits).each(function(idx, elem) {
-          iterationCount++;
-          return idx < 1;
-        });
-
-        expect(iterationCount).to.equal(2);
+      expect(iterationCount).to.equal(2);
     });
 
   });

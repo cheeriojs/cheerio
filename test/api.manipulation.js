@@ -628,18 +628,18 @@ describe('$(...)', function() {
     });
 
   });
-  
+
   describe('.toString', function() {
     it('() : should get the outerHTML for an element', function() {
       var $fruits = $(fruits);
       expect($fruits.toString()).to.equal(fruits);
     });
-    
+
     it('() : should return an html string for a set of elements', function() {
       var $fruits = $(fruits);
       expect($fruits.find('li').toString()).to.equal('<li class="apple">Apple</li><li class="orange">Orange</li><li class="pear">Pear</li>');
     });
-    
+
     it('() : should be called implicitly', function() {
       var string = [$("<foo>"), $("<bar>"), $("<baz>")].join("");
       expect(string).to.equal('<foo></foo><bar></bar><baz></baz>');
@@ -703,7 +703,7 @@ describe('$(...)', function() {
 
     it('(str) should encode then decode unsafe characters', function() {
       var $apple = $('.apple', fruits);
-      
+
       $apple.text('blah <script>alert("XSS!")</script> blah');
       expect($apple[0].children[0].data).to.equal('blah &lt;script&gt;alert(&quot;XSS!&quot;)&lt;/script&gt; blah');
       expect($apple.text()).to.equal('blah <script>alert("XSS!")</script> blah');
