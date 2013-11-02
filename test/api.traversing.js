@@ -505,4 +505,67 @@ describe('$(...)', function() {
 
   });
 
+  describe('.end() :', function() {
+    var $fruits = $(fruits).children();
+
+    it('returns an empty object at the end of the chain', function() {
+      expect($fruits.end().end()).to.be.ok();
+      expect($fruits.end().end()).to.have.length(0);
+    });
+    it('find', function() {
+      expect($fruits.find('.apple').end()).to.be($fruits);
+    });
+    it('filter', function() {
+      expect($fruits.filter('.apple').end()).to.be($fruits);
+    });
+    it('map', function() {
+      expect($fruits.map(function() { return this; }).end()).to.be($fruits);
+    });
+    it('contents', function() {
+      expect($fruits.contents().end()).to.be($fruits);
+    });
+    it('eq', function() {
+      expect($fruits.eq(1).end()).to.be($fruits);
+    });
+    it('first', function() {
+      expect($fruits.first().end()).to.be($fruits);
+    });
+    it('last', function() {
+      expect($fruits.last().end()).to.be($fruits);
+    });
+    it('slice', function() {
+      expect($fruits.slice(1).end()).to.be($fruits);
+    });
+    it('children', function() {
+      expect($fruits.children().end()).to.be($fruits);
+    });
+    it('parent', function() {
+      expect($fruits.parent().end()).to.be($fruits);
+    });
+    it('parents', function() {
+      expect($fruits.parents().end()).to.be($fruits);
+    });
+    it('closest', function() {
+      expect($fruits.closest('ul').end()).to.be($fruits);
+    });
+    it('siblings', function() {
+      expect($fruits.siblings().end()).to.be($fruits);
+    });
+    it('next', function() {
+      expect($fruits.next().end()).to.be($fruits);
+    });
+    it('nextAll', function() {
+      expect($fruits.nextAll().end()).to.be($fruits);
+    });
+    it('prev', function() {
+      expect($fruits.prev().end()).to.be($fruits);
+    });
+    it('prevAll', function() {
+      expect($fruits.prevAll().end()).to.be($fruits);
+    });
+    it('clone', function() {
+      expect($fruits.clone().end()).to.be($fruits);
+    });
+  });
+
 });

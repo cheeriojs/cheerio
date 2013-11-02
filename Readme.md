@@ -426,6 +426,14 @@ $('li').eq(-1).text()
 //=> Pear
 ```
 
+#### .end()
+End the most recent filtering operation in the current chain and return the set of matched elements to its previous state.
+
+```js
+$('li').eq(0).end().length
+//=> 3
+```
+
 ### Manipulation
 Methods for modifying the DOM structure.
 
