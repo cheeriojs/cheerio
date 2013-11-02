@@ -299,15 +299,78 @@ describe('$(...)', function() {
   });
 
   describe('.map', function() {
-    it('(fn) : should return an array of mapped items', function() {
-      var classes = $('li', fruits).map(function(i, el) {
-        expect(this[0]).to.be(el);
-        expect(el.name).to.be('li');
-        expect(i).to.be.a('number');
-        return el.attribs['class'];
-      }).join(', ');
+    it('(fn) : should be invoked with the correct arguments and context', function() {
+      var $fruits = $('li', fruits);
+      var args = [];
+      var thisVals = [];
 
-      expect(classes).to.be('apple, orange, pear');
+      $fruits.map(function() {
+        args.push(arguments);
+        thisVals.push(this);
+      });
+
+      expect(args).to.eql([
+        [0, $fruits[0]],
+        [1, $fruits[1]],
+        [2, $fruits[2]]
+      ]);
+      expect(thisVals).to.eql([
+        $fruits[0],
+        $fruits[1],
+        $fruits[2]
+      ]);
+    });
+
+    it('(fn) : should return an Cheerio object wrapping the returned items', function() {
+      var $fruits = $('li', fruits);
+      var $mapped = $fruits.map(function(i, el) {
+        return $fruits[2 - i];
+      });
+
+      expect($mapped).to.have.length(3);
+      expect($mapped[0]).to.be($fruits[2]);
+      expect($mapped[1]).to.be($fruits[1]);
+      expect($mapped[2]).to.be($fruits[0]);
+    });
+
+    it('(fn) : should ignore `null` and `undefined` returned by iterator', function() {
+      var $fruits = $('li', fruits);
+      var retVals = [null, undefined, $fruits[1]];
+
+      var $mapped = $fruits.map(function(i, el) {
+        return retVals[i];
+      });
+
+      expect($mapped).to.have.length(1);
+      expect($mapped[0]).to.be($fruits[1]);
+    });
+
+    it('(fn) : should preform a shallow merge on arrays returned by iterator', function() {
+      var $fruits = $('li', fruits);
+
+      var $mapped = $fruits.map(function(i, el) {
+        return [1, [3, 4]];
+      });
+
+      expect($mapped.toArray()).to.eql([
+        1, [3, 4],
+        1, [3, 4],
+        1, [3, 4]
+      ]);
+    });
+
+    it('(fn) : should tolerate `null` and `undefined` when flattening arrays returned by iterator', function() {
+      var $fruits = $('li', fruits);
+
+      var $mapped = $fruits.map(function(i, el) {
+        return [null, undefined];
+      });
+
+      expect($mapped.toArray()).to.eql([
+        null, undefined,
+        null, undefined,
+        null, undefined,
+      ]);
     });
   });
 
