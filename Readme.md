@@ -368,14 +368,14 @@ fruits.join(', ');
 ```
 
 #### .map( function(index, element) )
-Iterates over a cheerio object, executing a function for each selected element. Map will return an `array` of return values from each of the functions it iterated over. The function is fired in the context of the DOM element, so `this` refers to the current element, which is equivalent to the function parameter `element`.
+Pass each element in the current matched set through a function, producing a new Cheerio object containing the return values. The function can return an individual data item or an array of data items to be inserted into the resulting set. If an array is returned, the elements inside the array are inserted into the set. If the function returns null or undefined, no element will be inserted.
 
 ```js
 $('li').map(function(i, el) {
   // this === el
-  return $(this).attr('class');
-}).join(', ');
-//=> apple, orange, pear
+  return $('<div>').text($(this).text());
+}).html();
+//=> <div>apple</div><div>orange</div><div>pear</div>
 ```
 
 #### .filter( selector ) <br /> .filter( selection ) <br /> .filter( element ) <br /> .filter( function(index) )
