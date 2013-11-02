@@ -1,8 +1,8 @@
 REPORTER = dot
 
 test:
-	@./node_modules/jshint/bin/jshint lib/ test/
-	@./node_modules/mocha/bin/mocha --reporter $(REPORTER)
+	@./node_modules/.bin/jshint lib/ test/
+	@./node_modules/.bin/mocha --reporter $(REPORTER)
 
 setup:
 	@npm install
