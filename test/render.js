@@ -52,6 +52,11 @@ describe('render', function() {
       expect(html(str, {ignoreWhitespace: true})).to.equal('<a href="./haha.html">hi</a><a href="./blah.html">blah  </a>');
     });
 
+    it('should preserve multiple hyphens in data attributes', function() {
+      var str = '<div data-foo-bar-baz="value"></div>';
+      expect(html(str)).to.equal('<div data-foo-bar-baz="value"></div>');
+    });
+
   });
 
 });
