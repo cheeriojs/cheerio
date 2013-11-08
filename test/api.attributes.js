@@ -143,6 +143,39 @@ describe('$(...)', function() {
       expect(data.url).to.equal('http://www.cailler.ch/');
     });
 
+    describe('(attr) : data-* attribute type coercion :', function() {
+      it('boolean', function() {
+        var $el = $('<div data-bool="true">');
+        expect($el.data('bool')).to.be(true);
+      });
+
+      it('number', function() {
+        var $el = $('<div data-number="23">');
+        expect($el.data('number')).to.be(23);
+      });
+
+      it('number (scientific notation is not coerced)', function() {
+        var $el = $('<div data-sci="1E10">');
+        expect($el.data('sci')).to.be('1E10');
+      });
+
+      it('null', function() {
+        var $el = $('<div data-null="null">');
+        expect($el.data('null')).to.be(null);
+      });
+
+      it('object', function() {
+        var $el = $('<div data-obj=\'{ "a": 45 }\'>');
+        expect($el.data('obj')).to.eql({ a: 45 });
+      });
+
+      it('array', function() {
+        var $el = $('<div data-array="[1, 2, 3]">');
+        expect($el.data('array')).to.eql([1, 2, 3]);
+      });
+
+    });
+
   });
 
 
