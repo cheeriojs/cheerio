@@ -78,6 +78,16 @@ describe('$(...)', function() {
       $apple.attr('data-test', 1);
       expect($apple.attr('data-test')).to.equal('1');
     });
+
+    it('(data-key, value) : should be reflected in the rendered markup (issue #283)', function() {
+      var $el = $('<div>');
+      var $copied;
+
+      $el.attr('data-test', 1);
+      $copied = $($.html($el));
+
+      expect($copied.filter('[data-test="1"]')).to.have.length(1);
+    });
   });
 
   describe('.data', function() {
