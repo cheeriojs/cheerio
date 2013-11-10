@@ -7,254 +7,254 @@ var inputs = require('./fixtures').inputs;
 
 describe('$(...)', function() {
 
-  describe('.attr', function() {
+        describe('.attr', function() {
 
-    it('() : should get all the attributes', function() {
-      var attrs = $('ul', fruits).attr();
-      expect(attrs.id).to.equal('fruits');
-    });
+                it('() : should get all the attributes', function() {
+                        var attrs = $('ul', fruits).attr();
+                        expect(attrs.id).to.equal('fruits');
+                });
 
-    it('(invalid key) : invalid attr should get undefined', function() {
-      var attr = $('.apple', fruits).attr('lol');
-      expect(attr).to.be(undefined);
-    });
+                it('(invalid key) : invalid attr should get undefined', function() {
+                        var attr = $('.apple', fruits).attr('lol');
+                        expect(attr).to.be(undefined);
+                });
 
-    it('(valid key) : valid attr should get value', function() {
-      var cls = $('.apple', fruits).attr('class');
-      expect(cls).to.equal('apple');
-    });
+                it('(valid key) : valid attr should get value', function() {
+                        var cls = $('.apple', fruits).attr('class');
+                        expect(cls).to.equal('apple');
+                });
 
-    it('(key, value) : should set attr', function() {
-      var $fruits = $(fruits);
-      var $pear = $('.pear', $fruits).attr('id', 'pear');
-      expect($('#pear', $fruits)).to.have.length(1);
-      expect($pear.cheerio).to.not.be(undefined);
-    });
+                it('(key, value) : should set attr', function() {
+                        var $fruits = $(fruits);
+                        var $pear = $('.pear', $fruits).attr('id', 'pear');
+                        expect($('#pear', $fruits)).to.have.length(1);
+                        expect($pear.cheerio).to.not.be(undefined);
+                });
 
-    it('(map) : object map should set multiple attributes', function() {
-      var $fruits = $(fruits);
-      $('.apple', $fruits).attr({
-        id: 'apple',
-        style: 'color:red;',
-        'data-url': 'http://apple.com'
-      });
-      var attrs = $('.apple', $fruits).attr();
-      expect(attrs.id).to.equal('apple');
-      expect(attrs.style).to.equal('color:red;');
-      expect(attrs['data-url']).to.equal('http://apple.com');
-    });
+                it('(map) : object map should set multiple attributes', function() {
+                        var $fruits = $(fruits);
+                        $('.apple', $fruits).attr({
+                                id: 'apple',
+                                style: 'color:red;',
+                                'data-url': 'http://apple.com'
+                        });
+                        var attrs = $('.apple', $fruits).attr();
+                        expect(attrs.id).to.equal('apple');
+                        expect(attrs.style).to.equal('color:red;');
+                        expect(attrs['data-url']).to.equal('http://apple.com');
+                });
 
-    it('(key, value) : should correctly encode then decode unsafe values', function() {
-      var $apple = $('.apple', fruits);
-      $apple.attr('href', 'http://github.com/"><script>alert("XSS!")</script><br');
-      expect($apple[0].attribs.href).to.equal('http://github.com/&quot;&gt;&lt;script&gt;alert(&quot;XSS!&quot;)&lt;/script&gt;&lt;br');
-      expect($apple.attr('href')).to.equal('http://github.com/"><script>alert("XSS!")</script><br');
+                it('(key, value) : should correctly encode then decode unsafe values', function() {
+                        var $apple = $('.apple', fruits);
+                        $apple.attr('href', 'http://github.com/"><script>alert("XSS!")</script><br');
+                        expect($apple[0].attribs.href).to.equal('http://github.com/&quot;&gt;&lt;script&gt;alert(&quot;XSS!&quot;)&lt;/script&gt;&lt;br');
+                        expect($apple.attr('href')).to.equal('http://github.com/"><script>alert("XSS!")</script><br');
 
-      $apple.attr('href', 'http://github.com/"><script>alert("XSS!")</script><br');
-      expect($apple.html()).to.not.contain('<script>alert("XSS!")</script>');
-    });
-    
-    it('(key, value) : should coerce values to a string', function() {
-      var $apple = $('.apple', fruits);
-      $apple.attr('data-test', 1);
-      expect($apple[0].attribs['data-test']).to.equal('1');
-      expect($apple.attr('data-test')).to.equal('1');
-    });    
-  });
+                        $apple.attr('href', 'http://github.com/"><script>alert("XSS!")</script><br');
+                        expect($apple.html()).to.not.contain('<script>alert("XSS!")</script>');
+                });
 
-  describe('.val', function() {
-		it('.val(): on select should get value', function() {
-			var val = $('select#one', inputs).val();
-			expect(val).to.equal('option_selected');
-		});
-		it('.val(): on text input should get value', function() {
-			var val = $('input[type="text"]', inputs).val();
-			expect(val).to.equal('input_text');
-		});
-		it('.val(): on checked checkbox should get value', function() {
-			var val = $('input[name="checkbox_on"]', inputs).val();
-			expect(val).to.equal('on');
-		});
-		it('.val(): on unchecked checkbox should get null', function() {
-			var val = $('input[name="checkbox_off"]', inputs).val();
-			expect(val).to.equal(null);
-		});
-		it('.val(): on radio should get value', function() {
-			var val = $('input[type="radio"]', inputs).val();
-			expect(val).to.equal('on');
-		});
-		it('.val(): on multiple select should get an array of values', function() {
-			var val = $('select#multi', inputs).val();
-			expect(val).to.have.length(2);
-		});
-		it('.val(value): on input text should set value', function() {
-			var element = $('input[type="text"]', inputs).val('test');
-			expect(element.val()).to.equal('test');
-		});
-		it('.val(value): on select should set value', function() {
-			var element = $('select#one', inputs).val('option_not_selected');
-			expect(element.val()).to.equal('option_not_selected');
-		});
-		it('.val(value): on radio should set value', function() {
-			var element = $('input[name="radio"]', inputs).val('off');
-			expect(element.val()).to.equal('off');
-		});
-		it('.val(values): on multiple select should set multiple values', function() {
-			var element = $('select#multi', inputs).val(['1', '3', '4']);
-			expect(element.val()).to.have.length(3);
-		});
-  });
+                it('(key, value) : should coerce values to a string', function() {
+                        var $apple = $('.apple', fruits);
+                        $apple.attr('data-test', 1);
+                        expect($apple[0].attribs['data-test']).to.equal('1');
+                        expect($apple.attr('data-test')).to.equal('1');
+                });
+        });
 
-  describe('.removeAttr', function() {
+        describe('.val', function() {
+                it('.val(): on select should get value', function() {
+                        var val = $('select#one', inputs).val();
+                        expect(val).to.equal('option_selected');
+                });
+                it('.val(): on text input should get value', function() {
+                        var val = $('input[type="text"]', inputs).val();
+                        expect(val).to.equal('input_text');
+                });
+                it('.val(): on checked checkbox should get value', function() {
+                        var val = $('input[name="checkbox_on"]', inputs).val();
+                        expect(val).to.equal('on');
+                });
+                it('.val(): on unchecked checkbox should get null', function() {
+                        var val = $('input[name="checkbox_off"]', inputs).val();
+                        expect(val).to.equal(null);
+                });
+                it('.val(): on radio should get value', function() {
+                        var val = $('input[type="radio"]', inputs).val();
+                        expect(val).to.equal('on');
+                });
+                it('.val(): on multiple select should get an array of values', function() {
+                        var val = $('select#multi', inputs).val();
+                        expect(val).to.have.length(2);
+                });
+                it('.val(value): on input text should set value', function() {
+                        var element = $('input[type="text"]', inputs).val('test');
+                        expect(element.val()).to.equal('test');
+                });
+                it('.val(value): on select should set value', function() {
+                        var element = $('select#one', inputs).val('option_not_selected');
+                        expect(element.val()).to.equal('option_not_selected');
+                });
+                it('.val(value): on radio should set value', function() {
+                        var element = $('input[name="radio"]', inputs).val('off');
+                        expect(element.val()).to.equal('off');
+                });
+                it('.val(values): on multiple select should set multiple values', function() {
+                        var element = $('select#multi', inputs).val(['1', '3', '4']);
+                        expect(element.val()).to.have.length(3);
+                });
+        });
 
-    it('(key) : should remove a single attr', function() {
-      var $fruits = $(fruits);
-      expect($('ul', $fruits).attr('id')).to.not.be(undefined);
-      $('ul', $fruits).removeAttr('id');
-      expect($('ul', $fruits).attr('id')).to.be(undefined);
-    });
+        describe('.removeAttr', function() {
 
-    it('should return cheerio object', function() {
-      var obj = $('ul', fruits).removeAttr('id').cheerio;
-      expect(obj).to.be.ok();
-    });
+                it('(key) : should remove a single attr', function() {
+                        var $fruits = $(fruits);
+                        expect($('ul', $fruits).attr('id')).to.not.be(undefined);
+                        $('ul', $fruits).removeAttr('id');
+                        expect($('ul', $fruits).attr('id')).to.be(undefined);
+                });
 
-  });
+                it('should return cheerio object', function() {
+                        var obj = $('ul', fruits).removeAttr('id').cheerio;
+                        expect(obj).to.be.ok();
+                });
 
-  describe('.hasClass', function() {
+        });
 
-    it('(valid class) : should return true', function() {
-      var $fruits = $(fruits);
-      var cls = $('.apple', $fruits).hasClass('apple');
-      expect(cls).to.be.ok();
-    });
+        describe('.hasClass', function() {
 
-    it('(invalid class) : should return false', function() {
-      var cls = $('#fruits', fruits).hasClass('fruits');
-      expect(cls).to.not.be.ok();
-    });
+                it('(valid class) : should return true', function() {
+                        var $fruits = $(fruits);
+                        var cls = $('.apple', $fruits).hasClass('apple');
+                        expect(cls).to.be.ok();
+                });
 
-    it('should check multiple classes', function() {
-      var $fruits = $(fruits);
+                it('(invalid class) : should return false', function() {
+                        var cls = $('#fruits', fruits).hasClass('fruits');
+                        expect(cls).to.not.be.ok();
+                });
 
-      // Add a class
-      $('.apple', $fruits).addClass('red');
-      expect($('.apple', $fruits).hasClass('apple')).to.be.ok();
-      expect($('.apple', $fruits).hasClass('red')).to.be.ok();
+                it('should check multiple classes', function() {
+                        var $fruits = $(fruits);
 
-      // Remove one and test again
-      $('.apple', $fruits).removeClass('apple');
-      expect($('li', $fruits).eq(0).hasClass('apple')).to.not.be.ok();
-      // expect($('li', $fruits).eq(0).hasClass('red')).to.be.ok();
-    });
-  });
+                        // Add a class
+                        $('.apple', $fruits).addClass('red');
+                        expect($('.apple', $fruits).hasClass('apple')).to.be.ok();
+                        expect($('.apple', $fruits).hasClass('red')).to.be.ok();
 
-  describe('.addClass', function() {
+                        // Remove one and test again
+                        $('.apple', $fruits).removeClass('apple');
+                        expect($('li', $fruits).eq(0).hasClass('apple')).to.not.be.ok();
+                        // expect($('li', $fruits).eq(0).hasClass('red')).to.be.ok();
+                });
+        });
 
-    it('(first class) : should add the class to the element', function() {
-      var $fruits = $(fruits);
-      $('#fruits', $fruits).addClass('fruits');
-      var cls = $('#fruits', $fruits).hasClass('fruits');
-      expect(cls).to.be.ok();
-    });
+        describe('.addClass', function() {
 
-    it('(single class) : should add the class to the element', function() {
-      var $fruits = $(fruits);
-      $('.apple', $fruits).addClass('fruit');
-      var cls = $('.apple', $fruits).hasClass('fruit');
-      expect(cls).to.be.ok();
-    });
+                it('(first class) : should add the class to the element', function() {
+                        var $fruits = $(fruits);
+                        $('#fruits', $fruits).addClass('fruits');
+                        var cls = $('#fruits', $fruits).hasClass('fruits');
+                        expect(cls).to.be.ok();
+                });
 
-    it('(class): adds classes to many selected items', function() {
-      var $fruits = $(fruits);
-      $('li', $fruits).addClass('fruit');
-      expect($('.apple', $fruits).hasClass('fruit')).to.be.ok();
-      expect($('.orange', $fruits).hasClass('fruit')).to.be.ok();
-      expect($('.pear', $fruits).hasClass('fruit')).to.be.ok();
-    });
+                it('(single class) : should add the class to the element', function() {
+                        var $fruits = $(fruits);
+                        $('.apple', $fruits).addClass('fruit');
+                        var cls = $('.apple', $fruits).hasClass('fruit');
+                        expect(cls).to.be.ok();
+                });
 
-    it('(class class class) : should add multiple classes to the element', function() {
-      var $fruits = $(fruits);
-      $('.apple', $fruits).addClass('fruit red tasty');
-      expect($('.apple', $fruits).hasClass('apple')).to.be.ok();
-      expect($('.apple', $fruits).hasClass('fruit')).to.be.ok();
-      expect($('.apple', $fruits).hasClass('red')).to.be.ok();
-      expect($('.apple', $fruits).hasClass('tasty')).to.be.ok();
-    });
+                it('(class): adds classes to many selected items', function() {
+                        var $fruits = $(fruits);
+                        $('li', $fruits).addClass('fruit');
+                        expect($('.apple', $fruits).hasClass('fruit')).to.be.ok();
+                        expect($('.orange', $fruits).hasClass('fruit')).to.be.ok();
+                        expect($('.pear', $fruits).hasClass('fruit')).to.be.ok();
+                });
 
-    it('(fn) : should add classes returned from the function');
+                it('(class class class) : should add multiple classes to the element', function() {
+                        var $fruits = $(fruits);
+                        $('.apple', $fruits).addClass('fruit red tasty');
+                        expect($('.apple', $fruits).hasClass('apple')).to.be.ok();
+                        expect($('.apple', $fruits).hasClass('fruit')).to.be.ok();
+                        expect($('.apple', $fruits).hasClass('red')).to.be.ok();
+                        expect($('.apple', $fruits).hasClass('tasty')).to.be.ok();
+                });
 
-  });
+                it('(fn) : should add classes returned from the function');
 
-  describe('.removeClass', function() {
+        });
 
-    it('() : should remove all the classes', function() {
-      var $fruits = $(fruits);
-      $('.pear', $fruits).addClass('fruit');
-      $('.pear', $fruits).removeClass();
-      expect($('.pear', $fruits).attr('class')).to.be(undefined);
-    });
+        describe('.removeClass', function() {
 
-    it('(invalid class) : should not remove anything', function() {
-      var $fruits = $(fruits);
-      $('.pear', $fruits).removeClass('fruit');
-      expect($('.pear', $fruits).hasClass('pear')).to.be.ok();
-    });
+                it('() : should remove all the classes', function() {
+                        var $fruits = $(fruits);
+                        $('.pear', $fruits).addClass('fruit');
+                        $('.pear', $fruits).removeClass();
+                        expect($('.pear', $fruits).attr('class')).to.be(undefined);
+                });
 
-    it('(no class attribute) : should not throw an exception', function() {
-      var $vegetables = $(vegetables);
-      var thrown = null;
-      expect(function() {
-        $('li', $vegetables).removeClass('vegetable');
-      })
-      .to.not.throwException();
-    });
+                it('(invalid class) : should not remove anything', function() {
+                        var $fruits = $(fruits);
+                        $('.pear', $fruits).removeClass('fruit');
+                        expect($('.pear', $fruits).hasClass('pear')).to.be.ok();
+                });
 
-    it('(single class) : should remove a single class from the element', function() {
-      var $fruits = $(fruits);
-      $('.pear', $fruits).addClass('fruit');
-      expect($('.pear', $fruits).hasClass('fruit')).to.be.ok();
-      $('.pear', $fruits).removeClass('fruit');
-      expect($('.pear', $fruits).hasClass('fruit')).to.not.be.ok();
-      expect($('.pear', $fruits).hasClass('pear')).to.be.ok();
-    });
+                it('(no class attribute) : should not throw an exception', function() {
+                        var $vegetables = $(vegetables);
+                        var thrown = null;
+                        expect(function() {
+                                $('li', $vegetables).removeClass('vegetable');
+                        })
+                                .to.not.throwException();
+                });
 
-    it('(single class) : should remove a single class from multiple classes on the element', function() {
-      var $fruits = $(fruits);
-      $('.pear', $fruits).addClass('fruit green tasty');
-      expect($('.pear', $fruits).hasClass('fruit')).to.be.ok();
-      expect($('.pear', $fruits).hasClass('green')).to.be.ok();
-      expect($('.pear', $fruits).hasClass('tasty')).to.be.ok();
+                it('(single class) : should remove a single class from the element', function() {
+                        var $fruits = $(fruits);
+                        $('.pear', $fruits).addClass('fruit');
+                        expect($('.pear', $fruits).hasClass('fruit')).to.be.ok();
+                        $('.pear', $fruits).removeClass('fruit');
+                        expect($('.pear', $fruits).hasClass('fruit')).to.not.be.ok();
+                        expect($('.pear', $fruits).hasClass('pear')).to.be.ok();
+                });
 
-      $('.pear', $fruits).removeClass('green');
-      expect($('.pear', $fruits).hasClass('fruit')).to.be.ok();
-      expect($('.pear', $fruits).hasClass('green')).to.not.be.ok();
-      expect($('.pear', $fruits).hasClass('tasty')).to.be.ok();
-    });
+                it('(single class) : should remove a single class from multiple classes on the element', function() {
+                        var $fruits = $(fruits);
+                        $('.pear', $fruits).addClass('fruit green tasty');
+                        expect($('.pear', $fruits).hasClass('fruit')).to.be.ok();
+                        expect($('.pear', $fruits).hasClass('green')).to.be.ok();
+                        expect($('.pear', $fruits).hasClass('tasty')).to.be.ok();
 
-    it('(class class class) : should remove multiple classes from the element', function() {
-      var $fruits = $(fruits);
+                        $('.pear', $fruits).removeClass('green');
+                        expect($('.pear', $fruits).hasClass('fruit')).to.be.ok();
+                        expect($('.pear', $fruits).hasClass('green')).to.not.be.ok();
+                        expect($('.pear', $fruits).hasClass('tasty')).to.be.ok();
+                });
 
-      $('.apple', $fruits).addClass('fruit red tasty');
-      expect($('.apple', $fruits).hasClass('apple')).to.be.ok();
-      expect($('.apple', $fruits).hasClass('fruit')).to.be.ok();
-      expect($('.apple', $fruits).hasClass('red')).to.be.ok();
-      expect($('.apple', $fruits).hasClass('tasty')).to.be.ok();
+                it('(class class class) : should remove multiple classes from the element', function() {
+                        var $fruits = $(fruits);
 
-      $('.apple', $fruits).removeClass('apple red tasty');
-      expect($('.fruit', $fruits).hasClass('apple')).to.not.be.ok();
-      expect($('.fruit', $fruits).hasClass('red')).to.not.be.ok();
-      expect($('.fruit', $fruits).hasClass('tasty')).to.not.be.ok();
-      expect($('.fruit', $fruits).hasClass('fruit')).to.be.ok();
-    });
+                        $('.apple', $fruits).addClass('fruit red tasty');
+                        expect($('.apple', $fruits).hasClass('apple')).to.be.ok();
+                        expect($('.apple', $fruits).hasClass('fruit')).to.be.ok();
+                        expect($('.apple', $fruits).hasClass('red')).to.be.ok();
+                        expect($('.apple', $fruits).hasClass('tasty')).to.be.ok();
 
-    it('(class) : should remove all occurrences of a class name', function() {
-      var $div = $('<div class="x x y x z"></div>');
-      expect($div.removeClass('x').hasClass('x')).to.be(false);
-    });
+                        $('.apple', $fruits).removeClass('apple red tasty');
+                        expect($('.fruit', $fruits).hasClass('apple')).to.not.be.ok();
+                        expect($('.fruit', $fruits).hasClass('red')).to.not.be.ok();
+                        expect($('.fruit', $fruits).hasClass('tasty')).to.not.be.ok();
+                        expect($('.fruit', $fruits).hasClass('fruit')).to.be.ok();
+                });
 
-    it('(fn) : should remove classes returned from the function');
+                it('(class) : should remove all occurrences of a class name', function() {
+                        var $div = $('<div class="x x y x z"></div>');
+                        expect($div.removeClass('x').hasClass('x')).to.be(false);
+                });
 
-  });
+                it('(fn) : should remove classes returned from the function');
+
+        });
 
 });
