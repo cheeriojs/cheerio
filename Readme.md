@@ -144,7 +144,7 @@ $('.apple').attr('id', 'favorite').html()
 > See http://api.jquery.com/attr/ for more information
 
 #### .data( name, value )
-Method for getting and setting data attributes. Gets or sets the data attribute value for only the first element in the matched set. 
+Method for getting and setting data attributes. Gets or sets the data attribute value for only the first element in the matched set.
 
 ```js
 $('<div data-apple-color="red"></div>').data()
@@ -643,40 +643,47 @@ These are some of the contributors that have made cheerio possible:
 
 ```
 project  : cheerio
-repo age : 1 year, 10 months
-active   : 169 days
-commits  : 513
-files    : 28
+repo age : 2 years, 1 month
+active   : 196 days
+commits  : 591
+files    : 32
 authors  :
-  292 Matt Mueller            56.9%
-   86 Matthew Mueller         16.8%
-   44 David Chambers          8.6%
-   15 Siddharth Mahendraker   2.9%
-   13 Mike Pennisi            2.5%
-   11 Adam Bretz              2.1%
-    7 ironchefpython          1.4%
-    5 Ryan Schmukler          1.0%
-    5 Ben Sheldon             1.0%
-    5 Jos Shepherd            1.0%
-    4 Maciej Adwent           0.8%
-    3 jeremy.dentel@brandingbrand.com 0.6%
-    2 Felix Böhm             0.4%
-    2 Ali Farhadi             0.4%
-    2 Chris Khoo              0.4%
-    2 Wayne Larsen            0.4%
-    2 alexbardas              0.4%
-    2 Rob Ashton              0.4%
-    1 nevermind               0.2%
-    1 Felix Böhm            0.2%
-    1 Jeremy Hubble           0.2%
-    1 Manuel Alabor           0.2%
-    1 Matt Liegey             0.2%
-    1 Ben Atkin               0.2%
-    1 Rob "Hurricane" Ashton  0.2%
-    1 Simon Boudrias          0.2%
-    1 Sindre Sorhus           0.2%
-    1 mattym                  0.2%
-    1 Chris O'Hara            0.2%
+ 293  Matt Mueller            49.6%
+ 102  Matthew Mueller         17.3%
+  52  Mike Pennisi            8.8%
+  47  David Chambers          8.0%
+  15  Siddharth Mahendraker   2.5%
+  11  Adam Bretz              1.9%
+   7  ironchefpython          1.2%
+   6  Jarno Leppänen         1.0%
+   5  Ben Sheldon             0.8%
+   5  Ryan Schmukler          0.8%
+   5  Jos Shepherd            0.8%
+   4  Maciej Adwent           0.7%
+   4  Amir Abu Shareb         0.7%
+   3  Felix Böhm             0.5%
+   3  jeremy.dentel@brandingbrand.com 0.5%
+   3  Andi Neck               0.5%
+   2  alexbardas              0.3%
+   2  Ali Farhadi             0.3%
+   2  Thomas Heymann          0.3%
+   2  Wayne Larsen            0.3%
+   2  Rob Ashton              0.3%
+   2  Chris Khoo              0.3%
+   1  xiaohwan                0.2%
+   1  Chris O'Hara            0.2%
+   1  Felix Böhm            0.2%
+   1  Jeremy Hubble           0.2%
+   1  Manuel Alabor           0.2%
+   1  Matt Liegey             0.2%
+   1  Ben Atkin               0.2%
+   1  Rich Trott              0.2%
+   1  Rob "Hurricane" Ashton  0.2%
+   1  Simon Boudrias          0.2%
+   1  Sindre Sorhus           0.2%
+   1  Timm Preetz             0.2%
+   1  mattym                  0.2%
+   1  nevermind               0.2%
 ```
 
 ## Special Thanks

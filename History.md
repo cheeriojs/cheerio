@@ -1,5 +1,23 @@
 
-0.12.3 / 2013-10-04 
+0.12.4 / 2013-11-12
+==================
+
+ * Coerce JSON values returned by `data` (@jugglinmike)
+ * issue #284: when rendering HTML, use original data attributes (@Trott)
+ * Introduce JSHint for automated code linting (@jugglinmike)
+ * Prevent `find` from returning duplicate elements (@jugglinmike)
+ * Implement function signature of `replaceWith` (@jugglinmike)
+ * Implement function signature of `before` (@jugglinmike)
+ * Implement function signature of `after` (@jugglinmike)
+ * Implement function signature of `append`/`prepend` (@jugglinmike)
+ * Extend iteration methods to accept nodes (@jugglinmike)
+ * Improve `removeClass` (@jugglinmike)
+ * Complete function signature of `addClass` (@jugglinmike)
+ * Fix bug in `removeClass` (@jugglinmike)
+ * Improve contributing.md (@jugglinmike)
+ * Fix and document .css() (@jugglinmike)
+
+0.12.3 / 2013-10-04
 ===================
 
  * Add .toggleClass() function (@cyberthom)
@@ -10,7 +28,7 @@
  * add .css() (@yields)
  * Implements contents() (@jlep)
 
-0.12.2 / 2013-09-04 
+0.12.2 / 2013-09-04
 ==================
 
  * Correct implementation of `$.fn.text` (@jugglinmike)
