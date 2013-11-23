@@ -109,17 +109,17 @@ describe('$', function() {
 
     it('("<script>", true) : preserves scripts when requested', function() {
       var html = '<script>undefined()</script>';
-      expect($.parseHTML(html, true)[0].name).to.match(/script/i);
+      expect($.parseHTML(html, true)[0].tagName).to.match(/script/i);
     });
 
     it('("scriptAndNonScript) : preserves non-script nodes', function() {
       var html = '<script>undefined()</script><div></div>';
-      expect($.parseHTML(html)[0].name).to.match(/div/i);
+      expect($.parseHTML(html)[0].tagName).to.match(/div/i);
     });
 
     it('(scriptAndNonScript, true) : Preserves script position', function() {
       var html = '<script>undefined()</script><div></div>';
-      expect($.parseHTML(html, true)[0].name).to.match(/script/i);
+      expect($.parseHTML(html, true)[0].tagName).to.match(/script/i);
     });
 
     it('(text) : returns a text node', function() {

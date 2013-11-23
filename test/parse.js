@@ -269,66 +269,66 @@ describe('parse', function() {
 
     // root test utility
     function rootTest(root) {
-      expect(root.name).to.equal('root');
+      expect(root.tagName).to.equal('root');
 
       // Should exist but be null
-      expect(root.next).to.be(null);
-      expect(root.prev).to.be(null);
-      expect(root.parent).to.be(null);
+      expect(root.nextSibling).to.be(null);
+      expect(root.previousSibling).to.be(null);
+      expect(root.parentNode).to.be(null);
 
-      var child = root.children[0];
-      expect(child.parent).to.equal(root);
+      var child = root.childNodes[0];
+      expect(child.parentNode).to.equal(root);
     }
 
     it('should add root to: ' + basic, function() {
       var root = parse(basic);
       rootTest(root);
-      expect(root.children).to.have.length(1);
-      expect(root.children[0].name).to.equal('html');
+      expect(root.childNodes).to.have.length(1);
+      expect(root.childNodes[0].tagName).to.equal('html');
     });
 
     it('should add root to: ' + siblings, function() {
       var root = parse(siblings);
       rootTest(root);
-      expect(root.children).to.have.length(2);
-      expect(root.children[0].name).to.equal('h2');
-      expect(root.children[1].name).to.equal('p');
-      expect(root.children[1].parent.name).to.equal('root');
+      expect(root.childNodes).to.have.length(2);
+      expect(root.childNodes[0].tagName).to.equal('h2');
+      expect(root.childNodes[1].tagName).to.equal('p');
+      expect(root.childNodes[1].parentNode.tagName).to.equal('root');
     });
 
     it('should add root to: ' + comment, function() {
       var root = parse(comment);
       rootTest(root);
-      expect(root.children).to.have.length(1);
-      expect(root.children[0].type).to.equal('comment');
+      expect(root.childNodes).to.have.length(1);
+      expect(root.childNodes[0].type).to.equal('comment');
     });
 
     it('should add root to: ' + text, function() {
       var root = parse(text);
       rootTest(root);
-      expect(root.children).to.have.length(1);
-      expect(root.children[0].type).to.equal('text');
+      expect(root.childNodes).to.have.length(1);
+      expect(root.childNodes[0].type).to.equal('text');
     });
 
     it('should add root to: ' + scriptEmpty, function() {
       var root = parse(scriptEmpty);
       rootTest(root);
-      expect(root.children).to.have.length(1);
-      expect(root.children[0].type).to.equal('script');
+      expect(root.childNodes).to.have.length(1);
+      expect(root.childNodes[0].type).to.equal('script');
     });
 
     it('should add root to: ' + styleEmpty, function() {
       var root = parse(styleEmpty);
       rootTest(root);
-      expect(root.children).to.have.length(1);
-      expect(root.children[0].type).to.equal('style');
+      expect(root.childNodes).to.have.length(1);
+      expect(root.childNodes[0].type).to.equal('style');
     });
 
     it('should add root to: ' + directive, function() {
       var root = parse(directive);
       rootTest(root);
-      expect(root.children).to.have.length(1);
-      expect(root.children[0].type).to.equal('directive');
+      expect(root.childNodes).to.have.length(1);
+      expect(root.childNodes[0].type).to.equal('directive');
     });
 
   });

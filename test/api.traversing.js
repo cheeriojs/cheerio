@@ -302,7 +302,7 @@ describe('$(...)', function() {
     it('(fn) : should return an array of mapped items', function() {
       var classes = $('li', fruits).map(function(i, el) {
         expect(this[0]).to.be(el);
-        expect(el.name).to.be('li');
+        expect(el.tagName).to.be('li');
         expect(i).to.be.a('number');
         return el.attribs['class'];
       }).join(', ');
@@ -337,7 +337,7 @@ describe('$(...)', function() {
     it('(fn) : should reduce the set of matched elements to those that pass the function\'s test', function() {
       var orange = $('li', fruits).filter(function(i, el) {
         expect(this[0]).to.be(el);
-        expect(el.name).to.be('li');
+        expect(el.tagName).to.be('li');
         expect(i).to.be.a('number');
         return this.attr('class') === 'orange';
       }).text();
@@ -352,7 +352,7 @@ describe('$(...)', function() {
       var $src = $('<span>foo</span><span>bar</span><span>baz</span>');
       var $elem = $src.first();
       expect($elem.length).to.equal(1);
-      expect($elem[0].children[0].data).to.equal('foo');
+      expect($elem[0].childNodes[0].data).to.equal('foo');
     });
 
     it('() : should return an empty object for an empty object', function() {
@@ -370,7 +370,7 @@ describe('$(...)', function() {
       var $src = $('<span>foo</span><span>bar</span><span>baz</span>');
       var $elem = $src.last();
       expect($elem.length).to.equal(1);
-      expect($elem[0].children[0].data).to.equal('baz');
+      expect($elem[0].childNodes[0].data).to.equal('baz');
     });
 
     it('() : should return an empty object for an empty object', function() {
@@ -389,9 +389,9 @@ describe('$(...)', function() {
       var $first = $src.first();
       var $last = $src.last();
       expect($first.length).to.equal(1);
-      expect($first[0].children[0].data).to.equal('bar');
+      expect($first[0].childNodes[0].data).to.equal('bar');
       expect($last.length).to.equal(1);
-      expect($last[0].children[0].data).to.equal('bar');
+      expect($last[0].childNodes[0].data).to.equal('bar');
       expect($first[0]).to.equal($last[0]);
     });
 
@@ -401,7 +401,7 @@ describe('$(...)', function() {
 
     function getText(el) {
       if(!el.length) return '';
-      return el[0].children[0].data;
+      return el[0].childNodes[0].data;
     }
 
     it('(i) : should return the element at the specified index', function() {
@@ -418,7 +418,7 @@ describe('$(...)', function() {
 
     function getText(el) {
       if(!el.length) return '';
-      return el[0].children[0].data;
+      return el[0].childNodes[0].data;
     }
 
     it('(start) : should return all elements after the given index', function() {

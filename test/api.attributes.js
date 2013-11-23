@@ -557,7 +557,7 @@ describe('$(...)', function() {
 
     it('(false predicate) : should return false', function () {
       var result = $('li', fruits).last().is(function() {
-        return this.name === 'ul';
+        return this.tagName === 'ul';
       });
       expect(result).to.be(false);
     });
