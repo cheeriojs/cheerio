@@ -44,7 +44,7 @@ describe('cheerio', function() {
     var $h2 = $('<h2>');
     expect($h2).to.not.be.empty();
     expect($h2).to.have.length(1);
-    expect($h2[0].name).to.equal('h2');
+    expect($h2[0].tagName).to.equal('h2');
   });
 
   it('should be able to create complicated html', function() {
@@ -53,17 +53,17 @@ describe('cheerio', function() {
     expect($script).to.have.length(1);
     expect($script[0].attribs.src).to.equal('script.js');
     expect($script[0].attribs.type).to.equal('text/javascript');
-    expect($script[0].children).to.be.empty();
+    expect($script[0].childNodes).to.be.empty();
   });
 
   var testAppleSelect = function($apple) {
     expect($apple).to.have.length(1);
     $apple = $apple[0];
-    expect($apple.parent.name).to.equal('ul');
+    expect($apple.parentNode.tagName).to.equal('ul');
     expect($apple.prev).to.be(null);
     expect($apple.next.attribs['class']).to.equal('orange');
-    expect($apple.children).to.have.length(1);
-    expect($apple.children[0].data).to.equal('Apple');
+    expect($apple.childNodes).to.have.length(1);
+    expect($apple.childNodes[0].data).to.equal('Apple');
   };
 
   it('should be able to select .apple with only a context', function() {
@@ -90,7 +90,7 @@ describe('cheerio', function() {
   it('should be able to select a tag', function() {
     var $ul = $('ul', fruits);
     expect($ul).to.have.length(1);
-    expect($ul[0].name).to.equal('ul');
+    expect($ul[0].tagName).to.equal('ul');
   });
 
   it('should accept a node reference as a context', function() {
@@ -138,7 +138,7 @@ describe('cheerio', function() {
   it('should be able to select multiple classes: $(".btn.primary")', function() {
     var $a = $('.btn.primary', multiclass);
     expect($a).to.have.length(1);
-    expect($a[0].children[0].data).to.equal('Save');
+    expect($a[0].childNodes[0].data).to.equal('Save');
   });
 
   it('should not create a top-level node', function() {
@@ -256,7 +256,7 @@ describe('cheerio', function() {
           expected = '<MixedCaseTag UPPERCASEATTRIBUTE=""/>',
           dom = $.load(str, {xmlMode: true});
 
-      expect(dom('MixedCaseTag').get(0).name).to.equal('MixedCaseTag');
+      expect(dom('MixedCaseTag').get(0).tagName).to.equal('MixedCaseTag');
       expect(dom.html()).to.be(expected);
     });
 
@@ -267,7 +267,7 @@ describe('cheerio', function() {
           expectedNoXml = '<mixedcasetag uppercaseattribute=""></mixedcasetag>',
           dom = $.load(str);
 
-      expect(dom('MixedCaseTag').get(0).name).to.equal('mixedcasetag');
+      expect(dom('MixedCaseTag').get(0).tagName).to.equal('mixedcasetag');
       expect(dom.html()).to.be(expectedNoXml);
       expect(dom.html({xmlMode: true})).to.be(expectedXml);
     });

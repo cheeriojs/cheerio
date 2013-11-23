@@ -650,14 +650,14 @@ describe('$(...)', function() {
 
     it('(true predicate) : should return true', function() {
       var result = $('li').is(function() {
-        return this.name === 'li' && $(this).hasClass('pear');
+        return this.tagName === 'li' && $(this).hasClass('pear');
       });
       expect(result).to.be(true);
     });
 
     it('(false predicate) : should return false', function () {
       var result = $('li').last().is(function() {
-        return this.name === 'ul';
+        return this.tagName === 'ul';
       });
       expect(result).to.be(false);
     });
