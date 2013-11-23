@@ -198,4 +198,14 @@ describe('cheerio', function() {
     expect($elem).to.have.length(0); // []
   });
 
+  it('(extended Array) should not interfere with prototype methods (issue #119)', function() {
+    var extended = [];
+    var custom = extended.find = extended.children = extended.each = function() {};
+    var $empty = $(extended);
+
+    expect($empty.find).to.be($.prototype.find);
+    expect($empty.children).to.be($.prototype.children);
+    expect($empty.each).to.be($.prototype.each);
+  });
+
 });
