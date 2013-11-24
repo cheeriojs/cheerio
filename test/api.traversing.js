@@ -116,7 +116,7 @@ describe('$(...)', function() {
     });
 
     it('(nextAll on empty object) : should return empty', function() {
-      expect($('.banana', fruits).next()).to.have.length(0);
+      expect($('.banana', fruits).nextAll()).to.have.length(0);
     });
 
   });
@@ -133,7 +133,7 @@ describe('$(...)', function() {
     });
 
     it('(prev on empty object) : should return empty', function() {
-      expect($('.banana', fruits).next()).to.have.length(0);
+      expect($('.banana', fruits).prev()).to.have.length(0);
     });
 
   });
@@ -152,7 +152,7 @@ describe('$(...)', function() {
     });
 
     it('(prevAll on empty object) : should return empty', function() {
-      expect($('.banana', fruits).next()).to.have.length(0);
+      expect($('.banana', fruits).prevAll()).to.have.length(0);
     });
 
   });
