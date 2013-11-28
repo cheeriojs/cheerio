@@ -295,6 +295,14 @@ $('.apple').nextAll()
 //=> [<li class="orange">Orange</li>, <li class="pear">Pear</li>]
 ```
 
+#### .nextUntil()
+Gets all the following siblings up to but not including the element matched by the selector.
+
+```js
+$('.apple').nextUntil('.pear')
+//=> [<li class="orange">Orange</li>]
+```
+
 #### .prev()
 Gets the previous sibling of the first selected element.
 
@@ -309,6 +317,14 @@ Gets all the preceding siblings of the first selected element.
 ```js
 $('.pear').prevAll()
 //=> [<li class="orange">Orange</li>, <li class="apple">Apple</li>]
+```
+
+#### .prevUntil()
+Gets all the preceding siblings up to but not including the element matched by the selector.
+
+```js
+$('.pear').prevUntil('.apple')
+//=> [<li class="orange">Orange</li>]
 ```
 
 #### .slice( start, [end] )
