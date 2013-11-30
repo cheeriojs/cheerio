@@ -51,9 +51,9 @@ describe('$', function() {
       expect($html.html()).to.be('<body><ul id="fruits"></ul></body>');
     });
 
-    it('(html) : should handle the ignore whitepace option', function() {
-      var $html = $.load('<body><a href="http://yahoo.com">Yahoo</a> <a href="http://google.com">Google</a></body>', { ignoreWhitespace : true });
-      expect($html.html()).to.be('<body><a href="http://yahoo.com">Yahoo</a><a href="http://google.com">Google</a></body>');
+    it('(html) : should handle the `normalizeWhitepace` option', function() {
+      var $html = $.load('<body><b>foo</b>  <b>bar</b></body>', { normalizeWhitespace : true });
+      expect($html.html()).to.be('<body><b>foo</b> <b>bar</b></body>');
     });
 
     // TODO:

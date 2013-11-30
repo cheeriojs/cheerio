@@ -88,7 +88,7 @@ of the default parsing options:
 
 ```js
 $ = cheerio.load('<ul id="fruits">...</ul>', {
-    ignoreWhitespace: true,
+    normalizeWhitespace: true,
     xmlMode: true
 });
 ```
@@ -98,7 +98,7 @@ are valid in cheerio as well. The default options are:
 
 ```js
 {
-    ignoreWhitespace: false,
+    normalizeWhitespace: false,
     xmlMode: false,
     lowerCaseTags: false
 }

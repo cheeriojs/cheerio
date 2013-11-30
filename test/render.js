@@ -47,9 +47,9 @@ describe('render', function() {
       expect(html(str)).to.equal(str);
     });
 
-    it('should ignore whitespace if specified', function() {
+    it('should normalize whitespace if specified', function() {
       var str = '<a href="./haha.html">hi</a> <a href="./blah.html">blah  </a>';
-      expect(html(str, {ignoreWhitespace: true})).to.equal('<a href="./haha.html">hi</a><a href="./blah.html">blah  </a>');
+      expect(html(str, { normalizeWhitespace: true })).to.equal('<a href="./haha.html">hi</a> <a href="./blah.html">blah </a>');
     });
 
     it('should preserve multiple hyphens in data attributes', function() {
