@@ -2,6 +2,7 @@ var expect = require('expect.js'),
   $ = require('../'),
   food = require('./fixtures').food,
   fruits = require('./fixtures').fruits,
+  drinks = require('./fixtures').drinks,
   text = require('./fixtures').text;
 
 describe('$(...)', function() {
@@ -142,9 +143,9 @@ describe('$(...)', function() {
     });
     
     it('(nextUntil filtered) : should return all following siblings until selector, filtered by filter', function() {
-      var elems = $('.apple', food).nextUntil('.pear', '.orange');
+      var elems = $('.beer', drinks).nextUntil('.water', '.milk');
       expect(elems).to.have.length(1);
-      expect(elems[0].attribs['class']).to.equal('orange');
+      expect(elems[0].attribs['class']).to.equal('milk');
     });
     
     it('(no next) : should return empty for last child', function() {
@@ -215,9 +216,9 @@ describe('$(...)', function() {
     });
     
     it('(prevUntil filtered) : should return all preceding siblings until selector, filtered by filter', function() {
-      var elems = $('.pear', fruits).prevUntil('.apple', '.orange');
+      var elems = $('.cider', drinks).prevUntil('.juice', '.water');
       expect(elems).to.have.length(1);
-      expect(elems[0].attribs['class']).to.equal('orange');
+      expect(elems[0].attribs['class']).to.equal('water');
     });
     
     it('(no previous) : should return empty for first child', function() {

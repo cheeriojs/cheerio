@@ -22,6 +22,16 @@ exports.chocolates = [
   '</ul>'
 ].join('');
 
+exports.drinks = [
+  '<ul id="drinks">',
+    '<li class="beer">Beer</li>',
+    '<li class="juice">Juice</li>',
+    '<li class="milk">Milk</li>',
+    '<li class="water">Water</li>',
+    '<li class="cider">Cider</li>',
+  '</ul>'
+].join('');
+
 exports.food = [
   '<ul id="food">',
     exports.fruits,
