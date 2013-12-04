@@ -32,6 +32,16 @@ describe('$(...)', function() {
       expect(el.css('background-image')).to.equal('url(http://example.com/img.png)');
     });
 
+    it('(prop): should ignore blank properties', function() {
+      var el = $('<li style=":#ccc;color:#aaa;">');
+      expect(el.css()).to.eql({color:"#aaa"});
+    });
+
+    it('(prop): should ignore blank values', function() {
+      var el = $('<li style="color:;position:absolute;">');
+      expect(el.css()).to.eql({position:"absolute"});
+    });
+
     describe('(prop, function):', function() {
       beforeEach(function() {
         this.$el = $('<div style="margin: 0;"></div><div style="margin: 0;"></div><div style="margin: 0;">');
