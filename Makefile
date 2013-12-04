@@ -16,4 +16,7 @@ test-cov: lib-cov
 lib-cov:
 	@jscoverage lib lib-cov
 
+bench:
+	@./benchmark/benchmark.js
+
 .PHONY: test build setup subl
