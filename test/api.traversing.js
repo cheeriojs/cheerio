@@ -123,36 +123,36 @@ describe('$(...)', function() {
   });
 
   describe('.nextUntil', function() {
-  
+
     it('() : should return all following siblings if no selector specified', function() {
       var elems = $('.apple', food).nextUntil();
       expect(elems).to.have.length(2);
       expect(elems[0].attribs['class']).to.equal('orange');
       expect(elems[1].attribs['class']).to.equal('pear');
     });
-    
+
     it('(selector) : should return all following siblings until selector', function() {
       var elems = $('.apple', food).nextUntil('.pear');
       expect(elems).to.have.length(1);
       expect(elems[0].attribs['class']).to.equal('orange');
     });
-    
+
     it('(selector not sibling) : should return all following siblings', function() {
       var elems = $('.apple', fruits).nextUntil('#vegetables');
       expect(elems).to.have.length(2);
     });
-    
-    it('(nextUntil filtered) : should return all following siblings until selector, filtered by filter', function() {
+
+    it('(selector, filterString) : should return all following siblings until selector, filtered by filter', function() {
       var elems = $('.beer', drinks).nextUntil('.water', '.milk');
       expect(elems).to.have.length(1);
       expect(elems[0].attribs['class']).to.equal('milk');
     });
-    
-    it('(no next) : should return empty for last child', function() {
+
+    it('() : should return an empty object for last child', function() {
       expect($('.pear', fruits).nextUntil()).to.have.length(0);
     });
-    
-    it('(nextUntil on empty object) : should return empty', function() {
+
+    it('() : should return an empty object when called on an empty object', function() {
       expect($('.banana', fruits).nextUntil()).to.have.length(0);
     });
 
@@ -195,37 +195,37 @@ describe('$(...)', function() {
   });
 
   describe('.prevUntil', function() {
-  
+
     it('() : should return all preceding siblings if no selector specified', function() {
       var elems = $('.pear', fruits).prevUntil();
       expect(elems).to.have.length(2);
       expect(elems[0].attribs['class']).to.equal('orange');
       expect(elems[1].attribs['class']).to.equal('apple');
     });
-    
+
     it('(selector) : should return all preceding siblings until selector', function() {
       var elems = $('.pear', fruits).prevUntil('.apple');
       expect(elems).to.have.length(1);
       expect(elems[0].attribs['class']).to.equal('orange');
     });
-    
+
     it('(selector not sibling) : should return all preceding siblings', function() {
       var elems = $('.sweetcorn', food).prevUntil('#fruits');
       expect(elems).to.have.length(1);
       expect(elems[0].attribs['class']).to.equal('carrot');
     });
-    
-    it('(prevUntil filtered) : should return all preceding siblings until selector, filtered by filter', function() {
+
+    it('(selector, filterString) : should return all preceding siblings until selector, filtered by filter', function() {
       var elems = $('.cider', drinks).prevUntil('.juice', '.water');
       expect(elems).to.have.length(1);
       expect(elems[0].attribs['class']).to.equal('water');
     });
-    
-    it('(no previous) : should return empty for first child', function() {
+
+    it('() : should return an empty object for first child', function() {
       expect($('.apple', fruits).prevUntil()).to.have.length(0);
     });
-    
-    it('(prevUntil on empty object) : should return empty', function() {
+
+    it('() : should return an empty object when called on an empty object', function() {
       expect($('.banana', fruits).prevUntil()).to.have.length(0);
     });
 
