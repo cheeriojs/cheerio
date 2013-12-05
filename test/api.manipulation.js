@@ -641,7 +641,7 @@ describe('$(...)', function() {
     });
 
     it('() : should be called implicitly', function() {
-      var string = [$("<foo>"), $("<bar>"), $("<baz>")].join("");
+      var string = [$('<foo>'), $('<bar>'), $('<baz>')].join('');
       expect(string).to.equal('<foo></foo><bar></bar><baz></baz>');
     });
   });

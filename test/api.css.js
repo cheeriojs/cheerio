@@ -34,12 +34,12 @@ describe('$(...)', function() {
 
     it('(prop): should ignore blank properties', function() {
       var el = $('<li style=":#ccc;color:#aaa;">');
-      expect(el.css()).to.eql({color:"#aaa"});
+      expect(el.css()).to.eql({color:'#aaa'});
     });
 
     it('(prop): should ignore blank values', function() {
       var el = $('<li style="color:;position:absolute;">');
-      expect(el.css()).to.eql({position:"absolute"});
+      expect(el.css()).to.eql({position:'absolute'});
     });
 
     describe('(prop, function):', function() {

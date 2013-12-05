@@ -5,6 +5,7 @@
   "proto": true,
   "undef": true,
   "node": true,
+  "quotmark": "single",
   "globals": {
     "expect": true,
     "it": true,

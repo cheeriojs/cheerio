@@ -18,7 +18,7 @@ describe('render', function() {
     });
 
     it('should handle double quotes within single quoted attributes properly', function() {
-      var str = "<hr class='an \"edge\" case' />";
+      var str = '<hr class=\'an "edge" case\' />';
       expect(html(str)).to.equal('<hr class="an &quot;edge&quot; case">');
     });
 
