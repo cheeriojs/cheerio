@@ -207,6 +207,15 @@ describe('$(...)', function() {
       var result = $('#food', food).parents();
       expect(result).to.have.length(0);
     });
+    it('() : should return the parents of every element in the *reveresed* collection, omitting duplicates', function() {
+      var $food = $(food);
+      var $parents = $food.find('li').parents();
+
+      expect($parents).to.have.length(3);
+      expect($parents[0]).to.be($food.find('#vegetables')[0]);
+      expect($parents[1]).to.be($food[0]);
+      expect($parents[2]).to.be($food.find('#fruits')[0]);
+    });
   });
 
   describe('.parent', function() {
