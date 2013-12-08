@@ -18,10 +18,10 @@
     "node": ">= 0.6"
   },
   "dependencies": {
-    "cheerio-select": "*",
     "htmlparser2": "~3.3.0",
     "underscore": "~1.4",
-    "entities": "0.x"
+    "entities": "0.x",
+    "CSSselect": "~0.3.11"
   },
   "devDependencies": {
     "mocha": "*",
