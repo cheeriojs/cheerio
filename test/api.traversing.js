@@ -156,6 +156,19 @@ describe('$(...)', function() {
       expect($('.banana', fruits).nextUntil()).to.have.length(0);
     });
 
+    it('(node) : should return all following siblings until the node', function() {
+      var $fruits = $(fruits).children();
+      var elems = $fruits.eq(0).nextUntil($fruits[2]);
+      expect(elems).to.have.length(1);
+    });
+
+    it('(cheerio object) : should return all following siblings until any member of the cheerio object', function() {
+      var $drinks = $(drinks).children();
+      var $until = $([$drinks[4], $drinks[3]]);
+      var elems = $drinks.eq(0).nextUntil($until);
+      expect(elems).to.have.length(2);
+    });
+
   });
 
   describe('.prev', function() {
@@ -227,6 +240,19 @@ describe('$(...)', function() {
 
     it('() : should return an empty object when called on an empty object', function() {
       expect($('.banana', fruits).prevUntil()).to.have.length(0);
+    });
+
+    it('(node) : should return all previous siblings until the node', function() {
+      var $fruits = $(fruits).children();
+      var elems = $fruits.eq(2).prevUntil($fruits[0]);
+      expect(elems).to.have.length(1);
+    });
+
+    it('(cheerio object) : should return all previous siblings until any member of the cheerio object', function() {
+      var $drinks = $(drinks).children();
+      var $until = $([$drinks[0], $drinks[1]]);
+      var elems = $drinks.eq(4).prevUntil($until);
+      expect(elems).to.have.length(2);
     });
 
   });
