@@ -21,7 +21,7 @@
     "htmlparser2": "~3.3.0",
     "underscore": "~1.4",
     "entities": "0.x",
-    "CSSselect": "~0.3.11"
+    "CSSselect": "~0.4.0"
   },
   "devDependencies": {
     "mocha": "*",
