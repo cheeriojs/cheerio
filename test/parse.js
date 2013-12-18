@@ -158,7 +158,7 @@ describe('parse', function() {
       expect(root.parent).to.be(null);
 
       var child = root.children[0];
-      expect(child.parent).to.equal(root);
+      expect(child.parent).to.be(null);
     }
 
     it('should add root to: ' + basic, function() {
@@ -174,7 +174,7 @@ describe('parse', function() {
       expect(root.children).to.have.length(2);
       expect(root.children[0].name).to.equal('h2');
       expect(root.children[1].name).to.equal('p');
-      expect(root.children[1].parent.name).to.equal('root');
+      expect(root.children[1].parent).to.equal(null);
     });
 
     it('should add root to: ' + comment, function() {

@@ -127,6 +127,11 @@ describe('cheerio', function() {
     expect($a[0].children[0].data).to.equal('Save');
   });
 
+  it('should not create a top-level node', function() {
+    var $elem = $('* div', '<div>');
+    expect($elem).to.have.length(0);
+  });
+
   it('should be able to select multiple elements: $(".apple, #fruits")', function() {
     var $elems = $('.apple, #fruits', fruits);
     expect($elems).to.have.length(2);
