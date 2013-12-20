@@ -66,7 +66,9 @@ describe('$(...)', function() {
       expect($('ul', fruits).children('.lulz')).to.have.length(0);
     });
 
-    it('should only match immediate children, not ancestors');
+    it('should only match immediate children, not ancestors', function() {
+      expect($(food).children('li')).to.have.length(0);
+    });
 
   });
 
