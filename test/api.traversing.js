@@ -131,6 +131,12 @@ describe('$(...)', function() {
       expect(elems[1].attribs['class']).to.equal('pear');
     });
 
+    it('() : should filter out non-element nodes', function() {
+      var elems = $('<div><div></div><!-- comment -->text<div></div></div>');
+      var div = elems.children().eq(0);
+      expect(div.nextUntil()).to.have.length(1);
+    });
+
     it('(selector) : should return all following siblings until selector', function() {
       var elems = $('.apple', food).nextUntil('.pear');
       expect(elems).to.have.length(1);
@@ -214,6 +220,12 @@ describe('$(...)', function() {
       expect(elems).to.have.length(2);
       expect(elems[0].attribs['class']).to.equal('orange');
       expect(elems[1].attribs['class']).to.equal('apple');
+    });
+
+    it('() : should filter out non-element nodes', function() {
+      var elems = $('<div class="1"><div class="2"></div><!-- comment -->text<div class="3"></div></div>');
+      var div = elems.children().last();
+      expect(div.prevUntil()).to.have.length(1);
     });
 
     it('(selector) : should return all preceding siblings until selector', function() {
