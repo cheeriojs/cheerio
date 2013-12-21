@@ -265,6 +265,15 @@ $('.orange').parents('#fruits').length
 // => 1
 ```
 
+#### .parentsUntil([selector][,filter])
+Get the ancestors of each element in the current set of matched elements, up to but not including the element matched by the selector, DOM node, or cheerio object.
+```js
+$('.orange').parentsUntil('#food').length
+// => 1
+$('.orange').parentsUntil('.saladbar', '#food').length
+// => 1
+```
+
 #### .closest(selector)
 For each element in the set, get the first element that matches the selector by testing the element itself and traversing up through its ancestors in the DOM tree.
 
