@@ -493,41 +493,41 @@ describe('$(...)', function() {
 
       expect($fruits.children(2).hasClass('plum')).to.be.ok();
       expect($fruits.children(3).hasClass('grape')).to.be.ok();
+      expect($fruits.children()).to.have.length(4);
     });
 
-    it('(elem) : should replace the selected element with given element', function() {
-      var $src = $('<ul></ul>');
-      var $elem = $('<h2>hi <span>there</span></h2>');
-      var $replaced = $src.replaceWith($elem);
-      expect($replaced[0].parent.type).to.equal('root');
-      expect($.html($replaced[0].parent)).to.equal('<h2>hi <span>there</span></h2>');
-      expect($.html($replaced)).to.equal('<ul></ul>');
+    it('(Node) : should replace the selected element with given node', function() {
+      var $src = $('<h2>hi <span>there</span></h2>');
+      var $new = $('<ul></ul>');
+      var $replaced = $src.find('span').replaceWith($new[0]);
+      expect($new[0].parent).to.equal($src[0]);
+      expect($replaced[0].parent).to.equal(null);
+      expect($.html($src)).to.equal('<h2>hi <ul></ul></h2>');
     });
 
-    it('(Node) : should replace the selected element with given element', function() {
-      var $src = $('<ul></ul>');
-      var elem = $('<h2>hi <span>there</span></h2>');
-      var $replaced = $src.replaceWith(elem);
-      expect($replaced[0].parent.type).to.equal('root');
-      expect($.html($replaced[0].parent)).to.equal('<h2>hi <span>there</span></h2>');
-      expect($.html($replaced)).to.equal('<ul></ul>');
+    it('(existing element) : should remove element from its previous location', function() {
+      var $fruits = $(fruits);
+      $('.pear', $fruits).replaceWith($('.apple', $fruits));
+      expect($fruits.children()).to.have.length(2);
+      expect($fruits.children()[0]).to.equal($('.orange', $fruits)[0]);
+      expect($fruits.children()[1]).to.equal($('.apple', $fruits)[0]);
     });
 
     it('(elem) : should replace the single selected element with given element', function() {
-      var $src = $('<br/>');
-      var $elem = $('<h2>hi <span>there</span></h2>');
-      var $replaced = $src.replaceWith($elem);
-      expect($replaced[0].parent.type).to.equal('root');
-      expect($.html($replaced[0].parent)).to.equal('<h2>hi <span>there</span></h2>');
-      expect($.html($replaced)).to.equal('<br>');
+      var $src = $('<h2>hi <span>there</span></h2>');
+      var $new = $('<div>here</div>');
+      var $replaced = $src.find('span').replaceWith($new);
+      expect($new[0].parent).to.equal($src[0]);
+      expect($replaced[0].parent).to.equal(null);
+      expect($.html($src)).to.equal('<h2>hi <div>here</div></h2>');
     });
 
     it('(str) : should accept strings', function() {
-      var $src = $('<br/>');
-      var $replaced = $src.replaceWith('<h2>hi <span>there</span></h2>');
-      expect($replaced[0].parent.type).to.equal('root');
-      expect($.html($replaced[0].parent)).to.equal('<h2>hi <span>there</span></h2>');
-      expect($.html($replaced)).to.equal('<br>');
+      var $src = $('<h2>hi <span>there</span></h2>');
+      var newStr = '<div>here</div>';
+      var $replaced = $src.find('span').replaceWith(newStr);
+      expect($replaced[0].parent).to.equal(null);
+      expect($.html($src)).to.equal('<h2>hi <div>here</div></h2>');
     });
 
     it('(fn) : should invoke the callback with the correct argument and context', function() {
