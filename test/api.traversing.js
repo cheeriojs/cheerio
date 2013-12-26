@@ -240,6 +240,15 @@ describe('$(...)', function() {
       expect($('.banana', fruits).prevAll()).to.have.length(0);
     });
 
+    it('() : should operate over all elements in the selection', function() {
+      expect($('.orange, .sweetcorn', food).prevAll()).to.have.length(2);
+    });
+
+    it('() : should not contain duplicate elements', function() {
+      var elems = $('.orange, .pear', food);
+      expect(elems.prevAll()).to.have.length(2);
+    });
+
   });
 
   describe('.prevUntil', function() {
