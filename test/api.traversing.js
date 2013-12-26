@@ -103,6 +103,10 @@ describe('$(...)', function() {
       expect($('.banana', fruits).next()).to.have.length(0);
     });
 
+    it('() : should operate over all elements in the selection', function() {
+      expect($('.apple, .orange', food).next()).to.have.length(2);
+    });
+
   });
 
   describe('.nextAll', function() {
