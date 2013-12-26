@@ -217,6 +217,10 @@ describe('$(...)', function() {
       expect($('.banana', fruits).prev()).to.have.length(0);
     });
 
+    it('() : should operate over all elements in the selection', function() {
+      expect($('.orange, .pear', food).prev()).to.have.length(2);
+    });
+
   });
 
   describe('.prevAll', function() {
