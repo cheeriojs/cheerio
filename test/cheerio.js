@@ -96,6 +96,16 @@ describe('cheerio', function() {
     expect(lis).to.have.length(3);
   });
 
+  it('should accept a node reference as a context', function() {
+    var $elems = $('<div><span></span></div>');
+    expect($('span', $elems[0])).to.have.length(1);
+  });
+
+  it('should accept an array of node references as a context', function() {
+    var $elems = $('<div><span></span></div>');
+    expect($('span', $elems.toArray())).to.have.length(1);
+  });
+
   it('should select only elements inside given context (Issue #193)', function() {
     var q = $.load(food),
         fruits = q('#fruits'),
