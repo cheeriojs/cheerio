@@ -139,6 +139,16 @@ describe('$(...)', function() {
       expect(div.nextUntil()).to.have.length(1);
     });
 
+    it('() : should operate over all elements in the selection', function() {
+      var elems = $('.apple, .carrot', food);
+      expect(elems.nextUntil()).to.have.length(3);
+    });
+
+    it('() : should not contain duplicate elements', function() {
+      var elems = $('.apple, .orange', food);
+      expect(elems.nextUntil()).to.have.length(2);
+    });
+
     it('(selector) : should return all following siblings until selector', function() {
       var elems = $('.apple', food).nextUntil('.pear');
       expect(elems).to.have.length(1);
