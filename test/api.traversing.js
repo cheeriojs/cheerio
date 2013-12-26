@@ -126,6 +126,15 @@ describe('$(...)', function() {
       expect($('.banana', fruits).nextAll()).to.have.length(0);
     });
 
+    it('() : should operate over all elements in the selection', function() {
+      expect($('.apple, .carrot', food).nextAll()).to.have.length(3);
+    });
+
+    it('() : should not contain duplicate elements', function() {
+      var elems = $('.apple, .orange', food);
+      expect(elems.nextAll()).to.have.length(2);
+    });
+
   });
 
   describe('.nextUntil', function() {
