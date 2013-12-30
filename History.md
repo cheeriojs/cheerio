@@ -1,4 +1,26 @@
 
+0.13.0 / 2013-12-30
+==================
+
+ * Remove "root" node (@jugglinmike)
+ * Fix bug in `prevAll`, `prev`, `nextAll`, `next`, `prevUntil`, `nextUntil` (@jugglinmike)
+ * Fix `replaceWith` method (@jugglinmike)
+ * added nextUntil() and prevUntil() (@finspin)
+ * Remove internal `connect` function (@jugglinmike)
+ * Rename `Cheerio#make` to document private status (@jugginmike)
+ * Remove extraneous call to `_.uniq` (@jugglinmike)
+ * Use CSSselect library directly (@jugglinmike)
+ * Run CI against Node v0.11 as an allowed failure (@jugginmike)
+ * Correct bug in `Cheerio#parents` (@jugglinmike)
+ * Implement `$.fn.end` (@jugginmike)
+ * Ignore colons inside of url(.*) when parsing css (@Meekohi)
+ * Introduce rudimentary benchmark suite (@jugglinmike)
+ * Update HtmlParser2 version (@jugglinmike)
+ * Correct inconsistency in `$.fn.map` (@jugglinmike)
+ * fixed traversing tests (@finspin)
+ * Simplify `make` method (@jugglinmike)
+ * Avoid shadowing instance methods from arrays (@jugglinmike)
+
 0.12.4 / 2013-11-12
 ==================
 

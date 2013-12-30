@@ -8,7 +8,7 @@
     "selector",
     "scraper"
   ],
-  "version": "0.12.4",
+  "version": "0.13.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/MatthewMueller/cheerio.git"
