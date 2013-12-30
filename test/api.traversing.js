@@ -103,6 +103,10 @@ describe('$(...)', function() {
       expect($('.banana', fruits).next()).to.have.length(0);
     });
 
+    it('() : should operate over all elements in the selection', function() {
+      expect($('.apple, .orange', food).next()).to.have.length(2);
+    });
+
   });
 
   describe('.nextAll', function() {
@@ -122,6 +126,15 @@ describe('$(...)', function() {
       expect($('.banana', fruits).nextAll()).to.have.length(0);
     });
 
+    it('() : should operate over all elements in the selection', function() {
+      expect($('.apple, .carrot', food).nextAll()).to.have.length(3);
+    });
+
+    it('() : should not contain duplicate elements', function() {
+      var elems = $('.apple, .orange', food);
+      expect(elems.nextAll()).to.have.length(2);
+    });
+
   });
 
   describe('.nextUntil', function() {
@@ -137,6 +150,16 @@ describe('$(...)', function() {
       var elems = $('<div><div></div><!-- comment -->text<div></div></div>');
       var div = elems.children().eq(0);
       expect(div.nextUntil()).to.have.length(1);
+    });
+
+    it('() : should operate over all elements in the selection', function() {
+      var elems = $('.apple, .carrot', food);
+      expect(elems.nextUntil()).to.have.length(3);
+    });
+
+    it('() : should not contain duplicate elements', function() {
+      var elems = $('.apple, .orange', food);
+      expect(elems.nextUntil()).to.have.length(2);
     });
 
     it('(selector) : should return all following siblings until selector', function() {
@@ -194,6 +217,10 @@ describe('$(...)', function() {
       expect($('.banana', fruits).prev()).to.have.length(0);
     });
 
+    it('() : should operate over all elements in the selection', function() {
+      expect($('.orange, .pear', food).prev()).to.have.length(2);
+    });
+
   });
 
   describe('.prevAll', function() {
@@ -213,6 +240,15 @@ describe('$(...)', function() {
       expect($('.banana', fruits).prevAll()).to.have.length(0);
     });
 
+    it('() : should operate over all elements in the selection', function() {
+      expect($('.orange, .sweetcorn', food).prevAll()).to.have.length(2);
+    });
+
+    it('() : should not contain duplicate elements', function() {
+      var elems = $('.orange, .pear', food);
+      expect(elems.prevAll()).to.have.length(2);
+    });
+
   });
 
   describe('.prevUntil', function() {
@@ -228,6 +264,16 @@ describe('$(...)', function() {
       var elems = $('<div class="1"><div class="2"></div><!-- comment -->text<div class="3"></div></div>');
       var div = elems.children().last();
       expect(div.prevUntil()).to.have.length(1);
+    });
+
+    it('() : should operate over all elements in the selection', function() {
+      var elems = $('.pear, .sweetcorn', food);
+      expect(elems.prevUntil()).to.have.length(3);
+    });
+
+    it('() : should not contain duplicate elements', function() {
+      var elems = $('.orange, .pear', food);
+      expect(elems.prevUntil()).to.have.length(2);
     });
 
     it('(selector) : should return all preceding siblings until selector', function() {
