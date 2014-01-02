@@ -590,6 +590,23 @@ describe('$(...)', function() {
       expect($('#fruits', $fruits).children()).to.have.length(0);
     });
 
+    it('() : should destroy childrens\' references to the parent', function() {
+      var $fruits = $(fruits);
+      var $children = $fruits.children();
+
+      $fruits.empty();
+
+      expect($children.eq(0).parent()).to.have.length(0);
+      expect($children.eq(0).next()).to.have.length(0);
+      expect($children.eq(0).prev()).to.have.length(0);
+      expect($children.eq(1).parent()).to.have.length(0);
+      expect($children.eq(1).next()).to.have.length(0);
+      expect($children.eq(1).prev()).to.have.length(0);
+      expect($children.eq(2).parent()).to.have.length(0);
+      expect($children.eq(2).next()).to.have.length(0);
+      expect($children.eq(2).prev()).to.have.length(0);
+    });
+
   });
 
   describe('.html', function() {
