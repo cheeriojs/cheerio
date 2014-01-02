@@ -590,7 +590,7 @@ describe('$(...)', function() {
       expect($('#fruits', $fruits).children()).to.have.length(0);
     });
 
-    it('() : should destroy childrens\' references to the parent', function() {
+    it('() : should destroy children\'s references to the parent', function() {
       var $fruits = $(fruits);
       var $children = $fruits.children();
 
