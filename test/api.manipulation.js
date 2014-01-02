@@ -30,6 +30,20 @@ describe('$(...)', function() {
       expect($fruits.children(3).hasClass('plum')).to.be.ok();
     });
 
+    it('(existing Node) : should remove node from previous location', function() {
+      var $fruits = $(fruits);
+      var apple = $fruits.children()[0];
+      var $children;
+
+      expect($fruits.children()).to.have.length(3);
+      $fruits.append(apple);
+      $children = $fruits.children();
+
+      expect($children).to.have.length(3);
+      expect($children[0]).to.not.equal(apple);
+      expect($children[2]).to.equal(apple);
+    });
+
     it('($(...), html) : should add multiple elements as last children', function() {
       var $fruits = $(fruits);
       var $plum = $('<li class="plum">Plum</li>');
@@ -156,6 +170,20 @@ describe('$(...)', function() {
       var plum = $('<li class="plum">Plum</li>')[0];
       $fruits.prepend(plum);
       expect($fruits.children(0).hasClass('plum')).to.be.ok();
+    });
+
+    it('(existing Node) : should remove existing nodes from previous locations', function() {
+      var $fruits = $(fruits);
+      var pear = $fruits.children()[2];
+      var $children;
+
+      expect($fruits.children()).to.have.length(3);
+      $fruits.prepend(pear);
+      $children = $fruits.children();
+
+      expect($children).to.have.length(3);
+      expect($children[2]).to.not.equal(pear);
+      expect($children[0]).to.equal(pear);
     });
 
     it('(Array) : should add all elements in the array as inital children', function() {
@@ -287,6 +315,18 @@ describe('$(...)', function() {
       expect($('.apple', $fruits).next().hasClass('plum')).to.be.ok();
     });
 
+    it('(existing Node) : should remove existing nodes from previous locations', function() {
+      var $fruits = $(fruits);
+      var pear = $fruits.children()[2];
+      var $children;
+
+      $('.apple', $fruits).after(pear);
+
+      $children = $fruits.children();
+      expect($children).to.have.length(3);
+      expect($children[1]).to.be(pear);
+    });
+
     it('($(...), html) : should add multiple elements as next siblings', function() {
       var $fruits = $(fruits);
       var $plum = $('<li class="plum">Plum</li>');
@@ -380,6 +420,18 @@ describe('$(...)', function() {
       var plum = $('<li class="plum">Plum</li>');
       $('.apple', $fruits).before(plum);
       expect($('.apple', $fruits).prev().hasClass('plum')).to.be.ok();
+    });
+
+    it('(existing Node) : should remove existing nodes from previous locations', function() {
+      var $fruits = $(fruits);
+      var pear = $fruits.children()[2];
+      var $children;
+
+      $('.apple', $fruits).before(pear);
+
+      $children = $fruits.children();
+      expect($children).to.have.length(3);
+      expect($children[0]).to.be(pear);
     });
 
     it('(Array) : should add all elements in the array as previous sibling', function() {
