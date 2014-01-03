@@ -32,6 +32,13 @@ describe('cheerio', function() {
     expect($('#fruits')).to.be.empty();
   });
 
+  it('$(node) : should override previously-loaded nodes', function() {
+    var C = $.load('<div><span></span></div>');
+    var spanNode = C('span')[0];
+    var $span = C(spanNode);
+    expect($span[0]).to.equal(spanNode);
+  });
+
   it('should be able to create html without a root or context', function() {
     var $h2 = $('<h2>');
     expect($h2).to.not.be.empty();
