@@ -270,8 +270,6 @@ Get the ancestors of each element in the current set of matched elements, up to 
 ```js
 $('.orange').parentsUntil('#food').length
 // => 1
-$('.orange').parentsUntil('.saladbar', '#food').length
-// => 1
 ```
 
 #### .closest(selector)

@@ -386,14 +386,22 @@ describe('$(...)', function() {
 
   describe('.parentsUntil', function() {
 
-    it('() : should get all of the parents in logical order', function(){
+    it('() : should get all of the parents in logical order', function() {
       var result = $('.orange', food).parentsUntil();
       expect(result).to.have.length(2);
       expect(result[0].attribs.id).to.be('fruits');
       expect(result[1].attribs.id).to.be('food');
     });
 
-    it('(selector) : should get all of the parents until selector', function(){
+    it('() : should get all of the parents in reversed order, omitting duplicates', function() {
+      var result = $('.apple, .sweetcorn', food).parentsUntil();
+      expect(result).to.have.length(3);
+      expect(result[0].attribs.id).to.be('vegetables');
+      expect(result[1].attribs.id).to.be('food');
+      expect(result[2].attribs.id).to.be('fruits');
+    });
+
+    it('(selector) : should get all of the parents until selector', function() {
       var result = $('.orange', food).parentsUntil('#food');
       expect(result).to.have.length(1);
       expect(result[0].attribs.id).to.be('fruits');
@@ -409,9 +417,9 @@ describe('$(...)', function() {
     });
 
     it('(selector, filter) : should get all of the parents that match the filter', function() {
-      var result = $('.orange', food).parentsUntil('.saladbar', '#food');
+      var result = $('.apple, .sweetcorn', food).parentsUntil('.saladbar', '#vegetables');
       expect(result).to.have.length(1);
-      expect(result[0].attribs.id).to.be('food');
+      expect(result[0].attribs.id).to.be('vegetables');
     });
 
     it('() : should return empty object when called on an empty object', function() {
