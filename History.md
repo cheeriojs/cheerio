@@ -1,4 +1,11 @@
 
+0.13.1 / 2014-01-07
+==================
+
+ * Fix select with context in Cheerio function (@jugglinmike)
+ * Remove unecessary DOM maintenance logic (@jugglinmike)
+ * Deprecate support for node 0.6
+
 0.13.0 / 2013-12-30
 ==================
 
