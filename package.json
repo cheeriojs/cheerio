@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "htmlparser2": "~3.4.0",
-    "underscore": "~1.5",
+    "underscore": "1.5.2",
     "entities": "0.x",
     "CSSselect": "~0.4.0"
   },
