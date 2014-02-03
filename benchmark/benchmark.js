@@ -303,3 +303,14 @@ suites.add('attributes - Add Remove class', 'jquery.html', {
     $lis.removeClass('foo');
   }
 });
+
+suites.add('css - css', 'jquery.html', {
+  setup: function($) {
+    return $('li');
+  },
+  test: function($, $lis) {
+    $lis.css('foo', 'bar');
+    $lis.css('foo');
+    $lis.css('foo', '');
+  }
+});
