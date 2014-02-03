@@ -130,6 +130,13 @@ describe('$(...)', function() {
       expect($obj).to.be.ok();
     });
 
+    it('should invalidate _html cache', function() {
+      var $fruits = $(fruits);
+      expect($fruits.html()).to.not.match(/<li class="plum">Plum<\/li>/);
+
+      $fruits.children(1).append('<li class="plum">Plum</li>');
+      expect($fruits.html()).to.match(/<li class="plum">Plum<\/li>/);
+    });
   });
 
   describe('.prepend', function() {
@@ -249,6 +256,13 @@ describe('$(...)', function() {
       expect($pear.find('.third')[0]).to.equal($pear.contents()[0]);
     });
 
+    it('should invalidate _html cache', function() {
+      var $fruits = $(fruits);
+      expect($fruits.html()).to.not.match(/<li class="plum">Plum<\/li>/);
+
+      $fruits.children(1).prepend('<li class="plum">Plum</li>');
+      expect($fruits.html()).to.match(/<li class="plum">Plum<\/li>/);
+    });
   });
 
   describe('.after', function() {
@@ -353,6 +367,15 @@ describe('$(...)', function() {
       expect($list.find('.third')[2]).to.equal($list.contents()[5]);
     });
 
+    it('should invalidate _html cache', function() {
+      var $fruits = $(fruits);
+      expect($fruits.html()).to.not.match(/<li class="grape">Grape<\/li>/);
+
+      var grape = '<li class="grape">Grape</li>';
+      $('.apple', $fruits).after(grape);
+
+      expect($fruits.html()).to.match(/<li class="grape">Grape<\/li>/);
+    });
   });
 
   describe('.before', function() {
@@ -457,6 +480,14 @@ describe('$(...)', function() {
       expect($list.find('.third')[2]).to.equal($list.contents()[4]);
     });
 
+    it('should invalidate _html cache', function() {
+      var $fruits = $(fruits);
+      expect($fruits.html()).to.not.match(/<li class="grape">Grape<\/li>/);
+
+      $('.apple', $fruits).before('<li class="grape">Grape</li>');
+
+      expect($fruits.html()).to.match(/<li class="grape">Grape<\/li>/);
+    });
   });
 
   describe('.remove', function() {
@@ -473,6 +504,14 @@ describe('$(...)', function() {
       expect($fruits.find('.apple')).to.have.length(0);
     });
 
+    it('should invalidate _html cache', function() {
+      var $fruits = $(fruits);
+      expect($fruits.html()).to.match(/<li class="apple">Apple<\/li>/);
+
+      $('li', $fruits).remove('.apple');
+
+      expect($fruits.html()).to.not.match(/<li class="apple">Apple<\/li>/);
+    });
   });
 
   describe('.replaceWith', function() {
@@ -580,6 +619,16 @@ describe('$(...)', function() {
       expect($fruits.find('.third')).to.have.length(3);
     });
 
+    it('should invalidate _html cache', function() {
+      var $fruits = $(fruits);
+      expect($fruits.html()).to.match(/<li class="pear">Pear<\/li>/);
+
+      var $plum = $('<li class="plum">Plum</li>');
+      $('.pear', $fruits).replaceWith($plum);
+
+      expect($fruits.html()).to.not.match(/<li class="pear">Pear<\/li>/);
+      expect($fruits.html()).to.match(/<li class="plum">Plum<\/li>/);
+    });
   });
 
   describe('.empty', function() {
@@ -590,6 +639,13 @@ describe('$(...)', function() {
       expect($('#fruits', $fruits).children()).to.have.length(0);
     });
 
+    it('should invalidate _html cache', function() {
+      var $fruits = $(fruits);
+      expect($fruits.html()).to.match(/<li class="apple">Apple<\/li>/);
+
+      $fruits.find('.apple').empty();
+      expect($fruits.html()).to.not.match(/<li class="apple">Apple<\/li>/);
+    });
   });
 
   describe('.html', function() {
@@ -627,6 +683,13 @@ describe('$(...)', function() {
       expect(html).to.equal('<li class="durian">Durian</li>');
     });
 
+    it('should invalidate _html cache', function() {
+      var $fruits = $(fruits);
+      expect($fruits.html()).to.not.match(/<li class="plum">Plum<\/li>/);
+
+      $fruits.children(1).html('<li class="plum">Plum</li>');
+      expect($fruits.html()).to.match(/<li class="plum">Plum<\/li>/);
+    });
   });
 
   describe('.toString', function() {
@@ -711,6 +774,14 @@ describe('$(...)', function() {
       $apple.text('blah <script>alert("XSS!")</script> blah');
       expect($apple.html()).to.not.contain('<script>alert("XSS!")</script>');
     });
-  });
 
+    it('should invalidate _html cache', function() {
+      var $fruits = $(fruits),
+          $apple = $fruits.children('.apple');
+      expect($fruits.html()).to.not.match(/Granny Smith Apple/);
+
+      $apple.text('Granny Smith Apple');
+      expect($fruits.html()).to.match(/Granny Smith Apple/);
+    });
+  });
 });
