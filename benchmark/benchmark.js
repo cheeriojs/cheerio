@@ -257,6 +257,16 @@ suites.add('attributes - Attributes', 'jquery.html', {
     $lis.removeAttr('foo');
   }
 });
+suites.add('attributes - Single Attribute', 'jquery.html', {
+  setup: function($) {
+    return $('body');
+  },
+  test: function($, $lis) {
+    $lis.attr('foo', 'bar');
+    $lis.attr('foo');
+    $lis.removeAttr('foo');
+  }
+});
 suites.add('attributes - Data', 'jquery.html', {
   setup: function($) {
     return $('li');
