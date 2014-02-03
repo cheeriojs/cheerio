@@ -92,6 +92,14 @@ suites.add('manipulation - html', 'jquery.html', {
     $lis.html('foo');
   }
 });
+suites.add('manipulation - html render', 'jquery.html', {
+  setup: function($) {
+    return $('body');
+  },
+  test: function($, $lis) {
+    $lis.html();
+  }
+});
 suites.add('manipulation - text', 'jquery.html', {
   setup: function($) {
     return $('li');
