@@ -107,6 +107,16 @@ describe('$(...)', function() {
       expect($('.apple, .orange', food).next()).to.have.length(2);
     });
 
+    describe('(selector) :', function() {
+      it('should reject elements that violate the filter', function() {
+        expect($('.apple', fruits).next('.non-existent')).to.have.length(0);
+      });
+
+      it('should accept elements that satisify the filter', function() {
+        expect($('.apple', fruits).next('.orange')).to.have.length(1);
+      });
+    });
+
   });
 
   describe('.nextAll', function() {
@@ -133,6 +143,16 @@ describe('$(...)', function() {
     it('() : should not contain duplicate elements', function() {
       var elems = $('.apple, .orange', food);
       expect(elems.nextAll()).to.have.length(2);
+    });
+
+    describe('(selector) :', function() {
+      it('should filter according to the provided selector', function() {
+        expect($('.apple', fruits).nextAll('.pear')).to.have.length(1);
+      });
+
+      it('should not consider siblings\' contents when filtering', function() {
+        expect($('#fruits', food).nextAll('li')).to.have.length(0);
+      });
     });
 
   });
@@ -179,6 +199,12 @@ describe('$(...)', function() {
       expect(elems[0].attribs['class']).to.equal('milk');
     });
 
+    it('(null, filterString) : should return all following siblings until selector, filtered by filter', function() {
+      var elems = $('<ul><li></li><li><p></p></li></ul>');
+      var empty = elems.find('li').eq(0).nextUntil(null, 'p');
+      expect(empty).to.have.length(0);
+    });
+
     it('() : should return an empty object for last child', function() {
       expect($('.pear', fruits).nextUntil()).to.have.length(0);
     });
@@ -221,6 +247,16 @@ describe('$(...)', function() {
       expect($('.orange, .pear', food).prev()).to.have.length(2);
     });
 
+    describe('(selector) :', function() {
+      it('should reject elements that violate the filter', function() {
+        expect($('.orange', fruits).prev('.non-existent')).to.have.length(0);
+      });
+
+      it('should accept elements that satisify the filter', function() {
+        expect($('.orange', fruits).prev('.apple')).to.have.length(1);
+      });
+    });
+
   });
 
   describe('.prevAll', function() {
@@ -247,6 +283,18 @@ describe('$(...)', function() {
     it('() : should not contain duplicate elements', function() {
       var elems = $('.orange, .pear', food);
       expect(elems.prevAll()).to.have.length(2);
+    });
+
+    describe('(selector) :', function() {
+      it('should filter returned elements', function() {
+        var elems = $('.pear', fruits).prevAll('.apple');
+        expect(elems).to.have.length(1);
+      });
+
+      it('should not consider siblings\'s descendents', function() {
+        var elems = $('#vegetables', food).prevAll('li');
+        expect(elems).to.have.length(0);
+      });
     });
 
   });
@@ -294,6 +342,12 @@ describe('$(...)', function() {
       expect(elems[0].attribs['class']).to.equal('water');
     });
 
+    it('(selector, filterString) : should return all preceding siblings until selector', function() {
+      var elems = $('<ul><li><p></p></li><li></li></ul>');
+      var empty = elems.find('li').eq(1).prevUntil(null, 'p');
+      expect(empty).to.have.length(0);
+    });
+
     it('() : should return an empty object for first child', function() {
       expect($('.apple', fruits).prevUntil()).to.have.length(0);
     });
@@ -336,6 +390,10 @@ describe('$(...)', function() {
       }).to.throwException(function(err) {
         expect(err).to.be.a(SyntaxError);
       });
+    });
+
+    it('(selector) : does not consider the contents of siblings when filtering (GH-374)', function() {
+      expect($('#fruits', food).siblings('li')).to.have.length(0);
     });
 
   });
