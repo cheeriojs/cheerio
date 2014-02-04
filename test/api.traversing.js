@@ -145,6 +145,16 @@ describe('$(...)', function() {
       expect(elems.nextAll()).to.have.length(2);
     });
 
+    describe('(selector) :', function() {
+      it('should filter according to the provided selector', function() {
+        expect($('.apple', fruits).nextAll('.pear')).to.have.length(1);
+      });
+
+      it('should not consider siblings\' contents when filtering', function() {
+        expect($('#fruits', food).nextAll('li')).to.have.length(0);
+      });
+    });
+
   });
 
   describe('.nextUntil', function() {
