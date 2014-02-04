@@ -316,6 +316,12 @@ describe('$(...)', function() {
       expect(elems[0].attribs['class']).to.equal('water');
     });
 
+    it('(selector, filterString) : should return all preceding siblings until selector', function() {
+      var elems = $('<ul><li><p></p></li><li></li></ul>');
+      var empty = elems.find('li').eq(1).prevUntil(null, 'p');
+      expect(empty).to.have.length(0);
+    });
+
     it('() : should return an empty object for first child', function() {
       expect($('.apple', fruits).prevUntil()).to.have.length(0);
     });
