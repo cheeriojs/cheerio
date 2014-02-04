@@ -199,6 +199,12 @@ describe('$(...)', function() {
       expect(elems[0].attribs['class']).to.equal('milk');
     });
 
+    it('(null, filterString) : should return all following siblings until selector, filtered by filter', function() {
+      var elems = $('<ul><li></li><li><p></p></li></ul>');
+      var empty = elems.find('li').eq(0).nextUntil(null, 'p');
+      expect(empty).to.have.length(0);
+    });
+
     it('() : should return an empty object for last child', function() {
       expect($('.pear', fruits).nextUntil()).to.have.length(0);
     });
