@@ -249,6 +249,18 @@ describe('$(...)', function() {
       expect(elems.prevAll()).to.have.length(2);
     });
 
+    describe('(selector) :', function() {
+      it('should filter returned elements', function() {
+        var elems = $('.pear', fruits).prevAll('.apple');
+        expect(elems).to.have.length(1);
+      });
+
+      it('should not consider siblings\'s descendents', function() {
+        var elems = $('#vegetables', food).prevAll('li');
+        expect(elems).to.have.length(0);
+      });
+    });
+
   });
 
   describe('.prevUntil', function() {
