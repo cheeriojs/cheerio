@@ -338,6 +338,10 @@ describe('$(...)', function() {
       });
     });
 
+    it('(selector) : does not consider the contents of siblings when filtering (GH-374)', function() {
+      expect($('#fruits', food).siblings('li')).to.have.length(0);
+    });
+
   });
 
   describe('.parents', function() {
