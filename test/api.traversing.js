@@ -107,6 +107,16 @@ describe('$(...)', function() {
       expect($('.apple, .orange', food).next()).to.have.length(2);
     });
 
+    describe('(selector) :', function() {
+      it('should reject elements that violate the filter', function() {
+        expect($('.apple', fruits).next('.non-existent')).to.have.length(0);
+      });
+
+      it('should accept elements that satisify the filter', function() {
+        expect($('.apple', fruits).next('.orange')).to.have.length(1);
+      });
+    });
+
   });
 
   describe('.nextAll', function() {

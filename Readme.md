@@ -279,8 +279,8 @@ $('.orange').closest('#fruits')
 // => [<ul id="fruits"> ... </ul>]
 ```
 
-#### .next()
-Gets the next sibling of the first selected element.
+#### .next([selector])
+Gets the next sibling of the first selected element, optionally filtered by a selector.
 
 ```js
 $('.apple').next().hasClass('orange')
