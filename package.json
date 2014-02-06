@@ -6,7 +6,9 @@
     "htmlparser",
     "jquery",
     "selector",
-    "scraper"
+    "scraper",
+    "parser",
+    "html"
   ],
   "version": "0.13.1",
   "repository": {
