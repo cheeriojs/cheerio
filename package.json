@@ -22,7 +22,7 @@
   "dependencies": {
     "htmlparser2": "~3.4.0",
     "underscore": "1.5.2",
-    "entities": "0.x",
+    "entities": "~0.3.0",
     "CSSselect": "~0.4.0"
   },
   "devDependencies": {
