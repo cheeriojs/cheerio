@@ -100,6 +100,19 @@ suites.add('manipulation - html render', 'jquery.html', {
     $lis.html();
   }
 });
+suites.add('manipulation - html independent', 'jquery.html', {
+  setup: function() {
+    return '<div class="foo"><div id="bar">bat<hr>baz</div> </div>'
+        + '<div class="foo"><div id="bar">bat<hr>baz</div> </div>'
+        + '<div class="foo"><div id="bar">bat<hr>baz</div> </div>'
+        + '<div class="foo"><div id="bar">bat<hr>baz</div> </div>'
+        + '<div class="foo"><div id="bar">bat<hr>baz</div> </div>'
+        + '<div class="foo"><div id="bar">bat<hr>baz</div> </div>';
+  },
+  test: function($, content) {
+    $(content).html();
+  }
+});
 suites.add('manipulation - text', 'jquery.html', {
   setup: function($) {
     return $('li');
