@@ -92,6 +92,14 @@ suites.add('manipulation - html', 'jquery.html', {
     $lis.html('foo');
   }
 });
+suites.add('manipulation - html render', 'jquery.html', {
+  setup: function($) {
+    return $('body');
+  },
+  test: function($, $lis) {
+    $lis.html();
+  }
+});
 suites.add('manipulation - text', 'jquery.html', {
   setup: function($) {
     return $('li');
@@ -249,6 +257,16 @@ suites.add('attributes - Attributes', 'jquery.html', {
     $lis.removeAttr('foo');
   }
 });
+suites.add('attributes - Single Attribute', 'jquery.html', {
+  setup: function($) {
+    return $('body');
+  },
+  test: function($, $lis) {
+    $lis.attr('foo', 'bar');
+    $lis.attr('foo');
+    $lis.removeAttr('foo');
+  }
+});
 suites.add('attributes - Data', 'jquery.html', {
   setup: function($) {
     return $('li');
@@ -293,5 +311,16 @@ suites.add('attributes - Add Remove class', 'jquery.html', {
   test: function($, $lis) {
     $lis.addClass('foo');
     $lis.removeClass('foo');
+  }
+});
+
+suites.add('css - css', 'jquery.html', {
+  setup: function($) {
+    return $('li');
+  },
+  test: function($, $lis) {
+    $lis.css('foo', 'bar');
+    $lis.css('foo');
+    $lis.css('foo', '');
   }
 });
