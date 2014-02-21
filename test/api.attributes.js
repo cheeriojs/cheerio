@@ -84,6 +84,14 @@ describe('$(...)', function() {
       expect($apple.attr('data-test')).to.equal('1');
     });
 
+    it('(key, value) : handle removed boolean attributes', function() {
+      var $apple = $('.apple', fruits);
+      $apple.attr('autofocus', 'autofocus');
+      expect($apple.attr('autofocus')).to.equal('autofocus');
+      $apple.removeAttr('autofocus');
+      expect($apple.attr('autofocus')).to.equal(false);
+    });
+
     it('should invalidate _html cache', function() {
       var $fruits = $(fruits);
       expect($.html($fruits)).to.not.match(/<li class="plum">Plum<\/li>/);
