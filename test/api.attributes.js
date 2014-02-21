@@ -79,6 +79,14 @@ describe('$(...)', function() {
       expect($apple[0].attribs['data-test']).to.equal('1');
       expect($apple.attr('data-test')).to.equal('1');
     });
+
+    it('(key, value) : handle removed boolean attributes', function() {
+      var $apple = $('.apple', fruits);
+      $apple.attr('autofocus', 'autofocus');
+      expect($apple.attr('autofocus')).to.equal('autofocus');
+      $apple.removeAttr('autofocus');
+      expect($apple.attr('autofocus')).to.equal(false);
+    });
   });
 
   describe('.data', function() {
