@@ -26,6 +26,10 @@ describe('render', function() {
       var str = '<hr class="cheerio &amp; node = happy parsing" />';
       expect(html(str)).to.equal('<hr class="cheerio &amp; node = happy parsing">');
     });
+    it('should retain encoded HTML content within attributes', function() {
+      var str = '<hr class="cheerio &amp; node = happy parsing">';
+      expect(html(str)).to.equal('<hr class="cheerio &amp; node = happy parsing">');
+    });
 
     it('should shorten the "checked" attribute when it contains the value "checked"', function() {
       var str = '<input checked/>';
