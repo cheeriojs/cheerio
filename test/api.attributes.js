@@ -66,7 +66,6 @@ describe('$(...)', function() {
     it('(key, value) : should correctly encode then decode unsafe values', function() {
       var $apple = $('.apple', fruits);
       $apple.attr('href', 'http://github.com/"><script>alert("XSS!")</script><br');
-      expect($apple[0].attribs.href).to.equal('http://github.com/&quot;&gt;&lt;script&gt;alert(&quot;XSS!&quot;)&lt;/script&gt;&lt;br');
       expect($apple.attr('href')).to.equal('http://github.com/"><script>alert("XSS!")</script><br');
 
       $apple.attr('href', 'http://github.com/"><script>alert("XSS!")</script><br');
@@ -78,6 +77,14 @@ describe('$(...)', function() {
       $apple.attr('data-test', 1);
       expect($apple[0].attribs['data-test']).to.equal('1');
       expect($apple.attr('data-test')).to.equal('1');
+    });
+
+    it('(key, value) : handle removed boolean attributes', function() {
+      var $apple = $('.apple', fruits);
+      $apple.attr('autofocus', 'autofocus');
+      expect($apple.attr('autofocus')).to.equal('autofocus');
+      $apple.removeAttr('autofocus');
+      expect($apple.attr('autofocus')).to.equal(false);
     });
   });
 
