@@ -11,6 +11,9 @@ if (regexIdx > 0) {
   }
   suites.filter(process.argv[regexIdx]);
 }
+if (process.argv.indexOf('--cheerio-only') >= 0) {
+  suites.cheerioOnly();
+}
 
 suites.add('Select all', 'jquery.html', {
   test: function($) { $('*').length; }

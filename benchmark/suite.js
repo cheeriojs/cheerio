@@ -8,11 +8,16 @@ var cheerio = require('..');
 var documentDir = path.join(__dirname, 'documents');
 var jQuerySrc = path.join(__dirname, 'jquery-2.0.3.js');
 var filterRe = /./;
+var cheerioOnly = false;
 
 var Suites = module.exports = function() {};
 
 Suites.prototype.filter = function(str) {
   filterRe = new RegExp(str, 'i');
+};
+
+Suites.prototype.cheerioOnly = function() {
+  cheerioOnly = true;
 };
 
 Suites.prototype.add = function(name, fileName, options) {
@@ -47,7 +52,11 @@ Suites.prototype.add = function(name, fileName, options) {
   });
 
   this._benchCheerio(suite, markup, options);
-  this._benchJsDom(suite, markup, options);
+  if (!cheerioOnly) {
+    this._benchJsDom(suite, markup, options);
+  } else {
+    suite.run();
+  }
 };
 
 Suites.prototype._benchJsDom = function(suite, markup, options) {
