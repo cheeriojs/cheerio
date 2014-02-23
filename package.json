@@ -16,6 +16,7 @@
     "url": "git://github.com/MatthewMueller/cheerio.git"
   },
   "main": "./index.js",
+  "browser": "./index.browser.js",
   "engines": {
     "node": ">= 0.6"
   },
