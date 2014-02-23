@@ -2,6 +2,7 @@ src/
 support/
 tests/
 examples/
+.editorconfig
 *.sock
 *.tmproj
 coverage.html
