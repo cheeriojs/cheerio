@@ -70,6 +70,11 @@ describe('cheerio', function() {
     testAppleSelect($apple);
   });
 
+  it('should be able to select .apple with a node as context', function() {
+    var $apple = $('.apple', $(fruits)[0]);
+    testAppleSelect($apple);
+  });
+
   it('should be able to select .apple with only a root', function() {
     var $apple = $('.apple', null, fruits);
     testAppleSelect($apple);
