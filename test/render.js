@@ -8,6 +8,13 @@ var html = function(str, options) {
   return render(dom);
 };
 
+var xml = function(str, options) {
+  options = options || {};
+  options.xmlMode = true;
+  var dom = parse(str, options);
+  return render(dom, {xmlMode:true});
+};
+
 describe('render', function() {
 
   describe('(html)', function() {
@@ -55,6 +62,11 @@ describe('render', function() {
     it('should preserve multiple hyphens in data attributes', function() {
       var str = '<div data-foo-bar-baz="value"></div>';
       expect(html(str)).to.equal('<div data-foo-bar-baz="value"></div>');
+    });
+    
+    it('should render CDATA correctly', function() {
+      var str = '<a> <b> <![CDATA[ asdf&asdf ]]> <c/> <![CDATA[ asdf&asdf ]]> </b> </a>';
+      expect(xml(str)).to.equal(str);
     });
 
   });
