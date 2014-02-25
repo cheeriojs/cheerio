@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "mocha": "*",
-    "expect.js": "*",
+    "expect.js": "0.2",
     "jshint": "~2.3.0",
     "benchmark": "~1.0.0",
     "jsdom": "~0.8.9"
