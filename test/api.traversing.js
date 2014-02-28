@@ -532,7 +532,7 @@ describe('$(...)', function() {
       var thisVals = [];
 
       $fruits.map(function() {
-        args.push(arguments);
+        args.push(Array.prototype.slice.call(arguments));
         thisVals.push(this);
       });
 

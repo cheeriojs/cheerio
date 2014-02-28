@@ -6,6 +6,7 @@ var vegetables = require('./fixtures').vegetables;
 var food = require('./fixtures').food;
 var chocolates = require('./fixtures').chocolates;
 var inputs = require('./fixtures').inputs;
+var toArray = Function.call.bind(Array.prototype.slice);
 
 describe('$(...)', function() {
 
@@ -321,7 +322,7 @@ describe('$(...)', function() {
       var toAdd = ['apple red', '', undefined];
 
       $fruits.addClass(function(idx, currentClass) {
-        args.push(arguments);
+        args.push(toArray(arguments));
         thisVals.push(this);
         return toAdd[idx];
       });
@@ -424,7 +425,7 @@ describe('$(...)', function() {
       var toAdd = ['apple red', '', undefined];
 
       $fruits.removeClass(function(idx, currentClass) {
-        args.push(arguments);
+        args.push(toArray(arguments));
         thisVals.push(this);
         return toAdd[idx];
       });
