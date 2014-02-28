@@ -1,6 +1,7 @@
 var expect = require('expect.js'),
     $ = require('../'),
-    fruits = require('./fixtures').fruits;
+    fruits = require('./fixtures').fruits,
+    toArray = Function.call.bind(Array.prototype.slice);
 
 describe('$(...)', function() {
 
@@ -68,7 +69,7 @@ describe('$(...)', function() {
       var thisValues = [];
 
       $fruits.append(function() {
-        args.push(arguments);
+        args.push(toArray(arguments));
         thisValues.push(this);
       });
 
@@ -210,7 +211,7 @@ describe('$(...)', function() {
       var thisValues = [];
 
       $fruits.prepend(function() {
-        args.push(arguments);
+        args.push(toArray(arguments));
         thisValues.push(this);
       });
 
@@ -342,7 +343,7 @@ describe('$(...)', function() {
       var thisValues = [];
 
       $fruits.after(function() {
-        args.push(arguments);
+        args.push(toArray(arguments));
         thisValues.push(this);
       });
 
@@ -458,7 +459,7 @@ describe('$(...)', function() {
       var thisValues = [];
 
       $fruits.before(function() {
-        args.push(arguments);
+        args.push(toArray(arguments));
         thisValues.push(this);
       });
 
@@ -589,7 +590,7 @@ describe('$(...)', function() {
       var thisValues = [];
 
       $fruits.children().replaceWith(function() {
-        args.push(arguments);
+        args.push(toArray(arguments));
         thisValues.push(this);
         return '<li class="first">';
       });
