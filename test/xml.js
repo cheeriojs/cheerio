@@ -1,5 +1,5 @@
 var expect = require('expect.js'),
-    _ = require('underscore'),
+    _ = require('lodash'),
     cheerio = require('../lib/cheerio');
 
 var xml = function(str, options) {
