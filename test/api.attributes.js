@@ -34,6 +34,14 @@ describe('$(...)', function() {
       expect($pear.cheerio).to.not.be(undefined);
     });
 
+    it('(key, value) : should set attr', function() {
+      var $el = $('<div></div> <div></div>').attr('class', 'pear');
+
+      expect($el[0].attribs['class']).to.equal('pear');
+      expect($el[1].attribs).to.equal(undefined);
+      expect($el[2].attribs['class']).to.equal('pear');
+    });
+
     it('(key, value) : should return an empty object for an empty object', function() {
       var $src = $().attr('key', 'value');
       expect($src.length).to.equal(0);
