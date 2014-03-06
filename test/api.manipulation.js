@@ -595,7 +595,11 @@ describe('$(...)', function() {
         return '<li class="first">';
       });
 
-      expect(args).to.eql([[0], [1], [2]]);
+      expect(args).to.eql([
+        [0, origChildren[0]],
+        [1, origChildren[1]],
+        [2, origChildren[2]]
+      ]);
       expect(thisValues).to.eql([
         origChildren[0],
         origChildren[1],
