@@ -583,6 +583,13 @@ describe('$(...)', function() {
       expect($.html($src)).to.equal('<h2>hi <div>here</div></h2>');
     });
 
+    it('(str) : should replace all selected elements', function() {
+      var $src = $('<b>a<br>b<br>c<br>d</b>');
+      var $replaced = $src.find('br').replaceWith(' ');
+      expect($replaced[0].parent).to.equal(null);
+      expect($.html($src)).to.equal('<b>a b c d</b>');
+    });
+
     it('(fn) : should invoke the callback with the correct argument and context', function() {
       var $fruits = $(fruits);
       var origChildren = $fruits.children().toArray();
