@@ -566,7 +566,7 @@ describe('$(...)', function() {
 
     it('(true predicate) : should return true', function() {
       var result = $('li', fruits).is(function() {
-        return this.hasClass('pear');
+        return this.name === 'li' && $(this).hasClass('pear');
       });
       expect(result).to.be(true);
     });
