@@ -647,13 +647,28 @@ describe('$(...)', function() {
   });
 
   describe('.empty', function() {
-
     it('() : should remove all children from selected elements', function() {
       var $fruits = $(fruits);
-      $('#fruits', $fruits).empty();
-      expect($('#fruits', $fruits).children()).to.have.length(0);
+      expect($fruits.children()).to.have.length(3);
+
+      $fruits.empty();
+      expect($fruits.children()).to.have.length(0);
     });
 
+    it('() : should allow element reinsertion', function() {
+      var $fruits = $(fruits),
+          $children = $fruits.children();
+
+      $fruits.empty();
+      expect($fruits.children()).to.have.length(0);
+      expect($children).to.have.length(3);
+
+      $fruits.append($('<div></div><div></div>'));
+      var $remove = $fruits.children().eq(0),
+          $keep = $fruits.children().eq(1);
+      $remove.replaceWith($children);
+      expect($fruits.children()).to.have.length(4);
+    });
   });
 
   describe('.html', function() {
@@ -691,6 +706,18 @@ describe('$(...)', function() {
       expect(html).to.equal('<li class="durian">Durian</li>');
     });
 
+    it('() : should allow element reinsertion', function() {
+      var $fruits = $(fruits),
+          $children = $fruits.children();
+
+      $fruits.html('<div></div><div></div>');
+      expect($fruits.children()).to.have.length(2);
+
+      var $remove = $fruits.children().eq(0),
+          $keep = $fruits.children().eq(1);
+      $remove.replaceWith($children);
+      expect($fruits.children()).to.have.length(4);
+    });
   });
 
   describe('.toString', function() {
