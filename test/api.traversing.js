@@ -704,6 +704,35 @@ describe('$(...)', function() {
 
   });
 
+  describe('.get', function() {
+
+    it('(i) : should return the element at the specified index', function() {
+      var children = $(fruits).children();
+      expect(children.get(0)).to.be(children[0]);
+      expect(children.get(1)).to.be(children[1]);
+      expect(children.get(2)).to.be(children[2]);
+    });
+
+    it('(-1) : should return the element indexed from the end of the collection', function() {
+      var children = $(fruits).children();
+      expect(children.get(-1)).to.be(children[2]);
+      expect(children.get(-2)).to.be(children[1]);
+      expect(children.get(-3)).to.be(children[0]);
+    });
+
+    it('() : should return an array containing all of the collection', function() {
+      var children = $(fruits).children();
+      var all = children.get();
+      expect(Array.isArray(all)).to.be.ok();
+      expect(all).to.eql([
+        children[0],
+        children[1],
+        children[2]
+      ]);
+    });
+
+  });
+
   describe('.slice', function() {
 
     function getText(el) {
