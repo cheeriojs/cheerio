@@ -579,7 +579,7 @@ describe('$(...)', function() {
         return [1, [3, 4]];
       });
 
-      expect($mapped.toArray()).to.eql([
+      expect($mapped.get()).to.eql([
         1, [3, 4],
         1, [3, 4],
         1, [3, 4]
@@ -593,7 +593,7 @@ describe('$(...)', function() {
         return [null, undefined];
       });
 
-      expect($mapped.toArray()).to.eql([
+      expect($mapped.get()).to.eql([
         null, undefined,
         null, undefined,
         null, undefined,
