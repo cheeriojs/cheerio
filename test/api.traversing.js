@@ -579,7 +579,7 @@ describe('$(...)', function() {
         return [1, [3, 4]];
       });
 
-      expect($mapped.toArray()).to.eql([
+      expect($mapped.get()).to.eql([
         1, [3, 4],
         1, [3, 4],
         1, [3, 4]
@@ -593,7 +593,7 @@ describe('$(...)', function() {
         return [null, undefined];
       });
 
-      expect($mapped.toArray()).to.eql([
+      expect($mapped.get()).to.eql([
         null, undefined,
         null, undefined,
         null, undefined,
@@ -700,6 +700,35 @@ describe('$(...)', function() {
       expect(getText($('li', fruits).eq(2))).to.equal('Pear');
       expect(getText($('li', fruits).eq(3))).to.equal('');
       expect(getText($('li', fruits).eq(-1))).to.equal('Pear');
+    });
+
+  });
+
+  describe('.get', function() {
+
+    it('(i) : should return the element at the specified index', function() {
+      var children = $(fruits).children();
+      expect(children.get(0)).to.be(children[0]);
+      expect(children.get(1)).to.be(children[1]);
+      expect(children.get(2)).to.be(children[2]);
+    });
+
+    it('(-1) : should return the element indexed from the end of the collection', function() {
+      var children = $(fruits).children();
+      expect(children.get(-1)).to.be(children[2]);
+      expect(children.get(-2)).to.be(children[1]);
+      expect(children.get(-3)).to.be(children[0]);
+    });
+
+    it('() : should return an array containing all of the collection', function() {
+      var children = $(fruits).children();
+      var all = children.get();
+      expect(Array.isArray(all)).to.be.ok();
+      expect(all).to.eql([
+        children[0],
+        children[1],
+        children[2]
+      ]);
     });
 
   });

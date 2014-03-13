@@ -57,7 +57,7 @@ describe('$(...)', function() {
     it('(Array) : should append all elements in the array', function() {
       var $fruits = $(fruits);
       var more = $('<li class="plum">Plum</li><li class="grape">Grape</li>')
-        .toArray();
+        .get();
       $fruits.append(more);
       expect($fruits.children(3).hasClass('plum')).to.be.ok();
       expect($fruits.children(4).hasClass('grape')).to.be.ok();
@@ -190,7 +190,7 @@ describe('$(...)', function() {
     it('(Array) : should add all elements in the array as inital children', function() {
       var $fruits = $(fruits);
       var more = $('<li class="plum">Plum</li><li class="grape">Grape</li>')
-        .toArray();
+        .get();
       $fruits.prepend(more);
       expect($fruits.children(0).hasClass('plum')).to.be.ok();
       expect($fruits.children(1).hasClass('grape')).to.be.ok();
@@ -296,7 +296,7 @@ describe('$(...)', function() {
     it('(Array) : should add all elements in the array as next sibling', function() {
       var $fruits = $(fruits);
       var more = $('<li class="plum">Plum</li><li class="grape">Grape</li>')
-        .toArray();
+        .get();
       $('.apple', $fruits).after(more);
       expect($fruits.children(1).hasClass('plum')).to.be.ok();
       expect($fruits.children(2).hasClass('grape')).to.be.ok();
@@ -438,7 +438,7 @@ describe('$(...)', function() {
     it('(Array) : should add all elements in the array as previous sibling', function() {
       var $fruits = $(fruits);
       var more = $('<li class="plum">Plum</li><li class="grape">Grape</li>')
-        .toArray();
+        .get();
       $('.apple', $fruits).before(more);
       expect($fruits.children(0).hasClass('plum')).to.be.ok();
       expect($fruits.children(1).hasClass('grape')).to.be.ok();
@@ -541,7 +541,7 @@ describe('$(...)', function() {
     it('(Array) : should replace one <li> tag with the elements in the array', function() {
       var $fruits = $(fruits);
       var more = $('<li class="plum">Plum</li><li class="grape">Grape</li>')
-        .toArray();
+        .get();
       $('.pear', $fruits).replaceWith(more);
 
       expect($fruits.children(2).hasClass('plum')).to.be.ok();
@@ -592,7 +592,7 @@ describe('$(...)', function() {
 
     it('(fn) : should invoke the callback with the correct argument and context', function() {
       var $fruits = $(fruits);
-      var origChildren = $fruits.children().toArray();
+      var origChildren = $fruits.children().get();
       var args = [];
       var thisValues = [];
 

@@ -442,6 +442,22 @@ $('li').eq(-1).text()
 //=> Pear
 ```
 
+#### .get( [i] )
+
+Retrieve the DOM elements matched by the Cheerio object. If an index is specified, retrieve one of the elements matched by the Cheerio object:
+
+```js
+$('li').get(0).name
+//=> li
+```
+
+If no index is specified, retrieve all elements matched by the Cheerio object:
+
+```js
+$('li').get().length
+//=> 3
+```
+
 #### .end()
 End the most recent filtering operation in the current chain and return the set of matched elements to its previous state.
 
@@ -607,14 +623,6 @@ $.xml()
 
 ### Miscellaneous
 DOM element methods that don't fit anywhere else
-
-#### .toArray()
-Retrieve all the DOM elements contained in the jQuery set, as an array.
-
-```js
-$('li').toArray()
-//=> [ {...}, {...}, {...} ]
-```
 
 #### .clone() ####
 Clone the cheerio object.
