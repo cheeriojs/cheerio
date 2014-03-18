@@ -27,7 +27,7 @@ __&#991; Blazingly fast:__
 Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient. Preliminary end-to-end benchmarks suggest that cheerio is about __8x__ faster than JSDOM.
 
 __&#10049; Insanely flexible:__
-Cheerio wraps around @FB55's forgiving htmlparser. Cheerio can parse nearly any HTML or XML document.
+Cheerio wraps around @FB55's forgiving [htmlparser2](https://github.com/fb55/htmlparser2/). Cheerio can parse nearly any HTML or XML document.
 
 ## What about JSDOM?
 I wrote cheerio because I found myself increasingly frustrated with JSDOM. For me, there were three main sticking points that I kept running into again and again:
@@ -93,8 +93,7 @@ $ = cheerio.load('<ul id="fruits">...</ul>', {
 });
 ```
 
-These parsing options are taken directly from htmlparser, therefore any options that can be used in htmlparser
-are valid in cheerio as well. The default options are:
+These parsing options are taken directly from [htmlparser2](https://github.com/fb55/htmlparser2/wiki/Parser-options), therefore any options that can be used in `htmlparser2` are valid in cheerio as well. The default options are:
 
 ```js
 {
@@ -105,7 +104,7 @@ are valid in cheerio as well. The default options are:
 ```
 
 For a list of options and their effects, see [this](https://github.com/fb55/DomHandler) and
-[this](https://github.com/fb55/htmlparser2/wiki/Parser-options).
+[htmlparser2's options](https://github.com/fb55/htmlparser2/wiki/Parser-options).
 
 ### Selectors
 
