@@ -26,7 +26,7 @@ Cheerio implements a subset of core jQuery. Cheerio removes all the DOM inconsis
 __&#991; Blazingly fast:__
 Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient. Preliminary end-to-end benchmarks suggest that cheerio is about __8x__ faster than JSDOM.
 
-__&#10049; Insanely flexible:__
+__&#10049; Incredibly flexible:__
 Cheerio wraps around @FB55's forgiving [htmlparser2](https://github.com/fb55/htmlparser2/). Cheerio can parse nearly any HTML or XML document.
 
 ## What about JSDOM?
