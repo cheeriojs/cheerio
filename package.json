@@ -10,7 +10,7 @@
     "parser",
     "html"
   ],
-  "version": "0.13.1",
+  "version": "0.14.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/MatthewMueller/cheerio.git"
