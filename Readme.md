@@ -1,4 +1,4 @@
-# cheerio [![Build Status](https://secure.travis-ci.org/MatthewMueller/cheerio.png?branch=master)](http://travis-ci.org/MatthewMueller/cheerio)
+# cheerio [![Build Status](https://secure.travis-ci.org/MatthewMueller/cheerio.svg?branch=master)](http://travis-ci.org/MatthewMueller/cheerio)
 
 Fast, flexible, and lean implementation of core jQuery designed specifically for the server.
 
@@ -703,7 +703,7 @@ authors  :
    2  Chris Khoo              0.3%
    1  xiaohwan                0.2%
    1  Chris O'Hara            0.2%
-   1  Felix Böhm            0.2%
+   1  Felix Böhm            0.2%
    1  Jeremy Hubble           0.2%
    1  Manuel Alabor           0.2%
    1  Matt Liegey             0.2%
