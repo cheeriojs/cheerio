@@ -37,6 +37,18 @@ describe('$(...)', function() {
       expect($('#fruits').find('li')).to.have.length(0);
     });
 
+    it('should lowercase selectors', function() {
+      expect($('#fruits', fruits).find('LI')).to.have.length(3);
+    });
+
+    it('should query case-sensitively when in xmlMode', function() {
+      var q = $.load('<caseSenSitive allTheWay>', {xmlMode: true});
+      expect(q('caseSenSitive')).to.have.length(1);
+      expect(q('[allTheWay]')).to.have.length(1);
+      expect(q('casesensitive')).to.have.length(0);
+      expect(q('[alltheway]')).to.have.length(0);
+    });
+
     it('should throw a SyntaxError if given an invalid selector', function() {
       expect(function() {
         $('#fruits').find(':bah');
