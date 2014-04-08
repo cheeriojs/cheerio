@@ -571,7 +571,7 @@ describe('$(...)', function() {
           classes = ['apple', 'orange', 'pear'];
       $('li', fruits).each(function(idx, elem) {
         items[idx] = elem;
-        expect(this[0].attribs['class']).to.equal(classes[idx]);
+        expect(this.attribs['class']).to.equal(classes[idx]);
       });
       expect(items[0].attribs['class']).to.equal('apple');
       expect(items[1].attribs['class']).to.equal('orange');
@@ -691,10 +691,10 @@ describe('$(...)', function() {
 
     it('(fn) : should reduce the set of matched elements to those that pass the function\'s test', function() {
       var orange = $('li', fruits).filter(function(i, el) {
-        expect(this[0]).to.be(el);
+        expect(this).to.be(el);
         expect(el.name).to.be('li');
         expect(i).to.be.a('number');
-        return this.attr('class') === 'orange';
+        return $(this).attr('class') === 'orange';
       }).text();
 
       expect(orange).to.be('Orange');
