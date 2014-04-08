@@ -9,9 +9,9 @@ var xml = function(str, options) {
 };
 
 var dom = function(str, options) {
-  $ = cheerio.load('', options);
+  var $ = cheerio.load('', options);
   return $(str).html();
-}
+};
 
 describe('render', function() {
 
