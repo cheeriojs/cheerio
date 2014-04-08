@@ -1,5 +1,6 @@
 var expect = require('expect.js'),
     _ = require('lodash'),
+    htmlparser2 = require('htmlparser2'),
     $ = require('../'),
     fixtures = require('./fixtures'),
     fruits = fixtures.fruits,
@@ -107,6 +108,13 @@ describe('cheerio', function() {
         fruitElements = q('li', fruits);
 
     expect(fruitElements).to.have.length(3);
+  });
+
+  it('should allow loading a pre-parsed DOM', function() {
+    var dom = htmlparser2.parseDOM(food),
+        q = $.load(dom);
+
+    expect(q('ul')).to.have.length(3);
   });
 
   it('should be able to select multiple tags', function() {
