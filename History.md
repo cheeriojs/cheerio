@@ -1,4 +1,17 @@
 
+0.15.0 / 2014-04-08
+==================
+
+ * Update callbacks to pass element per docs (@kpdecker)
+ * preserve options (@fb55)
+ * Use SVG travis badge (@t3chnoboy)
+ * only use static requires (@fb55)
+ * Optimize manipulation methods (@kpdecker)
+ * Optimize add and remove class cases (@kpdecker)
+ * accept dom of DomHandler to cheerio.load (@nleush)
+ * added parentsUntil method (@finspin)
+ * Add performance optimization and bug fix `empty` method (@kpdecker)
+
 0.14.0 / 2014-04-01
 ==================
 
