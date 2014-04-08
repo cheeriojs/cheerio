@@ -8,6 +8,11 @@ var xml = function(str, options) {
   return dom.xml();
 };
 
+var dom = function(str, options) {
+  $ = cheerio.load('', options);
+  return $(str).html();
+}
+
 describe('render', function() {
 
   describe('(xml)', function() {
@@ -20,6 +25,20 @@ describe('render', function() {
     it('should render <link /> tags (RSS) correctly', function() {
       var str = '<link>http://www.github.com/</link>';
       expect(xml(str)).to.equal('<link>http://www.github.com/</link>');
+    });
+
+  });
+
+  describe('(dom)', function () {
+
+    it('should keep camelCase for new nodes', function() {
+      var str = '<g><someElem someAttribute="something">hello</someElem></g>';
+      expect(dom(str, {xmlMode: false})).to.equal('<someelem someattribute="something">hello</someelem>');
+    });
+
+    it('should keep camelCase for new nodes', function() {
+      var str = '<g><someElem someAttribute="something">hello</someElem></g>';
+      expect(dom(str, {xmlMode: true})).to.equal('<someElem someAttribute="something">hello</someElem>');
     });
 
   });
