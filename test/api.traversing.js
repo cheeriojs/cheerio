@@ -399,6 +399,7 @@ describe('$(...)', function() {
   });
 
   describe('.parents', function() {
+
     it('() : should get all of the parents in logical order', function(){
       var result = $('.orange', food).parents();
       expect(result).to.have.length(2);
@@ -408,6 +409,7 @@ describe('$(...)', function() {
       expect(result).to.have.length(1);
       expect(result[0].attribs.id).to.be('food');
     });
+
     it('(selector) : should get all of the parents that match the selector in logical order', function() {
       var result = $('.orange', food).parents('#fruits');
       expect(result).to.have.length(1);
@@ -417,14 +419,17 @@ describe('$(...)', function() {
       expect(result[0].attribs.id).to.be('fruits');
       expect(result[1].attribs.id).to.be('food');
     });
+
     it('() : should not break if the selector does not have any results', function() {
       var result = $('.saladbar', food).parents();
       expect(result).to.have.length(0);
     });
+
     it('() : should return an empty set for top-level elements', function() {
       var result = $('#food', food).parents();
       expect(result).to.have.length(0);
     });
+
     it('() : should return the parents of every element in the *reveresed* collection, omitting duplicates', function() {
       var $food = $(food);
       var $parents = $food.find('li').parents();
@@ -434,6 +439,66 @@ describe('$(...)', function() {
       expect($parents[1]).to.be($food[0]);
       expect($parents[2]).to.be($food.find('#fruits')[0]);
     });
+
+  });
+
+  describe('.parentsUntil', function() {
+
+    it('() : should get all of the parents in logical order', function() {
+      var result = $('.orange', food).parentsUntil();
+      expect(result).to.have.length(2);
+      expect(result[0].attribs.id).to.be('fruits');
+      expect(result[1].attribs.id).to.be('food');
+    });
+
+    it('() : should get all of the parents in reversed order, omitting duplicates', function() {
+      var result = $('.apple, .sweetcorn', food).parentsUntil();
+      expect(result).to.have.length(3);
+      expect(result[0].attribs.id).to.be('vegetables');
+      expect(result[1].attribs.id).to.be('food');
+      expect(result[2].attribs.id).to.be('fruits');
+    });
+
+    it('(selector) : should get all of the parents until selector', function() {
+      var result = $('.orange', food).parentsUntil('#food');
+      expect(result).to.have.length(1);
+      expect(result[0].attribs.id).to.be('fruits');
+      result = $('.orange', food).parentsUntil('#fruits');
+      expect(result).to.have.length(0);
+    });
+
+    it('(selector not parent) : should return all parents', function() {
+      var result = $('.orange', food).parentsUntil('.apple');
+      expect(result).to.have.length(2);
+      expect(result[0].attribs.id).to.be('fruits');
+      expect(result[1].attribs.id).to.be('food');
+    });
+
+    it('(selector, filter) : should get all of the parents that match the filter', function() {
+      var result = $('.apple, .sweetcorn', food).parentsUntil('.saladbar', '#vegetables');
+      expect(result).to.have.length(1);
+      expect(result[0].attribs.id).to.be('vegetables');
+    });
+
+    it('() : should return empty object when called on an empty object', function() {
+      var result = $('.saladbar', food).parentsUntil();
+      expect(result).to.have.length(0);
+    });
+
+    it('() : should return an empty set for top-level elements', function() {
+      var result = $('#food', food).parentsUntil();
+      expect(result).to.have.length(0);
+    });
+
+    it('(cheerio object) : should return all parents until any member of the cheerio object', function() {
+      var $food = $(food);
+      var $fruits = $(fruits);
+      var $until = $($food[0]);
+      var result = $fruits.children().eq(1).parentsUntil($until);
+      expect(result).to.have.length(1);
+      expect(result[0].attribs.id).to.be('fruits');
+    });
+
   });
 
   describe('.parent', function() {
