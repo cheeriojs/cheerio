@@ -1,18 +1,20 @@
 var expect = require('expect.js'),
+    defaultOpts = require('..').prototype.options,
+    _ = require('lodash'),
     parse = require('../lib/parse'),
     render = require('../lib/render');
 
 var html = function(str, options) {
-  options = options || {};
+  options = _.defaults(options || {}, defaultOpts);
   var dom = parse(str, options);
   return render(dom);
 };
 
 var xml = function(str, options) {
-  options = options || {};
+  options = _.defaults(options || {}, defaultOpts);
   options.xmlMode = true;
   var dom = parse(str, options);
-  return render(dom, {xmlMode:true});
+  return render(dom, options);
 };
 
 describe('render', function() {
