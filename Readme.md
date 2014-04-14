@@ -99,11 +99,12 @@ These parsing options are taken directly from [htmlparser2](https://github.com/f
 {
     normalizeWhitespace: false,
     xmlMode: false,
-    lowerCaseTags: false
+    decodeEntities: true
 }
+
 ```
 
-For a list of options and their effects, see [this](https://github.com/fb55/DomHandler) and
+For a full list of options and their effects, see [this](https://github.com/fb55/DomHandler) and
 [htmlparser2's options](https://github.com/fb55/htmlparser2/wiki/Parser-options).
 
 ### Selectors
