@@ -28,12 +28,12 @@ describe('render', function() {
 
     it('should handle double quotes within single quoted attributes properly', function() {
       var str = '<hr class=\'an "edge" case\' />';
-      expect(html(str)).to.equal('<hr class="an &quot;edge&quot; case">');
+      expect(html(str)).to.equal('<hr class="an &#x22;edge&#x22; case">');
     });
 
     it('should retain encoded HTML content within attributes', function() {
       var str = '<hr class="cheerio &amp; node = happy parsing" />';
-      expect(html(str)).to.equal('<hr class="cheerio &amp; node = happy parsing">');
+      expect(html(str)).to.equal('<hr class="cheerio &#x26; node = happy parsing">');
     });
 
     it('should shorten the "checked" attribute when it contains the value "checked"', function() {
