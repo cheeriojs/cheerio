@@ -45,6 +45,23 @@ describe('$(...)', function() {
       expect($children[2]).to.equal(apple);
     });
 
+    it('(existing Node) : should remove existing node from previous location', function() {
+      var $fruits = $(fruits);
+      var apple = $fruits.children()[0];
+      var $children;
+      var $dest = $('<div></div>');
+
+      expect($fruits.children()).to.have.length(3);
+      $dest.append(apple);
+      $children = $fruits.children();
+
+      expect($children).to.have.length(2);
+      expect($children[0]).to.not.equal(apple);
+
+      expect($dest.children()).to.have.length(1);
+      expect($dest.children()[0]).to.equal(apple);
+    });
+
     it('($(...), html) : should add multiple elements as last children', function() {
       var $fruits = $(fruits);
       var $plum = $('<li class="plum">Plum</li>');
@@ -145,6 +162,16 @@ describe('$(...)', function() {
       expect($obj).to.be.ok();
     });
 
+    it('($(...)) : should remove from root element', function() {
+      var $fruits = $(fruits);
+      var $plum = $('<li class="plum">Plum</li>');
+      var root = $plum[0].root;
+      expect(root).to.be.ok();
+
+      $fruits.append($plum);
+      expect($plum[0].root).to.not.be.ok();
+      expect(root.children).to.not.contain($plum[0]);
+    });
   });
 
   describe('.prepend', function() {
@@ -278,6 +305,17 @@ describe('$(...)', function() {
       expect($pear.find('.third')[0]).to.equal($pear.contents()[0]);
     });
 
+
+    it('($(...)) : should remove from root element', function() {
+      var $fruits = $(fruits);
+      var $plum = $('<li class="plum">Plum</li>');
+      var root = $plum[0].root;
+      expect(root).to.be.ok();
+
+      $fruits.prepend($plum);
+      expect($plum[0].root).to.not.be.ok();
+      expect(root.children).to.not.contain($plum[0]);
+    });
   });
 
   describe('.after', function() {
@@ -394,6 +432,16 @@ describe('$(...)', function() {
       expect($list.find('.third')[2]).to.equal($list.contents()[5]);
     });
 
+    it('($(...)) : should remove from root element', function() {
+      var $fruits = $(fruits);
+      var $plum = $('<li class="plum">Plum</li>');
+      var root = $plum[0].root;
+      expect(root).to.be.ok();
+
+      $fruits.after($plum);
+      expect($plum[0].root).to.not.be.ok();
+      expect(root.children).to.not.contain($plum[0]);
+    });
   });
 
   describe('.before', function() {
@@ -510,6 +558,16 @@ describe('$(...)', function() {
       expect($list.find('.third')[2]).to.equal($list.contents()[4]);
     });
 
+    it('($(...)) : should remove from root element', function() {
+      var $fruits = $(fruits);
+      var $plum = $('<li class="plum">Plum</li>');
+      var root = $plum[0].root;
+      expect(root).to.be.ok();
+
+      $fruits.before($plum);
+      expect($plum[0].root).to.not.be.ok();
+      expect(root.children).to.not.contain($plum[0]);
+    });
   });
 
   describe('.remove', function() {
@@ -526,6 +584,16 @@ describe('$(...)', function() {
       expect($fruits.find('.apple')).to.have.length(0);
     });
 
+    it('($(...)) : should remove from root element', function() {
+      var $fruits = $(fruits);
+      var $plum = $('<li class="plum">Plum</li>');
+      var root = $plum[0].root;
+      expect(root).to.be.ok();
+
+      $plum.remove();
+      expect($plum[0].root).to.not.be.ok();
+      expect(root.children).to.not.contain($plum[0]);
+    });
   });
 
   describe('.replaceWith', function() {
@@ -644,6 +712,16 @@ describe('$(...)', function() {
       expect($fruits.find('.third')).to.have.length(3);
     });
 
+    it('($(...)) : should remove from root element', function() {
+      var $fruits = $(fruits);
+      var $plum = $('<li class="plum">Plum</li>');
+      var root = $plum[0].root;
+      expect(root).to.be.ok();
+
+      $fruits.children().replaceWith($plum);
+      expect($plum[0].root).to.not.be.ok();
+      expect(root.children).to.not.contain($plum[0]);
+    });
   });
 
   describe('.empty', function() {
