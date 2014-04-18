@@ -263,16 +263,27 @@ describe('$(...)', function() {
   });
 
   describe('.hasClass', function() {
+    function test(attr) {
+      return $('<div class="' + attr + '"></div>');
+    }
 
     it('(valid class) : should return true', function() {
       var $fruits = $(fruits);
       var cls = $('.apple', $fruits).hasClass('apple');
       expect(cls).to.be.ok();
+
+      expect(test('foo').hasClass('foo')).to.be.ok();
+      expect(test('foo bar').hasClass('foo')).to.be.ok();
+      expect(test('bar foo').hasClass('foo')).to.be.ok();
+      expect(test('bar foo bar').hasClass('foo')).to.be.ok();
     });
 
     it('(invalid class) : should return false', function() {
       var cls = $('#fruits', fruits).hasClass('fruits');
       expect(cls).to.not.be.ok();
+      expect(test('foo-bar').hasClass('foo')).to.not.be.ok();
+      expect(test('foo-bar').hasClass('foo')).to.not.be.ok();
+      expect(test('foo-bar').hasClass('foo-ba')).to.not.be.ok();
     });
 
     it('should check multiple classes', function() {
