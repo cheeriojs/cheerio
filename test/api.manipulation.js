@@ -62,6 +62,15 @@ describe('$(...)', function() {
       expect($dest.children()[0]).to.equal(apple);
     });
 
+    it('(elem) : should NOP if removed', function() {
+      var $fruits = $(fruits);
+      var $apple = $('.apple', $fruits);
+
+      $apple.remove();
+      $fruits.append($apple);
+      expect($fruits.children(2).hasClass('apple')).to.be.ok();
+    });
+
     it('($(...), html) : should add multiple elements as last children', function() {
       var $fruits = $(fruits);
       var $plum = $('<li class="plum">Plum</li>');
@@ -212,6 +221,15 @@ describe('$(...)', function() {
       expect($children).to.have.length(3);
       expect($children[2]).to.not.equal(pear);
       expect($children[0]).to.equal(pear);
+    });
+
+    it('(elem) : should handle if removed', function() {
+      var $fruits = $(fruits);
+      var $apple = $('.apple', $fruits);
+
+      $apple.remove();
+      $fruits.prepend($apple);
+      expect($fruits.children(0).hasClass('apple')).to.be.ok();
     });
 
     it('(Array) : should add all elements in the array as inital children', function() {
@@ -366,6 +384,16 @@ describe('$(...)', function() {
       expect($children[1]).to.be(pear);
     });
 
+    it('(elem) : should handle if removed', function() {
+      var $fruits = $(fruits);
+      var $apple = $('.apple', $fruits);
+      var $plum = $('<li class="plum">Plum</li>');
+
+      $apple.remove();
+      $apple.after($plum);
+      expect($plum.prev()).to.be.empty();
+    });
+
     it('($(...), html) : should add multiple elements as next siblings', function() {
       var $fruits = $(fruits);
       var $plum = $('<li class="plum">Plum</li>');
@@ -483,6 +511,16 @@ describe('$(...)', function() {
       expect($children[0]).to.be(pear);
     });
 
+    it('(elem) : should handle if removed', function() {
+      var $fruits = $(fruits);
+      var $apple = $('.apple', $fruits);
+      var $plum = $('<li class="plum">Plum</li>');
+
+      $apple.remove();
+      $apple.before($plum);
+      expect($plum.next()).to.be.empty();
+    });
+
     it('(Array) : should add all elements in the array as previous sibling', function() {
       var $fruits = $(fruits);
       var more = $('<li class="plum">Plum</li><li class="grape">Grape</li>')
@@ -578,6 +616,14 @@ describe('$(...)', function() {
       expect($fruits.find('.apple')).to.have.length(0);
     });
 
+    it('() : should be reentrant', function() {
+      var $fruits = $(fruits),
+          $apple = $('.apple', $fruits);
+      $apple.remove();
+      $apple.remove();
+      expect($fruits.find('.apple')).to.have.length(0);
+    });
+
     it('(selector) : should remove matching selected elements', function() {
       var $fruits = $(fruits);
       $('li', $fruits).remove('.apple');
@@ -632,6 +678,16 @@ describe('$(...)', function() {
       expect($fruits.children()).to.have.length(2);
       expect($fruits.children()[0]).to.equal($('.orange', $fruits)[0]);
       expect($fruits.children()[1]).to.equal($('.apple', $fruits)[0]);
+    });
+
+    it('(elem) : should NOP if removed', function() {
+      var $fruits = $(fruits);
+      var $pear = $('.pear', $fruits);
+      var $plum = $('<li class="plum">Plum</li>');
+
+      $pear.remove();
+      $pear.replaceWith($plum);
+      expect($('.orange', $fruits).next().hasClass('plum')).to.not.be.ok();
     });
 
     it('(elem) : should replace the single selected element with given element', function() {
