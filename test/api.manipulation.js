@@ -802,6 +802,18 @@ describe('$(...)', function() {
       expect(html).to.equal('<li class="durian">Durian</li>');
     });
 
+    it('(str) should encode then decode unsafe characters', function() {
+      var $apple = $('.apple', fruits);
+
+      $apple.html('blah <script>alert("XSS!")</script> blah');
+      expect($apple[0].children[0].data).to.equal('blah ');
+      expect($apple[0].children[1].name).to.equal('script');
+      expect($apple[0].children[1].children[0].data).to.equal('alert("XSS!")');
+      expect($apple.text()).to.equal('blah alert("XSS!") blah');    // http://jsbin.com/munutaji/1
+
+      expect($apple.html()).to.contain('<script>alert("XSS!")</script>');
+    });
+
     it('() : should allow element reinsertion', function() {
       var $fruits = $(fruits),
           $children = $fruits.children();
