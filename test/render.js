@@ -65,7 +65,7 @@ describe('render', function() {
       var str = '<div data-foo-bar-baz="value"></div>';
       expect(html(str)).to.equal('<div data-foo-bar-baz="value"></div>');
     });
-    
+
     it('should render CDATA correctly', function() {
       var str = '<a> <b> <![CDATA[ asdf&asdf ]]> <c/> <![CDATA[ asdf&asdf ]]> </b> </a>';
       expect(xml(str)).to.equal(str);
