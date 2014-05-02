@@ -163,12 +163,13 @@ apple.data('kind')
 #### .val( [value] )
 Method for getting and setting the value of input, select, and textarea. Note: Support for `map`, and `function` has not been added yet.
 
-    $('input[type="text"]').val()
-    => input_text
+```js
+$('input[type="text"]').val()
+//=> input_text
 
-    $('input[type="text"]').val('test').html()
-    => <input type="text" value="test"/>
-
+$('input[type="text"]').val('test').html()
+//=> <input type="text" value="test"/>
+```
 
 #### .removeAttr( name )
 Method for removing attributes by `name`.
