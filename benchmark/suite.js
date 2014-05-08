@@ -25,7 +25,7 @@ Suites.prototype.add = function(name, fileName, options) {
   if (!filterRe.test(name)) {
     return;
   }
-  markup = fs.readFileSync(path.join(documentDir, fileName));
+  markup = fs.readFileSync(path.join(documentDir, fileName), 'utf8');
   suite = new Benchmark.Suite(name);
   testFn = options.test;
 
