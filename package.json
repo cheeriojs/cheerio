@@ -20,17 +20,17 @@
     "node": ">= 0.6"
   },
   "dependencies": {
-    "htmlparser2": "~3.7.0",
-    "entities": "~1.1.1",
     "CSSselect": "~0.4.0",
+    "entities": "~1.1.1",
+    "htmlparser2": "~3.7.0",
     "lodash": "~2.4.1"
   },
   "devDependencies": {
-    "mocha": "*",
-    "expect.js": "~0.3.1",
-    "jshint": "~2.3.0",
     "benchmark": "~1.0.0",
-    "jsdom": "~0.8.9"
+    "expect.js": "~0.3.1",
+    "jsdom": "~0.8.9",
+    "jshint": "~2.3.0",
+    "mocha": "*"
   },
   "scripts": {
     "test": "make test"
