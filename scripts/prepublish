@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -e
+
+tmp="$(mktemp -t "$(basename "$0").XXXXXXXXXX")"
+
+printf "
+$VERSION / $(date +"%Y-%m-%d")
+==================
+
+$(git --no-pager log --no-merges --pretty="format: * %s (%an)" $PREVIOUS_VERSION..)
+" >"$tmp"
+
+cat History.md >>"$tmp"
+mv "$tmp" History.md
+git add History.md
