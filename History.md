@@ -1,4 +1,33 @@
 
+0.16.0 / 2014-05-08
+==================
+
+ * fix `make bench` (David Chambers)
+ * makefile: add release-* targets (David Chambers)
+ * alphabetize dependencies (David Chambers)
+ * Rewrite `data` internals with caching behavior (Mike Pennisi)
+ * Fence .val example as js (Kevin Sawicki)
+ * Fixed typos. Deleted trailing whitespace from test/render.js (Nattaphoom Ch)
+ * Fix manipulation APIs with removed elements (kpdecker)
+ * Perform manual string parsing for hasClass (kpdecker)
+ * Fix existing element removal (kpdecker)
+ * update render tests (Felix Böhm)
+ * fixed cheerio path (Felix Böhm)
+ * use `entities.escape` for attribute values (Felix Böhm)
+ * bump entities version (Felix Böhm)
+ * remove lowerCaseTags option from readme (Felix Böhm)
+ * added test case for .html in xmlMode (fb55)
+ * render xml in `html()` when `xmlMode: true` (fb55)
+ * use a map for booleanAttributes (fb55)
+ * update singleTags, use utils.isTag (fb55)
+ * update travis badge URL (Felix Böhm)
+ * use typeof instead of _.isString and _.isNumber (fb55)
+ * use Array.isArray instead of _.isArray (fb55)
+ * replace _.isFunction with typeof (fb55)
+ * removed unnecessary error message (fb55)
+ * decode entities in htmlparser2 (fb55)
+ * pass options object to CSSselect (fb55)
+
 0.15.0 / 2014-04-08
 ==================
 
