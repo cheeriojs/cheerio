@@ -23,7 +23,8 @@
     "CSSselect": "~0.4.0",
     "entities": "~1.1.1",
     "htmlparser2": "~3.7.0",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "hap": "~1.0.2"
   },
   "devDependencies": {
     "benchmark": "~1.0.0",

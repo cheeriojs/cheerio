@@ -176,7 +176,7 @@ describe('cheerio', function() {
     expect($fruits[0].attribs.id).to.equal('fruits');
   });
 
-  it('should select first element $(:first)');
+//  it('should select first element $(:first)');
     // var $elem = $(':first', fruits);
     // var $h2 = $('<h2>fruits</h2>');
     // console.log($elem.before('hi'));

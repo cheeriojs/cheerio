@@ -7,3 +7,4 @@ examples/
 *.tmproj
 coverage.html
 lib-cov
+.idea
