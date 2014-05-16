@@ -101,7 +101,7 @@ describe('$(...)', function() {
       $apple.attr('data-autofocus', 'autofocus');
       expect($apple.attr('data-autofocus')).to.equal('autofocus');
       $apple.removeAttr('data-autofocus');
-      expect($apple.attr('data-autofocus')).to.not.exist;
+      expect($apple.attr('data-autofocus')).to.be(undefined);
     });
   });
 
