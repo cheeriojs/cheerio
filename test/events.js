@@ -12,9 +12,10 @@ describe('$', function () {
     $apple = $('.apple');
   });
 
-  it('should have trigger and on methods', function () {
+  it('should have trigger, on and off methods', function () {
     expect($apple.trigger).to.be.a('function');
     expect($apple.on).to.be.a('function');
+    expect($apple.off).to.be.a('function');
   });
 
   it('should add listeners and trigger events', function () {
@@ -60,6 +61,32 @@ describe('$', function () {
     });
     $apple.trigger('event', ['arg', 'arg1']);
     expect(toggle).to.equal(true);
+  });
+
+  it('should remove all listeners for all events', function () {
+    var toggle = true;
+    $apple.on('event', function (e) {
+      toggle = !toggle;
+    });
+    $apple.off();
+    $apple.trigger('event');
+    expect(toggle).to.equal(true);
+  });
+
+  it('should remove all listeners for selected event', function () {
+    var toggle = true,
+      toggle1 = true;
+    $apple.on('event', function () {
+      toggle = false;
+    });
+    $apple.on('event1', function () {
+      toggle1 = false;
+    });
+    $apple.off('event1');
+    $apple.trigger('event');
+    $apple.trigger('event1');
+    expect(toggle).to.equal(false);
+    expect(toggle1).to.equal(true);
   });
 
 });
