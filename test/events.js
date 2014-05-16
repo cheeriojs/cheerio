@@ -46,7 +46,25 @@ describe('$', function () {
     parent.on('event', function (e) {
       res = !res;
     });
-    child.trigger('event');
+    child.trigger('event', 'something');
+    expect(res).to.equal(true);
+    done();
+  });
+
+  it('should support arguments', function (done) {
+    var $ = cheerio.load('<div class="parent"><div class="child"></div></div>');
+    var parent = $('.parent');
+    var child = $('.child');
+    var res = true;
+    child.on('event', function (e) {
+      res = !res;
+    });
+    parent.on('event', function (e, arg, arg1) {
+      res = !res;
+      expect(arg).to.equal('arg');
+      expect(arg1).to.equal('arg1');
+    });
+    child.trigger('event', ['arg', 'arg1']);
     expect(res).to.equal(true);
     done();
   });
