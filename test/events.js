@@ -1,72 +1,65 @@
 var expect = require('expect.js'),
-  cheerio = require('../');
+  cheerio = require('../'),
+  fruits = require('./fixtures').fruits;
+
+var $, $fruits, $apple;
 
 describe('$', function () {
 
-  it('should have trigger and on methods', function (done) {
-    var $ = cheerio.load('<div class="elem">text</div>').root().children();
-    expect($.trigger).to.be.a('function');
-    expect($.on).to.be.a('function');
-    done();
+  beforeEach(function () {
+    $ = cheerio.load(fruits);
+    $fruits = $('#fruits');
+    $apple = $('.apple');
   });
 
-  it('should add listeners and trigger events', function (done) {
-    var $ = cheerio.load('<div class="elem">text</div>').root().children();
-    var res = false;
-    $.on('event', function (e) {
-      res = !res;
+  it('should have trigger and on methods', function () {
+    expect($apple.trigger).to.be.a('function');
+    expect($apple.on).to.be.a('function');
+  });
+
+  it('should add listeners and trigger events', function () {
+    var toggle = false;
+    $apple.on('event', function (e) {
+      toggle = !toggle;
     });
-    $.trigger('event');
-    expect(res).to.equal(true);
-    done();
+    $apple.trigger('event');
+    expect(toggle).to.equal(true);
   });
 
-  it('should bubble events', function (done) {
-    var $ = cheerio.load('<div class="parent"><div class="child"></div></div>');
-    var parent = $('.parent');
-    var child = $('.child');
-    var res = false;
-    parent.on('event', function (e) {
-      res = !res;
+  it('should bubble events', function () {
+    var toggle = false;
+    $fruits.on('event', function (e) {
+      toggle = !toggle;
     });
-    child.trigger('event');
-    expect(res).to.equal(true);
-    done();
+    $apple.trigger('event');
+    expect(toggle).to.equal(true);
   });
 
-  it('should stop propogation', function (done) {
-    var $ = cheerio.load('<div class="parent"><div class="child"></div></div>');
-    var parent = $('.parent');
-    var child = $('.child');
-    var res = false;
-    child.on('event', function (e) {
+  it('should stop propogation', function () {
+    var toggle = false;
+    $apple.on('event', function (e) {
       e.stopPropagation();
-      res = !res;
+      toggle = !toggle;
     });
-    parent.on('event', function (e) {
-      res = !res;
+    $fruits.on('event', function (e) {
+      toggle = !toggle;
     });
-    child.trigger('event', 'something');
-    expect(res).to.equal(true);
-    done();
+    $apple.trigger('event');
+    expect(toggle).to.equal(true);
   });
 
-  it('should support arguments', function (done) {
-    var $ = cheerio.load('<div class="parent"><div class="child"></div></div>');
-    var parent = $('.parent');
-    var child = $('.child');
-    var res = true;
-    child.on('event', function (e) {
-      res = !res;
+  it('should support extra arguments', function () {
+    var toggle = true;
+    $apple.on('event', function (e) {
+      toggle = !toggle;
     });
-    parent.on('event', function (e, arg, arg1) {
-      res = !res;
+    $fruits.on('event', function (e, arg, arg1) {
+      toggle = !toggle;
       expect(arg).to.equal('arg');
       expect(arg1).to.equal('arg1');
     });
-    child.trigger('event', ['arg', 'arg1']);
-    expect(res).to.equal(true);
-    done();
+    $apple.trigger('event', ['arg', 'arg1']);
+    expect(toggle).to.equal(true);
   });
 
 });
