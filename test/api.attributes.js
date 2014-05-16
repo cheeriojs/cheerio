@@ -95,6 +95,14 @@ describe('$(...)', function() {
       $apple.removeAttr('autofocus');
       expect($apple.attr('autofocus')).to.equal(false);
     });
+
+    it('(key, value) : should remove non-boolean attributes with names or values similar to boolean ones', function() {
+      var $apple = $('.apple', fruits);
+      $apple.attr('data-autofocus', 'autofocus');
+      expect($apple.attr('data-autofocus')).to.equal('autofocus');
+      $apple.removeAttr('data-autofocus');
+      expect($apple.attr('data-autofocus')).to.not.exist;
+    });
   });
 
   describe('.data', function() {
