@@ -570,6 +570,7 @@ $.html()
 
 #### .html( [htmlString] )
 Gets an html content string from the first selected element. If `htmlString` is specified, each selected element's content is replaced by the new content.
+In `options` could be set `notEncodeEntities` wich could be great for inline styles and scripts.
 
 ```js
 $('.orange').html()
@@ -577,6 +578,11 @@ $('.orange').html()
 
 $('#fruits').html('<li class="mango">Mango</li>').html()
 //=> <li class="mango">Mango</li>
+
+$().html(null, {
+  notEncodeEntities: true
+})
+
 ```
 
 #### .text( [textString] )
