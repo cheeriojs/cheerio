@@ -245,10 +245,11 @@ describe('cheerio', function() {
 
   it('should render xml in html() when options.xmlMode = true', function() {
     var str = '<MixedCaseTag UPPERCASEATTRIBUTE=""></MixedCaseTag>',
+        expected = '<MixedCaseTag UPPERCASEATTRIBUTE=""/>',
         dom = $.load(str, {xmlMode: true});
 
     expect(dom('MixedCaseTag').get(0).name).to.equal('MixedCaseTag');
-    expect(dom.html()).to.be(str);
+    expect(dom.html()).to.be(expected);
   });
 
 });
