@@ -851,6 +851,17 @@ describe('$(...)', function() {
       expect(html).to.equal('<li class="durian">Durian</li>');
     });
 
+    it('(html) : should add new elements for each element in selection', function() {
+      var $fruits = $(fruits).find('li');
+      $fruits.html('<li class="durian">Durian</li>');
+      var tested = 0;
+      $fruits.each(function(){
+        expect($(this).children().parent().get(0)).to.equal(this);
+        tested++;
+      });
+      expect(tested).to.equal(3);
+    });
+
     it('(elem) : should set the html for its children with element', function() {
       var $fruits = $(fruits);
       $fruits.html($('<li class="durian">Durian</li>'));
@@ -903,6 +914,17 @@ describe('$(...)', function() {
       var $fruits = $(fruits);
       $('.apple', $fruits).text('Granny Smith Apple');
       expect($('.apple', $fruits)[0].children[0].data).to.equal('Granny Smith Apple');
+    });
+
+    it('(text) : inserts separate nodes for all children', function() {
+      var $fruits = $(fruits);
+      $('li', $fruits).text('Fruits');
+      var tested = 0;
+      $('li', $fruits).each(function(){
+        expect(this.children[0].parent).to.equal(this);
+        tested++;
+      });
+      expect(tested).to.equal(3);
     });
 
     it('should allow functions as arguments', function() {
