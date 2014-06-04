@@ -1,6 +1,6 @@
 var expect = require('expect.js'),
     _ = require('lodash'),
-    cheerio = require('../lib/cheerio');
+    cheerio = require('..');
 
 var xml = function(str, options) {
   options = _.extend({ xmlMode: true }, options);
