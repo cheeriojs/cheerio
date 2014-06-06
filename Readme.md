@@ -474,6 +474,18 @@ $('li').eq(0).end().length
 //=> 3
 ```
 
+#### .add( selector [, context] )
+#### .add( element )
+#### .add( elements )
+#### .add( html )
+#### .add( selection )
+Add elements to the set of matched elements.
+
+```js
+$('.apple').add('.orange').length
+//=> 2
+```
+
 ### Manipulation
 Methods for modifying the DOM structure.
 
