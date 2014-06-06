@@ -562,6 +562,12 @@ describe('$(...)', function() {
       expect($('.fruit').hasClass('fruit')).to.be.ok();
     });
 
+    it('(class true) : should add only one instance of class', function () {
+      $('.apple').toggleClass('tasty', true);
+      $('.apple').toggleClass('tasty', true);
+      expect($('.apple').attr('class').match(/tasty/g).length).to.equal(1);
+    });
+
     it('(class class, false) : should remove multiple classes from the element', function() {
       $('.apple').addClass('fruit');
       expect($('.apple').hasClass('apple')).to.be.ok();
