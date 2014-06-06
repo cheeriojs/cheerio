@@ -33,6 +33,7 @@
     "jshint": "~2.3.0",
     "mocha": "*",
     "istanbul": "~0.2",
+    "coveralls": "~2.10",
     "xyz": "~0.3.0"
   },
   "scripts": {

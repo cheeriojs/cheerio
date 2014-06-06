@@ -1,8 +1,10 @@
 REPORTER = dot
 XYZ = node_modules/.bin/xyz --message 'Release X.Y.Z' --tag X.Y.Z --script scripts/prepublish
 
-test:
+lint:
 	@./node_modules/.bin/jshint lib/ test/
+
+test: lint
 	@./node_modules/.bin/mocha --reporter $(REPORTER)
 
 setup:
@@ -14,6 +16,11 @@ subl:
 test-cov:
 	@./node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- --reporter $(REPORTER)
 
+report-cov: test-cov
+	@cat coverage/lcov.info | ./node_modules/.bin/coveralls
+
+travis-test: lint
+	@make report-cov || echo "Couldn't submit"
 
 bench:
 	@./benchmark/benchmark.js
