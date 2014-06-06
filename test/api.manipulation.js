@@ -826,6 +826,16 @@ describe('$(...)', function() {
       $remove.replaceWith($children);
       expect($fruits.children()).to.have.length(4);
     });
+
+    it('() : should respect params from load method config', function() {
+      var content = '&copy', element;
+
+      element = cheerio.load('<p><strong>' + content + '</strong></p>', {
+        decodeEntities: false
+      });
+
+      expect(element('strong').html()).to.equal(content);
+    });
   });
 
   describe('.toString', function() {
