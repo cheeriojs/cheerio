@@ -11,11 +11,9 @@ setup:
 subl:
 	@subl lib/ test/ package.json index.js
 
-test-cov: lib-cov
-	@CHEERIO_COV=1 $(MAKE) test REPORTER=html-cov > coverage.html
+test-cov:
+	@./node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- --reporter $(REPORTER)
 
-lib-cov:
-	@jscoverage lib lib-cov
 
 bench:
 	@./benchmark/benchmark.js

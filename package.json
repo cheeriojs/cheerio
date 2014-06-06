@@ -32,6 +32,7 @@
     "jsdom": "~0.8.9",
     "jshint": "~2.3.0",
     "mocha": "*",
+    "istanbul": "~0.2",
     "xyz": "~0.3.0"
   },
   "scripts": {
