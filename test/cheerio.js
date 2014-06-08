@@ -252,4 +252,16 @@ describe('cheerio', function() {
     expect(dom.html()).to.be(expected);
   });
 
+  it('should render xml in html() when options.xmlMode = true passed to html()', function() {
+    var str = '<MixedCaseTag UPPERCASEATTRIBUTE=""></MixedCaseTag>',
+        // since parsing done without xmlMode flag, all tags converted to lowercase
+        expectedXml = '<mixedcasetag uppercaseattribute=""/>',
+        expectedNoXml = '<mixedcasetag uppercaseattribute=""></mixedcasetag>',
+        dom = $.load(str);
+
+    expect(dom('MixedCaseTag').get(0).name).to.equal('mixedcasetag');
+    expect(dom.html()).to.be(expectedNoXml);
+    expect(dom.html({xmlMode: true})).to.be(expectedXml);
+  });
+
 });
