@@ -264,4 +264,17 @@ describe('cheerio', function() {
     expect(dom.html({xmlMode: true})).to.be(expectedXml);
   });
 
+  it('should respect options on the element level', function() {
+    var str = '<!doctype html><html><head><title>Some test</title></head><body><footer><p>Copyright &copy; 2003-2014</p></footer></body></html>',
+        expectedHtml = '<p>Copyright &copy; 2003-2014</p>',
+        expectedXml = '<p>Copyright &#xA9; 2003-2014</p>',
+        domNotEncoded = $.load(str, {decodeEntities: false}),
+        domEncoded = $.load(str);
+
+    expect(domNotEncoded('footer').html()).to.be(expectedHtml);
+    // TODO: Make it more html friendly, maybe with custom encode tables
+    expect(domEncoded('footer').html()).to.be(expectedXml);
+  });
+
+
 });
