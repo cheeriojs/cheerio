@@ -96,13 +96,15 @@ describe('$(...)', function() {
       $apple.attr('autofocus', 'autofocus');
       expect($apple.attr('autofocus')).to.equal('autofocus');
       $apple.removeAttr('autofocus');
-      expect($apple.attr('autofocus')).to.equal(false);
+      expect($apple.attr('autofocus')).to.equal(undefined);
     });
 
     it('(key, value) : set proper boolean attribute value', function () {
       var $apple = $('.apple');
       $apple.attr('autofocus', true);
       expect($apple.attr('autofocus')).to.equal('autofocus');
+      $apple.attr('autofocus', false);
+      expect($apple.attr('autofocus')).to.be(undefined);
     });
 
     it('(key, value) : should remove non-boolean attributes with names or values similar to boolean ones', function() {
