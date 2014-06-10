@@ -3,11 +3,13 @@ set -e
 
 tmp="$(mktemp -t "$(basename "$0").XXXXXXXXXX")"
 
+log="$(git --no-pager log --no-merges --pretty="format: * %s (%an)" $PREVIOUS_VERSION..)"
+
 printf "
 $VERSION / $(date +"%Y-%m-%d")
 ==================
 
-$(git --no-pager log --no-merges --pretty="format: * %s (%an)" $PREVIOUS_VERSION..)
+$log
 " >"$tmp"
 
 cat History.md >>"$tmp"
