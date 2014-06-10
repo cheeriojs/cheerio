@@ -2,7 +2,30 @@
 0.17.0 / 2014-06-10
 ==================
 
-
+ * Fix bug in internal `uniqueSplice` function (Mike Pennisi)
+ * accept buffer argument to cheerio.load (David Chambers)
+ * Respect options on the element level (Alex Indigo)
+ * Change state definition to more readable (Artem Burtsev)
+ * added test (0xBADC0FFEE)
+ * add class only if doesn't exist (Artem Burtsev)
+ * Made it less insane. (Alex Indigo)
+ * Implement `Cheerio#add` (Mike Pennisi)
+ * Use "loaded" instance of Cheerio in unit tests (Mike Pennisi)
+ * Be more strict with object check. (Alex Indigo)
+ * Added options argument to .html() static method. (Alex Indigo)
+ * Fixed encoding mishaps. Adjusted tests. (Alex Indigo)
+ * use dom-serializer module (fb55)
+ * don't test on 0.8, don't ignore 0.11 (Felix Böhm)
+ * parse: rm unused variables (coderaiser)
+ * cheerio: rm unused variable (coderaiser)
+ * Fixed test (Avi Kohn)
+ * Added test (Avi Kohn)
+ * Changed == to === (Avi Kohn)
+ * Fixed a bug in removing type="hidden" attr (Avi Kohn)
+ * sorted (Alexey Raspopov)
+ * add `muted` attr to booleanAttributes (Alexey Raspopov)
+ * fixed context of `this` in .html (Felix Böhm)
+ * append new elements for each element in selection (fb55)
 
 0.16.0 / 2014-05-08
 ==================
