@@ -64,6 +64,12 @@ describe('$(...)', function() {
       expect($dest.children()[0]).to.equal(apple);
     });
 
+    it('(existing Node) : should update original direct siblings', function() {
+      $('.pear').append($('.orange'));
+      expect($('.apple').next()[0]).to.be($('.pear')[0]);
+      expect($('.pear').prev()[0]).to.be($('.apple')[0]);
+    });
+
     it('(elem) : should NOP if removed', function() {
       var $apple = $('.apple');
 
@@ -215,6 +221,12 @@ describe('$(...)', function() {
       expect($children).to.have.length(3);
       expect($children[2]).to.not.equal(pear);
       expect($children[0]).to.equal(pear);
+    });
+
+    it('(existing Node) : should update original direct siblings', function() {
+      $('.pear').prepend($('.orange'));
+      expect($('.apple').next()[0]).to.be($('.pear')[0]);
+      expect($('.pear').prev()[0]).to.be($('.apple')[0]);
     });
 
     it('(elem) : should handle if removed', function() {
@@ -369,6 +381,12 @@ describe('$(...)', function() {
       expect($children[1]).to.be(pear);
     });
 
+    it('(existing Node) : should update original direct siblings', function() {
+      $('.pear').after($('.orange'));
+      expect($('.apple').next()[0]).to.be($('.pear')[0]);
+      expect($('.pear').prev()[0]).to.be($('.apple')[0]);
+    });
+
     it('(elem) : should handle if removed', function() {
       var $apple = $('.apple');
       var $plum = $('<li class="plum">Plum</li>');
@@ -484,6 +502,12 @@ describe('$(...)', function() {
       $children = $fruits.children();
       expect($children).to.have.length(3);
       expect($children[0]).to.be(pear);
+    });
+
+    it('(existing Node) : should update original direct siblings', function() {
+      $('.apple').before($('.orange'));
+      expect($('.apple').next()[0]).to.be($('.pear')[0]);
+      expect($('.pear').prev()[0]).to.be($('.apple')[0]);
     });
 
     it('(elem) : should handle if removed', function() {
