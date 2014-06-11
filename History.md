@@ -238,7 +238,7 @@
 * Added filter() with tests and updated readme (@bensheldon & @davidchambers)
 * Added spaces between attributes rewritten by removeClass (@jos3000)
 * updated docs to remove reference to size method (@ironchefpython)
-* removed tidy from cheerio
+* removed HTML tidy/pretty print from cheerio
 
 0.10.1 / 2012-10-04
 ===================
@@ -311,7 +311,7 @@
 * Added travis-ci integration
 * Replaced should.js with expect.js. Browser testing to come
 * Fixed spacing between attributes and their values
-* Added HTML pretty print
+* Added HTML tidy/pretty print
 * Exposed node-htmlparser2 parsing options
 * Revert .replaceWith(...) to be consistent with jQuery
 
