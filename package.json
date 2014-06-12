@@ -28,7 +28,9 @@
   },
   "devDependencies": {
     "benchmark": "~1.0.0",
+    "coveralls": "~2.10",
     "expect.js": "~0.3.1",
+    "istanbul": "~0.2",
     "jsdom": "~0.8.9",
     "jshint": "~2.3.0",
     "mocha": "*",
