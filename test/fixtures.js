@@ -44,6 +44,7 @@ exports.inputs = [
   '<input type="text" value="input_text" />',
   '<input type="checkbox" name="checkbox_off" value="off" /><input type="checkbox" name="checkbox_on" value="on" checked />',
   '<input type="radio" value="off" name="radio" /><input type="radio" name="radio" value="on" checked />',
+  '<input type="radio" value="off" name="radio[brackets]" /><input type="radio" name="radio[brackets]" value="on" checked />',
   '<select id="multi" multiple><option value="1">1</option><option value="2" selected>2</option><option value="3" selected>3</option><option value="4">4</option></select>'
 ].join('');
 
