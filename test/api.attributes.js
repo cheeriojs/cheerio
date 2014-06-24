@@ -321,10 +321,10 @@ describe('$(...)', function() {
       var element = $('input[name="radio"]').val('off');
       expect(element.val()).to.equal('off');
     });
-	it('.val(value): on radio with special characters should set value', function() {
-		  var element = $('input[name="radio[brackets]"]').val('off');
-		  expect(element.val()).to.equal('off');
-	});
+    it('.val(value): on radio with special characters should set value', function() {
+      var element = $('input[name="radio[brackets]"]').val('off');
+      expect(element.val()).to.equal('off');
+    });
     it('.val(values): on multiple select should set multiple values', function() {
       var element = $('select#multi').val(['1', '3', '4']);
       expect(element.val()).to.have.length(3);
