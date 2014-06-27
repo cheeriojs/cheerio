@@ -1179,4 +1179,48 @@ describe('$(...)', function() {
     });
   });
 
+  describe('.addBack', function() {
+    describe('() : ', function() {
+      it('includes siblings and self', function() {
+        var $selection = $('.orange').siblings().addBack();
+
+        expect($selection).to.have.length(3);
+        expect($selection[0]).to.be($('.apple')[0]);
+        expect($selection[1]).to.be($('.orange')[0]);
+        expect($selection[2]).to.be($('.pear')[0]);
+      });
+      it('includes children and self', function() {
+        var $selection = $('#fruits').children().addBack();
+
+        expect($selection).to.have.length(4);
+        expect($selection[0]).to.be($('#fruits')[0]);
+        expect($selection[1]).to.be($('.apple')[0]);
+        expect($selection[2]).to.be($('.orange')[0]);
+        expect($selection[3]).to.be($('.pear')[0]);
+      });
+      it('includes parent and self', function() {
+        var $selection = $('.apple').parent().addBack();
+
+        expect($selection).to.have.length(2);
+        expect($selection[0]).to.be($('#fruits')[0]);
+        expect($selection[1]).to.be($('.apple')[0]);
+      });
+      it('includes parents and self', function() {
+        var $ = cheerio.load(food);
+        var $selection = $('.apple').parents().addBack();
+
+        expect($selection).to.have.length(3);
+        expect($selection[0]).to.be($('#food')[0]);
+        expect($selection[1]).to.be($('#fruits')[0]);
+        expect($selection[2]).to.be($('.apple')[0]);
+      });
+    });
+    it('(filter) : filters the previous selection', function() {
+      var $selection = $('li').eq(1).addBack('.apple');
+
+      expect($selection).to.have.length(2);
+      expect($selection[0]).to.be($('.apple')[0]);
+      expect($selection[1]).to.be($('.orange')[0]);
+    });
+  });
 });
