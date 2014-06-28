@@ -466,6 +466,21 @@ $('li').get().length
 //=> 3
 ```
 
+#### .index()
+#### .index( selector )
+#### .index( nodeOrSelection )
+
+Search for a given element from among the matched elements.
+
+```
+$('.pear').index()
+//=> 2
+$('.orange').index('li')
+//=> 1
+$('.apple').index($('#fruit, li'))
+//=> 1
+```
+
 #### .end()
 End the most recent filtering operation in the current chain and return the set of matched elements to its previous state.
 

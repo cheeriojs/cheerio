@@ -826,6 +826,60 @@ describe('$(...)', function() {
 
   });
 
+  describe('.index', function() {
+    describe('() : ', function() {
+      it('returns the index of a child amongst its siblings', function() {
+        expect($('.orange').index()).to.be(1);
+      });
+      it('returns -1 when the selection has no parent', function() {
+        expect($('<div/>').index()).to.be(-1);
+      });
+    });
+
+    describe('(selector) : ', function() {
+      it('returns the index of the first element in the set matched by `selector`', function() {
+        expect($('.apple').index('#fruits, li')).to.be(1);
+      });
+      it('returns -1 when the item is not present in the set matched by `selector`', function() {
+        expect($('.apple').index('#fuits')).to.be(-1);
+      });
+      it('returns -1 when the first element in the set has no parent', function() {
+        expect($('<div/>').index('*')).to.be(-1);
+      });
+    });
+
+    describe('(node) : ', function() {
+      it('returns the index of the given node within the current selection', function() {
+        var $lis = $('li');
+        expect($lis.index($lis.get(1))).to.be(1);
+      });
+      it('returns the index of the given node within the current selection when the current selection has no parent', function() {
+        var $apple = $('.apple').remove();
+
+        expect($apple.index($apple.get(0))).to.be(0);
+      });
+      it('returns -1 when the given node is not present in the current selection', function() {
+        expect($('li').index($('#fruits').get(0))).to.be(-1);
+      });
+      it('returns -1 when the current selection is empty', function() {
+        expect($('.not-fruit').index($('#fruits').get(0))).to.be(-1);
+      });
+    });
+
+    describe('(selection) : ', function() {
+      it('returns the index of the first node in the provided selection within the current selection', function() {
+        var $lis = $('li');
+        expect($lis.index($('.orange, .pear'))).to.be(1);
+      });
+      it('returns -1 when the given node is not present in the current selection', function() {
+        expect($('li').index($('#fruits'))).to.be(-1);
+      });
+      it('returns -1 when the current selection is empty', function() {
+        expect($('.not-fruit').index($('#fruits'))).to.be(-1);
+      });
+    });
+  });
+
   describe('.slice', function() {
 
     function getText(el) {
