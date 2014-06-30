@@ -276,5 +276,10 @@ describe('cheerio', function() {
     expect(domEncoded('footer').html()).to.be(expectedXml);
   });
 
+  it('should handle nested quoting properly', function() {
+    var str = '<label><input id="setbtn" type="button" value="set" ng-click="myVar=\'my-class\'"></label>',
+        domEncoded = $.load(str);
 
+    expect(domEncoded.html()).to.be.equal(str);
+  });
 });
