@@ -235,7 +235,7 @@ describe('cheerio', function() {
 
   it('(extended Array) should not interfere with prototype methods (issue #119)', function() {
     var extended = [];
-    var custom = extended.find = extended.children = extended.each = function() {};
+    extended.find = extended.children = extended.each = function() {};
     var $empty = $(extended);
 
     expect($empty.find).to.be($.prototype.find);

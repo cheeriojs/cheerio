@@ -44,7 +44,6 @@ describe('render', function() {
     it('should maintain the parsing options of distinct contexts independently', function() {
       var str = '<g><someElem someAttribute="something">hello</someElem></g>';
       var $x = cheerio.load('', { xmlMode: false });
-      var $h = cheerio.load('', { xmlMode: true });
 
       expect($x(str).html()).to.equal('<someelem someattribute="something">hello</someelem>');
     });

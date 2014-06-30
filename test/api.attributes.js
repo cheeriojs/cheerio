@@ -419,7 +419,7 @@ describe('$(...)', function() {
       var thisVals = [];
       var toAdd = ['apple red', '', undefined];
 
-      $fruits.addClass(function(idx, currentClass) {
+      $fruits.addClass(function(idx) {
         args.push(toArray(arguments));
         thisVals.push(this);
         return toAdd[idx];
@@ -464,7 +464,7 @@ describe('$(...)', function() {
 
     it('(no class attribute) : should not throw an exception', function() {
       var $vegetables = cheerio(vegetables);
-      var thrown = null;
+
       expect(function() {
         $('li', $vegetables).removeClass('vegetable');
       })
@@ -516,7 +516,7 @@ describe('$(...)', function() {
       var thisVals = [];
       var toAdd = ['apple red', '', undefined];
 
-      $fruits.removeClass(function(idx, currentClass) {
+      $fruits.removeClass(function(idx) {
         args.push(toArray(arguments));
         thisVals.push(this);
         return toAdd[idx];
@@ -598,7 +598,7 @@ describe('$(...)', function() {
       expect($('.sweetcorn').hasClass('fruit')).to.not.be.ok();
       expect($('.sweetcorn').hasClass('vegetable')).to.not.be.ok();
 
-      $('li').toggleClass(function(index, className, switchVal) {
+      $('li').toggleClass(function() {
         return $(this).parent().is('#fruits') ? 'fruit' : 'vegetable';
       });
       expect($('.apple').hasClass('fruit')).to.not.be.ok();
