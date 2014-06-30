@@ -6,11 +6,5 @@
   "undef": true,
   "unused": true,
   "node": true,
-  "quotmark": "single",
-  "globals": {
-    "expect": true,
-    "it": true,
-    "describe": true,
-    "beforeEach": true
-  }
+  "quotmark": "single"
 }
