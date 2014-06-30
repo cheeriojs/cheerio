@@ -34,7 +34,7 @@
     "jsdom": "~0.8.9",
     "jshint": "~2.3.0",
     "mocha": "*",
-    "xyz": "~0.3.0"
+    "xyz": "~0.4.0"
   },
   "scripts": {
     "test": "make test"
