@@ -769,6 +769,10 @@ project  : cheerio
      1  xiaohwan                0.1%
 ```
 
+## Cheerio in the real world
+
+Are you using cheerio in production? Add it to the [wiki](https://github.com/cheeriojs/cheerio/wiki/Cheerio-in-Production)!
+
 ## Special Thanks
 
 This library stands on the shoulders of some incredible developers. A special thanks to:
