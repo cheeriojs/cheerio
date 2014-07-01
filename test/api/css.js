@@ -1,5 +1,5 @@
 var expect = require('expect.js');
-var cheerio = require('..');
+var cheerio = require('../..');
 
 describe('$(...)', function() {
 

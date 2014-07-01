@@ -1,11 +1,11 @@
 var expect = require('expect.js');
 
-var cheerio = require('..');
-var fruits = require('./fixtures').fruits;
-var vegetables = require('./fixtures').vegetables;
-var food = require('./fixtures').food;
-var chocolates = require('./fixtures').chocolates;
-var inputs = require('./fixtures').inputs;
+var cheerio = require('../..');
+var fruits = require('../fixtures').fruits;
+var vegetables = require('../fixtures').vegetables;
+var food = require('../fixtures').food;
+var chocolates = require('../fixtures').chocolates;
+var inputs = require('../fixtures').inputs;
 var toArray = Function.call.bind(Array.prototype.slice);
 
 describe('$(...)', function() {
