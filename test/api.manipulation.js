@@ -772,8 +772,8 @@ describe('$(...)', function() {
       expect($children).to.have.length(3);
 
       $fruits.append($('<div></div><div></div>'));
-      var $remove = $fruits.children().eq(0),
-          $keep = $fruits.children().eq(1);
+      var $remove = $fruits.children().eq(0);
+
       $remove.replaceWith($children);
       expect($fruits.children()).to.have.length(4);
     });
@@ -845,8 +845,8 @@ describe('$(...)', function() {
       $fruits.html('<div></div><div></div>');
       expect($fruits.children()).to.have.length(2);
 
-      var $remove = $fruits.children().eq(0),
-          $keep = $fruits.children().eq(1);
+      var $remove = $fruits.children().eq(0);
+
       $remove.replaceWith($children);
       expect($fruits.children()).to.have.length(4);
     });

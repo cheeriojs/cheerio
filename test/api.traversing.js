@@ -608,7 +608,7 @@ describe('$(...)', function() {
 
     it('( (i, elem) -> ) : should break iteration when the iterator function returns false', function() {
       var iterationCount = 0;
-      $('li').each(function(idx, elem) {
+      $('li').each(function(idx) {
         iterationCount++;
         return idx < 1;
       });
@@ -643,7 +643,7 @@ describe('$(...)', function() {
 
     it('(fn) : should return an Cheerio object wrapping the returned items', function() {
       var $fruits = $('li');
-      var $mapped = $fruits.map(function(i, el) {
+      var $mapped = $fruits.map(function(i) {
         return $fruits[2 - i];
       });
 
@@ -657,7 +657,7 @@ describe('$(...)', function() {
       var $fruits = $('li');
       var retVals = [null, undefined, $fruits[1]];
 
-      var $mapped = $fruits.map(function(i, el) {
+      var $mapped = $fruits.map(function(i) {
         return retVals[i];
       });
 
@@ -668,7 +668,7 @@ describe('$(...)', function() {
     it('(fn) : should preform a shallow merge on arrays returned by iterator', function() {
       var $fruits = $('li');
 
-      var $mapped = $fruits.map(function(i, el) {
+      var $mapped = $fruits.map(function() {
         return [1, [3, 4]];
       });
 
@@ -682,7 +682,7 @@ describe('$(...)', function() {
     it('(fn) : should tolerate `null` and `undefined` when flattening arrays returned by iterator', function() {
       var $fruits = $('li');
 
-      var $mapped = $fruits.map(function(i, el) {
+      var $mapped = $fruits.map(function() {
         return [null, undefined];
       });
 

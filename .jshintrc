@@ -4,6 +4,7 @@
   "laxbreak": true,
   "proto": true,
   "undef": true,
+  "unused": true,
   "node": true,
   "quotmark": "single",
   "globals": {
