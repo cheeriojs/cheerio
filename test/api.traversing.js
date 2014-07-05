@@ -63,6 +63,48 @@ describe('$(...)', function() {
       });
     });
 
+    describe('(cheerio object) :', function() {
+      it('returns only those nodes contained within the current selection', function() {
+        var $ = cheerio.load(food);
+        var $selection = $('#fruits').find($('li'));
+
+        expect($selection).to.have.length(3);
+        expect($selection[0]).to.be($('.apple')[0]);
+        expect($selection[1]).to.be($('.orange')[0]);
+        expect($selection[2]).to.be($('.pear')[0]);
+      });
+      it('returns only those nodes contained within any element in the current selection', function() {
+        var $ = cheerio.load(food);
+        var $selection = $('.apple, #vegetables').find($('li'));
+
+        expect($selection).to.have.length(2);
+        expect($selection[0]).to.be($('.carrot')[0]);
+        expect($selection[1]).to.be($('.sweetcorn')[0]);
+      });
+    });
+
+    describe('(node) :', function() {
+      it('returns node when contained within the current selection', function() {
+        var $ = cheerio.load(food);
+        var $selection = $('#fruits').find($('.apple')[0]);
+
+        expect($selection).to.have.length(1);
+        expect($selection[0]).to.be($('.apple')[0]);
+      });
+      it('returns node when contained within any element the current selection', function() {
+        var $ = cheerio.load(food);
+        var $selection = $('#fruits, #vegetables').find($('.carrot')[0]);
+
+        expect($selection).to.have.length(1);
+        expect($selection[0]).to.be($('.carrot')[0]);
+      });
+      it('does not return node that is not contained within the current selection', function() {
+        var $ = cheerio.load(food);
+        var $selection = $('#fruits').find($('.carrot')[0]);
+
+        expect($selection).to.have.length(0);
+      });
+    });
   });
 
   describe('.children', function() {

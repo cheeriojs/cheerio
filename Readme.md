@@ -242,11 +242,15 @@ Checks the current list of elements and returns `true` if _any_ of the elements 
 ### Traversing
 
 #### .find(selector)
-Get a set of descendants filtered by `selector` of each element in the current set of matched elements.
+#### .find(selection)
+#### .find(node)
+Get the descendants of each element in the current set of matched elements, filtered by a selector, jQuery object, or element.
 
 ```js
 $('#fruits').find('li').length
 //=> 3
+$('#fruits').find($('.apple')).length
+//=> 1
 ```
 
 #### .parent([selector])
