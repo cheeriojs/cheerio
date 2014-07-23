@@ -229,6 +229,12 @@ describe('cheerio', function() {
 
   describe('.load', function() {
 
+    it('should generate selections as proper instances', function() {
+      var q = $.load(fruits);
+
+      expect(q('.apple')).to.be.a(q);
+    });
+
     it('should be able to filter down using the context', function() {
       var q = $.load(fruits),
           apple = q('.apple', 'ul'),
