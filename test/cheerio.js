@@ -93,15 +93,6 @@ describe('cheerio', function() {
     expect($ul[0].name).to.equal('ul');
   });
 
-  it('should be able to filter down using the context', function() {
-    var q = $.load(fruits),
-        apple = q('.apple', 'ul'),
-        lis = q('li', 'ul');
-
-    expect(apple).to.have.length(1);
-    expect(lis).to.have.length(3);
-  });
-
   it('should accept a node reference as a context', function() {
     var $elems = $('<div><span></span></div>');
     expect($('span', $elems[0])).to.have.length(1);
@@ -118,13 +109,6 @@ describe('cheerio', function() {
         fruitElements = q('li', fruits);
 
     expect(fruitElements).to.have.length(3);
-  });
-
-  it('should allow loading a pre-parsed DOM', function() {
-    var dom = htmlparser2.parseDOM(food),
-        q = $.load(dom);
-
-    expect(q('ul')).to.have.length(3);
   });
 
   it('should be able to select multiple tags', function() {
@@ -243,38 +227,56 @@ describe('cheerio', function() {
     expect($empty.each).to.be($.prototype.each);
   });
 
-  it('should render xml in html() when options.xmlMode = true', function() {
-    var str = '<MixedCaseTag UPPERCASEATTRIBUTE=""></MixedCaseTag>',
-        expected = '<MixedCaseTag UPPERCASEATTRIBUTE=""/>',
-        dom = $.load(str, {xmlMode: true});
+  describe('.load', function() {
 
-    expect(dom('MixedCaseTag').get(0).name).to.equal('MixedCaseTag');
-    expect(dom.html()).to.be(expected);
+    it('should be able to filter down using the context', function() {
+      var q = $.load(fruits),
+          apple = q('.apple', 'ul'),
+          lis = q('li', 'ul');
+
+      expect(apple).to.have.length(1);
+      expect(lis).to.have.length(3);
+    });
+
+    it('should allow loading a pre-parsed DOM', function() {
+      var dom = htmlparser2.parseDOM(food),
+          q = $.load(dom);
+
+      expect(q('ul')).to.have.length(3);
+    });
+
+    it('should render xml in html() when options.xmlMode = true', function() {
+      var str = '<MixedCaseTag UPPERCASEATTRIBUTE=""></MixedCaseTag>',
+          expected = '<MixedCaseTag UPPERCASEATTRIBUTE=""/>',
+          dom = $.load(str, {xmlMode: true});
+
+      expect(dom('MixedCaseTag').get(0).name).to.equal('MixedCaseTag');
+      expect(dom.html()).to.be(expected);
+    });
+
+    it('should render xml in html() when options.xmlMode = true passed to html()', function() {
+      var str = '<MixedCaseTag UPPERCASEATTRIBUTE=""></MixedCaseTag>',
+          // since parsing done without xmlMode flag, all tags converted to lowercase
+          expectedXml = '<mixedcasetag uppercaseattribute=""/>',
+          expectedNoXml = '<mixedcasetag uppercaseattribute=""></mixedcasetag>',
+          dom = $.load(str);
+
+      expect(dom('MixedCaseTag').get(0).name).to.equal('mixedcasetag');
+      expect(dom.html()).to.be(expectedNoXml);
+      expect(dom.html({xmlMode: true})).to.be(expectedXml);
+    });
+
+    it('should respect options on the element level', function() {
+      var str = '<!doctype html><html><head><title>Some test</title></head><body><footer><p>Copyright &copy; 2003-2014</p></footer></body></html>',
+          expectedHtml = '<p>Copyright &copy; 2003-2014</p>',
+          expectedXml = '<p>Copyright &#xA9; 2003-2014</p>',
+          domNotEncoded = $.load(str, {decodeEntities: false}),
+          domEncoded = $.load(str);
+
+      expect(domNotEncoded('footer').html()).to.be(expectedHtml);
+      // TODO: Make it more html friendly, maybe with custom encode tables
+      expect(domEncoded('footer').html()).to.be(expectedXml);
+    });
+
   });
-
-  it('should render xml in html() when options.xmlMode = true passed to html()', function() {
-    var str = '<MixedCaseTag UPPERCASEATTRIBUTE=""></MixedCaseTag>',
-        // since parsing done without xmlMode flag, all tags converted to lowercase
-        expectedXml = '<mixedcasetag uppercaseattribute=""/>',
-        expectedNoXml = '<mixedcasetag uppercaseattribute=""></mixedcasetag>',
-        dom = $.load(str);
-
-    expect(dom('MixedCaseTag').get(0).name).to.equal('mixedcasetag');
-    expect(dom.html()).to.be(expectedNoXml);
-    expect(dom.html({xmlMode: true})).to.be(expectedXml);
-  });
-
-  it('should respect options on the element level', function() {
-    var str = '<!doctype html><html><head><title>Some test</title></head><body><footer><p>Copyright &copy; 2003-2014</p></footer></body></html>',
-        expectedHtml = '<p>Copyright &copy; 2003-2014</p>',
-        expectedXml = '<p>Copyright &#xA9; 2003-2014</p>',
-        domNotEncoded = $.load(str, {decodeEntities: false}),
-        domEncoded = $.load(str);
-
-    expect(domNotEncoded('footer').html()).to.be(expectedHtml);
-    // TODO: Make it more html friendly, maybe with custom encode tables
-    expect(domEncoded('footer').html()).to.be(expectedXml);
-  });
-
-
 });
