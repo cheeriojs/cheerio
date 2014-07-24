@@ -299,7 +299,7 @@ describe('$(...)', function() {
     });
     it('.val(): on radio should get value', function() {
       var val = $('input[type="radio"]').val();
-      expect(val).to.equal('on');
+      expect(val).to.equal('off');
     });
     it('.val(): on multiple select should get an array of values', function() {
       var val = $('select#multi').val();
