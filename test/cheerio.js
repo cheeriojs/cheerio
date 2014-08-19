@@ -284,5 +284,11 @@ describe('cheerio', function() {
       expect(domEncoded('footer').html()).to.be(expectedXml);
     });
 
+    it('should return a fully-qualified Function', function() {
+      var $c = $.load('<div>');
+
+      expect($c).to.be.a(Function);
+    });
+
   });
 });
