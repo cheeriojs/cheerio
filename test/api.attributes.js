@@ -35,7 +35,7 @@ describe('$(...)', function() {
     it('(key, value) : should set attr', function() {
       var $pear = $('.pear').attr('id', 'pear');
       expect($('#pear')).to.have.length(1);
-      expect($pear.cheerio).to.not.be(undefined);
+      expect($pear).to.be.a($);
     });
 
     it('(key, value) : should set attr', function() {
@@ -341,8 +341,8 @@ describe('$(...)', function() {
     });
 
     it('should return cheerio object', function() {
-      var obj = $('ul').removeAttr('id').cheerio;
-      expect(obj).to.be.ok();
+      var obj = $('ul').removeAttr('id');
+      expect(obj).to.be.a($);
     });
 
   });
