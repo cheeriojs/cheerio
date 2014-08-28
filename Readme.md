@@ -401,9 +401,9 @@ Pass each element in the current matched set through a function, producing a new
 ```js
 $('li').map(function(i, el) {
   // this === el
-  return $('<div>').text($(this).text());
-}).html();
-//=> <div>apple</div><div>orange</div><div>pear</div>
+  return $(this).text();
+}).get().join(' ');
+//=> "apple orange pear"
 ```
 
 #### .filter( selector ) <br /> .filter( selection ) <br /> .filter( element ) <br /> .filter( function(index) )
