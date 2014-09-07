@@ -23,6 +23,14 @@ describe('$(...)', function() {
       expect($redFruits.children()).to.have.length(1);
     });
 
+    it ('(elem) : should insert the element and add selected element(s) as it\'s child and should accept strings', function(){
+      $('.apple').wrap('<div class="red-fruits"></div>');
+      expect($fruits.children(0).hasClass('red-fruits')).to.be.ok();
+      expect($('.red-fruits').children(0).hasClass('apple')).to.be.ok();
+      expect($fruits.children(1).hasClass('orange')).to.be.ok();
+      expect($('.red-fruits').children()).to.have.length(1);
+    });
+
     it ('($(...)) : for each element it should add a wrapper elment and add the selected element as its child', function(){
       var $fruitDecorator = $('<div class="fruit-decorator"></div>');
       $('li').wrap($fruitDecorator);
