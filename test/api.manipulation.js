@@ -19,26 +19,39 @@ describe('$(...)', function() {
 // </ul>
 
 //  <ul id="fruits">
-  // <div class="red-fruits">
+  // <div class="fruit-decorator">
   //   <li class="apple">Apple</li>
   // </div>
-//   <li class="orange">Orange</li>
-//   <li class="pear">Pear</li>
+ // <div class="fruit-decorator">
+  //   <li class="orange">Orange</li>
+  // </div>
+ // <div class="fruit-decorator">
+  //   <li class="pear">Pear</li>
+  // </div>
 // </ul>
 
    describe('.wrap', function(){
-    // it ('() : should do nothing', function(){
-    //   expect($('.apple').wrap()[0].name).to.equal('li');
-    // });
-    it ('($(...)) : should insert the element and add selected element as a child of the inserted element', function(){
+    it ('(elem) : should insert the element and add selected element(s) as it\'s child', function(){
       var $redFruits = $('<div class="red-fruits"></div>');
       $('.apple').wrap($redFruits);
-     
+
       expect($fruits.children(0).hasClass('red-fruits')).to.be.ok();
+      expect($('.red-fruits').children(0).hasClass('apple')).to.be.ok();
       expect($fruits.children(1).hasClass('orange')).to.be.ok();
       expect($redFruits.children()).to.have.length(1);
-      expect($redFruits.next().hasClass('orange')).to.be.ok();
     });
+
+    it ('(elem) : should insert the element and add selected element(s) as it\'s child', function(){
+      var $fruitDecorator = $('<div class="fruit-decorator"></div>');
+      $('li').wrap($fruitDecorator);
+      expect($fruits.children(0).hasClass('fruit-decorator')).to.be.ok();
+      expect($fruits.children(0).children(0).hasClass('apple')).to.be.ok();
+      expect($fruits.children(1).hasClass('fruit-decorator')).to.be.ok();
+      expect($fruits.children(2).hasClass('fruit-decorator')).to.be.ok();
+      expect($fruits.children(2).children(0).hasClass('pear')).to.be.ok();
+    });
+
+
    });
 
   describe('.append', function() {
