@@ -12,24 +12,6 @@ describe('$(...)', function() {
     $fruits = $('#fruits');
   });
 
-//  <ul id="fruits">
-//   <li class="apple">Apple</li>
-//   <li class="orange">Orange</li>
-//   <li class="pear">Pear</li>
-// </ul>
-
-//  <ul id="fruits">
-  // <div class="fruit-decorator">
-  //   <li class="apple">Apple</li>
-  // </div>
- // <div class="fruit-decorator">
-  //   <li class="orange">Orange</li>
-  // </div>
- // <div class="fruit-decorator">
-  //   <li class="pear">Pear</li>
-  // </div>
-// </ul>
-
    describe('.wrap', function(){
     it ('(elem) : should insert the element and add selected element(s) as it\'s child', function(){
       var $redFruits = $('<div class="red-fruits"></div>');
@@ -41,7 +23,7 @@ describe('$(...)', function() {
       expect($redFruits.children()).to.have.length(1);
     });
 
-    it ('(elem) : should insert the element and add selected element(s) as it\'s child', function(){
+    it ('($(...)) : for each element it should add a wrapper elment and add the selected element as its child', function(){
       var $fruitDecorator = $('<div class="fruit-decorator"></div>');
       $('li').wrap($fruitDecorator);
       expect($fruits.children(0).hasClass('fruit-decorator')).to.be.ok();
@@ -50,7 +32,6 @@ describe('$(...)', function() {
       expect($fruits.children(2).hasClass('fruit-decorator')).to.be.ok();
       expect($fruits.children(2).children(0).hasClass('pear')).to.be.ok();
     });
-
 
    });
 
