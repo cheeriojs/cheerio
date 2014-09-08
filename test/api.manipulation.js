@@ -13,17 +13,17 @@ describe('$(...)', function() {
   });
 
    describe('.wrap', function(){
-    // it ('(elem) : should insert the element and add selected element(s) as it\'s child', function(){
-    //   var $redFruits = $('<div class="red-fruits"></div>');
-    //   $('.apple').wrap($redFruits);
+    it ('(elem) : should insert the element and add selected element(s) as it\'s child', function(){
+      var $redFruits = $('<div class="red-fruits"></div>');
+      $('.apple').wrap($redFruits);
 
-    //   expect($fruits.children(0).hasClass('red-fruits')).to.be.ok();
-    //   expect($('.red-fruits').children(0).hasClass('apple')).to.be.ok();
-    //   expect($fruits.children(1).hasClass('orange')).to.be.ok();
-    //   expect($redFruits.children()).to.have.length(1);
-    // });
+      expect($fruits.children(0).hasClass('red-fruits')).to.be.ok();
+      expect($('.red-fruits').children(0).hasClass('apple')).to.be.ok();
+      expect($fruits.children(1).hasClass('orange')).to.be.ok();
+      expect($redFruits.children()).to.have.length(1);
+    });
 
-    it ('(elem) : should insert the element and add selected element(s) as it\'s child and should accept strings', function(){
+    it ('(elem) : should insert the element and add selected element(s) as it\'s child and should accept html', function(){
       $('.apple').wrap('<div class="red-fruits"> </div>');
       expect($fruits.children(0).hasClass('red-fruits')).to.be.ok();
       expect($('.red-fruits').children(0).hasClass('apple')).to.be.ok();
@@ -31,15 +31,15 @@ describe('$(...)', function() {
       expect($('.red-fruits').children()).to.have.length(1);
     });
 
-    // it ('($(...)) : for each element it should add a wrapper elment and add the selected element as it\'s child', function(){
-    //   var $fruitDecorator = $('<div class="fruit-decorator"></div>');
-    //   $('li').wrap($fruitDecorator);
-    //   expect($fruits.children(0).hasClass('fruit-decorator')).to.be.ok();
-    //   expect($fruits.children(0).children(0).hasClass('apple')).to.be.ok();
-    //   expect($fruits.children(1).hasClass('fruit-decorator')).to.be.ok();
-    //   expect($fruits.children(2).hasClass('fruit-decorator')).to.be.ok();
-    //   expect($fruits.children(2).children(0).hasClass('pear')).to.be.ok();
-    // });
+    it ('($(...)) : for each element it should add a wrapper elment and add the selected element as it\'s child', function(){
+      var $fruitDecorator = $('<div class="fruit-decorator"></div>');
+      $('li').wrap($fruitDecorator);
+      expect($fruits.children(0).hasClass('fruit-decorator')).to.be.ok();
+      expect($fruits.children(0).children(0).hasClass('apple')).to.be.ok();
+      expect($fruits.children(1).hasClass('fruit-decorator')).to.be.ok();
+      expect($fruits.children(2).hasClass('fruit-decorator')).to.be.ok();
+      expect($fruits.children(2).children(0).hasClass('pear')).to.be.ok();
+    });
 
    });
 
@@ -722,108 +722,7 @@ describe('$(...)', function() {
       expect($.html($src)).to.equal('<h2>hi <div>here</div></h2>');
     });
 
-    it('(str) : should replace all selected elements', function() {
-      var $src = $('<b>a<br>b<br>c<br>d</b>');
-      var $replaced = $src.find('br').replaceWith(' ');
-      expect($replaced[0].parent).to.equal(null);
-      expect($.html($src)).to.equal('<b>a b c d</b>');
-    });
-
-    it('(fn) : should invoke the callback with the correct argument and context', function() {
-      var origChildren = $fruits.children().get();
-      var args = [];
-      var thisValues = [];
-
-      $fruits.children().replaceWith(function() {
-        args.push(toArray(arguments));
-        thisValues.push(this);
-        return '<li class="first">';
-      });
-
-      expect(args).to.eql([
-        [0, origChildren[0]],
-        [1, origChildren[1]],
-        [2, origChildren[2]]
-      ]);
-      expect(thisValues).to.eql([
-        origChildren[0],
-        origChildren[1],
-        origChildren[2]
-      ]);
-    });
-
-    it('(fn) : should replace the selected element with the returned string', function() {
-      $fruits.children().replaceWith(function() {
-        return '<li class="first">';
-      });
-
-      expect($fruits.find('.first')).to.have.length(3);
-    });
-
-    it('(fn) : should replace the selected element with the returned Cheerio object', function() {
-      $fruits.children().replaceWith(function() {
-        return $('<li class="second">');
-      });
-
-      expect($fruits.find('.second')).to.have.length(3);
-    });
-
-    it('(fn) : should replace the selected element with the returned node', function() {
-      $fruits.children().replaceWith(function() {
-        return $('<li class="third">')[0];
-      });
-
-      expect($fruits.find('.third')).to.have.length(3);
-    });
-
-    it('($(...)) : should remove from root element', function() {
-      var $plum = $('<li class="plum">Plum</li>');
-      var root = $plum[0].root;
-      expect(root).to.be.ok();
-
-      $fruits.children().replaceWith($plum);
-      expect($plum[0].root).to.not.be.ok();
-      expect(root.children).to.not.contain($plum[0]);
-    });
-  });
-
-  describe('.empty', function() {
-    it('() : should remove all children from selected elements', function() {
-      expect($fruits.children()).to.have.length(3);
-
-      $fruits.empty();
-      expect($fruits.children()).to.have.length(0);
-    });
-
-    it('() : should allow element reinsertion', function() {
-      var $children = $fruits.children();
-
-      $fruits.empty();
-      expect($fruits.children()).to.have.length(0);
-      expect($children).to.have.length(3);
-
-      $fruits.append($('<div></div><div></div>'));
-      var $remove = $fruits.children().eq(0);
-
-      $remove.replaceWith($children);
-      expect($fruits.children()).to.have.length(4);
-    });
-
-    it('() : should destroy children\'s references to the parent', function() {
-      var $children = $fruits.children();
-
-      $fruits.empty();
-
-      expect($children.eq(0).parent()).to.have.length(0);
-      expect($children.eq(0).next()).to.have.length(0);
-      expect($children.eq(0).prev()).to.have.length(0);
-      expect($children.eq(1).parent()).to.have.length(0);
-      expect($children.eq(1).next()).to.have.length(0);
-      expect($children.eq(1).prev()).to.have.length(0);
-      expect($children.eq(2).parent()).to.have.length(0);
-      expect($children.eq(2).next()).to.have.length(0);
-      expect($children.eq(2).prev()).to.have.length(0);
-    });
+  
 
   });
 
@@ -864,23 +763,23 @@ describe('$(...)', function() {
       expect(tested).to.equal(3);
     });
 
-    it('(elem) : should set the html for its children with element', function() {
-      $fruits.html($('<li class="durian">Durian</li>'));
-      var html = $fruits.html();
-      expect(html).to.equal('<li class="durian">Durian</li>');
-    });
+    // it('(elem) : should set the html for its children with element', function() {
+    //   $fruits.html($('<li class="durian">Durian</li>'));
+    //   var html = $fruits.html();
+    //   expect(html).to.equal('<li class="durian">Durian</li>');
+    // });
 
-    it('() : should allow element reinsertion', function() {
-      var $children = $fruits.children();
+    // it('() : should allow element reinsertion', function() {
+    //   var $children = $fruits.children();
 
-      $fruits.html('<div></div><div></div>');
-      expect($fruits.children()).to.have.length(2);
+    //   $fruits.html('<div></div><div></div>');
+    //   expect($fruits.children()).to.have.length(2);
 
-      var $remove = $fruits.children().eq(0);
+    //   var $remove = $fruits.children().eq(0);
 
-      $remove.replaceWith($children);
-      expect($fruits.children()).to.have.length(4);
-    });
+    //   $remove.replaceWith($children);
+    //   expect($fruits.children()).to.have.length(4);
+    // });
   });
 
   describe('.toString', function() {
