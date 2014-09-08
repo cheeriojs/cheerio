@@ -23,7 +23,7 @@ describe('$(...)', function() {
       expect($redFruits.children()).to.have.length(1);
     });
 
-    xit ('(elem) : should insert the element and add selected element(s) as it\'s child and should accept html', function(){
+    it.skip ('(elem) : should insert the element and add selected element(s) as it\'s child and should accept html', function(){
       $('.apple').wrap('<div class="red-fruits"> </div>');
       expect($fruits.children(0).hasClass('red-fruits')).to.be.ok();
       expect($('.red-fruits').children(0).hasClass('apple')).to.be.ok();
@@ -721,9 +721,6 @@ describe('$(...)', function() {
       expect($replaced[0].parent).to.equal(null);
       expect($.html($src)).to.equal('<h2>hi <div>here</div></h2>');
     });
-
-  
-
   });
 
   describe('.html', function() {
