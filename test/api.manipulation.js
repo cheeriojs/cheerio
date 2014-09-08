@@ -760,23 +760,23 @@ describe('$(...)', function() {
       expect(tested).to.equal(3);
     });
 
-    // it('(elem) : should set the html for its children with element', function() {
-    //   $fruits.html($('<li class="durian">Durian</li>'));
-    //   var html = $fruits.html();
-    //   expect(html).to.equal('<li class="durian">Durian</li>');
-    // });
+    it('(elem) : should set the html for its children with element', function() {
+      $fruits.html($('<li class="durian">Durian</li>'));
+      var html = $fruits.html();
+      expect(html).to.equal('<li class="durian">Durian</li>');
+    });
 
-    // it('() : should allow element reinsertion', function() {
-    //   var $children = $fruits.children();
+    it('() : should allow element reinsertion', function() {
+      var $children = $fruits.children();
 
-    //   $fruits.html('<div></div><div></div>');
-    //   expect($fruits.children()).to.have.length(2);
+      $fruits.html('<div></div><div></div>');
+      expect($fruits.children()).to.have.length(2);
 
-    //   var $remove = $fruits.children().eq(0);
+      var $remove = $fruits.children().eq(0);
 
-    //   $remove.replaceWith($children);
-    //   expect($fruits.children()).to.have.length(4);
-    // });
+      $remove.replaceWith($children);
+      expect($fruits.children()).to.have.length(4);
+    });
   });
 
   describe('.toString', function() {
