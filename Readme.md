@@ -627,7 +627,8 @@ $('ul').text()
 The .wrap() function can take any string or object that could be passed to the $() factory function to specify a DOM structure. This structure may be nested several levels deep, but should contain only one inmost element. A copy of this structure will be wrapped around each of the elements in the set of matched elements. This method returns the original set of elements for chaining purposes.
 
 ```js
-$('.apple').wrap('<div class="red-fruit"></div>')
+var redFruit = $('<div class="red-fruit"></div>')
+$('.apple').wrap(redFruit)
 
 //=> <ul id="fruits">
 //     <div class="red-fruit">
@@ -637,7 +638,8 @@ $('.apple').wrap('<div class="red-fruit"></div>')
 //     <li class="plum">Plum</li>
 //   </ul>
 
-$('li').wrap('<div class="healthy"></div>')
+var healthy = $('<div class="healthy"></div>')
+$('li').wrap(healthy)
 
 //=> <ul id="fruits">
 //     <div class="healthy">
