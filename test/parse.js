@@ -213,6 +213,40 @@ describe('parse', function() {
       expect(root.childNodes[0].type).to.equal('directive');
     });
 
+    it('should expose the DOM level 1 API', function() {
+      var root = parse('<div><a></a><span></span><p></p></div>', defaultOpts).childNodes[0];
+      var childNodes = root.childNodes;
+
+      expect(childNodes).to.have.length(3);
+
+      expect(root.tagName).to.be('div');
+      expect(root.firstChild).to.be(childNodes[0]);
+      expect(root.lastChild).to.be(childNodes[2]);
+
+      expect(childNodes[0].tagName).to.be('a');
+      expect(childNodes[0].previousSibling).to.be(null);
+      expect(childNodes[0].nextSibling).to.be(childNodes[1]);
+      expect(childNodes[0].parentNode).to.be(root);
+      expect(childNodes[0].childNodes).to.have.length(0);
+      expect(childNodes[0].firstChild).to.be(null);
+      expect(childNodes[0].lastChild).to.be(null);
+
+      expect(childNodes[1].tagName).to.be('span');
+      expect(childNodes[1].previousSibling).to.be(childNodes[0]);
+      expect(childNodes[1].nextSibling).to.be(childNodes[2]);
+      expect(childNodes[1].parentNode).to.be(root);
+      expect(childNodes[1].childNodes).to.have.length(0);
+      expect(childNodes[1].firstChild).to.be(null);
+      expect(childNodes[1].lastChild).to.be(null);
+
+      expect(childNodes[2].tagName).to.be('p');
+      expect(childNodes[2].previousSibling).to.be(childNodes[1]);
+      expect(childNodes[2].nextSibling).to.be(null);
+      expect(childNodes[2].parentNode).to.be(root);
+      expect(childNodes[2].childNodes).to.have.length(0);
+      expect(childNodes[2].firstChild).to.be(null);
+      expect(childNodes[2].lastChild).to.be(null);
+    });
   });
 
 });
