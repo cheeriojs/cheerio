@@ -15,7 +15,7 @@ describe('$(...)', function() {
   describe('.append', function() {
 
     it('() : should do nothing', function() {
-      expect($('#fruits').append()[0].name).to.equal('ul');
+      expect($('#fruits').append()[0].tagName).to.equal('ul');
     });
 
     it('(html) : should add element as last child', function() {
@@ -183,14 +183,14 @@ describe('$(...)', function() {
 
       $fruits.append($plum);
       expect($plum[0].root).to.not.be.ok();
-      expect(root.children).to.not.contain($plum[0]);
+      expect(root.childNodes).to.not.contain($plum[0]);
     });
   });
 
   describe('.prepend', function() {
 
     it('() : should do nothing', function() {
-      expect($('#fruits').prepend()[0].name).to.equal('ul');
+      expect($('#fruits').prepend()[0].tagName).to.equal('ul');
     });
 
     it('(html) : should add element as first child', function() {
@@ -334,14 +334,14 @@ describe('$(...)', function() {
 
       $fruits.prepend($plum);
       expect($plum[0].root).to.not.be.ok();
-      expect(root.children).to.not.contain($plum[0]);
+      expect(root.childNodes).to.not.contain($plum[0]);
     });
   });
 
   describe('.after', function() {
 
     it('() : should do nothing', function() {
-      expect($('#fruits').after()[0].name).to.equal('ul');
+      expect($('#fruits').after()[0].tagName).to.equal('ul');
     });
 
     it('(html) : should add element as next sibling', function() {
@@ -465,14 +465,14 @@ describe('$(...)', function() {
 
       $fruits.after($plum);
       expect($plum[0].root).to.not.be.ok();
-      expect(root.children).to.not.contain($plum[0]);
+      expect(root.childNodes).to.not.contain($plum[0]);
     });
   });
 
   describe('.before', function() {
 
     it('() : should do nothing', function() {
-      expect($('#fruits').before()[0].name).to.equal('ul');
+      expect($('#fruits').before()[0].tagName).to.equal('ul');
     });
 
     it('(html) : should add element as previous sibling', function() {
@@ -596,7 +596,7 @@ describe('$(...)', function() {
 
       $fruits.before($plum);
       expect($plum[0].root).to.not.be.ok();
-      expect(root.children).to.not.contain($plum[0]);
+      expect(root.childNodes).to.not.contain($plum[0]);
     });
   });
 
@@ -626,7 +626,7 @@ describe('$(...)', function() {
 
       $plum.remove();
       expect($plum[0].root).to.not.be.ok();
-      expect(root.children).to.not.contain($plum[0]);
+      expect(root.childNodes).to.not.contain($plum[0]);
     });
   });
 
@@ -653,8 +653,8 @@ describe('$(...)', function() {
       var $src = $('<h2>hi <span>there</span></h2>');
       var $new = $('<ul></ul>');
       var $replaced = $src.find('span').replaceWith($new[0]);
-      expect($new[0].parent).to.equal($src[0]);
-      expect($replaced[0].parent).to.equal(null);
+      expect($new[0].parentNode).to.equal($src[0]);
+      expect($replaced[0].parentNode).to.equal(null);
       expect($.html($src)).to.equal('<h2>hi <ul></ul></h2>');
     });
 
@@ -678,8 +678,8 @@ describe('$(...)', function() {
       var $src = $('<h2>hi <span>there</span></h2>');
       var $new = $('<div>here</div>');
       var $replaced = $src.find('span').replaceWith($new);
-      expect($new[0].parent).to.equal($src[0]);
-      expect($replaced[0].parent).to.equal(null);
+      expect($new[0].parentNode).to.equal($src[0]);
+      expect($replaced[0].parentNode).to.equal(null);
       expect($.html($src)).to.equal('<h2>hi <div>here</div></h2>');
     });
 
@@ -687,14 +687,14 @@ describe('$(...)', function() {
       var $src = $('<h2>hi <span>there</span></h2>');
       var newStr = '<div>here</div>';
       var $replaced = $src.find('span').replaceWith(newStr);
-      expect($replaced[0].parent).to.equal(null);
+      expect($replaced[0].parentNode).to.equal(null);
       expect($.html($src)).to.equal('<h2>hi <div>here</div></h2>');
     });
 
     it('(str) : should replace all selected elements', function() {
       var $src = $('<b>a<br>b<br>c<br>d</b>');
       var $replaced = $src.find('br').replaceWith(' ');
-      expect($replaced[0].parent).to.equal(null);
+      expect($replaced[0].parentNode).to.equal(null);
       expect($.html($src)).to.equal('<b>a b c d</b>');
     });
 
@@ -752,7 +752,7 @@ describe('$(...)', function() {
 
       $fruits.children().replaceWith($plum);
       expect($plum[0].root).to.not.be.ok();
-      expect(root.children).to.not.contain($plum[0]);
+      expect(root.childNodes).to.not.contain($plum[0]);
     });
   });
 
@@ -879,14 +879,14 @@ describe('$(...)', function() {
 
     it('(text) : sets the text for the child node', function() {
       $('.apple').text('Granny Smith Apple');
-      expect($('.apple')[0].children[0].data).to.equal('Granny Smith Apple');
+      expect($('.apple')[0].childNodes[0].data).to.equal('Granny Smith Apple');
     });
 
     it('(text) : inserts separate nodes for all children', function() {
       $('li').text('Fruits');
       var tested = 0;
       $('li').each(function(){
-        expect(this.children[0].parent).to.equal(this);
+        expect(this.childNodes[0].parent).to.equal(this);
         tested++;
       });
       expect(tested).to.equal(3);
@@ -898,7 +898,7 @@ describe('$(...)', function() {
         expect(content).to.equal('Apple');
         return 'whatever mate';
       });
-      expect($('.apple')[0].children[0].data).to.equal('whatever mate');
+      expect($('.apple')[0].childNodes[0].data).to.equal('whatever mate');
     });
 
     it('should decode special chars', function() {
@@ -934,7 +934,7 @@ describe('$(...)', function() {
       var $apple = $('.apple');
 
       $apple.text('blah <script>alert("XSS!")</script> blah');
-      expect($apple[0].children[0].data).to.equal('blah <script>alert("XSS!")</script> blah');
+      expect($apple[0].childNodes[0].data).to.equal('blah <script>alert("XSS!")</script> blah');
       expect($apple.text()).to.equal('blah <script>alert("XSS!")</script> blah');
 
       $apple.text('blah <script>alert("XSS!")</script> blah');
