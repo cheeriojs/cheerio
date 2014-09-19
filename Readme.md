@@ -505,6 +505,15 @@ $('.apple').add('.orange').length
 //=> 2
 ```
 
+#### .addBack( [filter] )
+
+Add the previous set of elements on the stack to the current set, optionally filtered by a selector.
+
+```js
+$('li').eq(0).addBack('.orange').length
+//=> 2
+```
+
 ### Manipulation
 Methods for modifying the DOM structure.
 
