@@ -83,6 +83,12 @@ describe('cheerio', function() {
       expect($elem.text()).to.not.equal($src.text());
     });
 
+    it('() : should preserve parsing options', function() {
+      var $ = cheerio.load('<div>π</div>', { decodeEntities: false });
+      var $div = $('div');
+
+      expect($div.text()).to.equal($div.clone().text());
+    });
   });
 
   describe('.parseHTML', function() {
