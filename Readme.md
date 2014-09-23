@@ -427,6 +427,27 @@ $('li').filter(function(i, el) {
 //=> orange
 ```
 
+#### .not( selector ) <br /> .not( selection ) <br /> .not( element ) <br /> .not( function(index, elem) )
+
+Remove elements from the set of matched elements. Given a jQuery object that represents a set of DOM elements, the `.not()` method constructs a new jQuery object from a subset of the matching elements. The supplied selector is tested against each element; the elements that don't match the selector will be included in the result. The `.not()` method can take a function as its argument in the same way that `.filter()` does. Elements for which the function returns true are excluded from the filtered set; all other elements are included.
+
+Selector:
+
+```js
+$('li').not('.apple').length;
+//=> 2
+```
+
+Function:
+
+```js
+$('li').filter(function(i, el) {
+  // this === el
+  return $(this).attr('class') === 'orange';
+}).length;
+//=> 2
+```
+
 #### .first()
 Will select the first element of a cheerio object
 
