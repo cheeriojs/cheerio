@@ -771,6 +771,60 @@ describe('$(...)', function() {
     });
   });
 
+  describe('.not', function() {
+    it('(selector) : should reduce the set of matched elements to those that do not match the selector', function() {
+      var $fruits = $('li');
+
+      var $notPear = $fruits.not('.pear');
+
+      expect($notPear).to.have.length(2);
+      expect($notPear[0]).to.be($fruits[0]);
+      expect($notPear[1]).to.be($fruits[1]);
+    });
+
+    it('(selector) : should not consider nested elements', function() {
+      var lis = $('#fruits').not('li');
+      expect(lis).to.have.length(1);
+    });
+
+    it('(selection) : should reduce the set of matched elements to those that are mot contained in the provided selection', function() {
+      var $fruits = $('li');
+      var $orange = $('.orange');
+
+      var $notOrange = $fruits.not($orange);
+
+      expect($notOrange).to.have.length(2);
+      expect($notOrange[0]).to.be($fruits[0]);
+      expect($notOrange[1]).to.be($fruits[2]);
+    });
+
+    it('(element) : should reduce the set of matched elements to those that specified directly', function() {
+      var $fruits = $('li');
+      var apple = $('.apple')[0];
+
+      var $notApple = $fruits.not(apple);
+
+      expect($notApple).to.have.length(2);
+      expect($notApple[0]).to.be($fruits[1]);
+      expect($notApple[1]).to.be($fruits[2]);
+    });
+
+    it('(fn) : should reduce the set of matched elements to those that do not pass the function\'s test', function() {
+      var $fruits = $('li');
+
+      var $notOrange = $fruits.not(function(i, el) {
+        expect(this).to.be(el);
+        expect(el.name).to.be('li');
+        expect(i).to.be.a('number');
+        return $(this).attr('class') === 'orange';
+      });
+
+      expect($notOrange).to.have.length(2);
+      expect($notOrange[0]).to.be($fruits[0]);
+      expect($notOrange[1]).to.be($fruits[2]);
+    });
+  });
+
   describe('.first', function() {
 
     it('() : should return the first item', function() {
