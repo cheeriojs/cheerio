@@ -621,7 +621,7 @@ $.html()
 ```
 
 #### .empty()
-Empties an element, removing all it's children.
+Empties an element, removing all its children.
 
 ```js
 $('ul').empty()
