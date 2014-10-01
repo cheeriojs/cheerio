@@ -32,6 +32,11 @@ describe('$(...)', function() {
       expect(cls).to.equal('apple');
     });
 
+    it('(valid key) : valid attr should get name when boolean', function() {
+      var attr = $('<input name=email autofocus>').attr('autofocus');
+      expect(attr).to.equal('autofocus');
+    });
+
     it('(key, value) : should set attr', function() {
       var $pear = $('.pear').attr('id', 'pear');
       expect($('#pear')).to.have.length(1);
@@ -96,7 +101,7 @@ describe('$(...)', function() {
       $apple.attr('autofocus', 'autofocus');
       expect($apple.attr('autofocus')).to.equal('autofocus');
       $apple.removeAttr('autofocus');
-      expect($apple.attr('autofocus')).to.equal(false);
+      expect($apple.attr('autofocus')).to.be(undefined);
     });
 
     it('(key, value) : should remove non-boolean attributes with names or values similar to boolean ones', function() {
