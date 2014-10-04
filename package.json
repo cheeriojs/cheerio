@@ -13,7 +13,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/MatthewMueller/cheerio.git"
+    "url": "git://github.com/cheeriojs/cheerio.git"
   },
   "main": "./index.js",
   "engines": {
