@@ -746,7 +746,6 @@ $('li').wrap(healthy)
 //   </ul>
 ```
 
-
 #### .css( [propertName] ) <br /> .css( [ propertyNames] ) <br /> .css( [propertyName], [value] ) <br /> .css( [propertName], [function] ) <br /> .css( [properties] )
 
 Get the value of a style property for the first element in the set of matched elements or set one or more CSS properties for every matched element.
