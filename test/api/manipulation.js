@@ -70,6 +70,19 @@ describe('$(...)', function() {
       expect($('.pear').prev()[0]).to.be($('.apple')[0]);
     });
 
+    it('(existing Node) : should clone all but the last occurrence', function() {
+      var $originalApple = $('.apple');
+      var $apples;
+
+      $('.orange, .pear').append($originalApple);
+
+      $apples = $('.apple');
+      expect($apples).to.have.length(2);
+      expect($apples.eq(0).parent()[0]).to.be($('.orange')[0]);
+      expect($apples.eq(1).parent()[0]).to.be($('.pear')[0]);
+      expect($apples[1]).to.be($originalApple[0]);
+    });
+
     it('(elem) : should NOP if removed', function() {
       var $apple = $('.apple');
 
@@ -227,6 +240,19 @@ describe('$(...)', function() {
       $('.pear').prepend($('.orange'));
       expect($('.apple').next()[0]).to.be($('.pear')[0]);
       expect($('.pear').prev()[0]).to.be($('.apple')[0]);
+    });
+
+    it('(existing Node) : should clone all but the last occurrence', function() {
+      var $originalApple = $('.apple');
+      var $apples;
+
+      $('.orange, .pear').prepend($originalApple);
+
+      $apples = $('.apple');
+      expect($apples).to.have.length(2);
+      expect($apples.eq(0).parent()[0]).to.be($('.orange')[0]);
+      expect($apples.eq(1).parent()[0]).to.be($('.pear')[0]);
+      expect($apples[1]).to.be($originalApple[0]);
     });
 
     it('(elem) : should handle if removed', function() {
@@ -387,6 +413,19 @@ describe('$(...)', function() {
       expect($('.pear').prev()[0]).to.be($('.apple')[0]);
     });
 
+    it('(existing Node) : should clone all but the last occurrence', function() {
+      var $originalApple = $('.apple');
+      $('.orange, .pear').after($originalApple);
+
+      expect($('.apple')).to.have.length(2);
+      expect($('.apple').eq(0).prev()[0]).to.be($('.orange')[0]);
+      expect($('.apple').eq(0).next()[0]).to.be($('.pear')[0]);
+      expect($('.apple').eq(1).prev()[0]).to.be($('.pear')[0]);
+      expect($('.apple').eq(1).next()).to.have.length(0);
+      expect($('.apple')[0]).to.not.eql($originalApple[0]);
+      expect($('.apple')[1]).to.eql($originalApple[0]);
+    });
+
     it('(elem) : should handle if removed', function() {
       var $apple = $('.apple');
       var $plum = $('<li class="plum">Plum</li>');
@@ -508,6 +547,19 @@ describe('$(...)', function() {
       $('.apple').before($('.orange'));
       expect($('.apple').next()[0]).to.be($('.pear')[0]);
       expect($('.pear').prev()[0]).to.be($('.apple')[0]);
+    });
+
+    it('(existing Node) : should clone all but the last occurrence', function() {
+      var $originalPear = $('.pear');
+      $('.apple, .orange').before($originalPear);
+
+      expect($('.pear')).to.have.length(2);
+      expect($('.pear').eq(0).prev()).to.have.length(0);
+      expect($('.pear').eq(0).next()[0]).to.be($('.apple')[0]);
+      expect($('.pear').eq(1).prev()[0]).to.be($('.apple')[0]);
+      expect($('.pear').eq(1).next()[0]).to.be($('.orange')[0]);
+      expect($('.pear')[0]).to.not.eql($originalPear[0]);
+      expect($('.pear')[1]).to.eql($originalPear[0]);
     });
 
     it('(elem) : should handle if removed', function() {
