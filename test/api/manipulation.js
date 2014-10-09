@@ -13,7 +13,7 @@ describe('$(...)', function() {
   });
 
   describe('.wrap', function() {
-    it('(elem) : should insert the element and add selected element(s) as its child', function() {
+    it('(Cheerio object) : should insert the element and add selected element(s) as its child', function() {
       var $redFruits = $('<div class="red-fruits"></div>');
       $('.apple').wrap($redFruits);
 
