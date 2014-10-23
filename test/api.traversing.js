@@ -825,6 +825,38 @@ describe('$(...)', function() {
     });
   });
 
+  describe('.has', function() {
+
+    beforeEach(function() {
+      $ = cheerio.load(food);
+    });
+
+    it('(selector) : should reduce the set of matched elements to those with descendants that match the selector', function() {
+      var $fruits = $('#fruits,#vegetables').has('.pear');
+      expect($fruits).to.have.length(1);
+      expect($fruits[0]).to.be($('#fruits')[0]);
+    });
+
+    it('(selector) : should only consider nested elements', function() {
+      var $empty = $('#fruits').has('#fruits');
+      expect($empty).to.have.length(0);
+    });
+
+    it('(element) : should reduce the set of matched elements to those that are ancestors of the provided element', function() {
+      var $fruits = $('#fruits,#vegetables').has($('.pear')[0]);
+      expect($fruits).to.have.length(1);
+      expect($fruits[0]).to.be($('#fruits')[0]);
+    });
+
+    it('(element) : should only consider nested elements', function() {
+      var $fruits = $('#fruits');
+      var fruits = $fruits[0];
+      var $empty = $fruits.has(fruits);
+
+      expect($empty).to.have.length(0);
+    });
+  });
+
   describe('.first', function() {
 
     it('() : should return the first item', function() {

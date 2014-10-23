@@ -448,6 +448,24 @@ $('li').filter(function(i, el) {
 //=> 2
 ```
 
+#### .has( selector ) <br /> .has( element )
+
+Filters the set of matched elements to only those which have the given DOM element as a descendant or which have a descendant that matches the given selector. Equivalent to `.filter(':has(selector)')`.
+
+Selector:
+
+```js
+$('ul').has('.pear').attr('id');
+//=> fruits
+```
+
+Element:
+
+```js
+$('ul').has($('.pear')[0]).attr('id');
+//=> fruits
+```
+
 #### .first()
 Will select the first element of a cheerio object
 
