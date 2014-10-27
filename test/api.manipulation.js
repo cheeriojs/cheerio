@@ -94,7 +94,7 @@ describe('$(...)', function() {
       expect($fruits.children(4).hasClass('grape')).to.be.ok();
     });
 
-    it('(fn) : should invoke the callback with the correct argument and context', function() {
+    it('(fn) : should invoke the callback with the correct arguments and context', function() {
       $fruits = $fruits.children();
       var args = [];
       var thisValues = [];
@@ -253,7 +253,7 @@ describe('$(...)', function() {
       expect($fruits.children(1).hasClass('grape')).to.be.ok();
     });
 
-    it('(fn) : should invoke the callback with the correct argument and context', function() {
+    it('(fn) : should invoke the callback with the correct arguments and context', function() {
       var args = [];
       var thisValues = [];
       $fruits = $fruits.children();
