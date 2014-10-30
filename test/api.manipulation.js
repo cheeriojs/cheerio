@@ -94,7 +94,7 @@ describe('$(...)', function() {
       expect($fruits.children(4).hasClass('grape')).to.be.ok();
     });
 
-    it('(fn) : should invoke the callback with the correct argument and context', function() {
+    it('(fn) : should invoke the callback with the correct arguments and context', function() {
       $fruits = $fruits.children();
       var args = [];
       var thisValues = [];
@@ -253,7 +253,7 @@ describe('$(...)', function() {
       expect($fruits.children(1).hasClass('grape')).to.be.ok();
     });
 
-    it('(fn) : should invoke the callback with the correct argument and context', function() {
+    it('(fn) : should invoke the callback with the correct arguments and context', function() {
       var args = [];
       var thisValues = [];
       $fruits = $fruits.children();
@@ -404,7 +404,7 @@ describe('$(...)', function() {
       expect($('.plum').next().hasClass('grape')).to.be.ok();
     });
 
-    it('(fn) : should invoke the callback with the correct argument and context', function() {
+    it('(fn) : should invoke the callback with the correct arguments and context', function() {
       var args = [];
       var thisValues = [];
       $fruits = $fruits.children();
@@ -414,7 +414,7 @@ describe('$(...)', function() {
         thisValues.push(this);
       });
 
-      expect(args).to.eql([[0], [1], [2]]);
+      expect(args).to.eql([[0, 'Apple'], [1, 'Orange'], [2, 'Pear']]);
       expect(thisValues).to.eql([
         $fruits[0],
         $fruits[1],
@@ -535,7 +535,7 @@ describe('$(...)', function() {
       expect($('.grape').prev().hasClass('plum')).to.be.ok();
     });
 
-    it('(fn) : should invoke the callback with the correct argument and context', function() {
+    it('(fn) : should invoke the callback with the correct arguments and context', function() {
       var args = [];
       var thisValues = [];
       $fruits = $fruits.children();
@@ -545,7 +545,7 @@ describe('$(...)', function() {
         thisValues.push(this);
       });
 
-      expect(args).to.eql([[0], [1], [2]]);
+      expect(args).to.eql([[0, 'Apple'], [1, 'Orange'], [2, 'Pear']]);
       expect(thisValues).to.eql([
         $fruits[0],
         $fruits[1],
