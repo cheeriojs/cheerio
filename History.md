@@ -1,4 +1,45 @@
 
+0.18.0 / 2014-11-06
+==================
+
+ * bump htmlparser2 dependency to ~3.8.1 (Chris Rebert)
+ * Correct unit test titles (Mike Pennisi)
+ * Correct behavior of `after` and `before` (Mike Pennisi)
+ * implement jQuery's .has() (Chris Rebert)
+ * Update repository url (haqii)
+ * attr() should return undefined or name for booleans (Raoul Millais)
+ * Update Readme.md (Ryan Breen)
+ * Implement `Cheerio#not` (Mike Pennisi)
+ * Clone nodes according to original parsing options (Mike Pennisi)
+ * fix lint error (David Chambers)
+ * Add explicit tests for DOM level 1 API (Mike Pennisi)
+ * Expose DOM level 1 API for Node-like objects (Mike Pennisi)
+ * Correct error in documentation (Mike Pennisi)
+ * Return a fully-qualified Function from `$.load` (Mike Pennisi)
+ * Update tests to avoid duck typing (Mike Pennisi)
+ * Alter "loaded" functions to produce true instances (Mike Pennisi)
+ * Organize tests for `cheerio.load` (Mike Pennisi)
+ * Complete `$.prototype.find` (Mike Pennisi)
+ * Use JSHint's `extends` option (Mike Pennisi)
+ * Remove aliases for exported methods (Mike Pennisi)
+ * Disallow unused variables (Mike Pennisi)
+ * Remove unused internal variables (Mike Pennisi)
+ * Remove unused variables from unit tests (Mike Pennisi)
+ * Remove unused API method references (Mike Pennisi)
+ * Move tests for `contains` method (Mike Pennisi)
+ * xyz@0.4.0 (David Chambers)
+ * Created a wiki for companies using cheerio in production (Matthew Mueller)
+ * Implement `$.prototype.index` (Mike Pennisi)
+ * Implement `$.prototype.addBack` (Mike Pennisi)
+ * Added double quotes to radio attribute name to account for characters such as brackets (akant10)
+ * Update History.md (Gabriel Falkenberg)
+ * add 0.17.0 changelog (David Chambers)
+ * exit prepublish script if tag not found (David Chambers)
+ * alphabetize devDependencies (fb55)
+ * ignore coverage dir (fb55)
+ * submit coverage to coveralls (fb55)
+ * replace jscoverage with istanbul (fb55)
+
 0.17.0 / 2014-06-10
 ==================
 
