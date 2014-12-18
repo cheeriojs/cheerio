@@ -865,6 +865,11 @@ describe('$(...)', function() {
       var string = [$('<foo>'), $('<bar>'), $('<baz>')].join('');
       expect(string).to.equal('<foo></foo><bar></bar><baz></baz>');
     });
+
+    it('() : should pass options', function() {
+      var dom = cheerio.load('&', {decodeEntities: false});
+      expect(dom.root().toString()).to.equal('&');
+    });
   });
 
   describe('.text', function() {
