@@ -20,19 +20,19 @@ describe('$(...)', function() {
 
     it('(html) : should add element as last child', function() {
       $fruits.append('<li class="plum">Plum</li>');
-      expect($fruits.children(3).hasClass('plum')).to.be.ok();
+      expect($fruits.children().eq(3).hasClass('plum')).to.be.ok();
     });
 
     it('($(...)) : should add element as last child', function() {
       var $plum = $('<li class="plum">Plum</li>');
       $fruits.append($plum);
-      expect($fruits.children(3).hasClass('plum')).to.be.ok();
+      expect($fruits.children().eq(3).hasClass('plum')).to.be.ok();
     });
 
     it('(Node) : should add element as last child', function() {
       var plum = $('<li class="plum">Plum</li>')[0];
       $fruits.append(plum);
-      expect($fruits.children(3).hasClass('plum')).to.be.ok();
+      expect($fruits.children().eq(3).hasClass('plum')).to.be.ok();
     });
 
     it('(existing Node) : should remove node from previous location', function() {
@@ -75,23 +75,23 @@ describe('$(...)', function() {
 
       $apple.remove();
       $fruits.append($apple);
-      expect($fruits.children(2).hasClass('apple')).to.be.ok();
+      expect($fruits.children().eq(2).hasClass('apple')).to.be.ok();
     });
 
     it('($(...), html) : should add multiple elements as last children', function() {
       var $plum = $('<li class="plum">Plum</li>');
       var grape = '<li class="grape">Grape</li>';
       $fruits.append($plum, grape);
-      expect($fruits.children(3).hasClass('plum')).to.be.ok();
-      expect($fruits.children(4).hasClass('grape')).to.be.ok();
+      expect($fruits.children().eq(3).hasClass('plum')).to.be.ok();
+      expect($fruits.children().eq(4).hasClass('grape')).to.be.ok();
     });
 
     it('(Array) : should append all elements in the array', function() {
       var more = $('<li class="plum">Plum</li><li class="grape">Grape</li>')
         .get();
       $fruits.append(more);
-      expect($fruits.children(3).hasClass('plum')).to.be.ok();
-      expect($fruits.children(4).hasClass('grape')).to.be.ok();
+      expect($fruits.children().eq(3).hasClass('plum')).to.be.ok();
+      expect($fruits.children().eq(4).hasClass('grape')).to.be.ok();
     });
 
     it('(fn) : should invoke the callback with the correct arguments and context', function() {
@@ -195,19 +195,19 @@ describe('$(...)', function() {
 
     it('(html) : should add element as first child', function() {
       $fruits.prepend('<li class="plum">Plum</li>');
-      expect($fruits.children(0).hasClass('plum')).to.be.ok();
+      expect($fruits.children().eq(0).hasClass('plum')).to.be.ok();
     });
 
     it('($(...)) : should add element as first child', function() {
       var $plum = $('<li class="plum">Plum</li>');
       $fruits.prepend($plum);
-      expect($fruits.children(0).hasClass('plum')).to.be.ok();
+      expect($fruits.children().eq(0).hasClass('plum')).to.be.ok();
     });
 
     it('(Node) : should add node as first child', function() {
       var plum = $('<li class="plum">Plum</li>')[0];
       $fruits.prepend(plum);
-      expect($fruits.children(0).hasClass('plum')).to.be.ok();
+      expect($fruits.children().eq(0).hasClass('plum')).to.be.ok();
     });
 
     it('(existing Node) : should remove existing nodes from previous locations', function() {
@@ -234,23 +234,23 @@ describe('$(...)', function() {
 
       $apple.remove();
       $fruits.prepend($apple);
-      expect($fruits.children(0).hasClass('apple')).to.be.ok();
+      expect($fruits.children().eq(0).hasClass('apple')).to.be.ok();
     });
 
     it('(Array) : should add all elements in the array as inital children', function() {
       var more = $('<li class="plum">Plum</li><li class="grape">Grape</li>')
         .get();
       $fruits.prepend(more);
-      expect($fruits.children(0).hasClass('plum')).to.be.ok();
-      expect($fruits.children(1).hasClass('grape')).to.be.ok();
+      expect($fruits.children().eq(0).hasClass('plum')).to.be.ok();
+      expect($fruits.children().eq(1).hasClass('grape')).to.be.ok();
     });
 
     it('(html, $(...), html) : should add multiple elements as first children', function() {
       var $plum = $('<li class="plum">Plum</li>');
       var grape = '<li class="grape">Grape</li>';
       $fruits.prepend($plum, grape);
-      expect($fruits.children(0).hasClass('plum')).to.be.ok();
-      expect($fruits.children(1).hasClass('grape')).to.be.ok();
+      expect($fruits.children().eq(0).hasClass('plum')).to.be.ok();
+      expect($fruits.children().eq(1).hasClass('grape')).to.be.ok();
     });
 
     it('(fn) : should invoke the callback with the correct arguments and context', function() {
@@ -354,8 +354,8 @@ describe('$(...)', function() {
       var more = $('<li class="plum">Plum</li><li class="grape">Grape</li>')
         .get();
       $('.apple').after(more);
-      expect($fruits.children(1).hasClass('plum')).to.be.ok();
-      expect($fruits.children(2).hasClass('grape')).to.be.ok();
+      expect($fruits.children().eq(1).hasClass('plum')).to.be.ok();
+      expect($fruits.children().eq(2).hasClass('grape')).to.be.ok();
     });
 
     it('($(...)) : should add element as next sibling', function() {
@@ -523,8 +523,8 @@ describe('$(...)', function() {
       var more = $('<li class="plum">Plum</li><li class="grape">Grape</li>')
         .get();
       $('.apple').before(more);
-      expect($fruits.children(0).hasClass('plum')).to.be.ok();
-      expect($fruits.children(1).hasClass('grape')).to.be.ok();
+      expect($fruits.children().eq(0).hasClass('plum')).to.be.ok();
+      expect($fruits.children().eq(1).hasClass('grape')).to.be.ok();
     });
 
     it('($(...), html) : should add multiple elements as previous siblings', function() {
@@ -644,8 +644,8 @@ describe('$(...)', function() {
         .get();
       $('.pear').replaceWith(more);
 
-      expect($fruits.children(2).hasClass('plum')).to.be.ok();
-      expect($fruits.children(3).hasClass('grape')).to.be.ok();
+      expect($fruits.children().eq(2).hasClass('plum')).to.be.ok();
+      expect($fruits.children().eq(3).hasClass('grape')).to.be.ok();
       expect($fruits.children()).to.have.length(4);
     });
 
