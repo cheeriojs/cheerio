@@ -671,6 +671,38 @@ $('ul').text()
 //    Pear
 ```
 
+#### .wrap( content )
+The .wrap() function can take any string or object that could be passed to the $() factory function to specify a DOM structure. This structure may be nested several levels deep, but should contain only one inmost element. A copy of this structure will be wrapped around each of the elements in the set of matched elements. This method returns the original set of elements for chaining purposes.
+
+```js
+var redFruit = $('<div class="red-fruit"></div>')
+$('.apple').wrap(redFruit)
+
+//=> <ul id="fruits">
+//     <div class="red-fruit">
+//      <li class="apple">Apple</li>
+//     </div>
+//     <li class="orange">Orange</li>
+//     <li class="plum">Plum</li>
+//   </ul>
+
+var healthy = $('<div class="healthy"></div>')
+$('li').wrap(healthy)
+
+//=> <ul id="fruits">
+//     <div class="healthy">
+//       <li class="apple">Apple</li>
+//     </div>
+//     <div class="healthy">
+//       <li class="orange">Orange</li>
+//     </div>
+//     <div class="healthy">
+//        <li class="plum">Plum</li>
+//     </div>
+//   </ul>
+```
+
+
 #### .css( [propertName] ) <br /> .css( [ propertyNames] ) <br /> .css( [propertyName], [value] ) <br /> .css( [propertName], [function] ) <br /> .css( [properties] )
 
 Get the value of a style property for the first element in the set of matched elements or set one or more CSS properties for every matched element.
