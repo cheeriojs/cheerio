@@ -598,11 +598,39 @@ $.html()
 //    </ul>
 ```
 
+#### .insertAfter( content )
+Insert every element in the set of matched elements after the target.
+
+```js
+$('<li class="plum">Plum</li>').insertAfter('.apple')
+$.html()
+//=>  <ul id="fruits">
+//      <li class="apple">Apple</li>
+//      <li class="plum">Plum</li>
+//      <li class="orange">Orange</li>
+//      <li class="pear">Pear</li>
+//    </ul>
+```
+
 #### .before( content, [content, ...] )
 Insert content previous to each element in the set of matched elements.
 
 ```js
 $('.apple').before('<li class="plum">Plum</li>')
+$.html()
+//=>  <ul id="fruits">
+//      <li class="plum">Plum</li>
+//      <li class="apple">Apple</li>
+//      <li class="orange">Orange</li>
+//      <li class="pear">Pear</li>
+//    </ul>
+```
+
+#### .insertBefore( content )
+Insert every element in the set of matched elements before the target.
+
+```js
+$('<li class="plum">Plum</li>').insertBefore('.apple')
 $.html()
 //=>  <ul id="fruits">
 //      <li class="plum">Plum</li>
