@@ -515,7 +515,7 @@ $('li').get().length
 
 Search for a given element from among the matched elements.
 
-```
+```js
 $('.pear').index()
 //=> 2
 $('.orange').index('li')
