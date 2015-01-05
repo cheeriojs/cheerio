@@ -291,4 +291,22 @@ describe('cheerio', function() {
     });
 
   });
+
+  describe('.createWriteStream', function() {
+
+    it('should parse a stream', function(done) {
+      var s = $.createWriteStream();
+
+      s.on('finish', function (q) {
+        expect(q('.apple')).to.be.a(q);
+        done();
+      });
+
+      s.write(fruits.substring(0, 24));
+      s.write(fruits.substring(24, 48));
+      s.end(fruits.substring(48));
+
+    });
+
+  });
 });
