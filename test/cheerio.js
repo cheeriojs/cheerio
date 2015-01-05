@@ -2,6 +2,7 @@ var expect = require('expect.js'),
     _ = require('lodash'),
     htmlparser2 = require('htmlparser2'),
     $ = require('../'),
+    http = require('http'),
     fixtures = require('./fixtures'),
     fruits = fixtures.fruits,
     food = fixtures.food;
@@ -288,6 +289,38 @@ describe('cheerio', function() {
       var $c = $.load('<div>');
 
       expect($c).to.be.a(Function);
+    });
+
+    it('should load a url', function (done) {
+
+      var server = http.createServer(function (req, res) {
+        res.end(fruits);
+      }).listen(23000);
+
+      $.load('http://localhost:23000/', function (err, q) {
+        expect(err).not.to.an(Error);
+        expect(q('.apple').text()).to.be('Apple');
+        server.close(done);
+      });
+
+    });
+
+  });
+
+  describe('.createWriteStream', function() {
+
+    it('should parse a stream', function(done) {
+      var s = $.createWriteStream();
+
+      s.on('finish', function (q) {
+        expect(q('.apple')).to.be.a(q);
+        done();
+      });
+
+      s.write(fruits.substring(0, 24));
+      s.write(fruits.substring(24, 48));
+      s.end(fruits.substring(48));
+
     });
 
   });
