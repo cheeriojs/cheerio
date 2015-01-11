@@ -1,4 +1,4 @@
-# cheerio [![Build Status](https://secure.travis-ci.org/cheeriojs/cheerio.svg?branch=master)](http://travis-ci.org/cheeriojs/cheerio)
+# cheerio [![Build Status](https://secure.travis-ci.org/cheeriojs/cheerio.svg?branch=master)](http://travis-ci.org/cheeriojs/cheerio) [![Coverage](http://img.shields.io/coveralls/cheeriojs/cheerio.svg?branch=master&style=flat)](https://coveralls.io/r/cheeriojs/cheerio)
 
 Fast, flexible, and lean implementation of core jQuery designed specifically for the server.
 
@@ -781,10 +781,6 @@ Cheerio collections are made up of objects that bear some resemblence to [browse
 http://vimeo.com/31950192
 
 > This video tutorial is a follow-up to Nettut's "How to Scrape Web Pages with Node.js and jQuery", using cheerio instead of JSDOM + jQuery. This video shows how easy it is to use cheerio and how much faster cheerio is than JSDOM + jQuery.
-
-## Test Coverage
-
-Cheerio has high-test coverage, you can view the report [here](https://s3.amazonaws.com/MattMueller/Coverage/cheerio.html).
 
 ## Testing
 
