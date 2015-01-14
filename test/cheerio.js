@@ -212,6 +212,18 @@ describe('cheerio', function() {
     expect($elem.eq(1).attr('class')).to.equal('orange');
   });
 
+  it('should handle ', function() {
+    var $elem = $('li', fruits).gt(1);
+    expect($elem).to.have.length(1);
+    expect($elem.eq(0).attr('class')).to.equal('pear');
+  });
+
+  it('should handle ', function() {
+    var $elem = $('li', fruits).lt(1);
+    expect($elem).to.have.length(1);
+    expect($elem.eq(0).attr('class')).to.equal('apple');
+  });
+
   it('should gracefully degrade on complex, unmatched queries', function() {
     var $elem = $('Eastern States Cup #8-fin&nbsp;<br>Downhill&nbsp;');
     expect($elem).to.have.length(0); // []
