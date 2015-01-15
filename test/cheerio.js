@@ -290,5 +290,51 @@ describe('cheerio', function() {
       expect($c).to.be.a(Function);
     });
 
+    describe('prototype extensions', function() {
+      it('should honor extensions defined on `prototype` property', function() {
+        var $c = $.load('<div>');
+        var $div;
+        $c.prototype.myPlugin = function() {
+          return {
+            context: this,
+            args: arguments
+          };
+        };
+
+        $div = $c('div');
+
+        expect($div.myPlugin).to.be.a('function');
+        expect($div.myPlugin().context).to.be($div);
+        expect(Array.prototype.slice.call($div.myPlugin(1, 2, 3).args))
+          .to.eql([1, 2, 3]);
+      });
+
+      it('should honor extensions defined on `fn` property', function() {
+        var $c = $.load('<div>');
+        var $div;
+        $c.fn.myPlugin = function() {
+          return {
+            context: this,
+            args: arguments
+          };
+        };
+
+        $div = $c('div');
+
+        expect($div.myPlugin).to.be.a('function');
+        expect($div.myPlugin().context).to.be($div);
+        expect(Array.prototype.slice.call($div.myPlugin(1, 2, 3).args))
+          .to.eql([1, 2, 3]);
+      });
+
+      it('should isolate extensions between loaded functions', function() {
+        var $a = $.load('<div>');
+        var $b = $.load('<div>');
+
+        $a.prototype.foo = function() {};
+
+        expect($b('div').foo).to.be(undefined);
+      });
+    });
   });
 });
