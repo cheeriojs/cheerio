@@ -212,13 +212,13 @@ describe('cheerio', function() {
     expect($elem.eq(1).attr('class')).to.equal('orange');
   });
 
-  it('should handle ', function() {
+  it('should be able to use: .gt(1)', function() {
     var $elem = $('li', fruits).gt(1);
     expect($elem).to.have.length(1);
     expect($elem.eq(0).attr('class')).to.equal('pear');
   });
 
-  it('should handle ', function() {
+  it('should be able to use: .lt(1)', function() {
     var $elem = $('li', fruits).lt(1);
     expect($elem).to.have.length(1);
     expect($elem.eq(0).attr('class')).to.equal('apple');

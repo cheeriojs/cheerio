@@ -493,6 +493,21 @@ $('li').eq(-1).text()
 //=> Pear
 ```
 
+#### .gt( i )
+Select all elements at an index greater than index within the matched set.
+
+```js
+$('li').gt(1)
+//=> Pear
+```
+
+#### .lt( i )
+Select all elements at an index less than index within the matched set.
+```js
+$('li').lt(1)
+//=> Apple
+```
+
 #### .get( [i] )
 
 Retrieve the DOM elements matched by the Cheerio object. If an index is specified, retrieve one of the elements matched by the Cheerio object:
