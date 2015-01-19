@@ -1,4 +1,241 @@
 
+0.18.0 / 2014-11-06
+==================
+
+ * bump htmlparser2 dependency to ~3.8.1 (Chris Rebert)
+ * Correct unit test titles (Mike Pennisi)
+ * Correct behavior of `after` and `before` (Mike Pennisi)
+ * implement jQuery's .has() (Chris Rebert)
+ * Update repository url (haqii)
+ * attr() should return undefined or name for booleans (Raoul Millais)
+ * Update Readme.md (Ryan Breen)
+ * Implement `Cheerio#not` (Mike Pennisi)
+ * Clone nodes according to original parsing options (Mike Pennisi)
+ * fix lint error (David Chambers)
+ * Add explicit tests for DOM level 1 API (Mike Pennisi)
+ * Expose DOM level 1 API for Node-like objects (Mike Pennisi)
+ * Correct error in documentation (Mike Pennisi)
+ * Return a fully-qualified Function from `$.load` (Mike Pennisi)
+ * Update tests to avoid duck typing (Mike Pennisi)
+ * Alter "loaded" functions to produce true instances (Mike Pennisi)
+ * Organize tests for `cheerio.load` (Mike Pennisi)
+ * Complete `$.prototype.find` (Mike Pennisi)
+ * Use JSHint's `extends` option (Mike Pennisi)
+ * Remove aliases for exported methods (Mike Pennisi)
+ * Disallow unused variables (Mike Pennisi)
+ * Remove unused internal variables (Mike Pennisi)
+ * Remove unused variables from unit tests (Mike Pennisi)
+ * Remove unused API method references (Mike Pennisi)
+ * Move tests for `contains` method (Mike Pennisi)
+ * xyz@0.4.0 (David Chambers)
+ * Created a wiki for companies using cheerio in production (Matthew Mueller)
+ * Implement `$.prototype.index` (Mike Pennisi)
+ * Implement `$.prototype.addBack` (Mike Pennisi)
+ * Added double quotes to radio attribute name to account for characters such as brackets (akant10)
+ * Update History.md (Gabriel Falkenberg)
+ * add 0.17.0 changelog (David Chambers)
+ * exit prepublish script if tag not found (David Chambers)
+ * alphabetize devDependencies (fb55)
+ * ignore coverage dir (fb55)
+ * submit coverage to coveralls (fb55)
+ * replace jscoverage with istanbul (fb55)
+
+0.17.0 / 2014-06-10
+==================
+
+ * Fix bug in internal `uniqueSplice` function (Mike Pennisi)
+ * accept buffer argument to cheerio.load (David Chambers)
+ * Respect options on the element level (Alex Indigo)
+ * Change state definition to more readable (Artem Burtsev)
+ * added test (0xBADC0FFEE)
+ * add class only if doesn't exist (Artem Burtsev)
+ * Made it less insane. (Alex Indigo)
+ * Implement `Cheerio#add` (Mike Pennisi)
+ * Use "loaded" instance of Cheerio in unit tests (Mike Pennisi)
+ * Be more strict with object check. (Alex Indigo)
+ * Added options argument to .html() static method. (Alex Indigo)
+ * Fixed encoding mishaps. Adjusted tests. (Alex Indigo)
+ * use dom-serializer module (fb55)
+ * don't test on 0.8, don't ignore 0.11 (Felix Böhm)
+ * parse: rm unused variables (coderaiser)
+ * cheerio: rm unused variable (coderaiser)
+ * Fixed test (Avi Kohn)
+ * Added test (Avi Kohn)
+ * Changed == to === (Avi Kohn)
+ * Fixed a bug in removing type="hidden" attr (Avi Kohn)
+ * sorted (Alexey Raspopov)
+ * add `muted` attr to booleanAttributes (Alexey Raspopov)
+ * fixed context of `this` in .html (Felix Böhm)
+ * append new elements for each element in selection (fb55)
+
+0.16.0 / 2014-05-08
+==================
+
+ * fix `make bench` (David Chambers)
+ * makefile: add release-* targets (David Chambers)
+ * alphabetize dependencies (David Chambers)
+ * Rewrite `data` internals with caching behavior (Mike Pennisi)
+ * Fence .val example as js (Kevin Sawicki)
+ * Fixed typos. Deleted trailing whitespace from test/render.js (Nattaphoom Ch)
+ * Fix manipulation APIs with removed elements (kpdecker)
+ * Perform manual string parsing for hasClass (kpdecker)
+ * Fix existing element removal (kpdecker)
+ * update render tests (Felix Böhm)
+ * fixed cheerio path (Felix Böhm)
+ * use `entities.escape` for attribute values (Felix Böhm)
+ * bump entities version (Felix Böhm)
+ * remove lowerCaseTags option from readme (Felix Böhm)
+ * added test case for .html in xmlMode (fb55)
+ * render xml in `html()` when `xmlMode: true` (fb55)
+ * use a map for booleanAttributes (fb55)
+ * update singleTags, use utils.isTag (fb55)
+ * update travis badge URL (Felix Böhm)
+ * use typeof instead of _.isString and _.isNumber (fb55)
+ * use Array.isArray instead of _.isArray (fb55)
+ * replace _.isFunction with typeof (fb55)
+ * removed unnecessary error message (fb55)
+ * decode entities in htmlparser2 (fb55)
+ * pass options object to CSSselect (fb55)
+
+0.15.0 / 2014-04-08
+==================
+
+ * Update callbacks to pass element per docs (@kpdecker)
+ * preserve options (@fb55)
+ * Use SVG travis badge (@t3chnoboy)
+ * only use static requires (@fb55)
+ * Optimize manipulation methods (@kpdecker)
+ * Optimize add and remove class cases (@kpdecker)
+ * accept dom of DomHandler to cheerio.load (@nleush)
+ * added parentsUntil method (@finspin)
+ * Add performance optimization and bug fix `empty` method (@kpdecker)
+
+0.14.0 / 2014-04-01
+==================
+
+ * call encodeXML and directly expose decodeHTML (@fb55)
+ * use latest htmlparser2 and entities versions (@fb55)
+ * Deprecate `$.fn.toArray` (@jugglinmike)
+ * Implement `$.fn.get` (@jugglinmike)
+ * .replaceWith now replaces all selected elements. (@xavi-)
+ * Correct arguments for 'replaceWith' callback (@jugglinmike)
+ * switch to lodash (@fb55)
+ * update to entities@0.5.0 (@fb55)
+ * Fix attr when $ collection contains text modules (@kpdecker)
+ * Update to latest version of expect.js (@jugglinmike)
+ * Remove nodes from their previous structures (@jugglinmike)
+ * Update render.js (@stevenvachon)
+ * CDATA test (@stevenvachon)
+ * only ever one child index for cdata (@stevenvachon)
+ * don't loop through cdata children array (@stevenvachon)
+ * proper rendering of CDATA (@stevenvachon)
+ * Add cheerio-only bench option (@kpdecker)
+ * Avoid delete operations (@kpdecker)
+ * Add independent html benchmark (@kpdecker)
+ * Cache tag check in render (@kpdecker)
+ * Simplify attribute rendering step (@kpdecker)
+ * Add html rendering bench case (@kpdecker)
+ * Remove unnecessary check from removeAttr (@kpdecker)
+ * Remove unnecessary encoding step for attrs (@kpdecker)
+ * Add test for removeAttr+attr on boolean attributes (@kpdecker)
+ * Add single element benchmark case (@kpdecker)
+ * Optimize filter with selector (@kpdecker)
+ * Fix passing context as dom node (@alfred-nsh)
+ * Fix bug in `nextUntil` (@jugglinmike)
+ * Fix bug in `nextAll` (@jugglinmike)
+ * Implement `selector` argument of `next` method (@jugglinmike)
+ * Fix bug in `prevUntil` (@jugglinmike)
+ * Implement `selector` argument of `prev` method (@jugglinmike)
+ * Fix bug in `prevAll` (@jugglinmike)
+ * Fix bug in `siblings` (@jugglinmike)
+ * Avoid unnecessary indexOf from toggleClass (@kpdecker)
+ * Use strict equality rather than falsy check in eq (@kpdecker)
+ * Add benchmark coverage for all $ APIs (@kpdecker)
+ * Optimize filter Cheerio intermediate creation (@kpdecker)
+ * Optimize siblings cheerio instance creation (@kpdecker)
+ * Optimize identity cases for first/last/eq (@kpdecker)
+ * Use domEach for traversal (@kpdecker)
+ * Inline children lookup in find (@kpdecker)
+ * Use domEach in data accessor (@kpdecker)
+ * Avoid cheerio creation in add/remove/toggleClass (@kpdecker)
+ * Implement getAttr local helper (@kpdecker)
+
+0.13.1 / 2014-01-07
+==================
+
+ * Fix select with context in Cheerio function (@jugglinmike)
+ * Remove unecessary DOM maintenance logic (@jugglinmike)
+ * Deprecate support for node 0.6
+
+0.13.0 / 2013-12-30
+==================
+
+ * Remove "root" node (@jugglinmike)
+ * Fix bug in `prevAll`, `prev`, `nextAll`, `next`, `prevUntil`, `nextUntil` (@jugglinmike)
+ * Fix `replaceWith` method (@jugglinmike)
+ * added nextUntil() and prevUntil() (@finspin)
+ * Remove internal `connect` function (@jugglinmike)
+ * Rename `Cheerio#make` to document private status (@jugginmike)
+ * Remove extraneous call to `_.uniq` (@jugglinmike)
+ * Use CSSselect library directly (@jugglinmike)
+ * Run CI against Node v0.11 as an allowed failure (@jugginmike)
+ * Correct bug in `Cheerio#parents` (@jugglinmike)
+ * Implement `$.fn.end` (@jugginmike)
+ * Ignore colons inside of url(.*) when parsing css (@Meekohi)
+ * Introduce rudimentary benchmark suite (@jugglinmike)
+ * Update HtmlParser2 version (@jugglinmike)
+ * Correct inconsistency in `$.fn.map` (@jugglinmike)
+ * fixed traversing tests (@finspin)
+ * Simplify `make` method (@jugglinmike)
+ * Avoid shadowing instance methods from arrays (@jugglinmike)
+
+0.12.4 / 2013-11-12
+==================
+
+ * Coerce JSON values returned by `data` (@jugglinmike)
+ * issue #284: when rendering HTML, use original data attributes (@Trott)
+ * Introduce JSHint for automated code linting (@jugglinmike)
+ * Prevent `find` from returning duplicate elements (@jugglinmike)
+ * Implement function signature of `replaceWith` (@jugglinmike)
+ * Implement function signature of `before` (@jugglinmike)
+ * Implement function signature of `after` (@jugglinmike)
+ * Implement function signature of `append`/`prepend` (@jugglinmike)
+ * Extend iteration methods to accept nodes (@jugglinmike)
+ * Improve `removeClass` (@jugglinmike)
+ * Complete function signature of `addClass` (@jugglinmike)
+ * Fix bug in `removeClass` (@jugglinmike)
+ * Improve contributing.md (@jugglinmike)
+ * Fix and document .css() (@jugglinmike)
+
+0.12.3 / 2013-10-04
+===================
+
+ * Add .toggleClass() function (@cyberthom)
+ * Add contributing guidelines (@jugglinmike)
+ * Fix bug in `siblings` (@jugglinmike)
+ * Correct the implementation `filter` and `is` (@jugglinmike)
+ * add .data() function (@andi-neck)
+ * add .css() (@yields)
+ * Implements contents() (@jlep)
+
+0.12.2 / 2013-09-04
+==================
+
+ * Correct implementation of `$.fn.text` (@jugglinmike)
+ * Refactor Cheerio array creation (@jugglinmike)
+ * Extend manipulation methods to accept Arrays (@jugglinmike)
+ * support .attr(attributeName, function(index, attr)) (@xiaohwan)
+
+0.12.1 / 2013-07-30
+==================
+
+ * Correct behavior of `Cheerio#parents` (@jugglinmike)
+ * Double quotes inside attributes kills HTML (@khoomeister)
+ * Making next({}) and prev({}) return empty object (@absentTelegraph)
+ * Implement $.parseHTML (@jugglinmike)
+ * Correct bug in jQuery.fn.closest (@jugglinmike)
+ * Correct behavior of $.fn.val on 'option' elements (@jugglinmike)
+
 0.12.0 / 2013-06-09
 ===================
 
@@ -65,7 +302,7 @@
 * Added filter() with tests and updated readme (@bensheldon & @davidchambers)
 * Added spaces between attributes rewritten by removeClass (@jos3000)
 * updated docs to remove reference to size method (@ironchefpython)
-* removed tidy from cheerio
+* removed HTML tidy/pretty print from cheerio
 
 0.10.1 / 2012-10-04
 ===================
@@ -138,7 +375,7 @@
 * Added travis-ci integration
 * Replaced should.js with expect.js. Browser testing to come
 * Fixed spacing between attributes and their values
-* Added HTML pretty print
+* Added HTML tidy/pretty print
 * Exposed node-htmlparser2 parsing options
 * Revert .replaceWith(...) to be consistent with jQuery
 

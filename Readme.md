@@ -1,4 +1,4 @@
-# cheerio [![Build Status](https://secure.travis-ci.org/MatthewMueller/cheerio.png?branch=master)](http://travis-ci.org/MatthewMueller/cheerio)
+# cheerio [![Build Status](https://secure.travis-ci.org/cheeriojs/cheerio.svg?branch=master)](http://travis-ci.org/cheeriojs/cheerio)
 
 Fast, flexible, and lean implementation of core jQuery designed specifically for the server.
 
@@ -26,8 +26,8 @@ Cheerio implements a subset of core jQuery. Cheerio removes all the DOM inconsis
 __&#991; Blazingly fast:__
 Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient. Preliminary end-to-end benchmarks suggest that cheerio is about __8x__ faster than JSDOM.
 
-__&#10049; Insanely flexible:__
-Cheerio wraps around @FB55's forgiving htmlparser. Cheerio can parse nearly any HTML or XML document.
+__&#10049; Incredibly flexible:__
+Cheerio wraps around @FB55's forgiving [htmlparser2](https://github.com/fb55/htmlparser2/). Cheerio can parse nearly any HTML or XML document.
 
 ## What about JSDOM?
 I wrote cheerio because I found myself increasingly frustrated with JSDOM. For me, there were three main sticking points that I kept running into again and again:
@@ -88,24 +88,24 @@ of the default parsing options:
 
 ```js
 $ = cheerio.load('<ul id="fruits">...</ul>', {
-    ignoreWhitespace: true,
+    normalizeWhitespace: true,
     xmlMode: true
 });
 ```
 
-These parsing options are taken directly from htmlparser, therefore any options that can be used in htmlparser
-are valid in cheerio as well. The default options are:
+These parsing options are taken directly from [htmlparser2](https://github.com/fb55/htmlparser2/wiki/Parser-options), therefore any options that can be used in `htmlparser2` are valid in cheerio as well. The default options are:
 
 ```js
 {
-    ignoreWhitespace: false,
+    normalizeWhitespace: false,
     xmlMode: false,
-    lowerCaseTags: false
+    decodeEntities: true
 }
+
 ```
 
-For a list of options and their effects, see [this](https://github.com/fb55/DomHandler) and
-[this](https://github.com/fb55/htmlparser2/wiki/Parser-options).
+For a full list of options and their effects, see [this](https://github.com/fb55/DomHandler) and
+[htmlparser2's options](https://github.com/fb55/htmlparser2/wiki/Parser-options).
 
 ### Selectors
 
@@ -143,15 +143,33 @@ $('.apple').attr('id', 'favorite').html()
 
 > See http://api.jquery.com/attr/ for more information
 
+#### .data( name, value )
+Method for getting and setting data attributes. Gets or sets the data attribute value for only the first element in the matched set.
+
+```js
+$('<div data-apple-color="red"></div>').data()
+//=> { appleColor: 'red' }
+
+$('<div data-apple-color="red"></div>').data('data-apple-color')
+//=> 'red'
+
+var apple = $('.apple').data('kind', 'mac')
+apple.data('kind')
+//=> 'mac'
+```
+
+> See http://api.jquery.com/data/ for more information
+
 #### .val( [value] )
 Method for getting and setting the value of input, select, and textarea. Note: Support for `map`, and `function` has not been added yet.
 
-    $('input[type="text"]').val()
-    => input_text
+```js
+$('input[type="text"]').val()
+//=> input_text
 
-    $('input[type="text"]').val('test').html()
-    => <input type="text" value="test"/>
-
+$('input[type="text"]').val('test').html()
+//=> <input type="text" value="test"/>
+```
 
 #### .removeAttr( name )
 Method for removing attributes by `name`.
@@ -201,23 +219,42 @@ $('.apple').addClass('red').removeClass().html()
 
 > See http://api.jquery.com/removeClass/ for more information.
 
+#### .toggleClass( className, [switch] )
+Add or remove class(es) from the matched elements, depending on either the class's presence or the value of the switch argument. Also accepts a `function` like jQuery.
+
+```js
+$('.apple.green').toggleClass('fruit green red').html()
+//=> <li class="apple fruit red">Apple</li>
+
+$('.apple.green').toggleClass('fruit green red', true).html()
+//=> <li class="apple green fruit red">Apple</li>
+```
+
+> See http://api.jquery.com/toggleClass/ for more information.
+
 #### .is( selector )
+#### .is( element )
+#### .is( selection )
 #### .is( function(index) )
-Checks the current list of elements and returns `true` if _any_ of the elements match the selector. If using a predicate function, the function is executed in the context of the selected element, so `this` refers to the current element.
+Checks the current list of elements and returns `true` if _any_ of the elements match the selector. If using an element or Cheerio selection, returns `true` if _any_ of the elements match. If using a predicate function, the function is executed in the context of the selected element, so `this` refers to the current element.
 
 
 ### Traversing
 
 #### .find(selector)
-Get a set of descendants filtered by `selector` of each element in the current set of matched elements.
+#### .find(selection)
+#### .find(node)
+Get the descendants of each element in the current set of matched elements, filtered by a selector, jQuery object, or element.
 
 ```js
 $('#fruits').find('li').length
 //=> 3
+$('#fruits').find($('.apple')).length
+//=> 1
 ```
 
-#### .parent()
-Gets the parent of the first selected element.
+#### .parent([selector])
+Get the parent of each element in the current set of matched elements, optionally filtered by a selector.
 
 ```js
 $('.pear').parent().attr('id')
@@ -230,6 +267,13 @@ Get a set of parents filtered by `selector` of each element in the current set o
 $('.orange').parents().length
 // => 2
 $('.orange').parents('#fruits').length
+// => 1
+```
+
+#### .parentsUntil([selector][,filter])
+Get the ancestors of each element in the current set of matched elements, up to but not including the element matched by the selector, DOM node, or cheerio object.
+```js
+$('.orange').parentsUntil('#food').length
 // => 1
 ```
 
@@ -247,8 +291,8 @@ $('.orange').closest('#fruits')
 // => [<ul id="fruits"> ... </ul>]
 ```
 
-#### .next()
-Gets the next sibling of the first selected element.
+#### .next([selector])
+Gets the next sibling of the first selected element, optionally filtered by a selector.
 
 ```js
 $('.apple').next().hasClass('orange')
@@ -263,8 +307,16 @@ $('.apple').nextAll()
 //=> [<li class="orange">Orange</li>, <li class="pear">Pear</li>]
 ```
 
-#### .prev()
-Gets the previous sibling of the first selected element.
+#### .nextUntil()
+Gets all the following siblings up to but not including the element matched by the selector.
+
+```js
+$('.apple').nextUntil('.pear')
+//=> [<li class="orange">Orange</li>]
+```
+
+#### .prev([selector])
+Gets the previous sibling of the first selected element optionally filtered by a selector.
 
 ```js
 $('.orange').prev().hasClass('apple')
@@ -277,6 +329,14 @@ Gets all the preceding siblings of the first selected element.
 ```js
 $('.pear').prevAll()
 //=> [<li class="orange">Orange</li>, <li class="apple">Apple</li>]
+```
+
+#### .prevUntil()
+Gets all the preceding siblings up to but not including the element matched by the selector.
+
+```js
+$('.pear').prevUntil('.apple')
+//=> [<li class="orange">Orange</li>]
 ```
 
 #### .slice( start, [end] )
@@ -313,6 +373,14 @@ $('#fruits').children('.pear').text()
 //=> Pear
 ```
 
+#### .contents()
+Gets the children of each element in the set of matched elements, including text and comment nodes.
+
+```js
+$('#fruits').contents().length
+//=> 3
+```
+
 #### .each( function(index, element) )
 Iterates over a cheerio object, executing a function for each matched element. When the callback is fired, the function is fired in the context of the DOM element, so `this` refers to the current element, which is equivalent to the function parameter `element`. To break out of the `each` loop early, return with `false`.
 
@@ -328,19 +396,19 @@ fruits.join(', ');
 ```
 
 #### .map( function(index, element) )
-Iterates over a cheerio object, executing a function for each selected element. Map will return an `array` of return values from each of the functions it iterated over. The function is fired in the context of the DOM element, so `this` refers to the current element, which is equivalent to the function parameter `element`.
+Pass each element in the current matched set through a function, producing a new Cheerio object containing the return values. The function can return an individual data item or an array of data items to be inserted into the resulting set. If an array is returned, the elements inside the array are inserted into the set. If the function returns null or undefined, no element will be inserted.
 
 ```js
 $('li').map(function(i, el) {
   // this === el
-  return $(this).attr('class');
-}).join(', ');
-//=> apple, orange, pear
+  return $(this).text();
+}).get().join(' ');
+//=> "apple orange pear"
 ```
 
-#### .filter( selector ) <br /> .filter( function(index) )
+#### .filter( selector ) <br /> .filter( selection ) <br /> .filter( element ) <br /> .filter( function(index) )
 
-Iterates over a cheerio object, reducing the set of selector elements to those that match the selector or pass the function's test. If using the function method, the function is executed in the context of the selected element, so `this` refers to the current element.
+Iterates over a cheerio object, reducing the set of selector elements to those that match the selector or pass the function's test. When a Cheerio selection is specified, return only the elements contained in that selection. When an element is specified, return only that element (if it is contained in the original selection). If using the function method, the function is executed in the context of the selected element, so `this` refers to the current element.
 
 Selector:
 
@@ -357,6 +425,45 @@ $('li').filter(function(i, el) {
   return $(this).attr('class') === 'orange';
 }).attr('class')
 //=> orange
+```
+
+#### .not( selector ) <br /> .not( selection ) <br /> .not( element ) <br /> .not( function(index, elem) )
+
+Remove elements from the set of matched elements. Given a jQuery object that represents a set of DOM elements, the `.not()` method constructs a new jQuery object from a subset of the matching elements. The supplied selector is tested against each element; the elements that don't match the selector will be included in the result. The `.not()` method can take a function as its argument in the same way that `.filter()` does. Elements for which the function returns true are excluded from the filtered set; all other elements are included.
+
+Selector:
+
+```js
+$('li').not('.apple').length;
+//=> 2
+```
+
+Function:
+
+```js
+$('li').filter(function(i, el) {
+  // this === el
+  return $(this).attr('class') === 'orange';
+}).length;
+//=> 2
+```
+
+#### .has( selector ) <br /> .has( element )
+
+Filters the set of matched elements to only those which have the given DOM element as a descendant or which have a descendant that matches the given selector. Equivalent to `.filter(':has(selector)')`.
+
+Selector:
+
+```js
+$('ul').has('.pear').attr('id');
+//=> fruits
+```
+
+Element:
+
+```js
+$('ul').has($('.pear')[0]).attr('id');
+//=> fruits
 ```
 
 #### .first()
@@ -384,6 +491,66 @@ $('li').eq(0).text()
 
 $('li').eq(-1).text()
 //=> Pear
+```
+
+#### .get( [i] )
+
+Retrieve the DOM elements matched by the Cheerio object. If an index is specified, retrieve one of the elements matched by the Cheerio object:
+
+```js
+$('li').get(0).tagName
+//=> li
+```
+
+If no index is specified, retrieve all elements matched by the Cheerio object:
+
+```js
+$('li').get().length
+//=> 3
+```
+
+#### .index()
+#### .index( selector )
+#### .index( nodeOrSelection )
+
+Search for a given element from among the matched elements.
+
+```js
+$('.pear').index()
+//=> 2
+$('.orange').index('li')
+//=> 1
+$('.apple').index($('#fruit, li'))
+//=> 1
+```
+
+#### .end()
+End the most recent filtering operation in the current chain and return the set of matched elements to its previous state.
+
+```js
+$('li').eq(0).end().length
+//=> 3
+```
+
+#### .add( selector [, context] )
+#### .add( element )
+#### .add( elements )
+#### .add( html )
+#### .add( selection )
+Add elements to the set of matched elements.
+
+```js
+$('.apple').add('.orange').length
+//=> 2
+```
+
+#### .addBack( [filter] )
+
+Add the previous set of elements on the stack to the current set, optionally filtered by a selector.
+
+```js
+$('li').eq(0).addBack('.orange').length
+//=> 2
 ```
 
 ### Manipulation
@@ -431,11 +598,39 @@ $.html()
 //    </ul>
 ```
 
+#### .insertAfter( content )
+Insert every element in the set of matched elements after the target.
+
+```js
+$('<li class="plum">Plum</li>').insertAfter('.apple')
+$.html()
+//=>  <ul id="fruits">
+//      <li class="apple">Apple</li>
+//      <li class="plum">Plum</li>
+//      <li class="orange">Orange</li>
+//      <li class="pear">Pear</li>
+//    </ul>
+```
+
 #### .before( content, [content, ...] )
 Insert content previous to each element in the set of matched elements.
 
 ```js
 $('.apple').before('<li class="plum">Plum</li>')
+$.html()
+//=>  <ul id="fruits">
+//      <li class="plum">Plum</li>
+//      <li class="apple">Apple</li>
+//      <li class="orange">Orange</li>
+//      <li class="pear">Pear</li>
+//    </ul>
+```
+
+#### .insertBefore( content )
+Insert every element in the set of matched elements before the target.
+
+```js
+$('<li class="plum">Plum</li>').insertBefore('.apple')
 $.html()
 //=>  <ul id="fruits">
 //      <li class="plum">Plum</li>
@@ -472,7 +667,7 @@ $.html()
 ```
 
 #### .empty()
-Empties an element, removing all it's children.
+Empties an element, removing all its children.
 
 ```js
 $('ul').empty()
@@ -503,6 +698,10 @@ $('ul').text()
 //    Orange
 //    Pear
 ```
+
+#### .css( [propertName] ) <br /> .css( [ propertyNames] ) <br /> .css( [propertyName], [value] ) <br /> .css( [propertName], [function] ) <br /> .css( [properties] )
+
+Get the value of a style property for the first element in the set of matched elements or set one or more CSS properties for every matched element.
 
 ### Rendering
 When you're ready to render the document, you can use the `html` utility function:
@@ -540,14 +739,6 @@ $.xml()
 ### Miscellaneous
 DOM element methods that don't fit anywhere else
 
-#### .toArray()
-Retrieve all the DOM elements contained in the jQuery set, as an array.
-
-```js
-$('li').toArray()
-//=> [ {...}, {...}, {...} ]
-```
-
 #### .clone() ####
 Clone the cheerio object.
 
@@ -568,6 +759,35 @@ $.root().append('<ul id="vegetables"></ul>').html();
 
 #### $.contains( container, contained )
 Checks to see if the `contained` DOM element is a descendent of the `container` DOM element.
+
+#### $.parseHTML( data [, context ] [, keepScripts ] )
+Parses a string into an array of DOM nodes. The `context` argument has no meaning for Cheerio, but it is maintained for API compatability.
+
+### Plugins
+
+Once you have loaded a document, you may extend the prototype or the equivalent `fn` property with custom plugin methods:
+
+```js
+var $ = cheerio.load('<html><body>Hello, <b>world</b>!</body></html>');
+$.prototype.logHtml = function() {
+  console.log(this.html());
+};
+
+$('body').logHtml(); // logs "Hello, <b>world</b>!" to the console
+```
+
+### The "DOM Node" object
+
+Cheerio collections are made up of objects that bear some resemblence to [browser-based DOM nodes](https://developer.mozilla.org/en-US/docs/Web/API/Node). You can expect them to define the following properties:
+
+- `tagName`
+- `parentNode`
+- `previousSibling`
+- `nextSibling`
+- `nodeValue`
+- `firstChild`
+- `childNodes`
+- `lastChild`
 
 ## Screencasts
 
@@ -596,33 +816,68 @@ These are some of the contributors that have made cheerio possible:
 
 ```
 project  : cheerio
-repo age : 1 year, 7 months ago
-commits  : 474
-active   : 141 days
-files    : 27
-authors  :
-  286 Matt Mueller            60.3%
-   80 Matthew Mueller         16.9%
-   42 David Chambers          8.9%
-   15 Siddharth Mahendraker   3.2%
-    7 Adam Bretz              1.5%
-    7 ironchefpython          1.5%
-    6 Mike Pennisi            1.3%
-    5 Jos Shepherd            1.1%
-    5 Ryan Schmukler          1.1%
-    5 Ben Sheldon             1.1%
-    3 jeremy.dentel           0.6%
-    2 alexbardas              0.4%
-    2 Rob Ashton              0.4%
-    2 Wayne Larsen            0.4%
-    1 mattym                  0.2%
-    1 Ben Atkin               0.2%
-    1 Chris O'Hara            0.2%
-    1 Felix Böhm              0.2%
-    1 Rob "Hurricane" Ashton  0.2%
-    1 Simon Boudrias          0.2%
-    1 Sindre Sorhus           0.2%
+ repo age : 2 years, 6 months
+ active   : 285 days
+ commits  : 762
+ files    : 36
+ authors  :
+   293  Matt Mueller            38.5%
+   133  Matthew Mueller         17.5%
+    92  Mike Pennisi            12.1%
+    54  David Chambers          7.1%
+    30  kpdecker                3.9%
+    19  Felix Böhm             2.5%
+    17  fb55                    2.2%
+    15  Siddharth Mahendraker   2.0%
+    11  Adam Bretz              1.4%
+     8  Nazar Leush             1.0%
+     7  ironchefpython          0.9%
+     6  Jarno Leppänen         0.8%
+     5  Ben Sheldon             0.7%
+     5  Jos Shepherd            0.7%
+     5  Ryan Schmukler          0.7%
+     5  Steven Vachon           0.7%
+     4  Maciej Adwent           0.5%
+     4  Amir Abu Shareb         0.5%
+     3  jeremy.dentel@brandingbrand.com 0.4%
+     3  Andi Neck               0.4%
+     2  steve                   0.3%
+     2  alexbardas              0.3%
+     2  finspin                 0.3%
+     2  Ali Farhadi             0.3%
+     2  Chris Khoo              0.3%
+     2  Rob Ashton              0.3%
+     2  Thomas Heymann          0.3%
+     2  Jaro Spisak             0.3%
+     2  Dan Dascalescu          0.3%
+     2  Torstein Thune          0.3%
+     2  Wayne Larsen            0.3%
+     1  Timm Preetz             0.1%
+     1  Xavi                    0.1%
+     1  Alex Shaindlin          0.1%
+     1  mattym                  0.1%
+     1  Felix Böhm            0.1%
+     1  Farid Neshat            0.1%
+     1  Dmitry Mazuro           0.1%
+     1  Jeremy Hubble           0.1%
+     1  nevermind               0.1%
+     1  Manuel Alabor           0.1%
+     1  Matt Liegey             0.1%
+     1  Chris O'Hara            0.1%
+     1  Michael Holroyd         0.1%
+     1  Michiel De Mey          0.1%
+     1  Ben Atkin               0.1%
+     1  Rich Trott              0.1%
+     1  Rob "Hurricane" Ashton  0.1%
+     1  Robin Gloster           0.1%
+     1  Simon Boudrias          0.1%
+     1  Sindre Sorhus           0.1%
+     1  xiaohwan                0.1%
 ```
+
+## Cheerio in the real world
+
+Are you using cheerio in production? Add it to the [wiki](https://github.com/cheeriojs/cheerio/wiki/Cheerio-in-Production)!
 
 ## Special Thanks
 
@@ -632,7 +887,7 @@ __&#8226; @FB55 for node-htmlparser2 & CSSSelect:__
 Felix has a knack for writing speedy parsing engines. He completely re-wrote both @tautologistic's `node-htmlparser` and @harry's `node-soupselect` from the ground up, making both of them much faster and more flexible. Cheerio would not be possible without his foundational work
 
 __&#8226; @jQuery team for jQuery:__
-The core API is the best of it's class and despite dealing with all the browser inconsistencies the code base is extremely clean and easy to follow. Much of cheerio's implementation and documentation is from jQuery. Thanks guys.
+The core API is the best of its class and despite dealing with all the browser inconsistencies the code base is extremely clean and easy to follow. Much of cheerio's implementation and documentation is from jQuery. Thanks guys.
 
 __&#8226; @visionmedia:__
 The style, the structure, the open-source"-ness" of this library comes from studying TJ's style and using many of his libraries. This dude consistently pumps out high-quality libraries and has always been more than willing to help or answer questions. You rock TJ.

@@ -1,7 +1,11 @@
 REPORTER = dot
+XYZ = node_modules/.bin/xyz --message 'Release X.Y.Z' --tag X.Y.Z --repo git@github.com:cheeriojs/cheerio.git --script scripts/prepublish
 
-test:
-	@./node_modules/mocha/bin/mocha --reporter $(REPORTER)
+lint:
+	@./node_modules/.bin/jshint lib/ test/
+
+test: lint
+	@./node_modules/.bin/mocha --recursive --reporter $(REPORTER)
 
 setup:
 	@npm install
@@ -9,10 +13,24 @@ setup:
 subl:
 	@subl lib/ test/ package.json index.js
 
-test-cov: lib-cov
-	@CHEERIO_COV=1 $(MAKE) test REPORTER=html-cov > coverage.html
+test-cov:
+	@./node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- --recursive --reporter $(REPORTER)
 
-lib-cov:
-	@jscoverage lib lib-cov
+report-cov: test-cov
+	@cat coverage/lcov.info | ./node_modules/.bin/coveralls
+
+travis-test: lint
+	@make report-cov || echo "Couldn't submit"
+
+bench:
+	@./benchmark/benchmark.js
+
+.PHONY: release-major release-minor release-patch
+release-major: LEVEL = major
+release-minor: LEVEL = minor
+release-patch: LEVEL = patch
+
+release-major release-minor release-patch:
+	@$(XYZ) --increment $(LEVEL)
 
 .PHONY: test build setup subl

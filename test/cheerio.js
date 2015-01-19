@@ -1,5 +1,6 @@
 var expect = require('expect.js'),
-    _ = require('underscore'),
+    _ = require('lodash'),
+    htmlparser2 = require('htmlparser2'),
     $ = require('../'),
     fixtures = require('./fixtures'),
     fruits = fixtures.fruits,
@@ -32,11 +33,18 @@ describe('cheerio', function() {
     expect($('#fruits')).to.be.empty();
   });
 
+  it('$(node) : should override previously-loaded nodes', function() {
+    var C = $.load('<div><span></span></div>');
+    var spanNode = C('span')[0];
+    var $span = C(spanNode);
+    expect($span[0]).to.equal(spanNode);
+  });
+
   it('should be able to create html without a root or context', function() {
     var $h2 = $('<h2>');
     expect($h2).to.not.be.empty();
     expect($h2).to.have.length(1);
-    expect($h2[0].name).to.equal('h2');
+    expect($h2[0].tagName).to.equal('h2');
   });
 
   it('should be able to create complicated html', function() {
@@ -45,21 +53,26 @@ describe('cheerio', function() {
     expect($script).to.have.length(1);
     expect($script[0].attribs.src).to.equal('script.js');
     expect($script[0].attribs.type).to.equal('text/javascript');
-    expect($script[0].children).to.be.empty();
+    expect($script[0].childNodes).to.be.empty();
   });
 
   var testAppleSelect = function($apple) {
     expect($apple).to.have.length(1);
     $apple = $apple[0];
-    expect($apple.parent.name).to.equal('ul');
+    expect($apple.parentNode.tagName).to.equal('ul');
     expect($apple.prev).to.be(null);
     expect($apple.next.attribs['class']).to.equal('orange');
-    expect($apple.children).to.have.length(1);
-    expect($apple.children[0].data).to.equal('Apple');
+    expect($apple.childNodes).to.have.length(1);
+    expect($apple.childNodes[0].data).to.equal('Apple');
   };
 
   it('should be able to select .apple with only a context', function() {
     var $apple = $('.apple', fruits);
+    testAppleSelect($apple);
+  });
+
+  it('should be able to select .apple with a node as context', function() {
+    var $apple = $('.apple', $(fruits)[0]);
     testAppleSelect($apple);
   });
 
@@ -77,16 +90,17 @@ describe('cheerio', function() {
   it('should be able to select a tag', function() {
     var $ul = $('ul', fruits);
     expect($ul).to.have.length(1);
-    expect($ul[0].name).to.equal('ul');
+    expect($ul[0].tagName).to.equal('ul');
   });
 
-  it('should be able to filter down using the context', function() {
-    var q = $.load(fruits),
-        apple = q('.apple', 'ul'),
-        lis = q('li', 'ul');
+  it('should accept a node reference as a context', function() {
+    var $elems = $('<div><span></span></div>');
+    expect($('span', $elems[0])).to.have.length(1);
+  });
 
-    expect(apple).to.have.length(1);
-    expect(lis).to.have.length(3);
+  it('should accept an array of node references as a context', function() {
+    var $elems = $('<div><span></span></div>');
+    expect($('span', $elems.toArray())).to.have.length(1);
   });
 
   it('should select only elements inside given context (Issue #193)', function() {
@@ -124,17 +138,22 @@ describe('cheerio', function() {
   it('should be able to select multiple classes: $(".btn.primary")', function() {
     var $a = $('.btn.primary', multiclass);
     expect($a).to.have.length(1);
-    expect($a[0].children[0].data).to.equal('Save');
+    expect($a[0].childNodes[0].data).to.equal('Save');
+  });
+
+  it('should not create a top-level node', function() {
+    var $elem = $('* div', '<div>');
+    expect($elem).to.have.length(0);
   });
 
   it('should be able to select multiple elements: $(".apple, #fruits")', function() {
     var $elems = $('.apple, #fruits', fruits);
     expect($elems).to.have.length(2);
 
-    var $apple = _($elems).filter(function(elem) {
+    var $apple = _.filter($elems, function(elem) {
       return elem.attribs['class'] === 'apple';
     });
-    var $fruits = _($elems).filter(function(elem) {
+    var $fruits = _.filter($elems, function(elem) {
       return elem.attribs.id === 'fruits';
     });
     testAppleSelect($apple);
@@ -198,4 +217,124 @@ describe('cheerio', function() {
     expect($elem).to.have.length(0); // []
   });
 
+  it('(extended Array) should not interfere with prototype methods (issue #119)', function() {
+    var extended = [];
+    extended.find = extended.children = extended.each = function() {};
+    var $empty = $(extended);
+
+    expect($empty.find).to.be($.prototype.find);
+    expect($empty.children).to.be($.prototype.children);
+    expect($empty.each).to.be($.prototype.each);
+  });
+
+  describe('.load', function() {
+
+    it('should generate selections as proper instances', function() {
+      var q = $.load(fruits);
+
+      expect(q('.apple')).to.be.a(q);
+    });
+
+    it('should be able to filter down using the context', function() {
+      var q = $.load(fruits),
+          apple = q('.apple', 'ul'),
+          lis = q('li', 'ul');
+
+      expect(apple).to.have.length(1);
+      expect(lis).to.have.length(3);
+    });
+
+    it('should allow loading a pre-parsed DOM', function() {
+      var dom = htmlparser2.parseDOM(food),
+          q = $.load(dom);
+
+      expect(q('ul')).to.have.length(3);
+    });
+
+    it('should render xml in html() when options.xmlMode = true', function() {
+      var str = '<MixedCaseTag UPPERCASEATTRIBUTE=""></MixedCaseTag>',
+          expected = '<MixedCaseTag UPPERCASEATTRIBUTE=""/>',
+          dom = $.load(str, {xmlMode: true});
+
+      expect(dom('MixedCaseTag').get(0).tagName).to.equal('MixedCaseTag');
+      expect(dom.html()).to.be(expected);
+    });
+
+    it('should render xml in html() when options.xmlMode = true passed to html()', function() {
+      var str = '<MixedCaseTag UPPERCASEATTRIBUTE=""></MixedCaseTag>',
+          // since parsing done without xmlMode flag, all tags converted to lowercase
+          expectedXml = '<mixedcasetag uppercaseattribute=""/>',
+          expectedNoXml = '<mixedcasetag uppercaseattribute=""></mixedcasetag>',
+          dom = $.load(str);
+
+      expect(dom('MixedCaseTag').get(0).tagName).to.equal('mixedcasetag');
+      expect(dom.html()).to.be(expectedNoXml);
+      expect(dom.html({xmlMode: true})).to.be(expectedXml);
+    });
+
+    it('should respect options on the element level', function() {
+      var str = '<!doctype html><html><head><title>Some test</title></head><body><footer><p>Copyright &copy; 2003-2014</p></footer></body></html>',
+          expectedHtml = '<p>Copyright &copy; 2003-2014</p>',
+          expectedXml = '<p>Copyright &#xA9; 2003-2014</p>',
+          domNotEncoded = $.load(str, {decodeEntities: false}),
+          domEncoded = $.load(str);
+
+      expect(domNotEncoded('footer').html()).to.be(expectedHtml);
+      // TODO: Make it more html friendly, maybe with custom encode tables
+      expect(domEncoded('footer').html()).to.be(expectedXml);
+    });
+
+    it('should return a fully-qualified Function', function() {
+      var $c = $.load('<div>');
+
+      expect($c).to.be.a(Function);
+    });
+
+    describe('prototype extensions', function() {
+      it('should honor extensions defined on `prototype` property', function() {
+        var $c = $.load('<div>');
+        var $div;
+        $c.prototype.myPlugin = function() {
+          return {
+            context: this,
+            args: arguments
+          };
+        };
+
+        $div = $c('div');
+
+        expect($div.myPlugin).to.be.a('function');
+        expect($div.myPlugin().context).to.be($div);
+        expect(Array.prototype.slice.call($div.myPlugin(1, 2, 3).args))
+          .to.eql([1, 2, 3]);
+      });
+
+      it('should honor extensions defined on `fn` property', function() {
+        var $c = $.load('<div>');
+        var $div;
+        $c.fn.myPlugin = function() {
+          return {
+            context: this,
+            args: arguments
+          };
+        };
+
+        $div = $c('div');
+
+        expect($div.myPlugin).to.be.a('function');
+        expect($div.myPlugin().context).to.be($div);
+        expect(Array.prototype.slice.call($div.myPlugin(1, 2, 3).args))
+          .to.eql([1, 2, 3]);
+      });
+
+      it('should isolate extensions between loaded functions', function() {
+        var $a = $.load('<div>');
+        var $b = $.load('<div>');
+
+        $a.prototype.foo = function() {};
+
+        expect($b('div').foo).to.be(undefined);
+      });
+    });
+  });
 });

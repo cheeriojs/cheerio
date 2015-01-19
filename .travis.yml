@@ -1,5 +1,7 @@
 language: node_js
 node_js:
-  - 0.6
-  - 0.8
   - "0.10"
+  - 0.11
+script: make travis-test
+matrix:
+  fast_finish: true

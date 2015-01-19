@@ -2,9 +2,7 @@
  * Export cheerio (with )
  */
 
-exports = module.exports = process.env.CHEERIO_COV
-  ? require('./lib-cov/cheerio')
-  : require('./lib/cheerio');
+exports = module.exports = require('./lib/cheerio');
 
 /*
   Export the version
