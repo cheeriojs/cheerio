@@ -32,7 +32,7 @@
     "coveralls": "~2.10",
     "expect.js": "~0.3.1",
     "istanbul": "~0.2",
-    "jsdom": "~0.8.9",
+    "jsdom": "~3.0.2",
     "jshint": "~2.5.1",
     "mocha": "*",
     "xyz": "~0.5.0"
