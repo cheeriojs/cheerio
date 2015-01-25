@@ -338,10 +338,10 @@ describe('cheerio', function() {
     });
   });
 
-  describe('.createWriteStream', function() {
+  describe('.stream', function() {
 
     it('should parse a stream', function(done) {
-      var s = $.createWriteStream();
+      var s = $.stream();
 
       s.on('finish', function (q) {
         expect(q('.apple')).to.be.a(q);
