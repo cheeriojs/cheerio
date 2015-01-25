@@ -354,5 +354,43 @@ describe('cheerio', function() {
 
     });
 
+    describe('(options)', function() {
+      it('should use the defaults when unspecified', function(done) {
+        var s = $.stream();
+
+        s.on('finish', function($) {
+          expect($('ul').html()).to.eql('<li></li>    <li></li>');
+          done();
+        });
+
+        s.write('<ul><li></li>    <li></li></ul>');
+        s.end(null);
+      });
+
+      it('should honor options specified', function(done) {
+        var s = $.stream({ normalizeWhitespace: true });
+
+        s.on('finish', function($) {
+          expect($('ul').html()).to.eql('<li></li> <li></li>');
+          done();
+        });
+
+        s.write('<ul><li></li>    <li></li></ul>');
+        s.end(null);
+      });
+
+      it('should preserve options', function(done) {
+        var s = $.stream({ normalizeWhitespace: true });
+
+        s.on('finish', function($) {
+          $('ul').html('<li></li>    <li></li>');
+          expect($('ul').html()).to.eql('<li></li> <li></li>');
+          done();
+        });
+
+        s.write('<ul></ul>');
+        s.end(null);
+      });
+    });
   });
 });
