@@ -1,7 +1,6 @@
 var expect = require('expect.js'),
-    fixtures = require('./fixtures'),
-    cheerio = require('..');
-
+    fixtures = require('../fixtures'),
+    cheerio = require('../..');
 
 describe('cheerio', function() {
 

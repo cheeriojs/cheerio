@@ -1,5 +1,5 @@
 var expect = require('expect.js');
-var cheerio = require('..');
+var cheerio = require('../..');
 
 describe('$(...)', function() {
 
@@ -44,15 +44,15 @@ describe('$(...)', function() {
 
     describe('(prop, function):', function() {
       beforeEach(function() {
-        this.$el = cheerio('<div style="margin: 0;"></div><div style="margin: 0;"></div><div style="margin: 0;">');
+        this.$el = cheerio('<div style="margin: 0px;"></div><div style="margin: 1px;"></div><div style="margin: 2px;">');
       });
 
       it('should iterate over the selection', function() {
         var count = 0;
         var $el = this.$el;
-        this.$el.css('margin', function(idx, elem) {
+        this.$el.css('margin', function(idx, value) {
           expect(idx).to.equal(count);
-          expect(elem).to.equal($el[count]);
+          expect(value).to.equal(count + 'px');
           expect(this).to.equal($el[count]);
           count++;
         });
@@ -66,7 +66,7 @@ describe('$(...)', function() {
         });
         expect(this.$el.eq(0).attr('style')).to.equal('margin: 4px;');
         expect(this.$el.eq(1).attr('style')).to.equal('');
-        expect(this.$el.eq(2).attr('style')).to.equal('margin: 0;');
+        expect(this.$el.eq(2).attr('style')).to.equal('margin: 2px;');
       });
     });
 

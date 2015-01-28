@@ -1,11 +1,11 @@
 var expect = require('expect.js');
 
-var cheerio = require('..');
-var fruits = require('./fixtures').fruits;
-var vegetables = require('./fixtures').vegetables;
-var food = require('./fixtures').food;
-var chocolates = require('./fixtures').chocolates;
-var inputs = require('./fixtures').inputs;
+var cheerio = require('../..');
+var fruits = require('../fixtures').fruits;
+var vegetables = require('../fixtures').vegetables;
+var food = require('../fixtures').food;
+var chocolates = require('../fixtures').chocolates;
+var inputs = require('../fixtures').inputs;
 var toArray = Function.call.bind(Array.prototype.slice);
 
 describe('$(...)', function() {
@@ -304,7 +304,7 @@ describe('$(...)', function() {
     });
     it('.val(): on radio should get value', function() {
       var val = $('input[type="radio"]').val();
-      expect(val).to.equal('on');
+      expect(val).to.equal('off');
     });
     it('.val(): on multiple select should get an array of values', function() {
       var val = $('select#multi').val();

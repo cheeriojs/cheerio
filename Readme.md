@@ -1,4 +1,4 @@
-# cheerio [![Build Status](https://secure.travis-ci.org/cheeriojs/cheerio.svg?branch=master)](http://travis-ci.org/cheeriojs/cheerio)
+# cheerio [![Build Status](https://secure.travis-ci.org/cheeriojs/cheerio.svg?branch=master)](http://travis-ci.org/cheeriojs/cheerio) [![Gittask](https://gittask.com/cheeriojs/cheerio.svg)](https://gittask.com/cheeriojs/cheerio)
 
 Fast, flexible, and lean implementation of core jQuery designed specifically for the server.
 
@@ -515,7 +515,7 @@ $('li').get().length
 
 Search for a given element from among the matched elements.
 
-```
+```js
 $('.pear').index()
 //=> 2
 $('.orange').index('li')
@@ -598,11 +598,39 @@ $.html()
 //    </ul>
 ```
 
+#### .insertAfter( content )
+Insert every element in the set of matched elements after the target.
+
+```js
+$('<li class="plum">Plum</li>').insertAfter('.apple')
+$.html()
+//=>  <ul id="fruits">
+//      <li class="apple">Apple</li>
+//      <li class="plum">Plum</li>
+//      <li class="orange">Orange</li>
+//      <li class="pear">Pear</li>
+//    </ul>
+```
+
 #### .before( content, [content, ...] )
 Insert content previous to each element in the set of matched elements.
 
 ```js
 $('.apple').before('<li class="plum">Plum</li>')
+$.html()
+//=>  <ul id="fruits">
+//      <li class="plum">Plum</li>
+//      <li class="apple">Apple</li>
+//      <li class="orange">Orange</li>
+//      <li class="pear">Pear</li>
+//    </ul>
+```
+
+#### .insertBefore( content )
+Insert every element in the set of matched elements before the target.
+
+```js
+$('<li class="plum">Plum</li>').insertBefore('.apple')
 $.html()
 //=>  <ul id="fruits">
 //      <li class="plum">Plum</li>
@@ -734,6 +762,19 @@ Checks to see if the `contained` DOM element is a descendent of the `container` 
 
 #### $.parseHTML( data [, context ] [, keepScripts ] )
 Parses a string into an array of DOM nodes. The `context` argument has no meaning for Cheerio, but it is maintained for API compatability.
+
+### Plugins
+
+Once you have loaded a document, you may extend the prototype or the equivalent `fn` property with custom plugin methods:
+
+```js
+var $ = cheerio.load('<html><body>Hello, <b>world</b>!</body></html>');
+$.prototype.logHtml = function() {
+  console.log(this.html());
+};
+
+$('body').logHtml(); // logs "Hello, <b>world</b>!" to the console
+```
 
 ### The "DOM Node" object
 

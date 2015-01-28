@@ -5,7 +5,7 @@ lint:
 	@./node_modules/.bin/jshint lib/ test/
 
 test: lint
-	@./node_modules/.bin/mocha --reporter $(REPORTER)
+	@./node_modules/.bin/mocha --recursive --reporter $(REPORTER)
 
 setup:
 	@npm install
@@ -14,7 +14,7 @@ subl:
 	@subl lib/ test/ package.json index.js
 
 test-cov:
-	@./node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- --reporter $(REPORTER)
+	@./node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- --recursive --reporter $(REPORTER)
 
 report-cov: test-cov
 	@cat coverage/lcov.info | ./node_modules/.bin/coveralls
