@@ -27,6 +27,11 @@ describe('render', function() {
       expect(xml(str)).to.equal('<link>http://www.github.com/</link>');
     });
 
+    it('should escape entities', function(){
+      var str = '<tag attr="foo &amp; bar"/>';
+      expect(xml(str)).to.equal(str);
+    });
+
   });
 
   describe('(dom)', function () {
