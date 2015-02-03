@@ -21,7 +21,7 @@
     "node": ">= 0.6"
   },
   "dependencies": {
-    "CSSselect": "~0.4.0",
+    "css-select": "~1.0.0",
     "entities": "~1.1.1",
     "htmlparser2": "~3.8.1",
     "dom-serializer": "~0.0.0",
