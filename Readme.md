@@ -441,7 +441,7 @@ $('li').not('.apple').length;
 Function:
 
 ```js
-$('li').filter(function(i, el) {
+$('li').not(function(i, el) {
   // this === el
   return $(this).attr('class') === 'orange';
 }).length;
