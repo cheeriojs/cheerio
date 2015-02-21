@@ -4,12 +4,12 @@ Fast, flexible, and lean implementation of core jQuery designed specifically for
 
 **Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
 
-- [Introduction](#)
-- [Installation](#)
-- [Features](#)
-- [What about JSDOM?](#)
-- [When I would use JSDOM](#)
-- [API](#)
+- [Introduction](#Introduction])
+- [Installation](#Installation)
+- [Features](#Features
+- [What about JSDOM?](#What about JSDOM?)
+- [When I would use JSDOM](#When I would use JSDOM)
+- [API](#API)
 - [Markup example we'll be using:](#)
 - [Loading](#)
 - [Selectors](#)
