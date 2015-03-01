@@ -52,3 +52,14 @@ exports.text = [
   '<p>Apples, <b>oranges</b> and pears.</p>',
   '<p>Carrots and <!-- sweetcorn --></p>'
 ].join('');
+
+exports.forms = [
+  '<form id="simple"><input type="text" name="fruit" value="Apple" /></form>',
+  '<form id="nested"><div><input type="text" name="fruit" value="Apple" /></div><input type="text" name="vegetable" value="Carrot" /></form>',
+  '<form id="disabled"><input type="text" name="fruit" value="Apple" disabled /></form>',
+  '<form id="submit"><input type="text" name="fruit" value="Apple" /><input type="submit" name="submit" value="Submit" /></form>',
+  '<form id="select"><select name="fruit"><option value="Apple">Apple</option><option value="Orange" selected>Orange</option></select></form>',
+  '<form id="unnamed"><input type="text" name="fruit" value="Apple" /><input type="text" value="Carrot" /></form>',
+  '<form id="multiple"><select name="fruit" multiple><option value="Apple" selected>Apple</option><option value="Orange" selected>Orange</option><option value="Carrot">Carrot</option></select></form>',
+  '<form id="textarea"><textarea name="fruits">Apple\nOrange</textarea></form>'
+].join('');
