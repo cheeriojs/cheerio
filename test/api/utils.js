@@ -157,6 +157,14 @@ describe('cheerio', function() {
       expect(cheerio.parseHTML('<#if><tr><p>This is a test.</p></tr><#/if>') || true).to.be.ok();
     });
 
+    it('(text) : should return an array that is not effected by DOM manipulation methods', function() {
+      var $ = cheerio.load('<div>');
+      var elems = $.parseHTML('<b></b><i></i>');
+
+      $('div').append(elems);
+
+      expect(elems).to.have.length(2);
+    });
   });
 
   describe('.contains', function() {

@@ -1,4 +1,4 @@
-# cheerio [![Build Status](https://secure.travis-ci.org/cheeriojs/cheerio.svg?branch=master)](http://travis-ci.org/cheeriojs/cheerio)
+# cheerio [![Build Status](https://secure.travis-ci.org/cheeriojs/cheerio.svg?branch=master)](http://travis-ci.org/cheeriojs/cheerio) [![Gittask](https://gittask.com/cheeriojs/cheerio.svg)](https://gittask.com/cheeriojs/cheerio)
 
 Fast, flexible, and lean implementation of core jQuery designed specifically for the server.
 
@@ -441,7 +441,7 @@ $('li').not('.apple').length;
 Function:
 
 ```js
-$('li').filter(function(i, el) {
+$('li').not(function(i, el) {
   // this === el
   return $(this).attr('class') === 'orange';
 }).length;
