@@ -238,6 +238,16 @@ $('.apple.green').toggleClass('fruit green red', true).html()
 #### .is( function(index) )
 Checks the current list of elements and returns `true` if _any_ of the elements match the selector. If using an element or Cheerio selection, returns `true` if _any_ of the elements match. If using a predicate function, the function is executed in the context of the selected element, so `this` refers to the current element.
 
+### Forms
+
+#### .serializeArray()
+
+Encode a set of form elements as an array of names and values.
+
+```js
+$('<form><input name="foo" value="bar" /></form>').serializeArray()
+//=> [ { name: 'foo', valule: 'bar' } ]
+```
 
 ### Traversing
 
