@@ -115,6 +115,17 @@ describe('$(...)', function() {
       ]);
     });
 
+    it('() : shouldn\'t serialize the empty string', function() {
+        expect($('<input value=pineapple>').serializeArray()).to.eql([]);
+        expect($('<input name="" value=pineapple>').serializeArray()).to.eql([]);
+        expect($('<input name="fruit" value=pineapple>').serializeArray()).to.eql([
+            {
+                name: 'fruit',
+                value: 'pineapple'
+            }
+        ]);
+    });
+
   });
 
 });
