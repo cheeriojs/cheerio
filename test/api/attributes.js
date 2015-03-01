@@ -127,8 +127,7 @@ describe('$(...)', function() {
       checkbox.css('display', 'none');
       expect(checkbox.prop('style').display).to.equal('none');
       expect(checkbox.prop('style')).to.have.length(1);
-      expect(checkbox.prop('style').item(0)).to.equal('display');
-      expect(checkbox.prop('style').item(1)).to.be(undefined);
+      expect(checkbox.prop('style')).to.contain('display');
       expect(checkbox.prop('tagName')).to.equal('INPUT');
       expect(checkbox.prop('nodeName')).to.equal('INPUT');
     });
