@@ -111,6 +111,22 @@ describe('$(...)', function() {
       $apple.removeAttr('data-autofocus');
       expect($apple.attr('data-autofocus')).to.be(undefined);
     });
+
+    it('(key, value) : should remove attributes when called with null value', function() {
+      var $pear = $('.pear').attr('autofocus', 'autofocus');
+      expect($pear.attr('autofocus')).to.equal('autofocus');
+      $pear.attr('autofocus', null);
+      expect($pear.attr('autofocus')).to.be(undefined);
+    });
+
+    it('(map) : should remove attributes with null values', function() {
+      var $pear = $('.pear').attr({'autofocus': 'autofocus', 'style': 'color:red'});
+      expect($pear.attr('autofocus')).to.equal('autofocus');
+      expect($pear.attr('style')).to.equal('color:red');
+      $pear.attr({'autofocus': null, 'style': 'color:blue'});
+      expect($pear.attr('autofocus')).to.be(undefined);
+      expect($pear.attr('style')).to.equal('color:blue');
+    });
   });
 
   describe('.data', function() {
