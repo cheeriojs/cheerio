@@ -206,6 +206,12 @@ describe('$(...)', function() {
       expect($el.data('test')).to.be('a');
     });
 
+    it('(key) : should recover from malformed JSON', function() {
+        var $el = cheerio('<div data-custom="{{templatevar}}">');
+
+        expect($el.data('custom')).to.be('{{templatevar}}');
+    });
+
     it('(hyphen key) : data addribute with hyphen should be camelized ;-)', function() {
       var data = $('.frey').data();
       expect(data).to.eql({
