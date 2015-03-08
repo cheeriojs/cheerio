@@ -286,6 +286,18 @@ describe('$(...)', function() {
       var val = $('select#one').val();
       expect(val).to.equal('option_selected');
     });
+    it('.val(): on select with no value should get text', function() {
+      var val = $('select#one-valueless').val();
+      expect(val).to.equal('Option selected');
+    });
+    it('.val(): on select with no value should get converted HTML', function() {
+      var val = $('select#one-html-entity').val();
+      expect(val).to.equal('Option <selected>');
+    });
+    it('.val(): on select with no value should get text content', function() {
+      var val = $('select#one-nested').val();
+      expect(val).to.equal('Option selected');
+    });
     it('.val(): on option should get value', function() {
       var val = $('select#one option').eq(0).val();
       expect(val).to.equal('option_not_selected');
@@ -308,7 +320,11 @@ describe('$(...)', function() {
     });
     it('.val(): on multiple select should get an array of values', function() {
       var val = $('select#multi').val();
-      expect(val).to.have.length(2);
+      expect(val).to.eql(['2', '3']);
+    });
+    it('.val(): on multiple select with no value attribute should get an array of text content', function() {
+      var val = $('select#multi-valueless').val();
+      expect(val).to.eql(['2', '3']);
     });
     it('.val(value): on input text should set value', function() {
       var element = $('input[type="text"]').val('test');
