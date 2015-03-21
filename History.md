@@ -1,4 +1,37 @@
 
+0.19.0 / 2015-03-21
+==================
+
+ * fixed allignment (fb55)
+ * added test case for malformed json in data attributes (fb55)
+ * fix: handle some extreme cases like `data-custom="{{templatevar}}"`. There is possibility error while parsing json . (Harish.K)
+ * Add missing optional selector doc for {prev,next}{All,Until} (Jérémie Astori)
+ * update to dom-serializer@0.1.0 (Felix Böhm)
+ * Document `Cheerio#serialzeArray` (Mike Pennisi)
+ * Fixed up `serializeArray()` and added multiple support (Todd Wolfson)
+ * Implement serializeArray() (Jarno Leppänen)
+ * recognize options in $.xml() (fb55)
+ * lib/static.js: text(): rm errant space before ++ (Chris Rebert)
+ * Do not expose internal `children` array (Mike Pennisi)
+ * Change lodash dependencies to ^3.1.0 (Samy Pessé)
+ * Update lodash@3.1.0 (Samy Pessé)
+ * Updates Readme.md: .not(function (index, elem)) (Patrick Ward)
+ * update to css-select@1.0.0 (fb55)
+ * Allow failures in Node.js v0.11 (Mike Pennisi)
+ * Added: Gittask badge (Matthew Mueller)
+ * Isolate prototypes of functions created via `load` (Mike Pennisi)
+ * Updates Readme.md: adds JS syntax highlighting (frankcash)
+ * #608 -- Add support for insertBefore/insertAfter syntax. Supports target types of: $, [$], selector (both single and multiple results) (Ben Cochran)
+ * Clone input nodes when inserting over a set (Mike Pennisi)
+ * Move unit test files (Mike Pennisi)
+ * remove unnecessarily tricky code (David Chambers)
+ * pass options to $.html in toString (fb55)
+ * add license info to package.json (Chris Rebert)
+ * xyz@~0.5.0 (David Chambers)
+ * Remove unofficial signature of `children` (Mike Pennisi)
+ * Fix bug in `css` method (Mike Pennisi)
+ * Correct bug in implementation of `Cheerio#val` (Mike Pennisi)
+
 0.18.0 / 2014-11-06
 ==================
 
