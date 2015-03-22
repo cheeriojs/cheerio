@@ -772,7 +772,7 @@ $.root().append('<ul id="vegetables"></ul>').html();
 ```
 
 #### $.contains( container, contained )
-Checks to see if the `contained` DOM element is a descendent of the `container` DOM element.
+Checks to see if the `contained` DOM element is a descendant of the `container` DOM element.
 
 #### $.parseHTML( data [, context ] [, keepScripts ] )
 Parses a string into an array of DOM nodes. The `context` argument has no meaning for Cheerio, but it is maintained for API compatability.
