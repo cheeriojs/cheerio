@@ -246,7 +246,7 @@ Encode a set of form elements as an array of names and values.
 
 ```js
 $('<form><input name="foo" value="bar" /></form>').serializeArray()
-//=> [ { name: 'foo', valule: 'bar' } ]
+//=> [ { name: 'foo', value: 'bar' } ]
 ```
 
 ### Traversing
