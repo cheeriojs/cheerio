@@ -227,6 +227,18 @@ describe('cheerio', function() {
     expect($empty.each).to.be($.prototype.each);
   });
 
+  it('should set html(number) as a string', function() {
+    var $elem = $('<div>');
+    $elem.html(123);
+    expect(typeof $elem.text()).to.equal('string');
+  });
+
+  it('should set text(number) as a string', function() {
+    var $elem = $('<div>');
+    $elem.text(123);
+    expect(typeof $elem.text()).to.equal('string');
+  });
+
   describe('.load', function() {
 
     it('should generate selections as proper instances', function() {
