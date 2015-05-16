@@ -152,7 +152,7 @@ Method for getting and setting data attributes. Gets or sets the data attribute 
 $('<div data-apple-color="red"></div>').data()
 //=> { appleColor: 'red' }
 
-$('<div data-apple-color="red"></div>').data('data-apple-color')
+$('<div data-apple-color="red"></div>').data('apple-color')
 //=> 'red'
 
 var apple = $('.apple').data('kind', 'mac')
