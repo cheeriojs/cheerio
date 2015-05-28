@@ -17,28 +17,28 @@ describe('$(...)', function() {
       var $redFruits = $('<div class="red-fruits"></div>');
       $('.apple').wrap($redFruits);
 
-      expect($fruits.children(0).hasClass('red-fruits')).to.be.ok();
-      expect($('.red-fruits').children(0).hasClass('apple')).to.be.ok();
-      expect($fruits.children(1).hasClass('orange')).to.be.ok();
+      expect($fruits.children().eq(0).hasClass('red-fruits')).to.be.ok();
+      expect($('.red-fruits').children().eq(0).hasClass('apple')).to.be.ok();
+      expect($fruits.children().eq(1).hasClass('orange')).to.be.ok();
       expect($redFruits.children()).to.have.length(1);
     });
 
     it.skip ('(elem) : should insert the element and add selected element(s) as it\'s child and should accept html', function(){
       $('.apple').wrap('<div class="red-fruits"> </div>');
-      expect($fruits.children(0).hasClass('red-fruits')).to.be.ok();
-      expect($('.red-fruits').children(0).hasClass('apple')).to.be.ok();
-      expect($fruits.children(1).hasClass('orange')).to.be.ok();
+      expect($fruits.children().eq(0).hasClass('red-fruits')).to.be.ok();
+      expect($('.red-fruits').children().eq(0).hasClass('apple')).to.be.ok();
+      expect($fruits.children().eq(1).hasClass('orange')).to.be.ok();
       expect($('.red-fruits').children()).to.have.length(1);
     });
 
     it ('($(...)) : for each element it should add a wrapper elment and add the selected element as it\'s child', function(){
       var $fruitDecorator = $('<div class="fruit-decorator"></div>');
       $('li').wrap($fruitDecorator);
-      expect($fruits.children(0).hasClass('fruit-decorator')).to.be.ok();
-      expect($fruits.children(0).children(0).hasClass('apple')).to.be.ok();
-      expect($fruits.children(1).hasClass('fruit-decorator')).to.be.ok();
-      expect($fruits.children(2).hasClass('fruit-decorator')).to.be.ok();
-      expect($fruits.children(2).children(0).hasClass('pear')).to.be.ok();
+      expect($fruits.children().eq(0).hasClass('fruit-decorator')).to.be.ok();
+      expect($fruits.children().eq(0).children().eq(0).hasClass('apple')).to.be.ok();
+      expect($fruits.children().eq(1).hasClass('fruit-decorator')).to.be.ok();
+      expect($fruits.children().eq(2).hasClass('fruit-decorator')).to.be.ok();
+      expect($fruits.children().eq(2).children().eq(0).hasClass('pear')).to.be.ok();
     });
    });
 
