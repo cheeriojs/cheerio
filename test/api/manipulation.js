@@ -37,6 +37,7 @@ describe('$(...)', function() {
       expect($fruits.children().eq(0).hasClass('fruit-decorator')).to.be.ok();
       expect($fruits.children().eq(0).children().eq(0).hasClass('apple')).to.be.ok();
       expect($fruits.children().eq(1).hasClass('fruit-decorator')).to.be.ok();
+      expect($fruits.children().eq(1).children().eq(0).hasClass('orange')).to.be.ok();
       expect($fruits.children().eq(2).hasClass('fruit-decorator')).to.be.ok();
       expect($fruits.children().eq(2).children().eq(0).hasClass('pear')).to.be.ok();
     });
