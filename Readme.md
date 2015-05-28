@@ -366,7 +366,7 @@ $('li').slice(1, 2).length
 //=> 1
 ```
 
-#### .siblings( selector )
+#### .siblings([selector])
 Gets the first selected element's siblings, excluding itself.
 
 ```js
@@ -378,7 +378,7 @@ $('.pear').siblings('.orange').length
 
 ```
 
-#### .children( selector )
+#### .children([selector])
 Gets the children of the first selected element.
 
 ```js
