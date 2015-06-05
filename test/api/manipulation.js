@@ -12,6 +12,138 @@ describe('$(...)', function() {
     $fruits = $('#fruits');
   });
 
+  describe('.wrap', function() {
+    it('(Cheerio object) : should insert the element and add selected element(s) as its child', function() {
+      var $redFruits = $('<div class="red-fruits"></div>');
+      $('.apple').wrap($redFruits);
+
+      expect($fruits.children().eq(0).hasClass('red-fruits')).to.be.ok();
+      expect($('.red-fruits').children().eq(0).hasClass('apple')).to.be.ok();
+      expect($fruits.children().eq(1).hasClass('orange')).to.be.ok();
+      expect($redFruits.children()).to.have.length(1);
+    });
+
+    it('(element) : should insert the element and add selected element(s) as its child', function() {
+      var $redFruits = $('<div class="red-fruits"></div>');
+      $('.apple').wrap($redFruits[0]);
+
+      expect($fruits.children()[0]).to.be($redFruits[0]);
+      expect($redFruits.children()).to.have.length(1);
+      expect($redFruits.children()[0]).to.be($('.apple')[0]);
+      expect($fruits.children()[1]).to.be($('.orange')[0]);
+    });
+
+    it('(html) : should insert the markup and add selected element(s) as its child', function() {
+      $('.apple').wrap('<div class="red-fruits"> </div>');
+      expect($fruits.children().eq(0).hasClass('red-fruits')).to.be.ok();
+      expect($('.red-fruits').children().eq(0).hasClass('apple')).to.be.ok();
+      expect($fruits.children().eq(1).hasClass('orange')).to.be.ok();
+      expect($('.red-fruits').children()).to.have.length(1);
+    });
+
+    it('(html) : discards extraneous markup', function() {
+      $('.apple').wrap('<div></div><p></p>');
+      expect($('div')).to.have.length(1);
+      expect($('p')).to.have.length(0);
+    });
+
+    it('(selector) : wraps the content with a copy of the first matched element', function() {
+      var $oranges;
+
+      $('.apple').wrap('.orange, .pear');
+
+      $oranges = $('.orange');
+      expect($('.pear')).to.have.length(1);
+      expect($oranges).to.have.length(2);
+      expect($oranges.eq(0).parent()[0]).to.be($fruits[0]);
+      expect($oranges.eq(0).children()).to.have.length(1);
+      expect($oranges.eq(0).children()[0]).to.be($('.apple')[0]);
+      expect($('.apple').parent()[0]).to.be($oranges[0]);
+      expect($oranges.eq(1).children()).to.have.length(0);
+    });
+
+    it('(fn) : should invoke the provided function with the correct arguments and context', function() {
+      var $children = $fruits.children();
+      var args = [];
+      var thisValues = [];
+
+      $children.wrap(function() {
+        args.push(toArray(arguments));
+        thisValues.push(this);
+      });
+
+      expect(args).to.eql([
+        [0],
+        [1],
+        [2]
+      ]);
+      expect(thisValues).to.eql([
+        $children[0],
+        $children[1],
+        $children[2]
+      ]);
+    });
+
+    it('(fn) : should use the returned HTML to wrap each element', function() {
+      var $children = $fruits.children();
+      var tagNames = ['div', 'span', 'p'];
+
+      $children.wrap(function() {
+        return '<' + tagNames.shift() + '>';
+      });
+
+      expect($fruits.find('div')).to.have.length(1);
+      expect($fruits.find('div')[0]).to.be($fruits.children()[0]);
+      expect($fruits.find('.apple')).to.have.length(1);
+      expect($fruits.find('.apple').parent()[0]).to.be($fruits.find('div')[0]);
+
+      expect($fruits.find('span')).to.have.length(1);
+      expect($fruits.find('span')[0]).to.be($fruits.children()[1]);
+      expect($fruits.find('.orange')).to.have.length(1);
+      expect($fruits.find('.orange').parent()[0]).to.be($fruits.find('span')[0]);
+
+      expect($fruits.find('p')).to.have.length(1);
+      expect($fruits.find('p')[0]).to.be($fruits.children()[2]);
+      expect($fruits.find('.pear')).to.have.length(1);
+      expect($fruits.find('.pear').parent()[0]).to.be($fruits.find('p')[0]);
+    });
+
+    it('(fn) : should use the returned Cheerio object to wrap each element', function() {
+      var $children = $fruits.children();
+      var tagNames = ['span', 'p', 'div'];
+
+      $children.wrap(function() {
+        return $('<' + tagNames.shift() + '>');
+      });
+
+      expect($fruits.find('span')).to.have.length(1);
+      expect($fruits.find('span')[0]).to.be($fruits.children()[0]);
+      expect($fruits.find('.apple')).to.have.length(1);
+      expect($fruits.find('.apple').parent()[0]).to.be($fruits.find('span')[0]);
+
+      expect($fruits.find('p')).to.have.length(1);
+      expect($fruits.find('p')[0]).to.be($fruits.children()[1]);
+      expect($fruits.find('.orange')).to.have.length(1);
+      expect($fruits.find('.orange').parent()[0]).to.be($fruits.find('p')[0]);
+
+      expect($fruits.find('div')).to.have.length(1);
+      expect($fruits.find('div')[0]).to.be($fruits.children()[2]);
+      expect($fruits.find('.pear')).to.have.length(1);
+      expect($fruits.find('.pear').parent()[0]).to.be($fruits.find('div')[0]);
+    });
+
+    it('($(...)) : for each element it should add a wrapper elment and add the selected element as its child', function() {
+      var $fruitDecorator = $('<div class="fruit-decorator"></div>');
+      $('li').wrap($fruitDecorator);
+      expect($fruits.children().eq(0).hasClass('fruit-decorator')).to.be.ok();
+      expect($fruits.children().eq(0).children().eq(0).hasClass('apple')).to.be.ok();
+      expect($fruits.children().eq(1).hasClass('fruit-decorator')).to.be.ok();
+      expect($fruits.children().eq(1).children().eq(0).hasClass('orange')).to.be.ok();
+      expect($fruits.children().eq(2).hasClass('fruit-decorator')).to.be.ok();
+      expect($fruits.children().eq(2).children().eq(0).hasClass('pear')).to.be.ok();
+    });
+   });
+
   describe('.append', function() {
 
     it('() : should do nothing', function() {
