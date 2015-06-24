@@ -496,6 +496,24 @@ describe('$(...)', function() {
     });
   });
 
+  describe('.appendTo', function() {
+
+    it('(Node) : should add element as last child', function() {
+      $('<li class="plum">Plum</li>').appendTo($fruits);
+      expect($fruits.children().eq(3).hasClass('plum')).to.be.ok();
+    });
+
+  });
+
+  describe('.prependTo', function() {
+
+    it('(html) : should add element as first child', function() {
+      $('<li class="plum">Plum</li>').prependTo($fruits);
+      expect($fruits.children().eq(0).hasClass('plum')).to.be.ok();
+    });
+
+  });
+
   describe('.after', function() {
 
     it('() : should do nothing', function() {
