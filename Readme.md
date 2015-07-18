@@ -924,7 +924,7 @@ project  : cheerio
 
 ## FAQ
 
-In Chinese languages, it may show the UTF-8 encoding like '&#x9AD8;'. To avoid this situation, use 'text()' instead of 'html()'.
+In Chinese languages, it may show the UTF-8 encoding like '& #x9AD8;'. To avoid this situation, use 'text()' instead of 'html()'.
 
 ## Cheerio in the real world
 
