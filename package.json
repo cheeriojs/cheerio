@@ -17,6 +17,10 @@
     "url": "git://github.com/cheeriojs/cheerio.git"
   },
   "main": "./index.js",
+  "files": [
+    "index.js",
+    "lib"
+  ],
   "engines": {
     "node": ">= 0.6"
   },
