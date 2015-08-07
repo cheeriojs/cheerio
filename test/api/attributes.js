@@ -232,6 +232,14 @@ describe('$(...)', function() {
       expect(b.data('snack')).to.eql('chocoletti');
     });
 
+    it('(key, value) : should set data for all elements in the selection', function() {
+      $('li').data('foo', 'bar');
+
+      expect($('li').eq(0).data('foo')).to.eql('bar');
+      expect($('li').eq(1).data('foo')).to.eql('bar');
+      expect($('li').eq(2).data('foo')).to.eql('bar');
+    });
+
     it('(map) : object map should set multiple data attributes', function() {
       var data = $('.linth').data({
         id: 'Cailler',
