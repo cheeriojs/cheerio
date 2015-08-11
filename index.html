@@ -64,7 +64,7 @@ Cheerio implements a subset of core jQuery. Cheerio removes all the DOM inconsis
 Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient. Preliminary end-to-end benchmarks suggest that cheerio is about <strong>8x</strong> faster than JSDOM.</p>
 
 <p><strong>❁ Insanely flexible:</strong>
-Cheerio wraps around <a href="https://github.com/FB55" class="user-mention">@FB55</a>'s forgiving htmlparser. Cheerio can parse nearly any HTML or XML document.</p>
+Cheerio wraps around <a href="https://github.com/FB55" class="user-mention">@FB55</a>'s forgiving <a href="https://github.com/fb55/htmlparser2">htmlparser2</a>. Cheerio can parse nearly any HTML or XML document.</p>
 
 <h2>
 <a name="what-about-jsdom" class="anchor" href="#what-about-jsdom"><span class="octicon octicon-link"></span></a>What about JSDOM?</h2>
@@ -132,7 +132,7 @@ of the default parsing options:</p>
 <span class="p">});</span>
 </pre></div>
 
-<p>These parsing options are taken directly from htmlparser, therefore any options that can be used in htmlparser
+<p>These parsing options are taken directly from htmlparser2, therefore any options that can be used in htmlparser2
 are valid in cheerio as well. The default options are:</p>
 
 <div class="highlight"><pre><span class="p">{</span>
@@ -142,8 +142,8 @@ are valid in cheerio as well. The default options are:</p>
 <span class="p">}</span>
 </pre></div>
 
-<p>For a list of options and their effects, see <a href="https://github.com/FB55/node-htmlparser/wiki/DOMHandler">this</a> and
-<a href="https://github.com/FB55/node-htmlparser/wiki/Parser-options">this</a>.</p>
+<p>For a list of options and their effects, see <a href="https://github.com/fb55/domhandler">this</a> and
+<a href="https://github.com/fb55/htmlparser2/wiki/Parser-options">this</a>.</p>
 
 <h3>
 <a name="selectors" class="anchor" href="#selectors"><span class="octicon octicon-link"></span></a>Selectors</h3>
@@ -627,7 +627,7 @@ authors  :
 
 <p>This library stands on the shoulders of some incredible developers. A special thanks to:</p>
 
-<p><strong>• <a href="https://github.com/FB55" class="user-mention">@FB55</a> for node-htmlparser2 &amp; CSSSelect:</strong>
+<p><strong>• <a href="https://github.com/FB55" class="user-mention">@FB55</a> for <a href="https://github.com/fb55/htmlparser2">htmlparser2</a> &amp; <a href="https://github.com/fb55/css-select">css-select</a>:</strong>
 Felix has a knack for writing speedy parsing engines. He completely re-wrote both @tautologistic's <code>node-htmlparser</code> and <a href="https://github.com/harry" class="user-mention">@harry</a>'s <code>node-soupselect</code> from the ground up, making both of them much faster and more flexible. Cheerio would not be possible without his foundational work</p>
 
 <p><strong>• <a href="https://github.com/jQuery" class="user-mention">@jQuery</a> team for jQuery:</strong>
