@@ -126,7 +126,7 @@ $('ul .pear').attr('class')
 //=> pear
 
 $('li[class=orange]').html()
-//=> <li class="orange">Orange</li>
+//=> Orange
 ```
 
 ### Attributes
