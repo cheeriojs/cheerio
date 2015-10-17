@@ -1,6 +1,8 @@
 benchmark/
+coverage/
 src/
 support/
+test/
 tests/
 examples/
 *.sock
