@@ -1,4 +1,5 @@
 benchmark/
+coverage/
 src/
 support/
 tests/
