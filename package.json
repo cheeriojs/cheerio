@@ -25,7 +25,9 @@
     "entities": "~1.1.1",
     "htmlparser2": "~3.8.1",
     "dom-serializer": "~0.1.0",
-    "lodash": "^3.2.0"
+    "lodash": "^3.2.0",
+    "events": "^1.1.0",
+    "util": "^0.10.3"
   },
   "devDependencies": {
     "benchmark": "~1.0.0",
