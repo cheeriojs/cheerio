@@ -1,9 +1,13 @@
 language: node_js
 node_js:
-  - "0.10"
-  - 0.11
+  - "stable"
+  - "unstable"
+  - "4.2"
+  - "4.1"
+  - "4"
+  - "0.12"
 script: make travis-test
 matrix:
   fast_finish: true
   allow_failures:
-    - node_js: 0.11
+    - node_js: "unstable"
