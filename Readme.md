@@ -786,6 +786,14 @@ $.xml()
 ### Miscellaneous
 DOM element methods that don't fit anywhere else
 
+#### .toArray()
+Retrieve all the DOM elements contained in the jQuery set as an array.
+
+```js
+$('li').toArray()
+//=> [ {...}, {...}, {...} ]
+```
+
 #### .clone() ####
 Clone the cheerio object.
 
