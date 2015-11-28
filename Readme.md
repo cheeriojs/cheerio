@@ -818,6 +818,9 @@ Checks to see if the `contained` DOM element is a descendant of the `container` 
 #### $.parseHTML( data [, context ] [, keepScripts ] )
 Parses a string into an array of DOM nodes. The `context` argument has no meaning for Cheerio, but it is maintained for API compatability.
 
+#### $.load( html[, options ] )
+Load in the HTML.
+
 ### Plugins
 
 Once you have loaded a document, you may extend the prototype or the equivalent `fn` property with custom plugin methods:
