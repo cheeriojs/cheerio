@@ -69,6 +69,16 @@ describe('$(...)', function() {
       expect(attrs['data-url']).to.equal('http://apple.com');
     });
 
+    it('(map) : should remove attributes when null is passed in the object', function () {
+      var $apple = $('.apple');
+      $apple.attr({
+        'class': null,
+        'id':'newId'
+      });
+      expect($apple.attr('class')).to.equal(undefined);
+      expect($apple.attr('id')).to.equal('newId');
+    });
+
     it('(key, function) : should call the function and update the attribute with the return value', function() {
       var $fruits = $('#fruits');
       $fruits.attr('id', function(index, value) {
