@@ -48,8 +48,8 @@ describe('$(...)', function() {
     });
 
     it('should query immediate descendant only', function() {
-      var $ = cheerio.load('<foo><bar><bar></bar><bar></bar></bar></foo>');
-      expect($('foo').find('> bar')).to.have.length(1);
+      var q = cheerio.load('<foo><bar><bar></bar><bar></bar></bar></foo>');
+      expect(q('foo').find('> bar')).to.have.length(1);
     });
 
     it('should query case-sensitively when in xmlMode', function() {
@@ -70,42 +70,42 @@ describe('$(...)', function() {
 
     describe('(cheerio object) :', function() {
       it('returns only those nodes contained within the current selection', function() {
-        var $ = cheerio.load(food);
-        var $selection = $('#fruits').find($('li'));
+        var q = cheerio.load(food);
+        var $selection = q('#fruits').find(q('li'));
 
         expect($selection).to.have.length(3);
-        expect($selection[0]).to.be($('.apple')[0]);
-        expect($selection[1]).to.be($('.orange')[0]);
-        expect($selection[2]).to.be($('.pear')[0]);
+        expect($selection[0]).to.be(q('.apple')[0]);
+        expect($selection[1]).to.be(q('.orange')[0]);
+        expect($selection[2]).to.be(q('.pear')[0]);
       });
       it('returns only those nodes contained within any element in the current selection', function() {
-        var $ = cheerio.load(food);
-        var $selection = $('.apple, #vegetables').find($('li'));
+        var q = cheerio.load(food);
+        var $selection = q('.apple, #vegetables').find(q('li'));
 
         expect($selection).to.have.length(2);
-        expect($selection[0]).to.be($('.carrot')[0]);
-        expect($selection[1]).to.be($('.sweetcorn')[0]);
+        expect($selection[0]).to.be(q('.carrot')[0]);
+        expect($selection[1]).to.be(q('.sweetcorn')[0]);
       });
     });
 
     describe('(node) :', function() {
       it('returns node when contained within the current selection', function() {
-        var $ = cheerio.load(food);
-        var $selection = $('#fruits').find($('.apple')[0]);
+        var q = cheerio.load(food);
+        var $selection = q('#fruits').find(q('.apple')[0]);
 
         expect($selection).to.have.length(1);
-        expect($selection[0]).to.be($('.apple')[0]);
+        expect($selection[0]).to.be(q('.apple')[0]);
       });
       it('returns node when contained within any element the current selection', function() {
-        var $ = cheerio.load(food);
-        var $selection = $('#fruits, #vegetables').find($('.carrot')[0]);
+        var q = cheerio.load(food);
+        var $selection = q('#fruits, #vegetables').find(q('.carrot')[0]);
 
         expect($selection).to.have.length(1);
-        expect($selection[0]).to.be($('.carrot')[0]);
+        expect($selection[0]).to.be(q('.carrot')[0]);
       });
       it('does not return node that is not contained within the current selection', function() {
-        var $ = cheerio.load(food);
-        var $selection = $('#fruits').find($('.carrot')[0]);
+        var q = cheerio.load(food);
+        var $selection = q('#fruits').find(q('.carrot')[0]);
 
         expect($selection).to.have.length(0);
       });
@@ -855,8 +855,8 @@ describe('$(...)', function() {
 
     it('(element) : should only consider nested elements', function() {
       var $fruits = $('#fruits');
-      var fruits = $fruits[0];
-      var $empty = $fruits.has(fruits);
+      var fruitsEl = $fruits[0];
+      var $empty = $fruits.has(fruitsEl);
 
       expect($empty).to.have.length(0);
     });
@@ -1109,13 +1109,17 @@ describe('$(...)', function() {
   });
 
   describe('.add', function() {
-    var $ = cheerio.load(food);
-    var $fruits = $('#fruits');
-    var $apple = $('.apple');
-    var $orange = $('.orange');
-    var $pear = $('.pear');
-    var $carrot = $('.carrot');
-    var $sweetcorn = $('.sweetcorn');
+    var $fruits, $apple, $orange, $pear, $carrot, $sweetcorn;
+
+    beforeEach(function() {
+      $ = cheerio.load(food);
+      $fruits = $('#fruits');
+      $apple = $('.apple');
+      $orange = $('.orange');
+      $pear = $('.pear');
+      $carrot = $('.carrot');
+      $sweetcorn = $('.sweetcorn');
+    });
 
     describe('(selector', function() {
       describe(') :', function() {
@@ -1393,13 +1397,13 @@ describe('$(...)', function() {
         expect($selection[1]).to.be($('.apple')[0]);
       });
       it('includes parents and self', function() {
-        var $ = cheerio.load(food);
-        var $selection = $('.apple').parents().addBack();
+        var q = cheerio.load(food);
+        var $selection = q('.apple').parents().addBack();
 
         expect($selection).to.have.length(3);
-        expect($selection[0]).to.be($('#food')[0]);
-        expect($selection[1]).to.be($('#fruits')[0]);
-        expect($selection[2]).to.be($('.apple')[0]);
+        expect($selection[0]).to.be(q('#food')[0]);
+        expect($selection[1]).to.be(q('#fruits')[0]);
+        expect($selection[2]).to.be(q('.apple')[0]);
       });
     });
     it('(filter) : filters the previous selection', function() {

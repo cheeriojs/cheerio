@@ -107,8 +107,8 @@ describe('cheerio', function() {
 
   it('should select only elements inside given context (Issue #193)', function() {
     var q = $.load(food),
-        fruits = q('#fruits'),
-        fruitElements = q('li', fruits);
+        $fruits = q('#fruits'),
+        fruitElements = q('li', $fruits);
 
     expect(fruitElements).to.have.length(3);
   });

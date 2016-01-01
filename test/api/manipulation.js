@@ -1330,7 +1330,7 @@ describe('$(...)', function() {
     });
 
     it('(html) : should add new elements for each element in selection', function() {
-      var $fruits = $('li');
+      $fruits = $('li');
       $fruits.html('<li class="durian">Durian</li>');
       var tested = 0;
       $fruits.each(function(){
