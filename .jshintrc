@@ -6,5 +6,6 @@
   "undef": true,
   "unused": true,
   "node": true,
-  "quotmark": "single"
+  "quotmark": "single",
+  "shadow": "outer"
 }
