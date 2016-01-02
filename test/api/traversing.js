@@ -47,6 +47,11 @@ describe('$(...)', function() {
       expect($('#fruits').find('LI')).to.have.length(3);
     });
 
+    it('should query immediate descendant only', function() {
+      var $ = cheerio.load('<foo><bar><bar></bar><bar></bar></bar></foo>');
+      expect($('foo').find('> bar')).to.have.length(1);
+    });
+
     it('should query case-sensitively when in xmlMode', function() {
       var q = cheerio.load('<caseSenSitive allTheWay>', {xmlMode: true});
       expect(q('caseSenSitive')).to.have.length(1);
