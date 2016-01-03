@@ -586,11 +586,39 @@ $.html()
 //    </ul>
 ```
 
+#### .appendTo( target )
+Insert every element in the set of matched elements to the end of the target.
+
+```js
+$('<li class="plum">Plum</li>').appendTo('#fruits')
+$.html()
+//=>  <ul id="fruits">
+//      <li class="apple">Apple</li>
+//      <li class="orange">Orange</li>
+//      <li class="pear">Pear</li>
+//      <li class="plum">Plum</li>
+//    </ul>
+```
+
 #### .prepend( content, [content, ...] )
 Inserts content as the *first* child of each of the selected elements.
 
 ```js
 $('ul').prepend('<li class="plum">Plum</li>')
+$.html()
+//=>  <ul id="fruits">
+//      <li class="plum">Plum</li>
+//      <li class="apple">Apple</li>
+//      <li class="orange">Orange</li>
+//      <li class="pear">Pear</li>
+//    </ul>
+```
+
+#### .prependTo( target )
+Insert every element in the set of matched elements to the beginning of the target.
+
+```js
+$('<li class="plum">Plum</li>').prependTo('#fruits')
 $.html()
 //=>  <ul id="fruits">
 //      <li class="plum">Plum</li>
@@ -614,7 +642,7 @@ $.html()
 //    </ul>
 ```
 
-#### .insertAfter( content )
+#### .insertAfter( target )
 Insert every element in the set of matched elements after the target.
 
 ```js
@@ -642,7 +670,7 @@ $.html()
 //    </ul>
 ```
 
-#### .insertBefore( content )
+#### .insertBefore( target )
 Insert every element in the set of matched elements before the target.
 
 ```js
