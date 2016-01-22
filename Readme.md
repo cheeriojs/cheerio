@@ -11,6 +11,7 @@ Teach your server HTML.
 var cheerio = require('cheerio'),
     $ = cheerio.load('<h2 class="title">Hello world</h2>');
 
+
 $('h2.title').text('Hello there!');
 $('h2').addClass('welcome');
 
@@ -20,6 +21,27 @@ $.html();
 
 ## Installation
 `npm install cheerio`
+
+### Consumption via webpack
+
+In the case you want to consume cheerio with wepack you need to configure your webpack config:
+
+1. You need to install "json-loader" via
+
+```npm install --save-dev json-loader```
+
+2. Go to your webpack config and make sure to use the "json-loader" and configure that "cheerio/package" is resolved with the "json-loader".
+
+```js
+    module: {
+        loaders: [
+            {
+                test: /cheerio\/package$/,
+                loader: 'json'
+            },
+        ]
+    }
+```
 
 ## Features
 __&#10084; Familiar syntax:__
