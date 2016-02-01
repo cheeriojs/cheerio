@@ -496,6 +496,66 @@ describe('$(...)', function() {
     });
   });
 
+  describe('.appendTo', function() {
+
+    it('(html) : should add element as last child', function() {
+      var $plum = $('<li class="plum">Plum</li>').appendTo(fruits);
+      expect($plum.parent().children().eq(3).hasClass('plum')).to.be.ok();
+    });
+
+    it('($(...)) : should add element as last child', function() {
+      $('<li class="plum">Plum</li>').appendTo($fruits);
+      expect($fruits.children().eq(3).hasClass('plum')).to.be.ok();
+    });
+
+    it('(Node) : should add element as last child', function() {
+      $('<li class="plum">Plum</li>').appendTo($fruits[0]);
+      expect($fruits.children().eq(3).hasClass('plum')).to.be.ok();
+    });
+
+    it('(selector) : should add element as last child', function() {
+      $('<li class="plum">Plum</li>').appendTo('#fruits');
+      expect($fruits.children().eq(3).hasClass('plum')).to.be.ok();
+    });
+
+    it('(Array) : should add element as last child of all elements in the array', function() {
+      var $multiple = $('<ul><li>Apple</li></ul><ul><li>Orange</li></ul>');
+      $('<li class="plum">Plum</li>').appendTo($multiple.get());
+      expect($multiple.first().children().eq(1).hasClass('plum')).to.be.ok();
+      expect($multiple.last().children().eq(1).hasClass('plum')).to.be.ok();
+    });
+  });
+
+  describe('.prependTo', function() {
+
+    it('(html) : should add element as first child', function() {
+      var $plum = $('<li class="plum">Plum</li>').prependTo(fruits);
+      expect($plum.parent().children().eq(0).hasClass('plum')).to.be.ok();
+    });
+
+    it('($(...)) : should add element as first child', function() {
+      $('<li class="plum">Plum</li>').prependTo($fruits);
+      expect($fruits.children().eq(0).hasClass('plum')).to.be.ok();
+    });
+
+    it('(Node) : should add node as first child', function() {
+      $('<li class="plum">Plum</li>').prependTo($fruits[0]);
+      expect($fruits.children().eq(0).hasClass('plum')).to.be.ok();
+    });
+
+    it('(selector) : should add element as first child', function() {
+      $('<li class="plum">Plum</li>').prependTo('#fruits');
+      expect($fruits.children().eq(0).hasClass('plum')).to.be.ok();
+    });
+
+    it('(Array) : should add element as first child of all elements in the array', function() {
+      var $multiple = $('<ul><li>Apple</li></ul><ul><li>Orange</li></ul>');
+      $('<li class="plum">Plum</li>').prependTo($multiple.get());
+      expect($multiple.first().children().eq(0).hasClass('plum')).to.be.ok();
+      expect($multiple.last().children().eq(0).hasClass('plum')).to.be.ok();
+    });
+  });
+
   describe('.after', function() {
 
     it('() : should do nothing', function() {
@@ -790,7 +850,7 @@ describe('$(...)', function() {
     });
 
     it('(Node) : should add element as previous sibling', function() {
-      var plum = $('<li class="plum">Plum</li>');
+      var plum = $('<li class="plum">Plum</li>')[0];
       $('.apple').before(plum);
       expect($('.apple').prev().hasClass('plum')).to.be.ok();
     });
