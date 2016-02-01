@@ -1,4 +1,45 @@
 
+0.20.0 / 2016-02-01
+==================
+
+ * Add coveralls badge, remove link to old report (Felix Böhm)
+ * Update lodash dependeny to 4.1.0 (leif.hanack)
+ * Fix PR #726 adding 'appendTo()' and 'prependTo()' (Delgan)
+ * Added appendTo and prependTo with tests #641 (digihaven)
+ * Fix #780 by changing options context in '.find()' (Felix Böhm)
+ * Add an unit test checking the query of child (Delgan)
+ * fix #667: attr({foo: null}) removes attribute foo, like attr('foo', null) (Ray Waldin)
+ * Include reference to dedicated "Loading" section (Mike Pennisi)
+ * Added load method to $ (alanev)
+ * update css-select to 1.2.0 (Felix Böhm)
+ * Fixing Grammatical Error (Dan Corman)
+ * Test against node v0.12 --> v4.2 (Jason Kurian)
+ * Correct output in example (Felix Böhm)
+ * Fix npm files filter (Bogdan Chadkin)
+ * Enable setting data on all elements in selection (Mike Pennisi)
+ * Reinstate `$.fn.toArray` (Mike Pennisi)
+ * update css-select to 1.1.0 (Thomas Shafer)
+ * Complete implementation of `wrap` (Mike Pennisi)
+ * Correct name of unit test (Mike Pennisi)
+ * Correct grammar in test titles (Mike Pennisi)
+ * Normalize whitespace (Mike Pennisi)
+ * Insert omitted assertion (Mike Pennisi)
+ * Update invocation of `children` (Mike Pennisi)
+ * Begin implementation of `wrap` method (Dandlezzz)
+ * Update Readme.md (Sven Slootweg)
+ * fix document's mistake in Readme.md (exoticknight)
+ * Add tests for setting text and html as non-strings (Ryc O'Chet)
+ * Fix for passing non-string values to .html or .text (Ryc O'Chet)
+ * use a selector to filter form elements (fb55)
+ * fix README.md typo (Yutian Li)
+ * README: fix spelling (Chris Rebert)
+ * Added support for options without a `value` attribute. Fixes #633 (Todd Wolfson)
+ * responding to pull request feedback - remove item() method and related tests (Ray Waldin)
+ * add length property and item method to object returned by prop('style'), plus tests (Ray Waldin)
+ * Added .prop method to readme (Artem Burtsev)
+ * Added .prop method (Artem Burtsev)
+ * Added Gitter badge (The Gitter Badger)
+
 0.19.0 / 2015-03-21
 ==================
 
