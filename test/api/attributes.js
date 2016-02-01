@@ -399,9 +399,17 @@ describe('$(...)', function() {
       var val = $('input[name="checkbox_off"]').val();
       expect(val).to.equal('off');
     });
+    it('.val(): on valueless checkbox should get value', function() {
+      var val = $('input[name="checkbox_valueless"]').val();
+      expect(val).to.equal('on');
+    });
     it('.val(): on radio should get value', function() {
       var val = $('input[type="radio"]').val();
       expect(val).to.equal('off');
+    });
+    it('.val(): on valueless radio should get value', function() {
+      var val = $('input[name="radio_valueless"]').val();
+      expect(val).to.equal('on');
     });
     it('.val(): on multiple select should get an array of values', function() {
       var val = $('select#multi').val();
