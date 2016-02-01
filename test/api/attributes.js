@@ -129,6 +129,61 @@ describe('$(...)', function() {
     });
   });
 
+  describe('.prop', function () {
+    var $,
+        checkbox;
+
+    beforeEach(function () {
+      $ = cheerio.load(inputs);
+      checkbox = $('input[name=checkbox_on]');
+    });
+
+    it('(valid key) : valid prop should get value', function() {
+      expect(checkbox.prop('checked')).to.equal(true);
+      checkbox.css('display', 'none');
+      expect(checkbox.prop('style').display).to.equal('none');
+      expect(checkbox.prop('style')).to.have.length(1);
+      expect(checkbox.prop('style')).to.contain('display');
+      expect(checkbox.prop('tagName')).to.equal('INPUT');
+      expect(checkbox.prop('nodeName')).to.equal('INPUT');
+    });
+
+    it('(invalid key) : invalid prop should get undefined', function() {
+      var attr = checkbox.prop('lol');
+      expect(attr).to.be(undefined);
+    });
+
+    it('(key, value) : should set prop', function() {
+      expect(checkbox.prop('checked')).to.equal(true);
+      checkbox.prop('checked', false);
+      expect(checkbox.prop('checked')).to.equal(false);
+      checkbox.prop('checked', true);
+      expect(checkbox.prop('checked')).to.equal(true);
+    });
+
+    it('(map) : object map should set multiple props', function() {
+      checkbox.prop({
+        id: 'check',
+        checked: false
+      });
+      expect(checkbox.prop('id')).to.equal('check');
+      expect(checkbox.prop('checked')).to.equal(false);
+    });
+
+    it('(key, function) : should call the function and update the prop with the return value', function() {
+      checkbox.prop('checked', function(index, value) {
+        expect(index).to.equal(0);
+        expect(value).to.equal(true);
+        return false;
+      });
+      expect(checkbox.prop('checked')).to.equal(false);
+    });
+
+    it('(key, value) : should support chaining after setting props', function() {
+      expect(checkbox.prop('checked', false)).to.equal(checkbox);
+    });
+  });
+
   describe('.data', function() {
 
     beforeEach(function() {

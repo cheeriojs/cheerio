@@ -145,6 +145,19 @@ $('.apple').attr('id', 'favorite').html()
 
 > See http://api.jquery.com/attr/ for more information
 
+#### .prop( name, value )
+Method for getting and setting properties. Gets the property value for only the first element in the matched set.
+
+```js
+$('input[type="checkbox"]').prop('checked')
+//=> false
+
+$('input[type="checkbox"]').prop('checked', true).val()
+//=> ok
+```
+
+> See http://api.jquery.com/prop/ for more information
+
 #### .data( name, value )
 Method for getting and setting data attributes. Gets or sets the data attribute value for only the first element in the matched set.
 
