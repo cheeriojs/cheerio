@@ -126,6 +126,15 @@ describe('$(...)', function() {
         ]);
     });
 
+    it('() : should serialize inputs without value attributes', function() {
+        expect($('<input name="fruit">').serializeArray()).to.eql([
+            {
+                name: 'fruit',
+                value: ''
+            }
+        ]);
+    });
+
   });
 
 });
