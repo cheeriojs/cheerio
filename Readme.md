@@ -1,10 +1,11 @@
 # cheerio [![Build Status](https://secure.travis-ci.org/cheeriojs/cheerio.svg?branch=master)](http://travis-ci.org/cheeriojs/cheerio) [![Coverage](http://img.shields.io/coveralls/cheeriojs/cheerio.svg?branch=master&style=flat)](https://coveralls.io/r/cheeriojs/cheerio) [![Join the chat at https://gitter.im/cheeriojs/cheerio](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/cheeriojs/cheerio?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Fast, flexible, and lean implementation of core jQuery designed specifically for the server.
-
-## Introduction
-Teach your server HTML.
-
+<!-- Fast, flexible, and lean implementation of core jQuery designed specifically for the server. -->
+快速，灵活并且精简的专门针对服务器的核心JQuery实现
+<!-- ## Introduction -->
+## 介绍
+<!-- Teach your server HTML. -->
+让你的服务端HTML代码这样写.
 ```js
 var cheerio = require('cheerio'),
     $ = cheerio.load('<h2 class="title">Hello world</h2>');
@@ -16,15 +17,21 @@ $.html();
 //=> <h2 class="title welcome">Hello there!</h2>
 ```
 
-## Installation
+<!-- ## Installation -->
+## 安装
 `npm install cheerio`
 
-## Features
-__&#10084; Familiar syntax:__
-Cheerio implements a subset of core jQuery. Cheerio removes all the DOM inconsistencies and browser cruft from the jQuery library, revealing its truly gorgeous API.
+<!-- ## Features -->
+## 特点
+<!-- __&#10084; Familiar syntax:__ -->
+__&#10084; 相似的语法:__
+<!-- Cheerio implements a subset of core jQuery. Cheerio removes all the DOM inconsistencies and browser cruft from the jQuery library, revealing its truly gorgeous API. -->
+cheerio工具是核心jQuery的子集。cheerio会从jQuery库中删除所有DOM矛盾和浏览器的讨厌部分,展示她真正华丽的API。
 
-__&#991; Blazingly fast:__
+<!-- __&#991; Blazingly fast:__ -->
+__&#991; 非常快:__
 Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient. Preliminary end-to-end benchmarks suggest that cheerio is about __8x__ faster than JSDOM.
+cheerio使用一个非常简单的、一致的DOM模型。作为一个结果分析、处理和呈现的工具非常有效。初步的端到端基准表明其速度是JSDOM的__8x__倍。
 
 __&#10049; Incredibly flexible:__
 Cheerio wraps around @FB55's forgiving [htmlparser2](https://github.com/fb55/htmlparser2/). Cheerio can parse nearly any HTML or XML document.
