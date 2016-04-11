@@ -30,31 +30,43 @@ cheerio工具是核心jQuery的子集。cheerio会从jQuery库中删除所有DOM
 
 <!-- __&#991; Blazingly fast:__ -->
 __&#991; 非常快:__
-Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient. Preliminary end-to-end benchmarks suggest that cheerio is about __8x__ faster than JSDOM.
+<!-- Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient. Preliminary end-to-end benchmarks suggest that cheerio is about __8x__ faster than JSDOM. -->
 cheerio使用一个非常简单的、一致的DOM模型。作为一个结果分析、处理和呈现的工具非常有效。初步的端到端基准表明其速度是JSDOM的__8x__倍。
 
-__&#10049; Incredibly flexible:__
-Cheerio wraps around @FB55's forgiving [htmlparser2](https://github.com/fb55/htmlparser2/). Cheerio can parse nearly any HTML or XML document.
+<!-- __&#10049; Incredibly flexible:__ -->
+__&#10049; 非常的灵活:__
+<!-- Cheerio wraps around @FB55's forgiving [htmlparser2](https://github.com/fb55/htmlparser2/). Cheerio can parse nearly any HTML or XML document. -->
+cheerio基于 @FB55's forgiving [htmlparser2](https://github.com/fb55/htmlparser2/)。cheerio可以解析几乎任何HTML或XML文档。
 
-## What about JSDOM?
+<!-- ## What about JSDOM? -->
+## 关于JSDOM?
 I wrote cheerio because I found myself increasingly frustrated with JSDOM. For me, there were three main sticking points that I kept running into again and again:
+我写cheerio主要是因为我发现我自己对JSDOM非常失望。对我来说,主要有三个点让我一直耿耿于怀:
 
-__&#8226; JSDOM's built-in parser is too strict:__
-  JSDOM's bundled HTML parser cannot handle many popular sites out there today.
+<!-- __&#8226; JSDOM's built-in parser is too strict:__ -->
+__&#8226; JSDOM's built-in parser 太严格:__
+  <!-- JSDOM's bundled HTML parser cannot handle many popular sites out there today. -->
+  JSDOM捆绑的HTML解析器不能处理今天许多流行的网站。
 
-__&#8226; JSDOM is too slow:__
-Parsing big websites with JSDOM has a noticeable delay.
+<!-- __&#8226; JSDOM is too slow:__ -->
+__&#8226; JSDOM 太慢了:__
+<!-- Parsing big websites with JSDOM has a noticeable delay. -->
+解析大网站JSDOM有明显的延迟。
 
 __&#8226; JSDOM feels too heavy:__
-The goal of JSDOM is to provide an identical DOM environment as what we see in the browser. I never really needed all this, I just wanted a simple, familiar way to do HTML manipulation.
+__&#8226; JSDOM 感觉太笨重了:__
+<!-- The goal of JSDOM is to provide an identical DOM environment as what we see in the browser. I never really needed all this, I just wanted a simple, familiar way to do HTML manipulation. -->
+JSDOM的目标是提供一个相同DOM环境正如我们在浏览器中所看到的。我从未真正需要所有这些,我只是想要一个简单,熟悉HTML操作方法。
 
-## When I would use JSDOM
+<!-- ## When I would use JSDOM -->
+## 我什么时候会使用JSDOM
 
-Cheerio will not solve all your problems. I would still use JSDOM if I needed to work in a browser-like environment on the server, particularly if I wanted to automate functional tests.
-
+<!-- Cheerio will not solve all your problems. I would still use JSDOM if I needed to work in a browser-like environment on the server, particularly if I wanted to automate functional tests. -->
+cheerio不能解决你所有的问题。我仍然会使用JSDOM如果我需要工作在服务器上的浏览器环境中,特别是如果我想自动化功能测试。
 ## API
 
-### Markup example we'll be using:
+<!-- ### Markup example we'll be using: -->
+### 我们会一直使用以下例子:
 
 ```html
 <ul id="fruits">
@@ -64,19 +76,25 @@ Cheerio will not solve all your problems. I would still use JSDOM if I needed to
 </ul>
 ```
 
-This is the HTML markup we will be using in all of the API examples.
+<!-- This is the HTML markup we will be using in all of the API examples. -->
+这是在所有的API例子中一直要使用的HTML例子。
 
-### Loading
-First you need to load in the HTML. This step in jQuery is implicit, since jQuery operates on the one, baked-in DOM. With Cheerio, we need to pass in the HTML document.
+<!-- ### Loading -->
+### 加载
 
-This is the _preferred_ method:
+<!-- First you need to load in the HTML. This step in jQuery is implicit, since jQuery operates on the one, baked-in DOM. With Cheerio, we need to pass in the HTML document. -->
+首先你需要加载HTML。jQuery的这一步是隐式的,因为一个jQuery运行,常用DOM。在cheerio中,我们需要通过在HTML文档。
+
+<!-- This is the _preferred_ method: -->
+这是首选的方法:
 
 ```js
 var cheerio = require('cheerio'),
     $ = cheerio.load('<ul id="fruits">...</ul>');
 ```
 
-Optionally, you can also load in the HTML by passing the string as the context:
+<!-- Optionally, you can also load in the HTML by passing the string as the context: -->
+根据情况,您还可以通过环境加载HTML字符串:
 
 ```js
 $ = require('cheerio');
