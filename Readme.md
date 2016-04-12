@@ -40,7 +40,7 @@ cheerio基于 @FB55's forgiving [htmlparser2](https://github.com/fb55/htmlparser
 
 <!-- ## What about JSDOM? -->
 ## 关于JSDOM?
-I wrote cheerio because I found myself increasingly frustrated with JSDOM. For me, there were three main sticking points that I kept running into again and again:
+<!-- I wrote cheerio because I found myself increasingly frustrated with JSDOM. For me, there were three main sticking points that I kept running into again and again: -->
 我写cheerio主要是因为我发现我自己对JSDOM非常失望。对我来说,主要有三个点让我一直耿耿于怀:
 
 <!-- __&#8226; JSDOM's built-in parser is too strict:__ -->
@@ -101,15 +101,17 @@ $ = require('cheerio');
 $('ul', '<ul id="fruits">...</ul>');
 ```
 
-Or as the root:
+<!-- Or as the root: -->
+或作为根:
 
 ```js
 $ = require('cheerio');
 $('li', 'ul', '<ul id="fruits">...</ul>');
 ```
 
-You can also pass an extra object to `.load()` if you need to modify any
-of the default parsing options:
+<!-- You can also pass an extra object to `.load()` if you need to modify any -->
+<!-- of the default parsing options: -->
+如果你需要修改默认的解析选项你也可以传给`.load()`一个额外的对象:
 
 ```js
 $ = cheerio.load('<ul id="fruits">...</ul>', {
@@ -118,7 +120,8 @@ $ = cheerio.load('<ul id="fruits">...</ul>', {
 });
 ```
 
-These parsing options are taken directly from [htmlparser2](https://github.com/fb55/htmlparser2/wiki/Parser-options), therefore any options that can be used in `htmlparser2` are valid in cheerio as well. The default options are:
+<!-- These parsing options are taken directly from [htmlparser2](https://github.com/fb55/htmlparser2/wiki/Parser-options), therefore any options that can be used in `htmlparser2` are valid in cheerio as well. The default options are: -->
+这些解析选项直接取自[htmlparser2](https://github.com/fb55/htmlparser2/wiki/Parser-options),因此也可以在cheerio中使用任何在`htmlparser2`中有效的选项。默认的选项是:
 
 ```js
 {
@@ -129,17 +132,25 @@ These parsing options are taken directly from [htmlparser2](https://github.com/f
 
 ```
 
-For a full list of options and their effects, see [this](https://github.com/fb55/DomHandler) and
+<!-- For a full list of options and their effects, see [this](https://github.com/fb55/DomHandler) and -->
+<!-- [htmlparser2's options](https://github.com/fb55/htmlparser2/wiki/Parser-options). -->
+至于一个完整的选项列表和他们的影响,看 [this](https://github.com/fb55/DomHandler)和
 [htmlparser2's options](https://github.com/fb55/htmlparser2/wiki/Parser-options).
 
-### Selectors
+<!-- ### Selectors -->
+### 选择器
 
-Cheerio's selector implementation is nearly identical to jQuery's, so the API is very similar.
+<!-- Cheerio's selector implementation is nearly identical to jQuery's, so the API is very similar. -->
+cheerio和jQuery选择器的实现几乎是相同的,所以API非常相似。
 
 #### $( selector, [context], [root] )
 `selector` searches within the `context` scope which searches within the `root` scope. `selector` and `context` can be a string expression, DOM Element, array of DOM elements, or cheerio object. `root` is typically the HTML document string.
 
 This selector method is the starting point for traversing and manipulating the document. Like jQuery, it's the primary method for selecting elements in the document, but unlike jQuery it's built on top of the CSSSelect library, which implements most of the Sizzle selectors.
+“选择器”中搜索“上下文”范围内搜索“根”的范围。“选择器”和“上下文”可以是一个字符串表达式,DOM元素,DOM元素的数组,或加油对象。“根”通常是HTML文档字符串。
+
+
+这个选择器方法的出发点是遍历和操作文档。像jQuery,选择文档中元素的主要方法,但与jQuery之上的CSSSelect库,实现大部分的选择器。
 
 ```js
 $('.apple', '#fruits').text()
