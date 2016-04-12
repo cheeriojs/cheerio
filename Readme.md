@@ -144,13 +144,12 @@ $ = cheerio.load('<ul id="fruits">...</ul>', {
 cheerio和jQuery选择器的实现几乎是相同的,所以API非常相似。
 
 #### $( selector, [context], [root] )
-`selector` searches within the `context` scope which searches within the `root` scope. `selector` and `context` can be a string expression, DOM Element, array of DOM elements, or cheerio object. `root` is typically the HTML document string.
+<!-- `selector` searches within the `context` scope which searches within the `root` scope. `selector` and `context` can be a string expression, DOM Element, array of DOM elements, or cheerio object. `root` is typically the HTML document string. -->
 
-This selector method is the starting point for traversing and manipulating the document. Like jQuery, it's the primary method for selecting elements in the document, but unlike jQuery it's built on top of the CSSSelect library, which implements most of the Sizzle selectors.
-“选择器”中搜索“上下文”范围内搜索“根”的范围。“选择器”和“上下文”可以是一个字符串表达式,DOM元素,DOM元素的数组,或加油对象。“根”通常是HTML文档字符串。
+<!-- This selector method is the starting point for traversing and manipulating the document. Like jQuery, it's the primary method for selecting elements in the document, but unlike jQuery it's built on top of the CSSSelect library, which implements most of the Sizzle selectors. -->
+`selector` 在 `root` 的范围内搜索 `context` 。`selector`和`context`可以是一个字符串表达式,DOM元素,DOM元素的数组,或cheerio对象。`root` 通常是HTML文档字符串。
 
-
-这个选择器方法的出发点是遍历和操作文档。像jQuery,选择文档中元素的主要方法,但与jQuery之上的CSSSelect库,实现大部分的选择器。
+这个选择器方法的出发点是遍历和操作文档。就像jQuery,它是选择文档中元素的主要方法,但不像jQuery它基于CSSSelect库来实现大部分的选择器。
 
 ```js
 $('.apple', '#fruits').text()
@@ -163,11 +162,14 @@ $('li[class=orange]').html()
 //=> Orange
 ```
 
-### Attributes
-Methods for getting and modifying attributes.
+<!-- ### Attributes -->
+### 属性
+<!-- Methods for getting and modifying attributes. -->
+获取和修改属性的方法。
 
 #### .attr( name, value )
-Method for getting and setting attributes. Gets the attribute value for only the first element in the matched set. If you set an attribute's value to `null`, you remove that attribute. You may also pass a `map` and `function` like jQuery.
+<!-- Method for getting and setting attributes. Gets the attribute value for only the first element in the matched set. If you set an attribute's value to `null`, you remove that attribute. You may also pass a `map` and `function` like jQuery. -->
+获取和设置属性的方法。获取匹配集合中的第一个元素的属性值。如果您将属性值设置为空，您将删除该属性。你也可以像jQuery函数一样通过`map` 和 `function`来设置。
 
 ```js
 $('ul').attr('id')
@@ -180,7 +182,8 @@ $('.apple').attr('id', 'favorite').html()
 > See http://api.jquery.com/attr/ for more information
 
 #### .prop( name, value )
-Method for getting and setting properties. Gets the property value for only the first element in the matched set.
+<!-- Method for getting and setting properties. Gets the property value for only the first element in the matched set. -->
+获取和设置属性的方法。获取唯一匹配集的第一元素的属性值。
 
 ```js
 $('input[type="checkbox"]').prop('checked')
@@ -193,7 +196,8 @@ $('input[type="checkbox"]').prop('checked', true).val()
 > See http://api.jquery.com/prop/ for more information
 
 #### .data( name, value )
-Method for getting and setting data attributes. Gets or sets the data attribute value for only the first element in the matched set.
+<!-- Method for getting and setting data attributes. Gets or sets the data attribute value for only the first element in the matched set. -->
+获取和设置数据属性的方法。获取或设置仅在匹配集合中的第一个元素的数据属性值。
 
 ```js
 $('<div data-apple-color="red"></div>').data()
@@ -210,7 +214,8 @@ apple.data('kind')
 > See http://api.jquery.com/data/ for more information
 
 #### .val( [value] )
-Method for getting and setting the value of input, select, and textarea. Note: Support for `map`, and `function` has not been added yet.
+<!-- Method for getting and setting the value of input, select, and textarea. Note: Support for `map`, and `function` has not been added yet. -->
+用于获取和设置值输入，选择，和文本的方法。注：支持`map`,  `function`尚未加入。
 
 ```js
 $('input[type="text"]').val()
@@ -221,7 +226,8 @@ $('input[type="text"]').val('test').html()
 ```
 
 #### .removeAttr( name )
-Method for removing attributes by `name`.
+<!-- Method for removing attributes by `name`. -->
+通过`name`属性移除元素
 
 ```js
 $('.pear').removeAttr('class').html()
@@ -229,7 +235,8 @@ $('.pear').removeAttr('class').html()
 ```
 
 #### .hasClass( className )
-Check to see if *any* of the matched elements have the given `className`.
+<!-- Check to see if *any* of the matched elements have the given `className`. -->
+检查任何一个匹配的元素中是否有` className `。
 
 ```js
 $('.pear').hasClass('pear')
@@ -243,7 +250,8 @@ $('li').hasClass('pear')
 ```
 
 #### .addClass( className )
-Adds class(es) to all of the matched elements. Also accepts a `function` like jQuery.
+<!-- Adds class(es) to all of the matched elements. Also accepts a `function` like jQuery. -->
+在所有匹配的元素中添加类。也像jQuery函数一样接受`function`。
 
 ```js
 $('.pear').addClass('fruit').html()
@@ -256,7 +264,8 @@ $('.apple').addClass('fruit red').html()
 > See http://api.jquery.com/addClass/ for more information.
 
 #### .removeClass( [className] )
-Removes one or more space-separated classes from the selected elements. If no `className` is defined, all classes will be removed. Also accepts a `function` like jQuery.
+<!-- Removes one or more space-separated classes from the selected elements. If no `className` is defined, all classes will be removed. Also accepts a `function` like jQuery. -->
+从选定的元素中删除一个或多个空格分隔的类。如果` className `是未定义的(未传参数)，所有的类将被删除。也像jQuery函数一样接受`function`。
 
 ```js
 $('.pear').removeClass('pear').html()
@@ -269,7 +278,8 @@ $('.apple').addClass('red').removeClass().html()
 > See http://api.jquery.com/removeClass/ for more information.
 
 #### .toggleClass( className, [switch] )
-Add or remove class(es) from the matched elements, depending on either the class's presence or the value of the switch argument. Also accepts a `function` like jQuery.
+<!-- Add or remove class(es) from the matched elements, depending on either the class's presence or the value of the switch argument. Also accepts a `function` like jQuery. -->
+从匹配的元素中添加或删除类，这取决于类的存在或切换参数的值。也像jQuery函数一样接受`function`。
 
 ```js
 $('.apple.green').toggleClass('fruit green red').html()
@@ -285,13 +295,15 @@ $('.apple.green').toggleClass('fruit green red', true).html()
 #### .is( element )
 #### .is( selection )
 #### .is( function(index) )
-Checks the current list of elements and returns `true` if _any_ of the elements match the selector. If using an element or Cheerio selection, returns `true` if _any_ of the elements match. If using a predicate function, the function is executed in the context of the selected element, so `this` refers to the current element.
+<!-- Checks the current list of elements and returns `true` if _any_ of the elements match the selector. If using an element or Cheerio selection, returns `true` if _any_ of the elements match. If using a predicate function, the function is executed in the context of the selected element, so `this` refers to the current element. -->
+检查元素如果任何元素匹配了选择器就返回`true`。如果使用一个元素或Cheerio选择,则元素匹配就返回`真`。如果使用谓词函数，该函数将在选定的元素的上下文中执行，所以`this`是指当前元素。
 
 ### Forms
 
 #### .serializeArray()
 
-Encode a set of form elements as an array of names and values.
+<!-- Encode a set of form elements as an array of names and values. -->
+将一组表单元素编码为一组名称和值。
 
 ```js
 $('<form><input name="foo" value="bar" /></form>').serializeArray()
@@ -303,7 +315,8 @@ $('<form><input name="foo" value="bar" /></form>').serializeArray()
 #### .find(selector)
 #### .find(selection)
 #### .find(node)
-Get the descendants of each element in the current set of matched elements, filtered by a selector, jQuery object, or element.
+<!-- Get the descendants of each element in the current set of matched elements, filtered by a selector, jQuery object, or element. -->
+通过过滤选择器，jQuery对象或元素，获取每个匹配元素的后代。
 
 ```js
 $('#fruits').find('li').length
@@ -313,7 +326,8 @@ $('#fruits').find($('.apple')).length
 ```
 
 #### .parent([selector])
-Get the parent of each element in the current set of matched elements, optionally filtered by a selector.
+<!-- Get the parent of each element in the current set of matched elements, optionally filtered by a selector. -->
+在当前集合中的每个元素的父元素中，选择一个选择器进行筛选。
 
 ```js
 $('.pear').parent().attr('id')
@@ -330,14 +344,17 @@ $('.orange').parents('#fruits').length
 ```
 
 #### .parentsUntil([selector][,filter])
-Get the ancestors of each element in the current set of matched elements, up to but not including the element matched by the selector, DOM node, or cheerio object.
+<!-- Get the ancestors of each element in the current set of matched elements, up to but not including the element matched by the selector, DOM node, or cheerio object. -->
+获取匹配元素的祖先元素直到碰到匹配的选择器DOM节点或cheerio对象。
+
 ```js
 $('.orange').parentsUntil('#food').length
 // => 1
 ```
 
 #### .closest(selector)
-For each element in the set, get the first element that matches the selector by testing the element itself and traversing up through its ancestors in the DOM tree.
+<!-- For each element in the set, get the first element that matches the selector by testing the element itself and traversing up through its ancestors in the DOM tree. -->
+集合中的每个元素，获得选择器匹配元素的第一个匹配的祖先元素。
 
 ```js
 $('.orange').closest()
@@ -351,7 +368,8 @@ $('.orange').closest('#fruits')
 ```
 
 #### .next([selector])
-Gets the next sibling of the first selected element, optionally filtered by a selector.
+<!-- Gets the next sibling of the first selected element, optionally filtered by a selector. -->
+通过一个选择器筛选获取第一选定元素的下一个兄弟姐妹。
 
 ```js
 $('.apple').next().hasClass('orange')
@@ -359,8 +377,8 @@ $('.apple').next().hasClass('orange')
 ```
 
 #### .nextAll([selector])
-Gets all the following siblings of the first selected element, optionally filtered by a selector.
-
+<!-- Gets all the following siblings of the first selected element, optionally filtered by a selector. -->
+通过一个选择器筛选来获取所有下列第一选择元素的兄弟姐妹
 ```js
 $('.apple').nextAll()
 //=> [<li class="orange">Orange</li>, <li class="pear">Pear</li>]
@@ -369,7 +387,8 @@ $('.apple').nextAll('.orange')
 ```
 
 #### .nextUntil([selector], [filter])
-Gets all the following siblings up to but not including the element matched by the selector, optionally filtered by another selector.
+<!-- Gets all the following siblings up to but not including the element matched by the selector, optionally filtered by another selector. -->
+得到所有下面的兄弟姐妹，但不包括由选择器匹配的元素，可以选择由另一个选择器筛选。
 
 ```js
 $('.apple').nextUntil('.pear')
@@ -377,7 +396,8 @@ $('.apple').nextUntil('.pear')
 ```
 
 #### .prev([selector])
-Gets the previous sibling of the first selected element optionally filtered by a selector.
+<!-- Gets the previous sibling of the first selected element optionally filtered by a selector. -->
+获取选定元素的前一个兄弟姐妹，可以选择一个选择器筛选。
 
 ```js
 $('.orange').prev().hasClass('apple')
@@ -385,7 +405,8 @@ $('.orange').prev().hasClass('apple')
 ```
 
 #### .prevAll([selector])
-Gets all the preceding siblings of the first selected element, optionally filtered by a selector.
+<!-- Gets all the preceding siblings of the first selected element, optionally filtered by a selector. -->
+获取所选元素的所有前一个兄弟姐妹，选择一个选择器进行筛选。
 
 ```js
 $('.pear').prevAll()
@@ -395,7 +416,8 @@ $('.pear').prevAll('.orange')
 ```
 
 #### .prevUntil([selector], [filter])
-Gets all the preceding siblings up to but not including the element matched by the selector, optionally filtered by another selector.
+<!-- Gets all the preceding siblings up to but not including the element matched by the selector, optionally filtered by another selector. -->
+得到所有的前一个兄弟姐妹，但不包括由选择器匹配的元素，选择另一个选择器筛选。
 
 ```js
 $('.pear').prevUntil('.apple')
@@ -403,7 +425,8 @@ $('.pear').prevUntil('.apple')
 ```
 
 #### .slice( start, [end] )
-Gets the elements matching the specified range
+<!-- Gets the elements matching the specified range -->
+获取指定范围匹配的元素
 
 ```js
 $('li').slice(1).eq(0).text()
@@ -414,7 +437,8 @@ $('li').slice(1, 2).length
 ```
 
 #### .siblings([selector])
-Gets the first selected element's siblings, excluding itself.
+<!-- Gets the first selected element's siblings, excluding itself. -->
+获取第一选定元素的兄弟姐妹，不包括它自己。
 
 ```js
 $('.pear').siblings().length
@@ -426,7 +450,8 @@ $('.pear').siblings('.orange').length
 ```
 
 #### .children([selector])
-Gets the children of the first selected element.
+<!-- Gets the children of the first selected element. -->
+获取第一选定元素的孩子元素。
 
 ```js
 $('#fruits').children().length
@@ -437,7 +462,8 @@ $('#fruits').children('.pear').text()
 ```
 
 #### .contents()
-Gets the children of each element in the set of matched elements, including text and comment nodes.
+<!-- Gets the children of each element in the set of matched elements, including text and comment nodes. -->
+获取匹配元素集合中的每个元素的孩子元素，包括文本和注释节点。
 
 ```js
 $('#fruits').contents().length
@@ -445,7 +471,8 @@ $('#fruits').contents().length
 ```
 
 #### .each( function(index, element) )
-Iterates over a cheerio object, executing a function for each matched element. When the callback is fired, the function is fired in the context of the DOM element, so `this` refers to the current element, which is equivalent to the function parameter `element`. To break out of the `each` loop early, return with `false`.
+<!-- Iterates over a cheerio object, executing a function for each matched element. When the callback is fired, the function is fired in the context of the DOM element, so `this` refers to the current element, which is equivalent to the function parameter `element`. To break out of the `each` loop early, return with `false`. -->
+遍历一个cheerio对象，为每一个匹配元素的执行函数。当回调被解雇，功能是在DOM元素的上下文被解雇，所以`这`指向当前元素，这相当于函数的参数`element`。要提前打破的`each`循环，那么返回`false`。
 
 ```js
 var fruits = [];
@@ -460,6 +487,7 @@ fruits.join(', ');
 
 #### .map( function(index, element) )
 Pass each element in the current matched set through a function, producing a new Cheerio object containing the return values. The function can return an individual data item or an array of data items to be inserted into the resulting set. If an array is returned, the elements inside the array are inserted into the set. If the function returns null or undefined, no element will be inserted.
+通过每个在匹配函数产生的匹配集合中的匹配元素，产生一个新的包含返回值的cheerio对象。该函数可以返回一个单独的数据项或一组数据项被插入到所得到的集合中。如果返回一个数组，数组中的元素插入到集合中。如果函数返回空或未定义，则将插入任何元素。
 
 ```js
 $('li').map(function(i, el) {
