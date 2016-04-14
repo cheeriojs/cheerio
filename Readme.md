@@ -45,7 +45,7 @@ cheerio基于 @FB55's forgiving [htmlparser2](https://github.com/fb55/htmlparser
 
 <!-- __&#8226; JSDOM's built-in parser is too strict:__ -->
 __&#8226; JSDOM's built-in parser 太严格:__
-  <!-- JSDOM's bundled HTML parser cannot handle many popular sites out there today. -->
+  
   JSDOM捆绑的HTML解析器不能处理今天许多流行的网站。
 
 <!-- __&#8226; JSDOM is too slow:__ -->
