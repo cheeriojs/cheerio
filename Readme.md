@@ -53,7 +53,7 @@ __&#8226; JSDOM 太慢了:__
 <!-- Parsing big websites with JSDOM has a noticeable delay. -->
 解析大网站JSDOM有明显的延迟。
 
-__&#8226; JSDOM feels too heavy:__
+<!-- __&#8226; JSDOM feels too heavy:__ -->
 __&#8226; JSDOM 感觉太笨重了:__
 <!-- The goal of JSDOM is to provide an identical DOM environment as what we see in the browser. I never really needed all this, I just wanted a simple, familiar way to do HTML manipulation. -->
 JSDOM的目标是提供一个相同DOM环境正如我们在浏览器中所看到的。我从未真正需要所有这些,我只是想要一个简单,熟悉HTML操作方法。
@@ -486,7 +486,7 @@ fruits.join(', ');
 ```
 
 #### .map( function(index, element) )
-Pass each element in the current matched set through a function, producing a new Cheerio object containing the return values. The function can return an individual data item or an array of data items to be inserted into the resulting set. If an array is returned, the elements inside the array are inserted into the set. If the function returns null or undefined, no element will be inserted.
+<!-- Pass each element in the current matched set through a function, producing a new Cheerio object containing the return values. The function can return an individual data item or an array of data items to be inserted into the resulting set. If an array is returned, the elements inside the array are inserted into the set. If the function returns null or undefined, no element will be inserted. -->
 通过每个在匹配函数产生的匹配集合中的匹配元素，产生一个新的包含返回值的cheerio对象。该函数可以返回一个单独的数据项或一组数据项被插入到所得到的集合中。如果返回一个数组，数组中的元素插入到集合中。如果函数返回空或未定义，则将插入任何元素。
 
 ```js
@@ -499,7 +499,8 @@ $('li').map(function(i, el) {
 
 #### .filter( selector ) <br /> .filter( selection ) <br /> .filter( element ) <br /> .filter( function(index) )
 
-Iterates over a cheerio object, reducing the set of selector elements to those that match the selector or pass the function's test. When a Cheerio selection is specified, return only the elements contained in that selection. When an element is specified, return only that element (if it is contained in the original selection). If using the function method, the function is executed in the context of the selected element, so `this` refers to the current element.
+<!-- Iterates over a cheerio object, reducing the set of selector elements to those that match the selector or pass the function's test. When a Cheerio selection is specified, return only the elements contained in that selection. When an element is specified, return only that element (if it is contained in the original selection). If using the function method, the function is executed in the context of the selected element, so `this` refers to the current element. -->
+遍历一个cheerio对象，降低通过选择器匹配的元素，或传递函数的测试的选择器元素组。当一个cheerio的选择是特定的，只返回元素的选择。当指定元素时，返回该元素（如果它包含在原始选择中）。如果使用该函数方法，该函数将在选定的元素的上下文中执行，所以`this`是指当前元素。
 
 Selector:
 
@@ -520,9 +521,11 @@ $('li').filter(function(i, el) {
 
 #### .not( selector ) <br /> .not( selection ) <br /> .not( element ) <br /> .not( function(index, elem) )
 
-Remove elements from the set of matched elements. Given a jQuery object that represents a set of DOM elements, the `.not()` method constructs a new jQuery object from a subset of the matching elements. The supplied selector is tested against each element; the elements that don't match the selector will be included in the result. The `.not()` method can take a function as its argument in the same way that `.filter()` does. Elements for which the function returns true are excluded from the filtered set; all other elements are included.
+<!-- Remove elements from the set of matched elements. Given a jQuery object that represents a set of DOM elements, the `.not()` method constructs a new jQuery object from a subset of the matching elements. The supplied selector is tested against each element; the elements that don't match the selector will be included in the result. The `.not()` method can take a function as its argument in the same way that `.filter()` does. Elements for which the function returns true are excluded from the filtered set; all other elements are included. -->
+从匹配的元素集合中删除元素。给定一个jQuery对象表示一组DOM元素，`.not() `方法从匹配的元素的子集构造了一种新的jQuery对象。所提供的选择器对每个元素进行了测试；结果中不匹配选择器的元素将被包含在该结果中。`.not() `方法可以把一个函数作为参数就像`.filter() `一样。将函数返回为真的元素从过滤的集合中排除，所有其他元素都包括在内。
 
-Selector:
+<!-- Selector: -->
+选择器:
 
 ```js
 $('li').not('.apple').length;
@@ -541,16 +544,17 @@ $('li').not(function(i, el) {
 
 #### .has( selector ) <br /> .has( element )
 
-Filters the set of matched elements to only those which have the given DOM element as a descendant or which have a descendant that matches the given selector. Equivalent to `.filter(':has(selector)')`.
+<!-- Filters the set of matched elements to only those which have the given DOM element as a descendant or which have a descendant that matches the given selector. Equivalent to `.filter(':has(selector)')`. -->
+只有把那些特定的DOM元素作为后代或匹配了给定选择器的后裔才能过滤进匹配的元素集。相当于`.filter(':has(selector)')`。
 
-Selector:
+选择器:
 
 ```js
 $('ul').has('.pear').attr('id');
 //=> fruits
 ```
 
-Element:
+元素:
 
 ```js
 $('ul').has($('.pear')[0]).attr('id');
@@ -558,7 +562,8 @@ $('ul').has($('.pear')[0]).attr('id');
 ```
 
 #### .first()
-Will select the first element of a cheerio object
+<!-- Will select the first element of a cheerio object -->
+选择一个cheerio的对象的第一个元素
 
 ```js
 $('#fruits').children().first().text()
@@ -566,7 +571,8 @@ $('#fruits').children().first().text()
 ```
 
 #### .last()
-Will select the last element of a cheerio object
+<!-- Will select the last element of a cheerio object -->
+选择一个cheerio对象的最后一个元素
 
 ```js
 $('#fruits').children().last().text()
@@ -574,7 +580,8 @@ $('#fruits').children().last().text()
 ```
 
 #### .eq( i )
-Reduce the set of matched elements to the one at the specified index. Use `.eq(-i)` to count backwards from the last selected element.
+<!-- Reduce the set of matched elements to the one at the specified index. Use `.eq(-i)` to count backwards from the last selected element. -->
+根据索引来确定元素。使用 `.eq(-i)` 的则是倒过来计数。
 
 ```js
 $('li').eq(0).text()
@@ -586,14 +593,16 @@ $('li').eq(-1).text()
 
 #### .get( [i] )
 
-Retrieve the DOM elements matched by the Cheerio object. If an index is specified, retrieve one of the elements matched by the Cheerio object:
+<!-- Retrieve the DOM elements matched by the Cheerio object. If an index is specified, retrieve one of the elements matched by the Cheerio object: -->
+检索出匹配的cheerio对象的DOM元素。如果指定索引，检索出一个匹配的cheerio对象的元素：
 
 ```js
 $('li').get(0).tagName
 //=> li
 ```
 
-If no index is specified, retrieve all elements matched by the Cheerio object:
+<!-- If no index is specified, retrieve all elements matched by the Cheerio object: -->
+如果没有指定索引，检索出所有匹配的cheerio对象元素：
 
 ```js
 $('li').get().length
@@ -604,7 +613,8 @@ $('li').get().length
 #### .index( selector )
 #### .index( nodeOrSelection )
 
-Search for a given element from among the matched elements.
+<!-- Search for a given element from among the matched elements. -->
+在匹配元素中搜索给定元素。
 
 ```js
 $('.pear').index()
@@ -616,7 +626,8 @@ $('.apple').index($('#fruit, li'))
 ```
 
 #### .end()
-End the most recent filtering operation in the current chain and return the set of matched elements to its previous state.
+<!-- End the most recent filtering operation in the current chain and return the set of matched elements to its previous state. -->
+结束当前链中最新的过滤操作，将匹配的元素集合返回到它的前一状态。
 
 ```js
 $('li').eq(0).end().length
@@ -628,7 +639,8 @@ $('li').eq(0).end().length
 #### .add( elements )
 #### .add( html )
 #### .add( selection )
-Add elements to the set of matched elements.
+<!-- Add elements to the set of matched elements. -->
+在匹配元素集合中添加元素。
 
 ```js
 $('.apple').add('.orange').length
@@ -637,18 +649,22 @@ $('.apple').add('.orange').length
 
 #### .addBack( [filter] )
 
-Add the previous set of elements on the stack to the current set, optionally filtered by a selector.
+<!-- Add the previous set of elements on the stack to the current set, optionally filtered by a selector. -->
+将堆栈上的前一组元素添加到当前集合中，选择一个选择器进行筛选。
 
 ```js
 $('li').eq(0).addBack('.orange').length
 //=> 2
 ```
 
-### Manipulation
-Methods for modifying the DOM structure.
+<!-- ### Manipulation -->
+### 操作
+<!-- Methods for modifying the DOM structure. -->
+修改DOM结构的方法。
 
 #### .append( content, [content, ...] )
-Inserts content as the *last* child of each of the selected elements.
+<!-- Inserts content as the *last* child of each of the selected elements. -->
+插入内容为每个选定元素的 *last* 孩子。
 
 ```js
 $('ul').append('<li class="plum">Plum</li>')
@@ -662,7 +678,8 @@ $.html()
 ```
 
 #### .appendTo( target )
-Insert every element in the set of matched elements to the end of the target.
+<!-- Insert every element in the set of matched elements to the end of the target. -->
+将每一个元素插入到目标的末端。
 
 ```js
 $('<li class="plum">Plum</li>').appendTo('#fruits')
@@ -676,7 +693,8 @@ $.html()
 ```
 
 #### .prepend( content, [content, ...] )
-Inserts content as the *first* child of each of the selected elements.
+<!-- Inserts content as the *first* child of each of the selected elements. -->
+插入内容为每个选定元素的 *first* 孩子。
 
 ```js
 $('ul').prepend('<li class="plum">Plum</li>')
@@ -690,7 +708,8 @@ $.html()
 ```
 
 #### .prependTo( target )
-Insert every element in the set of matched elements to the beginning of the target.
+<!-- Insert every element in the set of matched elements to the beginning of the target. -->
+将每一个元素插入到目标的开始。
 
 ```js
 $('<li class="plum">Plum</li>').prependTo('#fruits')
@@ -704,7 +723,8 @@ $.html()
 ```
 
 #### .after( content, [content, ...] )
-Insert content next to each element in the set of matched elements.
+<!-- Insert content next to each element in the set of matched elements. -->
+在匹配元素集合中的元素后面插入内容。
 
 ```js
 $('.apple').after('<li class="plum">Plum</li>')
@@ -718,7 +738,8 @@ $.html()
 ```
 
 #### .insertAfter( target )
-Insert every element in the set of matched elements after the target.
+<!-- Insert every element in the set of matched elements after the target. -->
+将每一个元素插入匹配元素集合中的目标后。
 
 ```js
 $('<li class="plum">Plum</li>').insertAfter('.apple')
@@ -732,7 +753,8 @@ $.html()
 ```
 
 #### .before( content, [content, ...] )
-Insert content previous to each element in the set of matched elements.
+<!-- Insert content previous to each element in the set of matched elements. -->
+在匹配元素集合的元素前插入元素。
 
 ```js
 $('.apple').before('<li class="plum">Plum</li>')
@@ -746,7 +768,8 @@ $.html()
 ```
 
 #### .insertBefore( target )
-Insert every element in the set of matched elements before the target.
+<!-- Insert every element in the set of matched elements before the target. -->
+在目标元素前插入元素。
 
 ```js
 $('<li class="plum">Plum</li>').insertBefore('.apple')
@@ -760,7 +783,8 @@ $.html()
 ```
 
 #### .remove( [selector] )
-Removes the set of matched elements from the DOM and all their children. `selector` filters the set of matched elements to be removed.
+<!-- Removes the set of matched elements from the DOM and all their children. `selector` filters the set of matched elements to be removed. -->
+将匹配的元素集合从DOM和他们的孩子节点中删除。
 
 ```js
 $('.pear').remove()
@@ -772,7 +796,8 @@ $.html()
 ```
 
 #### .replaceWith( content )
-Replaces matched elements with `content`.
+<!-- Replaces matched elements with `content`. -->
+将匹配的元素替换为 `content`。
 
 ```js
 var plum = $('<li class="plum">Plum</li>')
@@ -786,7 +811,8 @@ $.html()
 ```
 
 #### .empty()
-Empties an element, removing all its children.
+<!-- Empties an element, removing all its children. -->
+清空一个元素，去除所有的孩子。
 
 ```js
 $('ul').empty()
@@ -795,7 +821,8 @@ $.html()
 ```
 
 #### .html( [htmlString] )
-Gets an html content string from the first selected element. If `htmlString` is specified, each selected element's content is replaced by the new content.
+<!-- Gets an html content string from the first selected element. If `htmlString` is specified, each selected element's content is replaced by the new content. -->
+获取第一个选中元素的HTML内容字符串。如果` htmlstring `被指定，那么选中元素的内容被新内容所取代。
 
 ```js
 $('.orange').html()
@@ -806,7 +833,8 @@ $('#fruits').html('<li class="mango">Mango</li>').html()
 ```
 
 #### .text( [textString] )
-Get the combined text contents of each element in the set of matched elements, including their descendants.. If `textString` is specified, each selected element's content is replaced by the new text content.
+<!-- Get the combined text contents of each element in the set of matched elements, including their descendants.. If `textString` is specified, each selected element's content is replaced by the new text content. -->
+获取元素集合中的每个元素的合并文本内容，包括它们的后代。如果 `textString` 指定文本字符串，每个元素的内容被新的内容替换。
 
 ```js
 $('.orange').text()
@@ -819,7 +847,8 @@ $('ul').text()
 ```
 
 #### .wrap( content )
-The .wrap() function can take any string or object that could be passed to the $() factory function to specify a DOM structure. This structure may be nested several levels deep, but should contain only one inmost element. A copy of this structure will be wrapped around each of the elements in the set of matched elements. This method returns the original set of elements for chaining purposes.
+<!-- The .wrap() function can take any string or object that could be passed to the $() factory function to specify a DOM structure. This structure may be nested several levels deep, but should contain only one inmost element. A copy of this structure will be wrapped around each of the elements in the set of matched elements. This method returns the original set of elements for chaining purposes. -->
+.wrap()函数可以使用任何可以传递给$()工厂函数字符串或对象来指定DOM结构。这种结构可以嵌套多个层次，但应该只包含一个内心深处的元素。这一结构的副本将在匹配的元素集合中的每一个元素被包装。此方法返回的链接目标的原始元素集。
 
 ```js
 var redFruit = $('<div class="red-fruit"></div>')
@@ -851,10 +880,12 @@ $('li').wrap(healthy)
 
 #### .css( [propertName] ) <br /> .css( [ propertyNames] ) <br /> .css( [propertyName], [value] ) <br /> .css( [propertName], [function] ) <br /> .css( [properties] )
 
-Get the value of a style property for the first element in the set of matched elements or set one or more CSS properties for every matched element.
+<!-- Get the value of a style property for the first element in the set of matched elements or set one or more CSS properties for every matched element. -->
+得到一个匹配元素的style属性值或者设置匹配元素的css属性。
 
-### Rendering
-When you're ready to render the document, you can use the `html` utility function:
+### 渲染
+<!-- When you're ready to render the document, you can use the `html` utility function: -->
+当你准备好要渲染的文件，你可以使用` html `效用函数：
 
 ```js
 $.html()
@@ -865,20 +896,23 @@ $.html()
 //    </ul>
 ```
 
-If you want to return the outerHTML you can use `$.html(selector)`:
+<!-- If you want to return the outerHTML you can use `$.html(selector)`: -->
+如果你想返回outerHTML，你可以使用 `$.html(selector)`：
 
 ```js
 $.html('.pear')
 //=> <li class="pear">Pear</li>
 ```
 
-By default, `html` will leave some tags open. Sometimes you may instead want to render a valid XML document. For example, you might parse the following XML snippet:
+<!-- By default, `html` will leave some tags open. Sometimes you may instead want to render a valid XML document. For example, you might parse the following XML snippet: -->
+默认情况下，` html `会留下一些开放标签。有时你可能会想要渲染一个有效的文档。例如，你可能会对下面的XML片段：
 
 ```xml
 $ = cheerio.load('<media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123"/>');
 ```
 
-... and later want to render to XML. To do this, you can use the 'xml' utility function:
+<!-- ... and later want to render to XML. To do this, you can use the 'xml' utility function: -->
+…后来要渲染到XML。要做到这一点，你可以使用 'xml' 效用函数：
 
 ```js
 $.xml()
@@ -886,11 +920,14 @@ $.xml()
 ```
 
 
-### Miscellaneous
-DOM element methods that don't fit anywhere else
+<!-- ### Miscellaneous -->
+### 其他
+<!-- DOM element methods that don't fit anywhere else -->
+DOM元素的方法不适合的地方
 
 #### .toArray()
-Retrieve all the DOM elements contained in the jQuery set as an array.
+<!-- Retrieve all the DOM elements contained in the jQuery set as an array. -->
+检索jQuery中所有的DOM元素然后设置为一个数组。
 
 ```js
 $('li').toArray()
@@ -898,17 +935,20 @@ $('li').toArray()
 ```
 
 #### .clone() ####
-Clone the cheerio object.
+<!-- Clone the cheerio object. -->
+克隆cheerio对象
 
 ```js
 var moreFruit = $('#fruits').clone()
 ```
 
-### Utilities
+<!-- ### Utilities -->
+### 实用工具
 
 #### $.root
 
-Sometimes you need to work with the top-level root element. To query it, you can use `$.root()`.
+<!-- Sometimes you need to work with the top-level root element. To query it, you can use `$.root()`. -->
+有时你需要与顶级根元素一起工作。要查询它，您可以使用 `$.root()`.。
 
 ```js
 $.root().append('<ul id="vegetables"></ul>').html();
@@ -916,17 +956,22 @@ $.root().append('<ul id="vegetables"></ul>').html();
 ```
 
 #### $.contains( container, contained )
-Checks to see if the `contained` DOM element is a descendant of the `container` DOM element.
+<!-- Checks to see if the `contained` DOM element is a descendant of the `container` DOM element. -->
+检查`contained`DOM元素的容器是否是 `container`DOM元素的后代。
 
 #### $.parseHTML( data [, context ] [, keepScripts ] )
-Parses a string into an array of DOM nodes. The `context` argument has no meaning for Cheerio, but it is maintained for API compatability.
+<!-- Parses a string into an array of DOM nodes. The `context` argument has no meaning for Cheerio, but it is maintained for API compatability. -->
+将一个字符串解析成DOM节点数组。`context`参数对cheerio对象没有意义，但它可以保持API的兼容性。
 
 #### $.load( html[, options ] )
-Load in the HTML. (See the previous section titled "Loading" for more information.)
+<!-- Load in the HTML. (See the previous section titled "Loading" for more information.) -->
+在HTML加载。（请参阅上一节题为 "Loading" 以了解更多信息。）
 
-### Plugins
+<!-- ### Plugins -->
+### 插件
 
-Once you have loaded a document, you may extend the prototype or the equivalent `fn` property with custom plugin methods:
+<!-- Once you have loaded a document, you may extend the prototype or the equivalent `fn` property with custom plugin methods: -->
+当你加载一个文件，你可以用定义插件的方法将原型或等效 `fn` 属性扩展：
 
 ```js
 var $ = cheerio.load('<html><body>Hello, <b>world</b>!</body></html>');
@@ -937,9 +982,11 @@ $.prototype.logHtml = function() {
 $('body').logHtml(); // logs "Hello, <b>world</b>!" to the console
 ```
 
-### The "DOM Node" object
+<!-- ### The "DOM Node" object -->
+### "DOM Node" 对象
 
-Cheerio collections are made up of objects that bear some resemblence to [browser-based DOM nodes](https://developer.mozilla.org/en-US/docs/Web/API/Node). You can expect them to define the following properties:
+<!-- Cheerio collections are made up of objects that bear some resemblence to [browser-based DOM nodes](https://developer.mozilla.org/en-US/docs/Web/API/Node). You can expect them to define the following properties: -->
+cheerio集合是由一些相似于[browser-based DOM nodes](https://developer.mozilla.org/en-US/docs/Web/API/Node)的对象组成。你可以期待他们定义以下属性：
 
 - `tagName`
 - `parentNode`
@@ -954,22 +1001,27 @@ Cheerio collections are made up of objects that bear some resemblence to [browse
 
 http://vimeo.com/31950192
 
-> This video tutorial is a follow-up to Nettut's "How to Scrape Web Pages with Node.js and jQuery", using cheerio instead of JSDOM + jQuery. This video shows how easy it is to use cheerio and how much faster cheerio is than JSDOM + jQuery.
+<!-- > This video tutorial is a follow-up to Nettut's "How to Scrape Web Pages with Node.js and jQuery", using cheerio instead of JSDOM + jQuery. This video shows how easy it is to use cheerio and how much faster cheerio is than JSDOM + jQuery. -->
+>这个视频教程是一个后续nettut "如何用Node.js和jQuery网页、使用cheerio不是jsdom + jQuery"。这段视频显示了它是多么容易使用cheerio以及cheerio到底比JSDOM + jQuery快多少。
 
-## Testing
+<!-- ## Testing -->
+## 测试
 
-To run the test suite, download the repository, then within the cheerio directory, run:
+<!-- To run the test suite, download the repository, then within the cheerio directory, run: -->
+要运行测试套件，下载库，然后在cheerio目录，运行：
 
 ```shell
 make setup
 make test
 ```
 
-This will download the development packages and run the test suite.
+<!-- This will download the development packages and run the test suite. -->
+这将下载开发包和运行测试套件。
 
-## Contributors
+## 贡献者
 
-These are some of the contributors that have made cheerio possible:
+<!-- These are some of the contributors that have made cheerio possible: -->
+这些都是一些对cheerio有贡献的人：
 
 ```
 project  : cheerio
@@ -1032,13 +1084,16 @@ project  : cheerio
      1  xiaohwan                0.1%
 ```
 
-## Cheerio in the real world
+<!-- ## Cheerio in the real world -->
+## 实际生活中的cheerio应用
 
-Are you using cheerio in production? Add it to the [wiki](https://github.com/cheeriojs/cheerio/wiki/Cheerio-in-Production)!
+<!-- Are you using cheerio in production? Add it to the [wiki](https://github.com/cheeriojs/cheerio/wiki/Cheerio-in-Production)! -->
+你用cheerio开发？把它添加到[wiki](https://github.com/cheeriojs/cheerio/wiki/Cheerio-in-Production)!
 
-## Special Thanks
+## 特别鸣谢
 
-This library stands on the shoulders of some incredible developers. A special thanks to:
+<!-- This library stands on the shoulders of some incredible developers. A special thanks to: -->
+这个库站在一些令人难以置信的开发者的肩膀上。特别感谢：
 
 __&#8226; @FB55 for node-htmlparser2 & CSSSelect:__
 Felix has a knack for writing speedy parsing engines. He completely re-wrote both @tautologistic's `node-htmlparser` and @harry's `node-soupselect` from the ground up, making both of them much faster and more flexible. Cheerio would not be possible without his foundational work
