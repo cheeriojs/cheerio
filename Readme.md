@@ -821,6 +821,13 @@ $.xml()
 //=>  <media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123"/>
 ```
 
+You may also render the text content of a Cheerio object using the `text` static method:
+
+```js
+$ = cheerio.load('<div>This is <em>content</em>.</div>')
+$.text($('div'))
+//=> This is content.
+```
 
 ### Miscellaneous
 DOM element methods that don't fit anywhere else
