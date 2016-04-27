@@ -50,6 +50,11 @@ describe('cheerio', function() {
       var $ = cheerio.load('<a>This is <div>a child with <span>another child and <!-- a comment --> not a comment</span> followed by <em>one last child</em> and some final</div> text.</a>');
       expect($.text($('a'))).to.equal('This is a child with another child and  not a comment followed by one last child and some final text.');
     });
+
+    it('() : should return the rendered text content of the root', function() {
+      var $ = cheerio.load('<a>This is <div>a child with <span>another child and <!-- a comment --> not a comment</span> followed by <em>one last child</em> and some final</div> text.</a>');
+      expect($.text()).to.equal('This is a child with another child and  not a comment followed by one last child and some final text.');
+    });
   });
 
 
