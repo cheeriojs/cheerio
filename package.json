@@ -42,8 +42,5 @@
   },
   "scripts": {
     "test": "make test"
-  },
-  "optionalDependencies": {
-    "jsdom": "^7.0.2"
   }
 }
