@@ -97,6 +97,7 @@ These parsing options are taken directly from [htmlparser2](https://github.com/f
 
 ```js
 {
+    withDomLvl1: true,
     normalizeWhitespace: false,
     xmlMode: false,
     decodeEntities: true
