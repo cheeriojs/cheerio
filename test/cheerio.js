@@ -1,5 +1,5 @@
 var expect = require('expect.js'),
-    _ = require('lodash'),
+    filter = require('lodash.filter'),
     htmlparser2 = require('htmlparser2'),
     $ = require('../'),
     fixtures = require('./fixtures'),
@@ -150,10 +150,10 @@ describe('cheerio', function() {
     var $elems = $('.apple, #fruits', fruits);
     expect($elems).to.have.length(2);
 
-    var $apple = _.filter($elems, function(elem) {
+    var $apple = filter($elems, function(elem) {
       return elem.attribs['class'] === 'apple';
     });
-    var $fruits = _.filter($elems, function(elem) {
+    var $fruits = filter($elems, function(elem) {
       return elem.attribs.id === 'fruits';
     });
     testAppleSelect($apple);
