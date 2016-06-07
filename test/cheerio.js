@@ -1,10 +1,12 @@
 var expect = require('expect.js'),
-    _ = require('lodash'),
     htmlparser2 = require('htmlparser2'),
     $ = require('../'),
     fixtures = require('./fixtures'),
     fruits = fixtures.fruits,
-    food = fixtures.food;
+    food = fixtures.food,
+    _ = {
+      filter: require('lodash.filter')
+    };
 
 // HTML
 var script = '<script src="script.js" type="text/javascript"></script>',

@@ -26,10 +26,21 @@
   },
   "dependencies": {
     "css-select": "~1.2.0",
+    "dom-serializer": "~0.1.0",
     "entities": "~1.1.1",
     "htmlparser2": "~3.8.1",
-    "dom-serializer": "~0.1.0",
-    "lodash": "^4.1.0"
+    "lodash.assignin": "^4.0.9",
+    "lodash.bind": "^4.1.4",
+    "lodash.defaults": "^4.0.1",
+    "lodash.filter": "^4.4.0",
+    "lodash.flatten": "^4.2.0",
+    "lodash.foreach": "^4.3.0",
+    "lodash.map": "^4.4.0",
+    "lodash.merge": "^4.4.0",
+    "lodash.pick": "^4.2.1",
+    "lodash.reduce": "^4.4.0",
+    "lodash.reject": "^4.4.0",
+    "lodash.some": "^4.4.0"
   },
   "devDependencies": {
     "benchmark": "~1.0.0",
