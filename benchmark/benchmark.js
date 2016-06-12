@@ -33,7 +33,9 @@ suites.add('manipulation - append', 'jquery.html', {
     $body.append(new Array(50).join('<div>'));
   }
 });
-suites.add('manipulation - prepend', 'jquery.html', {
+
+// These tests run out of memory in jsdom
+suites.add('manipulation - prepend - highmem', 'jquery.html', {
   setup: function($) {
     return $('body');
   },
@@ -41,7 +43,7 @@ suites.add('manipulation - prepend', 'jquery.html', {
     $body.prepend(new Array(50).join('<div>'));
   }
 });
-suites.add('manipulation - after', 'jquery.html', {
+suites.add('manipulation - after - highmem', 'jquery.html', {
   setup: function($) {
     return $('body');
   },
@@ -49,7 +51,7 @@ suites.add('manipulation - after', 'jquery.html', {
     $body.after(new Array(50).join('<div>'));
   }
 });
-suites.add('manipulation - before', 'jquery.html', {
+suites.add('manipulation - before - highmem', 'jquery.html', {
   setup: function($) {
     return $('body');
   },
