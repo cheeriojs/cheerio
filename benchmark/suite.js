@@ -48,7 +48,7 @@ Suites.prototype.add = function(name, fileName, options) {
       console.log();
       return;
     }
-    console.log('\tFastest: ' + this.filter('fastest').pluck('name') + '\n');
+    console.log('\tFastest: ' + this.filter('fastest')[0].name + '\n');
   });
 
   this._benchCheerio(suite, markup, options);
