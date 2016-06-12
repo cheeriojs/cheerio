@@ -6,7 +6,7 @@ var jsdom = require('jsdom');
 var cheerio = require('..');
 
 var documentDir = path.join(__dirname, 'documents');
-var jQuerySrc = path.join(__dirname, 'jquery-3.0.0.slim.js');
+var jQuerySrc = path.join(__dirname, '../node_modules/jquery/dist/jquery.slim.js');
 var filterRe = /./;
 var cheerioOnly = false;
 
