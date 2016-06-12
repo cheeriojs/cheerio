@@ -6,7 +6,7 @@ var jsdom = require('jsdom');
 var cheerio = require('..');
 
 var documentDir = path.join(__dirname, 'documents');
-var jQuerySrc = path.join(__dirname, 'jquery-2.0.3.js');
+var jQuerySrc = path.join(__dirname, 'jquery-3.0.0.slim.js');
 var filterRe = /./;
 var cheerioOnly = false;
 
@@ -48,7 +48,7 @@ Suites.prototype.add = function(name, fileName, options) {
       console.log();
       return;
     }
-    console.log('\tFastest: ' + this.filter('fastest').pluck('name') + '\n');
+    console.log('\tFastest: ' + this.filter('fastest')[0].name + '\n');
   });
 
   this._benchCheerio(suite, markup, options);

@@ -2,12 +2,14 @@ language: node_js
 node_js:
   - "stable"
   - "unstable"
-  - "4.2"
-  - "4.1"
+  - "6"
   - "4"
   - "0.12"
 script: make travis-test
 matrix:
   fast_finish: true
   allow_failures:
-    - node_js: "unstable"
+    - node_js: unstable
+  include:
+    - env: BENCHMARK=true
+      script: "node benchmark/benchmark.js --regex '^(?!.*highmem)'"

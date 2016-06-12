@@ -28,7 +28,7 @@
     "css-select": "~1.2.0",
     "dom-serializer": "~0.1.0",
     "entities": "~1.1.1",
-    "htmlparser2": "~3.8.1",
+    "htmlparser2": "^3.9.1",
     "lodash.assignin": "^4.0.9",
     "lodash.bind": "^4.1.4",
     "lodash.defaults": "^4.0.1",
@@ -43,18 +43,16 @@
     "lodash.some": "^4.4.0"
   },
   "devDependencies": {
-    "benchmark": "~1.0.0",
-    "coveralls": "~2.10",
+    "benchmark": "^2.1.0",
+    "coveralls": "^2.11.9",
     "expect.js": "~0.3.1",
-    "istanbul": "~0.2",
-    "jshint": "~2.5.1",
-    "mocha": "*",
+    "istanbul": "^0.4.3",
+    "jsdom": "^9.2.1",
+    "jshint": "^2.9.2",
+    "mocha": "^2.5.3",
     "xyz": "~0.5.0"
   },
   "scripts": {
     "test": "make test"
-  },
-  "optionalDependencies": {
-    "jsdom": "^7.0.2"
   }
 }
