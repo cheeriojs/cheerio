@@ -581,6 +581,14 @@ $('li').eq(0).addBack('.orange').length
 //=> 2
 ```
 
+#### .ignore( selector )
+
+Ignore the contents of the given selector, or leave empty to ignore all nested elements.
+
+```js
+$('li').ignore('span').text();
+```
+
 ### Manipulation
 Methods for modifying the DOM structure.
 
