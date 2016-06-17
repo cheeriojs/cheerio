@@ -182,6 +182,11 @@ describe('$(...)', function() {
     it('(key, value) : should support chaining after setting props', function() {
       expect(checkbox.prop('checked', false)).to.equal(checkbox);
     });
+    
+    it('(invalid element/tag) : prop should return undefined', function() {
+      expect($(undefined).prop('prop')).to.be(undefined);
+      expect($(null).prop('prop')).to.be(undefined);
+    });
   });
 
   describe('.data', function() {
