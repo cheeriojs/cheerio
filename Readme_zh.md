@@ -1,13 +1,11 @@
-===================以下是中文部分==================
-
 # cheerio [![Build Status](https://secure.travis-ci.org/cheeriojs/cheerio.svg?branch=master)](http://travis-ci.org/cheeriojs/cheerio) [![Coverage](http://img.shields.io/coveralls/cheeriojs/cheerio.svg?branch=master&style=flat)](https://coveralls.io/r/cheeriojs/cheerio) [![Join the chat at https://gitter.im/cheeriojs/cheerio](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/cheeriojs/cheerio?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 <!-- Fast, flexible, and lean implementation of core jQuery designed specifically for the server. -->
-快速，灵活并且精简的专门针对服务器的核心JQuery实现
+为服务器特别定制的，快速、灵活、实施的jQuery核心实现.
 <!-- ## Introduction -->
 ## 介绍
 <!-- Teach your server HTML. -->
-让你的服务端HTML代码这样写.
+把HTML告诉你的服务器.
 ```js
 var cheerio = require('cheerio'),
     $ = cheerio.load('<h2 class="title">Hello world</h2>');
@@ -28,12 +26,12 @@ $.html();
 <!-- __&#10084; Familiar syntax:__ -->
 __&#10084; 相似的语法:__
 <!-- Cheerio implements a subset of core jQuery. Cheerio removes all the DOM inconsistencies and browser cruft from the jQuery library, revealing its truly gorgeous API. -->
-cheerio工具是核心jQuery的子集。cheerio会从jQuery库中删除所有DOM矛盾和浏览器的讨厌部分,展示她真正华丽的API。
+cheerio实现了核心jQuery的子集。cheerio会从jQuery库中删除所有DOM矛盾和浏览器的尴尬部分,展示她真正华丽的API。
 
 <!-- __&#991; Blazingly fast:__ -->
 __&#991; 非常快:__
 <!-- Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient. Preliminary end-to-end benchmarks suggest that cheerio is about __8x__ faster than JSDOM. -->
-cheerio使用一个非常简单的、一致的DOM模型。作为一个结果分析、处理和呈现的工具非常有效。初步的端到端基准表明其速度是JSDOM的__8x__倍。
+cheerio使用一个非常简单的、一致的DOM模型。作为一个结果分析、处理和呈现的工具非常有效。基础的端到端基准测试显示其速度是JSDOM的__8x__倍。
 
 <!-- __&#10049; Incredibly flexible:__ -->
 __&#10049; 非常的灵活:__
@@ -46,7 +44,7 @@ cheerio基于 @FB55's forgiving [htmlparser2](https://github.com/fb55/htmlparser
 我写cheerio主要是因为我发现我自己对JSDOM非常失望。对我来说,主要有三个点让我一直耿耿于怀:
 
 <!-- __&#8226; JSDOM's built-in parser is too strict:__ -->
-__&#8226; JSDOM's built-in parser 太严格:__
+__&#8226; JSDOM内建的解析太严格:__
   
   JSDOM捆绑的HTML解析器不能处理今天许多流行的网站。
 
@@ -56,9 +54,9 @@ __&#8226; JSDOM 太慢了:__
 解析大网站JSDOM有明显的延迟。
 
 <!-- __&#8226; JSDOM feels too heavy:__ -->
-__&#8226; JSDOM 感觉太笨重了:__
+__&#8226; JSDOM 太笨重了:__
 <!-- The goal of JSDOM is to provide an identical DOM environment as what we see in the browser. I never really needed all this, I just wanted a simple, familiar way to do HTML manipulation. -->
-JSDOM的目标是提供一个相同DOM环境正如我们在浏览器中所看到的。我从未真正需要所有这些,我只是想要一个简单,熟悉HTML操作方法。
+JSDOM的目标是提供一个正如我们在浏览器中所看到的相同DOM环境。我从未真正需要所有这些,我只是想要一个简单,熟悉HTML操作方法。
 
 <!-- ## When I would use JSDOM -->
 ## 我什么时候会使用JSDOM
@@ -85,7 +83,7 @@ cheerio不能解决你所有的问题。我仍然会使用JSDOM如果我需要�
 ### 加载
 
 <!-- First you need to load in the HTML. This step in jQuery is implicit, since jQuery operates on the one, baked-in DOM. With Cheerio, we need to pass in the HTML document. -->
-首先你需要加载HTML。jQuery的这一步是隐式的,因为一个jQuery运行,常用DOM。在cheerio中,我们需要通过在HTML文档。
+首先你需要加载HTML。jQuery的这一步是必须的,因为一个jQuery运行,常用DOM。在cheerio中,我们需要把HTML document传进去。
 
 <!-- This is the _preferred_ method: -->
 这是首选的方法:
@@ -96,7 +94,7 @@ var cheerio = require('cheerio'),
 ```
 
 <!-- Optionally, you can also load in the HTML by passing the string as the context: -->
-根据情况,您还可以通过环境加载HTML字符串:
+根据情况,您还可以通过传递字符串来加载HTML字符串:
 
 ```js
 $ = require('cheerio');
@@ -113,7 +111,7 @@ $('li', 'ul', '<ul id="fruits">...</ul>');
 
 <!-- You can also pass an extra object to `.load()` if you need to modify any -->
 <!-- of the default parsing options: -->
-如果你需要修改默认的解析选项你也可以传给`.load()`一个额外的对象:
+如果你需要修改默认的解析选项你也可以传一个额外的对象给`.load()`:
 
 ```js
 $ = cheerio.load('<ul id="fruits">...</ul>', {
@@ -171,7 +169,7 @@ $('li[class=orange]').html()
 
 #### .attr( name, value )
 <!-- Method for getting and setting attributes. Gets the attribute value for only the first element in the matched set. If you set an attribute's value to `null`, you remove that attribute. You may also pass a `map` and `function` like jQuery. -->
-获取和设置属性的方法。获取匹配集合中的第一个元素的属性值。如果您将属性值设置为空，您将删除该属性。你也可以像jQuery函数一样通过`map` 和 `function`来设置。
+获取和设置属性的方法。在匹配集合中只能获取的第一个元素的属性值。如果你把属性值设置为空，就会删除该属性。你也可以像jQuery函数一样通过传递`键值` 和 `函数`来设置。
 
 ```js
 $('ul').attr('id')
@@ -217,7 +215,7 @@ apple.data('kind')
 
 #### .val( [value] )
 <!-- Method for getting and setting the value of input, select, and textarea. Note: Support for `map`, and `function` has not been added yet. -->
-用于获取和设置值输入，选择，和文本的方法。注：支持`map`,  `function`尚未加入。
+获取和设置input, select, and textarea的值的方法。注：对于传递`键值`,`函数`的支持尚未实现。
 
 ```js
 $('input[type="text"]').val()
@@ -229,7 +227,7 @@ $('input[type="text"]').val('test').html()
 
 #### .removeAttr( name )
 <!-- Method for removing attributes by `name`. -->
-通过`name`属性移除元素
+通过`name`属性移除属性
 
 ```js
 $('.pear').removeAttr('class').html()
@@ -253,7 +251,7 @@ $('li').hasClass('pear')
 
 #### .addClass( className )
 <!-- Adds class(es) to all of the matched elements. Also accepts a `function` like jQuery. -->
-在所有匹配的元素中添加类。也像jQuery函数一样接受`function`。
+在所有匹配的元素中添加类。也像jQuery函数一样接受`函数`。
 
 ```js
 $('.pear').addClass('fruit').html()
@@ -267,7 +265,7 @@ $('.apple').addClass('fruit red').html()
 
 #### .removeClass( [className] )
 <!-- Removes one or more space-separated classes from the selected elements. If no `className` is defined, all classes will be removed. Also accepts a `function` like jQuery. -->
-从选定的元素中删除一个或多个空格分隔的类。如果` className `是未定义的(未传参数)，所有的类将被删除。也像jQuery函数一样接受`function`。
+从选定的元素中删除一个或多个空格分隔的class。如果removeClass函数的` className `是未定义的(即未传参数)，所有的class值会被删除。也像jQuery函数一样接受`函数`。
 
 ```js
 $('.pear').removeClass('pear').html()
@@ -281,7 +279,7 @@ $('.apple').addClass('red').removeClass().html()
 
 #### .toggleClass( className, [switch] )
 <!-- Add or remove class(es) from the matched elements, depending on either the class's presence or the value of the switch argument. Also accepts a `function` like jQuery. -->
-从匹配的元素中添加或删除类，这取决于类的存在或切换参数的值。也像jQuery函数一样接受`function`。
+从匹配的元素中添加或删除类，这取决于class的存在或切换参数的值。也像jQuery函数一样接受`函数`。
 
 ```js
 $('.apple.green').toggleClass('fruit green red').html()
@@ -298,14 +296,14 @@ $('.apple.green').toggleClass('fruit green red', true).html()
 #### .is( selection )
 #### .is( function(index) )
 <!-- Checks the current list of elements and returns `true` if _any_ of the elements match the selector. If using an element or Cheerio selection, returns `true` if _any_ of the elements match. If using a predicate function, the function is executed in the context of the selected element, so `this` refers to the current element. -->
-检查元素如果任何元素匹配了选择器就返回`true`。如果使用一个元素或Cheerio选择,则元素匹配就返回`真`。如果使用谓词函数，该函数将在选定的元素的上下文中执行，所以`this`是指当前元素。
+有任何元素匹配selector就返回true。如果使用判定函数，判定函数在选中的元素中执行，所以this指向当前的元素。
 
 ### Forms
 
 #### .serializeArray()
 
 <!-- Encode a set of form elements as an array of names and values. -->
-将一组表单元素编码为一组名称和值。
+将一组表单元素编码为一组键值对。
 
 ```js
 $('<form><input name="foo" value="bar" /></form>').serializeArray()
@@ -318,7 +316,7 @@ $('<form><input name="foo" value="bar" /></form>').serializeArray()
 #### .find(selection)
 #### .find(node)
 <!-- Get the descendants of each element in the current set of matched elements, filtered by a selector, jQuery object, or element. -->
-通过过滤选择器，jQuery对象或元素，获取每个匹配元素的后代。
+通过选择器、jQuery对象或元素来过滤，获取每个匹配元素的后代。
 
 ```js
 $('#fruits').find('li').length
@@ -329,7 +327,7 @@ $('#fruits').find($('.apple')).length
 
 #### .parent([selector])
 <!-- Get the parent of each element in the current set of matched elements, optionally filtered by a selector. -->
-在当前集合中的每个元素的父元素中，选择一个选择器进行筛选。
+获得每个匹配元素的parent,可选择性的通过selector筛选。
 
 ```js
 $('.pear').parent().attr('id')
@@ -337,7 +335,7 @@ $('.pear').parent().attr('id')
 ```
 
 #### .parents([selector])
-Get a set of parents filtered by `selector` of each element in the current set of match elements.
+获得通过选择器筛选匹配的元素的parent集合。
 ```js
 $('.orange').parents().length
 // => 2
@@ -347,7 +345,7 @@ $('.orange').parents('#fruits').length
 
 #### .parentsUntil([selector][,filter])
 <!-- Get the ancestors of each element in the current set of matched elements, up to but not including the element matched by the selector, DOM node, or cheerio object. -->
-获取匹配元素的祖先元素直到碰到匹配的选择器DOM节点或cheerio对象。
+获取从匹配元素到其指定的祖先元素之间的所有节点（不包括那个指定的祖先元素）。
 
 ```js
 $('.orange').parentsUntil('#food').length
@@ -356,7 +354,7 @@ $('.orange').parentsUntil('#food').length
 
 #### .closest(selector)
 <!-- For each element in the set, get the first element that matches the selector by testing the element itself and traversing up through its ancestors in the DOM tree. -->
-集合中的每个元素，获得选择器匹配元素的第一个匹配的祖先元素。
+获得离他最近的祖先元素(可以包括他自己，但不包括其兄弟节点)。
 
 ```js
 $('.orange').closest()
@@ -371,7 +369,7 @@ $('.orange').closest('#fruits')
 
 #### .next([selector])
 <!-- Gets the next sibling of the first selected element, optionally filtered by a selector. -->
-通过一个选择器筛选获取第一选定元素的下一个兄弟姐妹。
+获取他的下一个兄弟节点。
 
 ```js
 $('.apple').next().hasClass('orange')
@@ -380,7 +378,7 @@ $('.apple').next().hasClass('orange')
 
 #### .nextAll([selector])
 <!-- Gets all the following siblings of the first selected element, optionally filtered by a selector. -->
-通过一个选择器筛选来获取所有下列第一选择元素的兄弟姐妹
+获取在他的后面的所有兄弟节点。
 ```js
 $('.apple').nextAll()
 //=> [<li class="orange">Orange</li>, <li class="pear">Pear</li>]
@@ -390,7 +388,7 @@ $('.apple').nextAll('.orange')
 
 #### .nextUntil([selector], [filter])
 <!-- Gets all the following siblings up to but not including the element matched by the selector, optionally filtered by another selector. -->
-得到所有下面的兄弟姐妹，但不包括由选择器匹配的元素，可以选择由另一个选择器筛选。
+获取从他本身到指定节点之间的所有节点(不包括他本身和指定节点)。
 
 ```js
 $('.apple').nextUntil('.pear')
@@ -399,7 +397,7 @@ $('.apple').nextUntil('.pear')
 
 #### .prev([selector])
 <!-- Gets the previous sibling of the first selected element optionally filtered by a selector. -->
-获取选定元素的前一个兄弟姐妹，可以选择一个选择器筛选。
+获取选定元素的前一个兄弟节点，可以选择一个选择器筛选。
 
 ```js
 $('.orange').prev().hasClass('apple')
@@ -408,7 +406,7 @@ $('.orange').prev().hasClass('apple')
 
 #### .prevAll([selector])
 <!-- Gets all the preceding siblings of the first selected element, optionally filtered by a selector. -->
-获取所选元素的所有前一个兄弟姐妹，选择一个选择器进行筛选。
+获取在指定元素的前面的所有兄弟节点。
 
 ```js
 $('.pear').prevAll()
@@ -419,7 +417,7 @@ $('.pear').prevAll('.orange')
 
 #### .prevUntil([selector], [filter])
 <!-- Gets all the preceding siblings up to but not including the element matched by the selector, optionally filtered by another selector. -->
-得到所有的前一个兄弟姐妹，但不包括由选择器匹配的元素，选择另一个选择器筛选。
+获得从他本身到指定节点之间的所有兄弟节点(不包括他本身和指定节点)。
 
 ```js
 $('.pear').prevUntil('.apple')
@@ -440,7 +438,7 @@ $('li').slice(1, 2).length
 
 #### .siblings([selector])
 <!-- Gets the first selected element's siblings, excluding itself. -->
-获取第一选定元素的兄弟姐妹，不包括它自己。
+获取选定元素的所有兄弟，不包括它自己(可以通过传入class改变筛选结果)。
 
 ```js
 $('.pear').siblings().length
@@ -453,7 +451,7 @@ $('.pear').siblings('.orange').length
 
 #### .children([selector])
 <!-- Gets the children of the first selected element. -->
-获取第一选定元素的孩子元素。
+获取选定元素的孩子元素。
 
 ```js
 $('#fruits').children().length
@@ -474,7 +472,7 @@ $('#fruits').contents().length
 
 #### .each( function(index, element) )
 <!-- Iterates over a cheerio object, executing a function for each matched element. When the callback is fired, the function is fired in the context of the DOM element, so `this` refers to the current element, which is equivalent to the function parameter `element`. To break out of the `each` loop early, return with `false`. -->
-遍历一个cheerio对象，为每一个匹配元素的执行函数。当回调被解雇，功能是在DOM元素的上下文被解雇，所以`这`指向当前元素，这相当于函数的参数`element`。要提前打破的`each`循环，那么返回`false`。
+迭代一个cheerio对象，为每个匹配元素执行一个函数。当回调函数执行后，该函数所处的环境是DOM element，所以`this`指向当前元素，这相当于函数的参数`element`。要提前打破的`each`循环，那么返回`false`。
 
 ```js
 var fruits = [];
@@ -502,7 +500,7 @@ $('li').map(function(i, el) {
 #### .filter( selector ) <br /> .filter( selection ) <br /> .filter( element ) <br /> .filter( function(index) )
 
 <!-- Iterates over a cheerio object, reducing the set of selector elements to those that match the selector or pass the function's test. When a Cheerio selection is specified, return only the elements contained in that selection. When an element is specified, return only that element (if it is contained in the original selection). If using the function method, the function is executed in the context of the selected element, so `this` refers to the current element. -->
-遍历一个cheerio对象，降低通过选择器匹配的元素，或传递函数的测试的选择器元素组。当一个cheerio的选择是特定的，只返回元素的选择。当指定元素时，返回该元素（如果它包含在原始选择中）。如果使用该函数方法，该函数将在选定的元素的上下文中执行，所以`this`是指当前元素。
+遍历一个cheerio对象，降低通过选择器匹配的元素，或传递函数的测试的选择器元素组。当一个cheerio的选择是特定的，只返回元素的选择。当指定元素时，返回该元素（如果它包含在原始选择中）。如果使用该函数方法，该函数将在选定的元素的环境中执行，所以`this`是指当前元素。
 
 Selector:
 
@@ -547,7 +545,7 @@ $('li').not(function(i, el) {
 #### .has( selector ) <br /> .has( element )
 
 <!-- Filters the set of matched elements to only those which have the given DOM element as a descendant or which have a descendant that matches the given selector. Equivalent to `.filter(':has(selector)')`. -->
-只有把那些特定的DOM元素作为后代或匹配了给定选择器的后裔才能过滤进匹配的元素集。相当于`.filter(':has(selector)')`。
+匹配一个拥有指定孩子元素的父元素。相当于`.filter(':has(selector)')`。
 
 选择器:
 
@@ -999,7 +997,7 @@ cheerio集合是由一些相似于[browser-based DOM nodes](https://developer.mo
 - `childNodes`
 - `lastChild`
 
-## Screencasts
+## 视频录像
 
 http://vimeo.com/31950192
 
@@ -1026,12 +1024,12 @@ make test
 这些都是一些对cheerio有贡献的人：
 
 ```
-project  : cheerio
- repo age : 2 years, 6 months
- active   : 285 days
- commits  : 762
- files    : 36
- authors  :
+ 项目 : cheerio
+ 项目年龄 : 2 years, 6 months
+ 活跃时间 : 285 days
+ 提交数 : 762
+ 文件数 : 36
+ 作者 :
    293  Matt Mueller            38.5%
    133  Matthew Mueller         17.5%
     92  Mike Pennisi            12.1%
@@ -1106,7 +1104,7 @@ The core API is the best of its class and despite dealing with all the browser i
 __&#8226; @visionmedia:__
 The style, the structure, the open-source"-ness" of this library comes from studying TJ's style and using many of his libraries. This dude consistently pumps out high-quality libraries and has always been more than willing to help or answer questions. You rock TJ.
 
-## License
+## License(就不翻译了~)
 
 (The MIT License)
 
