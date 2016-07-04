@@ -133,6 +133,24 @@ describe('$(...)', function() {
     var $,
         checkbox;
 
+    describe('with baseHref option', function() {
+      beforeEach(function() {
+        $ = cheerio.load(
+          '<img src="/hello.png"><a href="foobar/">test</a>',
+          { baseHref: 'http://example.com/a/' }
+        );
+      });
+
+      it('should have correct url', function() {
+        expect($('img').prop('src')).to.equal('http://example.com/hello.png');
+        expect($('a').prop('href')).to.equal('http://example.com/a/foobar/');
+      });
+
+      it('should not error on missing prop', function() {
+        expect($('img').prop('href')).to.equal(undefined);
+      });
+    });
+
     beforeEach(function () {
       $ = cheerio.load(inputs);
       checkbox = $('input[name=checkbox_on]');

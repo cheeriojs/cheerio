@@ -160,7 +160,8 @@ of the default parsing options:
 ```js
 $ = cheerio.load('<ul id="fruits">...</ul>', {
     normalizeWhitespace: true,
-    xmlMode: true
+    xmlMode: true,
+    baseHref: 'http://example.com/'
 });
 ```
 
@@ -217,6 +218,8 @@ $('.apple').attr('id', 'favorite').html()
 
 #### .prop( name, value )
 Method for getting and setting properties. Gets the property value for only the first element in the matched set.
+Use the `baseHref` option with `cheerio.load` to control how `src` and `href` properties are resolved. To imitate
+what jQuery and the browser does.
 
 ```js
 $('input[type="checkbox"]').prop('checked')
