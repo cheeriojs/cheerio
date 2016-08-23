@@ -1,4 +1,24 @@
 
+0.21.0 / 2016-08-23
+==================
+
+  * Return undefined in .prop if given an invalid element or tag (#880)
+  * Merge pull request #884 from cheeriojs/readme-cleanup
+  * readme updates
+  * Merge pull request #881 from piamancini/patch-1
+  * Added backers and sponsors from OpenCollective
+  * Use jQuery from the jquery module in benchmarks (#871)
+  * Document, test, and extend static `$.text` method (#855)
+  * Fix typo on calling _.extend (#861)
+  * Update versions (#870)
+  * Use individual lodash functions (#864)
+  * Added `.serialize()` support. Fixes #69 (#827)
+  * Update Readme.md (#857)
+  * add extension for JSON require call
+  * remove gittask badge
+  * Merge pull request #672 from underdogio/dev/checkbox.radio.values.sqwished
+  * Added default value for checkboxes/radios
+
 0.20.0 / 2016-02-01
 ==================
 
