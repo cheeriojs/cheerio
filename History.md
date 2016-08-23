@@ -1,5 +1,5 @@
 
-0.21.0 / 2016-08-23
+0.22.0 / 2016-08-23
 ==================
 
   * Return undefined in .prop if given an invalid element or tag (#880)
