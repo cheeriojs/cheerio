@@ -5,7 +5,7 @@ var expect = require('expect.js'),
     fruits = fixtures.fruits,
     food = fixtures.food,
     _ = {
-      filter: require('lodash.filter')
+      filter: require('lodash/filter')
     };
 
 // HTML
