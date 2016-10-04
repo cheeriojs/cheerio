@@ -500,6 +500,12 @@ describe('$(...)', function() {
       expect($('li').eq(0).hasClass('apple')).to.not.be.ok();
       // expect($('li', $fruits).eq(0).hasClass('red')).to.be.ok();
     });
+
+    it('(empty string argument) : should return false', function() {
+      expect(test('foo').hasClass('')).to.not.be.ok();
+      expect(test('foo bar').hasClass('')).to.not.be.ok();
+      expect(test('foo bar').removeClass('foo').hasClass('')).to.not.be.ok();
+    });
   });
 
   describe('.addClass', function() {
