@@ -350,5 +350,14 @@ describe('cheerio', function() {
         expect($b('div').foo).to.be(undefined);
       });
     });
+
+    describe('.prop', function () {
+      describe('("outerHTML")', function () {
+        var outerHtml = '<div><a></a></div>';
+        var $a = $(outerHtml);
+
+        expect($a.prop('outerHTML')).to.be(outerHtml);
+      });
+    });
   });
 });
