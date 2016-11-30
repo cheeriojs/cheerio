@@ -1437,7 +1437,7 @@ describe('$(...)', function() {
           expect($orange[1]).to.be($('.orange')[0]);
         });
         it('is a child of the current selection', function() {
-          var fruits = $('#fruits');
+          var $fruits = $('#fruits');
           var $selection = $fruits.add($('.orange'));
 
           expect($selection).to.have.length(2);
@@ -1493,7 +1493,7 @@ describe('$(...)', function() {
           expect($apple[2]).to.be($pear[0]);
         });
         it('occur within the current selection', function() {
-          var fruits = $('#fruits');
+          var $fruits = $('#fruits');
           var $selection = $fruits.add($('#fruits li'));
 
           expect($selection).to.have.length(4);
