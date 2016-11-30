@@ -298,6 +298,15 @@ describe('cheerio', function() {
       expect(domEncoded('footer').html()).to.be(expectedXml);
     });
 
+    it('should not encode characters (issue #866)', function() {
+        var str = 'абв',
+            div = '<div>' + str + '</div>',
+            dom = $.load(div, {decodeEntities: true});
+
+        expect(dom.text()).to.be(str);
+        expect(dom.html()).to.be(div);
+    });
+
     it('should return a fully-qualified Function', function() {
       var $c = $.load('<div>');
 
