@@ -304,7 +304,7 @@ describe('cheerio', function() {
             dom = $.load(div, {decodeEntities: true});
 
         expect(dom.text()).to.be(str);
-        expect(dom.html()).to.be(div);
+        expect(dom.html({decodeEntities: false})).to.be(div);
     });
 
     it('should return a fully-qualified Function', function() {
