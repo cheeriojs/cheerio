@@ -16,11 +16,14 @@ subl:
 test-cov:
 	@./node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- --recursive --reporter $(REPORTER)
 
+# Due to occasional unavailability of the code coverage reporting service, the
+# exit status of the command in this recipe may optionally be ignored.
 report-cov: test-cov
-	@cat coverage/lcov.info | ./node_modules/.bin/coveralls
+	@cat coverage/lcov.info | ./node_modules/.bin/coveralls || [ "$(OPTIONAL)" = "true" ]
 
-travis-test: lint
-	@make report-cov || echo "Couldn't submit"
+travis-test: OPTIONAL = true
+travis-test: lint report-cov
+	@true
 
 bench:
 	@./benchmark/benchmark.js
