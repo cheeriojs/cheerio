@@ -814,7 +814,7 @@ $('#fruits').html('<li class="mango">Mango</li>').html()
 ```
 
 #### .text( [textString] )
-Get the combined text contents of each element in the set of matched elements, including their descendants.. If `textString` is specified, each selected element's content is replaced by the new text content.
+Get the combined text contents of each element in the set of matched elements, including their descendants. If `textString` is specified, each selected element's content is replaced by the new text content.
 
 ```js
 $('.orange').text()
