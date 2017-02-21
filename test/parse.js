@@ -1,6 +1,7 @@
 var expect = require('expect.js'),
     parse = require('../lib/parse'),
-    defaultOpts = require('..').prototype.options;
+    defaults = require('lodash/defaults'),
+    defaultOpts = require('../lib/defaults');
 
 
 // Tags
@@ -46,7 +47,7 @@ describe('parse', function() {
       var tag = parse.evaluate(basic, defaultOpts)[0];
       expect(tag.type).to.equal('tag');
       expect(tag.tagName).to.equal('html');
-      expect(tag.childNodes).to.be.empty();
+      expect(tag.childNodes).to.have.length(2);
     });
 
     it('should handle sibling tags: ' + siblings, function() {
@@ -78,7 +79,15 @@ describe('parse', function() {
       expect(tag.type).to.equal('tag');
       expect(tag.tagName).to.equal('html');
       expect(tag.childNodes).to.be.ok();
+      expect(tag.childNodes[1].tagName).to.equal('body');
+      expect(tag.childNodes[1].childNodes).to.have.length(1);
+
+      tag = parse.evaluate(children, defaults({ useHtmlParser2: true }, defaultOpts))[0];
+      expect(tag.type).to.equal('tag');
+      expect(tag.tagName).to.equal('html');
+      expect(tag.childNodes).to.be.ok();
       expect(tag.childNodes).to.have.length(1);
+      expect(tag.childNodes[0].tagName).to.equal('br');
     });
 
     it('should handle tags with children: ' + li, function() {
@@ -141,7 +150,7 @@ describe('parse', function() {
     it('should handle directives: ' + directive, function() {
       var elem = parse.evaluate(directive, defaultOpts)[0];
       expect(elem.type).to.equal('directive');
-      expect(elem.data).to.equal('!doctype html');
+      expect(elem.data).to.equal('!DOCTYPE html');
       expect(elem.tagName).to.equal('!doctype');
     });
 
@@ -209,7 +218,7 @@ describe('parse', function() {
     it('should add root to: ' + directive, function() {
       var root = parse(directive, defaultOpts);
       rootTest(root);
-      expect(root.childNodes).to.have.length(1);
+      expect(root.childNodes).to.have.length(2);
       expect(root.childNodes[0].type).to.equal('directive');
     });
 
@@ -246,6 +255,101 @@ describe('parse', function() {
       expect(childNodes[2].childNodes).to.have.length(0);
       expect(childNodes[2].firstChild).to.be(null);
       expect(childNodes[2].lastChild).to.be(null);
+    });
+
+    it('Should parse less than or equal sign sign', function() {
+      var root = parse('<i>A</i><=<i>B</i>', defaultOpts);
+      var childNodes = root.childNodes;
+
+      expect(childNodes[0].tagName).to.be('i');
+      expect(childNodes[0].childNodes[0].data).to.be('A');
+      expect(childNodes[1].data).to.be('<=');
+      expect(childNodes[2].tagName).to.be('i');
+      expect(childNodes[2].childNodes[0].data).to.be('B');
+    });
+
+    it('Should ignore unclosed CDATA', function() {
+      var root = parse('<a></a><script>foo //<![CDATA[ bar</script><b></b>', defaultOpts);
+      var childNodes = root.childNodes;
+
+      expect(childNodes[0].tagName).to.be('a');
+      expect(childNodes[1].tagName).to.be('script');
+      expect(childNodes[1].childNodes[0].data).to.be('foo //<![CDATA[ bar');
+      expect(childNodes[2].tagName).to.be('b');
+    });
+
+    it('Should add <head> to documents', function() {
+      var root = parse('<html></html>', defaultOpts);
+      var childNodes = root.childNodes;
+
+      expect(childNodes[0].tagName).to.be('html');
+      expect(childNodes[0].childNodes[0].tagName).to.be('head');
+    });
+
+    it('Should add <head> to documents', function() {
+      var root = parse('<table><td>bar</td></tr></table>', defaultOpts);
+      var childNodes = root.childNodes;
+
+      expect(childNodes[0].tagName).to.be('table');
+      expect(childNodes[0].childNodes.length).to.be(1);
+      expect(childNodes[0].childNodes[0].tagName).to.be('tbody');
+      expect(childNodes[0].childNodes[0].childNodes[0].tagName).to.be('tr');
+      expect(childNodes[0].childNodes[0].childNodes[0].childNodes[0].tagName).to.be('td');
+      expect(childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].data).to.be('bar');
+    });
+
+    it('Should parse custom tag <line>', function() {
+      var root = parse('<line>test</line>', defaultOpts);
+      var childNodes = root.childNodes;
+
+      expect(childNodes.length).to.be(1);
+      expect(childNodes[0].tagName).to.be('line');
+      expect(childNodes[0].childNodes[0].data).to.be('test');
+    });
+
+    it('Should properly parse misnested table tags', function() {
+      var root = parse('<tr><td>i1</td></tr><tr><td>i2</td></td></tr><tr><td>i3</td></td></tr>', defaultOpts);
+      var childNodes = root.childNodes;
+
+      expect(childNodes.length).to.be(3);
+
+      childNodes.forEach(function(child, i) {
+        expect(child.tagName).to.be('tr');
+        expect(child.childNodes[0].tagName).to.be('td');
+        expect(child.childNodes[0].childNodes[0].data).to.be('i' + (i + 1));
+      });
+    });
+
+    it('Should correctly parse data url attributes', function() {
+      var html = '<div style=\'font-family:"butcherman-caps"; src:url(data:font/opentype;base64,AAEA...);\'></div>';
+      var expectedAttr = 'font-family:"butcherman-caps"; src:url(data:font/opentype;base64,AAEA...);';
+      var root = parse(html, defaultOpts);
+      var childNodes = root.childNodes;
+
+      expect(childNodes[0].attribs.style).to.be(expectedAttr);
+    });
+
+    it('Should treat <xmp> tag content as text', function() {
+      var root = parse('<xmp><h2></xmp>', defaultOpts);
+      var childNodes = root.childNodes;
+
+      expect(childNodes[0].childNodes[0].data).to.be('<h2>');
+    });
+
+    it('Should correctly parse malformed numbered entities', function() {
+      var root = parse('<p>z&#</p>', defaultOpts);
+      var childNodes = root.childNodes;
+
+      expect(childNodes[0].childNodes[0].data).to.be('z&#');
+    });
+
+    it('Should correctly parse mismatched headings', function() {
+      var root = parse('<h2>Test</h3><div></div>', defaultOpts);
+      var childNodes = root.childNodes;
+
+      expect(childNodes.length).to.be(2);
+      expect(childNodes[0].tagName).to.be('h2');
+      expect(childNodes[1].tagName).to.be('div');
     });
   });
 
