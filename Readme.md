@@ -44,7 +44,7 @@ __&#991; Blazingly fast:__
 Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient. Preliminary end-to-end benchmarks suggest that cheerio is about __8x__ faster than JSDOM.
 
 __&#10049; Incredibly flexible:__
-Cheerio wraps around @FB55's forgiving [htmlparser2](https://github.com/fb55/htmlparser2/). Cheerio can parse nearly any HTML or XML document.
+Cheerio wraps around [parse5](https://github.com/inikulin/parse5) parser and can optionally use @FB55's forgiving [htmlparser2](https://github.com/fb55/htmlparser2/). Cheerio can parse nearly any HTML or XML document.
 
 ## Cheerio is not a web browser
 
@@ -269,14 +269,15 @@ const $ = cheerio.load('<ul id="fruits">...</ul>', {
 });
 ```
 
-These parsing options are taken directly from [htmlparser2](https://github.com/fb55/htmlparser2/wiki/Parser-options), therefore any options that can be used in `htmlparser2` are valid in cheerio as well. The default options are:
+These parsing options are taken directly from [htmlparser2](https://github.com/fb55/htmlparser2/wiki/Parser-options), therefore any options that can be used in `htmlparser2` are valid in cheerio as well. If any of these options is set to non-default value cheerio will implicitly use `htmlparser2` as an underlying parser. In addition, you can use `useHtmlParser2` option to force cheerio use `htmlparser2` instead of `parse5`. The default options are:
 
 ```js
 {
     withDomLvl1: true,
     normalizeWhitespace: false,
     xmlMode: false,
-    decodeEntities: true
+    decodeEntities: true,
+    useHtmlParser2: false
 }
 
 ```
