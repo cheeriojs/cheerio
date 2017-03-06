@@ -101,7 +101,7 @@ describe('cheerio', function() {
     // });
 
     it('(buffer) : should accept a buffer', function() {
-      var html = '<div>foo</div>';
+      var html = '<html><head></head><body>foo</body></html>';
       var buf = Buffer.from && Buffer.from !== Uint8Array.from
         ? Buffer.from(html)
         : new Buffer(html);
@@ -118,6 +118,16 @@ describe('cheerio', function() {
       var $src = cheerio('<div><span>foo</span><span>bar</span><span>baz</span></div>').children();
       var $elem = $src.clone();
       expect($elem.length).to.equal(3);
+      expect($elem.parent()).to.have.length(0);
+      expect($elem.text()).to.equal($src.text());
+      $src.text('rofl');
+      expect($elem.text()).to.not.equal($src.text());
+    });
+
+    it('() : should return a copy of document', function() {
+      var $src = cheerio.load('<html><body><div>foo</div>bar</body></html>').root().children();
+      var $elem = $src.clone();
+      expect($elem.length).to.equal(1);
       expect($elem.parent()).to.have.length(0);
       expect($elem.text()).to.equal($src.text());
       $src.text('rofl');
@@ -243,9 +253,9 @@ describe('cheerio', function() {
   describe('.root', function() {
 
     it('() : should return a cheerio-wrapped root object', function() {
-      var $html = cheerio.load('<div><span>foo</span><span>bar</span></div>');
+      var $html = cheerio.load('<html><head></head><body>foo</body></html>');
       $html.root().append('<div id="test"></div>');
-      expect($html.html()).to.equal('<div><span>foo</span><span>bar</span></div><div id="test"></div>');
+      expect($html.html()).to.equal('<html><head></head><body>foo</body></html><div id="test"></div>');
     });
 
   });
