@@ -23,8 +23,8 @@
 <br />
 
 ```js
-let cheerio = require('cheerio')
-let $ = cheerio.load('<h2 class="title">Hello world</h2>')
+const cheerio = require('cheerio')
+const $ = cheerio.load('<h2 class="title">Hello world</h2>')
 
 $('h2.title').text('Hello there!')
 $('h2').addClass('welcome')
@@ -136,21 +136,21 @@ First you need to load in the HTML. This step in jQuery is implicit, since jQuer
 This is the _preferred_ method:
 
 ```js
-var cheerio = require('cheerio'),
-    $ = cheerio.load('<ul id="fruits">...</ul>');
+const cheerio = require('cheerio');
+const $ = cheerio.load('<ul id="fruits">...</ul>');
 ```
 
 Optionally, you can also load in the HTML by passing the string as the context:
 
 ```js
-$ = require('cheerio');
+const $ = require('cheerio');
 $('ul', '<ul id="fruits">...</ul>');
 ```
 
 Or as the root:
 
 ```js
-$ = require('cheerio');
+const $ = require('cheerio');
 $('li', 'ul', '<ul id="fruits">...</ul>');
 ```
 
@@ -158,7 +158,7 @@ You can also pass an extra object to `.load()` if you need to modify any
 of the default parsing options:
 
 ```js
-$ = cheerio.load('<ul id="fruits">...</ul>', {
+const $ = cheerio.load('<ul id="fruits">...</ul>', {
     normalizeWhitespace: true,
     xmlMode: true
 });
@@ -238,7 +238,7 @@ $('<div data-apple-color="red"></div>').data()
 $('<div data-apple-color="red"></div>').data('apple-color')
 //=> 'red'
 
-var apple = $('.apple').data('kind', 'mac')
+const apple = $('.apple').data('kind', 'mac')
 apple.data('kind')
 //=> 'mac'
 ```
@@ -484,7 +484,7 @@ $('#fruits').contents().length
 Iterates over a cheerio object, executing a function for each matched element. When the callback is fired, the function is fired in the context of the DOM element, so `this` refers to the current element, which is equivalent to the function parameter `element`. To break out of the `each` loop early, return with `false`.
 
 ```js
-var fruits = [];
+const fruits = [];
 
 $('li').each(function(i, elem) {
   fruits[i] = $(this).text();
@@ -783,7 +783,7 @@ $.html()
 Replaces matched elements with `content`.
 
 ```js
-var plum = $('<li class="plum">Plum</li>')
+const plum = $('<li class="plum">Plum</li>')
 $('.pear').replaceWith(plum)
 $.html()
 //=> <ul id="fruits">
@@ -830,7 +830,7 @@ $('ul').text()
 The .wrap() function can take any string or object that could be passed to the $() factory function to specify a DOM structure. This structure may be nested several levels deep, but should contain only one inmost element. A copy of this structure will be wrapped around each of the elements in the set of matched elements. This method returns the original set of elements for chaining purposes.
 
 ```js
-var redFruit = $('<div class="red-fruit"></div>')
+const redFruit = $('<div class="red-fruit"></div>')
 $('.apple').wrap(redFruit)
 
 //=> <ul id="fruits">
@@ -841,7 +841,7 @@ $('.apple').wrap(redFruit)
 //     <li class="plum">Plum</li>
 //   </ul>
 
-var healthy = $('<div class="healthy"></div>')
+const healthy = $('<div class="healthy"></div>')
 $('li').wrap(healthy)
 
 //=> <ul id="fruits">
@@ -883,7 +883,7 @@ $.html('.pear')
 By default, `html` will leave some tags open. Sometimes you may instead want to render a valid XML document. For example, you might parse the following XML snippet:
 
 ```xml
-$ = cheerio.load('<media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123"/>');
+const $ = cheerio.load('<media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123"/>');
 ```
 
 ... and later want to render to XML. To do this, you can use the 'xml' utility function:
@@ -896,7 +896,7 @@ $.xml()
 You may also render the text content of a Cheerio object using the `text` static method:
 
 ```js
-$ = cheerio.load('This is <em>content</em>.')
+const $ = cheerio.load('This is <em>content</em>.')
 $.text()
 //=> This is content.
 ```
@@ -904,7 +904,7 @@ $.text()
 The method may be called on the Cheerio module itself--be sure to pass a collection of nodes!
 
 ```js
-$ = cheerio.load('<div>This is <em>content</em>.</div>')
+const $ = cheerio.load('<div>This is <em>content</em>.</div>')
 cheerio.text($('div'))
 //=> This is content.
 ```
@@ -924,7 +924,7 @@ $('li').toArray()
 Clone the cheerio object.
 
 ```js
-var moreFruit = $('#fruits').clone()
+const moreFruit = $('#fruits').clone()
 ```
 
 ### Utilities
@@ -952,7 +952,7 @@ Load in the HTML. (See the previous section titled "Loading" for more informatio
 Once you have loaded a document, you may extend the prototype or the equivalent `fn` property with custom plugin methods:
 
 ```js
-var $ = cheerio.load('<html><body>Hello, <b>world</b>!</body></html>');
+const $ = cheerio.load('<html><body>Hello, <b>world</b>!</body></html>');
 $.prototype.logHtml = function() {
   console.log(this.html());
 };
