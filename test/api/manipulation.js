@@ -52,6 +52,16 @@ describe('$(...)', function() {
       expect($('p')).to.have.length(0);
     });
 
+    it('(html) : wraps with nested elements', function() {
+      var $orangeFruits = $('<div class="orange-fruits"><div class="and-stuff"></div></div>');
+      $('.orange').wrap($orangeFruits);
+
+      expect($fruits.children().eq(1).hasClass('orange-fruits')).to.be.ok();
+      expect($('.orange-fruits').children().eq(0).hasClass('and-stuff')).to.be.ok();
+      expect($fruits.children().eq(2).hasClass('pear')).to.be.ok();
+      expect($('.orange-fruits').children()).to.have.length(1);
+    });
+
     it('(selector) : wraps the content with a copy of the first matched element', function() {
       var $oranges;
 
