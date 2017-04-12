@@ -1,7 +1,6 @@
 var expect = require('expect.js'),
     parse = require('../lib/parse'),
-    defaults = require('lodash/defaults'),
-    defaultOpts = require('../lib/defaults');
+    defaultOpts = require('../lib/options').default;
 
 
 // Tags
@@ -81,13 +80,6 @@ describe('parse', function() {
       expect(tag.childNodes).to.be.ok();
       expect(tag.childNodes[1].tagName).to.equal('body');
       expect(tag.childNodes[1].childNodes).to.have.length(1);
-
-      tag = parse.evaluate(children, defaults({ useHtmlParser2: true }, defaultOpts, true))[0];
-      expect(tag.type).to.equal('tag');
-      expect(tag.tagName).to.equal('html');
-      expect(tag.childNodes).to.be.ok();
-      expect(tag.childNodes).to.have.length(1);
-      expect(tag.childNodes[0].tagName).to.equal('br');
     });
 
     it('should handle tags with children: ' + li, function() {
