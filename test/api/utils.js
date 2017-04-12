@@ -68,12 +68,12 @@ describe('cheerio', function() {
     });
 
     it('(html) : should handle lowercase tag options', function() {
-      var $html = cheerio.load('<BODY><ul id="fruits"></ul></BODY>', { lowerCaseTags : true });
-      expect($html.html()).to.be('<body><ul id="fruits"></ul></body>');
+      var $html = cheerio.load('<BODY><ul id="fruits"></ul></BODY>', { xml: { lowerCaseTags : true } });
+      expect($html.html()).to.be('<body><ul id="fruits"/></body>');
     });
 
     it('(html) : should handle the `normalizeWhitepace` option', function() {
-      var $html = cheerio.load('<body><b>foo</b>  <b>bar</b></body>', { normalizeWhitespace : true });
+      var $html = cheerio.load('<body><b>foo</b>  <b>bar</b></body>', { xml: { normalizeWhitespace : true } });
       expect($html.html()).to.be('<body><b>foo</b> <b>bar</b></body>');
     });
 

@@ -1374,7 +1374,7 @@ describe('$(...)', function() {
     });
 
     it('() : should pass options', function() {
-      var dom = cheerio.load('&', {decodeEntities: false});
+      var dom = cheerio.load('&', {xml: {decodeEntities: false}});
       expect(dom.root().toString()).to.equal('&');
     });
   });
