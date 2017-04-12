@@ -351,6 +351,15 @@ describe('parse', function() {
       expect(childNodes[0].tagName).to.be('h2');
       expect(childNodes[1].tagName).to.be('div');
     });
+
+    it('Should correctly parse tricky <pre> content', function() {
+      var root = parse('<pre>\nA <- factor(A, levels = c("c","a","b"))\n</pre>', defaultOpts, false);
+      var childNodes = root.childNodes;
+
+      expect(childNodes.length).to.be(1);
+      expect(childNodes[0].tagName).to.be('pre');
+      expect(childNodes[0].childNodes[0].data).to.be('A <- factor(A, levels = c("c","a","b"))\n');
+    });
   });
 
 });
