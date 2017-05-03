@@ -23,6 +23,11 @@ describe('$(...)', function() {
       expect($redFruits.children()).to.have.length(1);
     });
 
+    it('(element) : should wrap the base element correctly', function(){
+      $('ul').wrap('<a></a>');
+      expect($.root().children()[0].tagName).to.equal('a');
+    });
+
     it('(element) : should insert the element and add selected element(s) as its child', function() {
       var $redFruits = $('<div class="red-fruits"></div>');
       $('.apple').wrap($redFruits[0]);
