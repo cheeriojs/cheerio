@@ -62,6 +62,12 @@ describe('$(...)', function() {
       expect($('.orange-fruits').children()).to.have.length(1);
     });
 
+    it('(html) : should only worry about the first tag children', function() {
+      var delicious = '<span> This guy is delicious: <b></b></span>';
+      $('.apple').wrap(delicious);
+      expect($('b>.apple')).to.have.length(1);
+    });
+
     it('(selector) : wraps the content with a copy of the first matched element', function() {
       var $oranges;
 
