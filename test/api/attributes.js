@@ -425,11 +425,11 @@ describe('$(...)', function() {
     });
     it('(): with no selector matches should return nothing', function() {
       var val = $('.nasty').val();
-      expect(val).to.be.a('undefined');
+      expect(val).to.equal(undefined);
     });
-    it('(invalid value): should only handle arrays when it has the multiple property', function() {
+    it('(invalid value): should only handle arrays when it has the attribute multiple', function() {
       var val = $('select#one').val([]);
-      expect(val).to.not.be(undefined);
+      expect(val).not.to.equal(undefined);
     });
     it('(value): on input text should set value', function() {
       var element = $('input[type="text"]').val('test');
@@ -670,7 +670,7 @@ describe('$(...)', function() {
       expect($fruits.eq(2).hasClass('pear')).to.be.ok();
     });
 
-    it('(fn) : should handle elements without attributes', function(){
+    it('(fn) : should no op elements without attributes', function(){
       var $inputs = $(inputs);
       var val = $inputs.removeClass(function() {
         return 'tasty';
@@ -749,30 +749,27 @@ describe('$(...)', function() {
       expect($('.carrot').hasClass('vegetable')).to.not.be.ok();
       expect($('.sweetcorn').hasClass('fruit')).to.not.be.ok();
       expect($('.sweetcorn').hasClass('vegetable')).to.be.ok();
+    });
 
-      $ = cheerio.load(inputs);
-      $('input').toggleClass(function() {
-        return 'question';
+    it('(fn) : should work with no initial class attribute', function() {
+      var $inputs = cheerio.load(inputs);
+      $inputs('input, select').toggleClass(function() {
+        return $inputs(this).get(0).tagName === 'select' ? 'selectable' : 'inputable';
       });
-      expect($('.question')).to.have.length(9);
+      expect($inputs('.selectable')).to.have.length(6);
+      expect($inputs('.inputable')).to.have.length(9);
     });
 
     it('(invalid) : should be a no-op for invalid inputs', function(){
       var original = $('.apple');
-      var val = original.toggleClass();
-      expect(val).to.be.equal(original);
-      val = original.toggleClass(true);
-      expect(val).to.be.equal(original);
-      val = original.toggleClass(false);
-      expect(val).to.be.equal(original);
-      val = original.toggleClass(null);
-      expect(val).to.be.equal(original);
-      val = original.toggleClass(0);
-      expect(val).to.be.equal(original);
-      val = original.toggleClass(1);
-      expect(val).to.be.equal(original);
-      val = original.toggleClass({});
-      expect(val).to.be.equal(original);
+      var testAgainst = original.attr('class');
+      expect(original.toggleClass().attr('class')).to.be.eql(testAgainst);
+      expect(original.toggleClass(true).attr('class')).to.be.eql(testAgainst);
+      expect(original.toggleClass(false).attr('class')).to.be.eql(testAgainst);
+      expect(original.toggleClass(null).attr('class')).to.be.eql(testAgainst);
+      expect(original.toggleClass(0).attr('class')).to.be.eql(testAgainst);
+      expect(original.toggleClass(1).attr('class')).to.be.eql(testAgainst);
+      expect(original.toggleClass({}).attr('class')).to.be.eql(testAgainst);
     });
 
   });
