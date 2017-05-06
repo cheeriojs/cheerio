@@ -66,6 +66,11 @@ describe('cheerio', function() {
        expect($.text()).to.equal('');
     });
 
+     it('(cheerio object) : should include text contents of children omiting style and script tags', function(){
+       var $ = cheerio.load('<body>Welcome <div>Hello, testing text function,<script>console.log("hello")</script></div><style type="text/css">.cf-hidden { display: none; }</style>End of messege</body>');
+       expect($.text()).to.equal('Welcome Hello, testing text function,End of messege');
+    });
+
   });
 
 
