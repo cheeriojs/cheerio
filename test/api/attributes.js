@@ -371,79 +371,87 @@ describe('$(...)', function() {
       $ = cheerio.load(inputs);
     });
 
-    it('.val(): on select should get value', function() {
+    it('(): on select should get value', function() {
       var val = $('select#one').val();
       expect(val).to.equal('option_selected');
     });
-    it('.val(): on select with no value should get text', function() {
+    it('(): on select with no value should get text', function() {
       var val = $('select#one-valueless').val();
       expect(val).to.equal('Option selected');
     });
-    it('.val(): on select with no value should get converted HTML', function() {
+    it('(): on select with no value should get converted HTML', function() {
       var val = $('select#one-html-entity').val();
       expect(val).to.equal('Option <selected>');
     });
-    it('.val(): on select with no value should get text content', function() {
+    it('(): on select with no value should get text content', function() {
       var val = $('select#one-nested').val();
       expect(val).to.equal('Option selected');
     });
-    it('.val(): on option should get value', function() {
+    it('(): on option should get value', function() {
       var val = $('select#one option').eq(0).val();
       expect(val).to.equal('option_not_selected');
     });
-    it('.val(): on text input should get value', function() {
+    it('(): on text input should get value', function() {
       var val = $('input[type="text"]').val();
       expect(val).to.equal('input_text');
     });
-    it('.val(): on checked checkbox should get value', function() {
+    it('(): on checked checkbox should get value', function() {
       var val = $('input[name="checkbox_on"]').val();
       expect(val).to.equal('on');
     });
-    it('.val(): on unchecked checkbox should get value', function() {
+    it('(): on unchecked checkbox should get value', function() {
       var val = $('input[name="checkbox_off"]').val();
       expect(val).to.equal('off');
     });
-    it('.val(): on valueless checkbox should get value', function() {
+    it('(): on valueless checkbox should get value', function() {
       var val = $('input[name="checkbox_valueless"]').val();
       expect(val).to.equal('on');
     });
-    it('.val(): on radio should get value', function() {
+    it('(): on radio should get value', function() {
       var val = $('input[type="radio"]').val();
       expect(val).to.equal('off');
     });
-    it('.val(): on valueless radio should get value', function() {
+    it('(): on valueless radio should get value', function() {
       var val = $('input[name="radio_valueless"]').val();
       expect(val).to.equal('on');
     });
-    it('.val(): on multiple select should get an array of values', function() {
+    it('(): on multiple select should get an array of values', function() {
       var val = $('select#multi').val();
       expect(val).to.eql(['2', '3']);
     });
-    it('.val(): on multiple select with no value attribute should get an array of text content', function() {
+    it('(): on multiple select with no value attribute should get an array of text content', function() {
       var val = $('select#multi-valueless').val();
       expect(val).to.eql(['2', '3']);
     });
-    it('.val(value): on input text should set value', function() {
+    it('(): with no selector matches should return nothing', function() {
+      var val = $('.nasty').val();
+      expect(val).to.equal(undefined);
+    });
+    it('(invalid value): should only handle arrays when it has the attribute multiple', function() {
+      var val = $('select#one').val([]);
+      expect(val).not.to.equal(undefined);
+    });
+    it('(value): on input text should set value', function() {
       var element = $('input[type="text"]').val('test');
       expect(element.val()).to.equal('test');
     });
-    it('.val(value): on select should set value', function() {
+    it('(value): on select should set value', function() {
       var element = $('select#one').val('option_not_selected');
       expect(element.val()).to.equal('option_not_selected');
     });
-    it('.val(value): on option should set value', function() {
+    it('(value): on option should set value', function() {
       var element = $('select#one option').eq(0).val('option_changed');
       expect(element.val()).to.equal('option_changed');
     });
-    it('.val(value): on radio should set value', function() {
+    it('(value): on radio should set value', function() {
       var element = $('input[name="radio"]').val('off');
       expect(element.val()).to.equal('off');
     });
-    it('.val(value): on radio with special characters should set value', function() {
+    it('(value): on radio with special characters should set value', function() {
       var element = $('input[name="radio[brackets]"]').val('off');
       expect(element.val()).to.equal('off');
     });
-    it('.val(values): on multiple select should set multiple values', function() {
+    it('(values): on multiple select should set multiple values', function() {
       var element = $('select#multi').val(['1', '3', '4']);
       expect(element.val()).to.have.length(3);
     });
@@ -662,6 +670,14 @@ describe('$(...)', function() {
       expect($fruits.eq(2).hasClass('pear')).to.be.ok();
     });
 
+    it('(fn) : should no op elements without attributes', function(){
+      var $inputs = $(inputs);
+      var val = $inputs.removeClass(function() {
+        return 'tasty';
+      });
+      expect(val).to.have.length(15);
+    });
+
   });
 
   describe('.toggleClass', function() {
@@ -733,6 +749,27 @@ describe('$(...)', function() {
       expect($('.carrot').hasClass('vegetable')).to.not.be.ok();
       expect($('.sweetcorn').hasClass('fruit')).to.not.be.ok();
       expect($('.sweetcorn').hasClass('vegetable')).to.be.ok();
+    });
+
+    it('(fn) : should work with no initial class attribute', function() {
+      var $inputs = cheerio.load(inputs);
+      $inputs('input, select').toggleClass(function() {
+        return $inputs(this).get(0).tagName === 'select' ? 'selectable' : 'inputable';
+      });
+      expect($inputs('.selectable')).to.have.length(6);
+      expect($inputs('.inputable')).to.have.length(9);
+    });
+
+    it('(invalid) : should be a no-op for invalid inputs', function(){
+      var original = $('.apple');
+      var testAgainst = original.attr('class');
+      expect(original.toggleClass().attr('class')).to.be.eql(testAgainst);
+      expect(original.toggleClass(true).attr('class')).to.be.eql(testAgainst);
+      expect(original.toggleClass(false).attr('class')).to.be.eql(testAgainst);
+      expect(original.toggleClass(null).attr('class')).to.be.eql(testAgainst);
+      expect(original.toggleClass(0).attr('class')).to.be.eql(testAgainst);
+      expect(original.toggleClass(1).attr('class')).to.be.eql(testAgainst);
+      expect(original.toggleClass({}).attr('class')).to.be.eql(testAgainst);
     });
 
   });
