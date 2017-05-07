@@ -55,6 +55,22 @@ describe('cheerio', function() {
       var $ = cheerio.load('<a>This is <div>a child with <span>another child and <!-- a comment --> not a comment</span> followed by <em>one last child</em> and some final</div> text.</a>');
       expect($.text()).to.equal('This is a child with another child and  not a comment followed by one last child and some final text.');
     });
+
+    it('(cheerio object) : should omit script tags', function(){
+       var $ = cheerio.load('<script>console.log("test")</script>');
+       expect($.text()).to.equal('');
+    });
+
+    it('(cheerio object) : should omit style tags', function(){
+       var $ = cheerio.load('<style type="text/css">.cf-hidden { display: none; } .cf-invisible { visibility: hidden; }</style>');
+       expect($.text()).to.equal('');
+    });
+
+     it('(cheerio object) : should include text contents of children omiting style and script tags', function(){
+       var $ = cheerio.load('<body>Welcome <div>Hello, testing text function,<script>console.log("hello")</script></div><style type="text/css">.cf-hidden { display: none; }</style>End of messege</body>');
+       expect($.text()).to.equal('Welcome Hello, testing text function,End of messege');
+    });
+
   });
 
 
