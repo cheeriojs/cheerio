@@ -46,6 +46,10 @@ Cheerio works with a very simple, consistent DOM model. As a result parsing, man
 __&#10049; Incredibly flexible:__
 Cheerio wraps around @FB55's forgiving [htmlparser2](https://github.com/fb55/htmlparser2/). Cheerio can parse nearly any HTML or XML document.
 
+## Cheerio is not a web browser
+
+Cheerio parses markup and provides an API for traversing/manipulating the resulting data structure. It does not interpret the result as a web browser does. Specifically, it does *not* produce a visual rendering, apply CSS, load external resources, or execute JavaScript. If your use case requires any of this functionality, you should consider projects like [PhantomJS](http://phantomjs.org/) or [JSDom](https://github.com/tmpvar/jsdom).
+
 ## Job Board
 
 Looking for a career upgrade? Check out the available Node.js & Javascript positions at these innovative companies:
@@ -910,22 +914,6 @@ Cheerio collections are made up of objects that bear some resemblence to [browse
 - `firstChild`
 - `childNodes`
 - `lastChild`
-
-## What about JSDOM?
-I wrote cheerio because I found myself increasingly frustrated with JSDOM. For me, there were three main sticking points that I kept running into again and again:
-
-__&#8226; JSDOM's built-in parser is too strict:__
-  JSDOM's bundled HTML parser cannot handle many popular sites out there today.
-
-__&#8226; JSDOM is too slow:__
-Parsing big websites with JSDOM has a noticeable delay.
-
-__&#8226; JSDOM feels too heavy:__
-The goal of JSDOM is to provide an identical DOM environment as what we see in the browser. I never really needed all this, I just wanted a simple, familiar way to do HTML manipulation.
-
-## When I would use JSDOM
-
-Cheerio will not solve all your problems. I would still use JSDOM if I needed to work in a browser-like environment on the server, particularly if I wanted to automate functional tests.
 
 ## Screencasts
 
