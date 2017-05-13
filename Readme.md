@@ -986,6 +986,23 @@ project  : cheerio
      1  xiaohwan                0.1%
 ```
 
+## FAQ
+
+In Chinese languages, it may show the UTF-8 encoding like '& #x9AD8;'. To avoid this situation, use 'text()' instead of 'html()'.
+
+```
+eq(0)   ----> first()
+eq(1)
+eq(2)
+eq(3)
+......
+......
+......
+......
+eq(n-1)
+eq(n)   ----> last()
+```
+
 ## Cheerio in the real world
 
 Are you using cheerio in production? Add it to the [wiki](https://github.com/cheeriojs/cheerio/wiki/Cheerio-in-Production)!
