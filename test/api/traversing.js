@@ -1414,4 +1414,22 @@ describe('$(...)', function() {
       expect($selection[1]).to.be($('.orange')[0]);
     });
   });
+
+  describe('.ignore', function() {
+    it('() : ignores all nested tags', function(){
+      var $ = cheerio.load('<div id="test">foo<span>bar<b>baz</b></span></div>');
+
+      var $selection = $('#test').ignore().text();
+      expect($selection).to.have.length(3);
+      expect($selection).to.be('foo');
+    });
+
+    it('(selector) : ignores the contents of the selector only', function() {
+      var $ = cheerio.load('<div id="test">foo<span>bar</span><b>baz</b></text>');
+
+      var $selection = $('#test').ignore('span').text();
+      expect($selection).to.have.length(6);
+      expect($selection).to.be('foobaz');
+    });
+  });
 });
