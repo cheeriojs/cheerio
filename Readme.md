@@ -428,8 +428,8 @@ Iterates over a cheerio object, executing a function for each matched element. W
 ```js
 const fruits = [];
 
-$('li').each(function(i, elem) {
-  fruits[i] = $(this).text();
+$('li').each(function(i, el) {
+  fruits[i] = $(el).text();
 });
 
 fruits.join(', ');
@@ -441,8 +441,7 @@ Pass each element in the current matched set through a function, producing a new
 
 ```js
 $('li').map(function(i, el) {
-  // this === el
-  return $(this).text();
+  return $(el).text();
 }).get().join(' ');
 //=> "apple orange pear"
 ```
@@ -462,8 +461,7 @@ Function:
 
 ```js
 $('li').filter(function(i, el) {
-  // this === el
-  return $(this).attr('class') === 'orange';
+  return $(el).attr('class') === 'orange';
 }).attr('class')
 //=> orange
 ```
@@ -483,8 +481,7 @@ Function:
 
 ```js
 $('li').not(function(i, el) {
-  // this === el
-  return $(this).attr('class') === 'orange';
+  return $(el).attr('class') === 'orange';
 }).length;
 //=> 2
 ```
