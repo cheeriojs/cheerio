@@ -25,7 +25,7 @@ describe('$(...)', function() {
 
     it('(element) : should wrap the base element correctly', function(){
       $('ul').wrap('<a></a>');
-      expect($.root().children()[0].tagName).to.equal('a');
+      expect($('body').children()[0].tagName).to.equal('a');
     });
 
     it('(element) : should insert the element and add selected element(s) as its child', function() {
