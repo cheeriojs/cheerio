@@ -2,6 +2,9 @@ var fs = require('fs');
 var path = require('path');
 
 var Benchmark = require('benchmark');
+
+require('./install-jsdom')
+
 var jsdom = require('jsdom');
 var cheerio = require('..');
 
