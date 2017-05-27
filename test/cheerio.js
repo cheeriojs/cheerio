@@ -367,8 +367,8 @@ describe('cheerio', function() {
     it('should render xml in html() when options.xmlMode = true passed to html()', function() {
       var str = '<MixedCaseTag UPPERCASEATTRIBUTE=""></MixedCaseTag>',
           // since parsing done without xmlMode flag, all tags converted to lowercase
-          expectedXml = '<mixedcasetag uppercaseattribute=""/>',
-          expectedNoXml = '<mixedcasetag uppercaseattribute=""></mixedcasetag>',
+          expectedXml = '<html><head/><body><mixedcasetag uppercaseattribute=""/></body></html>',
+          expectedNoXml = '<html><head></head><body><mixedcasetag uppercaseattribute=""></mixedcasetag></body></html>',
           dom = $.load(str);
 
       expect(dom('MixedCaseTag').get(0).tagName).to.equal('mixedcasetag');
@@ -380,7 +380,7 @@ describe('cheerio', function() {
       var str = '<!doctype html><html><head><title>Some test</title></head><body><footer><p>Copyright &copy; 2003-2014</p></footer></body></html>',
           expectedHtml = '<p>Copyright &copy; 2003-2014</p>',
           expectedXml = '<p>Copyright &#xA9; 2003-2014</p>',
-          domNotEncoded = $.load(str, {decodeEntities: false}),
+          domNotEncoded = $.load(str, {xml: {decodeEntities: false}}),
           domEncoded = $.load(str);
 
       expect(domNotEncoded('footer').html()).to.be(expectedHtml);
