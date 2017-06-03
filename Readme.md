@@ -888,7 +888,7 @@ Checks to see if the `contained` DOM element is a descendant of the `container` 
 Parses a string into an array of DOM nodes. The `context` argument has no meaning for Cheerio, but it is maintained for API compatability.
 
 #### $.load( html[, options ] )
-Load in the HTML. (See the previous section titled "Loading" for more information.)
+Create a jQuery-like function, bound to a document created from the provided markup. Note that similar to web browser contexts, this operation may introduce `<html>`, `<head>`, and `<body>` elements. See the previous section titled "Loading" for usage information.
 
 ### Plugins
 
