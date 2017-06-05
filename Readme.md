@@ -122,6 +122,106 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 
 ## API
 
+### Table of contents
+
+<details>
+  <summary>Selectors</summary>
+
+  - [$( selector, [context], [root] )](#-selector-context-root-)
+</details>
+<details>
+  <summary>Attributes</summary>
+
+  - [.attr( name, value )](#attr-name-value-)
+  - [.prop( name, value )](#prop-name-value-)
+  - [.data( name, value )](#data-name-value-)
+  - [.val( [value] )](#val-value-)
+  - [.removeAttr( name )](#removeattr-name-)
+  - [.hasClass( className )](#hasclass-classname-)
+  - [.addClass( className )](#addclass-classname-)
+  - [.removeClass( [className] )](#removeclass-classname-)
+  - [.toggleClass( className, [switch] )](#toggleclass-classname-switch-)
+  - [.is( selector )](#is-selector-)
+  - [.is( element )](#is-element-)
+  - [.is( selection )](#is-selection-)
+  - [.is( function(index) )](#is-functionindex-)
+</details>
+<details>
+  <summary>Forms</summary>
+
+  - [.serializeArray()](#serializearray)
+</details>
+<details>
+  <summary>Traversing</summary>
+
+  - [.find(selector)](#findselector)
+  - [.find(selection)](#findselection)
+  - [.find(node)](#findnode)
+  - [.parent([selector])](#parentselector)
+  - [.parents([selector])](#parentsselector)
+  - [.parentsUntil([selector][,filter])](#parentsuntilselectorfilter)
+  - [.closest(selector)](#closestselector)
+  - [.next([selector])](#nextselector)
+  - [.nextAll([selector])](#nextallselector)
+  - [.nextUntil([selector], [filter])](#nextuntilselector-filter)
+  - [.prev([selector])](#prevselector)
+  - [.prevAll([selector])](#prevallselector)
+  - [.prevUntil([selector], [filter])](#prevuntilselector-filter)
+  - [.slice( start, [end] )](#slice-start-end-)
+  - [.siblings([selector])](#siblingsselector)
+  - [.children([selector])](#childrenselector)
+  - [.contents()](#contents)
+  - [.each( function(index, element) )](#each-functionindex-element-)
+  - [.map( function(index, element) )](#map-functionindex-element-)
+  - [.filter( selector )<br>
+     .filter( selection )<br>
+     .filter( element )<br>
+     .filter( function(index, element) )](#filter-selector---filter-selection---filter-element---filter-functionindex-element-)
+  - [.not( selector )<br>
+     .not( selection )<br>
+     .not( element )<br>
+     .not( function(index, elem) )](#not-selector---not-selection---not-element---not-functionindex-elem-)
+  - [.has( selector )<br>
+     .has( element )](#has-selector---has-element-)
+  - [.first()](#first)
+  - [.last()](#last)
+  - [.eq( i )](#eq-i-)
+  - [.get( [i] )](#get-i-)
+  - [.index()](#index)
+  - [.index( selector )](#index-selector-)
+  - [.index( nodeOrSelection )](#index-nodeorselection-)
+  - [.end()](#end)
+  - [.add( selector [, context] )](#add-selector--context-)
+  - [.add( element )](#add-element-)
+  - [.add( elements )](#add-elements-)
+  - [.add( html )](#add-html-)
+  - [.add( selection )](#add-selection-)
+  - [.addBack( [filter] )](#addback-filter-)
+</details>
+<details>
+  <summary>Manipulation</summary>
+
+  - [.append( content, [content, ...] )](#append-content-content--)
+  - [.appendTo( target )](#appendto-target-)
+  - [.prepend( content, [content, ...] )](#prepend-content-content--)
+  - [.prependTo( target )](#prependto-target-)
+  - [.after( content, [content, ...] )](#after-content-content--)
+  - [.insertAfter( target )](#insertafter-target-)
+  - [.before( content, [content, ...] )](#before-content-content--)
+  - [.insertBefore( target )](#insertbefore-target-)
+  - [.remove( [selector] )](#remove-selector-)
+  - [.replaceWith( content )](#replacewith-content-)
+  - [.empty()](#empty)
+  - [.html( [htmlString] )](#html-htmlstring-)
+  - [.text( [textString] )](#text-textstring-)
+  - [.wrap( content )](#wrap-content-)
+  - [.css( [propertName] )<br>
+     .css( [ propertyNames] )<br>
+     .css( [propertyName], [value] )<br>
+     .css( [propertName], [function] )<br>
+     .css( [properties] )](#css-propertname---css--propertynames---css-propertyname-value---css-propertname-function---css-properties-)
+</details>
+
 ### Markup example we'll be using:
 
 ```html
