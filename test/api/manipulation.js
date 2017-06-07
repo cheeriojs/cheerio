@@ -1366,6 +1366,18 @@ describe('$(...)', function() {
       var html = $fruits.html();
       expect(html).to.equal('<li class="durian">Durian</li>');
     });
+    
+    it('(null) : should empty the element', function() {
+      $fruits.html(null);
+      var html = $fruits.html();
+      expect(html).to.equal('');
+    });
+    
+    it('(\'\') : should empty the element', function() {
+      $fruits.html('');
+      var html = $fruits.html();
+      expect(html).to.equal('');
+    });
 
     it('() : should allow element reinsertion', function() {
       var $children = $fruits.children();
