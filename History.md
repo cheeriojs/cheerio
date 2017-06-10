@@ -1,3 +1,73 @@
+1.0.0-rc.2 / 2017-07-02
+==================
+
+This release changes Cheerio's default parser to [the Parse5 HTML
+parser](https://github.com/inikulin/parse5). Parse5 is an excellent project
+that rigorously conforms to the HTML standard. It does not support XML, so
+Cheerio continues to use [`htmlparser2`](https://github.com/fb55/htmlparser2/)
+when working with XML documents.
+
+This switch addresses many long-standing bugs in Cheerio, but some users may
+experience slower behavior in performance-critical applications. In addition,
+`htmlparser2` is more forgiving of invalid markup which can be useful when
+input sourced from a third party and cannot be corrected. For these reasons,
+the `load` method also accepts a DOM structure as produced by the `htmlparser2`
+library. See the project's "readme" file for more details on this usage
+pattern.
+
+### Migrating from version 0.x
+
+`cheerio.load( html[, options ] )`` This method continues to produce
+jQuery-like functions, bound to the provided input text. In prior releases, the
+provided string was interpreted as a document fragment. This meant that in a
+statement such as:
+
+    var $ = cheerio.load('<p>Hello, <b>world</b>!</p>');
+
+The resulting `$` function would operate on a tree whose root element was a
+paragraph tag.
+
+With this release of Cheerio, strings provided to the `load` method are
+interpreted as documents. The same example will produce a `$` function that
+operates on a full HTML document, including an `<html>` document element with
+nested `<head>` and `<body>` tags. This mimics web browser behavior much more
+closely, but may require alterations to existing code. To work with fragments,
+first load an empty document, and then use the resulting `$` to parse the
+input:
+
+    var $ = cheerio.load('');
+    var $fragment = $('<p>Hello, <b>world</b>!</p>');
+
+ * Update History.md (and include migration guide) (Mike Pennisi)
+ * Rename `useHtmlParser2` option (Mike Pennisi)
+ * Remove documentation for `xmlMode` option (Mike Pennisi)
+ * Document advanced usage with htmlparser2 (Mike Pennisi)
+ * Correct errors in Readme.md (Mike Pennisi)
+ * Improve release process (Mike Pennisi)
+ * 1.0.0-rc.1 (Mike Pennisi)
+ * Update unit test (Mike Pennisi)
+ * Normalize code style (Mike Pennisi)
+ * Added support for nested wrapping. (Diane Looney)
+ * Add nested wrapping test (Toni Helenius)
+ * Added $.merge following the specification at https://api.jquery.com/jquery.merge/ Added test cases for $.merge (Diane Looney)
+ * Clarify project scope in README file (Mike Pennisi)
+ * .text() ignores script and style tags (#1018) (Haleem Assal)
+ * Test suite housekeeping (#1016) (DianeLooney)
+ * experiment with a job board (Matthew)
+ * Change options format (inikulin)
+ * Add test for #997 (inikulin)
+ * Update .filter function docs. (Konstantin)
+ * Standardise readme on ES6 variable declarations (Dekatron)
+ * Use documents via $.load (inikulin)
+ * Use parse5 as a default parser (closes #863) (inikulin)
+ * Fix small typo in Readme (Darren Scerri)
+ * Report test failures in CI (Mike Pennisi)
+ * serializeArray should not ignore input elements without value attributes (Ricardo Gladwell)
+ * Disallow variable shadowing (Mike Pennisi)
+ * Update hasClass method (sufisaid)
+ * Added MIT License fixes #902 (Prasanth Vaaheeswaran)
+ * chore(package): update dependencies (greenkeeper[bot])
+ * Use modular lodash package (#913) (Billy Janitsch)
 
 0.22.0 / 2016-08-23
 ==================
