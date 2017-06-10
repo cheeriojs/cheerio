@@ -30,7 +30,7 @@ $('h2.title').text('Hello there!')
 $('h2').addClass('welcome')
 
 $.html()
-//=> <h2 class="title welcome">Hello there!</h2>
+//=> <html><head></head><body><h2 class="title welcome">Hello there!</h2></body></html>
 ```
 
 ## Note
@@ -273,15 +273,14 @@ const $ = cheerio.load('<ul id="fruits">...</ul>', {
 });
 ```
 
-These parsing options are taken directly from [htmlparser2](https://github.com/fb55/htmlparser2/wiki/Parser-options), therefore any options that can be used in `htmlparser2` are valid in cheerio as well. If any of these options is set to non-default value cheerio will implicitly use `htmlparser2` as an underlying parser. In addition, you can use `useHtmlParser2` option to force cheerio use `htmlparser2` instead of `parse5`. The default options are:
+These parsing options are taken directly from [htmlparser2](https://github.com/fb55/htmlparser2/wiki/Parser-options), therefore any options that can be used in `htmlparser2` are valid in cheerio as well. The default options are:
 
 ```js
 {
     withDomLvl1: true,
     normalizeWhitespace: false,
     xmlMode: false,
-    decodeEntities: true,
-    useHtmlParser2: false
+    decodeEntities: true
 }
 
 ```
@@ -1071,7 +1070,7 @@ Checks to see if the `contained` DOM element is a descendant of the `container` 
 Parses a string into an array of DOM nodes. The `context` argument has no meaning for Cheerio, but it is maintained for API compatibility.
 
 #### $.load( html[, options ] )
-Load in the HTML. (See the previous section titled "Loading" for more information.)
+Create a querying function, bound to a document created from the provided markup. Note that similar to web browser contexts, this operation may introduce `<html>`, `<head>`, and `<body>` elements. See the previous section titled "Loading" for usage information.
 
 ### Plugins
 
