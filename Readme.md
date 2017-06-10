@@ -121,6 +121,28 @@ These parsing options are taken directly from [htmlparser2](https://github.com/f
 For a full list of options and their effects, see [this](https://github.com/fb55/DomHandler) and
 [htmlparser2's options](https://github.com/fb55/htmlparser2/wiki/Parser-options).
 
+Some users may wish to parse markup with the `htmlparser2` library, and
+traverse/manipulate the resulting structure with Cheerio. This may be the case
+for those upgrading from pre-1.0 releases of Cheerio (which relied on
+`htmlparser2`), for those dealing with invalid markup (because `htmlparser2` is
+more forgiving), or for those operating in performance-critical situations
+(because `htmlparser2` may be faster in some cases). Note that "more forgiving"
+means `htmlparser2` has error-correcting mechanisms that aren't always a match
+for the standards observed by web browsers. This behavior may be useful when
+parsing non-HTML content.
+
+To support these cases, `load` also accepts a `htmlparser2`-compatible data
+structure as its first argument. Users may install `htmlparser2`, use it to
+parse input, and pass the result to `load`:
+
+```js
+// Usage as of htmlparser2 version 3:
+const htmlparser2 = require('htmlparser2');
+const dom = htmlparser2.parseDOM(document, options);
+
+const $ = cheerio.load(dom);
+```
+
 ### Selectors
 
 Cheerio's selector implementation is nearly identical to jQuery's, so the API is very similar.
