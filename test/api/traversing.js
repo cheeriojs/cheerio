@@ -52,8 +52,8 @@ describe('$(...)', function() {
       expect(q('foo').find('> bar')).to.have.length(1);
     });
 
-    it('should query case-sensitively when in xmlMode', function() {
-      var q = cheerio.load('<caseSenSitive allTheWay>', {xmlMode: true});
+    it('should query case-sensitively when in xml', function() {
+      var q = cheerio.load('<caseSenSitive allTheWay>', {xml: true});
       expect(q('caseSenSitive')).to.have.length(1);
       expect(q('[allTheWay]')).to.have.length(1);
       expect(q('casesensitive')).to.have.length(0);
