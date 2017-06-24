@@ -31,7 +31,12 @@ With this release of Cheerio, strings provided to the `load` method are
 interpreted as documents. The same example will produce a `$` function that
 operates on a full HTML document, including an `<html>` document element with
 nested `<head>` and `<body>` tags. This mimics web browser behavior much more
-closely, but may require alterations to existing code.
+closely, but may require alterations to existing code. To work with fragments,
+first load an empty document, and then use the resulting `$` to parse the
+input:
+
+    var $ = cheerio.load('');
+    var $fragment = $('<p>Hello, <b>world</b>!</p>');
 
  * Document advanced usage with htmlparser2 (Mike Pennisi)
  * Correct errors in Readme.md (Mike Pennisi)
