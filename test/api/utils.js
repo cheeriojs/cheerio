@@ -95,7 +95,7 @@ describe('cheerio', function() {
 
     // TODO:
     // it('(html) : should handle xml tag option', function() {
-    //   var $html = $.load('<body><script>oh hai</script></body>', { xmlMode : true });
+    //   var $html = $.load('<body><script>oh hai</script></body>', { xml : true });
     //   console.log($html('script')[0].type);
     //   expect($html('script')[0].type).to.be('tag');
     // });
