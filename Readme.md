@@ -263,26 +263,26 @@ const $ = require('cheerio');
 $('li', 'ul', '<ul id="fruits">...</ul>');
 ```
 
-You can also pass an extra object to `.load()` if you need to modify any
-of the default parsing options:
+If you need to modify parsing options for XML input, you may pass an extra
+object to `.load()`:
 
 ```js
 const $ = cheerio.load('<ul id="fruits">...</ul>', {
-    normalizeWhitespace: true,
-    xmlMode: true
+    xml: {
+      normalizeWhitespace: true,
+    }
 });
 ```
 
-These parsing options are taken directly from [htmlparser2](https://github.com/fb55/htmlparser2/wiki/Parser-options), therefore any options that can be used in `htmlparser2` are valid in cheerio as well. The default options are:
+The options in the `xml` object are taken directly from [htmlparser2](https://github.com/fb55/htmlparser2/wiki/Parser-options), therefore any options that can be used in `htmlparser2` are valid in cheerio as well. The default options are:
 
 ```js
 {
     withDomLvl1: true,
     normalizeWhitespace: false,
-    xmlMode: false,
+    xmlMode: true,
     decodeEntities: true
 }
-
 ```
 
 For a full list of options and their effects, see [this](https://github.com/fb55/DomHandler) and
