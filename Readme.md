@@ -126,15 +126,19 @@ traverse/manipulate the resulting structure with Cheerio. This may be the case
 for those upgrading from pre-1.0 releases of Cheerio (which relied on
 `htmlparser2`), for those dealing with invalid markup (because `htmlparser2` is
 more forgiving), or for those operating in performance-critical situations
-(because `htmlparser2` may be faster in some cases).
+(because `htmlparser2` may be faster in some cases). Note that "more forgiving"
+is not necessarily an advantage; `htmlparser2` will recover from some invalid
+markup differently than web browsers, and this may or may not be helpful.
 
 To support these cases, `load` also accepts a `htmlparser2`-compatible data
 structure as its first argument. Users may install `htmlparser2`, use it to
 parse input, and pass the result to `load`:
 
 ```js
+// Usage as of htmlparser2 version 3:
 const htmlParser2 = require('htmlparser2');
-const dom = { /* See htmlParser2's documentation for usage instructions. */ };
+const dom = htmlparser2.parseDOM(document, options);
+
 const $ = cheerio.load(dom);
 ```
 
