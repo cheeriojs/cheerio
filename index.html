@@ -163,7 +163,7 @@ are valid in cheerio as well. The default options are:</p>
 <span class="nx">$</span><span class="p">(</span><span class="s1">'ul .pear'</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'class'</span><span class="p">)</span>
 <span class="c1">//=&gt; pear</span>
 
-<span class="nx">$</span><span class="p">(</span><span class="s1">'li[class=orange]'</span><span class="p">).</span><span class="nx">html</span><span class="p">()</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">'li[class=orange]'</span><span class="p">).</span><span class="nx">toString</span><span class="p">()</span>
 <span class="c1">//=&gt; &lt;li class = "orange"&gt;Orange&lt;/li&gt;</span>
 </pre></div>
 
@@ -180,7 +180,7 @@ are valid in cheerio as well. The default options are:</p>
 <div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'id'</span><span class="p">)</span>
 <span class="c1">//=&gt; fruits</span>
 
-<span class="nx">$</span><span class="p">(</span><span class="s1">'.apple'</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'id'</span><span class="p">,</span> <span class="s1">'favorite'</span><span class="p">).</span><span class="nx">html</span><span class="p">()</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">'.apple'</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'id'</span><span class="p">,</span> <span class="s1">'favorite'</span><span class="p">).</span><span class="nx">toString</span><span class="p">()</span>
 <span class="c1">//=&gt; &lt;li class = "apple" id = "favorite"&gt;Apple&lt;/li&gt;</span>
 </pre></div>
 
@@ -193,7 +193,7 @@ are valid in cheerio as well. The default options are:</p>
 
 <p>Method for removing attributes by <code>name</code>.</p>
 
-<div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="s1">'.pear'</span><span class="p">).</span><span class="nx">removeAttr</span><span class="p">(</span><span class="s1">'class'</span><span class="p">).</span><span class="nx">html</span><span class="p">()</span>
+<div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="s1">'.pear'</span><span class="p">).</span><span class="nx">removeAttr</span><span class="p">(</span><span class="s1">'class'</span><span class="p">).</span><span class="nx">toString</span><span class="p">()</span>
 <span class="c1">//=&gt; &lt;li&gt;Pear&lt;/li&gt;</span>
 </pre></div>
 
@@ -217,10 +217,10 @@ are valid in cheerio as well. The default options are:</p>
 
 <p>Adds class(es) to all of the matched elements. Also accepts a <code>function</code> like jQuery.</p>
 
-<div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="s1">'.pear'</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">'fruit'</span><span class="p">).</span><span class="nx">html</span><span class="p">()</span>
+<div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="s1">'.pear'</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">'fruit'</span><span class="p">).</span><span class="nx">toString</span><span class="p">()</span>
 <span class="c1">//=&gt; &lt;li class = "pear fruit"&gt;Pear&lt;/li&gt;</span>
 
-<span class="nx">$</span><span class="p">(</span><span class="s1">'.apple'</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">'fruit red'</span><span class="p">).</span><span class="nx">html</span><span class="p">()</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">'.apple'</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">'fruit red'</span><span class="p">).</span><span class="nx">toString</span><span class="p">()</span>
 <span class="c1">//=&gt; &lt;li class = "apple fruit red"&gt;Apple&lt;/li&gt;</span>
 </pre></div>
 
@@ -233,10 +233,10 @@ are valid in cheerio as well. The default options are:</p>
 
 <p>Removes one or more space-separated classes from the selected elements. If no <code>className</code> is defined, all classes will be removed. Also accepts a <code>function</code> like jQuery.</p>
 
-<div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="s1">'.pear'</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">'pear'</span><span class="p">).</span><span class="nx">html</span><span class="p">()</span>
+<div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="s1">'.pear'</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">'pear'</span><span class="p">).</span><span class="nx">toString</span><span class="p">()</span>
 <span class="c1">//=&gt; &lt;li class = ""&gt;Pear&lt;/li&gt;</span>
 
-<span class="nx">$</span><span class="p">(</span><span class="s1">'.apple'</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">'red'</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">().</span><span class="nx">html</span><span class="p">()</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">'.apple'</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">'red'</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">().</span><span class="nx">toString</span><span class="p">()</span>
 <span class="c1">//=&gt; &lt;li class = ""&gt;Apple&lt;/li&gt;</span>
 </pre></div>
 
