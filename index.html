@@ -39,7 +39,7 @@
 
 <p>Teach your server HTML.</p>
 
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">cheerio</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'cheerio'</span><span class="p">),</span>
+<div class="highlight"><pre data-runkit-embed="no-premble"><span class="kd">var</span> <span class="nx">cheerio</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'cheerio'</span><span class="p">),</span>
     <span class="nx">$</span> <span class="o">=</span> <span class="nx">cheerio</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'&lt;h2 class = "title"&gt;Hello world&lt;/h2&gt;'</span><span class="p">);</span>
 
 <span class="nx">$</span><span class="p">(</span><span class="s1">'h2.title'</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="s1">'Hello there!'</span><span class="p">);</span>
@@ -91,7 +91,7 @@ The goal of JSDOM is to provide an identical DOM environment as what we see in t
 <h3>
 <a name="markup-example-well-be-using" class="anchor" href="#markup-example-well-be-using"><span class="octicon octicon-link"></span></a>Markup example we'll be using:</h3>
 
-<div class="highlight"><pre><span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">"fruits"</span><span class="nt">&gt;</span>
+<div class="highlight"><pre data-runkit-embed="disable" id="htmlExample"><span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">"fruits"</span><span class="nt">&gt;</span>
   <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"apple"</span><span class="nt">&gt;</span>Apple<span class="nt">&lt;/li&gt;</span>
   <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"orange"</span><span class="nt">&gt;</span>Orange<span class="nt">&lt;/li&gt;</span>
   <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"pear"</span><span class="nt">&gt;</span>Pear<span class="nt">&lt;/li&gt;</span>
@@ -107,26 +107,26 @@ The goal of JSDOM is to provide an identical DOM environment as what we see in t
 
 <p>This is the <em>preferred</em> method:</p>
 
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">cheerio</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'cheerio'</span><span class="p">),</span>
+<div class="highlight"><pre data-runkit-embed="disable"><span class="kd">var</span> <span class="nx">cheerio</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'cheerio'</span><span class="p">),</span>
     <span class="nx">$</span> <span class="o">=</span> <span class="nx">cheerio</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'&lt;ul id = "fruits"&gt;...&lt;/ul&gt;'</span><span class="p">);</span>
 </pre></div>
 
 <p>Optionally, you can also load in the HTML by passing the string as the context:</p>
 
-<div class="highlight"><pre><span class="nx">$</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'cheerio'</span><span class="p">);</span>
+<div class="highlight"><pre data-runkit-embed="disable"><span class="nx">$</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'cheerio'</span><span class="p">);</span>
 <span class="nx">$</span><span class="p">(</span><span class="s1">'ul'</span><span class="p">,</span> <span class="s1">'&lt;ul id = "fruits"&gt;...&lt;/ul&gt;'</span><span class="p">);</span>
 </pre></div>
 
 <p>Or as the root:</p>
 
-<div class="highlight"><pre><span class="nx">$</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'cheerio'</span><span class="p">);</span>
+<div class="highlight"><pre data-runkit-embed="disable"><span class="nx">$</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'cheerio'</span><span class="p">);</span>
 <span class="nx">$</span><span class="p">(</span><span class="s1">'li'</span><span class="p">,</span> <span class="s1">'ul'</span><span class="p">,</span> <span class="s1">'&lt;ul id = "fruits"&gt;...&lt;/ul&gt;'</span><span class="p">);</span>
 </pre></div>
 
 <p>You can also pass an extra object to <code>.load()</code> if you need to modify any
 of the default parsing options:</p>
 
-<div class="highlight"><pre><span class="nx">$</span> <span class="o">=</span> <span class="nx">cheerio</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'&lt;ul id = "fruits"&gt;...&lt;/ul&gt;'</span><span class="p">,</span> <span class="p">{</span>
+<div class="highlight"><pre data-runkit-embed="disable"><span class="nx">$</span> <span class="o">=</span> <span class="nx">cheerio</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">'&lt;ul id = "fruits"&gt;...&lt;/ul&gt;'</span><span class="p">,</span> <span class="p">{</span>
     <span class="nx">ignoreWhitespace</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
     <span class="nx">xmlMode</span><span class="o">:</span> <span class="kc">true</span>
 <span class="p">});</span>
@@ -135,7 +135,7 @@ of the default parsing options:</p>
 <p>These parsing options are taken directly from htmlparser2, therefore any options that can be used in htmlparser2
 are valid in cheerio as well. The default options are:</p>
 
-<div class="highlight"><pre><span class="p">{</span>
+<div class="highlight"><pre data-runkit-embed="disable"><span class="p">{</span>
     <span class="nx">ignoreWhitespace</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
     <span class="nx">xmlMode</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
     <span class="nx">lowerCaseTags</span><span class="o">:</span> <span class="kc">false</span>
@@ -667,17 +667,62 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
+
     <script src="javascripts/scale.fix.js"></script>
-              <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-10351690-10");
-            pageTracker._trackPageview();
-            } catch(err) {}
-          </script>
+    <script src = "https://embed.runkit.com" async defer></script>
+
+    <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+
+      try {
+        var pageTracker = _gat._getTracker("UA-10351690-10");
+      pageTracker._trackPageview();
+      } catch(err) {}
+
+      var htmlExample = document.getElementById("htmlExample").textContent.replace(/\n/g, "\\\n");
+      var runkitPreamble = "var cheerio = require('cheerio'),\
+                                $ = cheerio.load('" + htmlExample + "');";
+
+      var allJS = document.querySelectorAll(".highlight pre");
+
+      allJS.forEach(function(codeElement) {
+        var embedConfig = codeElement.dataset.runkitEmbed;
+
+        if (embedConfig === "disable")
+          return;
+
+        var code = codeElement.textContent;
+        var preamble = embedConfig === "no-premble" ? "" : runkitPreamble;
+
+        var runItButton = document.createElement("a");
+        runItButton.className = "run-it";
+        runItButton.innerText = "Run It";
+        codeElement.appendChild(runItButton);
+
+        runItButton.addEventListener("click", function(anEvent) {
+          if (!window.RunKit)
+            return;
+
+          var container = document.createElement("div");
+          var parent = codeElement.parentNode;
+
+          parent.insertBefore(container, codeElement);
+          parent.removeChild(codeElement);
+          codeElement.removeChild(runItButton);
+
+          RunKit.createNotebook({
+            element: container,
+            preamble: preamble,
+            source: code,
+            minHeight: "52px",
+            onLoad: function(notebook) {
+              notebook.evaluate();
+            }
+          });
+        }, false);
+      });
+    </script>
 
   </body>
 </html>
