@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "css-select": "~1.2.0",
-    "dom-serializer": "~0.1.0",
+    "dom-serializer": "https://github.com/cheeriojs/dom-serializer.git#d26e453910975f9d980df2d90dd893d89132889d",
     "entities": "~1.1.1",
     "htmlparser2": "^3.9.1",
     "lodash.assignin": "^4.0.9",
