@@ -13,6 +13,17 @@ describe('$(...)', function() {
     $ = cheerio.load(fruits);
   });
 
+  describe('.load', function() {
+    it('should throw a TypeError if given invalid input', function() {
+      expect(function() {
+        cheerio.load();
+      }).to.throwException(function(err) {
+        expect(err).to.be.a(TypeError);
+        expect(err.message).to.be('cheerio.load() expects a string');
+      });
+    });
+  });
+
   describe('.find', function() {
 
     it('() : should find nothing', function() {
