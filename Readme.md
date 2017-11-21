@@ -149,6 +149,7 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <details>
   <summary>Forms</summary>
 
+  - [.serialize()](#serialize)
   - [.serializeArray()](#serializearray)
 </details>
 <details>
@@ -428,6 +429,15 @@ $('.apple.green').toggleClass('fruit green red', true).html()
 Checks the current list of elements and returns `true` if _any_ of the elements match the selector. If using an element or Cheerio selection, returns `true` if _any_ of the elements match. If using a predicate function, the function is executed in the context of the selected element, so `this` refers to the current element.
 
 ### Forms
+
+#### .serialize()
+
+Encodes a set of form elements as a URL query string.
+
+```js
+$('<form><input name="foo" value="bar" checked /><input name="foo" value="qux" checked /></form>').serialize()
+//=> foo=bar&foo=qux
+```
 
 #### .serializeArray()
 
