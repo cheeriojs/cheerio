@@ -22,7 +22,7 @@
     "lib"
   ],
   "engines": {
-    "node": ">= 0.6"
+    "node": ">= 6.3.0"
   },
   "dependencies": {
     "css-select": "^1.2.0",
@@ -33,15 +33,18 @@
   "devDependencies": {
     "benchmark": "^2.1.4",
     "coveralls": "^3.0.0",
+    "eslint": "^4.13.1",
+    "eslint-config-vixo": "^2.0.1",
     "expect.js": "~0.3.1",
-    "istanbul": "^0.4.5",
-    "jsdom": "^11.5.1",
     "jquery": "^3.2.1",
-    "jshint": "^2.9.5",
+    "jsdom": "^11.5.1",
     "mocha": "^4.0.1",
+    "nyc": "^11.3.0",
     "xyz": "~2.1.0"
   },
   "scripts": {
-    "test": "make test"
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
+    "lint": "eslint {benchmarks,lib,test}/** *.js",
+    "test": "nyc -r=text -r=lcov mocha --recursive"
   }
 }
