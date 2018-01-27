@@ -32,6 +32,11 @@ describe('$(...)', function() {
       expect(el.css('background-image')).to.equal('url(http://example.com/img.png)');
     });
 
+    it('(prop): should not mangle embedded data-uris', function() {
+      var el = cheerio('<li style="background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAA);">');
+      expect(el.css('background-image')).to.equal('url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAA)');
+    });
+
     it('(prop): should ignore blank properties', function() {
       var el = cheerio('<li style=":#ccc;color:#aaa;">');
       expect(el.css()).to.eql({color:'#aaa'});
