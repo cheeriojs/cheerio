@@ -25,7 +25,7 @@
     "node": ">= 6.3.0"
   },
   "dependencies": {
-    "css-select": "^1.2.0",
+    "css-select": "^1.3.0-rc0",
     "dom-serializer": "^0.1.0",
     "entities": "^1.1.1",
     "htmlparser2": "^3.9.2"
@@ -33,14 +33,14 @@
   "devDependencies": {
     "benchmark": "^2.1.4",
     "coveralls": "^3.0.0",
-    "eslint": "^4.13.1",
-    "eslint-config-vixo": "^2.0.1",
+    "eslint": "^4.16.0",
+    "eslint-config-vixo": "^2.0.2",
     "expect.js": "~0.3.1",
-    "jquery": "^3.2.1",
-    "jsdom": "^11.5.1",
-    "mocha": "^4.0.1",
-    "nyc": "^11.3.0",
-    "xyz": "~2.1.0"
+    "jquery": "^3.3.1",
+    "jsdom": "^11.6.2",
+    "mocha": "^5.0.0",
+    "nyc": "^11.4.1",
+    "xyz": "~3.0.0"
   },
   "scripts": {
     "coveralls": "cat ./coverage/lcov.info | coveralls",
