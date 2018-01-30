@@ -1,15 +1,23 @@
+sudo: false
+
 language: node_js
+
 node_js:
-  - "stable"
-  - "unstable"
-  - "6"
-  - "4"
-  - "0.12"
-script: make travis-test
-matrix:
-  fast_finish: true
-  allow_failures:
-    - node_js: unstable
-  include:
-    - env: BENCHMARK=true
-      script: "node benchmark/benchmark.js --regex '^(?!.*highmem)'"
+  - 6
+  - 7
+  - 8
+  - 9
+
+cache:
+  directories:
+    - node_modules
+
+install:
+  - npm i
+
+script:
+  - npm run lint
+  - npm run test
+
+after_success:
+  - npm run coveralls

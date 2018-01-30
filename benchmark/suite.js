@@ -1,91 +1,93 @@
-var fs = require('fs');
-var path = require('path');
+const fs = require('fs')
+const path = require('path')
 
-var Benchmark = require('benchmark');
-var jsdom = require('jsdom');
-var cheerio = require('..');
+const Benchmark = require('benchmark')
+const jsdom = require('jsdom')
+const cheerio = require('..')
 
-var documentDir = path.join(__dirname, 'documents');
-var jQuerySrc = path.join(__dirname, '../node_modules/jquery/dist/jquery.slim.js');
-var filterRe = /./;
-var cheerioOnly = false;
+const documentDir = path.join(__dirname, 'documents')
+const jQuerySrc = path.join(__dirname, '../node_modules/jquery/dist/jquery.slim.js')
+let filterRe = /./
+let cheerioOnly = false
 
-var Suites = module.exports = function() {};
+const Suites = module.exports = function () {}
 
-Suites.prototype.filter = function(str) {
-  filterRe = new RegExp(str, 'i');
-};
+Suites.prototype.filter = function (str) {
+  filterRe = new RegExp(str, 'i')
+}
 
-Suites.prototype.cheerioOnly = function() {
-  cheerioOnly = true;
-};
+Suites.prototype.cheerioOnly = function () {
+  cheerioOnly = true
+}
 
-Suites.prototype.add = function(name, fileName, options) {
-  var markup, suite, testFn;
+Suites.prototype.add = function (name, fileName, options) {
+  let markup, suite, testFn
   if (!filterRe.test(name)) {
-    return;
+    return
   }
-  markup = fs.readFileSync(path.join(documentDir, fileName), 'utf8');
-  suite = new Benchmark.Suite(name);
-  testFn = options.test;
+  markup = fs.readFileSync(path.join(documentDir, fileName), 'utf8')
+  suite = new Benchmark.Suite(name)
+  testFn = options.test
 
-  suite.on('start', function(event) {
-    console.log('Test: ' + name + ' (file: ' + fileName + ')');
-  });
-  suite.on('cycle', function(event) {
+  suite.on('start', event => {
+    console.log(`Test: ${name} (file: ${fileName})`)
+  })
+  suite.on('cycle', event => {
     if (event.target.error) {
-      return;
+      return
     }
-    console.log('\t' + String(event.target));
-  });
-  suite.on('error', function(event) {
-    console.log('*** Error in ' + event.target.name + ': ***');
-    console.log('\t' + event.target.error);
-    console.log('*** Test invalidated. ***');
-  });
-  suite.on('complete', function(event) {
+    console.log(`\t${String(event.target)}`)
+  })
+  suite.on('error', event => {
+    console.log(`*** Error in ${event.target.name}: ***`)
+    console.log(`\t${event.target.error}`)
+    console.log('*** Test invalidated. ***')
+  })
+  suite.on('complete', function (event) {
     if (event.target.error) {
-      console.log();
-      return;
+      console.log()
+      return
     }
-    console.log('\tFastest: ' + this.filter('fastest')[0].name + '\n');
-  });
+    console.log(`\tFastest: ${this.filter('fastest')[0].name}\n`)
+  })
 
-  this._benchCheerio(suite, markup, options);
+  this._benchCheerio(suite, markup, options)
   if (!cheerioOnly) {
-    this._benchJsDom(suite, markup, options);
+    this._benchJsDom(suite, markup, options)
   } else {
-    suite.run();
+    suite.run()
   }
-};
+}
 
-Suites.prototype._benchJsDom = function(suite, markup, options) {
-  var testFn = options.test;
+Suites.prototype._benchJsDom = function (suite, markup, options) {
+  const testFn = options.test
 
   jsdom.env({
     html: markup,
     scripts: jQuerySrc,
-    done: function(err, window) {
-      var setupData;
+    done(err, window) {
+      let setupData
       if (options.setup) {
-        setupData = options.setup.call(null, window.$);
+        setupData = options.setup.call(null, window.$)
       }
-      suite.add('jsdom', function() {
-        testFn.call(null, window.$, setupData);
-      });
-      suite.run();
+      suite.add('jsdom', () => {
+        testFn.call(null, window.$, setupData)
+      })
+      suite.run()
     }
-  });
-};
+  })
+}
 
-Suites.prototype._benchCheerio = function(suite, markup, options) {
-  var $ = cheerio.load(markup);
-  var testFn = options.test;
-  var setupData;
+Suites.prototype._benchCheerio = function (suite, markup, options) {
+  const $ = cheerio.load(markup)
+  const testFn = options.test
+
+  let setupData
   if (options.setup) {
-    setupData = options.setup.call(null, $);
+    setupData = options.setup.call(null, $)
   }
-  suite.add('cheerio', function() {
-    testFn.call(null, $, setupData);
-  });
-};
+
+  suite.add('cheerio', () => {
+    testFn.call(null, $, setupData)
+  })
+}

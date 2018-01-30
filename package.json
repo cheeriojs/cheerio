@@ -22,27 +22,29 @@
     "lib"
   ],
   "engines": {
-    "node": ">= 0.6"
+    "node": ">= 6.3.0"
   },
   "dependencies": {
-    "css-select": "~1.2.0",
-    "dom-serializer": "~0.1.0",
-    "entities": "~1.1.1",
-    "htmlparser2": "^3.9.1",
-    "lodash": "^4.15.0"
+    "css-select": "^1.3.0-rc0",
+    "dom-serializer": "^0.1.0",
+    "entities": "^1.1.1",
+    "htmlparser2": "^3.9.2"
   },
   "devDependencies": {
-    "benchmark": "^2.1.0",
-    "coveralls": "^2.11.9",
+    "benchmark": "^2.1.4",
+    "coveralls": "^3.0.0",
+    "eslint": "^4.16.0",
+    "eslint-config-vixo": "^2.0.2",
     "expect.js": "~0.3.1",
-    "istanbul": "^0.4.3",
-    "jsdom": "^9.2.1",
-    "jquery": "^3.0.0",
-    "jshint": "^2.9.2",
-    "mocha": "^3.1.2",
-    "xyz": "~1.1.0"
+    "jquery": "^3.3.1",
+    "jsdom": "^11.6.2",
+    "mocha": "^5.0.0",
+    "nyc": "^11.4.1",
+    "xyz": "~3.0.0"
   },
   "scripts": {
-    "test": "make test"
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
+    "lint": "eslint {benchmarks,lib,test}/** *.js",
+    "test": "nyc -r=text -r=lcov mocha --recursive"
   }
 }
