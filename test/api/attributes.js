@@ -214,12 +214,14 @@ describe('$(...)', function() {
     });
 
     it('() : should get all data attributes initially declared in the markup merged with all data additionally set via `data`', function() {
-      var $el = cheerio('<div data-a="a">');
-      $el.data('b', 'b');
+      var $el = cheerio('<div data-a="a" data-b="b">');
+      $el.data('b', 'b-modified');
+      $el.data('c', 'c');
 
       expect($el.data()).to.eql({
         a: 'a',
-        b: 'b'
+        b: 'b-modified',
+        c: 'c'
       });
     });
 
