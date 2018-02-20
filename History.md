@@ -17,26 +17,51 @@ pattern.
 
 ### Migrating from version 0.x
 
-`cheerio.load( html[, options ] )`` This method continues to produce
-jQuery-like functions, bound to the provided input text. In prior releases, the
-provided string was interpreted as a document fragment. This meant that in a
-statement such as:
+`cheerio.load( html[, options ] )` This method continues to act as a "factory"
+function. It produces functions that define an API that is similar to the
+global `jQuery` function provided by the jQuery library. The generated function
+operates on a DOM structure based on the provided HTML.
+
+In releases prior to version 1.0, the provided HTML was interpreted as a
+document fragment. Following version 1.0, strings provided to the `load` method
+are interpreted as documents. The same example will produce a `$` function that
+operates on a full HTML document, including an `<html>` document element with
+nested `<head>` and `<body>` tags. This mimics web browser behavior much more
+closely, but may require alterations to existing code.
+
+For example, the following code will produce different results between 0.x and
+1.0 releases:
 
     var $ = cheerio.load('<p>Hello, <b>world</b>!</p>');
 
-The resulting `$` function would operate on a tree whose root element was a
-paragraph tag.
+    $.root().html();
 
-With this release of Cheerio, strings provided to the `load` method are
-interpreted as documents. The same example will produce a `$` function that
-operates on a full HTML document, including an `<html>` document element with
-nested `<head>` and `<body>` tags. This mimics web browser behavior much more
-closely, but may require alterations to existing code. To work with fragments,
-first load an empty document, and then use the resulting `$` to parse the
-input:
+    //=> In version 0.x: '<p>Hello, <b>world</b>!</p>'
+    //=> In version 1.0: '<html><head></head><body><p>Hello, <b>world</b>!</p></body></html>'
 
+Users wishing to parse, manipulate, and render full documents should not need
+to modify their code. Likewise, code that does not interact with the "root"
+element should not be effected by this change. (In the above example, the
+expression `$('p')` returns the same result across Cheerio versions--a Cheerio
+collection whose only member is a paragraph element.)
+
+However, users wishing to render document fragments should now explicitly
+create a "wrapper" element to contain their input.
+
+    // First, create a Cheerio function "bound" to an empty document (this is
+    // similar to loading an empty page in a web browser)
     var $ = cheerio.load('');
-    var $fragment = $('<p>Hello, <b>world</b>!</p>');
+    // Next, create a "wrapper" element for the input fragment:
+    var $wrapper = $('<div/>');
+    // Finally, supply the input markup as the content for the wrapper:
+    $wrapper.append('<p>Hello, <b>world</b>!</p>');
+
+    $wrapper.html();
+    //=> '<p>Hello, <b>world</b>!</p>'
+
+---
+
+Change log:
 
  * Update History.md (and include migration guide) (Mike Pennisi)
  * Rename `useHtmlParser2` option (Mike Pennisi)
