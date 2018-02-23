@@ -70,3 +70,14 @@ exports.forms = [
   '<form id="textarea"><textarea name="fruits">Apple\nOrange</textarea></form>',
   '<form id="spaces"><input type="text" name="fruit" value="Blood orange" /></form>'
 ].join('');
+
+exports.link = [
+  '<a id="href001" href="/n1745ct/1/" target="_blank">序章　一度目と二度目の終わり</a>',
+  '<a id="href002" href="n1745ct/1/" target="_blank">序章　一度目と二度目の終わり</a>',
+  '<a id="href003" href="../n1745ct/1/" target="_blank">序章　一度目と二度目の終わり</a>',
+  '<a id="href004" href="http://ncode.syosetu.com/n1745ct/1/" target="_blank">序章　一度目と二度目の終わり</a>',
+  '<img id="img001" src="/n1745ct/1/" />',
+  '<img id="img002" src="n1745ct/1/" />',
+  '<img id="img003" src="../n1745ct/1/" />',
+  '<img id="img003" src="http://ncode.syosetu.com/n1745ct/1/" />'
+].join('');
