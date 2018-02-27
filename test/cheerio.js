@@ -13,7 +13,6 @@ var script = '<script src="script.js" type="text/javascript"></script>',
     multiclass = '<p><a class="btn primary" href="#">Save</a></p>';
 
 describe('cheerio', function() {
-
   it('should get the version', function() {
     expect(/\d+\.\d+\.\d+/.test($.version)).to.be.ok();
   });
@@ -163,10 +162,10 @@ describe('cheerio', function() {
   });
 
   it('should select first element $(:first)');
-    // var $elem = $(':first', fruits);
-    // var $h2 = $('<h2>fruits</h2>');
-    // console.log($elem.before('hi'));
-    // console.log($elem.before($h2));
+  // var $elem = $(':first', fruits);
+  // var $h2 = $('<h2>fruits</h2>');
+  // console.log($elem.before('hi'));
+  // console.log($elem.before($h2));
 
   it('should be able to select immediate children: $("#fruits > .pear")', function() {
     var $food = $(food);
@@ -243,9 +242,9 @@ describe('cheerio', function() {
 
   describe('.merge', function() {
     var arr1, arr2;
-    beforeEach(function(){
-      arr1 = [1,2,3];
-      arr2 = [4,5,6];
+    beforeEach(function() {
+      arr1 = [1, 2, 3];
+      arr2 = [4, 5, 6];
     });
 
     it('should be a function', function() {
@@ -288,19 +287,19 @@ describe('cheerio', function() {
     });
 
     it('(?, ?) : should gracefully reject invalid inputs', function() {
-      var ret = $.merge([4],3);
+      var ret = $.merge([4], 3);
       expect(ret).to.not.be.ok();
-      ret = $.merge({},{});
+      ret = $.merge({}, {});
       expect(ret).to.not.be.ok();
-      ret = $.merge([],{});
+      ret = $.merge([], {});
       expect(ret).to.not.be.ok();
-      ret = $.merge({},[]);
+      ret = $.merge({}, []);
       expect(ret).to.not.be.ok();
-      var fakeArray1 = {length: 3};
+      var fakeArray1 = { length: 3 };
       fakeArray1[0] = 'a';
       fakeArray1[1] = 'b';
       fakeArray1[3] = 'd';
-      ret = $.merge(fakeArray1,[]);
+      ret = $.merge(fakeArray1, []);
       expect(ret).to.not.be.ok();
       ret = $.merge([], fakeArray1);
       expect(ret).to.not.be.ok();
@@ -314,25 +313,24 @@ describe('cheerio', function() {
     });
 
     it('(?, ?) : should no-op on invalid inputs', function() {
-      var fakeArray1 = {length: 3};
+      var fakeArray1 = { length: 3 };
       fakeArray1[0] = 'a';
       fakeArray1[1] = 'b';
       fakeArray1[3] = 'd';
-      var ret = $.merge(fakeArray1, []);
+      $.merge(fakeArray1, []);
       expect(fakeArray1).to.have.length(3);
-      expect(fakeArray1[0] = 'a');
-      expect(fakeArray1[1] = 'b');
-      expect(fakeArray1[3] = 'd');
-      ret = $.merge([], fakeArray1);
+      expect(fakeArray1[0]).to.equal('a');
+      expect(fakeArray1[1]).to.equal('b');
+      expect(fakeArray1[3]).to.equal('d');
+      $.merge([], fakeArray1);
       expect(fakeArray1).to.have.length(3);
-      expect(fakeArray1[0] = 'a');
-      expect(fakeArray1[1] = 'b');
-      expect(fakeArray1[3] = 'd');
+      expect(fakeArray1[0]).to.equal('a');
+      expect(fakeArray1[1]).to.equal('b');
+      expect(fakeArray1[3]).to.equal('d');
     });
   });
 
   describe('.load', function() {
-
     it('should generate selections as proper instances', function() {
       var q = $.load(fruits);
 
@@ -358,7 +356,7 @@ describe('cheerio', function() {
     it('should render xml in html() when options.xml = true', function() {
       var str = '<MixedCaseTag UPPERCASEATTRIBUTE=""></MixedCaseTag>',
           expected = '<MixedCaseTag UPPERCASEATTRIBUTE=""/>',
-          dom = $.load(str, {xml: true});
+          dom = $.load(str, { xml: true });
 
       expect(dom('MixedCaseTag').get(0).tagName).to.equal('MixedCaseTag');
       expect(dom.html()).to.be(expected);
@@ -367,20 +365,23 @@ describe('cheerio', function() {
     it('should render xml in html() when options.xml = true passed to html()', function() {
       var str = '<MixedCaseTag UPPERCASEATTRIBUTE=""></MixedCaseTag>',
           // since parsing done without xml flag, all tags converted to lowercase
-          expectedXml = '<html><head/><body><mixedcasetag uppercaseattribute=""/></body></html>',
-          expectedNoXml = '<html><head></head><body><mixedcasetag uppercaseattribute=""></mixedcasetag></body></html>',
+          expectedXml =
+          '<html><head/><body><mixedcasetag uppercaseattribute=""/></body></html>',
+          expectedNoXml =
+          '<html><head></head><body><mixedcasetag uppercaseattribute=""></mixedcasetag></body></html>',
           dom = $.load(str);
 
       expect(dom('MixedCaseTag').get(0).tagName).to.equal('mixedcasetag');
       expect(dom.html()).to.be(expectedNoXml);
-      expect(dom.html({xml: true})).to.be(expectedXml);
+      expect(dom.html({ xml: true })).to.be(expectedXml);
     });
 
     it('should respect options on the element level', function() {
-      var str = '<!doctype html><html><head><title>Some test</title></head><body><footer><p>Copyright &copy; 2003-2014</p></footer></body></html>',
+      var str =
+          '<!doctype html><html><head><title>Some test</title></head><body><footer><p>Copyright &copy; 2003-2014</p></footer></body></html>',
           expectedHtml = '<p>Copyright &copy; 2003-2014</p>',
           expectedXml = '<p>Copyright &#xA9; 2003-2014</p>',
-          domNotEncoded = $.load(str, {xml: {decodeEntities: false}}),
+          domNotEncoded = $.load(str, { xml: { decodeEntities: false } }),
           domEncoded = $.load(str);
 
       expect(domNotEncoded('footer').html()).to.be(expectedHtml);
@@ -409,8 +410,11 @@ describe('cheerio', function() {
 
         expect($div.myPlugin).to.be.a('function');
         expect($div.myPlugin().context).to.be($div);
-        expect(Array.prototype.slice.call($div.myPlugin(1, 2, 3).args))
-          .to.eql([1, 2, 3]);
+        expect(Array.prototype.slice.call($div.myPlugin(1, 2, 3).args)).to.eql([
+          1,
+          2,
+          3
+        ]);
       });
 
       it('should honor extensions defined on `fn` property', function() {
@@ -427,8 +431,11 @@ describe('cheerio', function() {
 
         expect($div.myPlugin).to.be.a('function');
         expect($div.myPlugin().context).to.be($div);
-        expect(Array.prototype.slice.call($div.myPlugin(1, 2, 3).args))
-          .to.eql([1, 2, 3]);
+        expect(Array.prototype.slice.call($div.myPlugin(1, 2, 3).args)).to.eql([
+          1,
+          2,
+          3
+        ]);
       });
 
       it('should isolate extensions between loaded functions', function() {

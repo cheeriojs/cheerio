@@ -2,7 +2,7 @@ REPORTER = dot
 XYZ = node_modules/.bin/xyz --message 'Release X.Y.Z' --tag X.Y.Z --repo git@github.com:cheeriojs/cheerio.git --script scripts/prepublish
 
 lint:
-	@./node_modules/.bin/jshint lib/ test/
+	@./node_modules/.bin/eslint .
 
 test: lint
 	@./node_modules/.bin/mocha --recursive --reporter $(REPORTER)

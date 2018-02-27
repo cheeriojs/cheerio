@@ -163,7 +163,7 @@ describe('$(...)', function() {
       expect($fruits.children().eq(2).hasClass('fruit-decorator')).to.be.ok();
       expect($fruits.children().eq(2).children().eq(0).hasClass('pear')).to.be.ok();
     });
-   });
+  });
 
   describe('.append', function() {
 

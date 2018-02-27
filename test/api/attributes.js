@@ -282,9 +282,9 @@ describe('$(...)', function() {
     });
 
     it('(key) : should recover from malformed JSON', function() {
-        var $el = cheerio('<div data-custom="{{templatevar}}">');
+      var $el = cheerio('<div data-custom="{{templatevar}}">');
 
-        expect($el.data('custom')).to.be('{{templatevar}}');
+      expect($el.data('custom')).to.be('{{templatevar}}');
     });
 
     it('(hyphen key) : data addribute with hyphen should be camelized ;-)', function() {
@@ -600,7 +600,7 @@ describe('$(...)', function() {
       expect(function() {
         $('li', $vegetables).removeClass('vegetable');
       })
-      .to.not.throwException();
+        .to.not.throwException();
     });
 
     it('(single class) : should remove a single class from the element', function() {

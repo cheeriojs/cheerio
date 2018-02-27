@@ -1,0 +1,19 @@
+{
+  "env": {
+    "node": true
+  },
+  "extends": ["eslint:recommended", "prettier"],
+  "globals": {},
+  "rules": {
+    "indent": [
+      2,
+      2,
+      {
+        "SwitchCase": 1,
+        "VariableDeclarator": 2
+      }
+    ],
+    "no-eq-null": 0,
+    "no-proto": 2
+  }
+}
