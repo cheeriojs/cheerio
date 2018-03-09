@@ -60,10 +60,13 @@ describe('$(...)', function() {
       expect(q('[alltheway]')).to.have.length(0);
     });
 
-    it('should throw a SyntaxError if given an invalid selector', function() {
+    it('should throw an Error if given an invalid selector', function() {
       expect(function() {
         $('#fruits').find(':bah');
-      }).to.throwException(/unmatched pseudo-class/);
+      }).to.throwException(function(err) {
+        expect(err).to.be.a(Error);
+        expect(err.message).to.contain('unmatched pseudo-class')
+      });
     });
 
     describe('(cheerio object) :', function() {
@@ -451,10 +454,13 @@ describe('$(...)', function() {
       expect($('.orange').siblings('.peach')).to.have.length(0);
     });
 
-    it('(selector) : should throw a SyntaxError if given an invalid selector', function() {
+    it('(selector) : should throw an Error if given an invalid selector', function() {
       expect(function() {
         $('.orange').siblings(':bah');
-      }).to.throwException(/unmatched pseudo-class/);
+      }).to.throwException(function(err) {
+        expect(err).to.be.a(Error);
+        expect(err.message).to.contain('unmatched pseudo-class')
+      });
     });
 
     it('(selector) : does not consider the contents of siblings when filtering (GH-374)', function() {
