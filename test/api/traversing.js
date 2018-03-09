@@ -60,11 +60,11 @@ describe('$(...)', function() {
       expect(q('[alltheway]')).to.have.length(0);
     });
 
-    it('should throw a SyntaxError if given an invalid selector', function() {
+    it('should throw an Error if given an invalid selector', function() {
       expect(function() {
         $('#fruits').find(':bah');
       }).to.throwException(function(err) {
-        expect(err).to.be.a(SyntaxError);
+        expect(err).to.be.a(Error);
       });
     });
 
@@ -453,11 +453,11 @@ describe('$(...)', function() {
       expect($('.orange').siblings('.peach')).to.have.length(0);
     });
 
-    it('(selector) : should throw a SyntaxError if given an invalid selector', function() {
+    it('(selector) : should throw an Error if given an invalid selector', function() {
       expect(function() {
         $('.orange').siblings(':bah');
       }).to.throwException(function(err) {
-        expect(err).to.be.a(SyntaxError);
+        expect(err).to.be.a(Error);
       });
     });
 
