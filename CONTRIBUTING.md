@@ -13,6 +13,9 @@ how we'd like to work with you:
        commit message
 3. Open a pull request, and reference the initial issue in the pull request
    message.
+    - If your patch **fixes a bug**, file it against the `master` branch.
+    - If your patch **adds new functionality** or **introduces a
+      backwards-breaking change**, file it against the `dev` branch.
 
 # Documentation
 
