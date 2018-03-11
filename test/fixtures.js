@@ -1,41 +1,41 @@
 /* jshint indent: false */
 exports.fruits = [
   '<ul id="fruits">',
-    '<li class="apple">Apple</li>',
-    '<li class="orange">Orange</li>',
-    '<li class="pear">Pear</li>',
+  '<li class="apple">Apple</li>',
+  '<li class="orange">Orange</li>',
+  '<li class="pear">Pear</li>',
   '</ul>'
 ].join('');
 
 exports.vegetables = [
   '<ul id="vegetables">',
-    '<li class="carrot">Carrot</li>',
-    '<li class="sweetcorn">Sweetcorn</li>',
+  '<li class="carrot">Carrot</li>',
+  '<li class="sweetcorn">Sweetcorn</li>',
   '</ul>'
 ].join('');
 
 exports.chocolates = [
   '<ul id="chocolates">',
-    '<li class="linth" data-highlight="Lindor" data-origin="swiss">Linth</li>',
-    '<li class="frey" data-taste="sweet" data-best-collection="Mahony">Frey</li>',
-    '<li class="cailler">Cailler</li>',
+  '<li class="linth" data-highlight="Lindor" data-origin="swiss">Linth</li>',
+  '<li class="frey" data-taste="sweet" data-best-collection="Mahony">Frey</li>',
+  '<li class="cailler">Cailler</li>',
   '</ul>'
 ].join('');
 
 exports.drinks = [
   '<ul id="drinks">',
-    '<li class="beer">Beer</li>',
-    '<li class="juice">Juice</li>',
-    '<li class="milk">Milk</li>',
-    '<li class="water">Water</li>',
-    '<li class="cider">Cider</li>',
+  '<li class="beer">Beer</li>',
+  '<li class="juice">Juice</li>',
+  '<li class="milk">Milk</li>',
+  '<li class="water">Water</li>',
+  '<li class="cider">Cider</li>',
   '</ul>'
 ].join('');
 
 exports.food = [
   '<ul id="food">',
-    exports.fruits,
-    exports.vegetables,
+  exports.fruits,
+  exports.vegetables,
   '</ul>'
 ].join('');
 
