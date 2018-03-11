@@ -2,7 +2,6 @@ var expect = require('expect.js'),
     parse = require('../lib/parse'),
     defaultOpts = require('../lib/options').default;
 
-
 // Tags
 var basic = '<html></html>';
 var siblings = '<h2></h2><p></p>';
@@ -21,7 +20,8 @@ var noValueAttribute = '<textarea disabled></textarea>';
 
 // Comments
 var comment = '<!-- sexy -->';
-var conditional = '<!--[if IE 8]><html class="no-js ie8" lang="en"><![endif]-->';
+var conditional =
+  '<!--[if IE 8]><html class="no-js ie8" lang="en"><![endif]-->';
 
 // Text
 var text = 'lorem ipsum';
@@ -37,11 +37,8 @@ var styleEmpty = '<style></style>';
 // Directives
 var directive = '<!doctype html>';
 
-
 describe('parse', function() {
-
   describe('.eval', function() {
-
     it('should parse basic empty tags: ' + basic, function() {
       var tag = parse.evaluate(basic, defaultOpts, true)[0];
       expect(tag.type).to.equal('tag');
@@ -96,7 +93,8 @@ describe('parse', function() {
     });
 
     it('should handle value-less attributes: ' + noValueAttribute, function() {
-      var attrs = parse.evaluate(noValueAttribute, defaultOpts, false)[0].attribs;
+      var attrs = parse.evaluate(noValueAttribute, defaultOpts, false)[0]
+        .attribs;
       expect(attrs).to.be.ok();
       expect(attrs.disabled).to.equal('');
     });
@@ -110,7 +108,9 @@ describe('parse', function() {
     it('should handle conditional comments: ' + conditional, function() {
       var elem = parse.evaluate(conditional, defaultOpts, false)[0];
       expect(elem.type).to.equal('comment');
-      expect(elem.data).to.equal(conditional.replace('<!--', '').replace('-->', ''));
+      expect(elem.data).to.equal(
+        conditional.replace('<!--', '').replace('-->', '')
+      );
     });
 
     it('should handle text: ' + text, function() {
@@ -145,11 +145,9 @@ describe('parse', function() {
       expect(elem.data).to.equal('!DOCTYPE html');
       expect(elem.tagName).to.equal('!doctype');
     });
-
   });
 
   describe('.parse', function() {
-
     // root test utility
     function rootTest(root) {
       expect(root.tagName).to.equal('root');
@@ -215,7 +213,11 @@ describe('parse', function() {
     });
 
     it('should expose the DOM level 1 API', function() {
-      var root = parse('<div><a></a><span></span><p></p></div>', defaultOpts, false).childNodes[0];
+      var root = parse(
+        '<div><a></a><span></span><p></p></div>',
+        defaultOpts,
+        false
+      ).childNodes[0];
       var childNodes = root.childNodes;
 
       expect(childNodes).to.have.length(3);
@@ -261,7 +263,11 @@ describe('parse', function() {
     });
 
     it('Should ignore unclosed CDATA', function() {
-      var root = parse('<a></a><script>foo //<![CDATA[ bar</script><b></b>', defaultOpts, false);
+      var root = parse(
+        '<a></a><script>foo //<![CDATA[ bar</script><b></b>',
+        defaultOpts,
+        false
+      );
       var childNodes = root.childNodes;
 
       expect(childNodes[0].tagName).to.be('a');
@@ -286,8 +292,13 @@ describe('parse', function() {
       expect(childNodes[0].childNodes.length).to.be(1);
       expect(childNodes[0].childNodes[0].tagName).to.be('tbody');
       expect(childNodes[0].childNodes[0].childNodes[0].tagName).to.be('tr');
-      expect(childNodes[0].childNodes[0].childNodes[0].childNodes[0].tagName).to.be('td');
-      expect(childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].data).to.be('bar');
+      expect(
+        childNodes[0].childNodes[0].childNodes[0].childNodes[0].tagName
+      ).to.be('td');
+      expect(
+        childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0]
+          .data
+      ).to.be('bar');
     });
 
     it('Should parse custom tag <line>', function() {
@@ -300,7 +311,11 @@ describe('parse', function() {
     });
 
     it('Should properly parse misnested table tags', function() {
-      var root = parse('<tr><td>i1</td></tr><tr><td>i2</td></td></tr><tr><td>i3</td></td></tr>', defaultOpts, false);
+      var root = parse(
+        '<tr><td>i1</td></tr><tr><td>i2</td></td></tr><tr><td>i3</td></td></tr>',
+        defaultOpts,
+        false
+      );
       var childNodes = root.childNodes;
 
       expect(childNodes.length).to.be(3);
@@ -313,8 +328,10 @@ describe('parse', function() {
     });
 
     it('Should correctly parse data url attributes', function() {
-      var html = '<div style=\'font-family:"butcherman-caps"; src:url(data:font/opentype;base64,AAEA...);\'></div>';
-      var expectedAttr = 'font-family:"butcherman-caps"; src:url(data:font/opentype;base64,AAEA...);';
+      var html =
+        '<div style=\'font-family:"butcherman-caps"; src:url(data:font/opentype;base64,AAEA...);\'></div>';
+      var expectedAttr =
+        'font-family:"butcherman-caps"; src:url(data:font/opentype;base64,AAEA...);';
       var root = parse(html, defaultOpts, false);
       var childNodes = root.childNodes;
 
@@ -345,13 +362,18 @@ describe('parse', function() {
     });
 
     it('Should correctly parse tricky <pre> content', function() {
-      var root = parse('<pre>\nA <- factor(A, levels = c("c","a","b"))\n</pre>', defaultOpts, false);
+      var root = parse(
+        '<pre>\nA <- factor(A, levels = c("c","a","b"))\n</pre>',
+        defaultOpts,
+        false
+      );
       var childNodes = root.childNodes;
 
       expect(childNodes.length).to.be(1);
       expect(childNodes[0].tagName).to.be('pre');
-      expect(childNodes[0].childNodes[0].data).to.be('A <- factor(A, levels = c("c","a","b"))\n');
+      expect(childNodes[0].childNodes[0].data).to.be(
+        'A <- factor(A, levels = c("c","a","b"))\n'
+      );
     });
   });
-
 });

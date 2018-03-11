@@ -1,9 +1,9 @@
 var expect = require('expect.js'),
-  cheerio = require('../..'),
-  food = require('../fixtures').food,
-  fruits = require('../fixtures').fruits,
-  drinks = require('../fixtures').drinks,
-  text = require('../fixtures').text;
+    cheerio = require('../..'),
+    food = require('../fixtures').food,
+    fruits = require('../fixtures').fruits,
+    drinks = require('../fixtures').drinks,
+    text = require('../fixtures').text;
 
 describe('$(...)', function() {
 
