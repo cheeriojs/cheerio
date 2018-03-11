@@ -333,6 +333,12 @@ describe('cheerio', function() {
 
   describe('.load', function() {
 
+    it('should not alter quotes in attribute values', function() {
+      var content = '<meta http-equiv="Content-Security-Policy" content="default-src \'self\'">';
+      var q = $.load(content);
+      expect(q.html()).to.equal(content);
+    });
+    
     it('should generate selections as proper instances', function() {
       var q = $.load(fruits);
 
