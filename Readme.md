@@ -33,6 +33,111 @@ $.html()
 //=> <html><head></head><body><h2 class="title welcome">Hello there!</h2></body></html>
 ```
 
+<!-- ⛔️ AUTO-GENERATED-CONTENT:START (TOC:collapse=true&collapseText=Table of contents&firsth1=true) -->
+<details>
+<summary>Table of contents</summary>
+
+- [Installation](#installation)
+- [Features](#features)
+- [Cheerio is not a web browser](#cheerio-is-not-a-web-browser)
+- [Sponsors](#sponsors)
+- [Backers](#backers)
+- [API](#api)
+  * [Markup example we'll be using:](#markup-example-well-be-using)
+  * [Loading](#loading)
+  * [Selectors](#selectors)
+    + [$( selector, [context], [root] )](#-selector-context-root-)
+      - [XML Namespaces](#xml-namespaces)
+  * [Attributes](#attributes)
+    + [.attr( name, value )](#attr-name-value-)
+    + [.prop( name, value )](#prop-name-value-)
+    + [.data( name, value )](#data-name-value-)
+    + [.val( [value] )](#val-value-)
+    + [.removeAttr( name )](#removeattr-name-)
+    + [.hasClass( className )](#hasclass-classname-)
+    + [.addClass( className )](#addclass-classname-)
+    + [.removeClass( [className] )](#removeclass-classname-)
+    + [.toggleClass( className, [switch] )](#toggleclass-classname-switch-)
+    + [.is( selector )](#is-selector-)
+    + [.is( element )](#is-element-)
+    + [.is( selection )](#is-selection-)
+    + [.is( function(index) )](#is-functionindex-)
+  * [Forms](#forms)
+    + [.serialize()](#serialize)
+    + [.serializeArray()](#serializearray)
+  * [Traversing](#traversing)
+    + [.find(selector)](#findselector)
+    + [.find(selection)](#findselection)
+    + [.find(node)](#findnode)
+    + [.parent([selector])](#parentselector)
+    + [.parents([selector])](#parentsselector)
+    + [.parentsUntil([selector][,filter])](#parentsuntilselectorfilter)
+    + [.closest(selector)](#closestselector)
+    + [.next([selector])](#nextselector)
+    + [.nextAll([selector])](#nextallselector)
+    + [.nextUntil([selector], [filter])](#nextuntilselector-filter)
+    + [.prev([selector])](#prevselector)
+    + [.prevAll([selector])](#prevallselector)
+    + [.prevUntil([selector], [filter])](#prevuntilselector-filter)
+    + [.slice( start, [end] )](#slice-start-end-)
+    + [.siblings([selector])](#siblingsselector)
+    + [.children([selector])](#childrenselector)
+    + [.contents()](#contents)
+    + [.each( function(index, element) )](#each-functionindex-element-)
+    + [.map( function(index, element) )](#map-functionindex-element-)
+    + [.filter( selector ) .filter( selection ) .filter( element ) .filter( function(index, element) )](#filter-selector---filter-selection---filter-element---filter-functionindex-element-)
+    + [.not( selector ) .not( selection ) .not( element ) .not( function(index, elem) )](#not-selector---not-selection---not-element---not-functionindex-elem-)
+    + [.has( selector ) .has( element )](#has-selector---has-element-)
+    + [.first()](#first)
+    + [.last()](#last)
+    + [.eq( i )](#eq-i-)
+    + [.get( [i] )](#get-i-)
+    + [.index()](#index)
+    + [.index( selector )](#index-selector-)
+    + [.index( nodeOrSelection )](#index-nodeorselection-)
+    + [.end()](#end)
+    + [.add( selector [, context] )](#add-selector--context-)
+    + [.add( element )](#add-element-)
+    + [.add( elements )](#add-elements-)
+    + [.add( html )](#add-html-)
+    + [.add( selection )](#add-selection-)
+    + [.addBack( [filter] )](#addback-filter-)
+  * [Manipulation](#manipulation)
+    + [.append( content, [content, ...] )](#append-content-content--)
+    + [.appendTo( target )](#appendto-target-)
+    + [.prepend( content, [content, ...] )](#prepend-content-content--)
+    + [.prependTo( target )](#prependto-target-)
+    + [.after( content, [content, ...] )](#after-content-content--)
+    + [.insertAfter( target )](#insertafter-target-)
+    + [.before( content, [content, ...] )](#before-content-content--)
+    + [.insertBefore( target )](#insertbefore-target-)
+    + [.remove( [selector] )](#remove-selector-)
+    + [.replaceWith( content )](#replacewith-content-)
+    + [.empty()](#empty)
+    + [.html( [htmlString] )](#html-htmlstring-)
+    + [.text( [textString] )](#text-textstring-)
+    + [.wrap( content )](#wrap-content-)
+    + [.css( [propertyName] ) .css( [ propertyNames] ) .css( [propertyName], [value] ) .css( [propertyName], [function] ) .css( [properties] )](#css-propertyname---css--propertynames---css-propertyname-value---css-propertyname-function---css-properties-)
+  * [Rendering](#rendering)
+  * [Miscellaneous](#miscellaneous)
+    + [.toArray()](#toarray)
+    + [.clone()](#clone)
+  * [Utilities](#utilities)
+    + [$.root](#root)
+    + [$.contains( container, contained )](#contains-container-contained-)
+    + [$.parseHTML( data [, context ] [, keepScripts ] )](#parsehtml-data--context---keepscripts--)
+    + [$.load( html[, options ] )](#load-html-options--)
+  * [Plugins](#plugins)
+  * [The "DOM Node" object](#the-dom-node-object)
+- [Screencasts](#screencasts)
+- [Contributors](#contributors)
+- [Testing](#testing)
+- [Special Thanks](#special-thanks)
+- [License](#license)
+
+</details>
+<!-- ⛔️ AUTO-GENERATED-CONTENT:END -->
+
 ## Installation
 `npm install cheerio`
 
@@ -316,66 +421,101 @@ http://vimeo.com/31950192
 
 These are some of the contributors that have made cheerio possible:
 
-```
-project  : cheerio
- repo age : 2 years, 6 months
- active   : 285 days
- commits  : 762
- files    : 36
- authors  :
-   293  Matt Mueller            38.5%
-   133  Matthew Mueller         17.5%
-    92  Mike Pennisi            12.1%
-    54  David Chambers          7.1%
-    30  kpdecker                3.9%
-    19  Felix Böhm             2.5%
-    17  fb55                    2.2%
-    15  Siddharth Mahendraker   2.0%
-    11  Adam Bretz              1.4%
-     8  Nazar Leush             1.0%
-     7  ironchefpython          0.9%
-     6  Jarno Leppänen         0.8%
-     5  Ben Sheldon             0.7%
-     5  Jos Shepherd            0.7%
-     5  Ryan Schmukler          0.7%
-     5  Steven Vachon           0.7%
-     4  Maciej Adwent           0.5%
-     4  Amir Abu Shareb         0.5%
-     3  jeremy.dentel@brandingbrand.com 0.4%
-     3  Andi Neck               0.4%
-     2  steve                   0.3%
-     2  alexbardas              0.3%
-     2  finspin                 0.3%
-     2  Ali Farhadi             0.3%
-     2  Chris Khoo              0.3%
-     2  Rob Ashton              0.3%
-     2  Thomas Heymann          0.3%
-     2  Jaro Spisak             0.3%
-     2  Dan Dascalescu          0.3%
-     2  Torstein Thune          0.3%
-     2  Wayne Larsen            0.3%
-     1  Timm Preetz             0.1%
-     1  Xavi                    0.1%
-     1  Alex Shaindlin          0.1%
-     1  mattym                  0.1%
-     1  Felix Böhm            0.1%
-     1  Farid Neshat            0.1%
-     1  Dmitry Mazuro           0.1%
-     1  Jeremy Hubble           0.1%
-     1  nevermind               0.1%
-     1  Manuel Alabor           0.1%
-     1  Matt Liegey             0.1%
-     1  Chris O'Hara            0.1%
-     1  Michael Holroyd         0.1%
-     1  Michiel De Mey          0.1%
-     1  Ben Atkin               0.1%
-     1  Rich Trott              0.1%
-     1  Rob "Hurricane" Ashton  0.1%
-     1  Robin Gloster           0.1%
-     1  Simon Boudrias          0.1%
-     1  Sindre Sorhus           0.1%
-     1  xiaohwan                0.1%
-```
+<!-- ⛔️ AUTO-GENERATED-CONTENT:START (CONTRIBUTORS) -->
+| **Commits** | **Contributor** |
+| --- | --- |
+| 409 | [matthewmueller](https://github.com/matthewmueller) |
+| 143 | [jugglinmike](https://github.com/jugglinmike) |
+| 128 | [fb55](https://github.com/fb55) |
+| 92  | [davidchambers](https://github.com/davidchambers) |
+| 33  | [kpdecker](https://github.com/kpdecker) |
+| 11  | [arb](https://github.com/arb) |
+| 8   | [nleush](https://github.com/nleush) |
+| 7   | [jlep](https://github.com/jlep) |
+| 5   | [alexindigo](https://github.com/alexindigo) |
+| 5   | [bensheldon](https://github.com/bensheldon) |
+| 5   | [stevenvachon](https://github.com/stevenvachon) |
+| 5   | [0xBADC0FFEE](https://github.com/0xBADC0FFEE) |
+| 5   | [cvrebert](https://github.com/cvrebert) |
+| 4   | [yields](https://github.com/yields) |
+| 4   | [AMKohn](https://github.com/AMKohn) |
+| 4   | [Maciek416](https://github.com/Maciek416) |
+| 4   | [twolfson](https://github.com/twolfson) |
+| 4   | [finspin](https://github.com/finspin) |
+| 3   | [andineck](https://github.com/andineck) |
+| 3   | [rwaldin](https://github.com/rwaldin) |
+| 3   | [DianeLooney](https://github.com/DianeLooney) |
+| 3   | [robashton](https://github.com/robashton) |
+| 2   | [alexeyraspopov](https://github.com/alexeyraspopov) |
+| 2   | [farhadi](https://github.com/farhadi) |
+| 2   | [khoomeister](https://github.com/khoomeister) |
+| 2   | [dandv](https://github.com/dandv) |
+| 2   | [Delgan](https://github.com/Delgan) |
+| 2   | [Rycochet](https://github.com/Rycochet) |
+| 2   | [SamyPesse](https://github.com/SamyPesse) |
+| 2   | [cyberthom](https://github.com/cyberthom) |
+| 2   | [Torthu](https://github.com/Torthu) |
+| 2   | [wvl](https://github.com/wvl) |
+| 2   | [alexbardas](https://github.com/alexbardas) |
+| 2   | [coderaiser](https://github.com/coderaiser) |
+| 2   | [2020steve](https://github.com/2020steve) |
+| 1   | [ashaindlin](https://github.com/ashaindlin) |
+| 1   | [benatkin](https://github.com/benatkin) |
+| 1   | [billyjanitsch](https://github.com/billyjanitsch) |
+| 1   | [TrySound](https://github.com/TrySound) |
+| 1   | [chriso](https://github.com/chriso) |
+| 1   | [dYale](https://github.com/dYale) |
+| 1   | [dandlezzz](https://github.com/dandlezzz) |
+| 1   | [dhurlburtusa](https://github.com/dhurlburtusa) |
+| 1   | [darrenscerri](https://github.com/darrenscerri) |
+| 1   | [dekatron](https://github.com/dekatron) |
+| 1   | [t3chnoboy](https://github.com/t3chnoboy) |
+| 1   | [elias-winberg](https://github.com/elias-winberg) |
+| 1   | [alFReD-NSH](https://github.com/alFReD-NSH) |
+| 1   | [gabrielf](https://github.com/gabrielf) |
+| 1   | [gkatsev](https://github.com/gkatsev) |
+| 1   | [Dreamiko](https://github.com/Dreamiko) |
+| 1   | [harish2704](https://github.com/harish2704) |
+| 1   | [JaKXz](https://github.com/JaKXz) |
+| 1   | [jhubble](https://github.com/jhubble) |
+| 1   | [sotojuan](https://github.com/sotojuan) |
+| 1   | [astorije](https://github.com/astorije) |
+| 1   | [kevinsawicki](https://github.com/kevinsawicki) |
+| 1   | [konstantin-popov](https://github.com/konstantin-popov) |
+| 1   | [leonard-thieu](https://github.com/leonard-thieu) |
+| 1   | [Meekohi](https://github.com/Meekohi) |
+| 1   | [MichielDeMey](https://github.com/MichielDeMey) |
+| 1   | [miduga](https://github.com/miduga) |
+| 1   | [attomos](https://github.com/attomos) |
+| 1   | [plward11](https://github.com/plward11) |
+| 1   | [piamancini](https://github.com/piamancini) |
+| 1   | [vprasanth](https://github.com/vprasanth) |
+| 1   | [raoulmillais](https://github.com/raoulmillais) |
+| 1   | [rgladwell](https://github.com/rgladwell) |
+| 1   | [Trott](https://github.com/Trott) |
+| 1   | [globin](https://github.com/globin) |
+| 1   | [ryanbreen](https://github.com/ryanbreen) |
+| 1   | [SBoudrias](https://github.com/SBoudrias) |
+| 1   | [sindresorhus](https://github.com/sindresorhus) |
+| 1   | [Autarc](https://github.com/Autarc) |
+| 1   | [joepie91](https://github.com/joepie91) |
+| 1   | [gitter-badger](https://github.com/gitter-badger) |
+| 1   | [trshafer](https://github.com/trshafer) |
+| 1   | [tp](https://github.com/tp) |
+| 1   | [whodidthis](https://github.com/whodidthis) |
+| 1   | [xavi-](https://github.com/xavi-) |
+| 1   | [hotpxl](https://github.com/hotpxl) |
+| 1   | [akant10](https://github.com/akant10) |
+| 1   | [besteman](https://github.com/besteman) |
+| 1   | [digihaven](https://github.com/digihaven) |
+| 1   | [exoticknight](https://github.com/exoticknight) |
+| 1   | [frankcash](https://github.com/frankcash) |
+| 1   | [h7lin](https://github.com/h7lin) |
+| 1   | [lessmind](https://github.com/lessmind) |
+| 1   | [sufisaid](https://github.com/sufisaid) |
+| 1   | [xiaohwan](https://github.com/xiaohwan) |
+
+<!-- ⛔️ AUTO-GENERATED-CONTENT:END -->
 
 ## Cheerio in the real world
 
