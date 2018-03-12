@@ -1446,6 +1446,15 @@ describe('$(...)', function() {
       expect($('.apple')[0].childNodes[0].data).to.equal('whatever mate');
     });
 
+    it('should allow functions as arguments for multiple elements', function() {
+      $('li').text(function(idx) {
+        return 'text' + idx;
+      });
+      $('li').each(function(idx) {
+        expect(this.childNodes[0].data).to.equal('text' + idx);
+      });
+    });
+
     it('should decode special chars', function() {
       var text = $('<p>M&amp;M</p>').text();
       expect(text).to.equal('M&M');
