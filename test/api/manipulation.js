@@ -25,7 +25,7 @@ describe('$(...)', function() {
 
     it('(element) : should wrap the base element correctly', function(){
       $('ul').wrap('<a></a>');
-      expect($.root().children()[0].tagName).to.equal('a');
+      expect($('body').children()[0].tagName).to.equal('a');
     });
 
     it('(element) : should insert the element and add selected element(s) as its child', function() {
@@ -163,7 +163,7 @@ describe('$(...)', function() {
       expect($fruits.children().eq(2).hasClass('fruit-decorator')).to.be.ok();
       expect($fruits.children().eq(2).children().eq(0).hasClass('pear')).to.be.ok();
     });
-   });
+  });
 
   describe('.append', function() {
 
@@ -1395,7 +1395,7 @@ describe('$(...)', function() {
     });
 
     it('() : should pass options', function() {
-      var dom = cheerio.load('&', {decodeEntities: false});
+      var dom = cheerio.load('&', {xml: {decodeEntities: false}});
       expect(dom.root().toString()).to.equal('&');
     });
   });

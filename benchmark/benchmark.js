@@ -16,10 +16,14 @@ if (process.argv.indexOf('--cheerio-only') >= 0) {
 }
 
 suites.add('Select all', 'jquery.html', {
-  test: function($) { $('*').length; }
+  test: function($) {
+    $('*').length;
+  }
 });
 suites.add('Select some', 'jquery.html', {
-  test: function($) { $('li').length; }
+  test: function($) {
+    $('li').length;
+  }
 });
 
 /*
@@ -75,7 +79,7 @@ suites.add('manipulation - replaceWith', 'jquery.html', {
   setup: function($) {
     $('body').append('<div id="foo">');
   },
-  test: function($, $lis) {
+  test: function($) {
     $('#foo').replaceWith('<div id="foo">');
   }
 });
@@ -107,12 +111,14 @@ suites.add('manipulation - html render', 'jquery.html', {
 });
 suites.add('manipulation - html independent', 'jquery.html', {
   setup: function() {
-    return '<div class="foo"><div id="bar">bat<hr>baz</div> </div>'
-        + '<div class="foo"><div id="bar">bat<hr>baz</div> </div>'
-        + '<div class="foo"><div id="bar">bat<hr>baz</div> </div>'
-        + '<div class="foo"><div id="bar">bat<hr>baz</div> </div>'
-        + '<div class="foo"><div id="bar">bat<hr>baz</div> </div>'
-        + '<div class="foo"><div id="bar">bat<hr>baz</div> </div>';
+    return (
+      '<div class="foo"><div id="bar">bat<hr>baz</div> </div>' +
+      '<div class="foo"><div id="bar">bat<hr>baz</div> </div>' +
+      '<div class="foo"><div id="bar">bat<hr>baz</div> </div>' +
+      '<div class="foo"><div id="bar">bat<hr>baz</div> </div>' +
+      '<div class="foo"><div id="bar">bat<hr>baz</div> </div>' +
+      '<div class="foo"><div id="bar">bat<hr>baz</div> </div>'
+    );
   },
   test: function($, content) {
     $(content).html();
@@ -127,7 +133,6 @@ suites.add('manipulation - text', 'jquery.html', {
     $lis.text('foo');
   }
 });
-
 
 /*
  * Traversing Tests
@@ -260,7 +265,6 @@ suites.add('traversing - Eq', 'jquery.html', {
     $lis.eq(0).eq(0).length;
   }
 });
-
 
 /*
  * Attributes Tests
