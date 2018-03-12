@@ -388,6 +388,24 @@ describe('cheerio', function() {
       expect(domEncoded('footer').html()).to.be(expectedXml);
     });
 
+    it('should not encode non latin characters (issue #866)', function() {
+        var str = 'абв',
+            div = '<div>' + str + '</div>',
+            dom = $.load(div, {decodeEntities: true});
+
+        expect(dom.text()).to.be(str);
+        expect(dom.html({decodeEntities: false})).to.be(div);
+    });
+
+    it('should not encode non latin characters but still not decode entities that need to be escaped(issue #866)', function() {
+        var str = '&lt;script&gt;alert(1)&lt;/script&gt;',
+            div = '<div>' + str + '</div>',
+            dom = $.load(div, {decodeEntities: true});
+
+        expect(dom.text()).to.be(str);
+        expect(dom.html({decodeEntities: false})).to.be(div);
+    });
+
     it('should return a fully-qualified Function', function() {
       var $c = $.load('<div>');
 
