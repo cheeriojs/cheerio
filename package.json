@@ -56,12 +56,12 @@
   },
   "lint-staged": {
     "*.js": [
-      "pretter --write",
+      "prettier --write",
       "eslint --fix",
       "git add"
     ],
     "*.json": [
-      "pretter --write",
+      "prettier --write",
       "git add"
     ]
   }
