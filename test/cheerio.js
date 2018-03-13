@@ -380,7 +380,7 @@ describe('cheerio', function () {
       var str =
           '<!doctype html><html><head><title>Some test</title></head><body><footer><p>Copyright &copy; 2003-2014</p></footer></body></html>',
         expectedHtml = '<p>Copyright &copy; 2003-2014</p>',
-        expectedXml = '<p>Copyright &#xA9; 2003-2014</p>',
+        expectedXml = '<p>Copyright © 2003-2014</p>',
         domNotEncoded = $.load(str, { xml: { decodeEntities: false } }),
         domEncoded = $.load(str);
 
@@ -445,15 +445,6 @@ describe('cheerio', function () {
         $a.prototype.foo = function () {};
 
         expect($b('div').foo).to.be(undefined);
-      });
-    });
-
-    describe('.prop', function () {
-      describe('("outerHTML")', function () {
-        var outerHtml = '<div><a></a></div>';
-        var $a = $(outerHtml);
-
-        expect($a.prop('outerHTML')).to.be(outerHtml);
       });
     });
   });
