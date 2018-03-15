@@ -41,7 +41,7 @@
     "husky": "^0.14.3",
     "istanbul": "^0.4.3",
     "jquery": "^3.0.0",
-    "jsdom": "^9.2.1",
+    "jsdom": "^11.6.2",
     "lint-staged": "^7.0.0",
     "mocha": "^5.0.4",
     "prettier": "^1.11.0",
