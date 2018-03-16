@@ -18,7 +18,7 @@ describe('$(...)', function() {
       expect(function() {
         cheerio.load();
       }).to.throwException(function(err) {
-        expect(err).to.be.am(Error);
+        expect(err).to.be.an(Error);
         expect(err.message).to.be('cheerio.load() expects a string');
       });
     });
