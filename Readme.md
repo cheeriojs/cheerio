@@ -30,7 +30,7 @@ $('h2.title').text('Hello there!')
 $('h2').addClass('welcome')
 
 $.html()
-//=> <h2 class="title welcome">Hello there!</h2>
+//=> <html><head></head><body><h2 class="title welcome">Hello there!</h2></body></html>
 ```
 
 ## Installation
@@ -44,7 +44,7 @@ __&#991; Blazingly fast:__
 Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient. Preliminary end-to-end benchmarks suggest that cheerio is about __8x__ faster than JSDOM.
 
 __&#10049; Incredibly flexible:__
-Cheerio wraps around @FB55's forgiving [htmlparser2](https://github.com/fb55/htmlparser2/). Cheerio can parse nearly any HTML or XML document.
+Cheerio wraps around [parse5](https://github.com/inikulin/parse5) parser and can optionally use @FB55's forgiving [htmlparser2](https://github.com/fb55/htmlparser2/). Cheerio can parse nearly any HTML or XML document.
 
 ## Cheerio is not a web browser
 
@@ -149,6 +149,7 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <details>
   <summary>Forms</summary>
 
+  - [.serialize()](#serialize)
   - [.serializeArray()](#serializearray)
 </details>
 <details>
@@ -258,30 +259,52 @@ const $ = require('cheerio');
 $('li', 'ul', '<ul id="fruits">...</ul>');
 ```
 
-You can also pass an extra object to `.load()` if you need to modify any
-of the default parsing options:
+If you need to modify parsing options for XML input, you may pass an extra
+object to `.load()`:
 
 ```js
 const $ = cheerio.load('<ul id="fruits">...</ul>', {
-    normalizeWhitespace: true,
-    xmlMode: true
+    xml: {
+      normalizeWhitespace: true,
+    }
 });
 ```
 
-These parsing options are taken directly from [htmlparser2](https://github.com/fb55/htmlparser2/wiki/Parser-options), therefore any options that can be used in `htmlparser2` are valid in cheerio as well. The default options are:
+The options in the `xml` object are taken directly from [htmlparser2](https://github.com/fb55/htmlparser2/wiki/Parser-options), therefore any options that can be used in `htmlparser2` are valid in cheerio as well. The default options are:
 
 ```js
 {
     withDomLvl1: true,
     normalizeWhitespace: false,
-    xmlMode: false,
+    xmlMode: true,
     decodeEntities: true
 }
-
 ```
 
 For a full list of options and their effects, see [this](https://github.com/fb55/DomHandler) and
 [htmlparser2's options](https://github.com/fb55/htmlparser2/wiki/Parser-options).
+
+Some users may wish to parse markup with the `htmlparser2` library, and
+traverse/manipulate the resulting structure with Cheerio. This may be the case
+for those upgrading from pre-1.0 releases of Cheerio (which relied on
+`htmlparser2`), for those dealing with invalid markup (because `htmlparser2` is
+more forgiving), or for those operating in performance-critical situations
+(because `htmlparser2` may be faster in some cases). Note that "more forgiving"
+means `htmlparser2` has error-correcting mechanisms that aren't always a match
+for the standards observed by web browsers. This behavior may be useful when
+parsing non-HTML content.
+
+To support these cases, `load` also accepts a `htmlparser2`-compatible data
+structure as its first argument. Users may install `htmlparser2`, use it to
+parse input, and pass the result to `load`:
+
+```js
+// Usage as of htmlparser2 version 3:
+const htmlparser2 = require('htmlparser2');
+const dom = htmlparser2.parseDOM(document, options);
+
+const $ = cheerio.load(dom);
+```
 
 ### Selectors
 
@@ -301,6 +324,13 @@ $('ul .pear').attr('class')
 
 $('li[class=orange]').html()
 //=> Orange
+```
+
+##### XML Namespaces
+You can select with XML Namespaces but [due to the CSS specification](https://www.w3.org/TR/2011/REC-css3-selectors-20110929/#attribute-selectors), the colon (`:`) needs to be escaped for the selector to be valid.
+
+```js
+$('[xml\\:id="main"');
 ```
 
 ### Attributes
@@ -428,6 +458,15 @@ $('.apple.green').toggleClass('fruit green red', true).html()
 Checks the current list of elements and returns `true` if _any_ of the elements match the selector. If using an element or Cheerio selection, returns `true` if _any_ of the elements match. If using a predicate function, the function is executed in the context of the selected element, so `this` refers to the current element.
 
 ### Forms
+
+#### .serialize()
+
+Encodes a set of form elements as a URL query string.
+
+```js
+$('<form><input name="foo" value="bar" checked /><input name="foo" value="qux" checked /></form>').serialize()
+//=> foo=bar&foo=qux
+```
 
 #### .serializeArray()
 
@@ -961,7 +1000,7 @@ $('li').wrap(healthy)
 //   </ul>
 ```
 
-#### .css( [propertName] ) <br /> .css( [ propertyNames] ) <br /> .css( [propertyName], [value] ) <br /> .css( [propertName], [function] ) <br /> .css( [properties] )
+#### .css( [propertyName] ) <br /> .css( [ propertyNames] ) <br /> .css( [propertyName], [value] ) <br /> .css( [propertyName], [function] ) <br /> .css( [properties] )
 
 Get the value of a style property for the first element in the set of matched elements or set one or more CSS properties for every matched element.
 
@@ -1049,7 +1088,7 @@ Checks to see if the `contained` DOM element is a descendant of the `container` 
 Parses a string into an array of DOM nodes. The `context` argument has no meaning for Cheerio, but it is maintained for API compatability.
 
 #### $.load( html[, options ] )
-Load in the HTML. (See the previous section titled "Loading" for more information.)
+Create a querying function, bound to a document created from the provided markup. Note that similar to web browser contexts, this operation may introduce `<html>`, `<head>`, and `<body>` elements. See the previous section titled "Loading" for usage information.
 
 ### Plugins
 

@@ -1,9 +1,9 @@
 var expect = require('expect.js'),
-  cheerio = require('../..'),
-  food = require('../fixtures').food,
-  fruits = require('../fixtures').fruits,
-  drinks = require('../fixtures').drinks,
-  text = require('../fixtures').text;
+    cheerio = require('../..'),
+    food = require('../fixtures').food,
+    fruits = require('../fixtures').fruits,
+    drinks = require('../fixtures').drinks,
+    text = require('../fixtures').text;
 
 describe('$(...)', function() {
 
@@ -63,19 +63,19 @@ describe('$(...)', function() {
       expect(q('foo').find('> bar')).to.have.length(1);
     });
 
-    it('should query case-sensitively when in xmlMode', function() {
-      var q = cheerio.load('<caseSenSitive allTheWay>', {xmlMode: true});
+    it('should query case-sensitively when in xml mode', function() {
+      var q = cheerio.load('<caseSenSitive allTheWay>', {xml: true});
       expect(q('caseSenSitive')).to.have.length(1);
       expect(q('[allTheWay]')).to.have.length(1);
       expect(q('casesensitive')).to.have.length(0);
       expect(q('[alltheway]')).to.have.length(0);
     });
 
-    it('should throw a SyntaxError if given an invalid selector', function() {
+    it('should throw an Error if given an invalid selector', function() {
       expect(function() {
         $('#fruits').find(':bah');
       }).to.throwException(function(err) {
-        expect(err).to.be.a(SyntaxError);
+        expect(err).to.be.a(Error);
       });
     });
 
@@ -464,11 +464,11 @@ describe('$(...)', function() {
       expect($('.orange').siblings('.peach')).to.have.length(0);
     });
 
-    it('(selector) : should throw a SyntaxError if given an invalid selector', function() {
+    it('(selector) : should throw an Error if given an invalid selector', function() {
       expect(function() {
         $('.orange').siblings(':bah');
       }).to.throwException(function(err) {
-        expect(err).to.be.a(SyntaxError);
+        expect(err).to.be.a(Error);
       });
     });
 
@@ -486,12 +486,16 @@ describe('$(...)', function() {
 
     it('() : should get all of the parents in logical order', function(){
       var result = $('.orange').parents();
-      expect(result).to.have.length(2);
+      expect(result).to.have.length(4);
       expect(result[0].attribs.id).to.be('fruits');
       expect(result[1].attribs.id).to.be('food');
+      expect(result[2].tagName).to.be('body');
+      expect(result[3].tagName).to.be('html');
       result = $('#fruits').parents();
-      expect(result).to.have.length(1);
+      expect(result).to.have.length(3);
       expect(result[0].attribs.id).to.be('food');
+      expect(result[1].tagName).to.be('body');
+      expect(result[2].tagName).to.be('html');
     });
 
     it('(selector) : should get all of the parents that match the selector in logical order', function() {
@@ -510,17 +514,19 @@ describe('$(...)', function() {
     });
 
     it('() : should return an empty set for top-level elements', function() {
-      var result = $('#food').parents();
+      var result = $('html').parents();
       expect(result).to.have.length(0);
     });
 
     it('() : should return the parents of every element in the *reveresed* collection, omitting duplicates', function() {
       var $parents = $('li').parents();
 
-      expect($parents).to.have.length(3);
+      expect($parents).to.have.length(5);
       expect($parents[0]).to.be($('#vegetables')[0]);
       expect($parents[1]).to.be($('#food')[0]);
-      expect($parents[2]).to.be($('#fruits')[0]);
+      expect($parents[2]).to.be($('body')[0]);
+      expect($parents[3]).to.be($('html')[0]);
+      expect($parents[4]).to.be($('#fruits')[0]);
     });
 
   });
@@ -533,17 +539,21 @@ describe('$(...)', function() {
 
     it('() : should get all of the parents in logical order', function() {
       var result = $('.orange').parentsUntil();
-      expect(result).to.have.length(2);
+      expect(result).to.have.length(4);
       expect(result[0].attribs.id).to.be('fruits');
       expect(result[1].attribs.id).to.be('food');
+      expect(result[2].tagName).to.be('body');
+      expect(result[3].tagName).to.be('html');
     });
 
     it('() : should get all of the parents in reversed order, omitting duplicates', function() {
       var result = $('.apple, .sweetcorn').parentsUntil();
-      expect(result).to.have.length(3);
+      expect(result).to.have.length(5);
       expect(result[0].attribs.id).to.be('vegetables');
       expect(result[1].attribs.id).to.be('food');
-      expect(result[2].attribs.id).to.be('fruits');
+      expect(result[2].tagName).to.be('body');
+      expect(result[3].tagName).to.be('html');
+      expect(result[4].attribs.id).to.be('fruits');
     });
 
     it('(selector) : should get all of the parents until selector', function() {
@@ -556,9 +566,11 @@ describe('$(...)', function() {
 
     it('(selector not parent) : should return all parents', function() {
       var result = $('.orange').parentsUntil('.apple');
-      expect(result).to.have.length(2);
+      expect(result).to.have.length(4);
       expect(result[0].attribs.id).to.be('fruits');
       expect(result[1].attribs.id).to.be('food');
+      expect(result[2].tagName).to.be('body');
+      expect(result[3].tagName).to.be('html');
     });
 
     it('(selector, filter) : should get all of the parents that match the filter', function() {
@@ -573,7 +585,7 @@ describe('$(...)', function() {
     });
 
     it('() : should return an empty set for top-level elements', function() {
-      var result = $('#food').parentsUntil();
+      var result = $('html').parentsUntil();
       expect(result).to.have.length(0);
     });
 
@@ -600,7 +612,7 @@ describe('$(...)', function() {
     });
 
     it('() : should return an empty object for top-level elements', function() {
-      var result = $('ul').parent();
+      var result = $('html').parent();
       expect(result).to.have.length(0);
     });
 
@@ -1411,10 +1423,12 @@ describe('$(...)', function() {
         var q = cheerio.load(food);
         var $selection = q('.apple').parents().addBack();
 
-        expect($selection).to.have.length(3);
-        expect($selection[0]).to.be(q('#food')[0]);
-        expect($selection[1]).to.be(q('#fruits')[0]);
-        expect($selection[2]).to.be(q('.apple')[0]);
+        expect($selection).to.have.length(5);
+        expect($selection[0]).to.be(q('html')[0]);
+        expect($selection[1]).to.be(q('body')[0]);
+        expect($selection[2]).to.be(q('#food')[0]);
+        expect($selection[3]).to.be(q('#fruits')[0]);
+        expect($selection[4]).to.be(q('.apple')[0]);
       });
     });
     it('(filter) : filters the previous selection', function() {

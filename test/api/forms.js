@@ -1,6 +1,6 @@
 var expect = require('expect.js'),
-  cheerio = require('../..'),
-  forms = require('../fixtures').forms;
+    cheerio = require('../..'),
+    forms = require('../fixtures').forms;
 
 describe('$(...)', function() {
 
@@ -116,23 +116,23 @@ describe('$(...)', function() {
     });
 
     it('() : shouldn\'t serialize the empty string', function() {
-        expect($('<input value=pineapple>').serializeArray()).to.eql([]);
-        expect($('<input name="" value=pineapple>').serializeArray()).to.eql([]);
-        expect($('<input name="fruit" value=pineapple>').serializeArray()).to.eql([
-            {
-                name: 'fruit',
-                value: 'pineapple'
-            }
-        ]);
+      expect($('<input value=pineapple>').serializeArray()).to.eql([]);
+      expect($('<input name="" value=pineapple>').serializeArray()).to.eql([]);
+      expect($('<input name="fruit" value=pineapple>').serializeArray()).to.eql([
+        {
+          name: 'fruit',
+          value: 'pineapple'
+        }
+      ]);
     });
 
     it('() : should serialize inputs without value attributes', function() {
-        expect($('<input name="fruit">').serializeArray()).to.eql([
-            {
-                name: 'fruit',
-                value: ''
-            }
-        ]);
+      expect($('<input name="fruit">').serializeArray()).to.eql([
+        {
+          name: 'fruit',
+          value: ''
+        }
+      ]);
     });
 
   });
