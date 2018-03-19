@@ -130,10 +130,11 @@ describe('$(...)', function() {
   });
 
   describe('.prop', function () {
-    var checkbox;
+    var checkbox, selectMenu;
 
     beforeEach(function () {
       $ = cheerio.load(inputs);
+      selectMenu = $('select');
       checkbox = $('input[name=checkbox_on]');
     });
 
@@ -185,6 +186,10 @@ describe('$(...)', function() {
     it('(invalid element/tag) : prop should return undefined', function() {
       expect($(undefined).prop('prop')).to.be(undefined);
       expect($(null).prop('prop')).to.be(undefined);
+    });
+    
+    it('(inherited properties) : prop should support inherited properties', function() {
+      expect(selectMenu.prop('childNodes')).to.equal(selectMenu[0].childNodes);
     });
   });
 
