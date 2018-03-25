@@ -16,7 +16,6 @@ describe('$(...)', function() {
   });
 
   describe('.attr', function() {
-
     it('() : should get all the attributes', function() {
       var attrs = $('ul').attr();
       expect(attrs.id).to.equal('fruits');
@@ -82,10 +81,18 @@ describe('$(...)', function() {
 
     it('(key, value) : should correctly encode then decode unsafe values', function() {
       var $apple = $('.apple');
-      $apple.attr('href', 'http://github.com/"><script>alert("XSS!")</script><br');
-      expect($apple.attr('href')).to.equal('http://github.com/"><script>alert("XSS!")</script><br');
+      $apple.attr(
+        'href',
+        'http://github.com/"><script>alert("XSS!")</script><br'
+      );
+      expect($apple.attr('href')).to.equal(
+        'http://github.com/"><script>alert("XSS!")</script><br'
+      );
 
-      $apple.attr('href', 'http://github.com/"><script>alert("XSS!")</script><br');
+      $apple.attr(
+        'href',
+        'http://github.com/"><script>alert("XSS!")</script><br'
+      );
       expect($apple.html()).to.not.contain('<script>alert("XSS!")</script>');
     });
 
@@ -120,19 +127,22 @@ describe('$(...)', function() {
     });
 
     it('(map) : should remove attributes with null values', function() {
-      var $pear = $('.pear').attr({'autofocus': 'autofocus', 'style': 'color:red'});
+      var $pear = $('.pear').attr({
+        autofocus: 'autofocus',
+        style: 'color:red'
+      });
       expect($pear.attr('autofocus')).to.equal('autofocus');
       expect($pear.attr('style')).to.equal('color:red');
-      $pear.attr({'autofocus': null, 'style': 'color:blue'});
+      $pear.attr({ autofocus: null, style: 'color:blue' });
       expect($pear.attr('autofocus')).to.be(undefined);
       expect($pear.attr('style')).to.equal('color:blue');
     });
   });
 
-  describe('.prop', function () {
+  describe('.prop', function() {
     var checkbox;
 
-    beforeEach(function () {
+    beforeEach(function() {
       $ = cheerio.load(inputs);
       checkbox = $('input[name=checkbox_on]');
     });
@@ -181,7 +191,7 @@ describe('$(...)', function() {
     it('(key, value) : should support chaining after setting props', function() {
       expect(checkbox.prop('checked', false)).to.equal(checkbox);
     });
-    
+
     it('(invalid element/tag) : prop should return undefined', function() {
       expect($(undefined).prop('prop')).to.be(undefined);
       expect($(null).prop('prop')).to.be(undefined);
@@ -189,7 +199,6 @@ describe('$(...)', function() {
   });
 
   describe('.data', function() {
-
     beforeEach(function() {
       $ = cheerio.load(chocolates);
     });
@@ -242,7 +251,9 @@ describe('$(...)', function() {
     });
 
     it('(key) : should translate camel-cased key values to hyphen-separated versions', function() {
-      var $el = cheerio('<div data--three-word-attribute="a" data-foo-Bar_BAZ-="b">');
+      var $el = cheerio(
+        '<div data--three-word-attribute="a" data-foo-Bar_BAZ-="b">'
+      );
 
       expect($el.data('ThreeWordAttribute')).to.be('a');
       expect($el.data('fooBar_baz-')).to.be('b');
@@ -260,7 +271,7 @@ describe('$(...)', function() {
     it('(key) : should parse JSON data derived from the markup', function() {
       var $el = cheerio('<div data-json="[1, 2, 3]">');
 
-      expect($el.data('json')).to.eql([1,2,3]);
+      expect($el.data('json')).to.eql([1, 2, 3]);
     });
 
     it('(key) : should not parse JSON data set via the `data` API', function() {
@@ -310,9 +321,21 @@ describe('$(...)', function() {
     it('(key, value) : should set data for all elements in the selection', function() {
       $('li').data('foo', 'bar');
 
-      expect($('li').eq(0).data('foo')).to.eql('bar');
-      expect($('li').eq(1).data('foo')).to.eql('bar');
-      expect($('li').eq(2).data('foo')).to.eql('bar');
+      expect(
+        $('li')
+          .eq(0)
+          .data('foo')
+      ).to.eql('bar');
+      expect(
+        $('li')
+          .eq(1)
+          .data('foo')
+      ).to.eql('bar');
+      expect(
+        $('li')
+          .eq(2)
+          .data('foo')
+      ).to.eql('bar');
     });
 
     it('(map) : object map should set multiple data attributes', function() {
@@ -359,14 +382,10 @@ describe('$(...)', function() {
         var $el = cheerio('<div data-array="[1, 2, 3]">');
         expect($el.data('array')).to.eql([1, 2, 3]);
       });
-
     });
-
   });
 
-
   describe('.val', function() {
-
     beforeEach(function() {
       $ = cheerio.load(inputs);
     });
@@ -388,7 +407,9 @@ describe('$(...)', function() {
       expect(val).to.equal('Option selected');
     });
     it('(): on option should get value', function() {
-      var val = $('select#one option').eq(0).val();
+      var val = $('select#one option')
+        .eq(0)
+        .val();
       expect(val).to.equal('option_not_selected');
     });
     it('(): on text input should get value', function() {
@@ -440,7 +461,9 @@ describe('$(...)', function() {
       expect(element.val()).to.equal('option_not_selected');
     });
     it('(value): on option should set value', function() {
-      var element = $('select#one option').eq(0).val('option_changed');
+      var element = $('select#one option')
+        .eq(0)
+        .val('option_changed');
       expect(element.val()).to.equal('option_changed');
     });
     it('(value): on radio should set value', function() {
@@ -458,7 +481,6 @@ describe('$(...)', function() {
   });
 
   describe('.removeAttr', function() {
-
     it('(key) : should remove a single attr', function() {
       var $fruits = $('#fruits');
       expect($fruits.attr('id')).to.not.be(undefined);
@@ -470,7 +492,6 @@ describe('$(...)', function() {
       var obj = $('ul').removeAttr('id');
       expect(obj).to.be.a($);
     });
-
   });
 
   describe('.hasClass', function() {
@@ -504,19 +525,26 @@ describe('$(...)', function() {
 
       // Remove one and test again
       $('.apple').removeClass('apple');
-      expect($('li').eq(0).hasClass('apple')).to.not.be.ok();
+      expect(
+        $('li')
+          .eq(0)
+          .hasClass('apple')
+      ).to.not.be.ok();
       // expect($('li', $fruits).eq(0).hasClass('red')).to.be.ok();
     });
 
     it('(empty string argument) : should return false', function() {
       expect(test('foo').hasClass('')).to.not.be.ok();
       expect(test('foo bar').hasClass('')).to.not.be.ok();
-      expect(test('foo bar').removeClass('foo').hasClass('')).to.not.be.ok();
+      expect(
+        test('foo bar')
+          .removeClass('foo')
+          .hasClass('')
+      ).to.not.be.ok();
     });
   });
 
   describe('.addClass', function() {
-
     it('(first class) : should add the class to the element', function() {
       var $fruits = $('#fruits');
       $fruits.addClass('fruits');
@@ -557,26 +585,16 @@ describe('$(...)', function() {
         return toAdd[idx];
       });
 
-      expect(args).to.eql([
-        [0, 'apple'],
-        [1, 'orange'],
-        [2, 'pear']
-      ]);
-      expect(thisVals).to.eql([
-        $fruits[0],
-        $fruits[1],
-        $fruits[2]
-      ]);
+      expect(args).to.eql([[0, 'apple'], [1, 'orange'], [2, 'pear']]);
+      expect(thisVals).to.eql([$fruits[0], $fruits[1], $fruits[2]]);
       expect($fruits.eq(0).hasClass('apple')).to.be.ok();
       expect($fruits.eq(0).hasClass('red')).to.be.ok();
       expect($fruits.eq(1).hasClass('orange')).to.be.ok();
       expect($fruits.eq(2).hasClass('pear')).to.be.ok();
     });
-
   });
 
   describe('.removeClass', function() {
-
     it('() : should remove all the classes', function() {
       $('.pear').addClass('fruit');
       $('.pear').removeClass();
@@ -599,8 +617,7 @@ describe('$(...)', function() {
 
       expect(function() {
         $('li', $vegetables).removeClass('vegetable');
-      })
-        .to.not.throwException();
+      }).to.not.throwException();
     });
 
     it('(single class) : should remove a single class from the element', function() {
@@ -654,34 +671,24 @@ describe('$(...)', function() {
         return toAdd[idx];
       });
 
-      expect(args).to.eql([
-        [0, 'apple'],
-        [1, 'orange'],
-        [2, 'pear']
-      ]);
-      expect(thisVals).to.eql([
-        $fruits[0],
-        $fruits[1],
-        $fruits[2]
-      ]);
+      expect(args).to.eql([[0, 'apple'], [1, 'orange'], [2, 'pear']]);
+      expect(thisVals).to.eql([$fruits[0], $fruits[1], $fruits[2]]);
       expect($fruits.eq(0).hasClass('apple')).to.not.be.ok();
       expect($fruits.eq(0).hasClass('red')).to.not.be.ok();
       expect($fruits.eq(1).hasClass('orange')).to.be.ok();
       expect($fruits.eq(2).hasClass('pear')).to.be.ok();
     });
 
-    it('(fn) : should no op elements without attributes', function(){
+    it('(fn) : should no op elements without attributes', function() {
       var $inputs = $(inputs);
       var val = $inputs.removeClass(function() {
         return 'tasty';
       });
       expect(val).to.have.length(15);
     });
-
   });
 
   describe('.toggleClass', function() {
-
     it('(class class) : should toggle multiple classes from the element', function() {
       $('.apple').addClass('fruit');
       expect($('.apple').hasClass('apple')).to.be.ok();
@@ -706,10 +713,14 @@ describe('$(...)', function() {
       expect($('.fruit').hasClass('fruit')).to.be.ok();
     });
 
-    it('(class true) : should add only one instance of class', function () {
+    it('(class true) : should add only one instance of class', function() {
       $('.apple').toggleClass('tasty', true);
       $('.apple').toggleClass('tasty', true);
-      expect($('.apple').attr('class').match(/tasty/g).length).to.equal(1);
+      expect(
+        $('.apple')
+          .attr('class')
+          .match(/tasty/g).length
+      ).to.equal(1);
     });
 
     it('(class class, false) : should remove multiple classes from the element', function() {
@@ -739,7 +750,11 @@ describe('$(...)', function() {
       expect($('.sweetcorn').hasClass('vegetable')).to.not.be.ok();
 
       $('li').toggleClass(function() {
-        return $(this).parent().is('#fruits') ? 'fruit' : 'vegetable';
+        return $(this)
+          .parent()
+          .is('#fruits')
+          ? 'fruit'
+          : 'vegetable';
       });
       expect($('.apple').hasClass('fruit')).to.not.be.ok();
       expect($('.apple').hasClass('vegetable')).to.not.be.ok();
@@ -754,13 +769,15 @@ describe('$(...)', function() {
     it('(fn) : should work with no initial class attribute', function() {
       var $inputs = cheerio.load(inputs);
       $inputs('input, select').toggleClass(function() {
-        return $inputs(this).get(0).tagName === 'select' ? 'selectable' : 'inputable';
+        return $inputs(this).get(0).tagName === 'select'
+          ? 'selectable'
+          : 'inputable';
       });
       expect($inputs('.selectable')).to.have.length(6);
       expect($inputs('.inputable')).to.have.length(9);
     });
 
-    it('(invalid) : should be a no-op for invalid inputs', function(){
+    it('(invalid) : should be a no-op for invalid inputs', function() {
       var original = $('.apple');
       var testAgainst = original.attr('class');
       expect(original.toggleClass().attr('class')).to.be.eql(testAgainst);
@@ -771,10 +788,9 @@ describe('$(...)', function() {
       expect(original.toggleClass(1).attr('class')).to.be.eql(testAgainst);
       expect(original.toggleClass({}).attr('class')).to.be.eql(testAgainst);
     });
-
   });
 
-  describe('.is', function () {
+  describe('.is', function() {
     it('() : should return false', function() {
       expect($('li.apple').is()).to.be(false);
     });
@@ -816,12 +832,13 @@ describe('$(...)', function() {
       expect(result).to.be(true);
     });
 
-    it('(false predicate) : should return false', function () {
-      var result = $('li').last().is(function() {
-        return this.tagName === 'ul';
-      });
+    it('(false predicate) : should return false', function() {
+      var result = $('li')
+        .last()
+        .is(function() {
+          return this.tagName === 'ul';
+        });
       expect(result).to.be(false);
     });
   });
-
 });

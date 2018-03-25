@@ -448,8 +448,8 @@ describe('cheerio', function() {
       });
     });
 
-    describe('.prop', function () {
-      describe('("outerHTML")', function () {
+    describe('.prop', function() {
+      describe('("outerHTML")', function() {
         var outerHtml = '<div><a></a></div>';
         var $a = $(outerHtml);
 
