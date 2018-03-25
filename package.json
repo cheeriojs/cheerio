@@ -28,6 +28,7 @@
     "coveralls": "^3.0.0",
     "eslint": "^4.18.1",
     "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-jsdoc": "^3.5.0",
     "expect.js": "~0.3.1",
     "husky": "^0.14.3",
     "istanbul": "^0.4.3",
