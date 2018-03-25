@@ -1419,10 +1419,22 @@ describe('$(...)', function() {
       $('li').text('Fruits');
       var tested = 0;
       $('li').each(function(){
-        expect(this.childNodes[0].parent).to.equal(this);
+        expect(this.childNodes[0].parentNode).to.equal(this);
         tested++;
       });
       expect(tested).to.equal(3);
+    });
+
+    it('(text) : should create a Node with the DOM level 1 API', function() {
+      var $apple = $('.apple');
+      var textNode;
+
+      $apple.text('anything');
+      textNode = $apple[0].childNodes[0];
+
+      expect(textNode.parentNode).to.be($apple[0]);
+      expect(textNode.nodeType).to.be(3);
+      expect(textNode.data).to.be('anything');
     });
 
     it('should allow functions as arguments', function() {
@@ -1432,6 +1444,15 @@ describe('$(...)', function() {
         return 'whatever mate';
       });
       expect($('.apple')[0].childNodes[0].data).to.equal('whatever mate');
+    });
+
+    it('should allow functions as arguments for multiple elements', function() {
+      $('li').text(function(idx) {
+        return 'text' + idx;
+      });
+      $('li').each(function(idx) {
+        expect(this.childNodes[0].data).to.equal('text' + idx);
+      });
     });
 
     it('should decode special chars', function() {
