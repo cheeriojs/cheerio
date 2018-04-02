@@ -426,6 +426,7 @@ These are some of the contributors that have made cheerio possible:
 | 1   | [trshafer](https://github.com/trshafer) |  
 | 1   | [tp](https://github.com/tp) |  
 | 1   | [whodidthis](https://github.com/whodidthis) |  
+| 1   | [wahajdar](https://github.com/wahajdar) |  
 | 1   | [xavi-](https://github.com/xavi-) |  
 | 1   | [hotpxl](https://github.com/hotpxl) |  
 | 1   | [akant10](https://github.com/akant10) |  

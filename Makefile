@@ -27,7 +27,7 @@ travis-test: lint report-cov
 	@true
 
 readme:
-	@./node_modules/.bin/md-magic
+	@./node_modules/.bin/md-magic --path Readme.md
 
 bench:
 	@./benchmark/benchmark.js
