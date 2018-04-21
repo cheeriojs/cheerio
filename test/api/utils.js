@@ -85,38 +85,38 @@ describe('cheerio', function() {
 
   describe('.load', function() {
     it('(html) : should retain original root after creating a new node', function() {
-      var $html = cheerio.load('<body><ul id="fruits"></ul></body>');
-      expect($html('body')).to.have.length(1);
-      $html('<script>');
-      expect($html('body')).to.have.length(1);
+      var $ = cheerio.load('<body><ul id="fruits"></ul></body>');
+      expect($('body')).to.have.length(1);
+      $('<script>');
+      expect($('body')).to.have.length(1);
     });
 
     it('(html) : should handle lowercase tag options', function() {
-      var $html = cheerio.load('<BODY><ul id="fruits"></ul></BODY>', {
+      var $ = cheerio.load('<BODY><ul id="fruits"></ul></BODY>', {
         xml: { lowerCaseTags: true }
       });
-      expect($html.html()).to.be('<body><ul id="fruits"/></body>');
+      expect($.html()).to.be('<body><ul id="fruits"/></body>');
     });
 
     it('(html) : should handle the `normalizeWhitepace` option', function() {
-      var $html = cheerio.load('<body><b>foo</b>  <b>bar</b></body>', {
+      var $ = cheerio.load('<body><b>foo</b>  <b>bar</b></body>', {
         xml: { normalizeWhitespace: true }
       });
-      expect($html.html()).to.be('<body><b>foo</b> <b>bar</b></body>');
+      expect($.html()).to.be('<body><b>foo</b> <b>bar</b></body>');
     });
 
     // TODO:
     // it('(html) : should handle xml tag option', function() {
-    //   var $html = $.load('<body><script>oh hai</script></body>', { xml : true });
-    //   console.log($html('script')[0].type);
-    //   expect($html('script')[0].type).to.be('tag');
+    //   var $ = $.load('<body><script>oh hai</script></body>', { xml : true });
+    //   console.log($('script')[0].type);
+    //   expect($('script')[0].type).to.be('tag');
     // });
 
     it('(buffer) : should accept a buffer', function() {
-      var $html = cheerio.load(
+      var $ = cheerio.load(
         new Buffer('<html><head></head><body>foo</body></html>')
       );
-      expect($html.html()).to.be('<html><head></head><body>foo</body></html>');
+      expect($.html()).to.be('<html><head></head><body>foo</body></html>');
     });
   });
 
@@ -263,9 +263,9 @@ describe('cheerio', function() {
 
   describe('.root', function() {
     it('() : should return a cheerio-wrapped root object', function() {
-      var $html = cheerio.load('<html><head></head><body>foo</body></html>');
-      $html.root().append('<div id="test"></div>');
-      expect($html.html()).to.equal(
+      var $ = cheerio.load('<html><head></head><body>foo</body></html>');
+      $.root().append('<div id="test"></div>');
+      expect($.html()).to.equal(
         '<html><head></head><body>foo</body></html><div id="test"></div>'
       );
     });
