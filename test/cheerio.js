@@ -330,6 +330,117 @@ describe('cheerio', function() {
     });
   });
 
+  /**
+   * The `.html` static method defined on the "loaded" Cheerio factory function
+   * is deprecated.
+   *
+   * In order to promote consistency with the jQuery library, users are
+   * encouraged to instead use the instance method of the same name. For
+   * example:
+   *
+   *     var $ = cheerio.load('<h1>Hello, <span>world</span>.</h1>');
+   *     $('h1').text(); // '<h1>Hello, <span>world</span>.'
+   *
+   * To render the markup of an entire document, invoke the `html` function
+   * exported by the Cheerio module with a "root" selection, e.g.
+   *
+   *     cheerio.html($.root()); // '<html><head></head><body><h1>Hello, <span>world</span>.</h1></body></html>'
+   */
+  describe('.html - deprecated API', function() {
+    it('() : of empty cheerio object should return null', function() {
+      // Note: the direct invocation of the Cheerio constructor function is
+      // also deprecated.
+      var $ = cheerio();
+      expect($.html()).to.be(null);
+    });
+
+    it('(selector) : should return the outerHTML of the selected element', function() {
+      var $ = cheerio.load(fixtures.fruits);
+      expect($.html('.pear')).to.equal('<li class="pear">Pear</li>');
+    });
+  });
+
+  /**
+   * The `.xml` static method defined on the "loaded" Cheerio factory function
+   * is deprecated. Users are encouraged to instead use the `xml` function
+   * exported by the Cheerio module. For example:
+   *
+   *     cheerio.xml($.root());
+   */
+  describe('.xml  - deprecated API', function() {
+    it('() :  renders XML', function() {
+      var $ = cheerio.load('<foo></foo>', { xmlMode: true });
+      expect($.xml()).to.equal('<foo/>');
+    });
+  });
+
+  /**
+   * The `.text` static method defined on the "loaded" Cheerio factory function
+   * is deprecated.
+   *
+   * In order to promote consistency with the jQuery library, users are
+   * encouraged to instead use the instance method of the same name. For
+   * example:
+   *
+   *     var $ = cheerio.load('<h1>Hello, <span>world</span>.</h1>');
+   *     $('h1').text(); // 'Hello, world.'
+   *
+   * To render the text content of an entire document, invoke the `text`
+   * function exported by the Cheerio module with a "root" selection, e.g.
+   *
+   *     cheerio.text($.root()); // 'Hello, world.'
+   */
+  describe('.text  - deprecated API', function() {
+    it('(cheerio object) : should return the text contents of the specified elements', function() {
+      var $ = cheerio.load('<a>This is <em>content</em>.</a>');
+      expect($.text($('a'))).to.equal('This is content.');
+    });
+
+    it('(cheerio object) : should omit comment nodes', function() {
+      var $ = cheerio.load('<a>This is <!-- a comment --> not a comment.</a>');
+      expect($.text($('a'))).to.equal('This is  not a comment.');
+    });
+
+    it('(cheerio object) : should include text contents of children recursively', function() {
+      var $ = cheerio.load(
+        '<a>This is <div>a child with <span>another child and <!-- a comment --> not a comment</span> followed by <em>one last child</em> and some final</div> text.</a>'
+      );
+      expect($.text($('a'))).to.equal(
+        'This is a child with another child and  not a comment followed by one last child and some final text.'
+      );
+    });
+
+    it('() : should return the rendered text content of the root', function() {
+      var $ = cheerio.load(
+        '<a>This is <div>a child with <span>another child and <!-- a comment --> not a comment</span> followed by <em>one last child</em> and some final</div> text.</a>'
+      );
+      expect($.text()).to.equal(
+        'This is a child with another child and  not a comment followed by one last child and some final text.'
+      );
+    });
+
+    it('(cheerio object) : should omit script tags', function() {
+      var $ = cheerio.load('<script>console.log("test")</script>');
+      expect($.text()).to.equal('');
+    });
+
+    it('(cheerio object) : should omit style tags', function() {
+      var $ = cheerio.load(
+        '<style type="text/css">.cf-hidden { display: none; } .cf-invisible { visibility: hidden; }</style>'
+      );
+      expect($.text()).to.equal('');
+    });
+
+    it('(cheerio object) : should include text contents of children omiting style and script tags', function() {
+      var $ = cheerio.load(
+        '<body>Welcome <div>Hello, testing text function,<script>console.log("hello")</script></div><style type="text/css">.cf-hidden { display: none; }</style>End of messege</body>'
+      );
+      expect($.text()).to.equal(
+        'Welcome Hello, testing text function,End of messege'
+      );
+    });
+  });
+
   describe('.load', function() {
     it('should generate selections as proper instances', function() {
       var $ = cheerio.load(fruits);
@@ -344,6 +455,20 @@ describe('cheerio', function() {
 
       expect(apple).to.have.length(1);
       expect(lis).to.have.length(3);
+    });
+
+    /**
+     * The `.load` static method defined on the "loaded" Cheerio factory
+     * function is deprecated. Users are encouraged to instead use the `load`
+     * function exported by the Cheerio module. For example:
+     *
+     *     var $ = cheerio.load('<h1>Hello, <span>world</span>.</h1>');
+     */
+    it('should be available as a static method on the "loaded" factory function (deprecated API)', function() {
+      var $1 = cheerio.load(fruits);
+      var $2 = $1.load('<div><p>Some <a>text</a>.</p></div>');
+
+      expect($2('a')).to.have.length(1);
     });
 
     it('should allow loading a pre-parsed DOM', function() {
