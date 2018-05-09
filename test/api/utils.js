@@ -21,33 +21,24 @@ describe('cheerio', function() {
       var $elem = cheerio('<span>foo</span>').html('');
       expect(cheerio.html($elem)).to.equal('<span></span>');
     });
-
-    it('() : of empty cheerio object should return null', function() {
-      expect(cheerio().html()).to.be(null);
-    });
-
-    it('(selector) : should return the outerHTML of the selected element', function() {
-      var $ = cheerio.load(fixtures.fruits);
-      expect($.html('.pear')).to.equal('<li class="pear">Pear</li>');
-    });
   });
 
   describe('.text', function() {
     it('(cheerio object) : should return the text contents of the specified elements', function() {
       var $ = cheerio.load('<a>This is <em>content</em>.</a>');
-      expect($.text($('a'))).to.equal('This is content.');
+      expect(cheerio.text($('a'))).to.equal('This is content.');
     });
 
     it('(cheerio object) : should omit comment nodes', function() {
       var $ = cheerio.load('<a>This is <!-- a comment --> not a comment.</a>');
-      expect($.text($('a'))).to.equal('This is  not a comment.');
+      expect(cheerio.text($('a'))).to.equal('This is  not a comment.');
     });
 
     it('(cheerio object) : should include text contents of children recursively', function() {
       var $ = cheerio.load(
         '<a>This is <div>a child with <span>another child and <!-- a comment --> not a comment</span> followed by <em>one last child</em> and some final</div> text.</a>'
       );
-      expect($.text($('a'))).to.equal(
+      expect(cheerio.text($('a'))).to.equal(
         'This is a child with another child and  not a comment followed by one last child and some final text.'
       );
     });
@@ -56,14 +47,14 @@ describe('cheerio', function() {
       var $ = cheerio.load(
         '<a>This is <div>a child with <span>another child and <!-- a comment --> not a comment</span> followed by <em>one last child</em> and some final</div> text.</a>'
       );
-      expect($.text()).to.equal(
+      expect(cheerio.text($.root())).to.equal(
         'This is a child with another child and  not a comment followed by one last child and some final text.'
       );
     });
 
     it('(cheerio object) : should omit script tags', function() {
       var $ = cheerio.load('<script>console.log("test")</script>');
-      expect($.text()).to.equal('');
+      expect(cheerio.text($.root())).to.equal('');
     });
 
     it('(cheerio object) : should omit style tags', function() {
@@ -77,7 +68,7 @@ describe('cheerio', function() {
       var $ = cheerio.load(
         '<body>Welcome <div>Hello, testing text function,<script>console.log("hello")</script></div><style type="text/css">.cf-hidden { display: none; }</style>End of messege</body>'
       );
-      expect($.text()).to.equal(
+      expect(cheerio.text($.root())).to.equal(
         'Welcome Hello, testing text function,End of messege'
       );
     });
@@ -158,21 +149,23 @@ describe('cheerio', function() {
   });
 
   describe('.parseHTML', function() {
+    var $ = cheerio.load('');
+
     it('() : returns null', function() {
-      expect(cheerio.parseHTML()).to.equal(null);
+      expect($.parseHTML()).to.equal(null);
     });
 
     it('(null) : returns null', function() {
-      expect(cheerio.parseHTML(null)).to.equal(null);
+      expect($.parseHTML(null)).to.equal(null);
     });
 
     it('("") : returns null', function() {
-      expect(cheerio.parseHTML('')).to.equal(null);
+      expect($.parseHTML('')).to.equal(null);
     });
 
     it('(largeHtmlString) : parses large HTML strings', function() {
       var html = new Array(10).join('<div></div>');
-      var nodes = cheerio.parseHTML(html);
+      var nodes = $.parseHTML(html);
 
       expect(nodes.length).to.be.greaterThan(4);
       expect(nodes).to.be.an('array');
@@ -180,48 +173,48 @@ describe('cheerio', function() {
 
     it('("<script>") : ignores scripts by default', function() {
       var html = '<script>undefined()</script>';
-      expect(cheerio.parseHTML(html)).to.have.length(0);
+      expect($.parseHTML(html)).to.have.length(0);
     });
 
     it('("<script>", true) : preserves scripts when requested', function() {
       var html = '<script>undefined()</script>';
-      expect(cheerio.parseHTML(html, true)[0].tagName).to.match(/script/i);
+      expect($.parseHTML(html, true)[0].tagName).to.match(/script/i);
     });
 
     it('("scriptAndNonScript) : preserves non-script nodes', function() {
       var html = '<script>undefined()</script><div></div>';
-      expect(cheerio.parseHTML(html)[0].tagName).to.match(/div/i);
+      expect($.parseHTML(html)[0].tagName).to.match(/div/i);
     });
 
     it('(scriptAndNonScript, true) : Preserves script position', function() {
       var html = '<script>undefined()</script><div></div>';
-      expect(cheerio.parseHTML(html, true)[0].tagName).to.match(/script/i);
+      expect($.parseHTML(html, true)[0].tagName).to.match(/script/i);
     });
 
     it('(text) : returns a text node', function() {
-      expect(cheerio.parseHTML('text')[0].type).to.be('text');
+      expect($.parseHTML('text')[0].type).to.be('text');
     });
 
     it('(\\ttext) : preserves leading whitespace', function() {
-      expect(cheerio.parseHTML('\t<div></div>')[0].data).to.equal('\t');
+      expect($.parseHTML('\t<div></div>')[0].data).to.equal('\t');
     });
 
     it('( text) : Leading spaces are treated as text nodes', function() {
-      expect(cheerio.parseHTML(' <div/> ')[0].type).to.be('text');
+      expect($.parseHTML(' <div/> ')[0].type).to.be('text');
     });
 
     it('(html) : should preserve content', function() {
       var html = '<div>test div</div>';
-      expect(cheerio(cheerio.parseHTML(html)[0]).html()).to.equal('test div');
+      expect(cheerio($.parseHTML(html)[0]).html()).to.equal('test div');
     });
 
     it('(malformedHtml) : should not break', function() {
-      expect(cheerio.parseHTML('<span><span>')).to.have.length(1);
+      expect($.parseHTML('<span><span>')).to.have.length(1);
     });
 
     it('(garbageInput) : should not cause an error', function() {
       expect(
-        cheerio.parseHTML('<#if><tr><p>This is a test.</p></tr><#/if>') || true
+        $.parseHTML('<#if><tr><p>This is a test.</p></tr><#/if>') || true
       ).to.be.ok();
     });
 
@@ -232,6 +225,23 @@ describe('cheerio', function() {
       $('div').append(elems);
 
       expect(elems).to.have.length(2);
+    });
+  });
+
+  /**
+   * The `.parseHTML` method exported by the Cheerio module is deprecated.
+   *
+   * In order to promote consistency with the jQuery library, users are
+   * encouraged to instead use the static method of the same name as it is
+   * defined on the "loaded" Cheerio factory function. For example:
+   *
+   *     var $ = cheerio.load('');
+   *     $.parseHTML('<b>markup</b>');
+   */
+  describe('.parseHTML - deprecated API', function() {
+    it('(html) : should preserve content', function() {
+      var html = '<div>test div</div>';
+      expect(cheerio(cheerio.parseHTML(html)[0]).html()).to.equal('test div');
     });
   });
 
