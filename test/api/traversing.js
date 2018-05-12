@@ -1,3 +1,4 @@
+/*global Symbol*/
 var expect = require('expect.js'),
   cheerio = require('../..'),
   food = require('../fixtures').food,
@@ -664,6 +665,20 @@ describe('$(...)', function() {
     });
 
   });
+
+  if (typeof Symbol !== 'undefined') {
+    describe('[Symbol.iterator]', function() {
+
+      it('should yield each element', function() {
+        // The equivalent of: for (const element of $('li')) ...
+        var $li = $('li'),
+            iterator = $li[Symbol.iterator]();
+        expect(iterator.next().value.attribs['class']).to.equal('apple');
+        expect(iterator.next().value.attribs['class']).to.equal('orange');
+        expect(iterator.next().value.attribs['class']).to.equal('pear');
+      });
+    });
+  }
 
   describe('.map', function() {
     it('(fn) : should be invoked with the correct arguments and context', function() {
