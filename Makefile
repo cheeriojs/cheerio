@@ -1,8 +1,9 @@
 REPORTER = dot
 XYZ = node_modules/.bin/xyz --message 'Release X.Y.Z' --tag X.Y.Z --repo git@github.com:cheeriojs/cheerio.git --script scripts/prepublish
+UPSTREAM = git@github.com:cheeriojs/cheerio.git
 
 lint:
-	@./node_modules/.bin/jshint lib/ test/
+	@./node_modules/.bin/eslint --ignore-path .gitignore .
 
 test: lint
 	@./node_modules/.bin/mocha --recursive --reporter $(REPORTER)
@@ -36,4 +37,16 @@ release-patch: LEVEL = patch
 release-major release-minor release-patch:
 	@$(XYZ) --increment $(LEVEL)
 
-.PHONY: test build setup subl
+docs:
+	@./node_modules/.bin/jsdoc --configure jsdoc-config.json
+
+publish-docs: docs
+	@cd docs; \
+		rm -rf .git && \
+		git init && \
+		git add --all . && \
+		git commit -m 'Generate documentation' && \
+		git remote add upstream $(UPSTREAM) && \
+		git push --force upstream master:gh-pages
+
+.PHONY: test build setup subl docs publish-docs

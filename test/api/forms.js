@@ -1,9 +1,8 @@
 var expect = require('expect.js'),
-  cheerio = require('../..'),
-  forms = require('../fixtures').forms;
+    cheerio = require('../..'),
+    forms = require('../fixtures').forms;
 
 describe('$(...)', function() {
-
   var $;
 
   beforeEach(function() {
@@ -11,7 +10,6 @@ describe('$(...)', function() {
   });
 
   describe('.serializeArray', function() {
-
     it('() : should get form controls', function() {
       expect($('form#simple').serializeArray()).to.eql([
         {
@@ -24,7 +22,7 @@ describe('$(...)', function() {
     it('() : should get nested form controls', function() {
       expect($('form#nested').serializeArray()).to.have.length(2);
       var data = $('form#nested').serializeArray();
-      data.sort(function (a, b) {
+      data.sort(function(a, b) {
         return a.value - b.value;
       });
       expect(data).to.eql([
@@ -73,7 +71,7 @@ describe('$(...)', function() {
     it('() : should get multiple selected options', function() {
       expect($('form#multiple').serializeArray()).to.have.length(2);
       var data = $('form#multiple').serializeArray();
-      data.sort(function (a, b) {
+      data.sort(function(a, b) {
         return a.value - b.value;
       });
       expect(data).to.eql([
@@ -90,7 +88,7 @@ describe('$(...)', function() {
 
     it('() : should get individually selected elements', function() {
       var data = $('form#nested input').serializeArray();
-      data.sort(function (a, b) {
+      data.sort(function(a, b) {
         return a.value - b.value;
       });
       expect(data).to.eql([
@@ -103,7 +101,6 @@ describe('$(...)', function() {
           value: 'Carrot'
         }
       ]);
-
     });
 
     it('() : should standardize line breaks', function() {
@@ -115,36 +112,38 @@ describe('$(...)', function() {
       ]);
     });
 
-    it('() : shouldn\'t serialize the empty string', function() {
-        expect($('<input value=pineapple>').serializeArray()).to.eql([]);
-        expect($('<input name="" value=pineapple>').serializeArray()).to.eql([]);
-        expect($('<input name="fruit" value=pineapple>').serializeArray()).to.eql([
-            {
-                name: 'fruit',
-                value: 'pineapple'
-            }
-        ]);
+    it("() : shouldn't serialize the empty string", function() {
+      expect($('<input value=pineapple>').serializeArray()).to.eql([]);
+      expect($('<input name="" value=pineapple>').serializeArray()).to.eql([]);
+      expect($('<input name="fruit" value=pineapple>').serializeArray()).to.eql(
+        [
+          {
+            name: 'fruit',
+            value: 'pineapple'
+          }
+        ]
+      );
     });
 
     it('() : should serialize inputs without value attributes', function() {
-        expect($('<input name="fruit">').serializeArray()).to.eql([
-            {
-                name: 'fruit',
-                value: ''
-            }
-        ]);
+      expect($('<input name="fruit">').serializeArray()).to.eql([
+        {
+          name: 'fruit',
+          value: ''
+        }
+      ]);
     });
-
   });
 
   describe('.serialize', function() {
-
     it('() : should get form controls', function() {
       expect($('form#simple').serialize()).to.equal('fruit=Apple');
     });
 
     it('() : should get nested form controls', function() {
-      expect($('form#nested').serialize()).to.equal('fruit=Apple&vegetable=Carrot');
+      expect($('form#nested').serialize()).to.equal(
+        'fruit=Apple&vegetable=Carrot'
+      );
     });
 
     it('() : should not get disabled form controls', function() {
@@ -152,13 +151,13 @@ describe('$(...)', function() {
     });
 
     it('() : should get multiple selected options', function() {
-      expect($('form#multiple').serialize()).to.equal('fruit=Apple&fruit=Orange');
+      expect($('form#multiple').serialize()).to.equal(
+        'fruit=Apple&fruit=Orange'
+      );
     });
 
-    it('() : should encode spaces as +\'s', function() {
+    it("() : should encode spaces as +'s", function() {
       expect($('form#spaces').serialize()).to.equal('fruit=Blood+orange');
     });
-
   });
-
 });
