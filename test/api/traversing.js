@@ -691,6 +691,7 @@ describe('$(...)', function() {
         expect(iterator.next().value.attribs['class']).to.equal('apple');
         expect(iterator.next().value.attribs['class']).to.equal('orange');
         expect(iterator.next().value.attribs['class']).to.equal('pear');
+        expect(iterator.next().done).to.equal(true);
       });
     });
   }
