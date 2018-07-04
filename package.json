@@ -43,6 +43,6 @@
     "xyz": "~1.1.0"
   },
   "scripts": {
-    "test": "make test"
+    "test": "jshint lib/ test/ && mocha --recursive --reporter dot"
   }
 }
