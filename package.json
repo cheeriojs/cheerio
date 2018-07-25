@@ -28,7 +28,7 @@
     "css-select": "~1.2.0",
     "dom-serializer": "~0.1.0",
     "entities": "~1.1.1",
-    "htmlparser2": "^3.9.1",
+    "htmlparser2": "https://github.com/fb55/htmlparser2.git#d7d2a331e8fecd58a30c27c692853a5f40b18fd7",
     "lodash": "^4.15.0"
   },
   "devDependencies": {
