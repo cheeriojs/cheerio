@@ -9,6 +9,9 @@
   <a href="https://coveralls.io/r/cheeriojs/cheerio">
     <img src="http://img.shields.io/coveralls/cheeriojs/cheerio.svg?branch=master&style=flat" alt="Coverage" />
   </a>
+  <a href="https://packagephobia.now.sh/result?p=cheerio">
+    <img src="https://packagephobia.now.sh/badge?p=cheerio" alt="Install Size" />
+  </a>
   <a href="https://gitter.im/cheeriojs/cheerio?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
     <img src="https://badges.gitter.im/Join%20Chat.svg" alt="Join the chat at https://gitter.im/cheeriojs/cheerio" />
   </a>
