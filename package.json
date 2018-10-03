@@ -41,7 +41,9 @@
     "xyz": "~1.1.0"
   },
   "scripts": {
-    "test": "make test",
+    "test": "npm run test:lint && npm run test:mocha",
+    "test:mocha": "mocha --recursive --reporter dot",
+    "test:lint": "eslint --ignore-path .gitignore .",
     "precommit": "lint-staged"
   },
   "prettier": {
