@@ -33,6 +33,10 @@ $.html()
 //=> <html><head></head><body><h2 class="title welcome">Hello there!</h2></body></html>
 ```
 
+## Note
+
+We are currently working on the 1.0.0 release of cheerio on the `master` branch. The source code for the last published version, `0.22.0`, can be found [here](https://github.com/cheeriojs/cheerio/tree/aa90399c9c02f12432bfff97b8f1c7d8ece7c307).
+
 ## Installation
 `npm install cheerio`
 
