@@ -2,6 +2,7 @@ var expect = require('expect.js');
 var cheerio = require('../..');
 
 describe('$(...)', function() {
+
   describe('.css', function() {
     it('(prop): should return a css property value', function() {
       var el = cheerio('<li style="hai: there">');
@@ -10,10 +11,7 @@ describe('$(...)', function() {
 
     it('([prop1, prop2]): should return the specified property values as an object', function() {
       var el = cheerio('<li style="margin: 1px; padding: 2px; color: blue;">');
-      expect(el.css(['margin', 'color'])).to.eql({
-        margin: '1px',
-        color: 'blue'
-      });
+      expect(el.css(['margin', 'color'])).to.eql({ margin: '1px', color: 'blue' });
     });
 
     it('(prop, val): should set a css property', function() {
@@ -30,29 +28,23 @@ describe('$(...)', function() {
     });
 
     it('(prop): should not mangle embedded urls', function() {
-      var el = cheerio(
-        '<li style="background-image:url(http://example.com/img.png);">'
-      );
-      expect(el.css('background-image')).to.equal(
-        'url(http://example.com/img.png)'
-      );
+      var el = cheerio('<li style="background-image:url(http://example.com/img.png);">');
+      expect(el.css('background-image')).to.equal('url(http://example.com/img.png)');
     });
 
     it('(prop): should ignore blank properties', function() {
       var el = cheerio('<li style=":#ccc;color:#aaa;">');
-      expect(el.css()).to.eql({ color: '#aaa' });
+      expect(el.css()).to.eql({color:'#aaa'});
     });
 
     it('(prop): should ignore blank values', function() {
       var el = cheerio('<li style="color:;position:absolute;">');
-      expect(el.css()).to.eql({ position: 'absolute' });
+      expect(el.css()).to.eql({position:'absolute'});
     });
 
     describe('(prop, function):', function() {
       beforeEach(function() {
-        this.$el = cheerio(
-          '<div style="margin: 0px;"></div><div style="margin: 1px;"></div><div style="margin: 2px;">'
-        );
+        this.$el = cheerio('<div style="margin: 0px;"></div><div style="margin: 1px;"></div><div style="margin: 2px;">');
       });
 
       it('should iterate over the selection', function() {
@@ -85,11 +77,12 @@ describe('$(...)', function() {
       expect(el.eq(1).attr('style')).to.equal('foo: 0;');
     });
 
-    describe('parser', function() {
+    describe('parser', function(){
       it('should allow any whitespace between declarations', function() {
         var el = cheerio('<li style="one \t:\n 0;\n two \f\r:\v 1">');
         expect(el.css(['one', 'two'])).to.eql({ one: 0, two: 1 });
       });
     });
   });
+
 });

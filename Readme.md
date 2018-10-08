@@ -30,7 +30,7 @@ $('h2.title').text('Hello there!')
 $('h2').addClass('welcome')
 
 $.html()
-//=> <html><head></head><body><h2 class="title welcome">Hello there!</h2></body></html>
+//=> <h2 class="title welcome">Hello there!</h2>
 ```
 
 ## Note
@@ -48,7 +48,7 @@ __&#991; Blazingly fast:__
 Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient. Preliminary end-to-end benchmarks suggest that cheerio is about __8x__ faster than JSDOM.
 
 __&#10049; Incredibly flexible:__
-Cheerio wraps around [parse5](https://github.com/inikulin/parse5) parser and can optionally use @FB55's forgiving [htmlparser2](https://github.com/fb55/htmlparser2/). Cheerio can parse nearly any HTML or XML document.
+Cheerio wraps around @FB55's forgiving [htmlparser2](https://github.com/fb55/htmlparser2/). Cheerio can parse nearly any HTML or XML document.
 
 ## Cheerio is not a web browser
 
@@ -126,6 +126,107 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 
 ## API
 
+### Table of contents
+
+<details>
+  <summary>Selectors</summary>
+
+  - [$( selector, [context], [root] )](#-selector-context-root-)
+</details>
+<details>
+  <summary>Attributes</summary>
+
+  - [.attr( name, value )](#attr-name-value-)
+  - [.prop( name, value )](#prop-name-value-)
+  - [.data( name, value )](#data-name-value-)
+  - [.val( [value] )](#val-value-)
+  - [.removeAttr( name )](#removeattr-name-)
+  - [.hasClass( className )](#hasclass-classname-)
+  - [.addClass( className )](#addclass-classname-)
+  - [.removeClass( [className] )](#removeclass-classname-)
+  - [.toggleClass( className, [switch] )](#toggleclass-classname-switch-)
+  - [.is( selector )](#is-selector-)
+  - [.is( element )](#is-element-)
+  - [.is( selection )](#is-selection-)
+  - [.is( function(index) )](#is-functionindex-)
+</details>
+<details>
+  <summary>Forms</summary>
+
+  - [.serialize()](#serialize)
+  - [.serializeArray()](#serializearray)
+</details>
+<details>
+  <summary>Traversing</summary>
+
+  - [.find(selector)](#findselector)
+  - [.find(selection)](#findselection)
+  - [.find(node)](#findnode)
+  - [.parent([selector])](#parentselector)
+  - [.parents([selector])](#parentsselector)
+  - [.parentsUntil([selector][,filter])](#parentsuntilselectorfilter)
+  - [.closest(selector)](#closestselector)
+  - [.next([selector])](#nextselector)
+  - [.nextAll([selector])](#nextallselector)
+  - [.nextUntil([selector], [filter])](#nextuntilselector-filter)
+  - [.prev([selector])](#prevselector)
+  - [.prevAll([selector])](#prevallselector)
+  - [.prevUntil([selector], [filter])](#prevuntilselector-filter)
+  - [.slice( start, [end] )](#slice-start-end-)
+  - [.siblings([selector])](#siblingsselector)
+  - [.children([selector])](#childrenselector)
+  - [.contents()](#contents)
+  - [.each( function(index, element) )](#each-functionindex-element-)
+  - [.map( function(index, element) )](#map-functionindex-element-)
+  - [.filter( selector )<br>
+     .filter( selection )<br>
+     .filter( element )<br>
+     .filter( function(index, element) )](#filter-selector---filter-selection---filter-element---filter-functionindex-element-)
+  - [.not( selector )<br>
+     .not( selection )<br>
+     .not( element )<br>
+     .not( function(index, elem) )](#not-selector---not-selection---not-element---not-functionindex-elem-)
+  - [.has( selector )<br>
+     .has( element )](#has-selector---has-element-)
+  - [.first()](#first)
+  - [.last()](#last)
+  - [.eq( i )](#eq-i-)
+  - [.get( [i] )](#get-i-)
+  - [.index()](#index)
+  - [.index( selector )](#index-selector-)
+  - [.index( nodeOrSelection )](#index-nodeorselection-)
+  - [.end()](#end)
+  - [.add( selector [, context] )](#add-selector--context-)
+  - [.add( element )](#add-element-)
+  - [.add( elements )](#add-elements-)
+  - [.add( html )](#add-html-)
+  - [.add( selection )](#add-selection-)
+  - [.addBack( [filter] )](#addback-filter-)
+</details>
+<details>
+  <summary>Manipulation</summary>
+
+  - [.append( content, [content, ...] )](#append-content-content--)
+  - [.appendTo( target )](#appendto-target-)
+  - [.prepend( content, [content, ...] )](#prepend-content-content--)
+  - [.prependTo( target )](#prependto-target-)
+  - [.after( content, [content, ...] )](#after-content-content--)
+  - [.insertAfter( target )](#insertafter-target-)
+  - [.before( content, [content, ...] )](#before-content-content--)
+  - [.insertBefore( target )](#insertbefore-target-)
+  - [.remove( [selector] )](#remove-selector-)
+  - [.replaceWith( content )](#replacewith-content-)
+  - [.empty()](#empty)
+  - [.html( [htmlString] )](#html-htmlstring-)
+  - [.text( [textString] )](#text-textstring-)
+  - [.wrap( content )](#wrap-content-)
+  - [.css( [propertName] )<br>
+     .css( [ propertyNames] )<br>
+     .css( [propertyName], [value] )<br>
+     .css( [propertName], [function] )<br>
+     .css( [properties] )](#css-propertname---css--propertynames---css-propertyname-value---css-propertname-function---css-properties-)
+</details>
+
 ### Markup example we'll be using:
 
 ```html
@@ -162,52 +263,30 @@ const $ = require('cheerio');
 $('li', 'ul', '<ul id="fruits">...</ul>');
 ```
 
-If you need to modify parsing options for XML input, you may pass an extra
-object to `.load()`:
+You can also pass an extra object to `.load()` if you need to modify any
+of the default parsing options:
 
 ```js
 const $ = cheerio.load('<ul id="fruits">...</ul>', {
-    xml: {
-      normalizeWhitespace: true,
-    }
+    normalizeWhitespace: true,
+    xmlMode: true
 });
 ```
 
-The options in the `xml` object are taken directly from [htmlparser2](https://github.com/fb55/htmlparser2/wiki/Parser-options), therefore any options that can be used in `htmlparser2` are valid in cheerio as well. The default options are:
+These parsing options are taken directly from [htmlparser2](https://github.com/fb55/htmlparser2/wiki/Parser-options), therefore any options that can be used in `htmlparser2` are valid in cheerio as well. The default options are:
 
 ```js
 {
     withDomLvl1: true,
     normalizeWhitespace: false,
-    xmlMode: true,
+    xmlMode: false,
     decodeEntities: true
 }
+
 ```
 
 For a full list of options and their effects, see [this](https://github.com/fb55/DomHandler) and
 [htmlparser2's options](https://github.com/fb55/htmlparser2/wiki/Parser-options).
-
-Some users may wish to parse markup with the `htmlparser2` library, and
-traverse/manipulate the resulting structure with Cheerio. This may be the case
-for those upgrading from pre-1.0 releases of Cheerio (which relied on
-`htmlparser2`), for those dealing with invalid markup (because `htmlparser2` is
-more forgiving), or for those operating in performance-critical situations
-(because `htmlparser2` may be faster in some cases). Note that "more forgiving"
-means `htmlparser2` has error-correcting mechanisms that aren't always a match
-for the standards observed by web browsers. This behavior may be useful when
-parsing non-HTML content.
-
-To support these cases, `load` also accepts a `htmlparser2`-compatible data
-structure as its first argument. Users may install `htmlparser2`, use it to
-parse input, and pass the result to `load`:
-
-```js
-// Usage as of htmlparser2 version 3:
-const htmlparser2 = require('htmlparser2');
-const dom = htmlparser2.parseDOM(document, options);
-
-const $ = cheerio.load(dom);
-```
 
 ### Selectors
 
@@ -235,6 +314,677 @@ You can select with XML Namespaces but [due to the CSS specification](https://ww
 ```js
 $('[xml\\:id="main"');
 ```
+
+### Attributes
+Methods for getting and modifying attributes.
+
+#### .attr( name, value )
+Method for getting and setting attributes. Gets the attribute value for only the first element in the matched set. If you set an attribute's value to `null`, you remove that attribute. You may also pass a `map` and `function` like jQuery.
+
+```js
+$('ul').attr('id')
+//=> fruits
+
+$('.apple').attr('id', 'favorite').html()
+//=> <li class="apple" id="favorite">Apple</li>
+```
+
+> See http://api.jquery.com/attr/ for more information
+
+#### .prop( name, value )
+Method for getting and setting properties. Gets the property value for only the first element in the matched set.
+
+```js
+$('input[type="checkbox"]').prop('checked')
+//=> false
+
+$('input[type="checkbox"]').prop('checked', true).val()
+//=> ok
+```
+
+> See http://api.jquery.com/prop/ for more information
+
+#### .data( name, value )
+Method for getting and setting data attributes. Gets or sets the data attribute value for only the first element in the matched set.
+
+```js
+$('<div data-apple-color="red"></div>').data()
+//=> { appleColor: 'red' }
+
+$('<div data-apple-color="red"></div>').data('apple-color')
+//=> 'red'
+
+const apple = $('.apple').data('kind', 'mac')
+apple.data('kind')
+//=> 'mac'
+```
+
+> See http://api.jquery.com/data/ for more information
+
+#### .val( [value] )
+Method for getting and setting the value of input, select, and textarea. Note: Support for `map`, and `function` has not been added yet.
+
+```js
+$('input[type="text"]').val()
+//=> input_text
+
+$('input[type="text"]').val('test').html()
+//=> <input type="text" value="test"/>
+```
+
+#### .removeAttr( name )
+Method for removing attributes by `name`.
+
+```js
+$('.pear').removeAttr('class').html()
+//=> <li>Pear</li>
+```
+
+#### .hasClass( className )
+Check to see if *any* of the matched elements have the given `className`.
+
+```js
+$('.pear').hasClass('pear')
+//=> true
+
+$('apple').hasClass('fruit')
+//=> false
+
+$('li').hasClass('pear')
+//=> true
+```
+
+#### .addClass( className )
+Adds class(es) to all of the matched elements. Also accepts a `function` like jQuery.
+
+```js
+$('.pear').addClass('fruit').html()
+//=> <li class="pear fruit">Pear</li>
+
+$('.apple').addClass('fruit red').html()
+//=> <li class="apple fruit red">Apple</li>
+```
+
+> See http://api.jquery.com/addClass/ for more information.
+
+#### .removeClass( [className] )
+Removes one or more space-separated classes from the selected elements. If no `className` is defined, all classes will be removed. Also accepts a `function` like jQuery.
+
+```js
+$('.pear').removeClass('pear').html()
+//=> <li class="">Pear</li>
+
+$('.apple').addClass('red').removeClass().html()
+//=> <li class="">Apple</li>
+```
+
+> See http://api.jquery.com/removeClass/ for more information.
+
+#### .toggleClass( className, [switch] )
+Add or remove class(es) from the matched elements, depending on either the class's presence or the value of the switch argument. Also accepts a `function` like jQuery.
+
+```js
+$('.apple.green').toggleClass('fruit green red').html()
+//=> <li class="apple fruit red">Apple</li>
+
+$('.apple.green').toggleClass('fruit green red', true).html()
+//=> <li class="apple green fruit red">Apple</li>
+```
+
+> See http://api.jquery.com/toggleClass/ for more information.
+
+#### .is( selector )
+#### .is( element )
+#### .is( selection )
+#### .is( function(index) )
+Checks the current list of elements and returns `true` if _any_ of the elements match the selector. If using an element or Cheerio selection, returns `true` if _any_ of the elements match. If using a predicate function, the function is executed in the context of the selected element, so `this` refers to the current element.
+
+### Forms
+
+#### .serialize()
+
+Encodes a set of form elements as a URL query string.
+
+```js
+$('<form><input name="foo" value="bar" checked /><input name="foo" value="qux" checked /></form>').serialize()
+//=> foo=bar&foo=qux
+```
+
+#### .serializeArray()
+
+Encode a set of form elements as an array of names and values.
+
+```js
+$('<form><input name="foo" value="bar" /></form>').serializeArray()
+//=> [ { name: 'foo', value: 'bar' } ]
+```
+
+### Traversing
+
+#### .find(selector)
+#### .find(selection)
+#### .find(node)
+Get the descendants of each element in the current set of matched elements, filtered by a selector, jQuery object, or element.
+
+```js
+$('#fruits').find('li').length
+//=> 3
+$('#fruits').find($('.apple')).length
+//=> 1
+```
+
+#### .parent([selector])
+Get the parent of each element in the current set of matched elements, optionally filtered by a selector.
+
+```js
+$('.pear').parent().attr('id')
+//=> fruits
+```
+
+#### .parents([selector])
+Get a set of parents filtered by `selector` of each element in the current set of match elements.
+```js
+$('.orange').parents().length
+// => 2
+$('.orange').parents('#fruits').length
+// => 1
+```
+
+#### .parentsUntil([selector][,filter])
+Get the ancestors of each element in the current set of matched elements, up to but not including the element matched by the selector, DOM node, or cheerio object.
+```js
+$('.orange').parentsUntil('#food').length
+// => 1
+```
+
+#### .closest(selector)
+For each element in the set, get the first element that matches the selector by testing the element itself and traversing up through its ancestors in the DOM tree.
+
+```js
+$('.orange').closest()
+// => []
+$('.orange').closest('.apple')
+// => []
+$('.orange').closest('li')
+// => [<li class="orange">Orange</li>]
+$('.orange').closest('#fruits')
+// => [<ul id="fruits"> ... </ul>]
+```
+
+#### .next([selector])
+Gets the next sibling of the first selected element, optionally filtered by a selector.
+
+```js
+$('.apple').next().hasClass('orange')
+//=> true
+```
+
+#### .nextAll([selector])
+Gets all the following siblings of the first selected element, optionally filtered by a selector.
+
+```js
+$('.apple').nextAll()
+//=> [<li class="orange">Orange</li>, <li class="pear">Pear</li>]
+$('.apple').nextAll('.orange')
+//=> [<li class="orange">Orange</li>]
+```
+
+#### .nextUntil([selector], [filter])
+Gets all the following siblings up to but not including the element matched by the selector, optionally filtered by another selector.
+
+```js
+$('.apple').nextUntil('.pear')
+//=> [<li class="orange">Orange</li>]
+```
+
+#### .prev([selector])
+Gets the previous sibling of the first selected element optionally filtered by a selector.
+
+```js
+$('.orange').prev().hasClass('apple')
+//=> true
+```
+
+#### .prevAll([selector])
+Gets all the preceding siblings of the first selected element, optionally filtered by a selector.
+
+```js
+$('.pear').prevAll()
+//=> [<li class="orange">Orange</li>, <li class="apple">Apple</li>]
+$('.pear').prevAll('.orange')
+//=> [<li class="orange">Orange</li>]
+```
+
+#### .prevUntil([selector], [filter])
+Gets all the preceding siblings up to but not including the element matched by the selector, optionally filtered by another selector.
+
+```js
+$('.pear').prevUntil('.apple')
+//=> [<li class="orange">Orange</li>]
+```
+
+#### .slice( start, [end] )
+Gets the elements matching the specified range
+
+```js
+$('li').slice(1).eq(0).text()
+//=> 'Orange'
+
+$('li').slice(1, 2).length
+//=> 1
+```
+
+#### .siblings([selector])
+Gets the first selected element's siblings, excluding itself.
+
+```js
+$('.pear').siblings().length
+//=> 2
+
+$('.pear').siblings('.orange').length
+//=> 1
+
+```
+
+#### .children([selector])
+Gets the children of the first selected element.
+
+```js
+$('#fruits').children().length
+//=> 3
+
+$('#fruits').children('.pear').text()
+//=> Pear
+```
+
+#### .contents()
+Gets the children of each element in the set of matched elements, including text and comment nodes.
+
+```js
+$('#fruits').contents().length
+//=> 3
+```
+
+#### .each( function(index, element) )
+Iterates over a cheerio object, executing a function for each matched element. When the callback is fired, the function is fired in the context of the DOM element, so `this` refers to the current element, which is equivalent to the function parameter `element`. To break out of the `each` loop early, return with `false`.
+
+```js
+const fruits = [];
+
+$('li').each(function(i, elem) {
+  fruits[i] = $(this).text();
+});
+
+fruits.join(', ');
+//=> Apple, Orange, Pear
+```
+
+#### .map( function(index, element) )
+Pass each element in the current matched set through a function, producing a new Cheerio object containing the return values. The function can return an individual data item or an array of data items to be inserted into the resulting set. If an array is returned, the elements inside the array are inserted into the set. If the function returns null or undefined, no element will be inserted.
+
+```js
+$('li').map(function(i, el) {
+  // this === el
+  return $(this).text();
+}).get().join(' ');
+//=> "apple orange pear"
+```
+
+#### .filter( selector ) <br /> .filter( selection ) <br /> .filter( element ) <br /> .filter( function(index, element) )
+
+Iterates over a cheerio object, reducing the set of selector elements to those that match the selector or pass the function's test. When a Cheerio selection is specified, return only the elements contained in that selection. When an element is specified, return only that element (if it is contained in the original selection). If using the function method, the function is executed in the context of the selected element, so `this` refers to the current element.
+
+Selector:
+
+```js
+$('li').filter('.orange').attr('class');
+//=> orange
+```
+
+Function:
+
+```js
+$('li').filter(function(i, el) {
+  // this === el
+  return $(this).attr('class') === 'orange';
+}).attr('class')
+//=> orange
+```
+
+#### .not( selector ) <br /> .not( selection ) <br /> .not( element ) <br /> .not( function(index, elem) )
+
+Remove elements from the set of matched elements. Given a jQuery object that represents a set of DOM elements, the `.not()` method constructs a new jQuery object from a subset of the matching elements. The supplied selector is tested against each element; the elements that don't match the selector will be included in the result. The `.not()` method can take a function as its argument in the same way that `.filter()` does. Elements for which the function returns true are excluded from the filtered set; all other elements are included.
+
+Selector:
+
+```js
+$('li').not('.apple').length;
+//=> 2
+```
+
+Function:
+
+```js
+$('li').not(function(i, el) {
+  // this === el
+  return $(this).attr('class') === 'orange';
+}).length;
+//=> 2
+```
+
+#### .has( selector ) <br /> .has( element )
+
+Filters the set of matched elements to only those which have the given DOM element as a descendant or which have a descendant that matches the given selector. Equivalent to `.filter(':has(selector)')`.
+
+Selector:
+
+```js
+$('ul').has('.pear').attr('id');
+//=> fruits
+```
+
+Element:
+
+```js
+$('ul').has($('.pear')[0]).attr('id');
+//=> fruits
+```
+
+#### .first()
+Will select the first element of a cheerio object
+
+```js
+$('#fruits').children().first().text()
+//=> Apple
+```
+
+#### .last()
+Will select the last element of a cheerio object
+
+```js
+$('#fruits').children().last().text()
+//=> Pear
+```
+
+#### .eq( i )
+Reduce the set of matched elements to the one at the specified index. Use `.eq(-i)` to count backwards from the last selected element.
+
+```js
+$('li').eq(0).text()
+//=> Apple
+
+$('li').eq(-1).text()
+//=> Pear
+```
+
+#### .get( [i] )
+
+Retrieve the DOM elements matched by the Cheerio object. If an index is specified, retrieve one of the elements matched by the Cheerio object:
+
+```js
+$('li').get(0).tagName
+//=> li
+```
+
+If no index is specified, retrieve all elements matched by the Cheerio object:
+
+```js
+$('li').get().length
+//=> 3
+```
+
+#### .index()
+#### .index( selector )
+#### .index( nodeOrSelection )
+
+Search for a given element from among the matched elements.
+
+```js
+$('.pear').index()
+//=> 2
+$('.orange').index('li')
+//=> 1
+$('.apple').index($('#fruit, li'))
+//=> 1
+```
+
+#### .end()
+End the most recent filtering operation in the current chain and return the set of matched elements to its previous state.
+
+```js
+$('li').eq(0).end().length
+//=> 3
+```
+
+#### .add( selector [, context] )
+#### .add( element )
+#### .add( elements )
+#### .add( html )
+#### .add( selection )
+Add elements to the set of matched elements.
+
+```js
+$('.apple').add('.orange').length
+//=> 2
+```
+
+#### .addBack( [filter] )
+
+Add the previous set of elements on the stack to the current set, optionally filtered by a selector.
+
+```js
+$('li').eq(0).addBack('.orange').length
+//=> 2
+```
+
+### Manipulation
+Methods for modifying the DOM structure.
+
+#### .append( content, [content, ...] )
+Inserts content as the *last* child of each of the selected elements.
+
+```js
+$('ul').append('<li class="plum">Plum</li>')
+$.html()
+//=>  <ul id="fruits">
+//      <li class="apple">Apple</li>
+//      <li class="orange">Orange</li>
+//      <li class="pear">Pear</li>
+//      <li class="plum">Plum</li>
+//    </ul>
+```
+
+#### .appendTo( target )
+Insert every element in the set of matched elements to the end of the target.
+
+```js
+$('<li class="plum">Plum</li>').appendTo('#fruits')
+$.html()
+//=>  <ul id="fruits">
+//      <li class="apple">Apple</li>
+//      <li class="orange">Orange</li>
+//      <li class="pear">Pear</li>
+//      <li class="plum">Plum</li>
+//    </ul>
+```
+
+#### .prepend( content, [content, ...] )
+Inserts content as the *first* child of each of the selected elements.
+
+```js
+$('ul').prepend('<li class="plum">Plum</li>')
+$.html()
+//=>  <ul id="fruits">
+//      <li class="plum">Plum</li>
+//      <li class="apple">Apple</li>
+//      <li class="orange">Orange</li>
+//      <li class="pear">Pear</li>
+//    </ul>
+```
+
+#### .prependTo( target )
+Insert every element in the set of matched elements to the beginning of the target.
+
+```js
+$('<li class="plum">Plum</li>').prependTo('#fruits')
+$.html()
+//=>  <ul id="fruits">
+//      <li class="plum">Plum</li>
+//      <li class="apple">Apple</li>
+//      <li class="orange">Orange</li>
+//      <li class="pear">Pear</li>
+//    </ul>
+```
+
+#### .after( content, [content, ...] )
+Insert content next to each element in the set of matched elements.
+
+```js
+$('.apple').after('<li class="plum">Plum</li>')
+$.html()
+//=>  <ul id="fruits">
+//      <li class="apple">Apple</li>
+//      <li class="plum">Plum</li>
+//      <li class="orange">Orange</li>
+//      <li class="pear">Pear</li>
+//    </ul>
+```
+
+#### .insertAfter( target )
+Insert every element in the set of matched elements after the target.
+
+```js
+$('<li class="plum">Plum</li>').insertAfter('.apple')
+$.html()
+//=>  <ul id="fruits">
+//      <li class="apple">Apple</li>
+//      <li class="plum">Plum</li>
+//      <li class="orange">Orange</li>
+//      <li class="pear">Pear</li>
+//    </ul>
+```
+
+#### .before( content, [content, ...] )
+Insert content previous to each element in the set of matched elements.
+
+```js
+$('.apple').before('<li class="plum">Plum</li>')
+$.html()
+//=>  <ul id="fruits">
+//      <li class="plum">Plum</li>
+//      <li class="apple">Apple</li>
+//      <li class="orange">Orange</li>
+//      <li class="pear">Pear</li>
+//    </ul>
+```
+
+#### .insertBefore( target )
+Insert every element in the set of matched elements before the target.
+
+```js
+$('<li class="plum">Plum</li>').insertBefore('.apple')
+$.html()
+//=>  <ul id="fruits">
+//      <li class="plum">Plum</li>
+//      <li class="apple">Apple</li>
+//      <li class="orange">Orange</li>
+//      <li class="pear">Pear</li>
+//    </ul>
+```
+
+#### .remove( [selector] )
+Removes the set of matched elements from the DOM and all their children. `selector` filters the set of matched elements to be removed.
+
+```js
+$('.pear').remove()
+$.html()
+//=>  <ul id="fruits">
+//      <li class="apple">Apple</li>
+//      <li class="orange">Orange</li>
+//    </ul>
+```
+
+#### .replaceWith( content )
+Replaces matched elements with `content`.
+
+```js
+const plum = $('<li class="plum">Plum</li>')
+$('.pear').replaceWith(plum)
+$.html()
+//=> <ul id="fruits">
+//     <li class="apple">Apple</li>
+//     <li class="orange">Orange</li>
+//     <li class="plum">Plum</li>
+//   </ul>
+```
+
+#### .empty()
+Empties an element, removing all its children.
+
+```js
+$('ul').empty()
+$.html()
+//=>  <ul id="fruits"></ul>
+```
+
+#### .html( [htmlString] )
+Gets an html content string from the first selected element. If `htmlString` is specified, each selected element's content is replaced by the new content.
+
+```js
+$('.orange').html()
+//=> Orange
+
+$('#fruits').html('<li class="mango">Mango</li>').html()
+//=> <li class="mango">Mango</li>
+```
+
+#### .text( [textString] )
+Get the combined text contents of each element in the set of matched elements, including their descendants. If `textString` is specified, each selected element's content is replaced by the new text content.
+
+```js
+$('.orange').text()
+//=> Orange
+
+$('ul').text()
+//=>  Apple
+//    Orange
+//    Pear
+```
+
+#### .wrap( content )
+The .wrap() function can take any string or object that could be passed to the $() factory function to specify a DOM structure. This structure may be nested several levels deep, but should contain only one inmost element. A copy of this structure will be wrapped around each of the elements in the set of matched elements. This method returns the original set of elements for chaining purposes.
+
+```js
+const redFruit = $('<div class="red-fruit"></div>')
+$('.apple').wrap(redFruit)
+
+//=> <ul id="fruits">
+//     <div class="red-fruit">
+//      <li class="apple">Apple</li>
+//     </div>
+//     <li class="orange">Orange</li>
+//     <li class="plum">Plum</li>
+//   </ul>
+
+const healthy = $('<div class="healthy"></div>')
+$('li').wrap(healthy)
+
+//=> <ul id="fruits">
+//     <div class="healthy">
+//       <li class="apple">Apple</li>
+//     </div>
+//     <div class="healthy">
+//       <li class="orange">Orange</li>
+//     </div>
+//     <div class="healthy">
+//        <li class="plum">Plum</li>
+//     </div>
+//   </ul>
+```
+
+#### .css( [propertyName] ) <br /> .css( [ propertyNames] ) <br /> .css( [propertyName], [value] ) <br /> .css( [propertyName], [function] ) <br /> .css( [properties] )
+
+Get the value of a style property for the first element in the set of matched elements or set one or more CSS properties for every matched element.
 
 ### Rendering
 When you're ready to render the document, you can use the `html` utility function:
@@ -283,6 +1033,44 @@ const $ = cheerio.load('<div>This is <em>content</em>.</div>')
 cheerio.text($('div'))
 //=> This is content.
 ```
+
+### Miscellaneous
+DOM element methods that don't fit anywhere else
+
+#### .toArray()
+Retrieve all the DOM elements contained in the jQuery set as an array.
+
+```js
+$('li').toArray()
+//=> [ {...}, {...}, {...} ]
+```
+
+#### .clone() ####
+Clone the cheerio object.
+
+```js
+const moreFruit = $('#fruits').clone()
+```
+
+### Utilities
+
+#### $.root
+
+Sometimes you need to work with the top-level root element. To query it, you can use `$.root()`.
+
+```js
+$.root().append('<ul id="vegetables"></ul>').html();
+//=> <ul id="fruits">...</ul><ul id="vegetables"></ul>
+```
+
+#### $.contains( container, contained )
+Checks to see if the `contained` DOM element is a descendant of the `container` DOM element.
+
+#### $.parseHTML( data [, context ] [, keepScripts ] )
+Parses a string into an array of DOM nodes. The `context` argument has no meaning for Cheerio, but it is maintained for API compatability.
+
+#### $.load( html[, options ] )
+Load in the HTML. (See the previous section titled "Loading" for more information.)
 
 ### Plugins
 
