@@ -27,5 +27,12 @@
     "jsdoc/require-param-description": 2,
     "jsdoc/require-param-name": 2,
     "jsdoc/require-param-type": 2
+  },
+  "settings": {
+    "jsdoc": {
+      "additionalTagNames": {
+        "customTags": ["hideconstructor"]
+      }
+    }
   }
 }

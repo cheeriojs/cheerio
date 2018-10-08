@@ -42,7 +42,7 @@
     "husky": "^0.14.3",
     "istanbul": "^0.4.3",
     "jquery": "^3.0.0",
-    "jsdoc": "^3.5.5",
+    "jsdoc": "https://github.com/cheeriojs/jsdoc.git#exports-mixin",
     "jsdom": "^11.6.2",
     "lint-staged": "^7.0.0",
     "mocha": "^5.0.4",
