@@ -240,7 +240,16 @@ describe('cheerio', function () {
     expect(typeof $elem.text()).to.equal('string');
   });
 
-  describe('.merge', function () {
+  /**
+   * The `.merge` method exported by the Cheerio module is deprecated.
+   *
+   * In order to promote consistency with the jQuery library, users are
+   * encouraged to instead use the static method of the same name. For example:
+   *
+   *     var $ = cheerio.load('');
+   *     $.merge([1, 2], [3, 4]) // [1, 2, 3, 4]
+   */
+  describe('.merge - deprecated API', function() {
     var arr1, arr2;
     beforeEach(function () {
       arr1 = [1, 2, 3];
