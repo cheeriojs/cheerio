@@ -34,7 +34,7 @@
     "istanbul": "^0.4.3",
     "jquery": "^3.0.0",
     "jsdoc": "^3.5.5",
-    "jsdom": "^11.6.2",
+    "jsdom": "^12.2.0",
     "lint-staged": "^7.0.0",
     "mocha": "^5.0.4",
     "prettier": "^1.11.0",
