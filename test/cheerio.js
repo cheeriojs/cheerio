@@ -339,7 +339,7 @@ describe('cheerio', function() {
    * example:
    *
    *     var $ = cheerio.load('<h1>Hello, <span>world</span>.</h1>');
-   *     $('h1').text(); // '<h1>Hello, <span>world</span>.'
+   *     $('h1').html(); // '<h1>Hello, <span>world</span>.'
    *
    * To render the markup of an entire document, invoke the `html` function
    * exported by the Cheerio module with a "root" selection, e.g.
