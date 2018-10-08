@@ -6,6 +6,6 @@
   },
   "plugins": ["plugins/markdown"],
   "source": {
-    "include": ["lib"]
+    "include": ["index.js", "lib"]
   }
 }
