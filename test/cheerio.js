@@ -379,6 +379,23 @@ describe('cheerio', function () {
   });
 
   /**
+   * The `.root` method exported by the Cheerio module is deprecated.
+   *
+   * Users seeking to access the top-level element of a parsed document should
+   * instead use the `root` static method of a "loaded" Cheerio function. For
+   * example:
+   *
+   *     var $ = cheerio.load('');
+   *     $.root();
+   */
+  describe('.root - deprecated API', function() {
+    it('returns an empty selection', function() {
+      var $empty = cheerio.root();
+      expect($empty).to.have.length(0);
+    });
+  });
+
+  /**
    * The `.html` static method defined on the "loaded" Cheerio factory function
    * is deprecated.
    *
