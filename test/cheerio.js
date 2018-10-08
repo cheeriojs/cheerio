@@ -340,6 +340,45 @@ describe('cheerio', function () {
   });
 
   /**
+   * The `.contains` method exported by the Cheerio module is deprecated.
+   *
+   * In order to promote consistency with the jQuery library, users are
+   * encouraged to instead use the static method of the same name. For example:
+   *
+   *     var $ = cheerio.load('<div><p></p></div>');
+   *     $.contains($('div').get(0), $('p').get(0)); // true
+   *     $.contains($('p').get(0), $('div').get(0)); // false
+   */
+  describe('.contains - deprecated API', function() {
+    var $;
+
+    beforeEach(function() {
+      $ = cheerio.load(fixtures.food);
+    });
+
+    it('(container, contained) : should correctly detect the provided element', function() {
+      var $food = $('#food');
+      var $fruits = $('#fruits');
+      var $apple = $('.apple');
+
+      expect(cheerio.contains($food[0], $fruits[0])).to.equal(true);
+      expect(cheerio.contains($food[0], $apple[0])).to.equal(true);
+    });
+
+    it('(container, other) : should not detect elements that are not contained', function() {
+      var $fruits = $('#fruits');
+      var $vegetables = $('#vegetables');
+      var $apple = $('.apple');
+
+      expect(cheerio.contains($vegetables[0], $apple[0])).to.equal(false);
+      expect(cheerio.contains($fruits[0], $vegetables[0])).to.equal(false);
+      expect(cheerio.contains($vegetables[0], $fruits[0])).to.equal(false);
+      expect(cheerio.contains($fruits[0], $fruits[0])).to.equal(false);
+      expect(cheerio.contains($vegetables[0], $vegetables[0])).to.equal(false);
+    });
+  });
+
+  /**
    * The `.html` static method defined on the "loaded" Cheerio factory function
    * is deprecated.
    *
