@@ -1,0 +1,11 @@
+{
+  "indent": 2,
+  "eqnull": true,
+  "laxbreak": true,
+  "proto": true,
+  "undef": true,
+  "unused": true,
+  "node": true,
+  "quotmark": "single",
+  "shadow": "outer"
+}

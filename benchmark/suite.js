@@ -2,18 +2,15 @@ var fs = require('fs');
 var path = require('path');
 
 var Benchmark = require('benchmark');
-var jsdom = require('jsdom/lib/old-api.js');
+var jsdom = require('jsdom');
 var cheerio = require('..');
 
 var documentDir = path.join(__dirname, 'documents');
-var jQuerySrc = path.join(
-  __dirname,
-  '../node_modules/jquery/dist/jquery.slim.js'
-);
+var jQuerySrc = path.join(__dirname, '../node_modules/jquery/dist/jquery.slim.js');
 var filterRe = /./;
 var cheerioOnly = false;
 
-var Suites = (module.exports = function() {});
+var Suites = module.exports = function() {};
 
 Suites.prototype.filter = function(str) {
   filterRe = new RegExp(str, 'i');
@@ -24,14 +21,15 @@ Suites.prototype.cheerioOnly = function() {
 };
 
 Suites.prototype.add = function(name, fileName, options) {
-  var markup, suite;
+  var markup, suite, testFn;
   if (!filterRe.test(name)) {
     return;
   }
   markup = fs.readFileSync(path.join(documentDir, fileName), 'utf8');
   suite = new Benchmark.Suite(name);
+  testFn = options.test;
 
-  suite.on('start', function() {
+  suite.on('start', function(event) {
     console.log('Test: ' + name + ' (file: ' + fileName + ')');
   });
   suite.on('cycle', function(event) {
