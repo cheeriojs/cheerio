@@ -1,5 +1,11 @@
-The default template for JSDoc 3 uses: [the Taffy Database library](http://taffydb.com/) and the [Underscore Template library](http://underscorejs.org/).
+Cheerio uses JSDoc's "mixin" functionality to organize instance methods
+according to their purpose. This mimics the organization of the jQuery library.
+Because these objects are not designed for consumption as JavaScript "mixins,"
+the term is not used in the project documentation. Instead, references to JSDoc
+mixins are presented in terms of "categories," similar to [the jQuery API
+documentation](https://api.jquery.com).
 
+Cheerio's template for JSDoc 3 uses: [the Taffy Database library](http://taffydb.com/) and the [Underscore Template library](http://underscorejs.org/).
 
 ## Generating Typeface Fonts
 
