@@ -1,6 +1,7 @@
 {
   "opts": {
-    "destination": "./docs",
+    "template": "./docs/template",
+    "destination": "./docs/out",
     "readme": "Readme.md",
     "recurse": true
   },

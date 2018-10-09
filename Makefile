@@ -37,11 +37,11 @@ release-patch: LEVEL = patch
 release-major release-minor release-patch:
 	@$(XYZ) --increment $(LEVEL)
 
-docs:
+docs/out:
 	@./node_modules/.bin/jsdoc --configure jsdoc-config.json
 
-publish-docs: docs
-	@cd docs; \
+publish-docs: docs/out
+	@cd docs/out; \
 		rm -rf .git && \
 		git init && \
 		git add --all . && \
@@ -49,4 +49,4 @@ publish-docs: docs
 		git remote add upstream $(UPSTREAM) && \
 		git push --force upstream master:gh-pages
 
-.PHONY: test build setup subl docs publish-docs
+.PHONY: test build setup subl docs/out publish-docs
