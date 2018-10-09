@@ -317,23 +317,6 @@ describe('cheerio', function() {
     });
   });
 
-  /**
-   * The `.parseHTML` method exported by the Cheerio module is deprecated.
-   *
-   * In order to promote consistency with the jQuery library, users are
-   * encouraged to instead use the static method of the same name as it is
-   * defined on the "loaded" Cheerio factory function. For example:
-   *
-   *     var $ = cheerio.load('');
-   *     $.parseHTML('<b>markup</b>');
-   */
-  describe('.parseHTML - deprecated API', function() {
-    it('(html) : should preserve content', function() {
-      var html = '<div>test div</div>';
-      expect(cheerio(cheerio.parseHTML(html)[0]).html()).to.equal('test div');
-    });
-  });
-
   describe('.contains', function() {
     var $;
 
