@@ -17,6 +17,11 @@ var self = this;
     <?js } ?>
 <?js } ?>
 
+<?js if (data.deprecated) { ?>
+<details class="deprecated">
+  <summary class="important">Deprecated - click to expand</summary>
+<?js } ?>
+
 <?js if (data.kind !== 'module' && data.description && !data.hideconstructor) { ?>
 <div class="description">
     <?js= data.description ?>
@@ -128,4 +133,8 @@ var self = this;
 <?js if (data.examples && examples.length) { ?>
     <h5>Example<?js= examples.length > 1? 's':'' ?></h5>
     <?js= this.partial('examples.tmpl', examples) ?>
+<?js } ?>
+
+<?js if (data.deprecated) { ?>
+</details>
 <?js } ?>
