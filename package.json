@@ -52,7 +52,7 @@
   "scripts": {
     "test": "npm run test:lint && npm run test:mocha",
     "test:mocha": "mocha --recursive --reporter dot",
-    "test:lint": "eslint --ignore-path .gitignore .",
+    "test:lint": "eslint --ignore-pattern docs --ignore-path .gitignore .",
     "precommit": "lint-staged"
   },
   "prettier": {
