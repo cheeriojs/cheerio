@@ -3,10 +3,10 @@ XYZ = node_modules/.bin/xyz --message 'Release X.Y.Z' --tag X.Y.Z --repo git@git
 UPSTREAM = git@github.com:cheeriojs/cheerio.git
 
 lint:
-	@./node_modules/.bin/eslint --ignore-path .gitignore .
+	@npm run test:lint
 
-test: lint
-	@./node_modules/.bin/mocha --recursive --reporter $(REPORTER)
+test:
+	@npm run test
 
 setup:
 	@npm install
