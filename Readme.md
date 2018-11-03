@@ -243,21 +243,26 @@ $('[xml\\:id="main"');
 
 ### Rendering
 
-When you're ready to render the document, you can use the `html` utility function:
+When you're ready to render the document, you can call the `html` method on the "root" selection:
 
 ```js
-$.html();
-//=>  <ul id="fruits">
-//      <li class="apple">Apple</li>
-//      <li class="orange">Orange</li>
-//      <li class="pear">Pear</li>
-//    </ul>
+$.root().html();
+//=>  <html>
+//      <head></head>
+//      <body>
+//        <ul id="fruits">
+//          <li class="apple">Apple</li>
+//          <li class="orange">Orange</li>
+//          <li class="pear">Pear</li>
+//        </ul>
+//      </body>
+//    </html>
 ```
 
-If you want to return the outerHTML you can use `$.html(selector)`:
+If you want to render the [`outerHTML`](https://developer.mozilla.org/en-US/docs/Web/API/Element/outerHTML) of a selection, you can use the `html` utility functon:
 
 ```js
-$.html('.pear');
+cheerio.html($('.pear'));
 //=> <li class="pear">Pear</li>
 ```
 
@@ -278,15 +283,7 @@ You may also render the text content of a Cheerio object using the `text` static
 
 ```js
 const $ = cheerio.load('This is <em>content</em>.');
-$.text();
-//=> This is content.
-```
-
-The method may be called on the Cheerio module itself--be sure to pass a collection of nodes!
-
-```js
-const $ = cheerio.load('<div>This is <em>content</em>.</div>');
-cheerio.text($('div'));
+cheerio.text($('body'));
 //=> This is content.
 ```
 
