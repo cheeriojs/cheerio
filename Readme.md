@@ -269,7 +269,8 @@ of the default parsing options:
 ```js
 const $ = cheerio.load('<ul id="fruits">...</ul>', {
     normalizeWhitespace: true,
-    xmlMode: true
+    xmlMode: true,
+    keepNonAscii: true
 });
 ```
 
@@ -280,10 +281,13 @@ These parsing options are taken directly from [htmlparser2](https://github.com/f
     withDomLvl1: true,
     normalizeWhitespace: false,
     xmlMode: false,
-    decodeEntities: true
+    decodeEntities: true,
+    keepNonAscii: false
 }
 
 ```
+
+the `keepNonAscii` option controll whether output html or xml will encode non ascii character to html entities form. if false, all non character will be encode to html entities form: `☺` become `&#x263A;` . if true, character will output directly . (usually in utf8.)
 
 For a full list of options and their effects, see [this](https://github.com/fb55/DomHandler) and
 [htmlparser2's options](https://github.com/fb55/htmlparser2/wiki/Parser-options).
