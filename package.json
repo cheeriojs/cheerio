@@ -26,8 +26,7 @@
   },
   "dependencies": {
     "css-select": "~1.2.0",
-    "dom-serializer": "~0.1.0",
-    "entities": "~1.1.1",
+    "dom-serializer": "git+https://github.com/GHolk/dom-serializer",
     "htmlparser2": "^3.9.1",
     "lodash": "^4.15.0"
   },
