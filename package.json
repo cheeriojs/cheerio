@@ -25,24 +25,24 @@
     "node": ">= 0.6"
   },
   "dependencies": {
-    "css-select": "~1.2.0",
+    "css-select": "~2.0.2",
     "dom-serializer": "~0.1.0",
-    "entities": "~1.1.1",
-    "htmlparser2": "^3.9.1",
-    "lodash": "^4.15.0"
+    "entities": "~1.1.2",
+    "htmlparser2": "^3.10.0",
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
-    "benchmark": "^2.1.0",
-    "coveralls": "^2.11.9",
+    "benchmark": "^2.1.4",
+    "coveralls": "^3.0.2",
     "expect.js": "~0.3.1",
-    "istanbul": "^0.4.3",
-    "jsdom": "^9.2.1",
-    "jquery": "^3.0.0",
-    "jshint": "^2.9.2",
-    "mocha": "^3.1.2",
-    "xyz": "~1.1.0"
+    "istanbul": "^0.4.5",
+    "jsdom": "^13.2.0",
+    "jquery": "^3.3.1",
+    "jshint": "^2.10.1",
+    "mocha": "^3.1.0",
+    "xyz": "~3.0.0"
   },
   "scripts": {
-    "test": "jshint lib/ test/ && mocha --recursive --reporter dot"
+    "test": "jshint lib/ test/ && mocha --recursive"
   }
 }

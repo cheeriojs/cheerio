@@ -101,7 +101,7 @@ describe('cheerio', function() {
     // });
 
     it('(buffer) : should accept a buffer', function() {
-      var $html = cheerio.load(new Buffer('<div>foo</div>'));
+      var $html = cheerio.load(Buffer.from('<div>foo</div>'));
       expect($html.html()).to.be('<div>foo</div>');
     });
 
