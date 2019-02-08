@@ -25,7 +25,7 @@
     "node": ">= 0.6"
   },
   "dependencies": {
-    "css-select": "~2.0.2",
+    "css-select": "^2.0.2",
     "dom-serializer": "~0.1.0",
     "entities": "~1.1.2",
     "htmlparser2": "^3.10.0",
@@ -36,8 +36,8 @@
     "coveralls": "^3.0.2",
     "expect.js": "~0.3.1",
     "istanbul": "^0.4.5",
-    "jsdom": "^13.2.0",
     "jquery": "^3.3.1",
+    "jsdom": "^13.2.0",
     "jshint": "^2.10.1",
     "mocha": "^3.1.0",
     "xyz": "~3.0.0"
