@@ -1067,7 +1067,7 @@ $.root().append('<ul id="vegetables"></ul>').html();
 Checks to see if the `contained` DOM element is a descendant of the `container` DOM element.
 
 #### $.parseHTML( data [, context ] [, keepScripts ] )
-Parses a string into an array of DOM nodes. The `context` argument has no meaning for Cheerio, but it is maintained for API compatability.
+Parses a string into an array of DOM nodes. The `context` argument has no meaning for Cheerio, but it is maintained for API compatibility.
 
 #### $.load( html[, options ] )
 Load in the HTML. (See the previous section titled "Loading" for more information.)
@@ -1087,7 +1087,7 @@ $('body').logHtml(); // logs "Hello, <b>world</b>!" to the console
 
 ### The "DOM Node" object
 
-Cheerio collections are made up of objects that bear some resemblence to [browser-based DOM nodes](https://developer.mozilla.org/en-US/docs/Web/API/Node). You can expect them to define the following properties:
+Cheerio collections are made up of objects that bear some resemblance to [browser-based DOM nodes](https://developer.mozilla.org/en-US/docs/Web/API/Node). You can expect them to define the following properties:
 
 - `tagName`
 - `parentNode`
