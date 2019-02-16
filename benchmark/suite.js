@@ -2,7 +2,7 @@ var fs = require('fs');
 var path = require('path');
 
 var Benchmark = require('benchmark');
-var jsdom = require('jsdom');
+var jsdom = require('jsdom/lib/old-api.js');
 var cheerio = require('..');
 
 var documentDir = path.join(__dirname, 'documents');
