@@ -368,7 +368,7 @@ describe('cheerio', function() {
       var str = '<MixedCaseTag UPPERCASEATTRIBUTE=""></MixedCaseTag>',
           // since parsing done without xml flag, all tags converted to lowercase
           expectedXml = '<html><head/><body><mixedcasetag uppercaseattribute=""/></body></html>',
-          expectedNoXml = '<html><head></head><body><mixedcasetag uppercaseattribute=""></mixedcasetag></body></html>',
+          expectedNoXml = '<html><head></head><body><mixedcasetag uppercaseattribute></mixedcasetag></body></html>',
           dom = $.load(str);
 
       expect(dom('MixedCaseTag').get(0).tagName).to.equal('mixedcasetag');
