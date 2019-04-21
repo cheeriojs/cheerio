@@ -63,9 +63,7 @@ describe('$(...)', function() {
     it('should throw a SyntaxError if given an invalid selector', function() {
       expect(function() {
         $('#fruits').find(':bah');
-      }).to.throwException(function(err) {
-        expect(err).to.be.a(SyntaxError);
-      });
+      }).to.throwException(/unmatched pseudo-class/);
     });
 
     describe('(cheerio object) :', function() {
@@ -456,9 +454,7 @@ describe('$(...)', function() {
     it('(selector) : should throw a SyntaxError if given an invalid selector', function() {
       expect(function() {
         $('.orange').siblings(':bah');
-      }).to.throwException(function(err) {
-        expect(err).to.be.a(SyntaxError);
-      });
+      }).to.throwException(/unmatched pseudo-class/);
     });
 
     it('(selector) : does not consider the contents of siblings when filtering (GH-374)', function() {

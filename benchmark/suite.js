@@ -62,20 +62,19 @@ Suites.prototype.add = function(name, fileName, options) {
 Suites.prototype._benchJsDom = function(suite, markup, options) {
   var testFn = options.test;
 
-  jsdom.env({
-    html: markup,
-    scripts: jQuerySrc,
-    done: function(err, window) {
-      var setupData;
-      if (options.setup) {
-        setupData = options.setup.call(null, window.$);
-      }
-      suite.add('jsdom', function() {
-        testFn.call(null, window.$, setupData);
-      });
-      suite.run();
-    }
+  var { JSDOM } = jsdom;
+  var { window } = new JSDOM(markup);
+  window.$ = require(jQuerySrc)(window);
+
+  var setupData;
+  if (options.setup) {
+    setupData = options.setup.call(null, window.$);
+  }
+  suite.add('jsdom', function() {
+    testFn.call(null, window.$, setupData);
   });
+  suite.run();
+
 };
 
 Suites.prototype._benchCheerio = function(suite, markup, options) {

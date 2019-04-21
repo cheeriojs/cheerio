@@ -4,7 +4,6 @@ node_js:
   - "unstable"
   - "6"
   - "4"
-  - "0.12"
 script: make travis-test
 matrix:
   fast_finish: true
