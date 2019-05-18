@@ -21,6 +21,23 @@ describe('cheerio', function() {
       var $elem = cheerio('<span>foo</span>').html('');
       expect(cheerio.html($elem)).to.equal('<span></span>');
     });
+
+    it('(<root>) : does not render the root element', function() {
+      var $ = cheerio.load('');
+      expect(cheerio.html($.root())).to.equal(
+        '<html><head></head><body></body></html>'
+      );
+    });
+
+    it('(<elem>, <root>, <elem>) : does not render the root element', function() {
+      var $ = cheerio.load('<div>a div</div><span>a span</span>');
+      var $collection = $('div')
+        .add($.root())
+        .add('span');
+      var expected =
+        '<span>a span</span><html><head></head><body><div>a div</div><span>a span</span></body></html><div>a div</div>';
+      expect(cheerio.html($collection)).to.equal(expected);
+    });
   });
 
   describe('.text', function() {
