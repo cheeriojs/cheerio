@@ -1,3 +1,9 @@
+1.0.0-rc.3 / 2019-04-06
+==================
+
+This release corrects a test expectation that was fixed by one of the project's
+dependencies.
+
 1.0.0-rc.2 / 2017-07-02
 ==================
 
