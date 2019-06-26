@@ -142,7 +142,7 @@ describe('parse', function() {
     it('should handle directives: ' + directive, function() {
       var elem = parse.evaluate(directive, defaultOpts, true)[0];
       expect(elem.type).to.equal('directive');
-      expect(elem.data).to.equal('!DOCTYPE html');
+      expect(elem.data).to.equal('!DOCTYPE html ""');
       expect(elem.tagName).to.equal('!doctype');
     });
   });

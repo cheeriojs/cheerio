@@ -23,10 +23,11 @@
     "jsdoc/newline-after-description": 2,
     "jsdoc/require-description-complete-sentence": 2,
     "jsdoc/require-hyphen-before-param-description": 2,
-    "jsdoc/require-param": 2,
     "jsdoc/require-param-description": 2,
     "jsdoc/require-param-name": 2,
-    "jsdoc/require-param-type": 2
+    "jsdoc/require-param-type": 2,
+    "jsdoc/require-param": 2,
+    "jsdoc/valid-types": 2
   },
   "settings": {
     "jsdoc": {
