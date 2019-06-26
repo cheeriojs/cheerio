@@ -2,14 +2,15 @@ var fs = require('fs');
 var path = require('path');
 
 var Benchmark = require('benchmark');
-var jsdom = require('jsdom/lib/old-api.js');
+var JSDOM = require('jsdom').JSDOM;
+var Script = require('vm').Script;
 var cheerio = require('..');
 
 var documentDir = path.join(__dirname, 'documents');
-var jQuerySrc = path.join(
-  __dirname,
-  '../node_modules/jquery/dist/jquery.slim.js'
+var jQuerySrc = fs.readFileSync(
+  path.join(__dirname, '../node_modules/jquery/dist/jquery.slim.js')
 );
+var jQueryScript = new Script(jQuerySrc);
 var filterRe = /./;
 var cheerioOnly = false;
 
@@ -64,20 +65,18 @@ Suites.prototype.add = function(name, fileName, options) {
 Suites.prototype._benchJsDom = function(suite, markup, options) {
   var testFn = options.test;
 
-  jsdom.env({
-    html: markup,
-    scripts: jQuerySrc,
-    done: function(err, window) {
-      var setupData;
-      if (options.setup) {
-        setupData = options.setup.call(null, window.$);
-      }
-      suite.add('jsdom', function() {
-        testFn.call(null, window.$, setupData);
-      });
-      suite.run();
-    }
+  var dom = new JSDOM(markup, { runScripts: 'outside-only' });
+
+  dom.runVMScript(jQueryScript);
+
+  var setupData;
+  if (options.setup) {
+    setupData = options.setup.call(null, dom.window.$);
+  }
+  suite.add('jsdom', function() {
+    testFn.call(null, dom.window.$, setupData);
   });
+  suite.run();
 };
 
 Suites.prototype._benchCheerio = function(suite, markup, options) {
