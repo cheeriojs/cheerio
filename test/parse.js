@@ -1,4 +1,5 @@
 var expect = require('expect.js'),
+    assign = require('lodash/assign'),
     parse = require('../lib/parse'),
     defaultOpts = require('../lib/options').default;
 
@@ -374,6 +375,18 @@ describe('parse', function() {
       expect(childNodes[0].childNodes[0].data).to.be(
         'A <- factor(A, levels = c("c","a","b"))\n'
       );
+    });
+
+    it('should pass the options for including the location info to parse5', function() {
+      var root = parse(
+        '<p>Hello</p>',
+        assign({}, defaultOpts, { sourceCodeLocationInfo: true }),
+        false
+      );
+      var location = root.children[0].sourceCodeLocation;
+
+      expect(location).to.be.an('object');
+      expect(location.endOffset).to.be(12);
     });
   });
 });
