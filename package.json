@@ -1,6 +1,6 @@
 {
   "name": "cheerio",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.3",
   "description": "Tiny, fast, and elegant implementation of core jQuery designed specifically for the server",
   "author": "Matt Mueller <mattmuelle@gmail.com> (mat.io)",
   "license": "MIT",
@@ -26,10 +26,10 @@
   },
   "dependencies": {
     "css-select": "~2.0.0",
-    "dom-serializer": "~0.1.0",
+    "dom-serializer": "~0.1.1",
     "entities": "~1.1.1",
     "htmlparser2": "^3.9.1",
-    "lodash": "^4.17.5",
+    "lodash": "^4.17.11",
     "parse5": "^4.0.0"
   },
   "devDependencies": {
