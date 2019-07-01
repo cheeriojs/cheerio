@@ -45,7 +45,7 @@
     "jquery": "^3.0.0",
     "jsdoc": "https://github.com/cheeriojs/jsdoc.git#exports-mixin",
     "jsdom": "^15.1.1",
-    "lint-staged": "^8.2.1",
+    "lint-staged": "^9.0.0",
     "mocha": "^6.1.4",
     "prettier": "^1.11.0",
     "xyz": "~3.0.0"
