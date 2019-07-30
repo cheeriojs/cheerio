@@ -280,7 +280,7 @@ describe('$(...)', function() {
       expect($('.container').children()).to.have.length(3);
     });
 
-    it('(selector) : should wrap the html of the element with the selector\'s first match', function() {
+    it("(selector) : should wrap the html of the element with the selector's first match", function() {
       var $oranges;
       $('.apple').wrapInner('.orange, .pear');
       $oranges = $('.orange');
@@ -288,7 +288,11 @@ describe('$(...)', function() {
       expect($oranges).to.have.length(2);
       expect($oranges.eq(0).parent()[0]).to.be($('.apple')[0]);
       expect($oranges.eq(0).text()).to.be('Apple');
-      expect($('.apple').eq(0).children()[0]).to.be($oranges[0]);
+      expect(
+        $('.apple')
+          .eq(0)
+          .children()[0]
+      ).to.be($oranges[0]);
       expect($oranges.eq(1).parent()[0]).to.be($fruits[0]);
       expect($oranges.eq(1).text()).to.be('Orange');
     });
@@ -303,19 +307,11 @@ describe('$(...)', function() {
         thisValues.push(this);
       });
 
-      expect(args).to.eql([
-        [0],
-        [1],
-        [2]
-      ]);
-      expect(thisValues).to.eql([
-        $children[0],
-        $children[1],
-        $children[2]
-      ]);
+      expect(args).to.eql([[0], [1], [2]]);
+      expect(thisValues).to.eql([$children[0], $children[1], $children[2]]);
     });
 
-    it('(fn) : should use the returned HTML to wrap each element\'s contents', function() {
+    it("(fn) : should use the returned HTML to wrap each element's contents", function() {
       var $children = $fruits.children();
       var tagNames = ['div', 'span', 'p'];
 
@@ -336,8 +332,7 @@ describe('$(...)', function() {
       expect($fruits.find('.pear')).to.have.length(1);
     });
 
-
-    it('(fn) : should use the returned Cheerio object to wrap each element\'s contents', function() {
+    it("(fn) : should use the returned Cheerio object to wrap each element's contents", function() {
       var $children = $fruits.children();
       var tags = [$('<div></div>'), $('<span></span>'), $('<p></p>')];
 
@@ -358,19 +353,70 @@ describe('$(...)', function() {
       expect($fruits.find('.pear')).to.have.length(1);
     });
 
-
     it('($(...)) : for each element it should add a wrapper elment and add the selected element as its child', function() {
       var $fruitDecorator = $('<div class="fruit-decorator"></div>');
       var $children = $fruits.children();
       $('li').wrapInner($fruitDecorator);
 
       expect($('.fruit-decorator')).to.have.length(3);
-      expect($children.eq(0).children().eq(0).hasClass('fruit-decorator')).to.be.ok();
+      expect(
+        $children
+          .eq(0)
+          .children()
+          .eq(0)
+          .hasClass('fruit-decorator')
+      ).to.be.ok();
       expect($children.eq(0).hasClass('apple')).to.be.ok();
-      expect($children.eq(1).children().eq(0).hasClass('fruit-decorator')).to.be.ok();
+      expect(
+        $children
+          .eq(1)
+          .children()
+          .eq(0)
+          .hasClass('fruit-decorator')
+      ).to.be.ok();
       expect($children.eq(1).hasClass('orange')).to.be.ok();
-      expect($children.eq(2).children().eq(0).hasClass('fruit-decorator')).to.be.ok();
+      expect(
+        $children
+          .eq(2)
+          .children()
+          .eq(0)
+          .hasClass('fruit-decorator')
+      ).to.be.ok();
       expect($children.eq(2).hasClass('pear')).to.be.ok();
+    });
+
+    it('(html) : wraps with nested elements', function() {
+      var $badOrangeJoke = $(
+        '<div class="orange-you-glad"><div class="i-didnt-say-apple"></div></div>'
+      );
+      $('.orange').wrapInner($badOrangeJoke);
+
+      expect(
+        $('.orange')
+          .children()
+          .eq(0)
+          .hasClass('orange-you-glad')
+      ).to.be.ok();
+      expect(
+        $('.orange-you-glad')
+          .children()
+          .eq(0)
+          .hasClass('i-didnt-say-apple')
+      ).to.be.ok();
+      expect(
+        $fruits
+          .children()
+          .eq(2)
+          .hasClass('pear')
+      ).to.be.ok();
+      expect($('.orange-you-glad').children()).to.have.length(1);
+    });
+
+    it('(html) : should only worry about the first tag children', function() {
+      var delicious = '<span> This guy is delicious: <b></b></span>';
+      $('.apple').wrapInner(delicious);
+      expect($('.apple>span>b')).to.have.length(1);
+      expect($('.apple>span>b').text()).to.equal('Apple');
     });
   });
 
