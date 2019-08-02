@@ -28,7 +28,7 @@
     "css-select": "~2.0.0",
     "dom-serializer": "~0.1.1",
     "entities": "~1.1.1",
-    "htmlparser2": "^3.9.1",
+    "htmlparser2": "^4.0.0",
     "lodash": "^4.17.11",
     "parse5": "^5.1.0",
     "parse5-htmlparser2-tree-adapter": "^5.1.0"
