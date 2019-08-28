@@ -15,12 +15,12 @@ subl:
 	@subl lib/ test/ package.json index.js
 
 test-cov:
-	@./node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- --recursive --reporter $(REPORTER)
+	@./node_modules/.bin/nyc node_modules/.bin/_mocha -- --recursive --reporter $(REPORTER)
 
 # Due to occasional unavailability of the code coverage reporting service, the
 # exit status of the command in this recipe may optionally be ignored.
 report-cov: test-cov
-	@cat coverage/lcov.info | ./node_modules/.bin/coveralls || [ "$(OPTIONAL)" = "true" ]
+	@./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls || [ "$(OPTIONAL)" = "true" ]
 
 travis-test: OPTIONAL = true
 travis-test: lint report-cov
