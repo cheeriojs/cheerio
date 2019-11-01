@@ -48,7 +48,7 @@
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
     "prettier": "^1.11.0",
-    "xyz": "~3.0.0"
+    "xyz": "~4.0.0"
   },
   "scripts": {
     "test": "npm run test:lint && npm run test:mocha",
