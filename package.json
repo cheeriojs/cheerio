@@ -43,7 +43,7 @@
     "husky": "^0.14.3",
     "jquery": "^3.0.0",
     "jsdoc": "https://github.com/cheeriojs/jsdoc.git#exports-mixin",
-    "jsdom": "^15.1.1",
+    "jsdom": "^16.0.1",
     "lint-staged": "^8.2.1",
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
