@@ -1,6 +1,6 @@
 {
   "name": "cheerio-htmlparser2",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Tiny, fast, and elegant implementation of core jQuery designed specifically for the server",
   "author": "Renz Holy <renzholy@gmail.com>",
   "license": "MIT",
@@ -18,6 +18,7 @@
   },
   "main": "./index.js",
   "typings": "./index.d.ts",
+  "types": "./index.d.ts",
   "files": [
     "index.js",
     "lib"
@@ -26,28 +27,28 @@
     "node": ">= 0.6"
   },
   "dependencies": {
-    "css-select": "~2.0.0",
-    "dom-serializer": "~0.1.1",
-    "entities": "~1.1.1",
-    "htmlparser2": "^3.9.1",
-    "lodash": "^4.17.11"
+    "css-select": "~2.1.0",
+    "dom-serializer": "~0.2.2",
+    "entities": "~2.0.0",
+    "htmlparser2": "^4.1.0",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "benchmark": "^2.1.0",
-    "coveralls": "^3.0.0",
-    "eslint": "^6.0.1",
-    "eslint-config-prettier": "^6.0.0",
-    "eslint-plugin-jsdoc": "^8.7.0",
+    "benchmark": "^2.1.4",
+    "coveralls": "^3.0.9",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-jsdoc": "^22.0.0",
     "expect.js": "~0.3.1",
-    "husky": "^0.14.3",
-    "jquery": "^3.0.0",
+    "husky": "^4.2.3",
+    "jquery": "^3.4.1",
     "jsdoc": "https://github.com/cheeriojs/jsdoc.git#exports-mixin",
-    "jsdom": "^15.1.1",
-    "lint-staged": "^8.2.1",
-    "mocha": "^6.1.4",
-    "nyc": "^14.1.1",
-    "prettier": "^1.11.0",
-    "xyz": "~3.0.0"
+    "jsdom": "^16.2.1",
+    "lint-staged": "^10.0.8",
+    "mocha": "^7.1.0",
+    "nyc": "^15.0.0",
+    "prettier": "^1.19.1",
+    "xyz": "~4.0.0"
   },
   "scripts": {
     "test": "npm run test:lint && npm run test:mocha",

@@ -314,6 +314,6 @@ interface Document {}
 
 declare const cheerio: CheerioAPI;
 
-declare module 'cheerio' {
+declare module 'cheerio-htmlparser2' {
   export = cheerio;
 }
