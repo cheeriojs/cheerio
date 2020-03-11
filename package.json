@@ -1,6 +1,6 @@
 {
   "name": "cheerio-htmlparser2",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Tiny, fast, and elegant implementation of core jQuery designed specifically for the server",
   "author": "Renz Holy <renzholy@gmail.com>",
   "license": "MIT",
@@ -20,6 +20,7 @@
   "typings": "./index.d.ts",
   "types": "./index.d.ts",
   "files": [
+    "index.d.ts",
     "index.js",
     "lib"
   ],
