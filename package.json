@@ -1,8 +1,8 @@
 {
-  "name": "cheerio",
-  "version": "1.0.0-rc.3",
+  "name": "cheerio-htmlparser2",
+  "version": "1.0.1",
   "description": "Tiny, fast, and elegant implementation of core jQuery designed specifically for the server",
-  "author": "Matt Mueller <mattmuelle@gmail.com> (mat.io)",
+  "author": "Renz Holy <renzholy@gmail.com>",
   "license": "MIT",
   "keywords": [
     "htmlparser",
@@ -14,9 +14,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/cheeriojs/cheerio.git"
+    "url": "git://github.com/RenzHoly/cheerio-htmlparser2.git"
   },
   "main": "./index.js",
+  "typings": "./index.d.ts",
   "files": [
     "index.js",
     "lib"
@@ -29,9 +30,7 @@
     "dom-serializer": "~0.1.1",
     "entities": "~1.1.1",
     "htmlparser2": "^3.9.1",
-    "lodash": "^4.17.11",
-    "parse5": "^5.1.0",
-    "parse5-htmlparser2-tree-adapter": "^5.1.0"
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
     "benchmark": "^2.1.0",

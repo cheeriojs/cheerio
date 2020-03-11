@@ -4,8 +4,8 @@
  * maintained until that time.
  */
 var expect = require('expect.js'),
-    fixtures = require('../fixtures'),
-    cheerio = require('../..');
+  fixtures = require('../fixtures'),
+  cheerio = require('../..');
 
 describe('deprecated APIs', function() {
   /**

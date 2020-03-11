@@ -1,8 +1,8 @@
 var expect = require('expect.js'),
-    cheerio = require('..'),
-    _ = {
-      extend: require('lodash/assignIn')
-    };
+  cheerio = require('..'),
+  _ = {
+    extend: require('lodash/assignIn')
+  };
 
 var xml = function(str, options) {
   options = _.extend({ xml: true }, options);

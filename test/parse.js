@@ -1,7 +1,7 @@
 var expect = require('expect.js'),
-    assign = require('lodash/assign'),
-    parse = require('../lib/parse'),
-    defaultOpts = require('../lib/options').default;
+  assign = require('lodash/assign'),
+  parse = require('../lib/parse'),
+  defaultOpts = require('../lib/options').default;
 
 // Tags
 var basic = '<html></html>';
@@ -49,8 +49,8 @@ describe('parse', function() {
 
     it('should handle sibling tags: ' + siblings, function() {
       var dom = parse.evaluate(siblings, defaultOpts, false),
-          h2 = dom[0],
-          p = dom[1];
+        h2 = dom[0],
+        p = dom[1];
 
       expect(dom).to.have.length(2);
       expect(h2.tagName).to.equal('h2');

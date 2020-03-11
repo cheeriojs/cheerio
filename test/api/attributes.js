@@ -199,12 +199,12 @@ describe('$(...)', function() {
     });
 
     it('("outerHTML") : should render properly', function() {
-      var outerHtml = "<div><a></a></div>";
+      var outerHtml = '<div><a></a></div>';
       var $a = $(outerHtml);
 
-      expect($a.prop("outerHTML")).to.be(outerHtml);
+      expect($a.prop('outerHTML')).to.be(outerHtml);
     });
-    
+
     it('(inherited properties) : prop should support inherited properties', function() {
       expect(selectMenu.prop('childNodes')).to.equal(selectMenu[0].childNodes);
     });

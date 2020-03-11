@@ -1,10 +1,10 @@
 /*global Symbol*/
 var expect = require('expect.js'),
-    cheerio = require('../..'),
-    food = require('../fixtures').food,
-    fruits = require('../fixtures').fruits,
-    drinks = require('../fixtures').drinks,
-    text = require('../fixtures').text;
+  cheerio = require('../..'),
+  food = require('../fixtures').food,
+  fruits = require('../fixtures').fruits,
+  drinks = require('../fixtures').drinks,
+  text = require('../fixtures').text;
 
 describe('$(...)', function() {
   var $;
@@ -660,7 +660,7 @@ describe('$(...)', function() {
   describe('.each', function() {
     it('( (i, elem) -> ) : should loop selected returning fn with (i, elem)', function() {
       var items = [],
-          classes = ['apple', 'orange', 'pear'];
+        classes = ['apple', 'orange', 'pear'];
       $('li').each(function(idx, elem) {
         items[idx] = elem;
         expect(this.attribs['class']).to.equal(classes[idx]);
@@ -683,11 +683,10 @@ describe('$(...)', function() {
 
   if (typeof Symbol !== 'undefined') {
     describe('[Symbol.iterator]', function() {
-
       it('should yield each element', function() {
         // The equivalent of: for (const element of $('li')) ...
         var $li = $('li'),
-            iterator = $li[Symbol.iterator]();
+          iterator = $li[Symbol.iterator]();
         expect(iterator.next().value.attribs['class']).to.equal('apple');
         expect(iterator.next().value.attribs['class']).to.equal('orange');
         expect(iterator.next().value.attribs['class']).to.equal('pear');

@@ -1,0 +1,13 @@
+.gitignore
+.npmrc
+.prettierignore
+.eslintignore
+dist/
+LICENSE
+Makefile
+.gitattributes
+*.tmpl
+scripts/
+fonts/
+CNAME
+*.opts

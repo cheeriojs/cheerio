@@ -1,6 +1,6 @@
 var expect = require('expect.js'),
-    cheerio = require('../..'),
-    forms = require('../fixtures').forms;
+  cheerio = require('../..'),
+  forms = require('../fixtures').forms;
 
 describe('$(...)', function() {
   var $;

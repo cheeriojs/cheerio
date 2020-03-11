@@ -1,7 +1,7 @@
 var expect = require('expect.js'),
-    cheerio = require('../..'),
-    fruits = require('../fixtures').fruits,
-    toArray = Function.call.bind(Array.prototype.slice);
+  cheerio = require('../..'),
+  fruits = require('../fixtures').fruits,
+  toArray = Function.call.bind(Array.prototype.slice);
 
 describe('$(...)', function() {
   var $, $fruits;
