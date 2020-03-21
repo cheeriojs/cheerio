@@ -47,7 +47,7 @@
     "lint-staged": "^8.2.1",
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
-    "prettier": "^1.11.0",
+    "prettier": "^2.0.0",
     "xyz": "~3.0.0"
   },
   "scripts": {
