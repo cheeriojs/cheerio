@@ -30,7 +30,7 @@
     "entities": "~1.1.1",
     "htmlparser2": "^3.9.1",
     "lodash": "^4.17.11",
-    "parse5": "^5.1.0",
+    "parse5": "^6.0.0",
     "parse5-htmlparser2-tree-adapter": "^5.1.0"
   },
   "devDependencies": {
