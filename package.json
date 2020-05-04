@@ -1,6 +1,6 @@
 {
   "name": "cheerio",
-  "version": "0.19.0",
+  "version": "0.19.0+moos.1",
   "description": "Tiny, fast, and elegant implementation of core jQuery designed specifically for the server",
   "author": "Matt Mueller <mattmuelle@gmail.com> (mat.io)",
   "license": "MIT",
@@ -21,7 +21,7 @@
     "node": ">= 0.6"
   },
   "dependencies": {
-    "css-select": "~1.0.0",
+    "css-select": "https://github.com/moos/css-select/tarball/v1.2.0+moos",
     "entities": "~1.1.1",
     "htmlparser2": "~3.8.1",
     "dom-serializer": "~0.1.0",

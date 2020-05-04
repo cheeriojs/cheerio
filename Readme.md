@@ -2,6 +2,10 @@
 
 Fast, flexible, and lean implementation of core jQuery designed specifically for the server.
 
+
+**Moos Fork**  Uses moos/css-select.
+
+
 ## Introduction
 Teach your server HTML.
 
