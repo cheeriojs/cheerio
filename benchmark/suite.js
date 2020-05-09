@@ -67,7 +67,7 @@ Suites.prototype._benchJsDom = function (suite, markup, options) {
 
   var dom = new JSDOM(markup, { runScripts: 'outside-only' });
 
-  dom.runVMScript(jQueryScript);
+  jQueryScript.runInContext(dom.getInternalVMContext());
 
   var setupData;
   if (options.setup) {
