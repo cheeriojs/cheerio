@@ -23,25 +23,27 @@ exports.xml = staticMethods.xml;
 
 /**
  * In order to promote consistency with the jQuery library, users are
- * encouraged to instead use the static method of the same name. For example:
+ * encouraged to instead use the static method of the same name.
  *
+ * @example
  *     var $ = cheerio.load('<div><p></p></div>');
  *     $.contains($('div').get(0), $('p').get(0)); // true
  *     $.contains($('p').get(0), $('div').get(0)); // false
  *
- * @method
+ * @function
  * @deprecated
  */
 exports.contains = staticMethods.contains;
 
 /**
  * In order to promote consistency with the jQuery library, users are
- * encouraged to instead use the static method of the same name. For example:
+ * encouraged to instead use the static method of the same name.
  *
+ * @example
  *     var $ = cheerio.load('');
  *     $.merge([1, 2], [3, 4]) // [1, 2, 3, 4]
  *
- * @method
+ * @function
  * @deprecated
  */
 exports.merge = staticMethods.merge;
@@ -49,25 +51,26 @@ exports.merge = staticMethods.merge;
 /**
  * In order to promote consistency with the jQuery library, users are
  * encouraged to instead use the static method of the same name as it is
- * defined on the "loaded" Cheerio factory function. For example:
+ * defined on the "loaded" Cheerio factory function.
  *
+ * @example
  *     var $ = cheerio.load('');
  *     $.parseHTML('<b>markup</b>');
  *
- * @method
- * @deprecated see {@link static/parseHTML}
+ * @function
+ * @deprecated See {@link static/parseHTML}.
  */
 exports.parseHTML = staticMethods.parseHTML;
 
 /**
  * Users seeking to access the top-level element of a parsed document should
- * instead use the `root` static method of a "loaded" Cheerio function. For
- * example:
+ * instead use the `root` static method of a "loaded" Cheerio function.
  *
+ * @example
  *     var $ = cheerio.load('');
  *     $.root();
  *
- * @method
+ * @function
  * @deprecated
  */
 exports.root = staticMethods.root;

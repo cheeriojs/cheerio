@@ -23,32 +23,34 @@
 <br />
 
 ```js
-const cheerio = require('cheerio')
-const $ = cheerio.load('<h2 class="title">Hello world</h2>')
+const cheerio = require('cheerio');
+const $ = cheerio.load('<h2 class="title">Hello world</h2>');
 
-$('h2.title').text('Hello there!')
-$('h2').addClass('welcome')
+$('h2.title').text('Hello there!');
+$('h2').addClass('welcome');
 
-$.html()
+$.html();
 //=> <html><head></head><body><h2 class="title welcome">Hello there!</h2></body></html>
 ```
 
 ## Installation
+
 `npm install cheerio`
 
 ## Features
-__&#10084; Familiar syntax:__
+
+**&#10084; Familiar syntax:**
 Cheerio implements a subset of core jQuery. Cheerio removes all the DOM inconsistencies and browser cruft from the jQuery library, revealing its truly gorgeous API.
 
-__&#991; Blazingly fast:__
-Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient. Preliminary end-to-end benchmarks suggest that cheerio is about __8x__ faster than JSDOM.
+**&#991; Blazingly fast:**
+Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient. Preliminary end-to-end benchmarks suggest that cheerio is about **8x** faster than JSDOM.
 
-__&#10049; Incredibly flexible:__
+**&#10049; Incredibly flexible:**
 Cheerio wraps around [parse5](https://github.com/inikulin/parse5) parser and can optionally use @FB55's forgiving [htmlparser2](https://github.com/fb55/htmlparser2/). Cheerio can parse nearly any HTML or XML document.
 
 ## Cheerio is not a web browser
 
-Cheerio parses markup and provides an API for traversing/manipulating the resulting data structure. It does not interpret the result as a web browser does. Specifically, it does *not* produce a visual rendering, apply CSS, load external resources, or execute JavaScript. If your use case requires any of this functionality, you should consider projects like [PhantomJS](http://phantomjs.org/) or [JSDom](https://github.com/tmpvar/jsdom).
+Cheerio parses markup and provides an API for traversing/manipulating the resulting data structure. It does not interpret the result as a web browser does. Specifically, it does _not_ produce a visual rendering, apply CSS, load external resources, or execute JavaScript. If your use case requires any of this functionality, you should consider projects like [PhantomJS](http://phantomjs.org/) or [JSDom](https://github.com/tmpvar/jsdom).
 
 ## Sponsors
 
@@ -135,6 +137,7 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 This is the HTML markup we will be using in all of the API examples.
 
 ### Loading
+
 First you need to load in the HTML. This step in jQuery is implicit, since jQuery operates on the one, baked-in DOM. With Cheerio, we need to pass in the HTML document.
 
 This is the _preferred_ method:
@@ -163,9 +166,9 @@ object to `.load()`:
 
 ```js
 const $ = cheerio.load('<ul id="fruits">...</ul>', {
-    xml: {
-      normalizeWhitespace: true,
-    }
+  xml: {
+    normalizeWhitespace: true,
+  },
 });
 ```
 
@@ -209,23 +212,25 @@ const $ = cheerio.load(dom);
 
 Cheerio's selector implementation is nearly identical to jQuery's, so the API is very similar.
 
-#### $( selector, [context], [root] )
+#### \$( selector, [context], [root] )
+
 `selector` searches within the `context` scope which searches within the `root` scope. `selector` and `context` can be a string expression, DOM Element, array of DOM elements, or cheerio object. `root` is typically the HTML document string.
 
 This selector method is the starting point for traversing and manipulating the document. Like jQuery, it's the primary method for selecting elements in the document, but unlike jQuery it's built on top of the CSSSelect library, which implements most of the Sizzle selectors.
 
 ```js
-$('.apple', '#fruits').text()
+$('.apple', '#fruits').text();
 //=> Apple
 
-$('ul .pear').attr('class')
+$('ul .pear').attr('class');
 //=> pear
 
-$('li[class=orange]').html()
+$('li[class=orange]').html();
 //=> Orange
 ```
 
 ##### XML Namespaces
+
 You can select with XML Namespaces but [due to the CSS specification](https://www.w3.org/TR/2011/REC-css3-selectors-20110929/#attribute-selectors), the colon (`:`) needs to be escaped for the selector to be valid.
 
 ```js
@@ -233,10 +238,11 @@ $('[xml\\:id="main"');
 ```
 
 ### Rendering
+
 When you're ready to render the document, you can call the `html` method on the "root" selection:
 
 ```js
-$.root().html()
+$.root().html();
 //=>  <html>
 //      <head></head>
 //      <body>
@@ -252,7 +258,7 @@ $.root().html()
 If you want to render the [`outerHTML`](https://developer.mozilla.org/en-US/docs/Web/API/Element/outerHTML) of a selection, you can use the `html` utility functon:
 
 ```js
-cheerio.html($('.pear'))
+cheerio.html($('.pear'));
 //=> <li class="pear">Pear</li>
 ```
 
@@ -265,15 +271,15 @@ const $ = cheerio.load('<media:thumbnail url="http://www.foo.com/keyframe.jpg" w
 ... and later want to render to XML. To do this, you can use the 'xml' utility function:
 
 ```js
-$.xml()
+$.xml();
 //=>  <media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123"/>
 ```
 
 You may also render the text content of a Cheerio object using the `text` static method:
 
 ```js
-const $ = cheerio.load('This is <em>content</em>.')
-cheerio.text($('body'))
+const $ = cheerio.load('This is <em>content</em>.');
+cheerio.text($('body'));
 //=> This is content.
 ```
 
@@ -283,7 +289,7 @@ Once you have loaded a document, you may extend the prototype or the equivalent 
 
 ```js
 const $ = cheerio.load('<html><body>Hello, <b>world</b>!</body></html>');
-$.prototype.logHtml = function() {
+$.prototype.logHtml = function () {
   console.log(this.html());
 };
 
@@ -393,13 +399,13 @@ This will download the development packages and run the test suite.
 
 This library stands on the shoulders of some incredible developers. A special thanks to:
 
-__&#8226; @FB55 for node-htmlparser2 & CSSSelect:__
+**&#8226; @FB55 for node-htmlparser2 & CSSSelect:**
 Felix has a knack for writing speedy parsing engines. He completely re-wrote both @tautologistic's `node-htmlparser` and @harry's `node-soupselect` from the ground up, making both of them much faster and more flexible. Cheerio would not be possible without his foundational work
 
-__&#8226; @jQuery team for jQuery:__
+**&#8226; @jQuery team for jQuery:**
 The core API is the best of its class and despite dealing with all the browser inconsistencies the code base is extremely clean and easy to follow. Much of cheerio's implementation and documentation is from jQuery. Thanks guys.
 
-__&#8226; @visionmedia:__
+**&#8226; @visionmedia:**
 The style, the structure, the open-source"-ness" of this library comes from studying TJ's style and using many of his libraries. This dude consistently pumps out high-quality libraries and has always been more than willing to help or answer questions. You rock TJ.
 
 ## License

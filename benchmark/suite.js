@@ -14,17 +14,17 @@ var jQueryScript = new Script(jQuerySrc);
 var filterRe = /./;
 var cheerioOnly = false;
 
-var Suites = (module.exports = function() {});
+var Suites = (module.exports = function () {});
 
-Suites.prototype.filter = function(str) {
+Suites.prototype.filter = function (str) {
   filterRe = new RegExp(str, 'i');
 };
 
-Suites.prototype.cheerioOnly = function() {
+Suites.prototype.cheerioOnly = function () {
   cheerioOnly = true;
 };
 
-Suites.prototype.add = function(name, fileName, options) {
+Suites.prototype.add = function (name, fileName, options) {
   var markup, suite;
   if (!filterRe.test(name)) {
     return;
@@ -32,21 +32,21 @@ Suites.prototype.add = function(name, fileName, options) {
   markup = fs.readFileSync(path.join(documentDir, fileName), 'utf8');
   suite = new Benchmark.Suite(name);
 
-  suite.on('start', function() {
+  suite.on('start', function () {
     console.log('Test: ' + name + ' (file: ' + fileName + ')');
   });
-  suite.on('cycle', function(event) {
+  suite.on('cycle', function (event) {
     if (event.target.error) {
       return;
     }
     console.log('\t' + String(event.target));
   });
-  suite.on('error', function(event) {
+  suite.on('error', function (event) {
     console.log('*** Error in ' + event.target.name + ': ***');
     console.log('\t' + event.target.error);
     console.log('*** Test invalidated. ***');
   });
-  suite.on('complete', function(event) {
+  suite.on('complete', function (event) {
     if (event.target.error) {
       console.log();
       return;
@@ -62,7 +62,7 @@ Suites.prototype.add = function(name, fileName, options) {
   }
 };
 
-Suites.prototype._benchJsDom = function(suite, markup, options) {
+Suites.prototype._benchJsDom = function (suite, markup, options) {
   var testFn = options.test;
 
   var dom = new JSDOM(markup, { runScripts: 'outside-only' });
@@ -73,20 +73,20 @@ Suites.prototype._benchJsDom = function(suite, markup, options) {
   if (options.setup) {
     setupData = options.setup.call(null, dom.window.$);
   }
-  suite.add('jsdom', function() {
+  suite.add('jsdom', function () {
     testFn.call(null, dom.window.$, setupData);
   });
   suite.run();
 };
 
-Suites.prototype._benchCheerio = function(suite, markup, options) {
+Suites.prototype._benchCheerio = function (suite, markup, options) {
   var $ = cheerio.load(markup);
   var testFn = options.test;
   var setupData;
   if (options.setup) {
     setupData = options.setup.call(null, $);
   }
-  suite.add('cheerio', function() {
+  suite.add('cheerio', function () {
     testFn.call(null, $, setupData);
   });
 };

@@ -25,49 +25,48 @@
     "node": ">= 0.6"
   },
   "dependencies": {
-    "css-select": "~2.0.0",
-    "dom-serializer": "~0.1.1",
-    "entities": "~1.1.1",
-    "htmlparser2": "^3.9.1",
+    "css-select": "~2.1.0",
+    "dom-serializer": "~1.0.1",
+    "entities": "~2.0.2",
+    "htmlparser2": "^4.1.0",
     "lodash": "^4.17.11",
-    "parse5": "^5.1.0",
-    "parse5-htmlparser2-tree-adapter": "^5.1.0"
+    "parse5": "^6.0.0",
+    "parse5-htmlparser2-tree-adapter": "^6.0.0"
   },
   "devDependencies": {
     "benchmark": "^2.1.0",
     "coveralls": "^3.0.0",
-    "eslint": "^6.0.1",
+    "eslint": "^7.0.0",
     "eslint-config-prettier": "^6.0.0",
-    "eslint-plugin-jsdoc": "^8.7.0",
+    "eslint-plugin-jsdoc": "^25.0.1",
     "expect.js": "~0.3.1",
-    "husky": "^0.14.3",
+    "husky": "^4.2.5",
     "jquery": "^3.0.0",
     "jsdoc": "https://github.com/cheeriojs/jsdoc.git#exports-mixin",
-    "jsdom": "^15.1.1",
-    "lint-staged": "^8.2.1",
-    "mocha": "^6.1.4",
-    "nyc": "^14.1.1",
-    "prettier": "^1.11.0",
-    "xyz": "~3.0.0"
+    "jsdom": "^16.2.2",
+    "lint-staged": "^10.2.2",
+    "mocha": "^7.1.2",
+    "nyc": "^15.0.1",
+    "prettier": "^2.0.5",
+    "xyz": "~4.0.0"
   },
   "scripts": {
     "test": "npm run test:lint && npm run test:mocha",
     "test:mocha": "mocha --recursive --reporter dot",
     "test:lint": "eslint --ignore-pattern docs --ignore-path .gitignore .",
-    "precommit": "lint-staged"
+    "pre-commit": "lint-staged"
   },
   "prettier": {
-    "singleQuote": true
+    "singleQuote": true,
+    "tabWidth": 2
   },
   "lint-staged": {
     "*.js": [
       "prettier --write",
-      "npm run test:lint -- --fix",
-      "git add"
+      "npm run test:lint -- --fix"
     ],
-    "*.json": [
-      "prettier --write",
-      "git add"
+    "*.{json,md}": [
+      "prettier --write"
     ]
   }
 }

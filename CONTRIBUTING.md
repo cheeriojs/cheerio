@@ -26,12 +26,12 @@ Please make sure commit hooks are run, which will enforce the code style.
 
 When implementing private functionality that isn't part of the jQuery API, please opt for:
 
-* _Static methods_: If the functionality does not require a reference to a
+- _Static methods_: If the functionality does not require a reference to a
   Cheerio instance, simply define a named function within the module it is
   needed.
-* _Instance methods_: If the functionality requires a reference to a Cheerio
+- _Instance methods_: If the functionality requires a reference to a Cheerio
   instance, informally define the method as "private" using the following
   conventions:
-  * Define the method as a function on the Cheerio prototype
-  * Prefix the method name with an underscore (`_`) character
-  * Include `@api private` in the code comment the documents the method
+  - Define the method as a function on the Cheerio prototype
+  - Prefix the method name with an underscore (`_`) character
+  - Include `@api private` in the code comment the documents the method
