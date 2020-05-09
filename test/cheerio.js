@@ -240,8 +240,8 @@ describe('cheerio', function () {
     expect(typeof $elem.text()).to.equal('string');
   });
 
-  describe('.load', function() {
-    it('should generate selections as proper instances', function() {
+  describe('.load', function () {
+    it('should generate selections as proper instances', function () {
       var $ = cheerio.load(fruits);
 
       expect($('.apple')).to.be.a($);
@@ -256,7 +256,7 @@ describe('cheerio', function () {
       expect(lis).to.have.length(3);
     });
 
-    it('should allow loading a pre-parsed DOM', function() {
+    it('should allow loading a pre-parsed DOM', function () {
       var dom = htmlparser2.parseDOM(food),
           $ = cheerio.load(dom);
 
@@ -291,7 +291,9 @@ describe('cheerio', function () {
           '<!doctype html><html><head><title>Some test</title></head><body><footer><p>Copyright &copy; 2003-2014</p></footer></body></html>',
           expectedHtml = '<p>Copyright &copy; 2003-2014</p>',
           expectedXml = '<p>Copyright © 2003-2014</p>',
-          domNotEncoded = cheerio.load(str, { xml: { decodeEntities: false } }),
+          domNotEncoded = cheerio.load(str, {
+            xml: { decodeEntities: false },
+          }),
           domEncoded = cheerio.load(str);
 
       expect(domNotEncoded('footer').html()).to.be(expectedHtml);

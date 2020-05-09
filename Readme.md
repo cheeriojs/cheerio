@@ -171,8 +171,8 @@ object to `.load()`:
 ```js
 const $ = cheerio.load('<ul id="fruits">...</ul>', {
   xml: {
-    normalizeWhitespace: true
-  }
+    normalizeWhitespace: true,
+  },
 });
 ```
 
@@ -293,7 +293,7 @@ Once you have loaded a document, you may extend the prototype or the equivalent 
 
 ```js
 const $ = cheerio.load('<html><body>Hello, <b>world</b>!</body></html>');
-$.prototype.logHtml = function() {
+$.prototype.logHtml = function () {
   console.log(this.html());
 };
 
