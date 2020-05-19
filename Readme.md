@@ -3,6 +3,10 @@
 <h5 align="center">Fast, flexible & lean implementation of core jQuery designed specifically for the server.</h5>
 
 <div align="center">
+  <a href="https://github.com/cheeriojs/cheerio/wiki/Chinese-version">中文</a>
+</div>
+
+<div align="center">
   <a href="http://travis-ci.org/cheeriojs/cheerio">
     <img src="https://secure.travis-ci.org/cheeriojs/cheerio.svg?branch=master" alt="Travis CI" />
   </a>
