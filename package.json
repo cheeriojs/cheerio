@@ -38,7 +38,7 @@
     "coveralls": "^3.0.0",
     "eslint": "^7.0.0",
     "eslint-config-prettier": "^6.0.0",
-    "eslint-plugin-jsdoc": "^25.0.1",
+    "eslint-plugin-jsdoc": "^26.0.2",
     "expect.js": "~0.3.1",
     "husky": "^4.2.5",
     "jquery": "^3.0.0",
