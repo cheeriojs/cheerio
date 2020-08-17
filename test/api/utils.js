@@ -120,7 +120,7 @@ describe('cheerio', function () {
 
     it('(buffer) : should accept a buffer', function () {
       var $ = cheerio.load(
-        new Buffer('<html><head></head><body>foo</body></html>')
+        Buffer.from('<html><head></head><body>foo</body></html>')
       );
       expect($.html()).to.be('<html><head></head><body>foo</body></html>');
     });
