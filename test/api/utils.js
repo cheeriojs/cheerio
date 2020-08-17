@@ -122,11 +122,7 @@ describe('cheerio', function() {
 
     it('(buffer) : should accept a buffer', function() {
       var html = '<html><head></head><body>foo</body></html>';
-      var buf =
-        Buffer.from && Buffer.from !== Uint8Array.from
-          ? Buffer.from(html)
-          : new Buffer(html);
-      var $html = cheerio.load(buf);
+      var $html = cheerio.load(Buffer.from(html));
       expect($html.html()).to.be(html);
     });
   });
