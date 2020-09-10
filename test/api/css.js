@@ -48,18 +48,18 @@ describe('$(...)', function () {
       expect(el.css()).to.eql({ position: 'absolute' });
     });
 
-    it('(prop): should return undefined for unmatched elements', function() {
+    it('(prop): should return undefined for unmatched elements', function () {
       var $ = cheerio.load('<li style="color:;position:absolute;">');
       expect($('ul').css('background-image')).to.eql(undefined);
     });
 
-    it('(prop): should return undefined for unmatched styles', function() {
+    it('(prop): should return undefined for unmatched styles', function () {
       var el = cheerio('<li style="color:;position:absolute;">');
       expect(el.css('margin')).to.eql(undefined);
     });
 
-    describe('(prop, function):', function() {
-      beforeEach(function() {
+    describe('(prop, function):', function () {
+      beforeEach(function () {
         this.$el = cheerio(
           '<div style="margin: 0px;"></div><div style="margin: 1px;"></div><div style="margin: 2px;">'
         );

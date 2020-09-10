@@ -75,7 +75,7 @@ describe('$(...)', function () {
         $('#fruits').find(':bah');
       }).to.throwException(function (err) {
         expect(err).to.be.a(Error);
-        expect(err.message).to.contain('unmatched pseudo-class')
+        expect(err.message).to.contain('unmatched pseudo-class');
       });
     });
 
@@ -454,7 +454,7 @@ describe('$(...)', function () {
         $('.orange').siblings(':bah');
       }).to.throwException(function (err) {
         expect(err).to.be.a(Error);
-        expect(err.message).to.contain('unmatched pseudo-class')
+        expect(err.message).to.contain('unmatched pseudo-class');
       });
     });
 
