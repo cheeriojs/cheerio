@@ -28,7 +28,6 @@
     "css-select": "~2.1.0",
     "dom-serializer": "~1.1.0",
     "entities": "~2.0.2",
-    "events": "^3.2.0",
     "htmlparser2": "^4.1.0",
     "lodash": "^4.17.11",
     "parse5": "^6.0.0",
