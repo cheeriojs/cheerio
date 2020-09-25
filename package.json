@@ -17,14 +17,17 @@
     "url": "git://github.com/cheeriojs/cheerio.git"
   },
   "main": "./index.js",
+  "types": "types/index.d.ts",
   "files": [
     "index.js",
+    "types/index.d.ts",
     "lib"
   ],
   "engines": {
     "node": ">= 0.6"
   },
   "dependencies": {
+    "@types/node": "^14.11.2",
     "css-select": "~2.1.0",
     "dom-serializer": "~1.1.0",
     "entities": "~2.0.2",
@@ -48,12 +51,14 @@
     "mocha": "^8.1.1",
     "nyc": "^15.0.1",
     "prettier": "^2.1.1",
+    "tsd": "^0.13.1",
     "xyz": "~4.0.0"
   },
   "scripts": {
     "test": "npm run test:lint && npm run test:mocha",
     "test:mocha": "mocha --recursive --reporter dot --parallel",
     "test:lint": "eslint --ignore-pattern docs --ignore-path .gitignore .",
+    "test:types": "tsd",
     "pre-commit": "lint-staged"
   },
   "prettier": {
