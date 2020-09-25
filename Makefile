@@ -5,6 +5,9 @@ UPSTREAM = git@github.com:cheeriojs/cheerio.git
 lint:
 	@npm run test:lint
 
+types:
+	@npm run test:types
+
 test:
 	@npm run test
 
@@ -23,7 +26,7 @@ report-cov: test-cov
 	@./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls || [ "$(OPTIONAL)" = "true" ]
 
 travis-test: OPTIONAL = true
-travis-test: lint report-cov
+travis-test: lint types report-cov
 	@true
 
 bench:
