@@ -1,5 +1,4 @@
 var expect = require('expect.js'),
-    assign = require('lodash/assign'),
     parse = require('../lib/parse'),
     defaultOpts = require('../lib/options').default;
 
@@ -380,7 +379,7 @@ describe('parse', function () {
     it('should pass the options for including the location info to parse5', function () {
       var root = parse(
         '<p>Hello</p>',
-        assign({}, defaultOpts, { sourceCodeLocationInfo: true }),
+        Object.assign({}, defaultOpts, { sourceCodeLocationInfo: true }),
         false
       );
       var location = root.children[0].sourceCodeLocation;
