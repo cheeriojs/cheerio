@@ -36,9 +36,9 @@
   "devDependencies": {
     "benchmark": "^2.1.4",
     "coveralls": "^3.0.2",
-    "eslint": "^7.0.0",
+    "eslint": "^7.10.0",
     "eslint-config-prettier": "^6.0.0",
-    "eslint-plugin-jsdoc": "^30.4.0",
+    "eslint-plugin-jsdoc": "^30.6.2",
     "expect.js": "~0.3.1",
     "husky": "^4.2.5",
     "jquery": "^3.0.0",
