@@ -3,10 +3,7 @@ var expect = require('expect.js'),
     cheerio = require('../'),
     fixtures = require('./fixtures'),
     fruits = fixtures.fruits,
-    food = fixtures.food,
-    _ = {
-      filter: require('lodash/filter'),
-    };
+    food = fixtures.food;
 
 // HTML
 var script = '<script src="script.js" type="text/javascript"></script>',
@@ -151,10 +148,10 @@ describe('cheerio', function () {
     var $elems = cheerio('.apple, #fruits', fruits);
     expect($elems).to.have.length(2);
 
-    var $apple = _.filter($elems, function (elem) {
+    var $apple = $elems.toArray().filter(function (elem) {
       return elem.attribs['class'] === 'apple';
     });
-    var $fruits = _.filter($elems, function (elem) {
+    var $fruits = $elems.toArray().filter(function (elem) {
       return elem.attribs.id === 'fruits';
     });
     testAppleSelect($apple);
