@@ -148,10 +148,10 @@ describe('cheerio', function () {
     var $elems = cheerio('.apple, #fruits', fruits);
     expect($elems).to.have.length(2);
 
-    var $apple = Array.from($elems).filter(function (elem) {
+    var $apple = $elems.toArray().filter(function (elem) {
       return elem.attribs['class'] === 'apple';
     });
-    var $fruits = Array.from($elems).filter(function (elem) {
+    var $fruits = $elems.toArray().filter(function (elem) {
       return elem.attribs.id === 'fruits';
     });
     testAppleSelect($apple);
