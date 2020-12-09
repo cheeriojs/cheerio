@@ -25,7 +25,8 @@ Suites.prototype.cheerioOnly = function () {
 };
 
 Suites.prototype.add = function (name, fileName, options) {
-  var markup, suite;
+  var markup;
+  var suite;
   if (!filterRe.test(name)) {
     return;
   }

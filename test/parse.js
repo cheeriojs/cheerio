@@ -1,6 +1,6 @@
-var expect = require('expect.js'),
-    parse = require('../lib/parse'),
-    defaultOpts = require('../lib/options').default;
+var expect = require('expect.js');
+var parse = require('../lib/parse');
+var defaultOpts = require('../lib/options').default;
 
 // Tags
 var basic = '<html></html>';
@@ -47,9 +47,9 @@ describe('parse', function () {
     });
 
     it('should handle sibling tags: ' + siblings, function () {
-      var dom = parse.evaluate(siblings, defaultOpts, false),
-          h2 = dom[0],
-          p = dom[1];
+      var dom = parse.evaluate(siblings, defaultOpts, false);
+      var h2 = dom[0];
+      var p = dom[1];
 
       expect(dom).to.have.length(2);
       expect(h2.tagName).to.equal('h2');

@@ -1,13 +1,13 @@
-var expect = require('expect.js'),
-    htmlparser2 = require('htmlparser2'),
-    cheerio = require('../'),
-    fixtures = require('./fixtures'),
-    fruits = fixtures.fruits,
-    food = fixtures.food;
+var expect = require('expect.js');
+var htmlparser2 = require('htmlparser2');
+var cheerio = require('../');
+var fixtures = require('./fixtures');
+var fruits = fixtures.fruits;
+var food = fixtures.food;
 
 // HTML
-var script = '<script src="script.js" type="text/javascript"></script>',
-    multiclass = '<p><a class="btn primary" href="#">Save</a></p>';
+var script = '<script src="script.js" type="text/javascript"></script>';
+var multiclass = '<p><a class="btn primary" href="#">Save</a></p>';
 
 describe('cheerio', function () {
   it('should get the version', function () {
@@ -102,9 +102,9 @@ describe('cheerio', function () {
   });
 
   it('should select only elements inside given context (Issue #193)', function () {
-    var $ = cheerio.load(food),
-        $fruits = $('#fruits'),
-        fruitElements = $('li', $fruits);
+    var $ = cheerio.load(food);
+    var $fruits = $('#fruits');
+    var fruitElements = $('li', $fruits);
 
     expect(fruitElements).to.have.length(3);
   });
@@ -245,38 +245,38 @@ describe('cheerio', function () {
     });
 
     it('should be able to filter down using the context', function () {
-      var $ = cheerio.load(fruits),
-          apple = $('.apple', 'ul'),
-          lis = $('li', 'ul');
+      var $ = cheerio.load(fruits);
+      var apple = $('.apple', 'ul');
+      var lis = $('li', 'ul');
 
       expect(apple).to.have.length(1);
       expect(lis).to.have.length(3);
     });
 
     it('should allow loading a pre-parsed DOM', function () {
-      var dom = htmlparser2.parseDOM(food),
-          $ = cheerio.load(dom);
+      var dom = htmlparser2.parseDOM(food);
+      var $ = cheerio.load(dom);
 
       expect($('ul')).to.have.length(3);
     });
 
     it('should render xml in html() when options.xml = true', function () {
-      var str = '<MixedCaseTag UPPERCASEATTRIBUTE=""></MixedCaseTag>',
-          expected = '<MixedCaseTag UPPERCASEATTRIBUTE=""/>',
-          $ = cheerio.load(str, { xml: true });
+      var str = '<MixedCaseTag UPPERCASEATTRIBUTE=""></MixedCaseTag>';
+      var expected = '<MixedCaseTag UPPERCASEATTRIBUTE=""/>';
+      var $ = cheerio.load(str, { xml: true });
 
       expect($('MixedCaseTag').get(0).tagName).to.equal('MixedCaseTag');
       expect($.html()).to.be(expected);
     });
 
     it('should render xml in html() when options.xml = true passed to html()', function () {
-      var str = '<MixedCaseTag UPPERCASEATTRIBUTE=""></MixedCaseTag>',
-          // since parsing done without xml flag, all tags converted to lowercase
-          expectedXml =
-          '<html><head/><body><mixedcasetag uppercaseattribute=""/></body></html>',
-          expectedNoXml =
-          '<html><head></head><body><mixedcasetag uppercaseattribute=""></mixedcasetag></body></html>',
-          $ = cheerio.load(str);
+      var str = '<MixedCaseTag UPPERCASEATTRIBUTE=""></MixedCaseTag>';
+      // since parsing done without xml flag, all tags converted to lowercase
+      var expectedXml =
+        '<html><head/><body><mixedcasetag uppercaseattribute=""/></body></html>';
+      var expectedNoXml =
+        '<html><head></head><body><mixedcasetag uppercaseattribute=""></mixedcasetag></body></html>';
+      var $ = cheerio.load(str);
 
       expect($('MixedCaseTag').get(0).tagName).to.equal('mixedcasetag');
       expect($.html()).to.be(expectedNoXml);
@@ -285,13 +285,13 @@ describe('cheerio', function () {
 
     it('should respect options on the element level', function () {
       var str =
-          '<!doctype html><html><head><title>Some test</title></head><body><footer><p>Copyright &copy; 2003-2014</p></footer></body></html>',
-          expectedHtml = '<p>Copyright &copy; 2003-2014</p>',
-          expectedXml = '<p>Copyright © 2003-2014</p>',
-          domNotEncoded = cheerio.load(str, {
-            xml: { decodeEntities: false },
-          }),
-          domEncoded = cheerio.load(str);
+        '<!doctype html><html><head><title>Some test</title></head><body><footer><p>Copyright &copy; 2003-2014</p></footer></body></html>';
+      var expectedHtml = '<p>Copyright &copy; 2003-2014</p>';
+      var expectedXml = '<p>Copyright © 2003-2014</p>';
+      var domNotEncoded = cheerio.load(str, {
+        xml: { decodeEntities: false },
+      });
+      var domEncoded = cheerio.load(str);
 
       expect(domNotEncoded('footer').html()).to.be(expectedHtml);
       // TODO: Make it more html friendly, maybe with custom encode tables

@@ -1,6 +1,6 @@
-var expect = require('expect.js'),
-    fixtures = require('../fixtures'),
-    cheerio = require('../..');
+var expect = require('expect.js');
+var fixtures = require('../fixtures');
+var cheerio = require('../..');
 
 describe('cheerio', function () {
   describe('.html', function () {
@@ -241,7 +241,8 @@ describe('cheerio', function () {
 
   describe('.merge', function () {
     var $ = cheerio.load('');
-    var arr1, arr2;
+    var arr1;
+    var arr2;
 
     beforeEach(function () {
       arr1 = [1, 2, 3];

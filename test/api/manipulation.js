@@ -1,10 +1,11 @@
-var expect = require('expect.js'),
-    cheerio = require('../..'),
-    fruits = require('../fixtures').fruits,
-    toArray = Function.call.bind(Array.prototype.slice);
+var expect = require('expect.js');
+var cheerio = require('../..');
+var fruits = require('../fixtures').fruits;
+var toArray = Function.call.bind(Array.prototype.slice);
 
 describe('$(...)', function () {
-  var $, $fruits;
+  var $;
+  var $fruits;
 
   beforeEach(function () {
     $ = cheerio.load(fruits);
@@ -435,7 +436,9 @@ describe('$(...)', function () {
 
     it('(fn) : should add returned string as last child', function () {
       $fruits = $fruits.children();
-      var $apple, $orange, $pear;
+      var $apple;
+      var $orange;
+      var $pear;
 
       $fruits.append(function () {
         return '<div class="first">';
@@ -451,7 +454,9 @@ describe('$(...)', function () {
     });
 
     it('(fn) : should add returned Cheerio object as last child', function () {
-      var $apple, $orange, $pear;
+      var $apple;
+      var $orange;
+      var $pear;
       $fruits = $fruits.children();
 
       $fruits.append(function () {
@@ -468,7 +473,9 @@ describe('$(...)', function () {
     });
 
     it('(fn) : should add returned Node as last child', function () {
-      var $apple, $orange, $pear;
+      var $apple;
+      var $orange;
+      var $pear;
       $fruits = $fruits.children();
 
       $fruits.append(function () {
@@ -602,7 +609,9 @@ describe('$(...)', function () {
     });
 
     it('(fn) : should add returned string as first child', function () {
-      var $apple, $orange, $pear;
+      var $apple;
+      var $orange;
+      var $pear;
       $fruits = $fruits.children();
 
       $fruits.prepend(function () {
@@ -619,7 +628,9 @@ describe('$(...)', function () {
     });
 
     it('(fn) : should add returned Cheerio object as first child', function () {
-      var $apple, $orange, $pear;
+      var $apple;
+      var $orange;
+      var $pear;
       $fruits = $fruits.children();
 
       $fruits.prepend(function () {
@@ -636,7 +647,9 @@ describe('$(...)', function () {
     });
 
     it('(fn) : should add returned Node as first child', function () {
-      var $apple, $orange, $pear;
+      var $apple;
+      var $orange;
+      var $pear;
       $fruits = $fruits.children();
 
       $fruits.prepend(function () {

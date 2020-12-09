@@ -3,9 +3,9 @@
  * removed in the next major release of Cheerio, but their stability should be
  * maintained until that time.
  */
-var expect = require('expect.js'),
-    fixtures = require('../fixtures'),
-    cheerio = require('../..');
+var expect = require('expect.js');
+var fixtures = require('../fixtures');
+var cheerio = require('../..');
 
 describe('deprecated APIs', function () {
   /**
@@ -39,7 +39,8 @@ describe('deprecated APIs', function () {
      *     $.merge([1, 2], [3, 4]) // [1, 2, 3, 4]
      */
     describe('.merge', function () {
-      var arr1, arr2;
+      var arr1;
+      var arr2;
       beforeEach(function () {
         arr1 = [1, 2, 3];
         arr2 = [4, 5, 6];

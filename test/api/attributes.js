@@ -140,7 +140,8 @@ describe('$(...)', function () {
   });
 
   describe('.prop', function () {
-    var checkbox, selectMenu;
+    var checkbox;
+    var selectMenu;
 
     beforeEach(function () {
       $ = cheerio.load(inputs);

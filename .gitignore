@@ -1,6 +1,5 @@
 node_modules
 npm-debug.log
 .DS_Store
-.c9revisions
 .nyc_output
 /docs/out/

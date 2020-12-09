@@ -1,5 +1,5 @@
-var expect = require('expect.js'),
-    cheerio = require('..');
+var expect = require('expect.js');
+var cheerio = require('..');
 
 var xml = function (str, options) {
   options = Object.assign({ xml: true }, options);
