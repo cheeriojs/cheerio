@@ -27,8 +27,7 @@
     "node": ">= 0.6"
   },
   "dependencies": {
-    "@types/node": "^14.11.2",
-    "css-select": "~3.1.0",
+    "css-select": "~3.1.1",
     "dom-serializer": "~1.2.0",
     "entities": "~2.1.0",
     "htmlparser2": "^6.0.0",
@@ -37,6 +36,7 @@
     "parse5-htmlparser2-tree-adapter": "^6.0.0"
   },
   "devDependencies": {
+    "@types/node": "^14.14.10",
     "benchmark": "^2.1.4",
     "coveralls": "^3.0.2",
     "eslint": "^7.10.0",
