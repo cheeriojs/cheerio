@@ -55,10 +55,16 @@
     "xyz": "~4.0.0"
   },
   "scripts": {
-    "test": "npm run test:lint && npm run test:mocha",
+    "test": "npm run lint && npm run test:mocha && npm run test:types",
     "test:mocha": "mocha --recursive --reporter dot --parallel",
-    "test:lint": "eslint --ignore-pattern docs --ignore-path .gitignore .",
     "test:types": "tsd",
+    "lint": "npm run lint:es && npm run lint:prettier",
+    "lint:es": "eslint --ignore-path .prettierignore .",
+    "lint:prettier": "npm run format:prettier:raw -- --check",
+    "format": "npm run format:es && npm run format:prettier",
+    "format:es": "npm run lint:es -- --fix",
+    "format:prettier": "npm run format:prettier:raw -- --write",
+    "format:prettier:raw": "prettier '**/*.{js,ts,md,json,yml}' --ignore-path .prettierignore",
     "pre-commit": "lint-staged"
   },
   "prettier": {
@@ -70,7 +76,7 @@
       "prettier --write",
       "npm run test:lint -- --fix"
     ],
-    "*.{json,md}": [
+    "*.{json,md,ts,yml}": [
       "prettier --write"
     ]
   }
