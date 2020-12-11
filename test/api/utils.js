@@ -33,7 +33,7 @@ describe('cheerio', function () {
       var $ = cheerio.load('<div>a div</div><span>a span</span>');
       var $collection = $('div').add($.root()).add('span');
       var expected =
-        '<span>a span</span><html><head></head><body><div>a div</div><span>a span</span></body></html><div>a div</div>';
+        '<html><head></head><body><div>a div</div><span>a span</span></body></html><div>a div</div><span>a span</span>';
       expect(cheerio.html($collection)).to.equal(expected);
     });
   });
