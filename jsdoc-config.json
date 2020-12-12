@@ -1,0 +1,12 @@
+{
+  "opts": {
+    "template": "./docs/template",
+    "destination": "./docs/out",
+    "readme": "Readme.md",
+    "recurse": true
+  },
+  "plugins": ["plugins/markdown"],
+  "source": {
+    "include": ["index.js", "lib"]
+  }
+}

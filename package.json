@@ -1,6 +1,6 @@
 {
   "name": "cheerio",
-  "version": "0.22.0",
+  "version": "1.0.0-rc.4",
   "description": "Tiny, fast, and elegant implementation of core jQuery designed specifically for the server",
   "author": "Matt Mueller <mattmuelle@gmail.com> (mat.io)",
   "license": "MIT",
@@ -17,32 +17,67 @@
     "url": "git://github.com/cheeriojs/cheerio.git"
   },
   "main": "./index.js",
+  "types": "types/index.d.ts",
   "files": [
     "index.js",
+    "types/index.d.ts",
     "lib"
   ],
   "engines": {
     "node": ">= 0.6"
   },
   "dependencies": {
-    "css-select": "~1.2.0",
-    "dom-serializer": "~0.1.0",
-    "entities": "~1.1.1",
-    "htmlparser2": "^3.9.1",
-    "lodash": "^4.15.0"
+    "css-select": "~3.1.1",
+    "dom-serializer": "~1.2.0",
+    "entities": "~2.1.0",
+    "htmlparser2": "^6.0.0",
+    "lodash": "^4.17.20",
+    "parse5": "^6.0.0",
+    "parse5-htmlparser2-tree-adapter": "^6.0.0"
   },
   "devDependencies": {
-    "benchmark": "^2.1.0",
-    "coveralls": "^2.11.9",
+    "@types/node": "^14.14.10",
+    "benchmark": "^2.1.4",
+    "coveralls": "^3.0.2",
+    "eslint": "^7.10.0",
+    "eslint-config-prettier": "^7.0.0",
+    "eslint-plugin-jsdoc": "^30.6.2",
     "expect.js": "~0.3.1",
-    "istanbul": "^0.4.3",
-    "jsdom": "^9.2.1",
+    "husky": "^4.2.5",
     "jquery": "^3.0.0",
-    "jshint": "^2.9.2",
-    "mocha": "^3.1.2",
-    "xyz": "~1.1.0"
+    "jsdoc": "https://github.com/cheeriojs/jsdoc.git#exports-mixin",
+    "jsdom": "^16.2.2",
+    "lint-staged": "^10.2.2",
+    "mocha": "^8.1.1",
+    "nyc": "^15.0.1",
+    "prettier": "^2.1.1",
+    "tsd": "^0.14.0",
+    "xyz": "~4.0.0"
   },
   "scripts": {
-    "test": "jshint lib/ test/ && mocha --recursive --reporter dot"
+    "test": "npm run lint && npm run test:mocha && npm run test:types",
+    "test:mocha": "mocha --recursive --reporter dot --parallel",
+    "test:types": "tsd",
+    "lint": "npm run lint:es && npm run lint:prettier",
+    "lint:es": "eslint --ignore-path .prettierignore .",
+    "lint:prettier": "npm run format:prettier:raw -- --check",
+    "format": "npm run format:es && npm run format:prettier",
+    "format:es": "npm run lint:es -- --fix",
+    "format:prettier": "npm run format:prettier:raw -- --write",
+    "format:prettier:raw": "prettier '**/*.{js,ts,md,json,yml}' --ignore-path .prettierignore",
+    "pre-commit": "lint-staged"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "tabWidth": 2
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "npm run test:lint -- --fix"
+    ],
+    "*.{json,md,ts,yml}": [
+      "prettier --write"
+    ]
   }
 }

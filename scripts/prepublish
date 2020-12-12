@@ -1,17 +1,23 @@
 #!/usr/bin/env bash
 set -e
 
-tmp="$(mktemp -t "$(basename "$0").XXXXXXXXXX")"
+function error {
+  echo Cheerio "prepublish" script: $1 >&2
+  false
+}
 
-log="$(git --no-pager log --no-merges --pretty="format: * %s (%an)" $PREVIOUS_VERSION..)"
+if [ "$VERSION" == "" ] ; then
+  error 'VERSION environment variable unset.'
+fi
 
-printf "
-$VERSION / $(date +"%Y-%m-%d")
-==================
+if [ "$PREVIOUS_VERSION" == "" ] ; then
+  error 'PREVIOUS_VERSION environment variable unset.'
+fi
 
-$log
-" >"$tmp"
+if ! grep -E "^$VERSION / [0-9]{4}-[0-9]{2}-[0-9]{2}" History.md > /dev/null; then
+  error "No entry for version $VERSION found in History.md file. (This may be seeded with the generate_history.sh script.)"
+fi
 
-cat History.md >>"$tmp"
-mv "$tmp" History.md
-git add History.md
+if ! git diff-index --quiet HEAD -- History.md; then
+  error 'History.md file contains untracked changes. Commit them prior to publication.'
+fi

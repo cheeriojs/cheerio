@@ -1,42 +1,42 @@
 /* jshint indent: false */
 exports.fruits = [
   '<ul id="fruits">',
-    '<li class="apple">Apple</li>',
-    '<li class="orange">Orange</li>',
-    '<li class="pear">Pear</li>',
-  '</ul>'
+  '<li class="apple">Apple</li>',
+  '<li class="orange">Orange</li>',
+  '<li class="pear">Pear</li>',
+  '</ul>',
 ].join('');
 
 exports.vegetables = [
   '<ul id="vegetables">',
-    '<li class="carrot">Carrot</li>',
-    '<li class="sweetcorn">Sweetcorn</li>',
-  '</ul>'
+  '<li class="carrot">Carrot</li>',
+  '<li class="sweetcorn">Sweetcorn</li>',
+  '</ul>',
 ].join('');
 
 exports.chocolates = [
   '<ul id="chocolates">',
-    '<li class="linth" data-highlight="Lindor" data-origin="swiss">Linth</li>',
-    '<li class="frey" data-taste="sweet" data-best-collection="Mahony">Frey</li>',
-    '<li class="cailler">Cailler</li>',
-  '</ul>'
+  '<li class="linth" data-highlight="Lindor" data-origin="swiss">Linth</li>',
+  '<li class="frey" data-taste="sweet" data-best-collection="Mahony">Frey</li>',
+  '<li class="cailler">Cailler</li>',
+  '</ul>',
 ].join('');
 
 exports.drinks = [
   '<ul id="drinks">',
-    '<li class="beer">Beer</li>',
-    '<li class="juice">Juice</li>',
-    '<li class="milk">Milk</li>',
-    '<li class="water">Water</li>',
-    '<li class="cider">Cider</li>',
-  '</ul>'
+  '<li class="beer">Beer</li>',
+  '<li class="juice">Juice</li>',
+  '<li class="milk">Milk</li>',
+  '<li class="water">Water</li>',
+  '<li class="cider">Cider</li>',
+  '</ul>',
 ].join('');
 
 exports.food = [
   '<ul id="food">',
-    exports.fruits,
-    exports.vegetables,
-  '</ul>'
+  exports.fruits,
+  exports.vegetables,
+  '</ul>',
 ].join('');
 
 exports.inputs = [
@@ -51,12 +51,12 @@ exports.inputs = [
   '<input type="radio" value="off" name="radio[brackets]" /><input type="radio" name="radio[brackets]" value="on" checked />',
   '<input type="radio" name="radio_valueless" />',
   '<select id="multi" multiple><option value="1">1</option><option value="2" selected>2</option><option value="3" selected>3</option><option value="4">4</option></select>',
-  '<select id="multi-valueless" multiple><option>1</option><option selected>2</option><option selected>3</option><option>4</option></select>'
+  '<select id="multi-valueless" multiple><option>1</option><option selected>2</option><option selected>3</option><option>4</option></select>',
 ].join('');
 
 exports.text = [
   '<p>Apples, <b>oranges</b> and pears.</p>',
-  '<p>Carrots and <!-- sweetcorn --></p>'
+  '<p>Carrots and <!-- sweetcorn --></p>',
 ].join('');
 
 exports.forms = [
@@ -68,5 +68,5 @@ exports.forms = [
   '<form id="unnamed"><input type="text" name="fruit" value="Apple" /><input type="text" value="Carrot" /></form>',
   '<form id="multiple"><select name="fruit" multiple><option value="Apple" selected>Apple</option><option value="Orange" selected>Orange</option><option value="Carrot">Carrot</option></select></form>',
   '<form id="textarea"><textarea name="fruits">Apple\nOrange</textarea></form>',
-  '<form id="spaces"><input type="text" name="fruit" value="Blood orange" /></form>'
+  '<form id="spaces"><input type="text" name="fruit" value="Blood orange" /></form>',
 ].join('');
