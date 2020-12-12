@@ -1318,6 +1318,7 @@ describe('$(...)', function () {
     });
   });
 
+  describe('.replaceWith', function () {
     it('(elem) : should replace one <li> tag with another', function () {
       var $plum = $('<li class="plum">Plum</li>');
       $('.orange').replaceWith($plum);
