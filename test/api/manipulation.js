@@ -1321,19 +1321,23 @@ describe('$(...)', function () {
   describe('.replaceWith', function () {
     it('(elem) : should replace one <li> tag with another', function () {
       var $plum = $('<li class="plum">Plum</li>');
-      $('.pear').replaceWith($plum);
-      expect($('.orange').next().hasClass('plum')).to.be.ok();
-      expect($('.orange').next().html()).to.equal('Plum');
+      $('.orange').replaceWith($plum);
+      expect($('.apple').next().hasClass('plum')).to.be.ok();
+      expect($('.apple').next().html()).to.equal('Plum');
+      expect($('.pear').prev().hasClass('plum')).to.be.ok();
+      expect($('.pear').prev().html()).to.equal('Plum');
     });
 
     it('(Array) : should replace one <li> tag with the elements in the array', function () {
       var more = $(
         '<li class="plum">Plum</li><li class="grape">Grape</li>'
       ).get();
-      $('.pear').replaceWith(more);
+      $('.orange').replaceWith(more);
 
-      expect($fruits.children().eq(2).hasClass('plum')).to.be.ok();
-      expect($fruits.children().eq(3).hasClass('grape')).to.be.ok();
+      expect($fruits.children().eq(1).hasClass('plum')).to.be.ok();
+      expect($fruits.children().eq(2).hasClass('grape')).to.be.ok();
+      expect($('.apple').next().hasClass('plum')).to.be.ok();
+      expect($('.pear').prev().hasClass('grape')).to.be.ok();
       expect($fruits.children()).to.have.length(4);
     });
 
