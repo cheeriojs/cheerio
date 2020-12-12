@@ -485,6 +485,20 @@ describe('$(...)', function () {
       expect($fruits.attr('id')).to.be(undefined);
     });
 
+    it('(key key): should remove multiple attrs', function () {
+      var $apple = $('.apple');
+      $apple.attr('id', 'favorite');
+      $apple.attr('size', 'small');
+
+      expect($apple.attr('id')).to.equal('favorite');
+      expect($apple.attr('class')).to.equal('apple');
+      expect($apple.attr('size')).to.equal('small');
+      $apple.removeAttr('id class');
+      expect($apple.attr('id')).to.be(undefined);
+      expect($apple.attr('class')).to.be(undefined);
+      expect($apple.attr('size')).to.equal('small');
+    });
+
     it('should return cheerio object', function () {
       var obj = $('ul').removeAttr('id');
       expect(obj).to.be.a($);
