@@ -1,28 +1,6 @@
-interface Document {}
+import { Document, Element } from 'domhandler';
 
 declare namespace cheerio {
-  interface Element {
-    // Document References
-    // Node Console
-    tagName: string;
-    type: string;
-    name: string;
-    attribs: { [attr: string]: string };
-    children: Element[];
-    childNodes: Element[];
-    lastChild: Element;
-    firstChild: Element;
-    next: Element;
-    nextSibling: Element;
-    prev: Element;
-    previousSibling: Element;
-    parent: Element;
-    parentNode: Element;
-    nodeValue: string;
-    data?: string;
-    startIndex?: number;
-  }
-
   type AttrFunction = (el: Element, i: number, currentValue: string) => any;
 
   interface Cheerio {
