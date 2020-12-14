@@ -182,7 +182,6 @@ The options in the `xml` object are taken directly from [htmlparser2](https://gi
 
 ```js
 {
-    withDomLvl1: true,
     normalizeWhitespace: false,
     xmlMode: true,
     decodeEntities: true

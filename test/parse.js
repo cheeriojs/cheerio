@@ -38,16 +38,16 @@ var styleEmpty = '<style></style>';
 var directive = '<!doctype html>';
 
 describe('parse', function () {
-  describe('.eval', function () {
+  describe('evaluate', function () {
     it('should parse basic empty tags: ' + basic, function () {
-      var tag = parse.evaluate(basic, defaultOpts, true)[0];
+      var tag = parse(basic, defaultOpts, true).children[0];
       expect(tag.type).to.equal('tag');
       expect(tag.tagName).to.equal('html');
       expect(tag.childNodes).to.have.length(2);
     });
 
     it('should handle sibling tags: ' + siblings, function () {
-      var dom = parse.evaluate(siblings, defaultOpts, false);
+      var dom = parse(siblings, defaultOpts, false).children;
       var h2 = dom[0];
       var p = dom[1];
 
@@ -57,21 +57,21 @@ describe('parse', function () {
     });
 
     it('should handle single tags: ' + single, function () {
-      var tag = parse.evaluate(single, defaultOpts, false)[0];
+      var tag = parse(single, defaultOpts, false).children[0];
       expect(tag.type).to.equal('tag');
       expect(tag.tagName).to.equal('br');
       expect(tag.childNodes).to.be.empty();
     });
 
     it('should handle malformatted single tags: ' + singleWrong, function () {
-      var tag = parse.evaluate(singleWrong, defaultOpts, false)[0];
+      var tag = parse(singleWrong, defaultOpts, false).children[0];
       expect(tag.type).to.equal('tag');
       expect(tag.tagName).to.equal('br');
       expect(tag.childNodes).to.be.empty();
     });
 
     it('should handle tags with children: ' + children, function () {
-      var tag = parse.evaluate(children, defaultOpts, true)[0];
+      var tag = parse(children, defaultOpts, true).children[0];
       expect(tag.type).to.equal('tag');
       expect(tag.tagName).to.equal('html');
       expect(tag.childNodes).to.be.ok();
@@ -80,33 +80,33 @@ describe('parse', function () {
     });
 
     it('should handle tags with children: ' + li, function () {
-      var tag = parse.evaluate(li, defaultOpts, false)[0];
+      var tag = parse(li, defaultOpts, false).children[0];
       expect(tag.childNodes).to.have.length(1);
       expect(tag.childNodes[0].data).to.equal('Durian');
     });
 
     it('should handle tags with attributes: ' + attributes, function () {
-      var attrs = parse.evaluate(attributes, defaultOpts, false)[0].attribs;
+      var attrs = parse(attributes, defaultOpts, false).children[0].attribs;
       expect(attrs).to.be.ok();
       expect(attrs.src).to.equal('hello.png');
       expect(attrs.alt).to.equal('man waving');
     });
 
     it('should handle value-less attributes: ' + noValueAttribute, function () {
-      var attrs = parse.evaluate(noValueAttribute, defaultOpts, false)[0]
+      var attrs = parse(noValueAttribute, defaultOpts, false).children[0]
         .attribs;
       expect(attrs).to.be.ok();
       expect(attrs.disabled).to.equal('');
     });
 
     it('should handle comments: ' + comment, function () {
-      var elem = parse.evaluate(comment, defaultOpts, false)[0];
+      var elem = parse(comment, defaultOpts, false).children[0];
       expect(elem.type).to.equal('comment');
       expect(elem.data).to.equal(' sexy ');
     });
 
     it('should handle conditional comments: ' + conditional, function () {
-      var elem = parse.evaluate(conditional, defaultOpts, false)[0];
+      var elem = parse(conditional, defaultOpts, false).children[0];
       expect(elem.type).to.equal('comment');
       expect(elem.data).to.equal(
         conditional.replace('<!--', '').replace('-->', '')
@@ -114,13 +114,13 @@ describe('parse', function () {
     });
 
     it('should handle text: ' + text, function () {
-      var text_ = parse.evaluate(text, defaultOpts, false)[0];
+      var text_ = parse(text, defaultOpts, false).children[0];
       expect(text_.type).to.equal('text');
       expect(text_.data).to.equal('lorem ipsum');
     });
 
     it('should handle script tags: ' + script, function () {
-      var script_ = parse.evaluate(script, defaultOpts, false)[0];
+      var script_ = parse(script, defaultOpts, false).children[0];
       expect(script_.type).to.equal('script');
       expect(script_.tagName).to.equal('script');
       expect(script_.attribs.type).to.equal('text/javascript');
@@ -130,7 +130,7 @@ describe('parse', function () {
     });
 
     it('should handle style tags: ' + style, function () {
-      var style_ = parse.evaluate(style, defaultOpts, false)[0];
+      var style_ = parse(style, defaultOpts, false).children[0];
       expect(style_.type).to.equal('style');
       expect(style_.tagName).to.equal('style');
       expect(style_.attribs.type).to.equal('text/css');
@@ -140,7 +140,7 @@ describe('parse', function () {
     });
 
     it('should handle directives: ' + directive, function () {
-      var elem = parse.evaluate(directive, defaultOpts, true)[0];
+      var elem = parse(directive, defaultOpts, true).children[0];
       expect(elem.type).to.equal('directive');
       expect(elem.data).to.equal('!DOCTYPE html ""');
       expect(elem.tagName).to.equal('!doctype');
@@ -158,7 +158,7 @@ describe('parse', function () {
       expect(root.parentNode).to.be(null);
 
       var child = root.childNodes[0];
-      expect(child.parentNode).to.be(null);
+      expect(child.parentNode).to.be(root);
     }
 
     it('should add root to: ' + basic, function () {
@@ -174,7 +174,7 @@ describe('parse', function () {
       expect(root.childNodes).to.have.length(2);
       expect(root.childNodes[0].tagName).to.equal('h2');
       expect(root.childNodes[1].tagName).to.equal('p');
-      expect(root.childNodes[1].parent).to.equal(null);
+      expect(root.childNodes[1].parent).to.equal(root);
     });
 
     it('should add root to: ' + comment, function () {
