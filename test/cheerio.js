@@ -158,11 +158,13 @@ describe('cheerio', function () {
     expect($fruits[0].attribs.id).to.equal('fruits');
   });
 
-  it('should select first element cheerio(:first)');
-  // var $elem = cheerio(':first', fruits);
-  // var $h2 = cheerio('<h2>fruits</h2>');
-  // console.log($elem.before('hi'));
-  // console.log($elem.before($h2));
+  it('should select first element cheerio(:first)', function () {
+    var $elem = cheerio('li:first', fruits);
+    expect($elem.attr('class')).to.equal('apple');
+
+    var $filtered = cheerio('li', fruits).filter(':even');
+    expect($filtered).to.have.length(2);
+  });
 
   it('should be able to select immediate children: cheerio("#fruits > .pear")', function () {
     var $food = cheerio(food);

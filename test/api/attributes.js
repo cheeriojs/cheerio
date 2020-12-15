@@ -243,7 +243,7 @@ describe('$(...)', function () {
       expect($el.data()).to.eql({
         a: 'a',
         b: 'b-modified',
-        c: 'c'
+        c: 'c',
       });
     });
 
