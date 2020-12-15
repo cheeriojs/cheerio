@@ -29,9 +29,9 @@
   "dependencies": {
     "css-select": "^3.1.2",
     "dom-serializer": "~1.2.0",
+    "domhandler": "^4.0.0",
     "entities": "~2.1.0",
     "htmlparser2": "^6.0.0",
-    "lodash": "^4.17.20",
     "parse5": "^6.0.0",
     "parse5-htmlparser2-tree-adapter": "^6.0.0"
   },
