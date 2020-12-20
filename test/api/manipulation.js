@@ -527,6 +527,18 @@ describe('$(...)', function () {
       expect($fruits.children().eq(0).hasClass('plum')).to.be.ok();
     });
 
+    it('($(...)) : should add style element as first child', function () {
+      var $style = $('<style>.foo {}</style>');
+      $fruits.prepend($style);
+      expect($fruits.children().get(0).tagName).to.be('style');
+    });
+
+    it('($(...)) : should add script element as first child', function () {
+      var $script = $('<script>var foo;</script>');
+      $fruits.prepend($script);
+      expect($fruits.children().get(0).tagName).to.be('script');
+    });
+
     it('(Node) : should add node as first child', function () {
       var plum = $('<li class="plum">Plum</li>')[0];
       $fruits.prepend(plum);
