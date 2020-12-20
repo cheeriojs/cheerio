@@ -530,13 +530,17 @@ describe('$(...)', function () {
     it('($(...)) : should add style element as first child', function () {
       var $style = $('<style>.foo {}</style>');
       $fruits.prepend($style);
-      expect($fruits.children().get(0).tagName).to.be('style');
+      var styleTag = $fruits.children().get(0);
+      expect(styleTag.tagName).to.be('style');
+      expect(styleTag.children[0].data).to.be('.foo {}');
     });
 
     it('($(...)) : should add script element as first child', function () {
       var $script = $('<script>var foo;</script>');
       $fruits.prepend($script);
-      expect($fruits.children().get(0).tagName).to.be('script');
+      var scriptTag = $fruits.children().get(0);
+      expect(scriptTag.tagName).to.be('script');
+      expect(scriptTag.children[0].data).to.be('var foo;');
     });
 
     it('(Node) : should add node as first child', function () {
