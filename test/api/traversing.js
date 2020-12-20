@@ -1,4 +1,3 @@
-/*global Symbol*/
 var expect = require('expect.js');
 var cheerio = require('../..');
 var food = require('../fixtures').food;

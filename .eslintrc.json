@@ -4,7 +4,7 @@
   },
   "plugins": ["jsdoc"],
   "extends": ["eslint:recommended", "prettier"],
-  "globals": { "Set": true },
+  "globals": { "Set": true, "Symbol": true },
   "rules": {
     "no-eq-null": 0,
     "no-proto": 2,
