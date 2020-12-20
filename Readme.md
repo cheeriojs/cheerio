@@ -81,6 +81,18 @@ This is the _preferred_ method:
 ```js
 const cheerio = require('cheerio');
 const $ = cheerio.load('<ul id="fruits">...</ul>');
+
+$.html();
+//=> <html><head></head><body><ul id="fruits">...</ul></body></html>
+```
+
+Similar to web browser contexts, `load` will introduce `<html>`, `<head>`, and `<body>` elements if they are not already present. You can set `load`'s third argument to `false` to disable this.
+
+```js
+const $ = cheerio.load('<ul id="fruits">...</ul>', null, false);
+
+$.html();
+//=> '<ul id="fruits">...</ul>'
 ```
 
 Optionally, you can also load in the HTML by passing the string as the context:
@@ -108,13 +120,14 @@ const $ = cheerio.load('<ul id="fruits">...</ul>', {
 });
 ```
 
-The options in the `xml` object are taken directly from [htmlparser2](https://github.com/fb55/htmlparser2/wiki/Parser-options), therefore any options that can be used in `htmlparser2` are valid in cheerio as well. The default options are:
+The options in the `xml` object are taken directly from [htmlparser2](https://github.com/fb55/htmlparser2/wiki/Parser-options), therefore any options that can be used in `htmlparser2` are valid in cheerio as well. When `xml` is set, the default options are:
 
 ```js
 {
-    normalizeWhitespace: false,
     xmlMode: true,
-    decodeEntities: true
+    decodeEntities: true, // Decode HTML entities.
+    withStartIndices: false, // Add a `startIndex` property to nodes.
+    withEndIndices: false, // Add an `endIndex` property to nodes.
 }
 ```
 
