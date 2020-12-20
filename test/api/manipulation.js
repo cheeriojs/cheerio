@@ -23,6 +23,11 @@ describe('$(...)', function() {
       expect($redFruits.children()).to.have.length(1);
     });
 
+    it('(element) : should wrap the base element correctly', function(){
+      $('ul').wrap('<a></a>');
+      expect($.root().children()[0].tagName).to.equal('a');
+    });
+
     it('(element) : should insert the element and add selected element(s) as its child', function() {
       var $redFruits = $('<div class="red-fruits"></div>');
       $('.apple').wrap($redFruits[0]);
@@ -45,6 +50,22 @@ describe('$(...)', function() {
       $('.apple').wrap('<div></div><p></p>');
       expect($('div')).to.have.length(1);
       expect($('p')).to.have.length(0);
+    });
+
+    it('(html) : wraps with nested elements', function() {
+      var $orangeFruits = $('<div class="orange-fruits"><div class="and-stuff"></div></div>');
+      $('.orange').wrap($orangeFruits);
+
+      expect($fruits.children().eq(1).hasClass('orange-fruits')).to.be.ok();
+      expect($('.orange-fruits').children().eq(0).hasClass('and-stuff')).to.be.ok();
+      expect($fruits.children().eq(2).hasClass('pear')).to.be.ok();
+      expect($('.orange-fruits').children()).to.have.length(1);
+    });
+
+    it('(html) : should only worry about the first tag children', function() {
+      var delicious = '<span> This guy is delicious: <b></b></span>';
+      $('.apple').wrap(delicious);
+      expect($('b>.apple')).to.have.length(1);
     });
 
     it('(selector) : wraps the content with a copy of the first matched element', function() {

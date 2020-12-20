@@ -23,8 +23,8 @@
 <br />
 
 ```js
-let cheerio = require('cheerio')
-let $ = cheerio.load('<h2 class="title">Hello world</h2>')
+const cheerio = require('cheerio')
+const $ = cheerio.load('<h2 class="title">Hello world</h2>')
 
 $('h2.title').text('Hello there!')
 $('h2').addClass('welcome')
@@ -32,6 +32,10 @@ $('h2').addClass('welcome')
 $.html()
 //=> <h2 class="title welcome">Hello there!</h2>
 ```
+
+## Note
+
+We are currently working on the 1.0.0 release of cheerio on the `master` branch. The source code for the last published version, `0.22.0`, can be found [here](https://github.com/cheeriojs/cheerio/tree/aa90399c9c02f12432bfff97b8f1c7d8ece7c307).
 
 ## Installation
 `npm install cheerio`
@@ -41,10 +45,14 @@ __&#10084; Familiar syntax:__
 Cheerio implements a subset of core jQuery. Cheerio removes all the DOM inconsistencies and browser cruft from the jQuery library, revealing its truly gorgeous API.
 
 __&#991; Blazingly fast:__
-Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient. Preliminary end-to-end benchmarks suggest that cheerio is about __8x__ faster than JSDOM.
+Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient.
 
 __&#10049; Incredibly flexible:__
 Cheerio wraps around [parse5](https://github.com/inikulin/parse5) parser and can optionally use @FB55's forgiving [htmlparser2](https://github.com/fb55/htmlparser2/). Cheerio can parse nearly any HTML or XML document.
+
+## Cheerio is not a web browser
+
+Cheerio parses markup and provides an API for traversing/manipulating the resulting data structure. It does not interpret the result as a web browser does. Specifically, it does *not* produce a visual rendering, apply CSS, load external resources, or execute JavaScript. If your use case requires any of this functionality, you should consider projects like [PhantomJS](http://phantomjs.org/) or [JSDom](https://github.com/tmpvar/jsdom).
 
 ## Sponsors
 
@@ -118,6 +126,107 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 
 ## API
 
+### Table of contents
+
+<details>
+  <summary>Selectors</summary>
+
+  - [$( selector, [context], [root] )](#-selector-context-root-)
+</details>
+<details>
+  <summary>Attributes</summary>
+
+  - [.attr( name, value )](#attr-name-value-)
+  - [.prop( name, value )](#prop-name-value-)
+  - [.data( name, value )](#data-name-value-)
+  - [.val( [value] )](#val-value-)
+  - [.removeAttr( name )](#removeattr-name-)
+  - [.hasClass( className )](#hasclass-classname-)
+  - [.addClass( className )](#addclass-classname-)
+  - [.removeClass( [className] )](#removeclass-classname-)
+  - [.toggleClass( className, [switch] )](#toggleclass-classname-switch-)
+  - [.is( selector )](#is-selector-)
+  - [.is( element )](#is-element-)
+  - [.is( selection )](#is-selection-)
+  - [.is( function(index) )](#is-functionindex-)
+</details>
+<details>
+  <summary>Forms</summary>
+
+  - [.serialize()](#serialize)
+  - [.serializeArray()](#serializearray)
+</details>
+<details>
+  <summary>Traversing</summary>
+
+  - [.find(selector)](#findselector)
+  - [.find(selection)](#findselection)
+  - [.find(node)](#findnode)
+  - [.parent([selector])](#parentselector)
+  - [.parents([selector])](#parentsselector)
+  - [.parentsUntil([selector][,filter])](#parentsuntilselectorfilter)
+  - [.closest(selector)](#closestselector)
+  - [.next([selector])](#nextselector)
+  - [.nextAll([selector])](#nextallselector)
+  - [.nextUntil([selector], [filter])](#nextuntilselector-filter)
+  - [.prev([selector])](#prevselector)
+  - [.prevAll([selector])](#prevallselector)
+  - [.prevUntil([selector], [filter])](#prevuntilselector-filter)
+  - [.slice( start, [end] )](#slice-start-end-)
+  - [.siblings([selector])](#siblingsselector)
+  - [.children([selector])](#childrenselector)
+  - [.contents()](#contents)
+  - [.each( function(index, element) )](#each-functionindex-element-)
+  - [.map( function(index, element) )](#map-functionindex-element-)
+  - [.filter( selector )<br>
+     .filter( selection )<br>
+     .filter( element )<br>
+     .filter( function(index, element) )](#filter-selector---filter-selection---filter-element---filter-functionindex-element-)
+  - [.not( selector )<br>
+     .not( selection )<br>
+     .not( element )<br>
+     .not( function(index, elem) )](#not-selector---not-selection---not-element---not-functionindex-elem-)
+  - [.has( selector )<br>
+     .has( element )](#has-selector---has-element-)
+  - [.first()](#first)
+  - [.last()](#last)
+  - [.eq( i )](#eq-i-)
+  - [.get( [i] )](#get-i-)
+  - [.index()](#index)
+  - [.index( selector )](#index-selector-)
+  - [.index( nodeOrSelection )](#index-nodeorselection-)
+  - [.end()](#end)
+  - [.add( selector [, context] )](#add-selector--context-)
+  - [.add( element )](#add-element-)
+  - [.add( elements )](#add-elements-)
+  - [.add( html )](#add-html-)
+  - [.add( selection )](#add-selection-)
+  - [.addBack( [filter] )](#addback-filter-)
+</details>
+<details>
+  <summary>Manipulation</summary>
+
+  - [.append( content, [content, ...] )](#append-content-content--)
+  - [.appendTo( target )](#appendto-target-)
+  - [.prepend( content, [content, ...] )](#prepend-content-content--)
+  - [.prependTo( target )](#prependto-target-)
+  - [.after( content, [content, ...] )](#after-content-content--)
+  - [.insertAfter( target )](#insertafter-target-)
+  - [.before( content, [content, ...] )](#before-content-content--)
+  - [.insertBefore( target )](#insertbefore-target-)
+  - [.remove( [selector] )](#remove-selector-)
+  - [.replaceWith( content )](#replacewith-content-)
+  - [.empty()](#empty)
+  - [.html( [htmlString] )](#html-htmlstring-)
+  - [.text( [textString] )](#text-textstring-)
+  - [.wrap( content )](#wrap-content-)
+  - [.css( [propertName] )<br>
+     .css( [ propertyNames] )<br>
+     .css( [propertyName], [value] )<br>
+     .css( [propertName], [function] )<br>
+     .css( [properties] )](#css-propertname---css--propertynames---css-propertyname-value---css-propertname-function---css-properties-)
+</details>
+
 ### Markup example we'll be using:
 
 ```html
@@ -136,21 +245,21 @@ First you need to load in the HTML. This step in jQuery is implicit, since jQuer
 This is the _preferred_ method:
 
 ```js
-var cheerio = require('cheerio'),
-    $ = cheerio.load('<ul id="fruits">...</ul>');
+const cheerio = require('cheerio');
+const $ = cheerio.load('<ul id="fruits">...</ul>');
 ```
 
 Optionally, you can also load in the HTML by passing the string as the context:
 
 ```js
-$ = require('cheerio');
+const $ = require('cheerio');
 $('ul', '<ul id="fruits">...</ul>');
 ```
 
 Or as the root:
 
 ```js
-$ = require('cheerio');
+const $ = require('cheerio');
 $('li', 'ul', '<ul id="fruits">...</ul>');
 ```
 
@@ -158,7 +267,7 @@ You can also pass an extra object to `.load()` if you need to modify any
 of the default parsing options:
 
 ```js
-$ = cheerio.load('<ul id="fruits">...</ul>', {
+const $ = cheerio.load('<ul id="fruits">...</ul>', {
     normalizeWhitespace: true,
     xmlMode: true
 });
@@ -200,6 +309,13 @@ $('li[class=orange]').html()
 //=> Orange
 ```
 
+##### XML Namespaces
+You can select with XML Namespaces but [due to the CSS specification](https://www.w3.org/TR/2011/REC-css3-selectors-20110929/#attribute-selectors), the colon (`:`) needs to be escaped for the selector to be valid.
+
+```js
+$('[xml\\:id="main"');
+```
+
 ### Attributes
 Methods for getting and modifying attributes.
 
@@ -239,7 +355,7 @@ $('<div data-apple-color="red"></div>').data()
 $('<div data-apple-color="red"></div>').data('apple-color')
 //=> 'red'
 
-var apple = $('.apple').data('kind', 'mac')
+const apple = $('.apple').data('kind', 'mac')
 apple.data('kind')
 //=> 'mac'
 ```
@@ -325,6 +441,15 @@ $('.apple.green').toggleClass('fruit green red', true).html()
 Checks the current list of elements and returns `true` if _any_ of the elements match the selector. If using an element or Cheerio selection, returns `true` if _any_ of the elements match. If using a predicate function, the function is executed in the context of the selected element, so `this` refers to the current element.
 
 ### Forms
+
+#### .serialize()
+
+Encodes a set of form elements as a URL query string.
+
+```js
+$('<form><input name="foo" value="bar" checked /><input name="foo" value="qux" checked /></form>').serialize()
+//=> foo=bar&foo=qux
+```
 
 #### .serializeArray()
 
@@ -485,7 +610,7 @@ $('#fruits').contents().length
 Iterates over a cheerio object, executing a function for each matched element. When the callback is fired, the function is fired in the context of the DOM element, so `this` refers to the current element, which is equivalent to the function parameter `element`. To break out of the `each` loop early, return with `false`.
 
 ```js
-var fruits = [];
+const fruits = [];
 
 $('li').each(function(i, elem) {
   fruits[i] = $(this).text();
@@ -506,7 +631,7 @@ $('li').map(function(i, el) {
 //=> "apple orange pear"
 ```
 
-#### .filter( selector ) <br /> .filter( selection ) <br /> .filter( element ) <br /> .filter( function(index) )
+#### .filter( selector ) <br /> .filter( selection ) <br /> .filter( element ) <br /> .filter( function(index, element) )
 
 Iterates over a cheerio object, reducing the set of selector elements to those that match the selector or pass the function's test. When a Cheerio selection is specified, return only the elements contained in that selection. When an element is specified, return only that element (if it is contained in the original selection). If using the function method, the function is executed in the context of the selected element, so `this` refers to the current element.
 
@@ -784,7 +909,7 @@ $.html()
 Replaces matched elements with `content`.
 
 ```js
-var plum = $('<li class="plum">Plum</li>')
+const plum = $('<li class="plum">Plum</li>')
 $('.pear').replaceWith(plum)
 $.html()
 //=> <ul id="fruits">
@@ -831,7 +956,7 @@ $('ul').text()
 The .wrap() function can take any string or object that could be passed to the $() factory function to specify a DOM structure. This structure may be nested several levels deep, but should contain only one inmost element. A copy of this structure will be wrapped around each of the elements in the set of matched elements. This method returns the original set of elements for chaining purposes.
 
 ```js
-var redFruit = $('<div class="red-fruit"></div>')
+const redFruit = $('<div class="red-fruit"></div>')
 $('.apple').wrap(redFruit)
 
 //=> <ul id="fruits">
@@ -842,7 +967,7 @@ $('.apple').wrap(redFruit)
 //     <li class="plum">Plum</li>
 //   </ul>
 
-var healthy = $('<div class="healthy"></div>')
+const healthy = $('<div class="healthy"></div>')
 $('li').wrap(healthy)
 
 //=> <ul id="fruits">
@@ -858,7 +983,7 @@ $('li').wrap(healthy)
 //   </ul>
 ```
 
-#### .css( [propertName] ) <br /> .css( [ propertyNames] ) <br /> .css( [propertyName], [value] ) <br /> .css( [propertName], [function] ) <br /> .css( [properties] )
+#### .css( [propertyName] ) <br /> .css( [ propertyNames] ) <br /> .css( [propertyName], [value] ) <br /> .css( [propertyName], [function] ) <br /> .css( [properties] )
 
 Get the value of a style property for the first element in the set of matched elements or set one or more CSS properties for every matched element.
 
@@ -884,7 +1009,7 @@ $.html('.pear')
 By default, `html` will leave some tags open. Sometimes you may instead want to render a valid XML document. For example, you might parse the following XML snippet:
 
 ```xml
-$ = cheerio.load('<media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123"/>');
+const $ = cheerio.load('<media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123"/>');
 ```
 
 ... and later want to render to XML. To do this, you can use the 'xml' utility function:
@@ -897,7 +1022,7 @@ $.xml()
 You may also render the text content of a Cheerio object using the `text` static method:
 
 ```js
-$ = cheerio.load('This is <em>content</em>.')
+const $ = cheerio.load('This is <em>content</em>.')
 $.text()
 //=> This is content.
 ```
@@ -905,7 +1030,7 @@ $.text()
 The method may be called on the Cheerio module itself--be sure to pass a collection of nodes!
 
 ```js
-$ = cheerio.load('<div>This is <em>content</em>.</div>')
+const $ = cheerio.load('<div>This is <em>content</em>.</div>')
 cheerio.text($('div'))
 //=> This is content.
 ```
@@ -925,7 +1050,7 @@ $('li').toArray()
 Clone the cheerio object.
 
 ```js
-var moreFruit = $('#fruits').clone()
+const moreFruit = $('#fruits').clone()
 ```
 
 ### Utilities
@@ -943,7 +1068,7 @@ $.root().append('<ul id="vegetables"></ul>').html();
 Checks to see if the `contained` DOM element is a descendant of the `container` DOM element.
 
 #### $.parseHTML( data [, context ] [, keepScripts ] )
-Parses a string into an array of DOM nodes. The `context` argument has no meaning for Cheerio, but it is maintained for API compatability.
+Parses a string into an array of DOM nodes. The `context` argument has no meaning for Cheerio, but it is maintained for API compatibility.
 
 #### $.load( html[, options ] )
 Load in the HTML. (See the previous section titled "Loading" for more information.)
@@ -953,7 +1078,7 @@ Load in the HTML. (See the previous section titled "Loading" for more informatio
 Once you have loaded a document, you may extend the prototype or the equivalent `fn` property with custom plugin methods:
 
 ```js
-var $ = cheerio.load('<html><body>Hello, <b>world</b>!</body></html>');
+const $ = cheerio.load('<html><body>Hello, <b>world</b>!</body></html>');
 $.prototype.logHtml = function() {
   console.log(this.html());
 };
@@ -963,7 +1088,7 @@ $('body').logHtml(); // logs "Hello, <b>world</b>!" to the console
 
 ### The "DOM Node" object
 
-Cheerio collections are made up of objects that bear some resemblence to [browser-based DOM nodes](https://developer.mozilla.org/en-US/docs/Web/API/Node). You can expect them to define the following properties:
+Cheerio collections are made up of objects that bear some resemblance to [browser-based DOM nodes](https://developer.mozilla.org/en-US/docs/Web/API/Node). You can expect them to define the following properties:
 
 - `tagName`
 - `parentNode`
@@ -973,22 +1098,6 @@ Cheerio collections are made up of objects that bear some resemblence to [browse
 - `firstChild`
 - `childNodes`
 - `lastChild`
-
-## What about JSDOM?
-I wrote cheerio because I found myself increasingly frustrated with JSDOM. For me, there were three main sticking points that I kept running into again and again:
-
-__&#8226; JSDOM's built-in parser is too strict:__
-  JSDOM's bundled HTML parser cannot handle many popular sites out there today.
-
-__&#8226; JSDOM is too slow:__
-Parsing big websites with JSDOM has a noticeable delay.
-
-__&#8226; JSDOM feels too heavy:__
-The goal of JSDOM is to provide an identical DOM environment as what we see in the browser. I never really needed all this, I just wanted a simple, familiar way to do HTML manipulation.
-
-## When I would use JSDOM
-
-Cheerio will not solve all your problems. I would still use JSDOM if I needed to work in a browser-like environment on the server, particularly if I wanted to automate functional tests.
 
 ## Screencasts
 
