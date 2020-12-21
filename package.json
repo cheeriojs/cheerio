@@ -45,7 +45,7 @@
     "expect.js": "~0.3.1",
     "husky": "^4.2.5",
     "jquery": "^3.0.0",
-    "jsdoc": "https://github.com/cheeriojs/jsdoc.git#exports-mixin",
+    "jsdoc": "^3.6.6",
     "jsdom": "^16.2.2",
     "lint-staged": "^10.2.2",
     "mocha": "^8.1.1",
@@ -65,6 +65,7 @@
     "format:es": "npm run lint:es -- --fix",
     "format:prettier": "npm run format:prettier:raw -- --write",
     "format:prettier:raw": "prettier '**/*.{js,ts,md,json,yml}' --ignore-path .prettierignore",
+    "build:docs": "jsdoc --configure jsdoc-config.json",
     "pre-commit": "lint-staged"
   },
   "prettier": {

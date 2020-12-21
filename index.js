@@ -31,6 +31,7 @@ exports.xml = staticMethods.xml;
  *     $.contains($('p').get(0), $('div').get(0)); // false
  *
  * @function
+ * @returns {boolean}
  * @deprecated
  */
 exports.contains = staticMethods.contains;
