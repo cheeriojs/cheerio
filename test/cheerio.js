@@ -300,6 +300,13 @@ describe('cheerio', function () {
       expect(domEncoded('footer').html()).to.be(expectedXml);
     });
 
+    it('should use htmlparser2 if xml option is used', function () {
+      var str = '<div></div>';
+      var dom = cheerio.load(str);
+      // Should use htmlparser2 and not add <html>, <body> etc. tags
+      expect(dom.html()).to.be(str);
+    });
+
     it('should return a fully-qualified Function', function () {
       var $ = cheerio.load('<div>');
 
