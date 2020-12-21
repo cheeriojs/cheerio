@@ -1,3 +1,6 @@
+Starting with 1.0.0-rc.4, release notes are exclusively tracked in
+[Github Releases](https://github.com/cheeriojs/cheerio/releases).
+
 # 1.0.0-rc.3 / 2019-04-06
 
 This release corrects a test expectation that was fixed by one of the project's
