@@ -46,6 +46,28 @@ $ = cheerio.load(html, {
   recognizeSelfClosing: true,
 });
 
+$ = cheerio.load(html, {
+  xml: true,
+});
+
+$ = cheerio.load(html, {
+  xml: { xmlMode: false },
+});
+
+$ = cheerio.load(html, {
+  xml: {
+    normalizeWhitespace: true,
+    withStartIndices: true,
+    withEndIndices: true,
+    xmlMode: false,
+    decodeEntities: true,
+    lowerCaseTags: true,
+    lowerCaseAttributeNames: true,
+    recognizeCDATA: true,
+    recognizeSelfClosing: true,
+  },
+});
+
 /**
  * Selectors
  */

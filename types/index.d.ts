@@ -1,4 +1,5 @@
-import { Document, Element } from 'domhandler';
+import { Document, Element, DomHandlerOptions } from 'domhandler';
+import { ParserOptions } from 'htmlparser2';
 
 declare namespace cheerio {
   type AttrFunction = (el: Element, i: number, currentValue: string) => any;
@@ -217,23 +218,15 @@ declare namespace cheerio {
     toArray(): Element[];
   }
 
-  interface CheerioParserOptions {
+  interface CheerioParserOptions extends ParserOptions, DomHandlerOptions {
     // Document References
     // Cheerio https://github.com/cheeriojs/cheerio
-    // HTMLParser2 https://github.com/fb55/htmlparser2/wiki/Parser-options
-    // DomHandler https://github.com/fb55/DomHandler
 
-    xmlMode?: boolean;
-    decodeEntities?: boolean;
-    lowerCaseTags?: boolean;
-    lowerCaseAttributeNames?: boolean;
-    recognizeCDATA?: boolean;
-    recognizeSelfClosing?: boolean;
-    normalizeWhitespace?: boolean;
-    withStartIndices?: boolean;
-    withEndIndices?: boolean;
-    ignoreWhitespace?: boolean;
+    xml?: (ParserOptions & DomHandlerOptions) | boolean;
     _useHtmlParser2?: boolean;
+
+    /** Enable location support for parse5 */
+    sourceCodeLocationInfo?: boolean;
   }
 
   interface Selector {
