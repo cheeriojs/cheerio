@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: lib/cheerio.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: lib/cheerio.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+  Module dependencies
+*/
+
+var parse = require('./parse');
+var defaultOptions = require('./options').default;
+var flattenOptions = require('./options').flatten;
+var isHtml = require('./utils').isHtml;
+
+/*
+ * The API
+ */
+var api = [
+  require('./api/attributes'),
+  require('./api/traversing'),
+  require('./api/manipulation'),
+  require('./api/css'),
+  require('./api/forms'),
+];
+
+/**
+ * Instance of cheerio. Methods are specified in the modules.
+ * Usage of this constructor is not recommended. Please use $.load instead.
+ *
+ * @class
+ * @hideconstructor
+ * @param {string|cheerio|node|node[]} selector - The new selection.
+ * @param {string|cheerio|node|node[]} [context] - Context of the selection.
+ * @param {string|cheerio|node|node[]} [root] - Sets the root node.
+ * @param {object} [options] - Options for the instance.
+ *
+ * @mixes module:cheerio/attributes
+ * @mixes module:cheerio/css
+ * @mixes module:cheerio/forms
+ * @mixes module:cheerio/manipulation
+ * @mixes module:cheerio/traversing
+ */
+var Cheerio = (module.exports = function (selector, context, root, options) {
+  if (!(this instanceof Cheerio)) {
+    return new Cheerio(selector, context, root, options);
+  }
+
+  this.options = Object.assign(
+    {},
+    defaultOptions,
+    this.options,
+    flattenOptions(options)
+  );
+
+  // $(), $(null), $(undefined), $(false)
+  if (!selector) return this;
+
+  if (root) {
+    if (typeof root === 'string') root = parse(root, this.options, false);
+    this._root = Cheerio.call(this, root);
+  }
+
+  // $($)
+  if (selector.cheerio) return selector;
+
+  // $(dom)
+  if (isNode(selector)) selector = [selector];
+
+  // $([dom])
+  if (Array.isArray(selector)) {
+    selector.forEach(function (elem, idx) {
+      this[idx] = elem;
+    }, this);
+    this.length = selector.length;
+    return this;
+  }
+
+  // $(&lt;html>)
+  if (typeof selector === 'string' &amp;&amp; isHtml(selector)) {
+    return Cheerio.call(this, parse(selector, this.options, false).children);
+  }
+
+  // If we don't have a context, maybe we have a root, from loading
+  if (!context) {
+    context = this._root;
+  } else if (typeof context === 'string') {
+    if (isHtml(context)) {
+      // $('li', '&lt;ul>...&lt;/ul>')
+      context = parse(context, this.options, false);
+      context = Cheerio.call(this, context);
+    } else {
+      // $('li', 'ul')
+      selector = [context, selector].join(' ');
+      context = this._root;
+    }
+  } else if (!context.cheerio) {
+    // $('li', node), $('li', [nodes])
+    context = Cheerio.call(this, context);
+  }
+
+  // If we still don't have a context, return
+  if (!context) return this;
+
+  // #id, .class, tag
+  return context.find(selector);
+});
+
+/*
+ * Set a signature of the object
+ */
+Cheerio.prototype.cheerio = '[cheerio object]';
+
+/*
+ * Make cheerio an array-like object
+ */
+Cheerio.prototype.length = 0;
+Cheerio.prototype.splice = Array.prototype.splice;
+
+/*
+ * Make a cheerio object
+ *
+ * @private
+ */
+Cheerio.prototype._make = function (dom, context) {
+  var cheerio = new this.constructor(dom, context, this._root, this.options);
+  cheerio.prevObject = this;
+  return cheerio;
+};
+
+/**
+ * Retrieve all the DOM elements contained in the jQuery set as an array.
+ *
+ * @example
+ * $('li').toArray()
+ * //=> [ {...}, {...}, {...} ]
+ */
+Cheerio.prototype.toArray = function () {
+  return this.get();
+};
+
+// Support for (const element of $(...)) iteration:
+if (typeof Symbol !== 'undefined') {
+  Cheerio.prototype[Symbol.iterator] = Array.prototype[Symbol.iterator];
+}
+
+// Plug in the API
+api.forEach(function (mod) {
+  Object.assign(Cheerio.prototype, mod);
+});
+
+var isNode = function (obj) {
+  return (
+    obj.name ||
+    obj.type === 'root' ||
+    obj.type === 'text' ||
+    obj.type === 'comment'
+  );
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-cheerio.html">cheerio</a></li><li><a href="module-cheerio_attributes.html">cheerio/attributes</a></li><li><a href="module-cheerio_css.html">cheerio/css</a></li><li><a href="module-cheerio_forms.html">cheerio/forms</a></li><li><a href="module-cheerio_manipulation.html">cheerio/manipulation</a></li><li><a href="module-cheerio_traversing.html">cheerio/traversing</a></li></ul><h3>Classes</h3><ul><li><a href="Cheerio.html">Cheerio</a></li></ul><h3>Global</h3><ul><li><a href="global.html#domEach">domEach</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Dec 21 2020 19:23:51 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
