@@ -16,6 +16,8 @@ jobs:
       - run: npm ci
       - name: Build JSDoc
         run: npm run build:docs
+      - name: Copy CNAME
+        run: cp CNAME docs/out/
       - name: Deploy
         uses: s0/git-publish-subdir-action@2.4.0
         env:
