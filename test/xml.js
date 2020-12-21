@@ -31,6 +31,11 @@ describe('render', function () {
       var str = '<tag attr="foo &amp; bar"/>';
       expect(xml(str)).to.equal(str);
     });
+
+    it('should render HTML as XML', function () {
+      var $ = cheerio.load('<foo></foo>', null, false);
+      expect($.xml()).to.equal('<foo/>');
+    });
   });
 
   describe('(dom)', function () {
