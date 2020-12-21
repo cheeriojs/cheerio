@@ -302,7 +302,7 @@ describe('cheerio', function () {
 
     it('should use htmlparser2 if xml option is used', function () {
       var str = '<div></div>';
-      var dom = cheerio.load(str);
+      var dom = cheerio.load(str, null, false);
       // Should use htmlparser2 and not add <html>, <body> etc. tags
       expect(dom.html()).to.be(str);
     });
