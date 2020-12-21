@@ -9,7 +9,7 @@ jobs:
     name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@2
+      - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
           node-version: 14.x
@@ -19,7 +19,7 @@ jobs:
       - name: Copy CNAME
         run: cp CNAME docs/out/
       - name: Deploy
-        uses: s0/git-publish-subdir-action@2.4.0
+        uses: s0/git-publish-subdir-action@v2.4
         env:
           REPO: self
           BRANCH: gh-pages
