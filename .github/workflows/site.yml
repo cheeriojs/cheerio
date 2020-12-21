@@ -19,7 +19,7 @@ jobs:
       - name: Copy CNAME
         run: cp CNAME docs/out/
       - name: Deploy
-        uses: s0/git-publish-subdir-action@v2.4
+        uses: s0/git-publish-subdir-action@v2.4.0
         env:
           REPO: self
           BRANCH: gh-pages
