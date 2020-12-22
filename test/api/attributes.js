@@ -172,6 +172,17 @@ describe('$(...)', function () {
       expect(checkbox.prop('checked')).to.equal(true);
     });
 
+    it('(key, value) : should update attribute', function () {
+      expect(checkbox.prop('checked')).to.equal(true);
+      expect(checkbox.attr('checked')).to.equal('checked');
+      checkbox.prop('checked', false);
+      expect(checkbox.prop('checked')).to.equal(false);
+      expect(checkbox.attr('checked')).to.equal(undefined);
+      checkbox.prop('checked', true);
+      expect(checkbox.prop('checked')).to.equal(true);
+      expect(checkbox.attr('checked')).to.equal('checked');
+    });
+
     it('(map) : object map should set multiple props', function () {
       checkbox.prop({
         id: 'check',
