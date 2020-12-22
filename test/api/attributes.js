@@ -137,6 +137,23 @@ describe('$(...)', function () {
       expect($pear.attr('autofocus')).to.be(undefined);
       expect($pear.attr('style')).to.equal('color:blue');
     });
+
+    it('(chaining) setting value and calling attr returns result', function () {
+      var pearAttr = $('.pear').attr('foo', 'bar').attr('foo');
+      expect(pearAttr).to.equal('bar');
+    });
+
+    it('(chaining) setting attr to null returns a $', function () {
+      var $pear = $('.pear').attr('foo', null);
+      expect($pear).to.be.a($);
+    });
+
+    it('(chaining) setting attr to undefined returns a $', function () {
+      var $pear = $('.pear').attr('foo', undefined);
+      expect($('.pear')).to.have.length(1);
+      expect($('.pear').attr('foo')).to.be('undefined');
+      expect($pear).to.be.a($);
+    });
   });
 
   describe('.prop', function () {
