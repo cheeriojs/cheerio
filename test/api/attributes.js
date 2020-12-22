@@ -222,23 +222,6 @@ describe('$(...)', function () {
     });
   });
 
-  it('modifying nested selections should not impact the parent', function () {
-    var apple = $('.apple');
-    var pear = $('.pear');
-
-    var applePear = apple.add(pear);
-
-    applePear.addClass('red');
-
-    expect(apple.hasClass('red')).to.be.ok();
-    expect(pear.hasClass('red')).to.be.ok();
-
-    // applies green to pear... AND apple
-    pear.addClass('green');
-    expect(pear.hasClass('green')).to.be.ok(); //currently this is true
-    expect(apple.hasClass('green')).to.be.ok(); // and this is true!
-  });
-
   describe('.data', function () {
     beforeEach(function () {
       $ = cheerio.load(chocolates);
