@@ -1391,6 +1391,16 @@ describe('$(...)', function () {
       expect($.html($src)).to.equal('<h2>hi <div>here</div></h2>');
     });
 
+    it('(self) : should be replaced after replacing it with itself', function () {
+      var $ = cheerio.load('<a>foo</a>', null, false);
+      var replacement = '<a>bar</a>';
+      $('a').replaceWith(function (i, el) {
+        return el;
+      });
+      $('a').replaceWith(replacement);
+      expect($.html()).to.be.equal(replacement);
+    });
+
     it('(str) : should accept strings', function () {
       var $src = $('<h2>hi <span>there</span></h2>');
       var newStr = '<div>here</div>';
