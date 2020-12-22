@@ -206,6 +206,12 @@ describe('$(...)', function () {
       expect($a.prop('outerHTML')).to.be(outerHtml);
     });
 
+    it('("innerHTML") : should render properly', function () {
+      var $a = $('<div><a></a></div>');
+
+      expect($a.prop('innerHTML')).to.be('<a></a>');
+    });
+
     it('(inherited properties) : prop should support inherited properties', function () {
       expect(selectMenu.prop('childNodes')).to.equal(selectMenu[0].childNodes);
     });
