@@ -262,6 +262,13 @@ describe('cheerio', function () {
       expect($('ul')).to.have.length(3);
     });
 
+    it('should allow loading a single element', function () {
+      var el = htmlparser2.parseDOM(food)[0];
+      var $ = cheerio.load(el);
+
+      expect($('ul')).to.have.length(3);
+    });
+
     it('should render xml in html() when options.xml = true', function () {
       var str = '<MixedCaseTag UPPERCASEATTRIBUTE=""></MixedCaseTag>';
       var expected = '<MixedCaseTag UPPERCASEATTRIBUTE=""/>';
