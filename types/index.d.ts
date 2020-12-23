@@ -267,7 +267,8 @@ declare namespace cheerio {
     version: string;
     load(
       html: string | { toString(): string },
-      options?: CheerioParserOptions
+      options?: CheerioParserOptions|null,
+      isDocument?: boolean
     ): Root;
     load(element: Element, options?: CheerioParserOptions): Root;
   }
