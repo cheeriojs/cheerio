@@ -1,6 +1,7 @@
 var expect = require('expect.js');
 var cheerio = require('../..');
 var fruits = require('../fixtures').fruits;
+var divcontainers = require('../fixtures').divcontainers;
 var toArray = Function.call.bind(Array.prototype.slice);
 
 describe('$(...)', function () {
@@ -318,6 +319,72 @@ describe('$(...)', function () {
       $('.apple').wrapInner(delicious);
       expect($('.apple>span>b')).to.have.length(1);
       expect($('.apple>span>b').text()).to.equal('Apple');
+    });
+  });
+
+  describe('.wrapAll', function () {
+    var $;
+    var $inner;
+
+    beforeEach(function () {
+      $ = cheerio.load(divcontainers);
+      $inner = $('.inner');
+    });
+
+    it('(Cheerio object) : should insert the element and wrap elements with it', function () {
+      $inner.wrapAll($('#new'));
+      var $container = $('.container');
+      var $wrap = $('b');
+
+      expect($container).to.have.length(2);
+      expect($container[0].children).to.have.length(1);
+      expect($container[1].children).to.have.length(0);
+      expect($container[0].children[0]).to.be($('#new')[0]);
+
+      expect($inner).to.have.length(4);
+      expect($wrap[0].children).to.have.length(4);
+      expect($inner[0].parent).to.be($wrap[0]);
+      expect($inner[1].parent).to.be($wrap[0]);
+      expect($inner[2].parent).to.be($wrap[0]);
+      expect($inner[3].parent).to.be($wrap[0]);
+    });
+
+    it('(html) : should wrap elements with it', function () {
+      $inner.wrapAll('<div class="wrap"></div>');
+      var $container = $('.container');
+      var $wrap = $('.wrap');
+
+      expect($inner).to.have.length(4);
+      expect($container).to.have.length(2);
+      expect($wrap).to.have.length(1);
+      expect($wrap[0].children).to.have.length(4);
+      expect($container[0].children).to.have.length(1);
+      expect($container[1].children).to.have.length(0);
+      expect($inner[0].parent).to.be($wrap[0]);
+      expect($inner[1].parent).to.be($wrap[0]);
+      expect($inner[2].parent).to.be($wrap[0]);
+      expect($inner[3].parent).to.be($wrap[0]);
+      expect($wrap[0].parent).to.be($container[0]);
+      expect($container[0].children[0]).to.be($wrap[0]);
+    });
+
+    it('(selector) : should find element from dom, wrap elements with it', function () {
+      $inner.wrapAll('#new');
+      var $container = $('.container');
+      var $wrap = $('b');
+      var $new = $('#new');
+
+      expect($inner).to.have.length(4);
+      expect($container).to.have.length(2);
+      expect($container[0].children).to.have.length(1);
+      expect($container[1].children).to.have.length(0);
+      expect($wrap[0].children).to.have.length(4);
+      expect($inner[0].parent).to.be($wrap[0]);
+      expect($inner[1].parent).to.be($wrap[0]);
+      expect($inner[2].parent).to.be($wrap[0]);
+      expect($inner[3].parent).to.be($wrap[0]);
+      expect($new[0].parent).to.be($container[0]);
+      expect($container[0].children[0]).to.be($new[0]);
     });
   });
 

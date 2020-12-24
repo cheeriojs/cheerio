@@ -14,6 +14,20 @@ exports.vegetables = [
   '</ul>',
 ].join('');
 
+exports.divcontainers = [
+  '<div class="container">',
+  '<div class="inner">First</div>',
+  '<div class="inner">Second</div>',
+  '</div>',
+  '<div class="container">',
+  '<div class="inner">Third</div>',
+  '<div class="inner">Fourth</div>',
+  '</div>',
+  '<div id="new"><div>',
+  '<div><p><em><b></b></em></p></div>',
+  '</div>',
+].join('');
+
 exports.chocolates = [
   '<ul id="chocolates">',
   '<li class="linth" data-highlight="Lindor" data-origin="swiss">Linth</li>',
