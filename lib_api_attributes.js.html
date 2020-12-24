@@ -53,7 +53,7 @@ var rboolean = /^(?:autofocus|autoplay|async|checked|controls|defer|disabled|hid
 // Matches strings that look like JSON objects or arrays
 var rbrace = /^(?:\{[\w\W]*\}|\[[\w\W]*\])$/;
 
-var getAttr = function (elem, name) {
+function getAttr(elem, name) {
   if (!elem || !isTag(elem)) return;
 
   if (!elem.attribs) {
@@ -83,15 +83,15 @@ var getAttr = function (elem, name) {
   ) {
     return 'on';
   }
-};
+}
 
-var setAttr = function (el, name, value) {
+function setAttr(el, name, value) {
   if (value === null) {
     removeAttribute(el, name);
   } else {
     el.attribs[name] = value + '';
   }
-};
+}
 
 /**
  * Method for getting and setting attributes. Gets the attribute value for only
@@ -137,7 +137,7 @@ exports.attr = function (name, value) {
   return getAttr(this[0], name);
 };
 
-var getProp = function (el, name) {
+function getProp(el, name) {
   if (!el || !isTag(el)) return;
 
   return name in el
@@ -145,15 +145,15 @@ var getProp = function (el, name) {
     : rboolean.test(name)
     ? getAttr(el, name) !== undefined
     : getAttr(el, name);
-};
+}
 
-var setProp = function (el, name, value) {
+function setProp(el, name, value) {
   if (name in el) {
     el[name] = value;
   } else {
     setAttr(el, name, rboolean.test(name) ? (value ? '' : null) : value);
   }
-};
+}
 
 /**
  * Method for getting and setting properties. Gets the property value for only
@@ -173,21 +173,19 @@ var setProp = function (el, name, value) {
  * @see {@link http://api.jquery.com/prop/}
  */
 exports.prop = function (name, value) {
-  var i = 0;
-  var property;
-
   if (typeof name === 'string' &amp;&amp; value === undefined) {
     switch (name) {
-      case 'style':
-        property = this.css();
-
-        Object.keys(property).forEach(function (p) {
-          property[i++] = p;
+      case 'style': {
+        var property = this.css();
+        var keys = Object.keys(property);
+        keys.forEach(function (p, i) {
+          property[i] = p;
         });
 
-        property.length = i;
+        property.length = keys.length;
 
         break;
+      }
       case 'tagName':
       case 'nodeName':
         property = this[0].name.toUpperCase();
@@ -227,7 +225,7 @@ exports.prop = function (name, value) {
   }
 };
 
-var setData = function (el, name, value) {
+function setData(el, name, value) {
   if (!el.data) {
     el.data = {};
   }
@@ -236,21 +234,16 @@ var setData = function (el, name, value) {
   if (typeof name === 'string' &amp;&amp; value !== undefined) {
     el.data[name] = value;
   }
-};
+}
 
 // Read the specified attribute from the equivalent HTML5 `data-*` attribute,
 // and (if present) cache the value in the node's internal data store. If no
 // attribute name is specified, read *all* HTML5 `data-*` attributes in this
 // manner.
-var readData = function (el, name) {
+function readData(el, name) {
   var readAll = arguments.length === 1;
   var domNames;
-  var domName;
   var jsNames;
-  var jsName;
-  var value;
-  var idx;
-  var length;
 
   if (readAll) {
     domNames = Object.keys(el.attribs).filter(function (attrName) {
@@ -264,9 +257,10 @@ var readData = function (el, name) {
     jsNames = [name];
   }
 
-  for (idx = 0, length = domNames.length; idx &lt; length; ++idx) {
-    domName = domNames[idx];
-    jsName = jsNames[idx];
+  for (var idx = 0; idx &lt; domNames.length; ++idx) {
+    var domName = domNames[idx];
+    var jsName = jsNames[idx];
+    var value;
     if (hasOwn.call(el.attribs, domName) &amp;&amp; !hasOwn.call(el.data, jsName)) {
       value = el.attribs[domName];
 
@@ -287,7 +281,7 @@ var readData = function (el, name) {
   }
 
   return readAll ? el.data : value;
-};
+}
 
 /**
  * Method for getting and setting data attributes. Gets or sets the data
@@ -362,20 +356,11 @@ exports.val = function (value) {
   switch (element.name) {
     case 'textarea':
       return this.text(value);
-    case 'input':
-      if (querying) {
-        return this.attr('value');
-      }
-
-      this.attr('value', value);
-      return this;
-
-    case 'select':
+    case 'select': {
       var option = this.find('option:selected');
-      var returnValue;
-      if (option === undefined) return undefined;
+      if (!option) return undefined;
       if (!querying) {
-        if (!hasOwn.call(this.attr(), 'multiple') &amp;&amp; typeof value == 'object') {
+        if (this.attr('multiple') == null &amp;&amp; typeof value == 'object') {
           return this;
         }
         if (typeof value != 'object') {
@@ -387,20 +372,16 @@ exports.val = function (value) {
         }
         return this;
       }
-      returnValue = option.attr('value');
-      if (hasOwn.call(this.attr(), 'multiple')) {
-        returnValue = [];
-        domEach(option, function (__, el) {
-          returnValue.push(getAttr(el, 'value'));
-        });
-      }
-      return returnValue;
+
+      return this.attr('multiple')
+        ? option.toArray().map(function (el) {
+            return getAttr(el, 'value');
+          })
+        : option.attr('value');
+    }
+    case 'input':
     case 'option':
-      if (!querying) {
-        this.attr('value', value);
-        return this;
-      }
-      return this.attr('value');
+      return querying ? this.attr('value') : this.attr('value', value);
   }
 };
 
@@ -411,11 +392,11 @@ exports.val = function (value) {
  * @param {node} elem - Node to remove attribute from.
  * @param {string} name - Name of the attribute to remove.
  */
-var removeAttribute = function (elem, name) {
+function removeAttribute(elem, name) {
   if (!elem.attribs || !hasOwn.call(elem.attribs, name)) return;
 
   delete elem.attribs[name];
-};
+}
 
 /**
  * Splits a space-separated list of names to individual
@@ -424,9 +405,9 @@ var removeAttribute = function (elem, name) {
  * @param {string} names -  Names to split.
  * @returns {string[]} - Split names.
  */
-var splitNames = function (names) {
+function splitNames(names) {
   return names ? names.trim().split(rspace) : [];
-};
+}
 
 /**
  * Method for removing attributes by `name`.
@@ -471,19 +452,18 @@ exports.removeAttr = function (name) {
  * //=> true
  *
  * @param {string} className - Name of the class.
+ * @returns {boolean}
  *
  * @see {@link http://api.jquery.com/hasClass/}
  */
 exports.hasClass = function (className) {
   return this.toArray().some(function (elem) {
-    var attrs = elem.attribs;
-    var clazz = attrs &amp;&amp; attrs['class'];
+    var clazz = elem.attribs &amp;&amp; elem.attribs['class'];
     var idx = -1;
-    var end;
 
     if (clazz &amp;&amp; className.length) {
       while ((idx = clazz.indexOf(className, idx + 1)) > -1) {
-        end = idx + className.length;
+        var end = idx + className.length;
 
         if (
           (idx === 0 || rspace.test(clazz[idx - 1])) &amp;&amp;
@@ -533,17 +513,14 @@ exports.addClass = function (value) {
 
     // If we don't already have classes
     var className = getAttr(this[i], 'class');
-    var numClasses;
-    var setClass;
 
     if (!className) {
       setAttr(this[i], 'class', classNames.join(' ').trim());
     } else {
-      setClass = ' ' + className + ' ';
-      numClasses = classNames.length;
+      var setClass = ' ' + className + ' ';
 
       // Check if class already exists
-      for (var j = 0; j &lt; numClasses; j++) {
+      for (var j = 0; j &lt; classNames.length; j++) {
         var appendClass = classNames[j] + ' ';
         if (setClass.indexOf(' ' + appendClass) &lt; 0) setClass += appendClass;
       }
@@ -572,10 +549,6 @@ exports.addClass = function (value) {
  * @see {@link http://api.jquery.com/removeClass/}
  */
 exports.removeClass = function (value) {
-  var classes;
-  var numClasses;
-  var removeAll;
-
   // Handle if value is a function
   if (typeof value === 'function') {
     return domEach(this, function (i, el) {
@@ -586,9 +559,9 @@ exports.removeClass = function (value) {
     });
   }
 
-  classes = splitNames(value);
-  numClasses = classes.length;
-  removeAll = arguments.length === 0;
+  var classes = splitNames(value);
+  var numClasses = classes.length;
+  var removeAll = arguments.length === 0;
 
   return domEach(this, function (i, el) {
     if (!isTag(el)) return;
@@ -598,11 +571,10 @@ exports.removeClass = function (value) {
       el.attribs.class = '';
     } else {
       var elClasses = splitNames(el.attribs.class);
-      var index;
-      var changed;
+      var changed = false;
 
       for (var j = 0; j &lt; numClasses; j++) {
-        index = elClasses.indexOf(classes[j]);
+        var index = elClasses.indexOf(classes[j]);
 
         if (index >= 0) {
           elClasses.splice(index, 1);
@@ -657,19 +629,17 @@ exports.toggleClass = function (value, stateVal) {
   var numClasses = classNames.length;
   var state = typeof stateVal === 'boolean' ? (stateVal ? 1 : -1) : 0;
   var numElements = this.length;
-  var elementClasses;
-  var index;
 
   for (var i = 0; i &lt; numElements; i++) {
     // If selected element isn't a tag, move on
     if (!isTag(this[i])) continue;
 
-    elementClasses = splitNames(this[i].attribs.class);
+    var elementClasses = splitNames(this[i].attribs.class);
 
     // Check if class already exists
     for (var j = 0; j &lt; numClasses; j++) {
       // Check if the class name is currently defined
-      index = elementClasses.indexOf(classNames[j]);
+      var index = elementClasses.indexOf(classNames[j]);
 
       // Add if stateValue === true or we are toggling and there is no value
       if (state >= 0 &amp;&amp; index &lt; 0) {
@@ -719,7 +689,7 @@ exports.is = function (selector) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Wed Dec 23 2020 12:35:14 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Thu Dec 24 2020 09:38:50 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>

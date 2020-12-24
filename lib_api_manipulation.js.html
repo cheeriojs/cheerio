@@ -70,26 +70,22 @@ exports._makeDomArray = function makeDomArray(elem, clone) {
   return clone ? cloneDom([elem]) : [elem];
 };
 
-var _insert = function (concatenator) {
+function _insert(concatenator) {
   return function () {
     var elems = slice.call(arguments);
     var lastIdx = this.length - 1;
 
     return domEach(this, function (i, el) {
-      var dom;
-      var domSrc;
+      var domSrc =
+        typeof elems[0] === 'function'
+          ? elems[0].call(el, i, html(el.children))
+          : elems;
 
-      if (typeof elems[0] === 'function') {
-        domSrc = elems[0].call(el, i, html(el.children));
-      } else {
-        domSrc = elems;
-      }
-
-      dom = this._makeDomArray(domSrc, i &lt; lastIdx);
+      var dom = this._makeDomArray(domSrc, i &lt; lastIdx);
       concatenator(dom, el.children, el);
     });
   };
-};
+}
 
 /*
  * Modify an array in-place, removing some number of elements and adding new
@@ -102,22 +98,17 @@ var _insert = function (concatenator) {
  *
  * @private
  */
-var uniqueSplice = function (array, spliceIdx, spliceCount, newElems, parent) {
+function uniqueSplice(array, spliceIdx, spliceCount, newElems, parent) {
   var spliceArgs = [spliceIdx, spliceCount].concat(newElems);
   var prev = array[spliceIdx - 1] || null;
   var next = array[spliceIdx + spliceCount] || null;
-  var idx;
-  var len;
-  var prevIdx;
-  var node;
-  var oldParent;
 
   // Before splicing in new elements, ensure they do not already appear in the
   // current array.
-  for (idx = 0, len = newElems.length; idx &lt; len; ++idx) {
-    node = newElems[idx];
-    oldParent = node.parent;
-    prevIdx = oldParent &amp;&amp; oldParent.children.indexOf(newElems[idx]);
+  for (var idx = 0; idx &lt; newElems.length; ++idx) {
+    var node = newElems[idx];
+    var oldParent = node.parent;
+    var prevIdx = oldParent &amp;&amp; oldParent.children.indexOf(newElems[idx]);
 
     if (oldParent &amp;&amp; prevIdx > -1) {
       oldParent.children.splice(prevIdx, 1);
@@ -147,7 +138,7 @@ var uniqueSplice = function (array, spliceIdx, spliceCount, newElems, parent) {
     next.prev = newElems[newElems.length - 1];
   }
   return array.splice.apply(array, spliceArgs);
-};
+}
 
 /**
  * Insert every element in the set of matched elements to the end of the
@@ -269,9 +260,6 @@ function _wrap(insert) {
 
     for (var i = 0; i &lt; this.length; i++) {
       var el = this[i];
-      var wrapperDom;
-      var elInsertLocation;
-      var j;
 
       if (wrapperFn) {
         wrapper = wrapperFn.call(el, i);
@@ -281,11 +269,11 @@ function _wrap(insert) {
         wrapper = lastParent.find(wrapper).clone();
       }
 
-      wrapperDom = this._makeDomArray(wrapper, i &lt; lastIdx).slice(0, 1);
-      elInsertLocation = wrapperDom[0];
+      var wrapperDom = this._makeDomArray(wrapper, i &lt; lastIdx).slice(0, 1);
+      var elInsertLocation = wrapperDom[0];
       // Find the deepest child. Only consider the first tag child of each node
       // (ignore text); stop if no children are found.
-      j = 0;
+      var j = 0;
 
       while (elInsertLocation &amp;&amp; elInsertLocation.children) {
         if (j >= elInsertLocation.children.length) {
@@ -423,7 +411,7 @@ exports.after = function () {
   var elems = slice.call(arguments);
   var lastIdx = this.length - 1;
 
-  domEach(this, function (i, el) {
+  return domEach(this, function (i, el) {
     var parent = el.parent;
     if (!parent) {
       return;
@@ -431,24 +419,20 @@ exports.after = function () {
 
     var siblings = parent.children;
     var index = siblings.indexOf(el);
-    var domSrc;
-    var dom;
 
     // If not found, move on
     if (index &lt; 0) return;
 
-    if (typeof elems[0] === 'function') {
-      domSrc = elems[0].call(el, i, html(el.children));
-    } else {
-      domSrc = elems;
-    }
-    dom = this._makeDomArray(domSrc, i &lt; lastIdx);
+    var domSrc =
+      typeof elems[0] === 'function'
+        ? elems[0].call(el, i, html(el.children))
+        : elems;
+
+    var dom = this._makeDomArray(domSrc, i &lt; lastIdx);
 
     // Add element after `this` element
     uniqueSplice(siblings, index + 1, 0, dom, parent);
   });
-
-  return this;
 };
 
 /**
@@ -522,7 +506,7 @@ exports.before = function () {
   var elems = slice.call(arguments);
   var lastIdx = this.length - 1;
 
-  domEach(this, function (i, el) {
+  return domEach(this, function (i, el) {
     var parent = el.parent;
     if (!parent) {
       return;
@@ -530,25 +514,20 @@ exports.before = function () {
 
     var siblings = parent.children;
     var index = siblings.indexOf(el);
-    var domSrc;
-    var dom;
 
     // If not found, move on
     if (index &lt; 0) return;
 
-    if (typeof elems[0] === 'function') {
-      domSrc = elems[0].call(el, i, html(el.children));
-    } else {
-      domSrc = elems;
-    }
+    var domSrc =
+      typeof elems[0] === 'function'
+        ? elems[0].call(el, i, html(el.children))
+        : elems;
 
-    dom = this._makeDomArray(domSrc, i &lt; lastIdx);
+    var dom = this._makeDomArray(domSrc, i &lt; lastIdx);
 
     // Add element before `el` element
     uniqueSplice(siblings, index, 0, dom, parent);
   });
-
-  return this;
 };
 
 /**
@@ -620,10 +599,8 @@ exports.insertBefore = function (target) {
  * @see {@link http://api.jquery.com/remove/}
  */
 exports.remove = function (selector) {
-  var elems = this;
-
   // Filter if we have selector
-  if (selector) elems = elems.filter(selector);
+  var elems = selector ? this.filter(selector) : this;
 
   domEach(elems, function (i, el) {
     DomUtils.removeElement(el);
@@ -652,25 +629,22 @@ exports.remove = function (selector) {
  * @see {@link http://api.jquery.com/replaceWith/}
  */
 exports.replaceWith = function (content) {
-  var self = this;
-
-  domEach(this, function (i, el) {
+  return domEach(this, function (i, el) {
     var parent = el.parent;
     if (!parent) {
       return;
     }
 
     var siblings = parent.children;
-    var dom = self._makeDomArray(
+    var dom = this._makeDomArray(
       typeof content === 'function' ? content.call(el, i, el) : content
     );
-    var index;
 
     // In the case that `dom` contains nodes that already exist in other
     // structures, ensure those nodes are properly removed.
     updateDOM(dom, null);
 
-    index = siblings.indexOf(el);
+    var index = siblings.indexOf(el);
 
     // Completely remove old element
     uniqueSplice(siblings, index, 1, dom, parent);
@@ -679,8 +653,6 @@ exports.replaceWith = function (content) {
       el.parent = el.prev = el.next = null;
     }
   });
-
-  return this;
 };
 
 /**
@@ -695,14 +667,13 @@ exports.replaceWith = function (content) {
  * @see {@link http://api.jquery.com/empty/}
  */
 exports.empty = function () {
-  domEach(this, function (i, el) {
+  return domEach(this, function (i, el) {
     el.children.forEach(function (child) {
       child.next = child.prev = child.parent = null;
     });
 
     el.children.length = 0;
   });
-  return this;
 };
 
 /**
@@ -730,7 +701,7 @@ exports.html = function (str) {
 
   var opts = this.options;
 
-  domEach(this, function (i, el) {
+  return domEach(this, function (i, el) {
     el.children.forEach(function (child) {
       child.next = child.prev = child.parent = null;
     });
@@ -741,8 +712,6 @@ exports.html = function (str) {
 
     updateDOM(content, el);
   });
-
-  return this;
 };
 
 exports.toString = function () {
@@ -774,14 +743,13 @@ exports.text = function (str) {
     return text(this);
   } else if (typeof str === 'function') {
     // Function support
-    var self = this;
     return domEach(this, function (i, el) {
-      return exports.text.call(self._make(el), str.call(el, i, text([el])));
+      return exports.text.call(this._make(el), str.call(el, i, text([el])));
     });
   }
 
   // Append text node to each selected elements
-  domEach(this, function (i, el) {
+  return domEach(this, function (i, el) {
     el.children.forEach(function (child) {
       child.next = child.prev = child.parent = null;
     });
@@ -790,8 +758,6 @@ exports.text = function (str) {
 
     updateDOM(textNode, el);
   });
-
-  return this;
 };
 
 /**
@@ -822,7 +788,7 @@ exports.clone = function () {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Wed Dec 23 2020 12:35:14 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Thu Dec 24 2020 09:38:50 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>
