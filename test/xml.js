@@ -1,16 +1,16 @@
 var expect = require('expect.js');
 var cheerio = require('..');
 
-var xml = function (str, options) {
+function xml(str, options) {
   options = Object.assign({ xml: true }, options);
   var $ = cheerio.load(str, options);
   return $.xml();
-};
+}
 
-var dom = function (str, options) {
+function dom(str, options) {
   var $ = cheerio.load('', options);
   return $(str).html();
-};
+}
 
 describe('render', function () {
   describe('(xml)', function () {

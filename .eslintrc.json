@@ -11,6 +11,8 @@
     "curly": [2, "multi-line"],
     "one-var": [2, "never"],
     "no-else-return": 2,
+    "no-shadow": 2,
+    "no-use-before-define": [2, "nofunc"],
 
     "jsdoc/check-param-names": 2,
     "jsdoc/check-tag-names": 2,

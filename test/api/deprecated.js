@@ -210,16 +210,16 @@ describe('deprecated APIs', function () {
      * is deprecated.
      *
      * In order to promote consistency with the jQuery library, users are
-     * encouraged to instead use the instance method of the same name. For
-     * example:
+     * encouraged to instead use the instance method of the same name.
      *
+     * @example
      *     var $ = cheerio.load('<h1>Hello, <span>world</span>.</h1>');
      *     $('h1').html(); // '<h1>Hello, <span>world</span>.'.
      *
-     * To render the markup of an entire document, invoke the `html` function
-     * exported by the Cheerio module with a "root" selection, e.g.
+     * @example <caption>To render the markup of an entire document, invoke the `html` function
+     * exported by the Cheerio module with a "root" selection.</caption>
      *
-     *     Cheerio.html($.root()); // '<html><head></head><body><h1>Hello, <span>world</span>.</h1></body></html>'.
+     *     cheerio.html($.root()); // '<html><head></head><body><h1>Hello, <span>world</span>.</h1></body></html>'.
      */
     describe('.html - deprecated API', function () {
       it('() : of empty cheerio object should return null', function () {
