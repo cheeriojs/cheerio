@@ -54,7 +54,7 @@ describe('cheerio', function () {
     expect($script[0].childNodes).to.be.empty();
   });
 
-  var testAppleSelect = function ($apple) {
+  function testAppleSelect($apple) {
     expect($apple).to.have.length(1);
     $apple = $apple[0];
     expect($apple.parentNode.tagName).to.equal('ul');
@@ -62,7 +62,7 @@ describe('cheerio', function () {
     expect($apple.next.attribs['class']).to.equal('orange');
     expect($apple.childNodes).to.have.length(1);
     expect($apple.childNodes[0].data).to.equal('Apple');
-  };
+  }
 
   it('should be able to select .apple with only a context', function () {
     var $apple = cheerio('.apple', fruits);
@@ -323,7 +323,6 @@ describe('cheerio', function () {
     describe('prototype extensions', function () {
       it('should honor extensions defined on `prototype` property', function () {
         var $ = cheerio.load('<div>');
-        var $div;
         $.prototype.myPlugin = function () {
           return {
             context: this,
@@ -331,7 +330,7 @@ describe('cheerio', function () {
           };
         };
 
-        $div = $('div');
+        var $div = $('div');
 
         expect($div.myPlugin).to.be.a('function');
         expect($div.myPlugin().context).to.be($div);
@@ -344,7 +343,6 @@ describe('cheerio', function () {
 
       it('should honor extensions defined on `fn` property', function () {
         var $ = cheerio.load('<div>');
-        var $div;
         $.fn.myPlugin = function () {
           return {
             context: this,
@@ -352,7 +350,7 @@ describe('cheerio', function () {
           };
         };
 
-        $div = $('div');
+        var $div = $('div');
 
         expect($div.myPlugin).to.be.a('function');
         expect($div.myPlugin().context).to.be($div);

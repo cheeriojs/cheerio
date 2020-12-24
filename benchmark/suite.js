@@ -25,13 +25,11 @@ Suites.prototype.cheerioOnly = function () {
 };
 
 Suites.prototype.add = function (name, fileName, options) {
-  var markup;
-  var suite;
   if (!filterRe.test(name)) {
     return;
   }
-  markup = fs.readFileSync(path.join(documentDir, fileName), 'utf8');
-  suite = new Benchmark.Suite(name);
+  var markup = fs.readFileSync(path.join(documentDir, fileName), 'utf8');
+  var suite = new Benchmark.Suite(name);
 
   suite.on('start', function () {
     console.log('Test: ' + name + ' (file: ' + fileName + ')');
@@ -70,10 +68,8 @@ Suites.prototype._benchJsDom = function (suite, markup, options) {
 
   jQueryScript.runInContext(dom.getInternalVMContext());
 
-  var setupData;
-  if (options.setup) {
-    setupData = options.setup.call(null, dom.window.$);
-  }
+  var setupData = options.setup && options.setup.call(null, dom.window.$);
+
   suite.add('jsdom', function () {
     testFn.call(null, dom.window.$, setupData);
   });
@@ -83,10 +79,8 @@ Suites.prototype._benchJsDom = function (suite, markup, options) {
 Suites.prototype._benchCheerio = function (suite, markup, options) {
   var $ = cheerio.load(markup);
   var testFn = options.test;
-  var setupData;
-  if (options.setup) {
-    setupData = options.setup.call(null, $);
-  }
+  var setupData = options.setup && options.setup.call(null, $);
+
   suite.add('cheerio', function () {
     testFn.call(null, $, setupData);
   });
