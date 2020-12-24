@@ -73,11 +73,9 @@ describe('$(...)', function () {
     });
 
     it('(selector) : wraps the content with a copy of the first matched element', function () {
-      var $oranges;
-
       $('.apple').wrap('.orange, .pear');
 
-      $oranges = $('.orange');
+      var $oranges = $('.orange');
       expect($('.pear')).to.have.length(1);
       expect($oranges).to.have.length(2);
       expect($oranges.eq(0).parent()[0]).to.be($fruits[0]);
@@ -209,9 +207,8 @@ describe('$(...)', function () {
     });
 
     it("(selector) : should wrap the html of the element with the selector's first match", function () {
-      var $oranges;
       $('.apple').wrapInner('.orange, .pear');
-      $oranges = $('.orange');
+      var $oranges = $('.orange');
       expect($('.pear')).to.have.length(1);
       expect($oranges).to.have.length(2);
       expect($oranges.eq(0).parent()[0]).to.be($('.apple')[0]);
@@ -345,11 +342,10 @@ describe('$(...)', function () {
 
     it('(existing Node) : should remove node from previous location', function () {
       var apple = $fruits.children()[0];
-      var $children;
 
       expect($fruits.children()).to.have.length(3);
       $fruits.append(apple);
-      $children = $fruits.children();
+      var $children = $fruits.children();
 
       expect($children).to.have.length(3);
       expect($children[0]).to.not.equal(apple);
@@ -358,12 +354,11 @@ describe('$(...)', function () {
 
     it('(existing Node) : should remove existing node from previous location', function () {
       var apple = $fruits.children()[0];
-      var $children;
       var $dest = $('<div></div>');
 
       expect($fruits.children()).to.have.length(3);
       $dest.append(apple);
-      $children = $fruits.children();
+      var $children = $fruits.children();
 
       expect($children).to.have.length(2);
       expect($children[0]).to.not.equal(apple);
@@ -380,11 +375,10 @@ describe('$(...)', function () {
 
     it('(existing Node) : should clone all but the last occurrence', function () {
       var $originalApple = $('.apple');
-      var $apples;
 
       $('.orange, .pear').append($originalApple);
 
-      $apples = $('.apple');
+      var $apples = $('.apple');
       expect($apples).to.have.length(2);
       expect($apples.eq(0).parent()[0]).to.be($('.orange')[0]);
       expect($apples.eq(1).parent()[0]).to.be($('.pear')[0]);
@@ -436,17 +430,14 @@ describe('$(...)', function () {
 
     it('(fn) : should add returned string as last child', function () {
       $fruits = $fruits.children();
-      var $apple;
-      var $orange;
-      var $pear;
 
       $fruits.append(function () {
         return '<div class="first">';
       });
 
-      $apple = $fruits.eq(0);
-      $orange = $fruits.eq(1);
-      $pear = $fruits.eq(2);
+      var $apple = $fruits.eq(0);
+      var $orange = $fruits.eq(1);
+      var $pear = $fruits.eq(2);
 
       expect($apple.find('.first')[0]).to.equal($apple.contents()[1]);
       expect($orange.find('.first')[0]).to.equal($orange.contents()[1]);
@@ -454,18 +445,15 @@ describe('$(...)', function () {
     });
 
     it('(fn) : should add returned Cheerio object as last child', function () {
-      var $apple;
-      var $orange;
-      var $pear;
       $fruits = $fruits.children();
 
       $fruits.append(function () {
         return $('<div class="second">');
       });
 
-      $apple = $fruits.eq(0);
-      $orange = $fruits.eq(1);
-      $pear = $fruits.eq(2);
+      var $apple = $fruits.eq(0);
+      var $orange = $fruits.eq(1);
+      var $pear = $fruits.eq(2);
 
       expect($apple.find('.second')[0]).to.equal($apple.contents()[1]);
       expect($orange.find('.second')[0]).to.equal($orange.contents()[1]);
@@ -473,18 +461,15 @@ describe('$(...)', function () {
     });
 
     it('(fn) : should add returned Node as last child', function () {
-      var $apple;
-      var $orange;
-      var $pear;
       $fruits = $fruits.children();
 
       $fruits.append(function () {
         return $('<div class="third">')[0];
       });
 
-      $apple = $fruits.eq(0);
-      $orange = $fruits.eq(1);
-      $pear = $fruits.eq(2);
+      var $apple = $fruits.eq(0);
+      var $orange = $fruits.eq(1);
+      var $pear = $fruits.eq(2);
 
       expect($apple.find('.third')[0]).to.equal($apple.contents()[1]);
       expect($orange.find('.third')[0]).to.equal($orange.contents()[1]);
@@ -551,11 +536,10 @@ describe('$(...)', function () {
 
     it('(existing Node) : should remove existing nodes from previous locations', function () {
       var pear = $fruits.children()[2];
-      var $children;
 
       expect($fruits.children()).to.have.length(3);
       $fruits.prepend(pear);
-      $children = $fruits.children();
+      var $children = $fruits.children();
 
       expect($children).to.have.length(3);
       expect($children[2]).to.not.equal(pear);
@@ -570,11 +554,10 @@ describe('$(...)', function () {
 
     it('(existing Node) : should clone all but the last occurrence', function () {
       var $originalApple = $('.apple');
-      var $apples;
 
       $('.orange, .pear').prepend($originalApple);
 
-      $apples = $('.apple');
+      var $apples = $('.apple');
       expect($apples).to.have.length(2);
       expect($apples.eq(0).parent()[0]).to.be($('.orange')[0]);
       expect($apples.eq(1).parent()[0]).to.be($('.pear')[0]);
@@ -625,18 +608,15 @@ describe('$(...)', function () {
     });
 
     it('(fn) : should add returned string as first child', function () {
-      var $apple;
-      var $orange;
-      var $pear;
       $fruits = $fruits.children();
 
       $fruits.prepend(function () {
         return '<div class="first">';
       });
 
-      $apple = $fruits.eq(0);
-      $orange = $fruits.eq(1);
-      $pear = $fruits.eq(2);
+      var $apple = $fruits.eq(0);
+      var $orange = $fruits.eq(1);
+      var $pear = $fruits.eq(2);
 
       expect($apple.find('.first')[0]).to.equal($apple.contents()[0]);
       expect($orange.find('.first')[0]).to.equal($orange.contents()[0]);
@@ -644,18 +624,15 @@ describe('$(...)', function () {
     });
 
     it('(fn) : should add returned Cheerio object as first child', function () {
-      var $apple;
-      var $orange;
-      var $pear;
       $fruits = $fruits.children();
 
       $fruits.prepend(function () {
         return $('<div class="second">');
       });
 
-      $apple = $fruits.eq(0);
-      $orange = $fruits.eq(1);
-      $pear = $fruits.eq(2);
+      var $apple = $fruits.eq(0);
+      var $orange = $fruits.eq(1);
+      var $pear = $fruits.eq(2);
 
       expect($apple.find('.second')[0]).to.equal($apple.contents()[0]);
       expect($orange.find('.second')[0]).to.equal($orange.contents()[0]);
@@ -663,18 +640,15 @@ describe('$(...)', function () {
     });
 
     it('(fn) : should add returned Node as first child', function () {
-      var $apple;
-      var $orange;
-      var $pear;
       $fruits = $fruits.children();
 
       $fruits.prepend(function () {
         return $('<div class="third">')[0];
       });
 
-      $apple = $fruits.eq(0);
-      $orange = $fruits.eq(1);
-      $pear = $fruits.eq(2);
+      var $apple = $fruits.eq(0);
+      var $orange = $fruits.eq(1);
+      var $pear = $fruits.eq(2);
 
       expect($apple.find('.third')[0]).to.equal($apple.contents()[0]);
       expect($orange.find('.third')[0]).to.equal($orange.contents()[0]);
@@ -784,11 +758,10 @@ describe('$(...)', function () {
 
     it('(existing Node) : should remove existing nodes from previous locations', function () {
       var pear = $fruits.children()[2];
-      var $children;
 
       $('.apple').after(pear);
 
-      $children = $fruits.children();
+      var $children = $fruits.children();
       expect($children).to.have.length(3);
       expect($children[1]).to.be(pear);
     });
@@ -1052,11 +1025,10 @@ describe('$(...)', function () {
 
     it('(existing Node) : should remove existing nodes from previous locations', function () {
       var pear = $fruits.children()[2];
-      var $children;
 
       $('.apple').before(pear);
 
-      $children = $fruits.children();
+      var $children = $fruits.children();
       expect($children).to.have.length(3);
       expect($children[0]).to.be(pear);
     });
@@ -1618,10 +1590,9 @@ describe('$(...)', function () {
 
     it('(text) : should create a Node with the DOM level 1 API', function () {
       var $apple = $('.apple');
-      var textNode;
 
       $apple.text('anything');
-      textNode = $apple[0].childNodes[0];
+      var textNode = $apple[0].childNodes[0];
 
       expect(textNode.parentNode).to.be($apple[0]);
       expect(textNode.nodeType).to.be(3);
