@@ -6,7 +6,6 @@
   "extends": ["eslint:recommended", "plugin:jsdoc/recommended", "prettier"],
   "globals": { "Set": true, "Symbol": true },
   "rules": {
-    "no-eq-null": 0,
     "no-proto": 2,
     "curly": [2, "multi-line"],
     "one-var": [2, "never"],
@@ -14,6 +13,7 @@
     "no-shadow": 2,
     "no-use-before-define": [2, "nofunc"],
 
+    "jsdoc/require-jsdoc": 0,
     "jsdoc/check-param-names": 2,
     "jsdoc/check-tag-names": 2,
     "jsdoc/check-types": 2,
