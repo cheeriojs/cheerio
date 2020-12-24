@@ -230,10 +230,10 @@ describe('cheerio', function () {
     });
 
     it('(text) : should return an array that is not effected by DOM manipulation methods', function () {
-      var $ = cheerio.load('<div>');
-      var elems = $.parseHTML('<b></b><i></i>');
+      var $div = cheerio.load('<div>');
+      var elems = $div.parseHTML('<b></b><i></i>');
 
-      $('div').append(elems);
+      $div('div').append(elems);
 
       expect(elems).to.have.length(2);
     });

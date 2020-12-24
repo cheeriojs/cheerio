@@ -1364,13 +1364,13 @@ describe('$(...)', function () {
     });
 
     it('(self) : should be replaced after replacing it with itself', function () {
-      var $ = cheerio.load('<a>foo</a>', null, false);
+      var $a = cheerio.load('<a>foo</a>', null, false);
       var replacement = '<a>bar</a>';
-      $('a').replaceWith(function (i, el) {
+      $a('a').replaceWith(function (i, el) {
         return el;
       });
-      $('a').replaceWith(replacement);
-      expect($.html()).to.be.equal(replacement);
+      $a('a').replaceWith(replacement);
+      expect($a.html()).to.be.equal(replacement);
     });
 
     it('(str) : should accept strings', function () {
