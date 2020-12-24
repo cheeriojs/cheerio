@@ -3,7 +3,7 @@
     "node": true
   },
   "plugins": ["jsdoc"],
-  "extends": ["eslint:recommended", "prettier"],
+  "extends": ["eslint:recommended", "plugin:jsdoc/recommended", "prettier"],
   "globals": { "Set": true, "Symbol": true },
   "rules": {
     "no-eq-null": 0,
@@ -30,6 +30,10 @@
     "jsdoc": {
       "additionalTagNames": {
         "customTags": ["hideconstructor"]
+      },
+      "preferredTypes": {
+        "node": "Node",
+        "cheerio": "Cheerio"
       }
     }
   }
