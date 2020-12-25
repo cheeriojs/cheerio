@@ -94,6 +94,134 @@
     
 
     
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="default"><span class="type-signature"></span>default<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Cheerio default options.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_options.js.html">lib/options.js</a>, <a href="lib_options.js.html#line2">line 2</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="quickExpr"><span class="type-signature"></span>quickExpr<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>A simple way to check for HTML strings or ID strings.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_utils.js.html">lib/utils.js</a>, <a href="lib_utils.js.html#line87">line 87</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
 
     
         <h3 class="subsection-title">Methods</h3>
@@ -104,7 +232,7 @@
     
 
     
-    <h4 class="name" id="domEach"><span class="type-signature"></span>domEach<span class="signature">(cheerio, fn)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="domEach"><span class="type-signature"></span>domEach<span class="signature">(cheerio, fn)</span><span class="type-signature"> &rarr; {void}</span></h4>
     
 
     
@@ -112,8 +240,7 @@
 
 
 <div class="description">
-    <p>Iterate over each DOM element without creating intermediary Cheerio
-instances.</p>
+    <p>Iterate over each DOM element without creating intermediary Cheerio instances.</p>
 <p>This is indented for use internally to avoid otherwise unnecessary memory
 pressure introduced by _make.</p>
 </div>
@@ -157,7 +284,7 @@ pressure introduced by _make.</p>
             <td class="type">
             
                 
-<span class="param-type">cheerio</span>
+<span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
 
 
             
@@ -256,6 +383,209 @@ pressure introduced by _make.</p>
 
 
 
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="update"><span class="type-signature"></span>update<span class="signature">(arr, parent)</span><span class="type-signature"> &rarr; {Node}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Update the dom structure, for one changed layer.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>arr</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Node></span>
+|
+
+<span class="param-type">Node</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The new children.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>parent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Node</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The new parent.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_parse.js.html">lib/parse.js</a>, <a href="lib_parse.js.html#line48">line 48</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The parent node.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Node</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -277,13 +607,13 @@ pressure introduced by _make.</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-cheerio.html">cheerio</a></li><li><a href="module-cheerio_attributes.html">cheerio/attributes</a></li><li><a href="module-cheerio_css.html">cheerio/css</a></li><li><a href="module-cheerio_forms.html">cheerio/forms</a></li><li><a href="module-cheerio_manipulation.html">cheerio/manipulation</a></li><li><a href="module-cheerio_traversing.html">cheerio/traversing</a></li></ul><h3>Classes</h3><ul><li><a href="Cheerio.html">Cheerio</a></li></ul><h3>Global</h3><ul><li><a href="global.html#domEach">domEach</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-cheerio.html">cheerio</a></li><li><a href="module-cheerio_attributes.html">cheerio/attributes</a></li><li><a href="module-cheerio_css.html">cheerio/css</a></li><li><a href="module-cheerio_forms.html">cheerio/forms</a></li><li><a href="module-cheerio_manipulation.html">cheerio/manipulation</a></li><li><a href="module-cheerio_traversing.html">cheerio/traversing</a></li></ul><h3>Classes</h3><ul><li><a href="Cheerio.html">Cheerio</a></li></ul><h3>Global</h3><ul><li><a href="global.html#default">default</a></li><li><a href="global.html#domEach">domEach</a></li><li><a href="global.html#quickExpr">quickExpr</a></li><li><a href="global.html#update">update</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Thu Dec 24 2020 09:53:21 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Fri Dec 25 2020 19:40:43 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>

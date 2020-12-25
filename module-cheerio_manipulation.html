@@ -187,7 +187,7 @@ for chaining purposes.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line310">line 310</a>
+        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line308">line 308</a>
     </li></ul></dd>
     
 
@@ -211,31 +211,31 @@ for chaining purposes.</p>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const redFruit = $('&lt;div class="red-fruit">&lt;/div>')
-$('.apple').wrap(redFruit)
+    <pre class="prettyprint"><code>const redFruit = $('&lt;div class="red-fruit">&lt;/div>');
+  $('.apple').wrap(redFruit);
 
-//=> &lt;ul id="fruits">
-//     &lt;div class="red-fruit">
-//      &lt;li class="apple">Apple&lt;/li>
-//     &lt;/div>
-//     &lt;li class="orange">Orange&lt;/li>
-//     &lt;li class="plum">Plum&lt;/li>
-//   &lt;/ul>
+  //=> &lt;ul id="fruits">
+  //     &lt;div class="red-fruit">
+  //      &lt;li class="apple">Apple&lt;/li>
+  //     &lt;/div>
+  //     &lt;li class="orange">Orange&lt;/li>
+  //     &lt;li class="plum">Plum&lt;/li>
+  //   &lt;/ul>
 
-const healthy = $('&lt;div class="healthy">&lt;/div>')
-$('li').wrap(healthy)
+  const healthy = $('&lt;div class="healthy">&lt;/div>');
+  $('li').wrap(healthy);
 
-//=> &lt;ul id="fruits">
-//     &lt;div class="healthy">
-//       &lt;li class="apple">Apple&lt;/li>
-//     &lt;/div>
-//     &lt;div class="healthy">
-//       &lt;li class="orange">Orange&lt;/li>
-//     &lt;/div>
-//     &lt;div class="healthy">
-//        &lt;li class="plum">Plum&lt;/li>
-//     &lt;/div>
-//   &lt;/ul></code></pre>
+  //=> &lt;ul id="fruits">
+  //     &lt;div class="healthy">
+  //       &lt;li class="apple">Apple&lt;/li>
+  //     &lt;/div>
+  //     &lt;div class="healthy">
+  //       &lt;li class="orange">Orange&lt;/li>
+  //     &lt;/div>
+  //     &lt;div class="healthy">
+  //        &lt;li class="plum">Plum&lt;/li>
+  //     &lt;/div>
+  //   &lt;/ul></code></pre>
 
 
 
@@ -247,11 +247,11 @@ $('li').wrap(healthy)
 
 
 <div class="description">
-    <p>The .wrapInner() function can take any string or object that could be passed to
-the $() factory function to specify a DOM structure. This structure may be
-nested several levels deep, but should contain only one inmost element. The
-structure will be wrapped around the content of each of the elements in the set
-of matched elements.</p>
+    <p>The .wrapInner() function can take any string or object that could be passed
+to the $() factory function to specify a DOM structure. This structure may
+be nested several levels deep, but should contain only one inmost element.
+The structure will be wrapped around the content of each of the elements in
+the set of matched elements.</p>
 </div>
 
 
@@ -289,7 +289,7 @@ of matched elements.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line361">line 361</a>
+        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line358">line 358</a>
     </li></ul></dd>
     
 
@@ -313,31 +313,31 @@ of matched elements.</p>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const redFruit = $('&lt;div class="red-fruit">&lt;/div>')
-$('.apple').wrapInner(redFruit)
+    <pre class="prettyprint"><code>const redFruit = $('&lt;div class="red-fruit">&lt;/div>');
+  $('.apple').wrapInner(redFruit);
 
-//=> &lt;ul id="fruits">
-//     &lt;li class="apple">
-//       &lt;div class="red-fruit">Apple&lt;/div>
-//     &lt;/li>
-//     &lt;li class="orange">Orange&lt;/li>
-//     &lt;li class="pear">Pear&lt;/li>
-//   &lt;/ul>
+  //=> &lt;ul id="fruits">
+  //     &lt;li class="apple">
+  //       &lt;div class="red-fruit">Apple&lt;/div>
+  //     &lt;/li>
+  //     &lt;li class="orange">Orange&lt;/li>
+  //     &lt;li class="pear">Pear&lt;/li>
+  //   &lt;/ul>
 
-const healthy = $('&lt;div class="healthy">&lt;/div>')
-$('li').wrapInner(healthy)
+  const healthy = $('&lt;div class="healthy">&lt;/div>');
+  $('li').wrapInner(healthy);
 
-//=> &lt;ul id="fruits">
-//     &lt;li class="apple">
-//       &lt;div class="healthy">Apple&lt;/div>
-//     &lt;/li>
-//     &lt;li class="orange">
-//       &lt;div class="healthy">Orange&lt;/div>
-//     &lt;/li>
-//     &lt;li class="pear">
-//       &lt;div class="healthy">Pear&lt;/div>
-//     &lt;/li>
-//   &lt;/ul></code></pre>
+  //=> &lt;ul id="fruits">
+  //     &lt;li class="apple">
+  //       &lt;div class="healthy">Apple&lt;/div>
+  //     &lt;/li>
+  //     &lt;li class="orange">
+  //       &lt;div class="healthy">Orange&lt;/div>
+  //     &lt;/li>
+  //     &lt;li class="pear">
+  //       &lt;div class="healthy">Pear&lt;/div>
+  //     &lt;/li>
+  //   &lt;/ul></code></pre>
 
 
 
@@ -353,7 +353,7 @@ $('li').wrapInner(healthy)
     
 
     
-    <h4 class="name" id=".after"><span class="type-signature">(static) </span>after<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".after"><span class="type-signature">(static) </span>after<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Cheerio.html">Cheerio</a>}</span></h4>
     
 
     
@@ -405,7 +405,7 @@ $('li').wrapInner(healthy)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line382">line 382</a>
+        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line380">line 380</a>
     </li></ul></dd>
     
 
@@ -437,20 +437,42 @@ $('li').wrapInner(healthy)
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The instance itself.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>$('.apple').after('&lt;li class="plum">Plum&lt;/li>')
-$.html()
-//=>  &lt;ul id="fruits">
-//      &lt;li class="apple">Apple&lt;/li>
-//      &lt;li class="plum">Plum&lt;/li>
-//      &lt;li class="orange">Orange&lt;/li>
-//      &lt;li class="pear">Pear&lt;/li>
-//    &lt;/ul></code></pre>
+    <pre class="prettyprint"><code>$('.apple').after('&lt;li class="plum">Plum&lt;/li>');
+  $.html();
+  //=>  &lt;ul id="fruits">
+  //      &lt;li class="apple">Apple&lt;/li>
+  //      &lt;li class="plum">Plum&lt;/li>
+  //      &lt;li class="orange">Orange&lt;/li>
+  //      &lt;li class="pear">Pear&lt;/li>
+  //    &lt;/ul></code></pre>
 
 
 
@@ -550,14 +572,14 @@ $.html()
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>$('ul').append('&lt;li class="plum">Plum&lt;/li>')
-$.html()
-//=>  &lt;ul id="fruits">
-//      &lt;li class="apple">Apple&lt;/li>
-//      &lt;li class="orange">Orange&lt;/li>
-//      &lt;li class="pear">Pear&lt;/li>
-//      &lt;li class="plum">Plum&lt;/li>
-//    &lt;/ul></code></pre>
+    <pre class="prettyprint"><code>$('ul').append('&lt;li class="plum">Plum&lt;/li>');
+  $.html();
+  //=>  &lt;ul id="fruits">
+  //      &lt;li class="apple">Apple&lt;/li>
+  //      &lt;li class="orange">Orange&lt;/li>
+  //      &lt;li class="pear">Pear&lt;/li>
+  //      &lt;li class="plum">Plum&lt;/li>
+  //    &lt;/ul></code></pre>
 
 
 
@@ -567,7 +589,7 @@ $.html()
     
 
     
-    <h4 class="name" id=".appendTo"><span class="type-signature">(static) </span>appendTo<span class="signature">(target)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".appendTo"><span class="type-signature">(static) </span>appendTo<span class="signature">(target)</span><span class="type-signature"> &rarr; {<a href="Cheerio.html">Cheerio</a>}</span></h4>
     
 
     
@@ -575,8 +597,7 @@ $.html()
 
 
 <div class="description">
-    <p>Insert every element in the set of matched elements to the end of the
-target.</p>
+    <p>Insert every element in the set of matched elements to the end of the target.</p>
 </div>
 
 
@@ -621,7 +642,7 @@ target.</p>
 <span class="param-type">string</span>
 |
 
-<span class="param-type">cheerio</span>
+<span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
 
 
             
@@ -672,7 +693,7 @@ target.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line134">line 134</a>
+        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line136">line 136</a>
     </li></ul></dd>
     
 
@@ -704,20 +725,42 @@ target.</p>
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The instance itself.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>$('&lt;li class="plum">Plum&lt;/li>').appendTo('#fruits')
-$.html()
-//=>  &lt;ul id="fruits">
-//      &lt;li class="apple">Apple&lt;/li>
-//      &lt;li class="orange">Orange&lt;/li>
-//      &lt;li class="pear">Pear&lt;/li>
-//      &lt;li class="plum">Plum&lt;/li>
-//    &lt;/ul></code></pre>
+    <pre class="prettyprint"><code>$('&lt;li class="plum">Plum&lt;/li>').appendTo('#fruits');
+  $.html();
+  //=>  &lt;ul id="fruits">
+  //      &lt;li class="apple">Apple&lt;/li>
+  //      &lt;li class="orange">Orange&lt;/li>
+  //      &lt;li class="pear">Pear&lt;/li>
+  //      &lt;li class="plum">Plum&lt;/li>
+  //    &lt;/ul></code></pre>
 
 
 
@@ -727,7 +770,7 @@ $.html()
     
 
     
-    <h4 class="name" id=".before"><span class="type-signature">(static) </span>before<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".before"><span class="type-signature">(static) </span>before<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Cheerio.html">Cheerio</a>}</span></h4>
     
 
     
@@ -779,7 +822,7 @@ $.html()
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line477">line 477</a>
+        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line476">line 476</a>
     </li></ul></dd>
     
 
@@ -811,20 +854,42 @@ $.html()
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The instance itself.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>$('.apple').before('&lt;li class="plum">Plum&lt;/li>')
-$.html()
-//=>  &lt;ul id="fruits">
-//      &lt;li class="plum">Plum&lt;/li>
-//      &lt;li class="apple">Apple&lt;/li>
-//      &lt;li class="orange">Orange&lt;/li>
-//      &lt;li class="pear">Pear&lt;/li>
-//    &lt;/ul></code></pre>
+    <pre class="prettyprint"><code>$('.apple').before('&lt;li class="plum">Plum&lt;/li>');
+  $.html();
+  //=>  &lt;ul id="fruits">
+  //      &lt;li class="plum">Plum&lt;/li>
+  //      &lt;li class="apple">Apple&lt;/li>
+  //      &lt;li class="orange">Orange&lt;/li>
+  //      &lt;li class="pear">Pear&lt;/li>
+  //    &lt;/ul></code></pre>
 
 
 
@@ -834,7 +899,7 @@ $.html()
     
 
     
-    <h4 class="name" id=".clone"><span class="type-signature">(static) </span>clone<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".clone"><span class="type-signature">(static) </span>clone<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Cheerio.html">Cheerio</a>}</span></h4>
     
 
     
@@ -886,7 +951,7 @@ $.html()
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line744">line 744</a>
+        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line750">line 750</a>
     </li></ul></dd>
     
 
@@ -918,13 +983,35 @@ $.html()
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The cloned object.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const moreFruit = $('#fruits').clone()</code></pre>
+    <pre class="prettyprint"><code>const moreFruit = $('#fruits').clone();</code></pre>
 
 
 
@@ -934,7 +1021,7 @@ $.html()
     
 
     
-    <h4 class="name" id=".empty"><span class="type-signature">(static) </span>empty<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".empty"><span class="type-signature">(static) </span>empty<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Cheerio.html">Cheerio</a>}</span></h4>
     
 
     
@@ -1018,15 +1105,37 @@ $.html()
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The instance itself.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>$('ul').empty()
-$.html()
-//=>  &lt;ul id="fruits">&lt;/ul></code></pre>
+    <pre class="prettyprint"><code>$('ul').empty();
+  $.html();
+  //=>  &lt;ul id="fruits">&lt;/ul></code></pre>
 
 
 
@@ -1036,7 +1145,7 @@ $.html()
     
 
     
-    <h4 class="name" id=".html"><span class="type-signature">(static) </span>html<span class="signature">(str)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".html"><span class="type-signature">(static) </span>html<span class="signature">(str)</span><span class="type-signature"> &rarr; {<a href="Cheerio.html">Cheerio</a>}</span></h4>
     
 
     
@@ -1045,8 +1154,7 @@ $.html()
 
 <div class="description">
     <p>Gets an HTML content string from the first selected element. If <code>htmlString</code>
-is specified, each selected element's content is replaced by the new
-content.</p>
+is specified, each selected element's content is replaced by the new content.</p>
 </div>
 
 
@@ -1139,7 +1247,7 @@ content.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line668">line 668</a>
+        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line667">line 667</a>
     </li></ul></dd>
     
 
@@ -1171,17 +1279,39 @@ content.</p>
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The instance itself.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>$('.orange').html()
-//=> Orange
+    <pre class="prettyprint"><code>$('.orange').html();
+  //=> Orange
 
-$('#fruits').html('&lt;li class="mango">Mango&lt;/li>').html()
-//=> &lt;li class="mango">Mango&lt;/li></code></pre>
+  $('#fruits').html('&lt;li class="mango">Mango&lt;/li>').html();
+  //=> &lt;li class="mango">Mango&lt;/li></code></pre>
 
 
 
@@ -1191,7 +1321,7 @@ $('#fruits').html('&lt;li class="mango">Mango&lt;/li>').html()
     
 
     
-    <h4 class="name" id=".insertAfter"><span class="type-signature">(static) </span>insertAfter<span class="signature">(target)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".insertAfter"><span class="type-signature">(static) </span>insertAfter<span class="signature">(target)</span><span class="type-signature"> &rarr; {<a href="Cheerio.html">Cheerio</a>}</span></h4>
     
 
     
@@ -1244,7 +1374,7 @@ $('#fruits').html('&lt;li class="mango">Mango&lt;/li>').html()
 <span class="param-type">string</span>
 |
 
-<span class="param-type">cheerio</span>
+<span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
 
 
             
@@ -1295,7 +1425,7 @@ $('#fruits').html('&lt;li class="mango">Mango&lt;/li>').html()
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line428">line 428</a>
+        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line426">line 426</a>
     </li></ul></dd>
     
 
@@ -1327,20 +1457,42 @@ $('#fruits').html('&lt;li class="mango">Mango&lt;/li>').html()
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The set of newly inserted elements.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>$('&lt;li class="plum">Plum&lt;/li>').insertAfter('.apple')
-$.html()
-//=>  &lt;ul id="fruits">
-//      &lt;li class="apple">Apple&lt;/li>
-//      &lt;li class="plum">Plum&lt;/li>
-//      &lt;li class="orange">Orange&lt;/li>
-//      &lt;li class="pear">Pear&lt;/li>
-//    &lt;/ul></code></pre>
+    <pre class="prettyprint"><code>$('&lt;li class="plum">Plum&lt;/li>').insertAfter('.apple');
+  $.html();
+  //=>  &lt;ul id="fruits">
+  //      &lt;li class="apple">Apple&lt;/li>
+  //      &lt;li class="plum">Plum&lt;/li>
+  //      &lt;li class="orange">Orange&lt;/li>
+  //      &lt;li class="pear">Pear&lt;/li>
+  //    &lt;/ul></code></pre>
 
 
 
@@ -1350,7 +1502,7 @@ $.html()
     
 
     
-    <h4 class="name" id=".insertBefore"><span class="type-signature">(static) </span>insertBefore<span class="signature">(target)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".insertBefore"><span class="type-signature">(static) </span>insertBefore<span class="signature">(target)</span><span class="type-signature"> &rarr; {<a href="Cheerio.html">Cheerio</a>}</span></h4>
     
 
     
@@ -1403,7 +1555,7 @@ $.html()
 <span class="param-type">string</span>
 |
 
-<span class="param-type">cheerio</span>
+<span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
 
 
             
@@ -1454,7 +1606,7 @@ $.html()
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line523">line 523</a>
+        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line522">line 522</a>
     </li></ul></dd>
     
 
@@ -1486,20 +1638,42 @@ $.html()
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The set of newly inserted elements.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>$('&lt;li class="plum">Plum&lt;/li>').insertBefore('.apple')
-$.html()
-//=>  &lt;ul id="fruits">
-//      &lt;li class="plum">Plum&lt;/li>
-//      &lt;li class="apple">Apple&lt;/li>
-//      &lt;li class="orange">Orange&lt;/li>
-//      &lt;li class="pear">Pear&lt;/li>
-//    &lt;/ul></code></pre>
+    <pre class="prettyprint"><code>$('&lt;li class="plum">Plum&lt;/li>').insertBefore('.apple');
+  $.html();
+  //=>  &lt;ul id="fruits">
+  //      &lt;li class="plum">Plum&lt;/li>
+  //      &lt;li class="apple">Apple&lt;/li>
+  //      &lt;li class="orange">Orange&lt;/li>
+  //      &lt;li class="pear">Pear&lt;/li>
+  //    &lt;/ul></code></pre>
 
 
 
@@ -1561,7 +1735,7 @@ $.html()
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line223">line 223</a>
+        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line222">line 222</a>
     </li></ul></dd>
     
 
@@ -1599,14 +1773,14 @@ $.html()
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>$('ul').prepend('&lt;li class="plum">Plum&lt;/li>')
-$.html()
-//=>  &lt;ul id="fruits">
-//      &lt;li class="plum">Plum&lt;/li>
-//      &lt;li class="apple">Apple&lt;/li>
-//      &lt;li class="orange">Orange&lt;/li>
-//      &lt;li class="pear">Pear&lt;/li>
-//    &lt;/ul></code></pre>
+    <pre class="prettyprint"><code>$('ul').prepend('&lt;li class="plum">Plum&lt;/li>');
+  $.html();
+  //=>  &lt;ul id="fruits">
+  //      &lt;li class="plum">Plum&lt;/li>
+  //      &lt;li class="apple">Apple&lt;/li>
+  //      &lt;li class="orange">Orange&lt;/li>
+  //      &lt;li class="pear">Pear&lt;/li>
+  //    &lt;/ul></code></pre>
 
 
 
@@ -1616,7 +1790,7 @@ $.html()
     
 
     
-    <h4 class="name" id=".prependTo"><span class="type-signature">(static) </span>prependTo<span class="signature">(target)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".prependTo"><span class="type-signature">(static) </span>prependTo<span class="signature">(target)</span><span class="type-signature"> &rarr; {<a href="Cheerio.html">Cheerio</a>}</span></h4>
     
 
     
@@ -1624,8 +1798,7 @@ $.html()
 
 
 <div class="description">
-    <p>Insert every element in the set of matched elements to the beginning of the
-target.</p>
+    <p>Insert every element in the set of matched elements to the beginning of the target.</p>
 </div>
 
 
@@ -1670,7 +1843,7 @@ target.</p>
 <span class="param-type">string</span>
 |
 
-<span class="param-type">cheerio</span>
+<span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
 
 
             
@@ -1721,7 +1894,7 @@ target.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line168">line 168</a>
+        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line169">line 169</a>
     </li></ul></dd>
     
 
@@ -1753,20 +1926,42 @@ target.</p>
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The instance itself.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>$('&lt;li class="plum">Plum&lt;/li>').prependTo('#fruits')
-$.html()
-//=>  &lt;ul id="fruits">
-//      &lt;li class="plum">Plum&lt;/li>
-//      &lt;li class="apple">Apple&lt;/li>
-//      &lt;li class="orange">Orange&lt;/li>
-//      &lt;li class="pear">Pear&lt;/li>
-//    &lt;/ul></code></pre>
+    <pre class="prettyprint"><code>$('&lt;li class="plum">Plum&lt;/li>').prependTo('#fruits');
+  $.html();
+  //=>  &lt;ul id="fruits">
+  //      &lt;li class="plum">Plum&lt;/li>
+  //      &lt;li class="apple">Apple&lt;/li>
+  //      &lt;li class="orange">Orange&lt;/li>
+  //      &lt;li class="pear">Pear&lt;/li>
+  //    &lt;/ul></code></pre>
 
 
 
@@ -1776,7 +1971,7 @@ $.html()
     
 
     
-    <h4 class="name" id=".remove"><span class="type-signature">(static) </span>remove<span class="signature">(selector<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".remove"><span class="type-signature">(static) </span>remove<span class="signature">(selector<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Cheerio.html">Cheerio</a>}</span></h4>
     
 
     
@@ -1890,7 +2085,7 @@ $.html()
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line573">line 573</a>
+        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line572">line 572</a>
     </li></ul></dd>
     
 
@@ -1922,18 +2117,40 @@ $.html()
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The instance itself.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>$('.pear').remove()
-$.html()
-//=>  &lt;ul id="fruits">
-//      &lt;li class="apple">Apple&lt;/li>
-//      &lt;li class="orange">Orange&lt;/li>
-//    &lt;/ul></code></pre>
+    <pre class="prettyprint"><code>$('.pear').remove();
+  $.html();
+  //=>  &lt;ul id="fruits">
+  //      &lt;li class="apple">Apple&lt;/li>
+  //      &lt;li class="orange">Orange&lt;/li>
+  //    &lt;/ul></code></pre>
 
 
 
@@ -1943,7 +2160,7 @@ $.html()
     
 
     
-    <h4 class="name" id=".replaceWith"><span class="type-signature">(static) </span>replaceWith<span class="signature">(content)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".replaceWith"><span class="type-signature">(static) </span>replaceWith<span class="signature">(content)</span><span class="type-signature"> &rarr; {<a href="Cheerio.html">Cheerio</a>}</span></h4>
     
 
     
@@ -1993,7 +2210,7 @@ $.html()
             <td class="type">
             
                 
-<span class="param-type">cheerio</span>
+<span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
 |
 
 <span class="param-type">function</span>
@@ -2047,7 +2264,7 @@ $.html()
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line603">line 603</a>
+        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line602">line 602</a>
     </li></ul></dd>
     
 
@@ -2079,20 +2296,42 @@ $.html()
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The instance itself.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>const plum = $('&lt;li class="plum">Plum&lt;/li>')
-$('.pear').replaceWith(plum)
-$.html()
-//=> &lt;ul id="fruits">
-//     &lt;li class="apple">Apple&lt;/li>
-//     &lt;li class="orange">Orange&lt;/li>
-//     &lt;li class="plum">Plum&lt;/li>
-//   &lt;/ul></code></pre>
+    <pre class="prettyprint"><code>const plum = $('&lt;li class="plum">Plum&lt;/li>');
+  $('.pear').replaceWith(plum);
+  $.html();
+  //=> &lt;ul id="fruits">
+  //     &lt;li class="apple">Apple&lt;/li>
+  //     &lt;li class="orange">Orange&lt;/li>
+  //     &lt;li class="plum">Plum&lt;/li>
+  //   &lt;/ul></code></pre>
 
 
 
@@ -2102,7 +2341,7 @@ $.html()
     
 
     
-    <h4 class="name" id=".text"><span class="type-signature">(static) </span>text<span class="signature">(str<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".text"><span class="type-signature">(static) </span>text<span class="signature">(str<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Cheerio.html">Cheerio</a>|string}</span></h4>
     
 
     
@@ -2217,7 +2456,7 @@ selected element's content is replaced by the new text content.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line712">line 712</a>
+        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line717">line 717</a>
     </li></ul></dd>
     
 
@@ -2249,19 +2488,155 @@ selected element's content is replaced by the new text content.</p>
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The instance itself when setting text, otherwise
+the rendered document.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
+|
+
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>$('.orange').text()
-//=> Orange
+    <pre class="prettyprint"><code>$('.orange').text();
+  //=> Orange
 
-$('ul').text()
-//=>  Apple
-//    Orange
-//    Pear</code></pre>
+  $('ul').text();
+  //=>  Apple
+  //    Orange
+  //    Pear</code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".toString"><span class="type-signature">(static) </span>toString<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Turns the collection to a string. Alias for <code>.html()</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_api_manipulation.js.html">lib/api/manipulation.js</a>, <a href="lib_api_manipulation.js.html#line693">line 693</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The rendered document.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
 
 
 
@@ -2281,13 +2656,13 @@ $('ul').text()
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-cheerio.html">cheerio</a></li><li><a href="module-cheerio_attributes.html">cheerio/attributes</a></li><li><a href="module-cheerio_css.html">cheerio/css</a></li><li><a href="module-cheerio_forms.html">cheerio/forms</a></li><li><a href="module-cheerio_manipulation.html">cheerio/manipulation</a></li><li><a href="module-cheerio_traversing.html">cheerio/traversing</a></li></ul><h3>Classes</h3><ul><li><a href="Cheerio.html">Cheerio</a></li></ul><h3>Global</h3><ul><li><a href="global.html#domEach">domEach</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-cheerio.html">cheerio</a></li><li><a href="module-cheerio_attributes.html">cheerio/attributes</a></li><li><a href="module-cheerio_css.html">cheerio/css</a></li><li><a href="module-cheerio_forms.html">cheerio/forms</a></li><li><a href="module-cheerio_manipulation.html">cheerio/manipulation</a></li><li><a href="module-cheerio_traversing.html">cheerio/traversing</a></li></ul><h3>Classes</h3><ul><li><a href="Cheerio.html">Cheerio</a></li></ul><h3>Global</h3><ul><li><a href="global.html#default">default</a></li><li><a href="global.html#domEach">domEach</a></li><li><a href="global.html#quickExpr">quickExpr</a></li><li><a href="global.html#update">update</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Thu Dec 24 2020 09:53:21 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Fri Dec 25 2020 19:40:43 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>

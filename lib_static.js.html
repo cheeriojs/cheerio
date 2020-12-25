@@ -40,15 +40,15 @@ var parse = require('./parse');
 /**
  * Create a querying function, bound to a document created from the provided
  * markup. Note that similar to web browser contexts, this operation may
- * introduce `&lt;html>`, `&lt;head>`, and `&lt;body>` elements; set `isDocument` to `false`
- * to switch to fragment mode and disable this.
+ * introduce `&lt;html>`, `&lt;head>`, and `&lt;body>` elements; set `isDocument` to
+ * `false` to switch to fragment mode and disable this.
  *
  * See the README section titled "Loading" for additional usage information.
  *
  * @param {string} content - Markup to be loaded.
  * @param {object} [options] - Options for the created instance.
  * @param {boolean} [isDocument] - Allows parser to be switched to fragment mode.
- *
+ * @returns {Cheerio} - The loaded document.
  */
 exports.load = function (content, options, isDocument) {
   if (content === null || content === undefined) {
@@ -94,10 +94,14 @@ exports.load = function (content, options, isDocument) {
   return initialize;
 };
 
-/*
- * Helper function
+/**
+ * Helper function to render a DOM.
+ *
+ * @param {Cheerio} that - Cheerio instance to render.
+ * @param {Node[] | undefined} dom - The DOM to render. Defaults to `that`'s root.
+ * @param {object} options - Options for rendering.
+ * @returns {string} The rendered document.
  */
-
 function render(that, dom, options) {
   if (!dom) {
     if (that._root &amp;&amp; that._root.children) {
@@ -117,8 +121,9 @@ function render(that, dom, options) {
 /**
  * Renders the document.
  *
- * @param {string|cheerio|node} [dom] - Element to render.
+ * @param {string | Cheerio | Node | object} [dom] - Element to render.
  * @param {object} [options] - Options for the renderer.
+ * @returns {string} The rendered document.
  */
 exports.html = function (dom, options) {
   // be flexible about parameters, sometimes we call html(),
@@ -150,7 +155,8 @@ exports.html = function (dom, options) {
 /**
  * Render the document as XML.
  *
- * @param {string|cheerio|node} [dom] - Element to render.
+ * @param {string | Cheerio | Node} [dom] - Element to render.
+ * @returns {string} THe rendered document.
  */
 exports.xml = function (dom) {
   var options = Object.assign({}, this._options, { xmlMode: true });
@@ -161,7 +167,8 @@ exports.xml = function (dom) {
 /**
  * Render the document as text.
  *
- * @param {cheerio|node} [elems] - Elements to render.
+ * @param {Cheerio | Node} [elems] - Elements to render.
+ * @returns {string} The rendered document.
  */
 exports.text = function (elems) {
   if (!elems) {
@@ -192,11 +199,13 @@ exports.text = function (elems) {
  * meaning for Cheerio, but it is maintained for API compatibility with jQuery.
  *
  * @param {string} data - Markup that will be parsed.
- * @param {any|boolean} [context] - Will be ignored. If it is a boolean it will be used as the value of `keepScripts`.
+ * @param {any | boolean} [context] - Will be ignored. If it is a boolean it
+ *     will be used as the value of `keepScripts`.
  * @param {boolean} [keepScripts] - If false all scripts will be removed.
+ * @see {@link https://api.jquery.com/jQuery.parseHTML/}
  *
  * @alias Cheerio.parseHTML
- * @see {@link https://api.jquery.com/jQuery.parseHTML/}
+ * @returns {Node[]} The parsed DOM.
  */
 exports.parseHTML = function (data, context, keepScripts) {
   if (!data || typeof data !== 'string') {
@@ -224,11 +233,12 @@ exports.parseHTML = function (data, context, keepScripts) {
  * Sometimes you need to work with the top-level root element. To query it, you
  * can use `$.root()`.
  *
- * @alias Cheerio.root
- *
  * @example
- * $.root().append('&lt;ul id="vegetables">&lt;/ul>').html();
- * //=> &lt;ul id="fruits">...&lt;/ul>&lt;ul id="vegetables">&lt;/ul>
+ *   $.root().append('&lt;ul id="vegetables">&lt;/ul>').html();
+ *   //=> &lt;ul id="fruits">...&lt;/ul>&lt;ul id="vegetables">&lt;/ul>
+ *
+ * @alias Cheerio.root
+ * @returns {Cheerio} Cheerio instance wrapping the root node.
  */
 exports.root = function () {
   return this(this._root);
@@ -238,12 +248,12 @@ exports.root = function () {
  * Checks to see if the `contained` DOM element is a descendant of the
  * `container` DOM element.
  *
- * @param {node} container - Potential parent node.
- * @param {node} contained - Potential child node.
- * @returns {boolean}
+ * @param {Node} container - Potential parent node.
+ * @param {Node} contained - Potential child node.
+ * @see {@link https://api.jquery.com/jQuery.contains}
  *
  * @alias Cheerio.contains
- * @see {@link https://api.jquery.com/jQuery.contains}
+ * @returns {boolean} Indicates if the nodes contain one another.
  */
 exports.contains = function (container, contained) {
   // According to the jQuery API, an element does not "contain" itself
@@ -266,11 +276,12 @@ exports.contains = function (container, contained) {
 /**
  * $.merge().
  *
- * @param {Array|cheerio} arr1 - First array.
- * @param {Array|cheerio} arr2 - Second array.
+ * @param {Array | Cheerio} arr1 - First array.
+ * @param {Array | Cheerio} arr2 - Second array.
+ * @see {@link https://api.jquery.com/jQuery.merge}
  *
  * @alias Cheerio.merge
- * @see {@link https://api.jquery.com/jQuery.merge}
+ * @returns {Array | Cheerio} `arr1`, with elements of `arr2` inserted.
  */
 exports.merge = function (arr1, arr2) {
   if (!isArrayLike(arr1) || !isArrayLike(arr2)) {
@@ -284,6 +295,10 @@ exports.merge = function (arr1, arr2) {
   return arr1;
 };
 
+/**
+ * @param {any} item - Item to check.
+ * @returns {boolean} Indicates if the item is array-like.
+ */
 function isArrayLike(item) {
   if (Array.isArray(item)) {
     return true;
@@ -315,13 +330,13 @@ function isArrayLike(item) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-cheerio.html">cheerio</a></li><li><a href="module-cheerio_attributes.html">cheerio/attributes</a></li><li><a href="module-cheerio_css.html">cheerio/css</a></li><li><a href="module-cheerio_forms.html">cheerio/forms</a></li><li><a href="module-cheerio_manipulation.html">cheerio/manipulation</a></li><li><a href="module-cheerio_traversing.html">cheerio/traversing</a></li></ul><h3>Classes</h3><ul><li><a href="Cheerio.html">Cheerio</a></li></ul><h3>Global</h3><ul><li><a href="global.html#domEach">domEach</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-cheerio.html">cheerio</a></li><li><a href="module-cheerio_attributes.html">cheerio/attributes</a></li><li><a href="module-cheerio_css.html">cheerio/css</a></li><li><a href="module-cheerio_forms.html">cheerio/forms</a></li><li><a href="module-cheerio_manipulation.html">cheerio/manipulation</a></li><li><a href="module-cheerio_traversing.html">cheerio/traversing</a></li></ul><h3>Classes</h3><ul><li><a href="Cheerio.html">Cheerio</a></li></ul><h3>Global</h3><ul><li><a href="global.html#default">default</a></li><li><a href="global.html#domEach">domEach</a></li><li><a href="global.html#quickExpr">quickExpr</a></li><li><a href="global.html#update">update</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Thu Dec 24 2020 09:53:21 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Fri Dec 25 2020 19:40:43 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>
