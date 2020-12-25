@@ -27,7 +27,7 @@
     "node": ">= 0.12"
   },
   "dependencies": {
-    "cheerio-select-tmp": "^0.1.0",
+    "cheerio-select": "^1.0.0",
     "dom-serializer": "~1.2.0",
     "domhandler": "^4.0.0",
     "entities": "~2.1.0",
@@ -51,6 +51,7 @@
     "mocha": "^8.1.1",
     "nyc": "^15.0.1",
     "prettier": "^2.1.1",
+    "prettier-plugin-jsdoc": "^0.2.9",
     "tsd": "^0.14.0",
     "xyz": "~4.0.0"
   },

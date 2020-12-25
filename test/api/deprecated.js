@@ -16,9 +16,8 @@ describe('deprecated APIs', function () {
    * defined on the "loaded" Cheerio factory function.
    *
    * @example
-   *
-   *     var $ = cheerio.load('');
-   *     $.parseHTML('<b>markup</b>');
+   *   var $ = cheerio.load('');
+   *   $.parseHTML('<b>markup</b>');
    */
   describe('cheerio module', function () {
     describe('.parseHTML', function () {
@@ -35,8 +34,8 @@ describe('deprecated APIs', function () {
      * encouraged to instead use the static method of the same name.
      *
      * @example
-     *     var $ = cheerio.load('');
-     *     $.merge([1, 2], [3, 4]) // [1, 2, 3, 4]
+     *   var $ = cheerio.load('');
+     *   $.merge([1, 2], [3, 4]); // [1, 2, 3, 4]
      */
     describe('.merge', function () {
       var arr1;
@@ -136,9 +135,9 @@ describe('deprecated APIs', function () {
      * encouraged to instead use the static method of the same name.
      *
      * @example
-     *     var $ = cheerio.load('<div><p></p></div>');
-     *     $.contains($('div').get(0), $('p').get(0)); // true
-     *     $.contains($('p').get(0), $('div').get(0)); // false
+     *   var $ = cheerio.load('<div><p></p></div>');
+     *   $.contains($('div').get(0), $('p').get(0)); // true
+     *   $.contains($('p').get(0), $('div').get(0)); // false
      */
     describe('.contains', function () {
       var $;
@@ -178,8 +177,8 @@ describe('deprecated APIs', function () {
      * instead use the `root` static method of a "loaded" Cheerio function.
      *
      * @example
-     *     var $ = cheerio.load('');
-     *     $.root();
+     *   var $ = cheerio.load('');
+     *   $.root();
      */
     describe('.root', function () {
       it('returns an empty selection', function () {
@@ -196,7 +195,7 @@ describe('deprecated APIs', function () {
      * function exported by the Cheerio module.
      *
      * @example
-     *     var $ = cheerio.load('<h1>Hello, <span>world</span>.</h1>');
+     *   var $ = cheerio.load('<h1>Hello, <span>world</span>.</h1>');
      */
     it('.load', function () {
       var $1 = cheerio.load(fixtures.fruits);
@@ -206,20 +205,19 @@ describe('deprecated APIs', function () {
     });
 
     /**
-     * The `.html` static method defined on the "loaded" Cheerio factory function
-     * is deprecated.
+     * The `.html` static method defined on the "loaded" Cheerio factory
+     * function is deprecated.
      *
      * In order to promote consistency with the jQuery library, users are
      * encouraged to instead use the instance method of the same name.
      *
      * @example
-     *     var $ = cheerio.load('<h1>Hello, <span>world</span>.</h1>');
-     *     $('h1').html(); // '<h1>Hello, <span>world</span>.'.
+     *   var $ = cheerio.load('<h1>Hello, <span>world</span>.</h1>');
+     *   $('h1').html(); // '<h1>Hello, <span>world</span>.'
      *
      * @example <caption>To render the markup of an entire document, invoke the `html` function
      * exported by the Cheerio module with a "root" selection.</caption>
-     *
-     *     cheerio.html($.root()); // '<html><head></head><body><h1>Hello, <span>world</span>.</h1></body></html>'.
+     *   cheerio.html($.root()); // '<html><head></head><body><h1>Hello, <span>world</span>.</h1></body></html>'
      */
     describe('.html - deprecated API', function () {
       it('() : of empty cheerio object should return null', function () {
@@ -241,7 +239,7 @@ describe('deprecated APIs', function () {
      * exported by the Cheerio module.
      *
      * @example
-     *     cheerio.xml($.root());
+     *   cheerio.xml($.root());
      */
     describe('.xml  - deprecated API', function () {
       it('() :  renders XML', function () {
@@ -251,20 +249,19 @@ describe('deprecated APIs', function () {
     });
 
     /**
-     * The `.text` static method defined on the "loaded" Cheerio factory function
-     * is deprecated.
+     * The `.text` static method defined on the "loaded" Cheerio factory
+     * function is deprecated.
      *
      * In order to promote consistency with the jQuery library, users are
-     * encouraged to instead use the instance method of the same name. For
-     * example:
+     * encouraged to instead use the instance method of the same name.
      *
-     *     var $ = cheerio.load('<h1>Hello, <span>world</span>.</h1>');
-     *     $('h1').text(); // 'Hello, world.'.
+     * @example
+     *   var $ = cheerio.load('<h1>Hello, <span>world</span>.</h1>');
+     *   $('h1').text(); // 'Hello, world.'
      *
-     * To render the text content of an entire document, invoke the `text`
-     * function exported by the Cheerio module with a "root" selection, e.g.
-     *
-     *     Cheerio.text($.root()); // 'Hello, world.'.
+     * @example <caption>To render the text content of an entire document, invoke the `text`
+     * function exported by the Cheerio module with a "root" selection. </caption>
+     *   cheerio.text($.root()); // 'Hello, world.'
      */
     describe('.text  - deprecated API', function () {
       it('(cheerio object) : should return the text contents of the specified elements', function () {
