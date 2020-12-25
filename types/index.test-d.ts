@@ -68,18 +68,14 @@ $ = cheerio.load(html, {
   },
 });
 
-/**
- * Selectors
- */
+/** Selectors */
 var $el = $('.class');
 var $multiEl = $('selector', 'selector', 'selector');
 var $emptyEl = $('.not-existing-class');
 
 $el.cheerio;
 
-/**
- * Attributes
- */
+/** Attributes */
 
 // attr
 $el.attr();
@@ -121,16 +117,12 @@ $el.is(() => {
   return true;
 });
 
-/**
- * Forms
- */
+/** Forms */
 // serializeArray
 $('<form><input name="foo" value="bar" /></form>').serializeArray();
 $('<form><input name="foo" value="bar" /></form>').serialize();
 
-/**
- * Traversing
- */
+/** Traversing */
 // find
 $el.find('li').length;
 $el.find($('.apple')).length;
@@ -259,9 +251,7 @@ $el.add('.class').length;
 $el.eq(0).addBack().length;
 $el.eq(0).addBack('.class').length;
 
-/**
- * Manipulation
- */
+/** Manipulation */
 
 $('<li class="plum">Plum</li>').appendTo($el);
 $el.prependTo($('<li class="plum">Plum</li>'));
@@ -314,24 +304,18 @@ $el.css('width');
 $el.css(['width', 'height']);
 $el.css('width', '50px');
 
-/**
- * Rendering
- */
+/** Rendering */
 $.html();
 $.html('.class');
 $.xml();
 $.xml($el);
 
-/**
- * Miscellaneous
- */
+/** Miscellaneous */
 
 // .clone() ####
 $el.clone().html();
 
-/**
- * Utilities
- */
+/** Utilities */
 
 // $.root
 $.root().append('<ul id="vegetables"></ul>').html();
@@ -343,9 +327,7 @@ $.contains($el[0], $el[0]);
 $.parseHTML(html);
 $.parseHTML(html, undefined, true);
 
-/**
- * Not in doc
- */
+/** Not in doc */
 $el.toArray();
 
 cheerio.html($el);
