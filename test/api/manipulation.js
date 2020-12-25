@@ -320,23 +320,23 @@ describe('$(...)', function () {
   });
 
   describe('.wrapAll', function () {
-    var $;
+    var doc;
     var $inner;
 
     beforeEach(function () {
-      $ = cheerio.load(divcontainers);
-      $inner = $('.inner');
+      doc = cheerio.load(divcontainers);
+      $inner = doc('.inner');
     });
 
     it('(Cheerio object) : should insert the element and wrap elements with it', function () {
-      $inner.wrapAll($('#new'));
-      var $container = $('.container');
-      var $wrap = $('b');
+      $inner.wrapAll(doc('#new'));
+      var $container = doc('.container');
+      var $wrap = doc('b');
 
       expect($container).to.have.length(2);
       expect($container[0].children).to.have.length(1);
       expect($container[1].children).to.have.length(0);
-      expect($container[0].children[0]).to.be($('#new')[0]);
+      expect($container[0].children[0]).to.be(doc('#new')[0]);
 
       expect($inner).to.have.length(4);
       expect($wrap[0].children).to.have.length(4);
@@ -348,8 +348,8 @@ describe('$(...)', function () {
 
     it('(html) : should wrap elements with it', function () {
       $inner.wrapAll('<div class="wrap"></div>');
-      var $container = $('.container');
-      var $wrap = $('.wrap');
+      var $container = doc('.container');
+      var $wrap = doc('.wrap');
 
       expect($inner).to.have.length(4);
       expect($container).to.have.length(2);
@@ -367,9 +367,9 @@ describe('$(...)', function () {
 
     it('(selector) : should find element from dom, wrap elements with it', function () {
       $inner.wrapAll('#new');
-      var $container = $('.container');
-      var $wrap = $('b');
-      var $new = $('#new');
+      var $container = doc('.container');
+      var $wrap = doc('b');
+      var $new = doc('#new');
 
       expect($inner).to.have.length(4);
       expect($container).to.have.length(2);
