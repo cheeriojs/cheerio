@@ -4,6 +4,12 @@ import { ParserOptions } from 'htmlparser2';
 declare namespace cheerio {
   type AttrFunction = (el: Element, i: number, currentValue: string) => any;
 
+  /** A Selector is used to select DOM elements from document. */
+  type selectorString = string;
+
+  /** A string representing html fragment or document */
+  type htmlString = string;
+
   interface Cheerio {
     // Document References
     // Cheerio https://github.com/cheeriojs/cheerio
@@ -193,6 +199,10 @@ declare namespace cheerio {
     wrap(content: Document): Cheerio;
     wrap(content: Cheerio): Cheerio;
 
+    wrapAll(
+      wrapper: cheerio.htmlString | cheerio.selectorString | Cheerio | Element
+    ): Cheerio;
+
     css(propertyName: string): string;
     css(propertyNames: string[]): string[];
     css(propertyName: string, value: string): Cheerio;
@@ -270,7 +280,7 @@ declare namespace cheerio {
       options?: CheerioParserOptions | null,
       isDocument?: boolean
     ): Root;
-    load(element: Element, options?: CheerioParserOptions): Root;
+    load(element: Element | Element[], options?: CheerioParserOptions): Root;
   }
 }
 
