@@ -27,7 +27,7 @@
     "node": ">= 0.12"
   },
   "dependencies": {
-    "cheerio-select-tmp": "^0.1.0",
+    "cheerio-select": "^1.0.0",
     "dom-serializer": "~1.2.0",
     "domhandler": "^4.0.0",
     "entities": "~2.1.0",
