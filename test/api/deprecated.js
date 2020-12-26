@@ -3,8 +3,7 @@
  * removed in the next major release of Cheerio, but their stability should be
  * maintained until that time.
  */
-var expect = require('expect.js');
-var fixtures = require('../fixtures');
+var fixtures = require('../__fixtures__/fixtures');
 var cheerio = require('../..');
 
 describe('deprecated APIs', function () {
@@ -23,7 +22,7 @@ describe('deprecated APIs', function () {
     describe('.parseHTML', function () {
       it('(html) : should preserve content', function () {
         var html = '<div>test div</div>';
-        expect(cheerio(cheerio.parseHTML(html)[0]).html()).to.equal('test div');
+        expect(cheerio(cheerio.parseHTML(html)[0]).html()).toBe('test div');
       });
     });
 
@@ -46,23 +45,23 @@ describe('deprecated APIs', function () {
       });
 
       it('should be a function', function () {
-        expect(typeof cheerio.merge).to.equal('function');
+        expect(typeof cheerio.merge).toBe('function');
       });
 
       it('(arraylike, arraylike) : should return an array', function () {
         var ret = cheerio.merge(arr1, arr2);
-        expect(typeof ret).to.equal('object');
-        expect(ret instanceof Array).to.be.ok();
+        expect(typeof ret).toBe('object');
+        expect(ret instanceof Array).toBeTruthy();
       });
 
       it('(arraylike, arraylike) : should modify the first array', function () {
         cheerio.merge(arr1, arr2);
-        expect(arr1).to.have.length(6);
+        expect(arr1).toHaveLength(6);
       });
 
       it('(arraylike, arraylike) : should not modify the second array', function () {
         cheerio.merge(arr1, arr2);
-        expect(arr2).to.have.length(3);
+        expect(arr2).toHaveLength(3);
       });
 
       it('(arraylike, arraylike) : should handle objects that arent arrays, but are arraylike', function () {
@@ -77,37 +76,37 @@ describe('deprecated APIs', function () {
         arr2[1] = 'e';
         arr2[2] = 'f';
         cheerio.merge(arr1, arr2);
-        expect(arr1).to.have.length(6);
-        expect(arr1[3]).to.equal('d');
-        expect(arr1[4]).to.equal('e');
-        expect(arr1[5]).to.equal('f');
-        expect(arr2).to.have.length(3);
+        expect(arr1).toHaveLength(6);
+        expect(arr1[3]).toBe('d');
+        expect(arr1[4]).toBe('e');
+        expect(arr1[5]).toBe('f');
+        expect(arr2).toHaveLength(3);
       });
 
       it('(?, ?) : should gracefully reject invalid inputs', function () {
         var ret = cheerio.merge([4], 3);
-        expect(ret).to.not.be.ok();
+        expect(ret).toBeFalsy();
         ret = cheerio.merge({}, {});
-        expect(ret).to.not.be.ok();
+        expect(ret).toBeFalsy();
         ret = cheerio.merge([], {});
-        expect(ret).to.not.be.ok();
+        expect(ret).toBeFalsy();
         ret = cheerio.merge({}, []);
-        expect(ret).to.not.be.ok();
+        expect(ret).toBeFalsy();
         var fakeArray1 = { length: 3 };
         fakeArray1[0] = 'a';
         fakeArray1[1] = 'b';
         fakeArray1[3] = 'd';
         ret = cheerio.merge(fakeArray1, []);
-        expect(ret).to.not.be.ok();
+        expect(ret).toBeFalsy();
         ret = cheerio.merge([], fakeArray1);
-        expect(ret).to.not.be.ok();
+        expect(ret).toBeFalsy();
         fakeArray1 = {};
         fakeArray1.length = '7';
         ret = cheerio.merge(fakeArray1, []);
-        expect(ret).to.not.be.ok();
+        expect(ret).toBeFalsy();
         fakeArray1.length = -1;
         ret = cheerio.merge(fakeArray1, []);
-        expect(ret).to.not.be.ok();
+        expect(ret).toBeFalsy();
       });
 
       it('(?, ?) : should no-op on invalid inputs', function () {
@@ -116,15 +115,15 @@ describe('deprecated APIs', function () {
         fakeArray1[1] = 'b';
         fakeArray1[3] = 'd';
         cheerio.merge(fakeArray1, []);
-        expect(fakeArray1).to.have.length(3);
-        expect(fakeArray1[0]).to.equal('a');
-        expect(fakeArray1[1]).to.equal('b');
-        expect(fakeArray1[3]).to.equal('d');
+        expect(fakeArray1).toHaveLength(3);
+        expect(fakeArray1[0]).toBe('a');
+        expect(fakeArray1[1]).toBe('b');
+        expect(fakeArray1[3]).toBe('d');
         cheerio.merge([], fakeArray1);
-        expect(fakeArray1).to.have.length(3);
-        expect(fakeArray1[0]).to.equal('a');
-        expect(fakeArray1[1]).to.equal('b');
-        expect(fakeArray1[3]).to.equal('d');
+        expect(fakeArray1).toHaveLength(3);
+        expect(fakeArray1[0]).toBe('a');
+        expect(fakeArray1[1]).toBe('b');
+        expect(fakeArray1[3]).toBe('d');
       });
     });
 
@@ -151,8 +150,8 @@ describe('deprecated APIs', function () {
         var $fruits = $('#fruits');
         var $apple = $('.apple');
 
-        expect(cheerio.contains($food[0], $fruits[0])).to.equal(true);
-        expect(cheerio.contains($food[0], $apple[0])).to.equal(true);
+        expect(cheerio.contains($food[0], $fruits[0])).toBe(true);
+        expect(cheerio.contains($food[0], $apple[0])).toBe(true);
       });
 
       it('(container, other) : should not detect elements that are not contained', function () {
@@ -160,13 +159,11 @@ describe('deprecated APIs', function () {
         var $vegetables = $('#vegetables');
         var $apple = $('.apple');
 
-        expect(cheerio.contains($vegetables[0], $apple[0])).to.equal(false);
-        expect(cheerio.contains($fruits[0], $vegetables[0])).to.equal(false);
-        expect(cheerio.contains($vegetables[0], $fruits[0])).to.equal(false);
-        expect(cheerio.contains($fruits[0], $fruits[0])).to.equal(false);
-        expect(cheerio.contains($vegetables[0], $vegetables[0])).to.equal(
-          false
-        );
+        expect(cheerio.contains($vegetables[0], $apple[0])).toBe(false);
+        expect(cheerio.contains($fruits[0], $vegetables[0])).toBe(false);
+        expect(cheerio.contains($vegetables[0], $fruits[0])).toBe(false);
+        expect(cheerio.contains($fruits[0], $fruits[0])).toBe(false);
+        expect(cheerio.contains($vegetables[0], $vegetables[0])).toBe(false);
       });
     });
 
@@ -183,7 +180,7 @@ describe('deprecated APIs', function () {
     describe('.root', function () {
       it('returns an empty selection', function () {
         var $empty = cheerio.root();
-        expect($empty).to.have.length(0);
+        expect($empty).toHaveLength(0);
       });
     });
   });
@@ -201,7 +198,7 @@ describe('deprecated APIs', function () {
       var $1 = cheerio.load(fixtures.fruits);
       var $2 = $1.load('<div><p>Some <a>text</a>.</p></div>');
 
-      expect($2('a')).to.have.length(1);
+      expect($2('a')).toHaveLength(1);
     });
 
     /**
@@ -224,12 +221,12 @@ describe('deprecated APIs', function () {
         // Note: the direct invocation of the Cheerio constructor function is
         // also deprecated.
         var $ = cheerio();
-        expect($.html()).to.be(null);
+        expect($.html()).toBe(null);
       });
 
       it('(selector) : should return the outerHTML of the selected element', function () {
         var $ = cheerio.load(fixtures.fruits);
-        expect($.html('.pear')).to.equal('<li class="pear">Pear</li>');
+        expect($.html('.pear')).toBe('<li class="pear">Pear</li>');
       });
     });
 
@@ -244,7 +241,7 @@ describe('deprecated APIs', function () {
     describe('.xml  - deprecated API', function () {
       it('() :  renders XML', function () {
         var $ = cheerio.load('<foo></foo>', { xmlMode: true });
-        expect($.xml()).to.equal('<foo/>');
+        expect($.xml()).toBe('<foo/>');
       });
     });
 
@@ -266,21 +263,21 @@ describe('deprecated APIs', function () {
     describe('.text  - deprecated API', function () {
       it('(cheerio object) : should return the text contents of the specified elements', function () {
         var $ = cheerio.load('<a>This is <em>content</em>.</a>');
-        expect($.text($('a'))).to.equal('This is content.');
+        expect($.text($('a'))).toBe('This is content.');
       });
 
       it('(cheerio object) : should omit comment nodes', function () {
         var $ = cheerio.load(
           '<a>This is <!-- a comment --> not a comment.</a>'
         );
-        expect($.text($('a'))).to.equal('This is  not a comment.');
+        expect($.text($('a'))).toBe('This is  not a comment.');
       });
 
       it('(cheerio object) : should include text contents of children recursively', function () {
         var $ = cheerio.load(
           '<a>This is <div>a child with <span>another child and <!-- a comment --> not a comment</span> followed by <em>one last child</em> and some final</div> text.</a>'
         );
-        expect($.text($('a'))).to.equal(
+        expect($.text($('a'))).toBe(
           'This is a child with another child and  not a comment followed by one last child and some final text.'
         );
       });
@@ -289,28 +286,28 @@ describe('deprecated APIs', function () {
         var $ = cheerio.load(
           '<a>This is <div>a child with <span>another child and <!-- a comment --> not a comment</span> followed by <em>one last child</em> and some final</div> text.</a>'
         );
-        expect($.text()).to.equal(
+        expect($.text()).toBe(
           'This is a child with another child and  not a comment followed by one last child and some final text.'
         );
       });
 
       it('(cheerio object) : should omit script tags', function () {
         var $ = cheerio.load('<script>console.log("test")</script>');
-        expect($.text()).to.equal('');
+        expect($.text()).toBe('');
       });
 
       it('(cheerio object) : should omit style tags', function () {
         var $ = cheerio.load(
           '<style type="text/css">.cf-hidden { display: none; } .cf-invisible { visibility: hidden; }</style>'
         );
-        expect($.text()).to.equal('');
+        expect($.text()).toBe('');
       });
 
       it('(cheerio object) : should include text contents of children omiting style and script tags', function () {
         var $ = cheerio.load(
           '<body>Welcome <div>Hello, testing text function,<script>console.log("hello")</script></div><style type="text/css">.cf-hidden { display: none; }</style>End of messege</body>'
         );
-        expect($.text()).to.equal(
+        expect($.text()).toBe(
           'Welcome Hello, testing text function,End of messege'
         );
       });
