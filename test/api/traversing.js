@@ -1298,7 +1298,7 @@ describe('$(...)', function () {
      * > If the collection consists of elements from different documents or ones
      * > not in any document, the sort order is undefined.
      *
-     * @see {@link http://api.jquery.com/add/}
+     * @see {@link https://api.jquery.com/add/}
      */
     it('(html) : correctly parses and adds the new elements', function () {
       var $selection = $apple.add('<li class="banana">banana</li>');
