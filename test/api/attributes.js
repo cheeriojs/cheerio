@@ -330,7 +330,7 @@ describe('$(...)', function () {
       expect($el.data('json')).to.be('[1, 2, 3]');
     });
 
-    // See http://api.jquery.com/data/ and http://bugs.jquery.com/ticket/14523
+    // See https://api.jquery.com/data/ and https://bugs.jquery.com/ticket/14523
     it('(key) : should ignore the markup value after the first access', function () {
       var $el = cheerio('<div data-test="a">');
 

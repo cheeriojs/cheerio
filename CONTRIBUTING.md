@@ -17,7 +17,7 @@ how we'd like to work with you:
 # Documentation
 
 Any API change should be reflected in the project's README.md file. Reuse
-[jQuery's documentation](http://api.jquery.com) wherever possible, but take
+[jQuery's documentation](https://api.jquery.com) wherever possible, but take
 care to note aspects that make Cheerio distinct.
 
 # Code Style

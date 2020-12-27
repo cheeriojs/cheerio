@@ -7,7 +7,7 @@ declare namespace cheerio {
   interface Cheerio {
     // Document References
     // Cheerio https://github.com/cheeriojs/cheerio
-    // JQuery http://api.jquery.com
+    // JQuery https://api.jquery.com
 
     [index: number]: Element;
     cheerio: string;
@@ -245,7 +245,7 @@ declare namespace cheerio {
   interface Root extends Selector {
     // Document References
     // Cheerio https://github.com/cheeriojs/cheerio
-    // JQuery http://api.jquery.com
+    // JQuery https://api.jquery.com
     root(): Cheerio;
     contains(container: Element, contained: Element): boolean;
     parseHTML(

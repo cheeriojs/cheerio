@@ -3,11 +3,11 @@
 <h5 align="center">Fast, flexible & lean implementation of core jQuery designed specifically for the server.</h5>
 
 <div align="center">
-  <a href="http://travis-ci.org/cheeriojs/cheerio">
-    <img src="https://secure.travis-ci.org/cheeriojs/cheerio.svg?branch=master" alt="Travis CI" />
+  <a href="https://travis-ci.org/cheeriojs/cheerio">
+    <img src="https://travis-ci.org/cheeriojs/cheerio.svg?branch=main" alt="Travis CI" />
   </a>
   <a href="https://coveralls.io/r/cheeriojs/cheerio">
-    <img src="http://img.shields.io/coveralls/cheeriojs/cheerio.svg?branch=master&style=flat" alt="Coverage" />
+    <img src="https://img.shields.io/coveralls/cheeriojs/cheerio.svg?branch=main&style=flat" alt="Coverage" />
   </a>
   <a href="https://gitter.im/cheeriojs/cheerio?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
     <img src="https://badges.gitter.im/Join%20Chat.svg" alt="Join the chat at https://gitter.im/cheeriojs/cheerio" />
@@ -259,7 +259,7 @@ Cheerio collections are made up of objects that bear some resemblance to [browse
 
 ## Screencasts
 
-http://vimeo.com/31950192
+https://vimeo.com/31950192
 
 > This video tutorial is a follow-up to Nettut's "How to Scrape Web Pages with Node.js and jQuery", using cheerio instead of JSDOM + jQuery. This video shows how easy it is to use cheerio and how much faster cheerio is than JSDOM + jQuery.
 
