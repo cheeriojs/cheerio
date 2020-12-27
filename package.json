@@ -65,7 +65,7 @@
     "format": "npm run format:es && npm run format:prettier",
     "format:es": "npm run lint:es -- --fix",
     "format:prettier": "npm run format:prettier:raw -- --write",
-    "format:prettier:raw": "prettier '**/*.{js,ts,md,json,yml}' --ignore-path .prettierignore",
+    "format:prettier:raw": "prettier \"**/*.{js,ts,md,json,yml}\" --ignore-path .prettierignore",
     "build:docs": "jsdoc --configure jsdoc-config.json",
     "pre-commit": "lint-staged"
   },
