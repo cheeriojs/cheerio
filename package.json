@@ -42,22 +42,20 @@
     "eslint": "^7.10.0",
     "eslint-config-prettier": "^7.0.0",
     "eslint-plugin-jsdoc": "^30.6.2",
-    "expect.js": "~0.3.1",
     "husky": "^4.2.5",
+    "jest": "^26.6.3",
     "jquery": "^3.0.0",
     "jsdoc": "^3.6.6",
     "jsdom": "^16.2.2",
     "lint-staged": "^10.2.2",
-    "mocha": "^8.1.1",
-    "nyc": "^15.0.1",
     "prettier": "^2.1.1",
     "prettier-plugin-jsdoc": "^0.2.9",
     "tsd": "^0.14.0",
     "xyz": "~4.0.0"
   },
   "scripts": {
-    "test": "npm run lint && npm run test:mocha && npm run test:types",
-    "test:mocha": "mocha --recursive --reporter dot --parallel",
+    "test": "npm run lint && npm run test:jest && npm run test:types",
+    "test:jest": "jest",
     "test:types": "tsd",
     "lint": "npm run lint:es && npm run lint:prettier",
     "lint:es": "eslint --ignore-path .prettierignore .",
@@ -80,6 +78,15 @@
     ],
     "*.{json,md,ts,yml}": [
       "prettier --write"
+    ]
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "<rootDir>/test/**/*.js"
+    ],
+    "testPathIgnorePatterns": [
+      "/__fixtures__/"
     ]
   }
 }

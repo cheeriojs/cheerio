@@ -1,4 +1,3 @@
-/* jshint indent: false */
 exports.fruits = [
   '<ul id="fruits">',
   '<li class="apple">Apple</li>',

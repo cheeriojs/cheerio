@@ -1,6 +1,5 @@
-var expect = require('expect.js');
 var cheerio = require('../..');
-var forms = require('../fixtures').forms;
+var forms = require('../__fixtures__/fixtures').forms;
 
 describe('$(...)', function () {
   var $;
@@ -11,7 +10,7 @@ describe('$(...)', function () {
 
   describe('.serializeArray', function () {
     it('() : should get form controls', function () {
-      expect($('form#simple').serializeArray()).to.eql([
+      expect($('form#simple').serializeArray()).toStrictEqual([
         {
           name: 'fruit',
           value: 'Apple',
@@ -20,12 +19,12 @@ describe('$(...)', function () {
     });
 
     it('() : should get nested form controls', function () {
-      expect($('form#nested').serializeArray()).to.have.length(2);
+      expect($('form#nested').serializeArray()).toHaveLength(2);
       var data = $('form#nested').serializeArray();
       data.sort(function (a, b) {
         return a.value - b.value;
       });
-      expect(data).to.eql([
+      expect(data).toStrictEqual([
         {
           name: 'fruit',
           value: 'Apple',
@@ -38,11 +37,11 @@ describe('$(...)', function () {
     });
 
     it('() : should not get disabled form controls', function () {
-      expect($('form#disabled').serializeArray()).to.eql([]);
+      expect($('form#disabled').serializeArray()).toStrictEqual([]);
     });
 
     it('() : should not get form controls with the wrong type', function () {
-      expect($('form#submit').serializeArray()).to.eql([
+      expect($('form#submit').serializeArray()).toStrictEqual([
         {
           name: 'fruit',
           value: 'Apple',
@@ -51,7 +50,7 @@ describe('$(...)', function () {
     });
 
     it('() : should get selected options', function () {
-      expect($('form#select').serializeArray()).to.eql([
+      expect($('form#select').serializeArray()).toStrictEqual([
         {
           name: 'fruit',
           value: 'Orange',
@@ -60,7 +59,7 @@ describe('$(...)', function () {
     });
 
     it('() : should not get unnamed form controls', function () {
-      expect($('form#unnamed').serializeArray()).to.eql([
+      expect($('form#unnamed').serializeArray()).toStrictEqual([
         {
           name: 'fruit',
           value: 'Apple',
@@ -69,12 +68,12 @@ describe('$(...)', function () {
     });
 
     it('() : should get multiple selected options', function () {
-      expect($('form#multiple').serializeArray()).to.have.length(2);
+      expect($('form#multiple').serializeArray()).toHaveLength(2);
       var data = $('form#multiple').serializeArray();
       data.sort(function (a, b) {
         return a.value - b.value;
       });
-      expect(data).to.eql([
+      expect(data).toStrictEqual([
         {
           name: 'fruit',
           value: 'Apple',
@@ -91,7 +90,7 @@ describe('$(...)', function () {
       data.sort(function (a, b) {
         return a.value - b.value;
       });
-      expect(data).to.eql([
+      expect(data).toStrictEqual([
         {
           name: 'fruit',
           value: 'Apple',
@@ -104,7 +103,7 @@ describe('$(...)', function () {
     });
 
     it('() : should standardize line breaks', function () {
-      expect($('form#textarea').serializeArray()).to.eql([
+      expect($('form#textarea').serializeArray()).toStrictEqual([
         {
           name: 'fruits',
           value: 'Apple\r\nOrange',
@@ -113,20 +112,22 @@ describe('$(...)', function () {
     });
 
     it("() : shouldn't serialize the empty string", function () {
-      expect($('<input value=pineapple>').serializeArray()).to.eql([]);
-      expect($('<input name="" value=pineapple>').serializeArray()).to.eql([]);
-      expect($('<input name="fruit" value=pineapple>').serializeArray()).to.eql(
-        [
-          {
-            name: 'fruit',
-            value: 'pineapple',
-          },
-        ]
-      );
+      expect($('<input value=pineapple>').serializeArray()).toStrictEqual([]);
+      expect(
+        $('<input name="" value=pineapple>').serializeArray()
+      ).toStrictEqual([]);
+      expect(
+        $('<input name="fruit" value=pineapple>').serializeArray()
+      ).toStrictEqual([
+        {
+          name: 'fruit',
+          value: 'pineapple',
+        },
+      ]);
     });
 
     it('() : should serialize inputs without value attributes', function () {
-      expect($('<input name="fruit">').serializeArray()).to.eql([
+      expect($('<input name="fruit">').serializeArray()).toStrictEqual([
         {
           name: 'fruit',
           value: '',
@@ -137,27 +138,23 @@ describe('$(...)', function () {
 
   describe('.serialize', function () {
     it('() : should get form controls', function () {
-      expect($('form#simple').serialize()).to.equal('fruit=Apple');
+      expect($('form#simple').serialize()).toBe('fruit=Apple');
     });
 
     it('() : should get nested form controls', function () {
-      expect($('form#nested').serialize()).to.equal(
-        'fruit=Apple&vegetable=Carrot'
-      );
+      expect($('form#nested').serialize()).toBe('fruit=Apple&vegetable=Carrot');
     });
 
     it('() : should not get disabled form controls', function () {
-      expect($('form#disabled').serialize()).to.equal('');
+      expect($('form#disabled').serialize()).toBe('');
     });
 
     it('() : should get multiple selected options', function () {
-      expect($('form#multiple').serialize()).to.equal(
-        'fruit=Apple&fruit=Orange'
-      );
+      expect($('form#multiple').serialize()).toBe('fruit=Apple&fruit=Orange');
     });
 
     it("() : should encode spaces as +'s", function () {
-      expect($('form#spaces').serialize()).to.equal('fruit=Blood+orange');
+      expect($('form#spaces').serialize()).toBe('fruit=Blood+orange');
     });
   });
 });
