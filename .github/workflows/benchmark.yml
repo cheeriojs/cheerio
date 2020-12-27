@@ -1,4 +1,4 @@
-name: CI
+name: Benchmark
 
 on:
   push:
@@ -10,7 +10,7 @@ env:
   NODE: 14.x
 
 jobs:
-  ci:
+  benchmark:
     runs-on: ubuntu-latest
 
     steps:
@@ -34,5 +34,7 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
-      - name: Run tests
-        run: npm run test:jest && npm run test:types
+      - name: Run benchmarks
+        run: "node benchmark/benchmark.js --regex '^(?!.*highmem)'"
+        env:
+          BENCHMARK: true
