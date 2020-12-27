@@ -157,7 +157,7 @@ function uniqueSplice(array, spliceIdx, spliceCount, newElems, parent) {
  *   //    &lt;/ul>
  *
  * @param {string | Cheerio} target - Element to append elements to.
- * @see {@link http://api.jquery.com/appendTo/}
+ * @see {@link https://api.jquery.com/appendTo/}
  *
  * @returns {Cheerio} The instance itself.
  */
@@ -190,7 +190,7 @@ exports.appendTo = function (target) {
  *   //    &lt;/ul>
  *
  * @param {string | Cheerio} target - Element to prepend elements to.
- * @see {@link http://api.jquery.com/prependTo/}
+ * @see {@link https://api.jquery.com/prependTo/}
  *
  * @returns {Cheerio} The instance itself.
  */
@@ -224,7 +224,7 @@ exports.prependTo = function (target) {
  *
  * @function
  *
- * @see {@link http://api.jquery.com/append/}
+ * @see {@link https://api.jquery.com/append/}
  */
 exports.append = _insert(function (dom, children, parent) {
   uniqueSplice(children, children.length, 0, dom, parent);
@@ -245,7 +245,7 @@ exports.append = _insert(function (dom, children, parent) {
  *
  * @function
  *
- * @see {@link http://api.jquery.com/prepend/}
+ * @see {@link https://api.jquery.com/prepend/}
  */
 exports.prepend = _insert(function (dom, children, parent) {
   uniqueSplice(children, 0, 0, dom, parent);
@@ -331,7 +331,7 @@ function _wrap(insert) {
  *
  * @param {Cheerio} wrapper - The DOM structure to wrap around each element in
  *     the selection.
- * @see {@link http://api.jquery.com/wrap/}
+ * @see {@link https://api.jquery.com/wrap/}
  */
 exports.wrap = _wrap(function (el, elInsertLocation, wrapperDom) {
   var parent = el.parent;
@@ -381,7 +381,7 @@ exports.wrap = _wrap(function (el, elInsertLocation, wrapperDom) {
  *
  * @param {Cheerio} wrapper - The DOM structure to wrap around the content of
  *     each element in the selection.
- * @see {@link http://api.jquery.com/wrapInner/}
+ * @see {@link https://api.jquery.com/wrapInner/}
  */
 exports.wrapInner = _wrap(function (el, elInsertLocation, wrapperDom) {
   updateDOM(el.children, elInsertLocation);
@@ -481,7 +481,7 @@ exports.wrapAll = function (wrapper) {
  *   //      &lt;li class="pear">Pear&lt;/li>
  *   //    &lt;/ul>
  *
- * @see {@link http://api.jquery.com/after/}
+ * @see {@link https://api.jquery.com/after/}
  *
  * @returns {Cheerio} The instance itself.
  */
@@ -527,7 +527,7 @@ exports.after = function () {
  *   //    &lt;/ul>
  *
  * @param {string | Cheerio} target - Element to insert elements after.
- * @see {@link http://api.jquery.com/insertAfter/}
+ * @see {@link https://api.jquery.com/insertAfter/}
  *
  * @returns {Cheerio} The set of newly inserted elements.
  */
@@ -577,7 +577,7 @@ exports.insertAfter = function (target) {
  *   //      &lt;li class="pear">Pear&lt;/li>
  *   //    &lt;/ul>
  *
- * @see {@link http://api.jquery.com/before/}
+ * @see {@link https://api.jquery.com/before/}
  *
  * @returns {Cheerio} The instance itself.
  */
@@ -623,7 +623,7 @@ exports.before = function () {
  *   //    &lt;/ul>
  *
  * @param {string | Cheerio} target - Element to insert elements before.
- * @see {@link http://api.jquery.com/insertBefore/}
+ * @see {@link https://api.jquery.com/insertBefore/}
  *
  * @returns {Cheerio} The set of newly inserted elements.
  */
@@ -673,7 +673,7 @@ exports.insertBefore = function (target) {
  *   //    &lt;/ul>
  *
  * @param {string} [selector] - Optional selector for elements to remove.
- * @see {@link http://api.jquery.com/remove/}
+ * @see {@link https://api.jquery.com/remove/}
  *
  * @returns {Cheerio} The instance itself.
  */
@@ -703,7 +703,7 @@ exports.remove = function (selector) {
  *   //   &lt;/ul>
  *
  * @param {Cheerio | Function} content - Replacement for matched elements.
- * @see {@link http://api.jquery.com/replaceWith/}
+ * @see {@link https://api.jquery.com/replaceWith/}
  *
  * @returns {Cheerio} The instance itself.
  */
@@ -742,7 +742,7 @@ exports.replaceWith = function (content) {
  *   $.html();
  *   //=>  &lt;ul id="fruits">&lt;/ul>
  *
- * @see {@link http://api.jquery.com/empty/}
+ * @see {@link https://api.jquery.com/empty/}
  *
  * @returns {Cheerio} The instance itself.
  */
@@ -768,7 +768,7 @@ exports.empty = function () {
  *   //=> &lt;li class="mango">Mango&lt;/li>
  *
  * @param {string} str - If specified used to replace selection's contents.
- * @see {@link http://api.jquery.com/html/}
+ * @see {@link https://api.jquery.com/html/}
  *
  * @returns {Cheerio} The instance itself.
  */
@@ -817,7 +817,7 @@ exports.toString = function () {
  *   //    Pear
  *
  * @param {string} [str] - If specified replacement for the selected element's contents.
- * @see {@link http://api.jquery.com/text/}
+ * @see {@link https://api.jquery.com/text/}
  *
  * @returns {Cheerio | string} The instance itself when setting text, otherwise
  *     the rendered document.
@@ -851,7 +851,7 @@ exports.text = function (str) {
  * @example
  *   const moreFruit = $('#fruits').clone();
  *
- * @see {@link http://api.jquery.com/clone/}
+ * @see {@link https://api.jquery.com/clone/}
  *
  * @returns {Cheerio} The cloned object.
  */
@@ -874,7 +874,7 @@ exports.clone = function () {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Fri Dec 25 2020 20:36:55 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sun Dec 27 2020 09:28:19 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>
