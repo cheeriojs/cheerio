@@ -351,7 +351,7 @@ Change log:
 # 0.13.1 / 2014-01-07
 
 - Fix select with context in Cheerio function (@jugglinmike)
-- Remove unecessary DOM maintenance logic (@jugglinmike)
+- Remove unnecessary DOM maintenance logic (@jugglinmike)
 - Deprecate support for node 0.6
 
 # 0.13.0 / 2013-12-30
@@ -524,7 +524,7 @@ Change log:
 
   # 0.8.0 / 2012-05-27
 
-- Updated CSS parser to use FB55/CSSselect. Cheerio now supports most CSS3 psuedo selectors thanks to @FB55.
+- Updated CSS parser to use FB55/CSSselect. Cheerio now supports most CSS3 pseudo selectors thanks to @FB55.
 - ignoreWhitespace now on by default again. See #55 for context.
 - Changed $(':root') to $.root(), cleaned up \$.clone()
 - Support for .eq(i) thanks to @alexbardas
