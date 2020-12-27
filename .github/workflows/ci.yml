@@ -45,5 +45,19 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
-      - name: Run tests
-        run: npm run test:jest && npm run test:types
+      - name: Run Jest
+        run: npm run test:jest
+        if: matrix.node != 14
+
+      - name: Run Jest with coverage
+        run: npm run test:jest:cov
+        if: matrix.node == 14
+
+      - name: Test types
+        run: npm run test:types
+
+      - name: Run Coveralls
+        uses: coverallsapp/github-action@master
+        if: matrix.node == 14
+        with:
+          github-token: '${{ secrets.GITHUB_TOKEN }}'
