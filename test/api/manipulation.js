@@ -639,7 +639,7 @@ describe('$(...)', function () {
       expect($fruits.children().eq(0).hasClass('apple')).to.be.ok();
     });
 
-    it('(Array) : should add all elements in the array as inital children', function () {
+    it('(Array) : should add all elements in the array as initial children', function () {
       var more = $(
         '<li class="plum">Plum</li><li class="grape">Grape</li>'
       ).get();
