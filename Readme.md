@@ -6,7 +6,7 @@
   <a href="https://travis-ci.org/cheeriojs/cheerio">
     <img src="https://travis-ci.org/cheeriojs/cheerio.svg?branch=main" alt="Travis CI" />
   </a>
-  <a href="https://coveralls.io/r/cheeriojs/cheerio">
+  <a href="https://coveralls.io/github/cheeriojs/cheerio">
     <img src="https://img.shields.io/coveralls/cheeriojs/cheerio.svg?branch=main&style=flat" alt="Coverage" />
   </a>
   <a href="https://gitter.im/cheeriojs/cheerio?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
