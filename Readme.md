@@ -4,23 +4,23 @@
 
 <div align="center">
   <a href="https://travis-ci.org/cheeriojs/cheerio">
-    <img src="https://travis-ci.org/cheeriojs/cheerio.svg?branch=main" alt="Travis CI" />
+    <img src="https://img.shields.io/travis/cheeriojs/cheerio/main" alt="Travis CI">
   </a>
   <a href="https://coveralls.io/github/cheeriojs/cheerio">
-    <img src="https://img.shields.io/coveralls/cheeriojs/cheerio.svg?branch=main&style=flat" alt="Coverage" />
+    <img src="https://img.shields.io/coveralls/github/cheeriojs/cheerio/main" alt="Coverage">
   </a>
-  <a href="https://gitter.im/cheeriojs/cheerio?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
-    <img src="https://badges.gitter.im/Join%20Chat.svg" alt="Join the chat at https://gitter.im/cheeriojs/cheerio" />
+  <a href="https://gitter.im/cheeriojs/cheerio">
+    <img src="https://img.shields.io/gitter/room/cheeriojs/cheerio?color=%2348b293" alt="Join the chat at https://gitter.im/cheeriojs/cheerio">
   </a>
   <a href="#backers">
-    <img src="https://opencollective.com/cheerio/backers/badge.svg" alt="OpenCollective backers"/>
+    <img src="https://img.shields.io/opencollective/backers/cheerio" alt="OpenCollective backers">
   </a>
   <a href="#sponsors">
-    <img src="https://opencollective.com/cheerio/sponsors/badge.svg" alt="OpenCollective sponsors"/>
+    <img src="https://img.shields.io/opencollective/sponsors/cheerio" alt="OpenCollective sponsors">
   </a>
 </div>
 
-<br />
+<br>
 
 [中文文档 (Chinese Readme)](https://github.com/cheeriojs/cheerio/wiki/Chinese-README)
 
