@@ -54,9 +54,6 @@ jobs:
         run: npm run test:jest:cov
         if: matrix.node == env.NODE_COV
 
-      - name: Test types
-        run: npm run test:types
-
       - name: Run Coveralls
         uses: coverallsapp/github-action@master
         if: matrix.node == env.NODE_COV
