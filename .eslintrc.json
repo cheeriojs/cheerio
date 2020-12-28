@@ -6,6 +6,12 @@
   "extends": ["eslint:recommended", "plugin:jsdoc/recommended", "prettier"],
   "globals": { "Set": true, "Symbol": true },
   "rules": {
+    "array-callback-return": [
+      "error",
+      {
+        "allowImplicit": true
+      }
+    ],
     "no-proto": 2,
     "curly": [2, "multi-line"],
     "one-var": [2, "never"],

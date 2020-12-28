@@ -704,7 +704,7 @@ describe('$(...)', function () {
       var args = [];
       var thisVals = [];
 
-      $fruits.map(function () {
+      $fruits.each(function () {
         args.push(Array.prototype.slice.call(arguments));
         thisVals.push(this);
       });
