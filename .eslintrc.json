@@ -9,7 +9,12 @@
     "no-proto": 2,
     "curly": [2, "multi-line"],
     "one-var": [2, "never"],
-    "no-else-return": 2,
+    "no-else-return": [
+      2,
+      {
+        "allowElseIf": false
+      }
+    ],
     "no-shadow": 2,
     "no-use-before-define": [2, "nofunc"],
 
