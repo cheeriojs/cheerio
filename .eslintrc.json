@@ -22,6 +22,7 @@
       }
     ],
     "no-shadow": 2,
+    "no-useless-call": 2,
     "no-use-before-define": [2, "nofunc"],
     "no-void": 2,
 

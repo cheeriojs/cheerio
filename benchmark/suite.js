@@ -71,7 +71,7 @@ Suites.prototype._benchJsDom = function (suite, markup, options) {
   var setupData = options.setup && options.setup.call(null, dom.window.$);
 
   suite.add('jsdom', function () {
-    testFn.call(null, dom.window.$, setupData);
+    testFn(dom.window.$, setupData);
   });
   suite.run();
 };
@@ -82,6 +82,6 @@ Suites.prototype._benchCheerio = function (suite, markup, options) {
   var setupData = options.setup && options.setup.call(null, $);
 
   suite.add('cheerio', function () {
-    testFn.call(null, $, setupData);
+    testFn($, setupData);
   });
 };
