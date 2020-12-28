@@ -66,7 +66,7 @@ declare namespace cheerio {
     // Traversing
 
     find(selector: string): Cheerio;
-    find(element: Cheerio): Cheerio;
+    find(element: Cheerio | Element): Cheerio;
 
     parent(selector?: string): Cheerio;
     parents(selector?: string): Cheerio;

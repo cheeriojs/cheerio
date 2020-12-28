@@ -33,6 +33,8 @@
       },
       "preferredTypes": {
         "node": "Node",
+        "nodewithchildren": "NodeWithChildren",
+        "element": "Element",
         "cheerio": "Cheerio"
       }
     }
