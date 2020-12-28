@@ -85,6 +85,7 @@ $el.attr('id', (el, i, attr) => el.tagName + i * 2 + attr).html();
 $el.attr('id', (el) => el.tagName).html();
 $el.attr({ id: 'uniq', class: 'big' }).html();
 
+$multiEl.prop('foo') === undefined;
 $emptyEl.attr('id') === undefined;
 
 // props
@@ -183,13 +184,13 @@ $el.children('.class').text();
 $el.contents().length;
 
 // .each( function(index, element) )
-$el.each((i, el) => {
+$el.each((_, el) => {
   $(el).html();
 });
 
 // .map( function(index, element) )
 $el
-  .map((i, el) => {
+  .map((_, el) => {
     return $(el).text();
   })
   .get()
@@ -202,7 +203,7 @@ $el.filter($('.class')).attr('class');
 $el.filter($('.class')[0]).attr('class');
 
 $el
-  .filter((i, el) => {
+  .filter((_, el) => {
     return $(el).attr('class') === 'class';
   })
   .attr('class');
@@ -212,7 +213,7 @@ $el.not('.class').length;
 $el.not($('.class')).length;
 $el.not($('.class')[0]).length;
 
-$el.not((i, el) => {
+$el.not((_, el) => {
   return $(el).attr('class') === 'class';
 }).length;
 
