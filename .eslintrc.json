@@ -12,6 +12,7 @@
         "allowImplicit": true
       }
     ],
+    "no-lonely-if": 2,
     "no-proto": 2,
     "curly": [2, "multi-line"],
     "one-var": [2, "never"],
