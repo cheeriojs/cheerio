@@ -17,6 +17,7 @@
     ],
     "no-shadow": 2,
     "no-use-before-define": [2, "nofunc"],
+    "no-void": 2,
 
     "jsdoc/require-jsdoc": 0,
     "jsdoc/check-param-names": 2,
