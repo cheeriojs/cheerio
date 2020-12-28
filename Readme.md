@@ -259,7 +259,7 @@ Cheerio collections are made up of objects that bear some resemblance to [browse
 
 ## Screencasts
 
-https://vimeo.com/31950192
+<https://vimeo.com/31950192>
 
 > This video tutorial is a follow-up to Nettut's "How to Scrape Web Pages with Node.js and jQuery", using cheerio instead of JSDOM + jQuery. This video shows how easy it is to use cheerio and how much faster cheerio is than JSDOM + jQuery.
 
