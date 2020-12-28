@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches-ignore:
+      - 'dependabot/**'
+  pull_request:
+
+env:
+  CI: true
+  FORCE_COLOR: 2
+  NODE_COV: 14 # The Node.js version to run coveralls on
+
+jobs:
+  run:
+    name: Node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+          - 10
+          - 12
+          - 14
+          - 15
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '${{ matrix.node }}'
+
+      - name: Set up npm cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-v${{ matrix.node }}-${{ hashFiles('package.json') }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-v${{ matrix.node }}-${{ hashFiles('package.json') }}-${{ hashFiles('package-lock.json') }}
+            ${{ runner.OS }}-node-v${{ matrix.node }}-
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Run Jest
+        run: npm run test:jest
+        if: matrix.node != env.NODE_COV
+
+      - name: Run Jest with coverage
+        run: npm run test:jest:cov
+        if: matrix.node == env.NODE_COV
+
+      - name: Run Coveralls
+        uses: coverallsapp/github-action@master
+        if: matrix.node == env.NODE_COV
+        with:
+          github-token: '${{ secrets.GITHUB_TOKEN }}'

@@ -20,13 +20,8 @@ subl:
 test-cov:
 	@./node_modules/.bin/jest --coverage
 
-# Due to occasional unavailability of the code coverage reporting service, the
-# exit status of the command in this recipe may optionally be ignored.
-report-cov: test-cov
-	cat coverage/lcov.info | ./node_modules/.bin/coveralls || [ "$(OPTIONAL)" = "true" ]
-
 travis-test: OPTIONAL = true
-travis-test: lint types report-cov
+travis-test: lint types
 	@true
 
 bench:

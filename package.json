@@ -41,7 +41,6 @@
   "devDependencies": {
     "@types/node": "^14.14.10",
     "benchmark": "^2.1.4",
-    "coveralls": "^3.0.2",
     "eslint": "^7.10.0",
     "eslint-config-prettier": "^7.0.0",
     "eslint-plugin-jsdoc": "^30.6.2",
@@ -59,6 +58,7 @@
   "scripts": {
     "test": "npm run lint && npm run test:jest && npm run test:types",
     "test:jest": "jest",
+    "test:jest:cov": "npm run test:jest -- --coverage",
     "test:types": "tsd",
     "lint": "npm run lint:es && npm run lint:prettier",
     "lint:es": "eslint .",
@@ -68,6 +68,7 @@
     "format:prettier": "npm run format:prettier:raw -- --write",
     "format:prettier:raw": "prettier \"**/*.{js,ts,md,json,yml}\" --ignore-path .prettierignore",
     "build:docs": "jsdoc --configure jsdoc-config.json",
+    "benchmark": "node benchmark/benchmark.js --regex \"^(?!.*highmem)\"",
     "pre-commit": "lint-staged"
   },
   "prettier": {

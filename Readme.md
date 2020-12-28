@@ -3,8 +3,8 @@
 <h5 align="center">Fast, flexible & lean implementation of core jQuery designed specifically for the server.</h5>
 
 <div align="center">
-  <a href="https://travis-ci.org/cheeriojs/cheerio">
-    <img src="https://img.shields.io/travis/cheeriojs/cheerio/main" alt="Travis CI">
+  <a href="https://github.com/cheeriojs/cheerio/actions?query=workflow%3ACI+branch%3Amain">
+    <img src="https://img.shields.io/github/workflow/status/cheeriojs/cheerio/CI/main" alt="Build Status">
   </a>
   <a href="https://coveralls.io/github/cheeriojs/cheerio">
     <img src="https://img.shields.io/coveralls/github/cheeriojs/cheerio/main" alt="Coverage">

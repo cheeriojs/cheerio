@@ -1,9 +1,0 @@
-language: node_js
-node_js:
-  - lts/*
-script: make travis-test
-matrix:
-  fast_finish: true
-  include:
-    - env: BENCHMARK=true
-      script: "node benchmark/benchmark.js --regex '^(?!.*highmem)'"
