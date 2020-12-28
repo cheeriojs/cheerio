@@ -5,6 +5,9 @@
     "recurse": true
   },
   "plugins": ["plugins/markdown"],
+  "markdown": {
+    "idInHeadings": true
+  },
   "source": {
     "include": ["index.js", "lib"]
   }
