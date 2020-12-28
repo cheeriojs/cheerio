@@ -62,7 +62,7 @@
     "test:jest": "jest",
     "test:types": "tsd",
     "lint": "npm run lint:es && npm run lint:prettier",
-    "lint:es": "eslint --ignore-path .prettierignore .",
+    "lint:es": "eslint .",
     "lint:prettier": "npm run format:prettier:raw -- --check",
     "format": "npm run format:es && npm run format:prettier",
     "format:es": "npm run lint:es -- --fix",
