@@ -255,7 +255,7 @@ describe('cheerio', function () {
     it('(arraylike, arraylike) : should return an array', function () {
       var ret = $.merge(arr1, arr2);
       expect(typeof ret).toBe('object');
-      expect(ret instanceof Array).toBeTruthy();
+      expect(Array.isArray(ret)).toBe(true);
     });
 
     it('(arraylike, arraylike) : should modify the first array', function () {
