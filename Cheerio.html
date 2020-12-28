@@ -1650,6 +1650,9 @@ filtered by a selector.</p>
             
                 
 <span class="param-type">string</span>
+|
+
+<span class="param-type">function</span>
 
 
             
@@ -1708,7 +1711,7 @@ filtered by a selector.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_api_attributes.js.html">lib/api/attributes.js</a>, <a href="lib_api_attributes.js.html#line517">line 517</a>
+        <a href="lib_api_attributes.js.html">lib/api/attributes.js</a>, <a href="lib_api_attributes.js.html#line515">line 515</a>
     </li></ul></dd>
     
 
@@ -2310,6 +2313,9 @@ like jQuery.</p>
             
                 
 <span class="param-type">string</span>
+|
+
+<span class="param-type">function</span>
 
 
             
@@ -3470,7 +3476,7 @@ elements or set one or more CSS properties for every matched element.</p>
     
 
     
-    <h4 class="name" id="data"><span class="type-signature"></span>data<span class="signature">(name, value<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string|<a href="Cheerio.html">Cheerio</a>}</span></h4>
+    <h4 class="name" id="data"><span class="type-signature"></span>data<span class="signature">(name, value<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string|<a href="Cheerio.html">Cheerio</a>|undefined}</span></h4>
     
 
     
@@ -3623,7 +3629,7 @@ attribute value for only the first element in the matched set.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_api_attributes.js.html">lib/api/attributes.js</a>, <a href="lib_api_attributes.js.html#line331">line 331</a>
+        <a href="lib_api_attributes.js.html">lib/api/attributes.js</a>, <a href="lib_api_attributes.js.html#line329">line 329</a>
     </li></ul></dd>
     
 
@@ -3675,6 +3681,9 @@ otherwise the data attribute's value.</p>
 |
 
 <span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
+|
+
+<span class="param-type">undefined</span>
 
 
     </dd>
@@ -4343,7 +4352,7 @@ set of matched elements to its previous state.</p>
     
 
     
-    <h4 class="name" id="filter"><span class="type-signature"></span>filter<span class="signature">(match, container)</span><span class="type-signature"> &rarr; {<a href="Cheerio.html">Cheerio</a>}</span></h4>
+    <h4 class="name" id="filter"><span class="type-signature"></span>filter<span class="signature">(match, container<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Cheerio.html">Cheerio</a>}</span></h4>
     
 
     
@@ -4381,6 +4390,8 @@ refers to the current element.</p>
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -4409,6 +4420,14 @@ refers to the current element.</p>
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -4425,12 +4444,22 @@ refers to the current element.</p>
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;Node></span>
+<span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
 
 
             
             </td>
 
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -5389,7 +5418,7 @@ selector. Equivalent to <code>.filter(':has(selector)')</code>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_api_attributes.js.html">lib/api/attributes.js</a>, <a href="lib_api_attributes.js.html#line482">line 482</a>
+        <a href="lib_api_attributes.js.html">lib/api/attributes.js</a>, <a href="lib_api_attributes.js.html#line479">line 479</a>
     </li></ul></dd>
     
 
@@ -5518,6 +5547,9 @@ is specified, each selected element's content is replaced by the new content.</p
             
                 
 <span class="param-type">string</span>
+|
+
+<span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
 
 
             
@@ -6230,7 +6262,7 @@ is specified, each selected element's content is replaced by the new content.</p
     
 
     
-    <h4 class="name" id="is"><span class="type-signature"></span>is<span class="signature">(selector)</span><span class="type-signature"> &rarr; {<a href="Cheerio.html">Cheerio</a>}</span></h4>
+    <h4 class="name" id="is"><span class="type-signature"></span>is<span class="signature">(selector)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
 
     
@@ -6352,7 +6384,7 @@ so <code>this</code> refers to the current element.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_api_attributes.js.html">lib/api/attributes.js</a>, <a href="lib_api_attributes.js.html#line694">line 694</a>
+        <a href="lib_api_attributes.js.html">lib/api/attributes.js</a>, <a href="lib_api_attributes.js.html#line691">line 691</a>
     </li></ul></dd>
     
 
@@ -6388,7 +6420,7 @@ so <code>this</code> refers to the current element.</p>
 
         
 <div class="param-desc">
-    <p>The instance itself.</p>
+    <p>Whether or not the selector matches an element of the instance.</p>
 </div>
 
 
@@ -6399,7 +6431,7 @@ so <code>this</code> refers to the current element.</p>
     </dt>
     <dd>
         
-<span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
+<span class="param-type">boolean</span>
 
 
     </dd>
@@ -7356,7 +7388,7 @@ by the selector, optionally filtered by another selector.</p>
     
 
     
-    <h4 class="name" id="not"><span class="type-signature"></span>not<span class="signature">(match, container)</span><span class="type-signature"> &rarr; {<a href="Cheerio.html">Cheerio</a>}</span></h4>
+    <h4 class="name" id="not"><span class="type-signature"></span>not<span class="signature">(match, container<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Cheerio.html">Cheerio</a>}</span></h4>
     
 
     
@@ -7395,6 +7427,8 @@ are included.</p>
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -7423,10 +7457,19 @@ are included.</p>
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"><p>Value to look for, following the rules above.</p></td>
+            <td class="description last"><p>Value to look for, following the rules
+above.</p></td>
         </tr>
 
     
@@ -7440,11 +7483,24 @@ are included.</p>
             
                 
 <span class="param-type">Array.&lt;Node></span>
+|
+
+<span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
 
 
             
             </td>
 
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -9659,7 +9715,7 @@ otherwise the prop's value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_api_attributes.js.html">lib/api/attributes.js</a>, <a href="lib_api_attributes.js.html#line452">line 452</a>
+        <a href="lib_api_attributes.js.html">lib/api/attributes.js</a>, <a href="lib_api_attributes.js.html#line449">line 449</a>
     </li></ul></dd>
     
 
@@ -9787,6 +9843,9 @@ otherwise the prop's value.</p>
             
                 
 <span class="param-type">string</span>
+|
+
+<span class="param-type">function</span>
 
 
             
@@ -9845,7 +9904,7 @@ otherwise the prop's value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_api_attributes.js.html">lib/api/attributes.js</a>, <a href="lib_api_attributes.js.html#line574">line 574</a>
+        <a href="lib_api_attributes.js.html">lib/api/attributes.js</a>, <a href="lib_api_attributes.js.html#line571">line 571</a>
     </li></ul></dd>
     
 
@@ -10250,6 +10309,9 @@ otherwise the prop's value.</p>
 
 
 
+    <h5>This:</h5>
+    <ul><li>{<a href="Cheerio.html">Cheerio</a>}</li></ul>
+
 
 
 
@@ -10293,7 +10355,7 @@ otherwise the prop's value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_api_forms.js.html">lib/api/forms.js</a>, <a href="lib_api_forms.js.html#line40">line 40</a>
+        <a href="lib_api_forms.js.html">lib/api/forms.js</a>, <a href="lib_api_forms.js.html#line41">line 41</a>
     </li></ul></dd>
     
 
@@ -10748,6 +10810,9 @@ selected element's content is replaced by the new text content.</p>
             
                 
 <span class="param-type">string</span>
+|
+
+<span class="param-type">function</span>
 
 
             
@@ -10767,7 +10832,8 @@ selected element's content is replaced by the new text content.</p>
 
             
 
-            <td class="description last"><p>If specified replacement for the selected element's contents.</p></td>
+            <td class="description last"><p>If specified replacement for the selected
+element's contents.</p></td>
         </tr>
 
     
@@ -11168,7 +11234,7 @@ class's presence or the value of the switch argument. Also accepts a
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_api_attributes.js.html">lib/api/attributes.js</a>, <a href="lib_api_attributes.js.html#line636">line 636</a>
+        <a href="lib_api_attributes.js.html">lib/api/attributes.js</a>, <a href="lib_api_attributes.js.html#line633">line 633</a>
     </li></ul></dd>
     
 
@@ -11360,7 +11426,7 @@ class's presence or the value of the switch argument. Also accepts a
     
 
     
-    <h4 class="name" id="val"><span class="type-signature"></span>val<span class="signature">(value<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string|<a href="Cheerio.html">Cheerio</a>}</span></h4>
+    <h4 class="name" id="val"><span class="type-signature"></span>val<span class="signature">(value<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string|<a href="Cheerio.html">Cheerio</a>|undefined}</span></h4>
     
 
     
@@ -11414,6 +11480,9 @@ Note: Support for <code>map</code>, and <code>function</code> has not been added
             
                 
 <span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
 
 
             
@@ -11482,7 +11551,7 @@ Note: Support for <code>map</code>, and <code>function</code> has not been added
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_api_attributes.js.html">lib/api/attributes.js</a>, <a href="lib_api_attributes.js.html#line375">line 375</a>
+        <a href="lib_api_attributes.js.html">lib/api/attributes.js</a>, <a href="lib_api_attributes.js.html#line372">line 372</a>
     </li></ul></dd>
     
 
@@ -11534,6 +11603,9 @@ itself, otherwise the value.</p>
 |
 
 <span class="param-type"><a href="Cheerio.html">Cheerio</a></span>
+|
+
+<span class="param-type">undefined</span>
 
 
     </dd>
@@ -11792,7 +11864,7 @@ elements in the selection.</p></td>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Dec 28 2020 07:43:05 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Dec 28 2020 08:08:11 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>

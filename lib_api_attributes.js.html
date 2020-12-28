@@ -60,9 +60,9 @@ var rbrace = /^(?:\{[\w\W]*\}|\[[\w\W]*\])$/;
  * Also supports getting the `value` of several form elements.
  *
  * @private
- * @param {Node} elem - Elenent to get the attribute of.
+ * @param {Element} elem - Elenent to get the attribute of.
  * @param {string} name - Name of the attribute.
- * @returns {string | undefined} The attribute's value.
+ * @returns {object | string | undefined} The attribute's value.
  */
 function getAttr(elem, name) {
   if (!elem || !isTag(elem)) return;
@@ -100,7 +100,7 @@ function getAttr(elem, name) {
  * Sets the value of an attribute. The attribute will be deleted if the value is `null`.
  *
  * @private
- * @param {Node} el - The element to set the attribute on.
+ * @param {Element} el - The element to set the attribute on.
  * @param {string} name - The attribute's name.
  * @param {string | null} value - The attribute's value.
  */
@@ -126,7 +126,7 @@ function setAttr(el, name, value) {
  *   //=> &lt;li class="apple" id="favorite">Apple&lt;/li>
  *
  * @param {string} name - Name of the attribute.
- * @param {string} [value] - If specified sets the value of the attribute.
+ * @param {string | Function} [value] - If specified sets the value of the attribute.
  * @see {@link https://api.jquery.com/attr/}
  *
  * @returns {string | Cheerio} If `value` is specified the instance itself,
@@ -179,7 +179,7 @@ function getProp(el, name) {
  * Sets the value of a prop.
  *
  * @private
- * @param {Node} el - The element to set the prop on.
+ * @param {Element} el - The element to set the prop on.
  * @param {string} name - The prop's name.
  * @param {string | null} value - The prop's value.
  */
@@ -221,23 +221,21 @@ exports.prop = function (name, value) {
 
         property.length = keys.length;
 
-        break;
+        return property;
       }
       case 'tagName':
       case 'nodeName':
-        property = this[0].name.toUpperCase();
-        break;
-      case 'outerHTML':
-        property = this.clone().wrap('&lt;container />').parent().html();
-        break;
-      case 'innerHTML':
-        property = this.html();
-        break;
-      default:
-        property = getProp(this[0], name);
-    }
+        return this[0].name.toUpperCase();
 
-    return property;
+      case 'outerHTML':
+        return this.clone().wrap('&lt;container />').parent().html();
+
+      case 'innerHTML':
+        return this.html();
+
+      default:
+        return getProp(this[0], name);
+    }
   }
 
   if (typeof name === 'object' || value !== undefined) {
@@ -266,8 +264,8 @@ exports.prop = function (name, value) {
  * Sets the value of a data attribute.
  *
  * @private
- * @param {Node} el - The element to set the data attribute on.
- * @param {string|object&lt;string,*>} name - The data attribute's name.
+ * @param {Element} el - The element to set the data attribute on.
+ * @param {string | object} name - The data attribute's name.
  * @param {string | null} value - The data attribute's value.
  */
 function setData(el, name, value) {
@@ -287,7 +285,7 @@ function setData(el, name, value) {
  * attribute name is specified, read *all* HTML5 `data-*` attributes in this manner.
  *
  * @private
- * @param {Node} el - Elenent to get the data attribute of.
+ * @param {Element} el - Elenent to get the data attribute of.
  * @param {string} [name] - Name of the data attribute.
  * @returns {any} The data attribute's value, or a map with all of the data attribute.
  */
@@ -353,7 +351,7 @@ function readData(el, name) {
  * @param {any} [value] - If specified new value.
  * @see {@link https://api.jquery.com/data/}
  *
- * @returns {string | Cheerio} If `value` is specified the instance itself,
+ * @returns {string | Cheerio | undefined} If `value` is specified the instance itself,
  *     otherwise the data attribute's value.
  */
 exports.data = function (name, value) {
@@ -394,10 +392,9 @@ exports.data = function (name, value) {
  *   $('input[type="text"]').val('test').html();
  *   //=> &lt;input type="text" value="test"/>
  *
- * @param {string} [value] - If specified new value.
+ * @param {string | string[]} [value] - If specified new value.
  * @see {@link https://api.jquery.com/val/}
- *
- * @returns {string | Cheerio} If a new `value` is specified the instance
+ * @returns {string | Cheerio | undefined} If a new `value` is specified the instance
  *     itself, otherwise the value.
  */
 exports.val = function (value) {
@@ -411,7 +408,7 @@ exports.val = function (value) {
       return this.text(value);
     case 'select': {
       var option = this.find('option:selected');
-      if (!option) return undefined;
+      if (!option) return;
       if (!querying) {
         if (this.attr('multiple') == null &amp;&amp; typeof value == 'object') {
           return this;
@@ -442,7 +439,7 @@ exports.val = function (value) {
  * Remove an attribute.
  *
  * @private
- * @param {Node} elem - Node to remove attribute from.
+ * @param {Element} elem - Node to remove attribute from.
  * @param {string} name - Name of the attribute to remove.
  */
 function removeAttribute(elem, name) {
@@ -481,7 +478,7 @@ exports.removeAttr = function (name) {
   var attrNames = splitNames(name);
 
   for (var i = 0; i &lt; attrNames.length; i++) {
-    domEach(this, function (j, elem) {
+    domEach(this, function (_, elem) {
       removeAttribute(elem, attrNames[i]);
     });
   }
@@ -524,6 +521,8 @@ exports.hasClass = function (className) {
         }
       }
     }
+
+    return false;
   });
 };
 
@@ -537,9 +536,8 @@ exports.hasClass = function (className) {
  *   $('.apple').addClass('fruit red').html();
  *   //=> &lt;li class="apple fruit red">Apple&lt;/li>
  *
- * @param {string} value - Name of new class.
+ * @param {string | Function} value - Name of new class.
  * @see {@link https://api.jquery.com/addClass/}
- *
  * @returns {Cheerio} The instance itself.
  */
 exports.addClass = function (value) {
@@ -594,9 +592,8 @@ exports.addClass = function (value) {
  *   $('.apple').addClass('red').removeClass().html();
  *   //=> &lt;li class="">Apple&lt;/li>
  *
- * @param {string} value - Name of the class.
+ * @param {string | Function} value - Name of the class.
  * @see {@link https://api.jquery.com/removeClass/}
- *
  * @returns {Cheerio} The instance itself.
  */
 exports.removeClass = function (value) {
@@ -614,7 +611,7 @@ exports.removeClass = function (value) {
   var numClasses = classes.length;
   var removeAll = arguments.length === 0;
 
-  return domEach(this, function (i, el) {
+  return domEach(this, function (_, el) {
     if (!isTag(el)) return;
 
     if (removeAll) {
@@ -717,7 +714,7 @@ exports.toggleClass = function (value, stateVal) {
  * @param {string | Function | Cheerio | Node} selector - Selector for the selection.
  * @see {@link https://api.jquery.com/is/}
  *
- * @returns {Cheerio} The instance itself.
+ * @returns {boolean} Whether or not the selector matches an element of the instance.
  */
 exports.is = function (selector) {
   if (selector) {
@@ -741,7 +738,7 @@ exports.is = function (selector) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Dec 28 2020 07:43:05 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Dec 28 2020 08:08:11 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>
