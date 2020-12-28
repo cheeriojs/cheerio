@@ -73,21 +73,21 @@ $('h2').addClass('welcome');
 $.html();
 //=> &lt;html>&lt;head>&lt;/head>&lt;body>&lt;h2 class=&quot;title welcome&quot;>Hello there!&lt;/h2>&lt;/body>&lt;/html>
 </code></pre>
-<h2>Note</h2>
+<h2 id="note">Note</h2>
 <p>We are currently working on the 1.0.0 release of cheerio on the <code>main</code> branch. The source code for the last published version, <code>0.22.0</code>, can be found <a href="https://github.com/cheeriojs/cheerio/tree/aa90399c9c02f12432bfff97b8f1c7d8ece7c307">here</a>.</p>
-<h2>Installation</h2>
+<h2 id="installation">Installation</h2>
 <p><code>npm install cheerio</code></p>
-<h2>Features</h2>
+<h2 id="features">Features</h2>
 <p><strong>❤ Familiar syntax:</strong>
 Cheerio implements a subset of core jQuery. Cheerio removes all the DOM inconsistencies and browser cruft from the jQuery library, revealing its truly gorgeous API.</p>
 <p><strong>ϟ Blazingly fast:</strong>
 Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient.</p>
 <p><strong>❁ Incredibly flexible:</strong>
 Cheerio wraps around <a href="https://github.com/inikulin/parse5">parse5</a> parser and can optionally use @FB55's forgiving <a href="https://github.com/fb55/htmlparser2/">htmlparser2</a>. Cheerio can parse nearly any HTML or XML document.</p>
-<h2>Cheerio is not a web browser</h2>
+<h2 id="cheerio-is-not-a-web-browser">Cheerio is not a web browser</h2>
 <p>Cheerio parses markup and provides an API for traversing/manipulating the resulting data structure. It does not interpret the result as a web browser does. Specifically, it does <em>not</em> produce a visual rendering, apply CSS, load external resources, or execute JavaScript. If your use case requires any of this functionality, you should consider projects like <a href="https://github.com/puppeteer/puppeteer">Puppeteer</a> or <a href="https://github.com/jsdom/jsdom">JSDom</a>.</p>
-<h2>API</h2>
-<h3>Markup example we'll be using:</h3>
+<h2 id="api">API</h2>
+<h3 id="markup-example-we'll-be-using%3A">Markup example we'll be using:</h3>
 <pre class="prettyprint source lang-html"><code>&lt;ul id=&quot;fruits&quot;>
   &lt;li class=&quot;apple&quot;>Apple&lt;/li>
   &lt;li class=&quot;orange&quot;>Orange&lt;/li>
@@ -95,7 +95,7 @@ Cheerio wraps around <a href="https://github.com/inikulin/parse5">parse5</a> par
 &lt;/ul>
 </code></pre>
 <p>This is the HTML markup we will be using in all of the API examples.</p>
-<h3>Loading</h3>
+<h3 id="loading">Loading</h3>
 <p>First you need to load in the HTML. This step in jQuery is implicit, since jQuery operates on the one, baked-in DOM. With Cheerio, we need to pass in the HTML document.</p>
 <p>This is the <em>preferred</em> method:</p>
 <pre class="prettyprint source lang-js"><code>const cheerio = require('cheerio');
@@ -154,9 +154,9 @@ const dom = htmlparser2.parseDOM(document, options);
 
 const $ = cheerio.load(dom);
 </code></pre>
-<h3>Selectors</h3>
+<h3 id="selectors">Selectors</h3>
 <p>Cheerio's selector implementation is nearly identical to jQuery's, so the API is very similar.</p>
-<h4>$( selector, [context], [root] )</h4>
+<h4 id="%24(-selector%2C-%5Bcontext%5D%2C-%5Broot%5D-)">$( selector, [context], [root] )</h4>
 <p><code>selector</code> searches within the <code>context</code> scope which searches within the <code>root</code> scope. <code>selector</code> and <code>context</code> can be a string expression, DOM Element, array of DOM elements, or cheerio object. <code>root</code> is typically the HTML document string.</p>
 <p>This selector method is the starting point for traversing and manipulating the document. Like jQuery, it's the primary method for selecting elements in the document, but unlike jQuery it's built on top of the CSSSelect library, which implements most of the Sizzle selectors.</p>
 <pre class="prettyprint source lang-js"><code>$('.apple', '#fruits').text();
@@ -168,11 +168,11 @@ $('ul .pear').attr('class');
 $('li[class=orange]').html();
 //=> Orange
 </code></pre>
-<h5>XML Namespaces</h5>
+<h5 id="xml-namespaces">XML Namespaces</h5>
 <p>You can select with XML Namespaces but <a href="https://www.w3.org/TR/2011/REC-css3-selectors-20110929/#attribute-selectors">due to the CSS specification</a>, the colon (<code>:</code>) needs to be escaped for the selector to be valid.</p>
 <pre class="prettyprint source lang-js"><code>$('[xml\\:id=&quot;main&quot;');
 </code></pre>
-<h3>Rendering</h3>
+<h3 id="rendering">Rendering</h3>
 <p>When you're ready to render the document, you can call the <code>html</code> method on the &quot;root&quot; selection:</p>
 <pre class="prettyprint source lang-js"><code>$.root().html();
 //=>  &lt;html>
@@ -202,7 +202,7 @@ $('li[class=orange]').html();
 cheerio.text($('body'));
 //=> This is content.
 </code></pre>
-<h3>Plugins</h3>
+<h3 id="plugins">Plugins</h3>
 <p>Once you have loaded a document, you may extend the prototype or the equivalent <code>fn</code> property with custom plugin methods:</p>
 <pre class="prettyprint source lang-js"><code>const $ = cheerio.load('&lt;html>&lt;body>Hello, &lt;b>world&lt;/b>!&lt;/body>&lt;/html>');
 $.prototype.logHtml = function () {
@@ -211,7 +211,7 @@ $.prototype.logHtml = function () {
 
 $('body').logHtml(); // logs &quot;Hello, &lt;b>world&lt;/b>!&quot; to the console
 </code></pre>
-<h3>The &quot;DOM Node&quot; object</h3>
+<h3 id="the-%22dom-node%22-object">The &quot;DOM Node&quot; object</h3>
 <p>Cheerio collections are made up of objects that bear some resemblance to <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node">browser-based DOM nodes</a>. You can expect them to define the following properties:</p>
 <ul>
 <li><code>tagName</code></li>
@@ -223,20 +223,20 @@ $('body').logHtml(); // logs &quot;Hello, &lt;b>world&lt;/b>!&quot; to the conso
 <li><code>childNodes</code></li>
 <li><code>lastChild</code></li>
 </ul>
-<h2>Screencasts</h2>
+<h2 id="screencasts">Screencasts</h2>
 <p>https://vimeo.com/31950192</p>
 <blockquote>
 <p>This video tutorial is a follow-up to Nettut's &quot;How to Scrape Web Pages with Node.js and jQuery&quot;, using cheerio instead of JSDOM + jQuery. This video shows how easy it is to use cheerio and how much faster cheerio is than JSDOM + jQuery.</p>
 </blockquote>
-<h2>Cheerio in the real world</h2>
+<h2 id="cheerio-in-the-real-world">Cheerio in the real world</h2>
 <p>Are you using cheerio in production? Add it to the <a href="https://github.com/cheeriojs/cheerio/wiki/Cheerio-in-Production">wiki</a>!</p>
-<h2>Testing</h2>
+<h2 id="testing">Testing</h2>
 <p>To run the test suite, download the repository, then within the cheerio directory, run:</p>
 <pre class="prettyprint source lang-shell"><code>make setup
 make test
 </code></pre>
 <p>This will download the development packages and run the test suite.</p>
-<h2>Sponsors</h2>
+<h2 id="sponsors">Sponsors</h2>
 <p>Does your company use Cheerio in production? Please consider <a href="https://opencollective.com/cheerio#sponsor">sponsoring this project</a>. Your help will allow maintainers to dedicate more time and resources to its development and support.</p>
 <p><a href="https://opencollective.com/cheerio/sponsor/0/website" target="_blank"><img src="https://opencollective.com/cheerio/sponsor/0/avatar.svg"></a>
 <a href="https://opencollective.com/cheerio/sponsor/1/website" target="_blank"><img src="https://opencollective.com/cheerio/sponsor/1/avatar.svg"></a>
@@ -268,7 +268,7 @@ make test
 <a href="https://opencollective.com/cheerio/sponsor/27/website" target="_blank"><img src="https://opencollective.com/cheerio/sponsor/27/avatar.svg"></a>
 <a href="https://opencollective.com/cheerio/sponsor/28/website" target="_blank"><img src="https://opencollective.com/cheerio/sponsor/28/avatar.svg"></a>
 <a href="https://opencollective.com/cheerio/sponsor/29/website" target="_blank"><img src="https://opencollective.com/cheerio/sponsor/29/avatar.svg"></a></p>
-<h2>Backers</h2>
+<h2 id="backers">Backers</h2>
 <p><a href="https://opencollective.com/cheerio#backer">Become a backer</a> to show your support for Cheerio and help us maintain and improve this open source project.</p>
 <p><a href="https://opencollective.com/cheerio/backer/0/website" target="_blank"><img src="https://opencollective.com/cheerio/backer/0/avatar.svg"></a>
 <a href="https://opencollective.com/cheerio/backer/1/website" target="_blank"><img src="https://opencollective.com/cheerio/backer/1/avatar.svg"></a>
@@ -300,7 +300,7 @@ make test
 <a href="https://opencollective.com/cheerio/backer/27/website" target="_blank"><img src="https://opencollective.com/cheerio/backer/27/avatar.svg"></a>
 <a href="https://opencollective.com/cheerio/backer/28/website" target="_blank"><img src="https://opencollective.com/cheerio/backer/28/avatar.svg"></a>
 <a href="https://opencollective.com/cheerio/backer/29/website" target="_blank"><img src="https://opencollective.com/cheerio/backer/29/avatar.svg"></a></p>
-<h2>Special Thanks</h2>
+<h2 id="special-thanks">Special Thanks</h2>
 <p>This library stands on the shoulders of some incredible developers. A special thanks to:</p>
 <p><strong>• @FB55 for node-htmlparser2 &amp; CSSSelect:</strong>
 Felix has a knack for writing speedy parsing engines. He completely re-wrote both @tautologistic's <code>node-htmlparser</code> and @harry's <code>node-soupselect</code> from the ground up, making both of them much faster and more flexible. Cheerio would not be possible without his foundational work</p>
@@ -308,7 +308,7 @@ Felix has a knack for writing speedy parsing engines. He completely re-wrote bot
 The core API is the best of its class and despite dealing with all the browser inconsistencies the code base is extremely clean and easy to follow. Much of cheerio's implementation and documentation is from jQuery. Thanks guys.</p>
 <p><strong>• @visionmedia:</strong>
 The style, the structure, the open-source&quot;-ness&quot; of this library comes from studying TJ's style and using many of his libraries. This dude consistently pumps out high-quality libraries and has always been more than willing to help or answer questions. You rock TJ.</p>
-<h2>License</h2>
+<h2 id="license">License</h2>
 <p>MIT</p></article>
     </section>
 
@@ -326,7 +326,7 @@ The style, the structure, the open-source&quot;-ness&quot; of this library comes
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Dec 28 2020 07:17:47 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Dec 28 2020 07:27:06 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>
