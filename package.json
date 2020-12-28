@@ -16,6 +16,10 @@
     "type": "git",
     "url": "git://github.com/cheeriojs/cheerio.git"
   },
+  "bugs": {
+    "url": "https://github.com/cheeriojs/cheerio/issues"
+  },
+  "homepage": "https://cheerio.js.org/",
   "main": "./index.js",
   "types": "types/index.d.ts",
   "files": [
