@@ -9,6 +9,7 @@ on:
 env:
   CI: true
   FORCE_COLOR: 2
+  NODE_COV: 14 # The Node.js version to run coveralls on
 
 jobs:
   run:
@@ -47,17 +48,17 @@ jobs:
 
       - name: Run Jest
         run: npm run test:jest
-        if: matrix.node != 14
+        if: matrix.node != env.NODE_COV
 
       - name: Run Jest with coverage
         run: npm run test:jest:cov
-        if: matrix.node == 14
+        if: matrix.node == env.NODE_COV
 
       - name: Test types
         run: npm run test:types
 
       - name: Run Coveralls
         uses: coverallsapp/github-action@master
-        if: matrix.node == 14
+        if: matrix.node == env.NODE_COV
         with:
           github-token: '${{ secrets.GITHUB_TOKEN }}'
