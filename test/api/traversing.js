@@ -18,7 +18,7 @@ describe('$(...)', function () {
           cheerio.load();
         })();
 
-        throw Error('Function did not throw');
+        throw new Error('Function did not throw');
       } catch (err) {
         expect(err).toBeInstanceOf(Error);
         expect(err.message).toBe('cheerio.load() expects a string');
@@ -86,7 +86,7 @@ describe('$(...)', function () {
           $('#fruits').find(':bah');
         })();
 
-        throw Error('Function did not throw');
+        throw new Error('Function did not throw');
       } catch (err) {
         expect(err).toBeInstanceOf(Error);
         expect(err.message).toContain('unmatched pseudo-class');
@@ -469,7 +469,7 @@ describe('$(...)', function () {
           $('.orange').siblings(':bah');
         })();
 
-        throw Error('Function did not throw');
+        throw new Error('Function did not throw');
       } catch (err) {
         expect(err).toBeInstanceOf(Error);
         expect(err.message).toContain('unmatched pseudo-class');
@@ -704,7 +704,7 @@ describe('$(...)', function () {
       var args = [];
       var thisVals = [];
 
-      $fruits.map(function () {
+      $fruits.each(function () {
         args.push(Array.prototype.slice.call(arguments));
         thisVals.push(this);
       });

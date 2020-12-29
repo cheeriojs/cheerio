@@ -1,5 +1,5 @@
 var htmlparser2 = require('htmlparser2');
-var cheerio = require('../');
+var cheerio = require('..');
 var fixtures = require('./__fixtures__/fixtures');
 var fruits = fixtures.fruits;
 var food = fixtures.food;
