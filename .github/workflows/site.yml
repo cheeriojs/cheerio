@@ -27,15 +27,11 @@ jobs:
             ${{ runner.OS }}-node-v${{ env.NODE }}-${{ hashFiles('package.json') }}-${{ hashFiles('package-lock.json') }}
             ${{ runner.OS }}-node-v${{ env.NODE }}-
       - run: npm ci
-      - name: Build JSDoc
+      - name: Build docs
         run: npm run build:docs
-      - name: Copy CNAME
-        run: cp CNAME docs/out/
       - name: Deploy
-        uses: s0/git-publish-subdir-action@v2.4.0
-        env:
-          REPO: self
-          BRANCH: gh-pages
-          FOLDER: docs/out
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SKIP_EMPTY_COMMITS: true
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs
+          cname: cheerio.js.org
