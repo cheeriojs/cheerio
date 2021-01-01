@@ -1577,6 +1577,13 @@ describe('$(...)', function () {
       expect($('li', item).html()).toBe('');
     });
 
+    it('() : should return empty string if nothing inside, with document', function () {
+      var item = '<html></html>';
+      var $obj = $(item);
+      expect($obj).toHaveLength(1);
+      expect($obj.html()).toBe('');
+    });
+
     it('(html) : should set the html for its children', function () {
       $fruits.html('<li class="durian">Durian</li>');
       var html = $fruits.html();

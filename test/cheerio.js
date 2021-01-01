@@ -44,6 +44,13 @@ describe('cheerio', function () {
     expect($h2[0].tagName).toBe('h2');
   });
 
+  it('should be able to create html without a root or context, html tag', function () {
+    var $tag = cheerio('<html>');
+    expect($tag).not.toHaveLength(0);
+    expect($tag).toHaveLength(1);
+    expect($tag[0].tagName).toBe('html');
+  });
+
   it('should be able to create complicated html', function () {
     var $script = cheerio(script);
     expect($script).not.toHaveLength(0);
