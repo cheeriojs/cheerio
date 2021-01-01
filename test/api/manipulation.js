@@ -1611,6 +1611,19 @@ describe('$(...)', function () {
       $remove.replaceWith($children);
       expect($fruits.children()).toHaveLength(4);
     });
+
+    it('(script value) : should add content as text', function () {
+      var $data = '<a><b>';
+      var $script = $('<script>').html($data);
+
+      expect($script).toHaveLength(1);
+      expect($script[0].type).toBe('script');
+      expect($script[0].name).toBe('script');
+
+      expect($script[0].children).toHaveLength(1);
+      expect($script[0].children[0].type).toBe('text');
+      expect($script[0].children[0].data).toBe($data);
+    });
   });
 
   describe('.toString', function () {
