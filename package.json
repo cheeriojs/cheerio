@@ -53,7 +53,7 @@
     "jsdom": "^16.4.0",
     "lint-staged": "^10.5.3",
     "prettier": "^2.2.1",
-    "prettier-plugin-jsdoc": "^0.2.12",
+    "prettier-plugin-jsdoc": "^0.2.13",
     "tsd": "^0.14.0"
   },
   "scripts": {
