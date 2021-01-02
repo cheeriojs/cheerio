@@ -17,12 +17,12 @@ if (process.argv.indexOf('--cheerio-only') >= 0) {
 
 suites.add('Select all', 'jquery.html', {
   test: function ($) {
-    $('*').length;
+    return $('*').length;
   },
 });
 suites.add('Select some', 'jquery.html', {
   test: function ($) {
-    $('li').length;
+    return $('li').length;
   },
 });
 
@@ -142,7 +142,7 @@ suites.add('traversing - Find', 'jquery.html', {
     return $('li');
   },
   test: function ($, $lis) {
-    $lis.find('li').length;
+    return $lis.find('li').length;
   },
 });
 suites.add('traversing - Parent', 'jquery.html', {
@@ -150,7 +150,7 @@ suites.add('traversing - Parent', 'jquery.html', {
     return $('li');
   },
   test: function ($, $lis) {
-    $lis.parent('div').length;
+    return $lis.parent('div').length;
   },
 });
 suites.add('traversing - Parents', 'jquery.html', {
@@ -158,7 +158,7 @@ suites.add('traversing - Parents', 'jquery.html', {
     return $('li');
   },
   test: function ($, $lis) {
-    $lis.parents('div').length;
+    return $lis.parents('div').length;
   },
 });
 suites.add('traversing - Closest', 'jquery.html', {
@@ -166,7 +166,7 @@ suites.add('traversing - Closest', 'jquery.html', {
     return $('li');
   },
   test: function ($, $lis) {
-    $lis.closest('div').length;
+    return $lis.closest('div').length;
   },
 });
 suites.add('traversing - next', 'jquery.html', {
@@ -174,7 +174,7 @@ suites.add('traversing - next', 'jquery.html', {
     return $('li');
   },
   test: function ($, $lis) {
-    $lis.next().length;
+    return $lis.next().length;
   },
 });
 suites.add('traversing - nextAll', 'jquery.html', {
@@ -182,7 +182,7 @@ suites.add('traversing - nextAll', 'jquery.html', {
     return $('li');
   },
   test: function ($, $lis) {
-    $lis.nextAll('li').length;
+    return $lis.nextAll('li').length;
   },
 });
 suites.add('traversing - nextUntil', 'jquery.html', {
@@ -190,7 +190,7 @@ suites.add('traversing - nextUntil', 'jquery.html', {
     return $('li');
   },
   test: function ($, $lis) {
-    $lis.nextUntil('li').length;
+    return $lis.nextUntil('li').length;
   },
 });
 suites.add('traversing - prev', 'jquery.html', {
@@ -198,7 +198,7 @@ suites.add('traversing - prev', 'jquery.html', {
     return $('li');
   },
   test: function ($, $lis) {
-    $lis.prev().length;
+    return $lis.prev().length;
   },
 });
 suites.add('traversing - prevAll', 'jquery.html', {
@@ -206,7 +206,7 @@ suites.add('traversing - prevAll', 'jquery.html', {
     return $('li');
   },
   test: function ($, $lis) {
-    $lis.prevAll('li').length;
+    return $lis.prevAll('li').length;
   },
 });
 suites.add('traversing - prevUntil', 'jquery.html', {
@@ -214,7 +214,7 @@ suites.add('traversing - prevUntil', 'jquery.html', {
     return $('li');
   },
   test: function ($, $lis) {
-    $lis.prevUntil('li').length;
+    return $lis.prevUntil('li').length;
   },
 });
 suites.add('traversing - siblings', 'jquery.html', {
@@ -222,7 +222,7 @@ suites.add('traversing - siblings', 'jquery.html', {
     return $('li');
   },
   test: function ($, $lis) {
-    $lis.siblings('li').length;
+    return $lis.siblings('li').length;
   },
 });
 suites.add('traversing - Children', 'jquery.html', {
@@ -230,7 +230,7 @@ suites.add('traversing - Children', 'jquery.html', {
     return $('li');
   },
   test: function ($, $lis) {
-    $lis.children('a').length;
+    return $lis.children('a').length;
   },
 });
 suites.add('traversing - Filter', 'jquery.html', {
@@ -238,7 +238,7 @@ suites.add('traversing - Filter', 'jquery.html', {
     return $('li');
   },
   test: function ($, $lis) {
-    $lis.filter('li').length;
+    return $lis.filter('li').length;
   },
 });
 suites.add('traversing - First', 'jquery.html', {
@@ -246,7 +246,7 @@ suites.add('traversing - First', 'jquery.html', {
     return $('li');
   },
   test: function ($, $lis) {
-    $lis.first().first().length;
+    return $lis.first().first().length;
   },
 });
 suites.add('traversing - Last', 'jquery.html', {
@@ -254,7 +254,7 @@ suites.add('traversing - Last', 'jquery.html', {
     return $('li');
   },
   test: function ($, $lis) {
-    $lis.last().last().length;
+    return $lis.last().last().length;
   },
 });
 suites.add('traversing - Eq', 'jquery.html', {
@@ -262,7 +262,7 @@ suites.add('traversing - Eq', 'jquery.html', {
     return $('li');
   },
   test: function ($, $lis) {
-    $lis.eq(0).eq(0).length;
+    return $lis.eq(0).eq(0).length;
   },
 });
 
