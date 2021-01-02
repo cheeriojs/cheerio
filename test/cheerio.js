@@ -48,7 +48,6 @@ describe('cheerio', function () {
 
   it('should be able to create html without a root or context, html tag', function () {
     var $tag = cheerio('<html>');
-    expect($tag).not.toHaveLength(0);
     expect($tag).toHaveLength(1);
     expect($tag[0].tagName).toBe('html');
   });
