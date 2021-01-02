@@ -1744,6 +1744,13 @@ describe('$(...)', function () {
       expect($script[0].children[0].type).toBe('text');
       expect($script[0].children[0].data).toBe($data);
     });
+
+    it('() : should return empty string if nothing inside, with document', function () {
+      var item = '<html></html>';
+      var $obj = $(item);
+      expect($obj).toHaveLength(1);
+      expect($obj.html()).toBe('');
+    });
   });
 
   describe('.toString', function () {

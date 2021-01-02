@@ -150,7 +150,7 @@ describe('parse', function () {
   describe('.parse', function () {
     // root test utility
     function rootTest(root) {
-      expect(root.tagName).toBe('root');
+      expect(root.type).toBe('root');
 
       expect(root.nextSibling).toBe(null);
       expect(root.previousSibling).toBe(null);
