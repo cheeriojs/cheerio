@@ -25,6 +25,7 @@
         "null": "ignore"
       }
     ],
+    "no-implicit-coercion": 2,
     "no-lonely-if": 2,
     "no-proto": 2,
     "curly": [2, "multi-line"],
