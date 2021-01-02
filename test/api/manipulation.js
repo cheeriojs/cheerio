@@ -324,6 +324,89 @@ describe('$(...)', function () {
     });
   });
 
+  describe('.unwrap', function () {
+    var $elem;
+    var unwrapspans = [
+      '<div id=unwrap style="display: none;">',
+      '<div id=unwrap1><span class=unwrap>a</span><span class=unwrap>b</span></div>',
+      '<div id=unwrap2><span class=unwrap>c</span><span class=unwrap>d</span></div>',
+      '<div id=unwrap3><b><span class="unwrap unwrap3">e</span></b><b><span class="unwrap unwrap3">f</span></b></div>',
+      '</div>',
+    ].join('');
+
+    beforeEach(function () {
+      $elem = cheerio.load(unwrapspans);
+    });
+
+    it('() : should be unwrap span elements', function () {
+      var abcd = $elem('#unwrap1 > span, #unwrap2 > span').get();
+      var abcdef = $elem('#unwrap span').get();
+
+      // make #unwrap1 and #unwrap2 go away
+      expect(
+        $elem('#unwrap1 span').add('#unwrap2 span:first-child').unwrap()
+      ).toHaveLength(3);
+
+      //.toEqual
+      // all four spans should still exist
+      expect($elem('#unwrap > span').get()).toEqual(abcd);
+
+      // make all b elements in #unwrap3 go away
+      expect($elem('#unwrap3 span').unwrap().get()).toEqual(
+        $elem('#unwrap3 > span').get()
+      );
+
+      // make #unwrap3 go away
+      expect($elem('#unwrap3 span').unwrap().get()).toEqual(
+        $elem('#unwrap > span.unwrap3').get()
+      );
+
+      // #unwrap only contains 6 child spans
+      expect($elem('#unwrap').children().get()).toEqual(abcdef);
+
+      // make the 6 spans become children of body
+      expect($elem('#unwrap > span').unwrap().get()).toEqual(
+        $elem('body > span.unwrap').get()
+      );
+
+      // can't unwrap children of body
+      expect($elem('body > span.unwrap').unwrap().get()).toEqual(
+        $elem('body > span.unwrap').get()
+      );
+
+      // can't unwrap children of body
+      expect($elem('body > span.unwrap').unwrap().get()).toEqual(abcdef);
+
+      // can't unwrap children of body
+      expect($elem('body > span.unwrap').get()).toEqual(abcdef);
+    });
+
+    it('(selector) : should only unwrap element parent what specified', function () {
+      var abcd = $elem('#unwrap1 > span, #unwrap2 > span').get();
+      // var abcdef = $elem('#unwrap span').get();
+
+      // Shouldn't unwrap, no match
+      $elem('#unwrap1 span').unwrap('#unwrap2');
+      expect($elem('#unwrap1')).toHaveLength(1);
+
+      // Shouldn't unwrap, no match
+      $elem('#unwrap1 span').unwrap('span');
+      expect($elem('#unwrap1')).toHaveLength(1);
+
+      // Unwraps
+      $elem('#unwrap1 span').unwrap('#unwrap1');
+      expect($elem('#unwrap1')).toHaveLength(0);
+
+      // Should not unwrap - unmatched unwrap
+      $elem('#unwrap2 span').unwrap('quote');
+      expect($elem('#unwrap > span')).toHaveLength(2);
+
+      // Check return values - matched unwrap
+      $elem('#unwrap2 span').unwrap('#unwrap2');
+      expect($elem('#unwrap > span').get()).toEqual(abcd);
+    });
+  });
+
   describe('.wrapAll', function () {
     var doc;
     var $inner;
