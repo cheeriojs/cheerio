@@ -73,8 +73,6 @@ var $el = $('.class');
 var $multiEl = $('selector', 'selector', 'selector');
 var $emptyEl = $('.not-existing-class');
 
-$el.cheerio;
-
 /** Attributes */
 
 // attr
