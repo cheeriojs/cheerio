@@ -52,8 +52,7 @@
     "lint-staged": "^10.5.3",
     "prettier": "^2.2.1",
     "prettier-plugin-jsdoc": "^0.2.12",
-    "tsd": "^0.14.0",
-    "xyz": "~4.0.0"
+    "tsd": "^0.14.0"
   },
   "scripts": {
     "test": "npm run lint && npm run test:jest && npm run test:types",
