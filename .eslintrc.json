@@ -13,13 +13,14 @@
   "globals": { "Set": true, "Symbol": true },
   "rules": {
     "array-callback-return": [
-      "error",
+      2,
       {
         "allowImplicit": true
       }
     ],
+    "block-scoped-var": 2,
     "eqeqeq": [
-      "error",
+      2,
       "always",
       {
         "null": "ignore"
