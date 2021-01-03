@@ -599,6 +599,13 @@ describe('$(...)', function () {
       expect(result).toHaveLength(1);
       expect(result[0].attribs.id).toBe('fruits');
     });
+
+    it('(cheerio object) : should return all parents until body element', function () {
+      var body = $('body')[0];
+      var result = $('.carrot').parentsUntil(body);
+      expect(result).toHaveLength(2);
+      expect(result.eq(0).is('ul#vegetables')).toBe(true);
+    });
   });
 
   describe('.parent', function () {
@@ -820,6 +827,15 @@ describe('$(...)', function () {
     it('(selector) : should not consider nested elements', function () {
       var lis = $('#fruits').not('li');
       expect(lis).toHaveLength(1);
+    });
+
+    it('(selector, container) : should reduce the set of matched elements to those that are mot contained in the provided selection', function () {
+      var $fruits = $('li');
+      var $notOrange = $('ul').not('.orange', $fruits.get());
+
+      expect($notOrange).toHaveLength(2);
+      expect($notOrange[0]).toBe($fruits[0]);
+      expect($notOrange[1]).toBe($fruits[2]);
     });
 
     it('(selection) : should reduce the set of matched elements to those that are mot contained in the provided selection', function () {

@@ -226,6 +226,10 @@ describe('cheerio', function () {
     expect($empty.each).toBe(cheerio.prototype.each);
   });
 
+  it('cheerio.html(null) should return a "" string', function () {
+    expect(cheerio.html(null)).toBe('');
+  });
+
   it('should set html(number) as a string', function () {
     var $elem = cheerio('<div>');
     $elem.html(123);
