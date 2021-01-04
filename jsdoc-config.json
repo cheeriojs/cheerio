@@ -2,7 +2,8 @@
   "opts": {
     "destination": "docs",
     "readme": "Readme.md",
-    "recurse": true
+    "recurse": true,
+    "template": "node_modules/clean-jsdoc-theme"
   },
   "plugins": ["plugins/markdown"],
   "markdown": {

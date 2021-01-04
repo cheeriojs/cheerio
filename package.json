@@ -41,6 +41,7 @@
   "devDependencies": {
     "@types/node": "^14.14.16",
     "benchmark": "^2.1.4",
+    "clean-jsdoc-theme": "^3.0.6",
     "eslint": "^7.16.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-jsdoc": "^30.7.9",
