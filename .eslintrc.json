@@ -3,9 +3,18 @@
     "node": true
   },
   "plugins": ["jsdoc"],
-  "extends": ["eslint:recommended", "plugin:jsdoc/recommended", "prettier"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:jsdoc/recommended",
+    "plugin:jest/recommended",
+    "plugin:node/recommended",
+    "prettier"
+  ],
   "globals": { "Set": true, "Symbol": true },
   "rules": {
+    // TODO
+    "node/no-unsupported-features/es-builtins": 0,
+
     "array-callback-return": [
       "error",
       {

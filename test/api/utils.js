@@ -110,15 +110,16 @@ describe('cheerio', function () {
       expect($.html()).toBe('<body><b>foo</b> <b>bar</b></body>');
     });
 
-    // TODO:
-    // it('(html) : should handle xml tag option', function() {
-    //   var $ = $.load('<body><script>oh hai</script></body>', { xml : true });
-    //   console.log($('script')[0].type);
-    //   expect($('script')[0].type).to.be('tag');
-    // });
+    it('(html) : should handle xml tag option', function () {
+      var $ = cheerio.load('<body><script><foo></script></body>', {
+        xml: true,
+      });
+      expect($('script')[0].children[0].type).toBe('tag');
+    });
 
     it('(buffer) : should accept a buffer', function () {
       var html = '<html><head></head><body>foo</body></html>';
+      // eslint-disable-next-line node/no-unsupported-features/node-builtins
       var $html = cheerio.load(Buffer.from(html));
       expect($html.html()).toBe(html);
     });

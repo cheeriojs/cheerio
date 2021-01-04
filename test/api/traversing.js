@@ -13,16 +13,9 @@ describe('$(...)', function () {
 
   describe('.load', function () {
     it('should throw a TypeError if given invalid input', function () {
-      try {
-        (function () {
-          cheerio.load();
-        })();
-
-        throw new Error('Function did not throw');
-      } catch (err) {
-        expect(err).toBeInstanceOf(Error);
-        expect(err.message).toBe('cheerio.load() expects a string');
-      }
+      expect(function () {
+        cheerio.load();
+      }).toThrow('cheerio.load() expects a string');
     });
   });
 
@@ -81,16 +74,9 @@ describe('$(...)', function () {
     });
 
     it('should throw an Error if given an invalid selector', function () {
-      try {
-        (function () {
-          $('#fruits').find(':bah');
-        })();
-
-        throw new Error('Function did not throw');
-      } catch (err) {
-        expect(err).toBeInstanceOf(Error);
-        expect(err.message).toContain('unmatched pseudo-class');
-      }
+      expect(function () {
+        $('#fruits').find(':bah');
+      }).toThrow('unmatched pseudo-class');
     });
 
     describe('(cheerio object) :', function () {
@@ -464,16 +450,9 @@ describe('$(...)', function () {
     });
 
     it('(selector) : should throw an Error if given an invalid selector', function () {
-      try {
-        (function () {
-          $('.orange').siblings(':bah');
-        })();
-
-        throw new Error('Function did not throw');
-      } catch (err) {
-        expect(err).toBeInstanceOf(Error);
-        expect(err.message).toContain('unmatched pseudo-class');
-      }
+      expect(function () {
+        $('.orange').siblings(':bah');
+      }).toThrow('unmatched pseudo-class');
     });
 
     it('(selector) : does not consider the contents of siblings when filtering (GH-374)', function () {

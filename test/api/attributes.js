@@ -33,13 +33,13 @@ describe('$(...)', function () {
       expect(attr).toBe('autofocus');
     });
 
-    it('(key, value) : should set attr', function () {
+    it('(key, value) : should set one attr', function () {
       var $pear = $('.pear').attr('id', 'pear');
       expect($('#pear')).toHaveLength(1);
       expect($pear).toBeInstanceOf($);
     });
 
-    it('(key, value) : should set attr', function () {
+    it('(key, value) : should set multiple attr', function () {
       var $el = cheerio('<div></div> <div></div>').attr('class', 'pear');
 
       expect($el[0].attribs['class']).toBe('pear');
@@ -539,7 +539,7 @@ describe('$(...)', function () {
   });
 
   describe('.hasClass', function () {
-    function test(attr) {
+    function withClass(attr) {
       return cheerio('<div class="' + attr + '"></div>');
     }
 
@@ -547,18 +547,18 @@ describe('$(...)', function () {
       var cls = $('.apple').hasClass('apple');
       expect(cls).toBe(true);
 
-      expect(test('foo').hasClass('foo')).toBe(true);
-      expect(test('foo bar').hasClass('foo')).toBe(true);
-      expect(test('bar foo').hasClass('foo')).toBe(true);
-      expect(test('bar foo bar').hasClass('foo')).toBe(true);
+      expect(withClass('foo').hasClass('foo')).toBe(true);
+      expect(withClass('foo bar').hasClass('foo')).toBe(true);
+      expect(withClass('bar foo').hasClass('foo')).toBe(true);
+      expect(withClass('bar foo bar').hasClass('foo')).toBe(true);
     });
 
     it('(invalid class) : should return false', function () {
       var cls = $('#fruits').hasClass('fruits');
       expect(cls).toBe(false);
-      expect(test('foo-bar').hasClass('foo')).toBe(false);
-      expect(test('foo-bar').hasClass('foo')).toBe(false);
-      expect(test('foo-bar').hasClass('foo-ba')).toBe(false);
+      expect(withClass('foo-bar').hasClass('foo')).toBe(false);
+      expect(withClass('foo-bar').hasClass('foo')).toBe(false);
+      expect(withClass('foo-bar').hasClass('foo-ba')).toBe(false);
     });
 
     it('should check multiple classes', function () {
@@ -573,9 +573,9 @@ describe('$(...)', function () {
     });
 
     it('(empty string argument) : should return false', function () {
-      expect(test('foo').hasClass('')).toBe(false);
-      expect(test('foo bar').hasClass('')).toBe(false);
-      expect(test('foo bar').removeClass('foo').hasClass('')).toBe(false);
+      expect(withClass('foo').hasClass('')).toBe(false);
+      expect(withClass('foo bar').hasClass('')).toBe(false);
+      expect(withClass('foo bar').removeClass('foo').hasClass('')).toBe(false);
     });
   });
 
