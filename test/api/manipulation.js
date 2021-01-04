@@ -369,7 +369,7 @@ describe('$(...)', function () {
       expect($container[0].children[0]).toBe($wrap[0]);
     });
 
-    it('(html) : should wrap elements with it', function () {
+    it('(html) : should wrap single element with it', function () {
       var parent = doc('<p>').wrapAll('<div></div>').parent();
       expect(parent).toHaveLength(1);
       expect(parent.is('div')).toBe(true);
