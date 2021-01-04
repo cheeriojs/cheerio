@@ -598,6 +598,12 @@ describe('$(...)', function () {
       expect(result[1].attribs.id).toBe('vegetables');
     });
 
+    it('(undefined) : should not throw an exception', function () {
+      expect(function () {
+        $('li').parent(undefined);
+      }).not.toThrow();
+    });
+
     it('() : should return an empty object for top-level elements', function () {
       var result = $('html').parent();
       expect(result).toHaveLength(0);
