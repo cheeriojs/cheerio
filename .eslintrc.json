@@ -3,7 +3,13 @@
     "node": true
   },
   "plugins": ["jsdoc"],
-  "extends": ["eslint:recommended", "plugin:jsdoc/recommended", "prettier"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:jsdoc/recommended",
+    "plugin:jest/recommended",
+    "plugin:node/recommended",
+    "prettier"
+  ],
   "globals": { "Set": true, "Symbol": true },
   "rules": {
     "array-callback-return": [
@@ -47,7 +53,10 @@
     "jsdoc/require-param-name": 2,
     "jsdoc/require-param-type": 2,
     "jsdoc/require-param": 2,
-    "jsdoc/valid-types": 2
+    "jsdoc/valid-types": 2,
+
+    "node/no-unsupported-features/es-builtins": 0, // TODO
+    "node/shebang": 0
   },
   "settings": {
     "jsdoc": {

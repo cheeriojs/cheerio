@@ -210,7 +210,7 @@ describe('parse', function () {
       expect(root.childNodes[0].type).toBe('directive');
     });
 
-    it('should simply return root ', function () {
+    it('should simply return root', function () {
       var oldroot = parse(basic, defaultOpts, true);
       var root = parse(oldroot, defaultOpts, true);
       expect(root).toBe(oldroot);
