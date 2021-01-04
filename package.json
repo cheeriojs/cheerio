@@ -70,6 +70,7 @@
     "format:prettier:raw": "prettier \"**/*.{js,ts,md,json,yml}\" --ignore-path .gitignore",
     "build:docs": "jsdoc --configure jsdoc-config.json",
     "benchmark": "node benchmark/benchmark.js --regex \"^(?!.*highmem)\"",
+    "bench": "npm run benchmark",
     "pre-commit": "lint-staged"
   },
   "prettier": {
