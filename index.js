@@ -1,3 +1,4 @@
+'use strict';
 /**
  * @module cheerio
  * @borrows static.load as load

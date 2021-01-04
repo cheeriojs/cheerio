@@ -1,3 +1,4 @@
+'use strict';
 var cheerio = require('..');
 
 function xml(str, options) {

@@ -1,3 +1,4 @@
+'use strict';
 var parse = require('../lib/parse');
 var defaultOpts = require('../lib/options').default;
 

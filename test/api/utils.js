@@ -1,3 +1,4 @@
+'use strict';
 var fixtures = require('../__fixtures__/fixtures');
 var cheerio = require('../..');
 

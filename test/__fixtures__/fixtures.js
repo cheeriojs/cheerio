@@ -1,3 +1,4 @@
+'use strict';
 exports.fruits = [
   '<ul id="fruits">',
   '<li class="apple">Apple</li>',
