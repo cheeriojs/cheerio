@@ -829,15 +829,6 @@ describe('$(...)', function () {
       expect(lis).toHaveLength(1);
     });
 
-    it('(selector, container) : should reduce the set of matched elements to those that are mot contained in the provided selection', function () {
-      var $fruits = $('li');
-      var $notOrange = $('ul').not('.orange', $fruits.get());
-
-      expect($notOrange).toHaveLength(2);
-      expect($notOrange[0]).toBe($fruits[0]);
-      expect($notOrange[1]).toBe($fruits[2]);
-    });
-
     it('(selection) : should reduce the set of matched elements to those that are mot contained in the provided selection', function () {
       var $fruits = $('li');
       var $orange = $('.orange');
