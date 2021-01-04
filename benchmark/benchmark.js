@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var Suites = require('./suite');
 var suites = new Suites();
 

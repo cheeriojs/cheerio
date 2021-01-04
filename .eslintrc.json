@@ -12,9 +12,6 @@
   ],
   "globals": { "Set": true, "Symbol": true },
   "rules": {
-    // TODO
-    "node/no-unsupported-features/es-builtins": 0,
-
     "array-callback-return": [
       "error",
       {
@@ -56,7 +53,10 @@
     "jsdoc/require-param-name": 2,
     "jsdoc/require-param-type": 2,
     "jsdoc/require-param": 2,
-    "jsdoc/valid-types": 2
+    "jsdoc/valid-types": 2,
+
+    "node/no-unsupported-features/es-builtins": 0, // TODO
+    "node/shebang": 0
   },
   "settings": {
     "jsdoc": {
