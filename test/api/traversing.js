@@ -599,6 +599,13 @@ describe('$(...)', function () {
       expect(result).toHaveLength(1);
       expect(result[0].attribs.id).toBe('fruits');
     });
+
+    it('(cheerio object) : should return all parents until body element', function () {
+      var body = $('body')[0];
+      var result = $('.carrot').parentsUntil(body);
+      expect(result).toHaveLength(2);
+      expect(result.eq(0).is('ul#vegetables')).toBe(true);
+    });
   });
 
   describe('.parent', function () {

@@ -369,6 +369,12 @@ describe('$(...)', function () {
       expect($container[0].children[0]).toBe($wrap[0]);
     });
 
+    it('(html) : should wrap elements with it', function () {
+      var parent = doc('<p>').wrapAll('<div></div>').parent();
+      expect(parent).toHaveLength(1);
+      expect(parent.is('div')).toBe(true);
+    });
+
     it('(selector) : should find element from dom, wrap elements with it', function () {
       $inner.wrapAll('#new');
       var $container = doc('.container');
@@ -386,6 +392,36 @@ describe('$(...)', function () {
       expect($inner[3].parent).toBe($wrap[0]);
       expect($new[0].parent).toBe($container[0]);
       expect($container[0].children[0]).toBe($new[0]);
+    });
+
+    it('(function) : check execution', function () {
+      var $container = doc('.container');
+      var p = $container[0].parent;
+
+      var result = $container.wrapAll(function () {
+        return "<div class='red'><div class='tmp'></div></div>";
+      });
+
+      expect(result.parent()).toHaveLength(1);
+      expect($container.eq(0).parent().parent().is('.red')).toBe(true);
+      expect($container.eq(1).parent().parent().is('.red')).toBe(true);
+      expect($container.eq(0).parent().parent().parent().is(p)).toBe(true);
+    });
+
+    it('(function) : check execution characteristics', function () {
+      var $new = doc('#new');
+      var i = 0;
+
+      doc('no-result').wrapAll(function () {
+        i++;
+        return '';
+      });
+      expect(i).toBeFalsy();
+
+      $new.wrapAll(function (index) {
+        expect(this).toBe($new[0]);
+        expect(index).toBe(undefined);
+      });
     });
   });
 
@@ -797,7 +833,7 @@ describe('$(...)', function () {
 
   describe('.after', function () {
     it('() : should do nothing', function () {
-      expect($('#fruits').after()[0].tagName).toBe('ul');
+      expect($fruits.after()[0].tagName).toBe('ul');
     });
 
     it('(html) : should add element as next sibling', function () {
