@@ -969,13 +969,13 @@ describe('$(...)', function () {
     it('() : should return an array containing all of the collection', function () {
       var children = $('#fruits').children();
       var all = children.get();
-      expect(Array.isArray(all)).toBeTruthy();
+      expect(Array.isArray(all)).toBe(true);
       expect(all).toStrictEqual([children[0], children[1], children[2]]);
     });
   });
 
   describe('.index', function () {
-    describe('() : ', function () {
+    describe('() :', function () {
       it('returns the index of a child amongst its siblings', function () {
         expect($('.orange').index()).toBe(1);
       });
@@ -984,7 +984,7 @@ describe('$(...)', function () {
       });
     });
 
-    describe('(selector) : ', function () {
+    describe('(selector) :', function () {
       it('returns the index of the first element in the set matched by `selector`', function () {
         expect($('.apple').index('#fruits, li')).toBe(1);
       });
@@ -996,7 +996,7 @@ describe('$(...)', function () {
       });
     });
 
-    describe('(node) : ', function () {
+    describe('(node) :', function () {
       it('returns the index of the given node within the current selection', function () {
         var $lis = $('li');
         expect($lis.index($lis.get(1))).toBe(1);
@@ -1014,7 +1014,7 @@ describe('$(...)', function () {
       });
     });
 
-    describe('(selection) : ', function () {
+    describe('(selection) :', function () {
       it('returns the index of the first node in the provided selection within the current selection', function () {
         var $lis = $('li');
         expect($lis.index($('.orange, .pear'))).toBe(1);
@@ -1394,7 +1394,7 @@ describe('$(...)', function () {
   });
 
   describe('.addBack', function () {
-    describe('() : ', function () {
+    describe('() :', function () {
       it('includes siblings and self', function () {
         var $selection = $('.orange').siblings().addBack();
 
