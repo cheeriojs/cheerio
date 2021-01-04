@@ -210,6 +210,15 @@ describe('parse', function () {
       expect(root.childNodes[0].type).toBe('directive');
     });
 
+    it('should simply return root ', function () {
+      var oldroot = parse(basic, defaultOpts, true);
+      var root = parse(oldroot, defaultOpts, true);
+      expect(root).toBe(oldroot);
+      rootTest(root);
+      expect(root.childNodes).toHaveLength(1);
+      expect(root.childNodes[0].tagName).toBe('html');
+    });
+
     it('should expose the DOM level 1 API', function () {
       var root = parse(
         '<div><a></a><span></span><p></p></div>',
