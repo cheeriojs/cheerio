@@ -12,6 +12,13 @@
         "allowImplicit": true
       }
     ],
+    "eqeqeq": [
+      "error",
+      "always",
+      {
+        "null": "ignore"
+      }
+    ],
     "no-lonely-if": 2,
     "no-proto": 2,
     "curly": [2, "multi-line"],
