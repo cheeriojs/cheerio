@@ -1,3 +1,4 @@
+'use strict';
 var cheerio = require('../..');
 var fruits = require('../__fixtures__/fixtures').fruits;
 var vegetables = require('../__fixtures__/fixtures').vegetables;

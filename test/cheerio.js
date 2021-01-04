@@ -1,3 +1,4 @@
+'use strict';
 var htmlparser2 = require('htmlparser2');
 var cheerio = require('..');
 var fixtures = require('./__fixtures__/fixtures');
