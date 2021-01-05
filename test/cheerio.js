@@ -1,6 +1,7 @@
 'use strict';
 var htmlparser2 = require('htmlparser2');
 var cheerio = require('..');
+var utils = require('../lib/utils');
 var fixtures = require('./__fixtures__/fixtures');
 var fruits = fixtures.fruits;
 var food = fixtures.food;
@@ -64,16 +65,19 @@ describe('cheerio', function () {
     expect($apple.childNodes[0].data).toBe('Apple');
   }
 
+  // eslint-disable-next-line jest/expect-expect
   it('should be able to select .apple with only a context', function () {
     var $apple = cheerio('.apple', fruits);
     testAppleSelect($apple);
   });
 
+  // eslint-disable-next-line jest/expect-expect
   it('should be able to select .apple with a node as context', function () {
     var $apple = cheerio('.apple', cheerio(fruits)[0]);
     testAppleSelect($apple);
   });
 
+  // eslint-disable-next-line jest/expect-expect
   it('should be able to select .apple with only a root', function () {
     var $apple = cheerio('.apple', null, fruits);
     testAppleSelect($apple);
@@ -118,16 +122,19 @@ describe('cheerio', function () {
     });
   });
 
+  // eslint-disable-next-line jest/expect-expect
   it('should be able to do: cheerio("#fruits .apple")', function () {
     var $apple = cheerio('#fruits .apple', fruits);
     testAppleSelect($apple);
   });
 
+  // eslint-disable-next-line jest/expect-expect
   it('should be able to do: cheerio("li.apple")', function () {
     var $apple = cheerio('li.apple', fruits);
     testAppleSelect($apple);
   });
 
+  // eslint-disable-next-line jest/expect-expect
   it('should be able to select by attributes', function () {
     var $apple = cheerio('li[class=apple]', fruits);
     testAppleSelect($apple);
@@ -367,6 +374,39 @@ describe('cheerio', function () {
 
         expect($b('div').foo).toBe(undefined);
       });
+    });
+  });
+  describe('util functions', function () {
+    it('camelCase function test', function () {
+      expect(utils.camelCase('cheerio.js')).toBe('cheerioJs');
+      expect(utils.camelCase('camel-case-')).toBe('camelCase');
+      expect(utils.camelCase('__directory__')).toBe('_directory_');
+      expect(utils.camelCase('_one-two.three')).toBe('OneTwoThree');
+    });
+
+    it('cssCase function test', function () {
+      expect(utils.cssCase('camelCase')).toBe('camel-case');
+      expect(utils.cssCase('jQuery')).toBe('j-query');
+      expect(utils.cssCase('neverSayNever')).toBe('never-say-never');
+      expect(utils.cssCase('CSSCase')).toBe('-c-s-s-case');
+    });
+
+    it('cloneDom : should be able clone single Elements', function () {
+      var main = cheerio('<p>Cheerio</p>');
+      var result = [];
+      utils.domEach(main, function (i, el) {
+        result = result.concat(utils.cloneDom(el));
+      });
+      expect(result).toHaveLength(1);
+      expect(result[0]).not.toBe(main[0]);
+      expect(main[0].children.length).toBe(result[0].children.length);
+      expect(cheerio(result).text()).toBe(main.text());
+    });
+
+    it('isHtml function test', function () {
+      expect(utils.isHtml('<html>')).toBe(true);
+      expect(utils.isHtml('\n<html>\n')).toBe(true);
+      expect(utils.isHtml('#main')).toBe(false);
     });
   });
 });

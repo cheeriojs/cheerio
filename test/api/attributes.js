@@ -175,8 +175,9 @@ describe('$(...)', function () {
     });
 
     it('(invalid key) : invalid prop should get undefined', function () {
-      var attr = checkbox.prop('lol');
-      expect(attr).toBe(undefined);
+      expect(checkbox.prop('lol')).toBe(undefined);
+      expect(checkbox.prop(4)).toBe(undefined);
+      expect(checkbox.prop(true)).toBe(undefined);
     });
 
     it('(key, value) : should set prop', function () {
@@ -196,6 +197,15 @@ describe('$(...)', function () {
       checkbox.prop('checked', true);
       expect(checkbox.prop('checked')).toBe(true);
       expect(checkbox.attr('checked')).toBe('checked');
+    });
+
+    it('(key, value) : should update namespace', function () {
+      var imgs = $('<img>\n\n<img>\n\n<img>');
+      var nsHtml = 'http://www.w3.org/1999/xhtml';
+      imgs.prop('src', '#').prop('namespace', nsHtml);
+      expect(imgs.prop('namespace')).toBe(nsHtml);
+      imgs.prop('attribs', null);
+      expect(imgs.prop('src')).toBe(undefined);
     });
 
     it('(map) : object map should set multiple props', function () {
@@ -282,6 +292,7 @@ describe('$(...)', function () {
     it('() : no data attribute should return an empty object', function () {
       var data = $('.cailler').data();
       expect(Object.keys(data)).toHaveLength(0);
+      expect($('.free').data()).toBe(undefined);
     });
 
     it('(invalid key) : invalid data attribute should return `undefined`', function () {
@@ -361,6 +372,9 @@ describe('$(...)', function () {
       // Adding as string.
       var b = $('.linth').data('snack', 'chocoletti');
 
+      expect(function () {
+        a.data(4, 'throw');
+      }).not.toThrow();
       expect(a.data('balls')).toStrictEqual('giandor');
       expect(b.data('snack')).toStrictEqual('chocoletti');
     });
