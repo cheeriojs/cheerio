@@ -370,8 +370,11 @@ describe('$(...)', function () {
         balls: 'giandor',
       });
       // Adding as string.
-      var b = $('.linth').data('snack', 'chocoletti').data(4, 'chocoletti');
+      var b = $('.linth').data('snack', 'chocoletti');
 
+      expect(function () {
+        a.data(4, 'throw');
+      }).not.toThrow();
       expect(a.data('balls')).toStrictEqual('giandor');
       expect(b.data('snack')).toStrictEqual('chocoletti');
     });

@@ -392,11 +392,15 @@ describe('cheerio', function () {
     });
 
     it('cloneDom : should be able clone single Elements', function () {
+      var main = cheerio('<p>Cheerio</p>');
       var result = [];
-      utils.domEach(cheerio('<p>A</p><p>B</p>'), function (i, el) {
+      utils.domEach(main, function (i, el) {
         result = result.concat(utils.cloneDom(el));
       });
-      expect(result).toHaveLength(2);
+      expect(result).toHaveLength(1);
+      expect(result[0]).not.toBe(main[0]);
+      expect(main[0].children.length).toBe(result[0].children.length);
+      expect(cheerio(result).text()).toBe(main.text());
     });
 
     it('isHtml function test', function () {
