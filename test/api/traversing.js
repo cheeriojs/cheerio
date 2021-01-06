@@ -1396,7 +1396,7 @@ describe('$(...)', function () {
         // applies green to pear... AND should not affect apple
         $pear.addClass('green');
         expect($pear.hasClass('green')).toBe(true); //currently this is true
-        expect($apple.hasClass('green')).toBe(false); // and this is true!
+        expect($apple.hasClass('green')).toBe(false); // and this should be false!
       });
     });
   });
