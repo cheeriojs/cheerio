@@ -1383,6 +1383,21 @@ describe('$(...)', function () {
           expect($selection[3]).toBe($pear[0]);
         });
       });
+
+      it('modifying nested selections should not impact the parent [#834]', function () {
+        var apple_pear = $apple.add($pear);
+
+        // applies red to apple and pear
+        apple_pear.addClass('red');
+
+        expect($apple.hasClass('red')).toBe(true); // this is true
+        expect($pear.hasClass('red')).toBe(true); // this is true
+
+        // applies green to pear... AND should not affect apple
+        $pear.addClass('green');
+        expect($pear.hasClass('green')).toBe(true); //currently this is true
+        expect($apple.hasClass('green')).toBe(false); // and this is true!
+      });
     });
   });
 
