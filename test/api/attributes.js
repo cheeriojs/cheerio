@@ -21,7 +21,7 @@ describe('$(...)', function () {
 
     it('(invalid key) : invalid attr should get undefined', function () {
       var attr = $('.apple').attr('lol');
-      expect(attr).toBe(undefined);
+      expect(attr).toBeUndefined();
     });
 
     it('(valid key) : valid attr should get value', function () {
@@ -44,14 +44,14 @@ describe('$(...)', function () {
       var $el = cheerio('<div></div> <div></div>').attr('class', 'pear');
 
       expect($el[0].attribs['class']).toBe('pear');
-      expect($el[1].attribs).toBe(undefined);
+      expect($el[1].attribs).toBeUndefined();
       expect($el[2].attribs['class']).toBe('pear');
     });
 
     it('(key, value) : should return an empty object for an empty object', function () {
       var $src = $().attr('key', 'value');
       expect($src.length).toBe(0);
-      expect($src[0]).toBe(undefined);
+      expect($src[0]).toBeUndefined();
     });
 
     it('(map) : object map should set multiple attributes', function () {
@@ -106,7 +106,7 @@ describe('$(...)', function () {
       $apple.attr('autofocus', 'autofocus');
       expect($apple.attr('autofocus')).toBe('autofocus');
       $apple.removeAttr('autofocus');
-      expect($apple.attr('autofocus')).toBe(undefined);
+      expect($apple.attr('autofocus')).toBeUndefined();
     });
 
     it('(key, value) : should remove non-boolean attributes with names or values similar to boolean ones', function () {
@@ -114,14 +114,14 @@ describe('$(...)', function () {
       $apple.attr('data-autofocus', 'autofocus');
       expect($apple.attr('data-autofocus')).toBe('autofocus');
       $apple.removeAttr('data-autofocus');
-      expect($apple.attr('data-autofocus')).toBe(undefined);
+      expect($apple.attr('data-autofocus')).toBeUndefined();
     });
 
     it('(key, value) : should remove attributes when called with null value', function () {
       var $pear = $('.pear').attr('autofocus', 'autofocus');
       expect($pear.attr('autofocus')).toBe('autofocus');
       $pear.attr('autofocus', null);
-      expect($pear.attr('autofocus')).toBe(undefined);
+      expect($pear.attr('autofocus')).toBeUndefined();
     });
 
     it('(map) : should remove attributes with null values', function () {
@@ -132,7 +132,7 @@ describe('$(...)', function () {
       expect($pear.attr('autofocus')).toBe('autofocus');
       expect($pear.attr('style')).toBe('color:red');
       $pear.attr({ autofocus: null, style: 'color:blue' });
-      expect($pear.attr('autofocus')).toBe(undefined);
+      expect($pear.attr('autofocus')).toBeUndefined();
       expect($pear.attr('style')).toBe('color:blue');
     });
 
@@ -149,7 +149,7 @@ describe('$(...)', function () {
     it('(chaining) setting attr to undefined returns a $', function () {
       var $pear = $('.pear').attr('foo', undefined);
       expect($('.pear')).toHaveLength(1);
-      expect($('.pear').attr('foo')).toBe('undefined');
+      expect($('.pear').attr('foo')).toBeUndefined(); // this is stringified undefined
       expect($pear).toBeInstanceOf($);
     });
   });
@@ -175,9 +175,9 @@ describe('$(...)', function () {
     });
 
     it('(invalid key) : invalid prop should get undefined', function () {
-      expect(checkbox.prop('lol')).toBe(undefined);
-      expect(checkbox.prop(4)).toBe(undefined);
-      expect(checkbox.prop(true)).toBe(undefined);
+      expect(checkbox.prop('lol')).toBeUndefined();
+      expect(checkbox.prop(4)).toBeUndefined();
+      expect(checkbox.prop(true)).toBeUndefined();
     });
 
     it('(key, value) : should set prop', function () {
@@ -193,7 +193,7 @@ describe('$(...)', function () {
       expect(checkbox.attr('checked')).toBe('checked');
       checkbox.prop('checked', false);
       expect(checkbox.prop('checked')).toBe(false);
-      expect(checkbox.attr('checked')).toBe(undefined);
+      expect(checkbox.attr('checked')).toBeUndefined();
       checkbox.prop('checked', true);
       expect(checkbox.prop('checked')).toBe(true);
       expect(checkbox.attr('checked')).toBe('checked');
@@ -205,7 +205,7 @@ describe('$(...)', function () {
       imgs.prop('src', '#').prop('namespace', nsHtml);
       expect(imgs.prop('namespace')).toBe(nsHtml);
       imgs.prop('attribs', null);
-      expect(imgs.prop('src')).toBe(undefined);
+      expect(imgs.prop('src')).toBeUndefined();
     });
 
     it('(map) : object map should set multiple props', function () {
@@ -231,8 +231,8 @@ describe('$(...)', function () {
     });
 
     it('(invalid element/tag) : prop should return undefined', function () {
-      expect($(undefined).prop('prop')).toBe(undefined);
-      expect($(null).prop('prop')).toBe(undefined);
+      expect($(undefined).prop('prop')).toBeUndefined();
+      expect($(null).prop('prop')).toBeUndefined();
     });
 
     it('("outerHTML") : should render properly', function () {
@@ -292,12 +292,12 @@ describe('$(...)', function () {
     it('() : no data attribute should return an empty object', function () {
       var data = $('.cailler').data();
       expect(Object.keys(data)).toHaveLength(0);
-      expect($('.free').data()).toBe(undefined);
+      expect($('.free').data()).toBeUndefined();
     });
 
     it('(invalid key) : invalid data attribute should return `undefined`', function () {
       var data = $('.frey').data('lol');
-      expect(data).toBe(undefined);
+      expect(data).toBeUndefined();
     });
 
     it('(valid key) : valid data attribute should get value', function () {
@@ -493,11 +493,11 @@ describe('$(...)', function () {
     });
     it('(): with no selector matches should return nothing', function () {
       var val = $('.nasty').val();
-      expect(val).toBe(undefined);
+      expect(val).toBeUndefined();
     });
     it('(invalid value): should only handle arrays when it has the attribute multiple', function () {
       var val = $('select#one').val([]);
-      expect(val).not.toBe(undefined);
+      expect(val).not.toBeUndefined();
     });
     it('(value): on input text should set value', function () {
       var element = $('input[type="text"]').val('test');
@@ -528,9 +528,9 @@ describe('$(...)', function () {
   describe('.removeAttr', function () {
     it('(key) : should remove a single attr', function () {
       var $fruits = $('#fruits');
-      expect($fruits.attr('id')).not.toBe(undefined);
+      expect($fruits.attr('id')).not.toBeUndefined();
       $fruits.removeAttr('id');
-      expect($fruits.attr('id')).toBe(undefined);
+      expect($fruits.attr('id')).toBeUndefined();
     });
 
     it('(key key): should remove multiple attrs', function () {
@@ -542,8 +542,8 @@ describe('$(...)', function () {
       expect($apple.attr('class')).toBe('apple');
       expect($apple.attr('size')).toBe('small');
       $apple.removeAttr('id class');
-      expect($apple.attr('id')).toBe(undefined);
-      expect($apple.attr('class')).toBe(undefined);
+      expect($apple.attr('id')).toBeUndefined();
+      expect($apple.attr('class')).toBeUndefined();
       expect($apple.attr('size')).toBe('small');
     });
 
@@ -652,7 +652,7 @@ describe('$(...)', function () {
     it('() : should remove all the classes', function () {
       $('.pear').addClass('fruit');
       $('.pear').removeClass();
-      expect($('.pear').attr('class')).toBe(undefined);
+      expect($('.pear').attr('class')).toBeUndefined();
     });
 
     it('("") : should not modify class list', function () {

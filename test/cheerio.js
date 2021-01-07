@@ -372,7 +372,7 @@ describe('cheerio', function () {
 
         $a.prototype.foo = function () {};
 
-        expect($b('div').foo).toBe(undefined);
+        expect($b('div').foo).toBeUndefined();
       });
     });
   });
