@@ -225,6 +225,11 @@ describe('$(...)', function () {
       expect(elems.nextAll()).toHaveLength(2);
     });
 
+    it('() : should not contain text elements', function () {
+      var elems = $('.apple', fruits.replace(/></g, '>\n<'));
+      expect(elems.nextAll()).toHaveLength(2);
+    });
+
     describe('(selector) :', function () {
       it('should filter according to the provided selector', function () {
         expect($('.apple').nextAll('.pear')).toHaveLength(1);
@@ -356,6 +361,11 @@ describe('$(...)', function () {
 
     it('() : should not contain duplicate elements', function () {
       var elems = $('.orange, .pear', food);
+      expect(elems.prevAll()).toHaveLength(2);
+    });
+
+    it('() : should not contain text elements', function () {
+      var elems = $('.pear', fruits.replace(/></g, '>\n<'));
       expect(elems.prevAll()).toHaveLength(2);
     });
 
@@ -511,10 +521,10 @@ describe('$(...)', function () {
 
       expect($parents).toHaveLength(5);
       expect($parents[0]).toBe($('#vegetables')[0]);
-      expect($parents[1]).toBe($('#food')[0]);
-      expect($parents[2]).toBe($('body')[0]);
-      expect($parents[3]).toBe($('html')[0]);
-      expect($parents[4]).toBe($('#fruits')[0]);
+      expect($parents[2]).toBe($('#food')[0]);
+      expect($parents[3]).toBe($('body')[0]);
+      expect($parents[4]).toBe($('html')[0]);
+      expect($parents[1]).toBe($('#fruits')[0]);
     });
   });
 
@@ -853,6 +863,15 @@ describe('$(...)', function () {
         expect(typeof i).toBe('number');
         return $(this).attr('class') === 'orange';
       });
+
+      expect($notOrange).toHaveLength(2);
+      expect($notOrange[0]).toBe($fruits[0]);
+      expect($notOrange[1]).toBe($fruits[2]);
+    });
+
+    it('(selector, container) : should reduce the set of matched elements to those that are mot contained in the provided selection', function () {
+      var $fruits = $('li');
+      var $notOrange = $('ul').not('.orange', $fruits);
 
       expect($notOrange).toHaveLength(2);
       expect($notOrange[0]).toBe($fruits[0]);
