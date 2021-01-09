@@ -1,0 +1,343 @@
+body {
+    background-color: #fff;
+    color: #4d4e53;
+}
+
+a,
+a:active {
+    color: #530fff;
+}
+
+hr {
+    border: 1px solid #eee;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #000;
+}
+
+/* stylelint-disable */
+
+h1.page-title::after,
+article h1::after {
+    background: #fbe555;
+}
+
+/* stylelint-enable */
+
+h4 {
+    color: #4d4e53;
+}
+
+.subsection-title {
+    border-bottom: 1px solid #eee;
+}
+
+tt,
+code,
+kbd,
+samp {
+    background: #f4f4f4;
+}
+
+section {
+    background-color: #fff;
+}
+
+section h2::after {
+    background: #eee;
+}
+
+::selection {
+    background: #ffce76;
+    color: #1d1919;
+}
+
+::selection {
+    background: #ffce76;
+    color: #1d1919;
+}
+
+.signature-attributes {
+    color: #aaa;
+}
+
+nav {
+    background: #001628;
+}
+
+nav > h2 > a {
+    color: #fff !important;
+}
+
+/* stylelint-disable */
+nav > h2 > a.filter img {
+    filter: grayscale(100%) brightness(10);
+    filter: grayscale(100%) brightness(10);
+}
+
+/* stylelint-enable */
+
+.search-box .search-item-container {
+    background: #fff;
+}
+
+.search-item-ul li {
+    color: #999;
+}
+
+.search-item-ul li:hover {
+    background: #f7f7f7;
+}
+
+.search-item-ul a:hover {
+    color: #530fff;
+}
+
+nav h2,
+nav h3,
+nav h3 a {
+    color: #fff !important;
+}
+
+nav a:hover {
+    color: #1089ff;
+}
+
+/* stylelint-disable */
+.sidebar-list-div > ul > li > a {
+    color: #c9d1d3;
+}
+
+.sidebar-list-div ul ul a {
+    color: #c9d1d3;
+}
+/* stylelint-enable */
+
+footer {
+    color: #222;
+    color: #555;
+}
+
+.ancestors {
+    color: #999;
+}
+
+.ancestors a {
+    color: #999 !important;
+}
+
+.important {
+    color: #950b02;
+}
+
+.type-signature {
+    color: #00918e;
+}
+
+.name,
+.name a {
+    color: #293a80;
+}
+
+.details {
+    background: #f7f7f7;
+    border-left: 5px solid #001628;
+    color: #001628;
+}
+
+.member-item-container strong,
+.method-member-container strong {
+    color: #001628;
+}
+
+.prettyprint,
+.pre-top-bar-container {
+    background: #001628;
+}
+
+.prettyprint code {
+    background-color: #001628;
+}
+
+.prettyprint.linenums li {
+    border-left: 3px #222831 solid;
+}
+
+/* stylelint-disable */
+.prettyprint.linenums li.selected,
+.prettyprint.linenums li.selected * {
+    background-color: #404040;
+}
+/* stylelint-enable */
+
+table,
+.params,
+.props {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+table .name,
+.params .name,
+.props .name,
+.name code {
+    color: #4d4e53;
+}
+
+table td,
+.params td {
+    border-top: 1px solid #eee;
+}
+
+table thead tr,
+.params thead tr,
+.props thead tr {
+    background-color: #001628;
+    color: #fff;
+}
+
+/* stylelint-disable */
+table .params thead tr,
+.params .params thead tr,
+.props .props thead tr {
+    background-color: #001628;
+    color: #fff;
+}
+
+/* dl.param-type {
+    border-bottom: 1px solid hsl(0, 0%, 87%);
+} */
+
+.disabled {
+    color: #454545;
+}
+
+/* navicon */
+
+.navicon {
+    background: #000;
+}
+
+.navicon::before,
+.navicon::after {
+    background: #000;
+}
+
+.nav-trigger:checked + label.plus .navicon::before,
+.nav-trigger:checked + label.x .navicon::before {
+    background: #000;
+}
+
+.nav-trigger:checked + label.plus .navicon::after,
+.nav-trigger:checked + label.x .navicon::after {
+    background: #000;
+}
+
+.overlay {
+    background: hsla(0, 0%, 0%, 0.5);
+}
+
+@media only screen and (max-width: 42rem) {
+    /* Navbar icon button color*/
+
+    .navicon-button {
+        background: #f1f1f1;
+    }
+}
+
+.code-copy-icon-container {
+    fill: #fff;
+}
+
+.code-copy-icon-container:hover {
+    background-color: #fff;
+    fill: #000;
+}
+
+.code-lang-name {
+    color: #ff8a00;
+}
+
+.tooltip {
+    background: #ffce76;
+    color: #000;
+}
+
+.pln {
+    color: #f5d67b;
+}
+
+/* string content */
+.str {
+    color: #55ae95;
+}
+
+/* a keyword */
+.kwd {
+    color: #5edfff;
+}
+
+/* a comment */
+.com {
+    color: #a0a0a0;
+}
+
+/* a type name */
+.typ {
+    color: #f5d67b;
+}
+
+/* a literal value */
+.lit {
+    color: #f5d67b;
+}
+
+/* punctuation */
+.pun {
+    color: #72e0d1;
+}
+
+/* lisp open bracket */
+.opn {
+    color: #72e0d1;
+}
+
+/* lisp close bracket */
+.clo {
+    color: #72e0d1;
+}
+
+/* a markup tag name */
+.tag {
+    color: #007bff;
+}
+
+/* a markup attribute name */
+.atn {
+    color: #f5d67b;
+}
+
+/* a markup attribute value */
+.atv {
+    color: #3e999f;
+}
+
+/* a declaration */
+.dec {
+    color: #f5871f;
+}
+
+/* a variable name */
+.var {
+    color: #f5d67b;
+}
+
+/* a function name */
+.fun {
+    color: #4271ae;
+}

@@ -1,0 +1,324 @@
+body {
+    background-color: #000;
+    color: #fff;
+}
+
+a,
+a:active {
+    color: #009bff;
+}
+
+hr {
+    border: 1px solid #333;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #f7f7f7;
+}
+
+/* stylelint-disable */
+
+h1.page-title::after,
+article h1::after {
+    background: #333;
+}
+
+/* stylelint-enable */
+
+h4 {
+    color: #4d4e53;
+}
+
+.subsection-title {
+    border-bottom: 1px solid #333;
+}
+
+tt,
+code,
+kbd,
+samp {
+    background: #333;
+}
+
+section {
+    background-color: #000;
+}
+
+section h2::after {
+    background: #333;
+}
+
+::selection {
+    background: #ffce76;
+    color: #000;
+}
+
+.signature-attributes {
+    color: #aaa;
+}
+
+nav {
+    background: #101010;
+}
+
+nav > h2 > a {
+    color: #fff !important;
+}
+
+/* stylelint-disable */
+nav > h2 > a.filter img {
+    filter: grayscale(100%) brightness(10);
+    filter: grayscale(100%) brightness(10);
+}
+
+/* stylelint-enable */
+
+.search-box .search-item-container {
+    background: #222;
+}
+
+.search-item-ul li:hover {
+    background: #333;
+}
+
+.search-item-ul a,
+.search-item-ul a:hover {
+    color: #fff;
+}
+
+nav h2,
+nav h3,
+nav h3 a {
+    color: #fff !important;
+}
+
+/* stylelint-disable */
+.sidebar-list-div > ul > li > a {
+    color: #c9d1d3;
+}
+
+.sidebar-list-div ul ul a {
+    color: #c9d1d3;
+}
+/* stylelint-enable */
+
+footer {
+    background: #101010;
+    color: #f7f7f7;
+}
+
+.ancestors {
+    color: #999;
+}
+
+.ancestors a {
+    color: #999 !important;
+}
+
+.important {
+    color: #950b02;
+}
+
+.type-signature {
+    color: #00918e;
+}
+
+.name,
+.name a {
+    color: #f7f7f7;
+}
+
+.details {
+    background: #222;
+    border-left: 5px solid #555;
+    color: #fff;
+}
+
+.member-item-container strong,
+.method-member-container strong {
+    color: #fff;
+}
+
+.prettyprint,
+.pre-top-bar-container {
+    background: #101010;
+}
+
+.prettyprint code {
+    background-color: #101010;
+}
+
+.prettyprint.linenums li {
+    border-left: 3px #222831 solid;
+}
+
+/* stylelint-disable */
+.prettyprint.linenums li.selected,
+.prettyprint.linenums li.selected * {
+    background-color: #404040;
+}
+/* stylelint-enable */
+
+table .name,
+.params .name,
+.props .name,
+.name code {
+    color: #fff;
+}
+
+table td,
+.params td {
+    background: #1b1b1b;
+}
+
+table thead tr,
+.params thead tr,
+.props thead tr {
+    background-color: #101010;
+    color: #fff;
+}
+
+/* stylelint-disable */
+table .params thead tr,
+.params .params thead tr,
+.props .props thead tr {
+    background-color: #001628;
+    color: #fff;
+}
+
+/* dl.param-type {
+    border-bottom: 1px solid #555;
+} */
+
+.disabled {
+    color: #aaaaaa;
+}
+
+/* navicon */
+
+.navicon {
+    background: #fff;
+}
+
+.navicon::before,
+.navicon::after {
+    background: #fff;
+}
+
+.nav-trigger:checked + label.plus .navicon::before,
+.nav-trigger:checked + label.x .navicon::before {
+    background: #fff;
+}
+
+.nav-trigger:checked + label.plus .navicon::after,
+.nav-trigger:checked + label.x .navicon::after {
+    background: #fff;
+}
+
+.overlay {
+    background: hsla(0, 0%, 0%, 0.5);
+}
+
+@media only screen and (max-width: 42rem) {
+    /* Navbar icon button color*/
+
+    .navicon-button {
+        background: #222;
+    }
+}
+
+.code-copy-icon-container {
+    fill: #fff;
+}
+
+.code-copy-icon-container:hover {
+    background-color: #333;
+}
+
+.code-lang-name {
+    color: #ff8a00;
+}
+
+.tooltip {
+    background: #ffce76;
+    color: #000;
+}
+
+/* code */
+.pln {
+    color: #ffdd4a;
+}
+
+.str {
+    color: #56e39f;
+}
+
+/* a keyword */
+.kwd {
+    color: #08b2e3;
+}
+
+/* a comment */
+.com {
+    color: #999;
+}
+
+/* a type name */
+.typ {
+    color: #ef6f6c;
+}
+
+/* a literal value */
+.lit {
+    color: #f5d67b;
+}
+
+/* punctuation */
+.pun {
+    color: #5adbff;
+}
+
+/* lisp open bracket */
+.opn {
+    color: #72e0d1;
+}
+
+/* lisp close bracket */
+.clo {
+    color: #72e0d1;
+}
+
+/* a markup tag name */
+.tag {
+    color: #007bff;
+}
+
+/* a markup attribute name */
+.atn {
+    color: #f5d67b;
+}
+
+/* a markup attribute value */
+.atv {
+    color: #3e999f;
+}
+
+/* a declaration */
+.dec {
+    color: #f5871f;
+}
+
+/* a variable name */
+.var {
+    color: #f5d67b;
+}
+
+/* a function name */
+.fun {
+    color: #4271ae;
+}

@@ -9,7 +9,7 @@
 
 /* string content */
 .str {
-  color: #006400;
+  color: hsl(104, 100%, 24%);
   font-weight: normal;
   font-style: normal;
 }

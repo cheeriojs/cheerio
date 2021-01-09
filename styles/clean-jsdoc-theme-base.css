@@ -1,0 +1,71 @@
+@font-face {
+    font-family: 'heading';
+    src: url('../fonts/Muli-Black.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'body';
+    src: url('../fonts/Montserrat-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'code';
+    src: url('../fonts/MavenPro-Regular.ttf') format('truetype');
+}
+
+pre {
+    position: relative;
+}
+
+.pre-top-bar-container {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    left: 0;
+    padding: 0.3125rem 1.5rem;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.code-copy-icon-container {
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    height: 1.875rem;
+    justify-content: center;
+    transition: 0.3s;
+    width: 1.875rem;
+}
+
+.code-copy-icon-container > div {
+    margin-top: 0.25rem;
+    position: relative;
+}
+
+.sm-icon {
+    height: 1rem;
+    width: 1rem;
+}
+
+.code-lang-name {
+    font-family: 'code';
+    font-size: 12px;
+}
+
+.tooltip {
+    border-radius: 5px;
+    opacity: 0;
+    padding: 3px 8px;
+    position: absolute;
+    right: 30px;
+    top: -2px;
+    transform: scale(0);
+    transition: 0.3s;
+}
+
+.show-tooltip {
+    opacity: 1;
+    transform: scale(1);
+}
