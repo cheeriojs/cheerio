@@ -504,7 +504,7 @@ describe('$(...)', function () {
 
       $new.wrapAll(function (index) {
         expect(this).toBe($new[0]);
-        expect(index).toBe(undefined);
+        expect(index).toBeUndefined();
       });
     });
   });

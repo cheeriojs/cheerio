@@ -896,7 +896,7 @@ describe('$(...)', function () {
       var $src = $();
       var $first = $src.first();
       expect($first.length).toBe(0);
-      expect($first[0]).toBe(undefined);
+      expect($first[0]).toBeUndefined();
     });
   });
 
@@ -912,7 +912,7 @@ describe('$(...)', function () {
       var $src = $();
       var $last = $src.last();
       expect($last.length).toBe(0);
-      expect($last[0]).toBe(undefined);
+      expect($last[0]).toBeUndefined();
     });
   });
 
