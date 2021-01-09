@@ -1,3 +1,4 @@
+'use strict';
 var cheerio = require('../..');
 var fruits = require('../__fixtures__/fixtures').fruits;
 var divcontainers = require('../__fixtures__/fixtures').divcontainers;
@@ -323,6 +324,89 @@ describe('$(...)', function () {
     });
   });
 
+  describe('.unwrap', function () {
+    var $elem;
+    var unwrapspans = [
+      '<div id=unwrap style="display: none;">',
+      '<div id=unwrap1><span class=unwrap>a</span><span class=unwrap>b</span></div>',
+      '<div id=unwrap2><span class=unwrap>c</span><span class=unwrap>d</span></div>',
+      '<div id=unwrap3><b><span class="unwrap unwrap3">e</span></b><b><span class="unwrap unwrap3">f</span></b></div>',
+      '</div>',
+    ].join('');
+
+    beforeEach(function () {
+      $elem = cheerio.load(unwrapspans);
+    });
+
+    it('() : should be unwrap span elements', function () {
+      var abcd = $elem('#unwrap1 > span, #unwrap2 > span').get();
+      var abcdef = $elem('#unwrap span').get();
+
+      // make #unwrap1 and #unwrap2 go away
+      expect(
+        $elem('#unwrap1 span').add('#unwrap2 span:first-child').unwrap()
+      ).toHaveLength(3);
+
+      //.toEqual
+      // all four spans should still exist
+      expect($elem('#unwrap > span').get()).toEqual(abcd);
+
+      // make all b elements in #unwrap3 go away
+      expect($elem('#unwrap3 span').unwrap().get()).toEqual(
+        $elem('#unwrap3 > span').get()
+      );
+
+      // make #unwrap3 go away
+      expect($elem('#unwrap3 span').unwrap().get()).toEqual(
+        $elem('#unwrap > span.unwrap3').get()
+      );
+
+      // #unwrap only contains 6 child spans
+      expect($elem('#unwrap').children().get()).toEqual(abcdef);
+
+      // make the 6 spans become children of body
+      expect($elem('#unwrap > span').unwrap().get()).toEqual(
+        $elem('body > span.unwrap').get()
+      );
+
+      // can't unwrap children of body
+      expect($elem('body > span.unwrap').unwrap().get()).toEqual(
+        $elem('body > span.unwrap').get()
+      );
+
+      // can't unwrap children of body
+      expect($elem('body > span.unwrap').unwrap().get()).toEqual(abcdef);
+
+      // can't unwrap children of body
+      expect($elem('body > span.unwrap').get()).toEqual(abcdef);
+    });
+
+    it('(selector) : should only unwrap element parent what specified', function () {
+      var abcd = $elem('#unwrap1 > span, #unwrap2 > span').get();
+      // var abcdef = $elem('#unwrap span').get();
+
+      // Shouldn't unwrap, no match
+      $elem('#unwrap1 span').unwrap('#unwrap2');
+      expect($elem('#unwrap1')).toHaveLength(1);
+
+      // Shouldn't unwrap, no match
+      $elem('#unwrap1 span').unwrap('span');
+      expect($elem('#unwrap1')).toHaveLength(1);
+
+      // Unwraps
+      $elem('#unwrap1 span').unwrap('#unwrap1');
+      expect($elem('#unwrap1')).toHaveLength(0);
+
+      // Should not unwrap - unmatched unwrap
+      $elem('#unwrap2 span').unwrap('quote');
+      expect($elem('#unwrap > span')).toHaveLength(2);
+
+      // Check return values - matched unwrap
+      $elem('#unwrap2 span').unwrap('#unwrap2');
+      expect($elem('#unwrap > span').get()).toEqual(abcd);
+    });
+  });
+
   describe('.wrapAll', function () {
     var doc;
     var $inner;
@@ -369,6 +453,12 @@ describe('$(...)', function () {
       expect($container[0].children[0]).toBe($wrap[0]);
     });
 
+    it('(html) : should wrap single element with it', function () {
+      var parent = doc('<p>').wrapAll('<div></div>').parent();
+      expect(parent).toHaveLength(1);
+      expect(parent.is('div')).toBe(true);
+    });
+
     it('(selector) : should find element from dom, wrap elements with it', function () {
       $inner.wrapAll('#new');
       var $container = doc('.container');
@@ -386,6 +476,36 @@ describe('$(...)', function () {
       expect($inner[3].parent).toBe($wrap[0]);
       expect($new[0].parent).toBe($container[0]);
       expect($container[0].children[0]).toBe($new[0]);
+    });
+
+    it('(function) : check execution', function () {
+      var $container = doc('.container');
+      var p = $container[0].parent;
+
+      var result = $container.wrapAll(function () {
+        return "<div class='red'><div class='tmp'></div></div>";
+      });
+
+      expect(result.parent()).toHaveLength(1);
+      expect($container.eq(0).parent().parent().is('.red')).toBe(true);
+      expect($container.eq(1).parent().parent().is('.red')).toBe(true);
+      expect($container.eq(0).parent().parent().parent().is(p)).toBe(true);
+    });
+
+    it('(function) : check execution characteristics', function () {
+      var $new = doc('#new');
+      var i = 0;
+
+      doc('no-result').wrapAll(function () {
+        i++;
+        return '';
+      });
+      expect(i).toBeFalsy();
+
+      $new.wrapAll(function (index) {
+        expect(this).toBe($new[0]);
+        expect(index).toBeUndefined();
+      });
     });
   });
 
@@ -797,7 +917,7 @@ describe('$(...)', function () {
 
   describe('.after', function () {
     it('() : should do nothing', function () {
-      expect($('#fruits').after()[0].tagName).toBe('ul');
+      expect($fruits.after()[0].tagName).toBe('ul');
     });
 
     it('(html) : should add element as next sibling', function () {

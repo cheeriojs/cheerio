@@ -1,3 +1,4 @@
+'use strict';
 var cheerio = require('../..');
 var forms = require('../__fixtures__/fixtures').forms;
 

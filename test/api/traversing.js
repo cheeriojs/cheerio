@@ -1,3 +1,4 @@
+'use strict';
 var cheerio = require('../..');
 var food = require('../__fixtures__/fixtures').food;
 var fruits = require('../__fixtures__/fixtures').fruits;
@@ -13,16 +14,9 @@ describe('$(...)', function () {
 
   describe('.load', function () {
     it('should throw a TypeError if given invalid input', function () {
-      try {
-        (function () {
-          cheerio.load();
-        })();
-
-        throw new Error('Function did not throw');
-      } catch (err) {
-        expect(err).toBeInstanceOf(Error);
-        expect(err.message).toBe('cheerio.load() expects a string');
-      }
+      expect(function () {
+        cheerio.load();
+      }).toThrow('cheerio.load() expects a string');
     });
   });
 
@@ -81,16 +75,9 @@ describe('$(...)', function () {
     });
 
     it('should throw an Error if given an invalid selector', function () {
-      try {
-        (function () {
-          $('#fruits').find(':bah');
-        })();
-
-        throw new Error('Function did not throw');
-      } catch (err) {
-        expect(err).toBeInstanceOf(Error);
-        expect(err.message).toContain('unmatched pseudo-class');
-      }
+      expect(function () {
+        $('#fruits').find(':bah');
+      }).toThrow('unmatched pseudo-class');
     });
 
     describe('(cheerio object) :', function () {
@@ -464,16 +451,9 @@ describe('$(...)', function () {
     });
 
     it('(selector) : should throw an Error if given an invalid selector', function () {
-      try {
-        (function () {
-          $('.orange').siblings(':bah');
-        })();
-
-        throw new Error('Function did not throw');
-      } catch (err) {
-        expect(err).toBeInstanceOf(Error);
-        expect(err.message).toContain('unmatched pseudo-class');
-      }
+      expect(function () {
+        $('.orange').siblings(':bah');
+      }).toThrow('unmatched pseudo-class');
     });
 
     it('(selector) : does not consider the contents of siblings when filtering (GH-374)', function () {
@@ -599,6 +579,13 @@ describe('$(...)', function () {
       expect(result).toHaveLength(1);
       expect(result[0].attribs.id).toBe('fruits');
     });
+
+    it('(cheerio object) : should return all parents until body element', function () {
+      var body = $('body')[0];
+      var result = $('.carrot').parentsUntil(body);
+      expect(result).toHaveLength(2);
+      expect(result.eq(0).is('ul#vegetables')).toBe(true);
+    });
   });
 
   describe('.parent', function () {
@@ -610,6 +597,12 @@ describe('$(...)', function () {
       expect(result).toHaveLength(2);
       expect(result[0].attribs.id).toBe('fruits');
       expect(result[1].attribs.id).toBe('vegetables');
+    });
+
+    it('(undefined) : should not throw an exception', function () {
+      expect(function () {
+        $('li').parent(undefined);
+      }).not.toThrow();
     });
 
     it('() : should return an empty object for top-level elements', function () {
@@ -903,7 +896,7 @@ describe('$(...)', function () {
       var $src = $();
       var $first = $src.first();
       expect($first.length).toBe(0);
-      expect($first[0]).toBe(undefined);
+      expect($first[0]).toBeUndefined();
     });
   });
 
@@ -919,7 +912,7 @@ describe('$(...)', function () {
       var $src = $();
       var $last = $src.last();
       expect($last.length).toBe(0);
-      expect($last[0]).toBe(undefined);
+      expect($last[0]).toBeUndefined();
     });
   });
 
@@ -1389,6 +1382,21 @@ describe('$(...)', function () {
           expect($selection[2]).toBe($orange[0]);
           expect($selection[3]).toBe($pear[0]);
         });
+      });
+
+      it('modifying nested selections should not impact the parent [#834]', function () {
+        var apple_pear = $apple.add($pear);
+
+        // applies red to apple and pear
+        apple_pear.addClass('red');
+
+        expect($apple.hasClass('red')).toBe(true); // this is true
+        expect($pear.hasClass('red')).toBe(true); // this is true
+
+        // applies green to pear... AND should not affect apple
+        $pear.addClass('green');
+        expect($pear.hasClass('green')).toBe(true); //currently this is true
+        expect($apple.hasClass('green')).toBe(false); // and this should be false!
       });
     });
   });

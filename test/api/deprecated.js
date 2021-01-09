@@ -1,3 +1,4 @@
+'use strict';
 /**
  * This file includes tests for deprecated APIs. The methods are expected to be
  * removed in the next major release of Cheerio, but their stability should be

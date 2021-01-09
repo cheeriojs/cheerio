@@ -1,3 +1,4 @@
+'use strict';
 var cheerio = require('../..');
 
 describe('$(...)', function () {
@@ -49,12 +50,12 @@ describe('$(...)', function () {
 
     it('(prop): should return undefined for unmatched elements', function () {
       var $ = cheerio.load('<li style="color:;position:absolute;">');
-      expect($('ul').css('background-image')).toStrictEqual(undefined);
+      expect($('ul').css('background-image')).toBeUndefined();
     });
 
     it('(prop): should return undefined for unmatched styles', function () {
       var el = cheerio('<li style="color:;position:absolute;">');
-      expect(el.css('margin')).toStrictEqual(undefined);
+      expect(el.css('margin')).toBeUndefined();
     });
 
     describe('(prop, function):', function () {

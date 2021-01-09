@@ -1,3 +1,4 @@
+'use strict';
 var parse = require('../lib/parse');
 var defaultOpts = require('../lib/options').default;
 
@@ -208,6 +209,15 @@ describe('parse', function () {
       rootTest(root);
       expect(root.childNodes).toHaveLength(2);
       expect(root.childNodes[0].type).toBe('directive');
+    });
+
+    it('should simply return root', function () {
+      var oldroot = parse(basic, defaultOpts, true);
+      var root = parse(oldroot, defaultOpts, true);
+      expect(root).toBe(oldroot);
+      rootTest(root);
+      expect(root.childNodes).toHaveLength(1);
+      expect(root.childNodes[0].tagName).toBe('html');
     });
 
     it('should expose the DOM level 1 API', function () {

@@ -1,3 +1,4 @@
+'use strict';
 exports.fruits = [
   '<ul id="fruits">',
   '<li class="apple">Apple</li>',
@@ -23,7 +24,7 @@ exports.divcontainers = [
   '<div class="inner">Fourth</div>',
   '</div>',
   '<div id="new"><div>',
-  '<div><p><em><b></b></em></p></div>',
+  '<div>\n\n<p><em><b></b></em></p>\n\n</div>',
   '</div>',
 ].join('');
 

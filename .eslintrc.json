@@ -3,17 +3,24 @@
     "node": true
   },
   "plugins": ["jsdoc"],
-  "extends": ["eslint:recommended", "plugin:jsdoc/recommended", "prettier"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:jsdoc/recommended",
+    "plugin:jest/recommended",
+    "plugin:node/recommended",
+    "prettier"
+  ],
   "globals": { "Set": true, "Symbol": true },
   "rules": {
     "array-callback-return": [
-      "error",
+      2,
       {
         "allowImplicit": true
       }
     ],
+    "block-scoped-var": 2,
     "eqeqeq": [
-      "error",
+      2,
       "always",
       {
         "null": "ignore"
@@ -35,6 +42,7 @@
     "no-use-before-define": [2, "nofunc"],
     "no-void": 2,
     "yoda": 2,
+    "strict": 2,
 
     "jsdoc/require-jsdoc": 0,
     "jsdoc/check-param-names": 2,
@@ -47,7 +55,10 @@
     "jsdoc/require-param-name": 2,
     "jsdoc/require-param-type": 2,
     "jsdoc/require-param": 2,
-    "jsdoc/valid-types": 2
+    "jsdoc/valid-types": 2,
+
+    "node/no-unsupported-features/es-builtins": 0, // TODO
+    "node/shebang": 0
   },
   "settings": {
     "jsdoc": {

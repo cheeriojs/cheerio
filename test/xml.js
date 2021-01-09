@@ -1,3 +1,4 @@
+'use strict';
 var cheerio = require('..');
 
 function xml(str, options) {
@@ -38,7 +39,7 @@ describe('render', function () {
   });
 
   describe('(dom)', function () {
-    it('should keep camelCase for new nodes', function () {
+    it('should not keep camelCase for new nodes', function () {
       var str = '<g><someElem someAttribute="something">hello</someElem></g>';
       expect(dom(str, { xml: false })).toBe(
         '<someelem someattribute="something">hello</someelem>'
