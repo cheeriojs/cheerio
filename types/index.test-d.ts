@@ -81,8 +81,16 @@ $el.cheerio;
 $el.attr();
 $el.attr('id');
 $el.attr('id', 'favorite').html();
-$el.attr('id', function (i, attr) { return this.tagName + i * 2 + attr }).html();
-$el.attr('id', function () { return this.tagName }).html();
+$el
+  .attr('id', function (i, attr) {
+    return this.tagName + i * 2 + attr;
+  })
+  .html();
+$el
+  .attr('id', function () {
+    return this.tagName;
+  })
+  .html();
 $el.attr({ id: 'uniq', class: 'big' }).html();
 
 $multiEl.prop('foo') === undefined;
