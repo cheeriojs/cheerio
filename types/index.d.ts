@@ -2,7 +2,7 @@ import { Document, Element, DomHandlerOptions } from 'domhandler';
 import { ParserOptions } from 'htmlparser2';
 
 declare namespace cheerio {
-  type AttrFunction = (el: Element, i: number, currentValue: string) => any;
+  type AttrFunction = (this: Element, i: number, currentValue: string) => any;
 
   interface Cheerio {
     // Document References
