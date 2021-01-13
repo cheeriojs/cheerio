@@ -7,7 +7,6 @@ on:
   pull_request:
 
 env:
-  CI: true
   FORCE_COLOR: 2
   NODE_COV: 14 # The Node.js version to run coveralls on
 
@@ -40,8 +39,8 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-node-v${{ matrix.node }}-${{ hashFiles('package.json') }}-${{ hashFiles('package-lock.json') }}
           restore-keys: |
-            ${{ runner.OS }}-node-v${{ matrix.node }}-${{ hashFiles('package.json') }}-${{ hashFiles('package-lock.json') }}
-            ${{ runner.OS }}-node-v${{ matrix.node }}-
+            ${{ runner.os }}-node-v${{ matrix.node }}-${{ hashFiles('package.json') }}-${{ hashFiles('package-lock.json') }}
+            ${{ runner.os }}-node-v${{ matrix.node }}-
 
       - name: Install npm dependencies
         run: npm ci
