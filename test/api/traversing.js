@@ -29,6 +29,12 @@ describe('$(...)', function () {
       expect($('#fruits').find('.apple')[0].attribs['class']).toBe('apple');
     });
 
+    // #1679 - text tags not filtered
+    it('(single) : should filter out text nodes', function () {
+      var $root = $('<html>\n' + fruits.replace(/></g, '>\n<') + '\n</html>');
+      expect($root.find('.apple')[0].attribs['class']).toBe('apple');
+    });
+
     it('(many) : should find all matching descendant', function () {
       expect($('#fruits').find('li')).toHaveLength(3);
     });
