@@ -407,6 +407,10 @@ describe('cheerio', function () {
       expect(utils.isHtml('<html>')).toBe(true);
       expect(utils.isHtml('\n<html>\n')).toBe(true);
       expect(utils.isHtml('#main')).toBe(false);
+      expect(utils.isHtml('\n<p>foo<p>bar\n')).toBe(true);
+      expect(utils.isHtml('dog<p>fox<p>cat')).toBe(false);
+      expect(utils.isHtml('<p>fox<p>cat')).toBe(true);
+      expect(utils.isHtml('\n<p>fox<p>cat\n')).toBe(true);
     });
   });
 });
