@@ -274,5 +274,5 @@ declare namespace cheerio {
   }
 }
 
-declare const cheerioModule: cheerio.CheerioAPI;
-export = cheerioModule;
+declare const cheerio: cheerio.CheerioAPI;
+export = cheerio;
