@@ -8,7 +8,8 @@
  */
 var staticMethods = require('./lib/static');
 
-exports = module.exports = require('./lib/cheerio');
+var Cheerio = require('./lib/cheerio');
+exports = module.exports = Cheerio;
 
 /**
  * An identifier describing the version of Cheerio which has been executed.
@@ -17,7 +18,10 @@ exports = module.exports = require('./lib/cheerio');
  */
 exports.version = require('./package.json').version;
 
-exports.load = staticMethods.load;
+var load = staticMethods.loadWithCheerio.bind(null, Cheerio);
+Cheerio.prototype.load = load;
+
+exports.load = load;
 exports.html = staticMethods.html;
 exports.text = staticMethods.text;
 exports.xml = staticMethods.xml;
