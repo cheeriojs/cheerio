@@ -1,14 +1,16 @@
 'use strict';
 /**
  * @module cheerio
+ * @borrows load.load as load
  * @borrows static.load as load
  * @borrows static.html as html
  * @borrows static.text as text
  * @borrows static.xml as xml
  */
-var staticMethods = require('./lib/static');
-
 exports = module.exports = require('./lib/cheerio');
+
+var staticMethods = require('./lib/static');
+var loadMethod = require('./lib/load');
 
 /**
  * An identifier describing the version of Cheerio which has been executed.
@@ -17,7 +19,7 @@ exports = module.exports = require('./lib/cheerio');
  */
 exports.version = require('./package.json').version;
 
-exports.load = staticMethods.load;
+exports.load = loadMethod.load;
 exports.html = staticMethods.html;
 exports.text = staticMethods.text;
 exports.xml = staticMethods.xml;
