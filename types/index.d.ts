@@ -1,7 +1,7 @@
 import { Document, Element, DomHandlerOptions } from 'domhandler';
 import { ParserOptions } from 'htmlparser2';
 
-declare namespace cheerio {
+export namespace cheerio {
   type AttrFunction = (this: Element, i: number, currentValue: string) => any;
 
   interface Cheerio {
@@ -275,4 +275,4 @@ declare namespace cheerio {
 }
 
 declare const cheerioModule: cheerio.CheerioAPI;
-export = cheerioModule;
+export default cheerioModule;
