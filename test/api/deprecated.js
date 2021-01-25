@@ -49,6 +49,13 @@ describe('deprecated APIs', function () {
         expect(typeof cheerio.merge).toBe('function');
       });
 
+      // #1674 - merge, wont accept Cheerio object
+      it('should be a able merge array and cheerio object', function () {
+        var ret = cheerio.merge(new cheerio(), ['elem1', 'elem2']);
+        expect(typeof ret).toBe('object');
+        expect(ret).toHaveLength(2);
+      });
+
       it('(arraylike, arraylike) : should return an array', function () {
         var ret = cheerio.merge(arr1, arr2);
         expect(typeof ret).toBe('object');
