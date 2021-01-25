@@ -2,7 +2,6 @@
 /**
  * @module cheerio
  * @borrows load.load as load
- * @borrows static.load as load
  * @borrows static.html as html
  * @borrows static.text as text
  * @borrows static.xml as xml
