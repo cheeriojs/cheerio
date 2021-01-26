@@ -115,6 +115,7 @@ var Cheerio = (module.exports = function (selector, context, root, options) {
     return new Cheerio(selector, context, root, options);
   }
 
+  this.length = 0;
   this.options = Object.assign(
     {},
     defaultOptions,
@@ -181,7 +182,6 @@ Cheerio.prototype.cheerio = '[cheerio object]';
 /*
  * Make cheerio an array-like object
  */
-Cheerio.prototype.length = 0;
 Cheerio.prototype.splice = Array.prototype.splice;
 
 /**
