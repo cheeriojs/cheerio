@@ -46,6 +46,24 @@ exports.drinks = [
   '</ul>',
 ].join('');
 
+exports.eleven = [
+  '<html>\n<body>\n<ul>',
+  '<li>One</li>',
+  '<li>Two</li>',
+  '<li class="blue sel">Three</li>',
+  '<li class="red">Four</li>',
+  '</ul>\n\n<ul>',
+  '<li class="red">Five</li>',
+  '<li>Six</li>',
+  '<li class="blue">Seven</li>',
+  '</ul>\n\n<ul>',
+  '<li>Eight</li>',
+  '<li class="red sel">Nine</li>',
+  '<li>Ten</li>',
+  '<li class="sel">Eleven</li>',
+  '</ul>\n</body>\n</html>',
+].join('\n');
+
 exports.food = [
   '<ul id="food">',
   exports.fruits,

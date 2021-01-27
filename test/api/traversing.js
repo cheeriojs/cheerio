@@ -4,6 +4,7 @@ var food = require('../__fixtures__/fixtures').food;
 var fruits = require('../__fixtures__/fixtures').fruits;
 var drinks = require('../__fixtures__/fixtures').drinks;
 var text = require('../__fixtures__/fixtures').text;
+var eleven = require('../__fixtures__/fixtures').eleven;
 
 describe('$(...)', function () {
   var $;
@@ -474,6 +475,33 @@ describe('$(...)', function () {
 
     it('(selector) : does not consider the contents of siblings when filtering (GH-374)', function () {
       expect($('#fruits', food).siblings('li')).toHaveLength(0);
+    });
+
+    it('() : when two elements are siblings to each other they have to be included', function () {
+      var result = cheerio.load(eleven)('.sel').siblings();
+      expect(result).toHaveLength(7);
+      expect(result.eq(0).text()).toBe('One');
+      expect(result.eq(1).text()).toBe('Two');
+      expect(result.eq(2).text()).toBe('Four');
+      expect(result.eq(3).text()).toBe('Eight');
+      expect(result.eq(4).text()).toBe('Nine');
+      expect(result.eq(5).text()).toBe('Ten');
+      expect(result.eq(6).text()).toBe('Eleven');
+    });
+
+    it('(selector) : when two elements are siblings to each other they have to be included', function () {
+      var result = cheerio.load(eleven)('.sel').siblings('.red');
+      expect(result).toHaveLength(2);
+      expect(result.eq(0).text()).toBe('Four');
+      expect(result.eq(1).text()).toBe('Nine');
+    });
+
+    it('(cheerio) : test filtering with cheerio object', function () {
+      var doc = cheerio.load(eleven);
+      var result = doc('.sel').siblings(doc('.red'));
+      expect(result).toHaveLength(2);
+      expect(result.eq(0).text()).toBe('Four');
+      expect(result.eq(1).text()).toBe('Nine');
     });
   });
 
