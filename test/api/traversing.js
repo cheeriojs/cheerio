@@ -5,6 +5,7 @@ var fruits = require('../__fixtures__/fixtures').fruits;
 var drinks = require('../__fixtures__/fixtures').drinks;
 var text = require('../__fixtures__/fixtures').text;
 var forms = require('../__fixtures__/fixtures').forms;
+var eleven = require('../__fixtures__/fixtures').eleven;
 
 describe('$(...)', function () {
   var $;
@@ -190,14 +191,19 @@ describe('$(...)', function () {
       expect($('.apple, .orange', food).next()).toHaveLength(2);
     });
 
-    describe('(selector) :', function () {
-      it('should reject elements that violate the filter', function () {
-        expect($('.apple').next('.non-existent')).toHaveLength(0);
-      });
+    it('() : should return elements in order', function () {
+      var result = cheerio.load(eleven)('.red').next();
+      expect(result).toHaveLength(2);
+      expect(result.eq(0).text()).toBe('Six');
+      expect(result.eq(1).text()).toBe('Ten');
+    });
 
-      it('should accept elements that satisify the filter', function () {
-        expect($('.apple').next('.orange')).toHaveLength(1);
-      });
+    it('should reject elements that violate the filter', function () {
+      expect($('.apple').next('.non-existent')).toHaveLength(0);
+    });
+
+    it('should accept elements that satisify the filter', function () {
+      expect($('.apple').next('.orange')).toHaveLength(1);
     });
   });
 
@@ -336,14 +342,20 @@ describe('$(...)', function () {
       expect($('.orange, .pear', food).prev()).toHaveLength(2);
     });
 
-    describe('(selector) :', function () {
-      it('should reject elements that violate the filter', function () {
-        expect($('.orange').prev('.non-existent')).toHaveLength(0);
-      });
+    it('() : should return elements in reverse order', function () {
+      var result = cheerio.load(eleven)('.sel').prev();
+      expect(result).toHaveLength(3);
+      expect(result.eq(0).text()).toBe('Ten');
+      expect(result.eq(1).text()).toBe('Eight');
+      expect(result.eq(2).text()).toBe('Two');
+    });
 
-      it('should accept elements that satisify the filter', function () {
-        expect($('.orange').prev('.apple')).toHaveLength(1);
-      });
+    it('(selector) : should reject elements that violate the filter', function () {
+      expect($('.orange').prev('.non-existent')).toHaveLength(0);
+    });
+
+    it('(selector) : should accept elements that satisify the filter', function () {
+      expect($('.orange').prev('.apple')).toHaveLength(1);
     });
   });
 
@@ -489,6 +501,35 @@ describe('$(...)', function () {
 
     it('(selector) : does not consider the contents of siblings when filtering (GH-374)', function () {
       expect($('#fruits', food).siblings('li')).toHaveLength(0);
+    });
+
+    it('() : when two elements are siblings to each other they have to be included', function () {
+      var result = cheerio.load(eleven)('.sel').siblings();
+      expect(result).toHaveLength(7);
+      expect(result.eq(0).text()).toBe('One');
+      expect(result.eq(1).text()).toBe('Two');
+      expect(result.eq(2).text()).toBe('Four');
+      expect(result.eq(3).text()).toBe('Eight');
+      expect(result.eq(4).text()).toBe('Nine');
+      expect(result.eq(5).text()).toBe('Ten');
+      expect(result.eq(6).text()).toBe('Eleven');
+    });
+
+    it('(selector) : when two elements are siblings to each other they have to be included', function () {
+      var result = cheerio.load(eleven)('.sel').siblings('.red');
+      expect(result).toHaveLength(2);
+      expect(result.eq(0).text()).toBe('Four');
+      expect(result.eq(1).text()).toBe('Nine');
+    });
+
+    it('(cheerio) : test filtering with cheerio object', function () {
+      var doc = cheerio.load(eleven);
+      var result = doc('.sel').siblings(doc(':not([class])'));
+      expect(result).toHaveLength(4);
+      expect(result.eq(0).text()).toBe('One');
+      expect(result.eq(1).text()).toBe('Two');
+      expect(result.eq(2).text()).toBe('Eight');
+      expect(result.eq(3).text()).toBe('Ten');
     });
   });
 
