@@ -242,6 +242,30 @@ describe('$(...)', function () {
       expect($a.prop('outerHTML')).toBe(outerHtml);
     });
 
+    it('("nodeName") : should return proper value', function () {
+      // simple tests
+      expect(checkbox.prop('nodeName')).toBe('INPUT');
+      expect(selectMenu.prop('nodeName')).toBe('SELECT');
+      expect($('ul').prop('nodeName')).toBeUndefined();
+      // test with whitespace (issue 1206)
+      var html = '<html>' + food + '</html>';
+      var qq = cheerio(html.replace(/></g, '>\t<'));
+      expect(qq.prop('nodeName')).toBe('UL');
+      expect(qq.prop('tagName')).toBe('UL');
+    });
+
+    it('("textContent") : should return proper value', function () {
+      var select5 = selectMenu.eq(5);
+      expect(select5.find('[selected]').prop('textContent')).toBe('2');
+      expect(select5.find(':not([selected])').prop('textContent')).toBe('1');
+      expect(select5.prop('textContent')).toBe('1234');
+      expect($('ul').prop('textContent')).toBeUndefined();
+      // test with whitespace
+      var html = '<html>' + food + '</html>';
+      var qq = cheerio(html.replace(/></g, '>\t<'));
+      expect(qq.find('ul').prop('textContent')).toBe('\tApple\tOrange\tPear\t');
+    });
+
     it('("innerHTML") : should render properly', function () {
       var $a = $('<div><a></a></div>');
 
