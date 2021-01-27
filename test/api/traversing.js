@@ -577,10 +577,10 @@ describe('$(...)', function () {
 
       expect($parents).toHaveLength(5);
       expect($parents[0]).toBe($('#vegetables')[0]);
+      expect($parents[1]).toBe($('#fruits')[0]);
       expect($parents[2]).toBe($('#food')[0]);
       expect($parents[3]).toBe($('body')[0]);
       expect($parents[4]).toBe($('html')[0]);
-      expect($parents[1]).toBe($('#fruits')[0]);
     });
   });
 
