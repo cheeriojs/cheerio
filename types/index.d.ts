@@ -12,6 +12,7 @@ declare namespace cheerio {
     [index: number]: Element;
     cheerio: string;
     length: number;
+    [Symbol.iterator](): IterableIterator<Element>;
 
     // Attributes
 
