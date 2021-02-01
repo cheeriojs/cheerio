@@ -266,6 +266,15 @@ describe('cheerio', function () {
       expect(lis).toHaveLength(3);
     });
 
+    it('should preserve root content', function () {
+      var $ = cheerio.load(fruits);
+      // root should not be overwritten
+      var el = $('<div></div>');
+      expect(Object.is(el, el._root)).toBe(false);
+      // query has to have results
+      expect($('li', 'ul')).toHaveLength(3);
+    });
+
     it('should allow loading a pre-parsed DOM', function () {
       var dom = htmlparser2.parseDOM(food);
       var $ = cheerio.load(dom);
