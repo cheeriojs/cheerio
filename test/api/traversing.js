@@ -1180,6 +1180,13 @@ describe('$(...)', function () {
           expect($selection[0]).toBe($fruits[0]);
           expect($selection[1]).toBe($orange[0]);
         });
+        it('is root object preserved', function () {
+          var $selection = $('<div></div>').add('#fruits');
+
+          expect($selection).toHaveLength(2);
+          expect($selection.eq(0).is('div')).toBe(true);
+          expect($selection.eq(1).is($fruits.eq(0))).toBe(true);
+        });
       });
       describe('matched elements', function () {
         it('occur before the current selection', function () {
