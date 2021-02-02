@@ -703,9 +703,10 @@ describe('$(...)', function () {
       var args = [];
       var thisVals = [];
 
-      $fruits.each(function () {
+      $fruits.map(function () {
         args.push(Array.prototype.slice.call(arguments));
         thisVals.push(this);
+        return;
       });
 
       expect(args).toStrictEqual([
