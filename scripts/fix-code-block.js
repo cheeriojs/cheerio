@@ -41,9 +41,13 @@
         var location = window.location.href.split('#')[1];
 
         if (location && location.length > 0) {
-            var element = document.querySelector('#'.concat(location));
+            try {
+                var element = document.querySelector('#'.concat(decodeURI(location)));
 
-            element.scrollIntoView();
+                element.scrollIntoView();
+            } catch (error) {
+                console.log(error);
+            }
         }
     }, 300);
 })();

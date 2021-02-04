@@ -347,16 +347,8 @@ nav a:hover {
 /* stylelint-disable */
 .sidebar-list-div > ul > li > a {
     font-weight: 500;
-    margin: 0;
     padding: 4px 10px;
     word-break: break-all;
-}
-
-.sidebar-list-div ul ul {
-    margin-bottom: 10px;
-}
-
-.sidebar-list-div ul ul a {
 }
 
 .sidebar-list-div ul ul a,

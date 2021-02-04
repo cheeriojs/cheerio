@@ -1,4 +1,9 @@
 /* global document */
+var accordionLocalStorageKey = 'accordion-id';
+
+// eslint-disable-next-line no-undef
+var localStorage = window.localStorage;
+
 function copy(value) {
     const el = document.createElement('textarea');
 
@@ -69,4 +74,91 @@ function copyFunction(id) {
         allPre[i].innerHTML += '<div class="pre-top-bar-container">' + langNameDiv + copyToClipboard + '</div>';
         allPre[i].setAttribute('id', id);
     }
+})();
+
+
+/**
+ * Function to set accordion id to localStorage.
+ * @param {string} id Accordion id
+ */
+function setAccordionIdToLocalStorage(id) {
+    /**
+     * @type {object}
+     */
+    var ids = JSON.parse(localStorage.getItem(accordionLocalStorageKey));
+
+    ids[id] = id;
+    localStorage.setItem(accordionLocalStorageKey, JSON.stringify(ids));
+}
+
+/**
+ * Function to remove accordion id from localStorage.
+ * @param {string} id Accordion id
+ */
+function removeAccordionIdFromLocalStorage(id) {
+    /**
+     * @type {object}
+     */
+    var ids = JSON.parse(localStorage.getItem(accordionLocalStorageKey));
+
+    delete ids[id];
+    localStorage.setItem(accordionLocalStorageKey, JSON.stringify(ids));
+}
+
+/**
+ * Function to get all accordion ids from localStorage.
+ *
+ * @returns {object}
+ */
+function getAccordionIdsFromLocalStorage() {
+    /**
+     * @type {object}
+     */
+    var ids = JSON.parse(localStorage.getItem(accordionLocalStorageKey));
+
+    return ids || {};
+}
+
+
+function toggleAccordion(element) {
+    var currentNode = element;
+
+    console.log(element);
+    var isCollapsed = currentNode.classList.contains('collapsed');
+
+    var currentNodeUL = currentNode.querySelector('ul');
+
+    if (isCollapsed) {
+        var scrollHeight = currentNodeUL.scrollHeight;
+
+        currentNodeUL.style.height = scrollHeight + 20 + 'px';
+        currentNode.classList.remove('collapsed');
+        setAccordionIdToLocalStorage(currentNode.id);
+    } else {
+        currentNodeUL.style.height = '0px';
+        currentNode.classList.add('collapsed');
+        removeAccordionIdFromLocalStorage(currentNode.id);
+    }
+}
+
+(function() {
+    if (localStorage.getItem(accordionLocalStorageKey) === undefined ||
+    localStorage.getItem(accordionLocalStorageKey) === null
+    ) {
+        console.log('reset', localStorage.getItem(accordionLocalStorageKey));
+        localStorage.setItem(accordionLocalStorageKey, '{}');
+    }
+    var getAllAccordion = document.querySelectorAll('.accordion');
+    var ids = getAccordionIdsFromLocalStorage();
+
+    getAllAccordion.forEach(function(item) {
+        var clickElement = item.querySelector('.accordion-title');
+
+        console.log(clickElement);
+
+        clickElement.addEventListener('click', function() { toggleAccordion(item); } );
+        if (item.id in ids) {
+            toggleAccordion( item);
+        }
+    });
 })();
