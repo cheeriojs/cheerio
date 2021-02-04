@@ -220,7 +220,7 @@ describe('cheerio', function () {
   });
 
   it('should gracefully degrade on complex, unmatched queries', function () {
-    var $elem = cheerio('Eastern States Cup #8-fin&nbsp;<br>Downhill&nbsp;');
+    var $elem = cheerio('Eastern States Cup #8-fin&nbsp;<1br>Downhill&nbsp;');
     expect($elem).toHaveLength(0);
   });
 
@@ -407,6 +407,12 @@ describe('cheerio', function () {
       expect(utils.isHtml('<html>')).toBe(true);
       expect(utils.isHtml('\n<html>\n')).toBe(true);
       expect(utils.isHtml('#main')).toBe(false);
+      expect(utils.isHtml('\n<p>foo<p>bar\n')).toBe(true);
+      expect(utils.isHtml('dog<p>fox<p>cat')).toBe(true);
+      expect(utils.isHtml('<p>fox<p>cat')).toBe(true);
+      expect(utils.isHtml('\n<p>fox<p>cat\n')).toBe(true);
+      expect(utils.isHtml('#<p>fox<p>cat#')).toBe(true);
+      expect(utils.isHtml('<123>')).toBe(false);
     });
   });
 });
