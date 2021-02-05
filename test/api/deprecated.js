@@ -239,9 +239,9 @@ describe('deprecated APIs', function () {
     });
 
     /**
-     * The `.xml` static method defined on the "loaded" Cheerio factory function
-     * is deprecated. Users are encouraged to instead use the `xml` function
-     * exported by the Cheerio module.
+     * The `.xml` static method defined on the "loaded" Cheerio factory
+     * function is deprecated. Users are encouraged to instead use the `xml`
+     * function exported by the Cheerio module.
      *
      * @example
      *   cheerio.xml($.root());
