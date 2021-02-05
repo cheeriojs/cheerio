@@ -24,8 +24,8 @@ exports.text = staticMethods.text;
 exports.xml = staticMethods.xml;
 
 /**
- * In order to promote consistency with the jQuery library, users are
- * encouraged to instead use the static method of the same name.
+ * In order to promote consistency with the jQuery library, users are encouraged
+ * to instead use the static method of the same name.
  *
  * @deprecated
  * @example
@@ -39,8 +39,8 @@ exports.xml = staticMethods.xml;
 exports.contains = staticMethods.contains;
 
 /**
- * In order to promote consistency with the jQuery library, users are
- * encouraged to instead use the static method of the same name.
+ * In order to promote consistency with the jQuery library, users are encouraged
+ * to instead use the static method of the same name.
  *
  * @deprecated
  * @example
@@ -52,9 +52,9 @@ exports.contains = staticMethods.contains;
 exports.merge = staticMethods.merge;
 
 /**
- * In order to promote consistency with the jQuery library, users are
- * encouraged to instead use the static method of the same name as it is
- * defined on the "loaded" Cheerio factory function.
+ * In order to promote consistency with the jQuery library, users are encouraged
+ * to instead use the static method of the same name as it is defined on the
+ * "loaded" Cheerio factory function.
  *
  * @deprecated See {@link static/parseHTML}.
  * @example
