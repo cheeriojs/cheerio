@@ -35,6 +35,14 @@ $ = cheerio.load(html, {
 });
 
 $ = cheerio.load(html, {
+  scriptingEnabled: false,
+});
+
+$ = cheerio.load(html, {
+  sourceCodeLocationInfo: true,
+});
+
+$ = cheerio.load(html, {
   normalizeWhitespace: true,
   withStartIndices: true,
   withEndIndices: true,

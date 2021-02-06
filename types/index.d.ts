@@ -228,6 +228,9 @@ declare namespace cheerio {
 
     /** Enable location support for parse5 */
     sourceCodeLocationInfo?: boolean;
+
+    /** Disable scripting in parse5, so noscript tags would be parsed */
+    scriptingEnabled?: boolean;
   }
 
   interface Selector {
