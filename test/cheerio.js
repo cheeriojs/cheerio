@@ -413,7 +413,7 @@ describe('cheerio', function () {
   describe('parse5 options', function () {
     var noscript = fixtures.noscript;
 
-    // should parse nodata only with false option value
+    // should parse noscript tags only with false option value
     test('{scriptingEnabled: ???}', function () {
       var opt = 'scriptingEnabled';
       var options = {};
