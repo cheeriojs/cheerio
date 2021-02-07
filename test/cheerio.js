@@ -415,4 +415,68 @@ describe('cheerio', function () {
       expect(utils.isHtml('<123>')).toBe(false);
     });
   });
+
+  describe('parse5 options', function () {
+    var noscript = fixtures.noscript;
+
+    // should parse noscript tags only with false option value
+    test('{scriptingEnabled: ???}', function () {
+      var opt = 'scriptingEnabled';
+      var options = {};
+      var result;
+
+      // [default] scriptingEnabled: true - tag contains one text element
+      result = cheerio.load(noscript)('noscript');
+      expect(result).toHaveLength(1);
+      expect(result[0].children).toHaveLength(1);
+      expect(result[0].children[0].type).toBe('text');
+
+      // scriptingEnabled: false - content of noscript will parsed
+      options[opt] = false;
+      result = cheerio.load(fixtures.noscript, options)('noscript');
+      expect(result).toHaveLength(1);
+      expect(result[0].children).toHaveLength(2);
+      expect(result[0].children[0].type).toBe('comment');
+      expect(result[0].children[1].type).toBe('tag');
+      expect(result[0].children[1].name).toBe('a');
+
+      // scriptingEnabled: ??? - should acts as true
+      var values = [undefined, null, 0, ''];
+      for (var val of values) {
+        options[opt] = val;
+        result = cheerio.load(noscript, options)('noscript');
+        expect(result).toHaveLength(1);
+        expect(result[0].children).toHaveLength(1);
+        expect(result[0].children[0].type).toBe('text');
+      }
+    });
+
+    // should contain location data only with truthful option value
+    test('{sourceCodeLocationInfo: ???}', function () {
+      var prop = 'sourceCodeLocation';
+      var opt = 'sourceCodeLocationInfo';
+      var options = {};
+      var result;
+      var i;
+
+      // Location data should not be present
+      var values = [undefined, null, 0, false, ''];
+      for (i = 0; i < values.length; i++) {
+        options[opt] = values[i];
+        result = cheerio.load(noscript, options)('noscript');
+        expect(result).toHaveLength(1);
+        expect(result[0]).not.toHaveProperty(prop);
+      }
+
+      // Location data should be present
+      values = [true, 1, 'test'];
+      for (i = 0; i < values.length; i++) {
+        options[opt] = values[i];
+        result = cheerio.load(noscript, options)('noscript');
+        expect(result).toHaveLength(1);
+        expect(result[0]).toHaveProperty(prop);
+        expect(typeof result[0][prop]).toBe('object');
+      }
+    });
+  });
 });

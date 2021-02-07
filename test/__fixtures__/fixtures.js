@@ -84,3 +84,13 @@ exports.forms = [
   '<form id="textarea"><textarea name="fruits">Apple\nOrange</textarea></form>',
   '<form id="spaces"><input type="text" name="fruit" value="Blood orange" /></form>',
 ].join('');
+
+exports.noscript = [
+  '</body>',
+  '<noscript>',
+  '<!-- anchor linking to external file -->',
+  '<a href="https://github.com/cheeriojs/cheerio">External Link</a>',
+  '</noscript>',
+  '<p>Rocks!</p>',
+  '</body>',
+].join('');
