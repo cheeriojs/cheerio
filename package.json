@@ -31,7 +31,7 @@
     "node": ">= 0.12"
   },
   "dependencies": {
-    "cheerio-select": "^1.1.0",
+    "cheerio-select": "^1.2.0",
     "dom-serializer": "~1.2.0",
     "domhandler": "^4.0.0",
     "htmlparser2": "^6.0.0",

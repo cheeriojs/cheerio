@@ -576,9 +576,9 @@ describe('$(...)', function () {
     it('(selector, filter) : Multiple-filtered parentsUntil check', function () {
       var result = $('.orange').parentsUntil('html', 'ul,body');
       expect(result).toHaveLength(3);
-      expect(result.eq(0).prop('tagName')).toBe('BODY');
+      expect(result.eq(0).attr('id')).toBe('fruits');
       expect(result.eq(1).attr('id')).toBe('food');
-      expect(result.eq(2).attr('id')).toBe('fruits');
+      expect(result.eq(2).prop('tagName')).toBe('BODY');
     });
 
     it('() : should return empty object when called on an empty object', function () {
