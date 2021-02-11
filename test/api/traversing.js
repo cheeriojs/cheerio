@@ -4,6 +4,7 @@ var food = require('../__fixtures__/fixtures').food;
 var fruits = require('../__fixtures__/fixtures').fruits;
 var drinks = require('../__fixtures__/fixtures').drinks;
 var text = require('../__fixtures__/fixtures').text;
+var forms = require('../__fixtures__/fixtures').forms;
 var eleven = require('../__fixtures__/fixtures').eleven;
 
 describe('$(...)', function () {
@@ -277,6 +278,13 @@ describe('$(...)', function () {
       expect(elems[0].attribs['class']).toBe('orange');
     });
 
+    it('(selector) : should support selector matching multiple elements', function () {
+      var elems = $('#disabled', forms).nextUntil('option, #unnamed');
+      expect(elems).toHaveLength(2);
+      expect(elems[0].attribs['id']).toBe('submit');
+      expect(elems[1].attribs['id']).toBe('select');
+    });
+
     it('(selector not sibling) : should return all following siblings', function () {
       var elems = $('.apple').nextUntil('#vegetables');
       expect(elems).toHaveLength(2);
@@ -436,6 +444,13 @@ describe('$(...)', function () {
       var elems = $('.pear').prevUntil('.apple');
       expect(elems).toHaveLength(1);
       expect(elems[0].attribs['class']).toBe('orange');
+    });
+
+    it('(selector) : should support selector matching multiple elements', function () {
+      var elems = $('#unnamed', forms).prevUntil('option, #disabled');
+      expect(elems).toHaveLength(2);
+      expect(elems[0].attribs['id']).toBe('select');
+      expect(elems[1].attribs['id']).toBe('submit');
     });
 
     it('(selector not sibling) : should return all preceding siblings', function () {
@@ -614,6 +629,11 @@ describe('$(...)', function () {
       expect(result).toHaveLength(0);
     });
 
+    it('(selector) : Less simple parentsUntil check with selector', function () {
+      var result = $('#fruits').parentsUntil('html, body');
+      expect(result.eq(0).attr('id')).toBe('food');
+    });
+
     it('(selector not parent) : should return all parents', function () {
       var result = $('.orange').parentsUntil('.apple');
       expect(result).toHaveLength(4);
@@ -630,6 +650,14 @@ describe('$(...)', function () {
       );
       expect(result).toHaveLength(1);
       expect(result[0].attribs.id).toBe('vegetables');
+    });
+
+    it('(selector, filter) : Multiple-filtered parentsUntil check', function () {
+      var result = $('.orange').parentsUntil('html', 'ul,body');
+      expect(result).toHaveLength(3);
+      expect(result.eq(0).prop('tagName')).toBe('BODY');
+      expect(result.eq(1).attr('id')).toBe('food');
+      expect(result.eq(2).attr('id')).toBe('fruits');
     });
 
     it('() : should return empty object when called on an empty object', function () {
