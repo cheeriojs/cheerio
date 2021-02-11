@@ -4,6 +4,7 @@ var food = require('../__fixtures__/fixtures').food;
 var fruits = require('../__fixtures__/fixtures').fruits;
 var drinks = require('../__fixtures__/fixtures').drinks;
 var text = require('../__fixtures__/fixtures').text;
+var forms = require('../__fixtures__/fixtures').forms;
 
 describe('$(...)', function () {
   var $;
@@ -266,6 +267,13 @@ describe('$(...)', function () {
       expect(elems[0].attribs['class']).toBe('orange');
     });
 
+    it('(selector) : should support selector matching multiple elements', function () {
+      var elems = $('#disabled', forms).nextUntil('option, #unnamed');
+      expect(elems).toHaveLength(2);
+      expect(elems[0].attribs['id']).toBe('submit');
+      expect(elems[1].attribs['id']).toBe('select');
+    });
+
     it('(selector not sibling) : should return all following siblings', function () {
       var elems = $('.apple').nextUntil('#vegetables');
       expect(elems).toHaveLength(2);
@@ -402,6 +410,13 @@ describe('$(...)', function () {
       var elems = $('.pear').prevUntil('.apple');
       expect(elems).toHaveLength(1);
       expect(elems[0].attribs['class']).toBe('orange');
+    });
+
+    it('(selector) : should support selector matching multiple elements', function () {
+      var elems = $('#unnamed', forms).prevUntil('option, #disabled');
+      expect(elems).toHaveLength(2);
+      expect(elems[0].attribs['id']).toBe('select');
+      expect(elems[1].attribs['id']).toBe('submit');
     });
 
     it('(selector not sibling) : should return all preceding siblings', function () {
