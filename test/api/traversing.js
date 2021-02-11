@@ -550,6 +550,11 @@ describe('$(...)', function () {
       expect(result).toHaveLength(0);
     });
 
+    it('(selector) : Less simple parentsUntil check with selector', function () {
+      var result = $('#fruits').parentsUntil('html, body');
+      expect(result.eq(0).attr('id')).toBe('food');
+    });
+
     it('(selector not parent) : should return all parents', function () {
       var result = $('.orange').parentsUntil('.apple');
       expect(result).toHaveLength(4);
@@ -566,6 +571,14 @@ describe('$(...)', function () {
       );
       expect(result).toHaveLength(1);
       expect(result[0].attribs.id).toBe('vegetables');
+    });
+
+    it('(selector, filter) : Multiple-filtered parentsUntil check', function () {
+      var result = $('.orange').parentsUntil('html', 'ul,body');
+      expect(result).toHaveLength(3);
+      expect(result.eq(0).prop('tagName')).toBe('BODY');
+      expect(result.eq(1).attr('id')).toBe('food');
+      expect(result.eq(2).attr('id')).toBe('fruits');
     });
 
     it('() : should return empty object when called on an empty object', function () {
