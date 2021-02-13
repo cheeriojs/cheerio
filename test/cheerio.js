@@ -257,6 +257,15 @@ describe('cheerio', function () {
       expect($('.apple')).toBeInstanceOf($);
     });
 
+    // issue #1092
+    it('should handle a character `)` in `:contains` selector', function () {
+      var result = cheerio.load('<p>)aaa</p>')(":contains('\\)aaa')");
+      expect(result).toHaveLength(3);
+      expect(result.first().prop('tagName')).toBe('HTML');
+      expect(result.eq(1).prop('tagName')).toBe('BODY');
+      expect(result.last().prop('tagName')).toBe('P');
+    });
+
     it('should be able to filter down using the context', function () {
       var $ = cheerio.load(fruits);
       var apple = $('.apple', 'ul');
