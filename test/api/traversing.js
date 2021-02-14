@@ -1342,7 +1342,6 @@ describe('$(...)', function () {
       expect($selection.is('.banana')).toBe(true);
     });
 
-    //d escribe('(selection) :', function () {
     describe('(selection) element in selection :', function () {
       it('occurs before current selection', function () {
         var $selection = $orange.add($('.apple'));
