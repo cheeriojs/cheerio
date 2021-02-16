@@ -316,6 +316,14 @@ $el.text('text');
 // .wrap( content )
 $el.wrap($('<div class="red-fruit"></div>')).html();
 
+// .wrapAll( wrapper )
+$el.wrapAll($('<div class="red-fruit"></div>'));
+$el.wrapAll($('<div class="red-fruit"></div>').get());
+$el.wrapAll('<div class="red-fruit"></div>');
+$el.wrapAll(function () {
+  return '<div class="red-fruit"></div>';
+});
+
 // .css
 $el.css('width');
 $el.css(['width', 'height']);

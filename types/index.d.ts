@@ -3,6 +3,7 @@ import { ParserOptions } from 'htmlparser2';
 
 declare namespace cheerio {
   type AttrFunction = (this: Element, i: number, currentValue: string) => any;
+  type WrapFunction = (this: Element) => any;
 
   interface Cheerio {
     // Document References
@@ -194,6 +195,10 @@ declare namespace cheerio {
     wrap(content: Document): Cheerio;
     wrap(content: Cheerio): Cheerio;
 
+    wrapAll(
+      wrapper: Cheerio | string | Element | Element[] | WrapFunction
+    ): Cheerio;
+
     css(propertyName: string): string;
     css(propertyNames: string[]): string[];
     css(propertyName: string, value: string): Cheerio;
@@ -270,11 +275,11 @@ declare namespace cheerio {
   interface CheerioAPI extends Root {
     version: string;
     load(
-      html: string | { toString(): string },
+      html: string | Buffer | { toString(): string },
       options?: CheerioParserOptions | null,
       isDocument?: boolean
     ): Root;
-    load(element: Element, options?: CheerioParserOptions): Root;
+    load(element: Element | Element[], options?: CheerioParserOptions): Root;
   }
 }
 
