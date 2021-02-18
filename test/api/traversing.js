@@ -1155,7 +1155,7 @@ describe('$(...)', function () {
     });
   });
 
-  describe('.add', function () {
+  describe('.add()', function () {
     var $fruits;
     var $apple;
     var $orange;
@@ -1173,80 +1173,78 @@ describe('$(...)', function () {
       $sweetcorn = $('.sweetcorn');
     });
 
-    describe('(selector', function () {
-      describe(') :', function () {
-        describe('matched element', function () {
-          it('occurs before current selection', function () {
-            var $selection = $orange.add('.apple');
+    describe('(selector) matched element :', function () {
+      it('occurs before current selection', function () {
+        var $selection = $orange.add('.apple');
 
-            expect($selection).toHaveLength(2);
-            expect($selection[0]).toBe($apple[0]);
-            expect($selection[1]).toBe($orange[0]);
-          });
-          it('is identical to the current selection', function () {
-            var $selection = $orange.add('.orange');
-
-            expect($selection).toHaveLength(1);
-            expect($selection[0]).toBe($orange[0]);
-          });
-          it('occurs after current selection', function () {
-            var $selection = $orange.add('.pear');
-
-            expect($selection).toHaveLength(2);
-            expect($selection[0]).toBe($orange[0]);
-            expect($selection[1]).toBe($pear[0]);
-          });
-          it('contains the current selection', function () {
-            var $selection = $orange.add('#fruits');
-
-            expect($selection).toHaveLength(2);
-            expect($selection[0]).toBe($fruits[0]);
-            expect($selection[1]).toBe($orange[0]);
-          });
-          it('is a child of the current selection', function () {
-            var $selection = $fruits.add('.orange');
-
-            expect($selection).toHaveLength(2);
-            expect($selection[0]).toBe($fruits[0]);
-            expect($selection[1]).toBe($orange[0]);
-          });
-        });
-        describe('matched elements', function () {
-          it('occur before the current selection', function () {
-            var $selection = $pear.add('.apple, .orange');
-
-            expect($selection).toHaveLength(3);
-            expect($selection[0]).toBe($apple[0]);
-            expect($selection[1]).toBe($orange[0]);
-            expect($selection[2]).toBe($pear[0]);
-          });
-          it('include the current selection', function () {
-            var $selection = $pear.add('#fruits li');
-
-            expect($selection).toHaveLength(3);
-            expect($selection[0]).toBe($apple[0]);
-            expect($selection[1]).toBe($orange[0]);
-            expect($selection[2]).toBe($pear[0]);
-          });
-          it('occur after the current selection', function () {
-            var $selection = $apple.add('.orange, .pear');
-
-            expect($selection).toHaveLength(3);
-            expect($selection[0]).toBe($apple[0]);
-            expect($selection[1]).toBe($orange[0]);
-            expect($selection[2]).toBe($pear[0]);
-          });
-          it('occur within the current selection', function () {
-            var $selection = $fruits.add('#fruits li');
-
-            expect($selection).toHaveLength(4);
-            expect($selection[0]).toBe($fruits[0]);
-            expect($selection[1]).toBe($apple[0]);
-            expect($selection[2]).toBe($orange[0]);
-            expect($selection[3]).toBe($pear[0]);
-          });
-        });
+        expect($selection).toHaveLength(2);
+        expect($selection[0]).toBe($apple[0]);
+        expect($selection[1]).toBe($orange[0]);
       });
+      it('is identical to the current selection', function () {
+        var $selection = $orange.add('.orange');
+
+        expect($selection).toHaveLength(1);
+        expect($selection[0]).toBe($orange[0]);
+      });
+      it('occurs after current selection', function () {
+        var $selection = $orange.add('.pear');
+
+        expect($selection).toHaveLength(2);
+        expect($selection[0]).toBe($orange[0]);
+        expect($selection[1]).toBe($pear[0]);
+      });
+      it('contains the current selection', function () {
+        var $selection = $orange.add('#fruits');
+
+        expect($selection).toHaveLength(2);
+        expect($selection[0]).toBe($fruits[0]);
+        expect($selection[1]).toBe($orange[0]);
+      });
+      it('is a child of the current selection', function () {
+        var $selection = $fruits.add('.orange');
+
+        expect($selection).toHaveLength(2);
+        expect($selection[0]).toBe($fruits[0]);
+        expect($selection[1]).toBe($orange[0]);
+      });
+    });
+    describe('(selector) matched elements :', function () {
+      it('occur before the current selection', function () {
+        var $selection = $pear.add('.apple, .orange');
+
+        expect($selection).toHaveLength(3);
+        expect($selection[0]).toBe($apple[0]);
+        expect($selection[1]).toBe($orange[0]);
+        expect($selection[2]).toBe($pear[0]);
+      });
+      it('include the current selection', function () {
+        var $selection = $pear.add('#fruits li');
+
+        expect($selection).toHaveLength(3);
+        expect($selection[0]).toBe($apple[0]);
+        expect($selection[1]).toBe($orange[0]);
+        expect($selection[2]).toBe($pear[0]);
+      });
+      it('occur after the current selection', function () {
+        var $selection = $apple.add('.orange, .pear');
+
+        expect($selection).toHaveLength(3);
+        expect($selection[0]).toBe($apple[0]);
+        expect($selection[1]).toBe($orange[0]);
+        expect($selection[2]).toBe($pear[0]);
+      });
+      it('occur within the current selection', function () {
+        var $selection = $fruits.add('#fruits li');
+
+        expect($selection).toHaveLength(4);
+        expect($selection[0]).toBe($fruits[0]);
+        expect($selection[1]).toBe($apple[0]);
+        expect($selection[2]).toBe($orange[0]);
+        expect($selection[3]).toBe($pear[0]);
+      });
+    });
+    describe('(selector, context) :', function () {
       it(', context)', function () {
         var $selection = $fruits.add('li', '#vegetables');
         expect($selection).toHaveLength(3);
@@ -1256,36 +1254,34 @@ describe('$(...)', function () {
       });
     });
 
-    describe('(element) :', function () {
-      describe('honors document order when element occurs', function () {
-        it('before the current selection', function () {
-          var $selection = $orange.add($apple[0]);
+    describe('(element) honors document order when element occurs :', function () {
+      it('before the current selection', function () {
+        var $selection = $orange.add($apple[0]);
 
-          expect($selection).toHaveLength(2);
-          expect($selection[0]).toBe($apple[0]);
-          expect($selection[1]).toBe($orange[0]);
-        });
-        it('after the current selection', function () {
-          var $selection = $orange.add($pear[0]);
+        expect($selection).toHaveLength(2);
+        expect($selection[0]).toBe($apple[0]);
+        expect($selection[1]).toBe($orange[0]);
+      });
+      it('after the current selection', function () {
+        var $selection = $orange.add($pear[0]);
 
-          expect($selection).toHaveLength(2);
-          expect($selection[0]).toBe($orange[0]);
-          expect($selection[1]).toBe($pear[0]);
-        });
-        it('within the current selection', function () {
-          var $selection = $fruits.add($orange[0]);
+        expect($selection).toHaveLength(2);
+        expect($selection[0]).toBe($orange[0]);
+        expect($selection[1]).toBe($pear[0]);
+      });
+      it('within the current selection', function () {
+        var $selection = $fruits.add($orange[0]);
 
-          expect($selection).toHaveLength(2);
-          expect($selection[0]).toBe($fruits[0]);
-          expect($selection[1]).toBe($orange[0]);
-        });
-        it('as an ancestor of the current selection', function () {
-          var $selection = $orange.add($fruits[0]);
+        expect($selection).toHaveLength(2);
+        expect($selection[0]).toBe($fruits[0]);
+        expect($selection[1]).toBe($orange[0]);
+      });
+      it('as an ancestor of the current selection', function () {
+        var $selection = $orange.add($fruits[0]);
 
-          expect($selection).toHaveLength(2);
-          expect($selection[0]).toBe($fruits[0]);
-          expect($selection[1]).toBe($orange[0]);
-        });
+        expect($selection).toHaveLength(2);
+        expect($selection[0]).toBe($fruits[0]);
+        expect($selection[1]).toBe($orange[0]);
       });
       it('does not insert an element already contained within the current selection', function () {
         var $selection = $apple.add($apple[0]);
@@ -1346,79 +1342,79 @@ describe('$(...)', function () {
       expect($selection.is('.banana')).toBe(true);
     });
 
+    describe('(selection) element in selection :', function () {
+      it('occurs before current selection', function () {
+        var $selection = $orange.add($('.apple'));
+
+        expect($selection).toHaveLength(2);
+        expect($selection[0]).toBe($apple[0]);
+        expect($selection[1]).toBe($orange[0]);
+      });
+      it('is identical to the current selection', function () {
+        var $selection = $orange.add($('.orange'));
+
+        expect($selection).toHaveLength(1);
+        expect($selection[0]).toBe($orange[0]);
+      });
+      it('occurs after current selection', function () {
+        var $selection = $orange.add($('.pear'));
+
+        expect($selection).toHaveLength(2);
+        expect($selection[0]).toBe($orange[0]);
+        expect($selection[1]).toBe($pear[0]);
+      });
+      it('contains the current selection', function () {
+        var $selection = $orange.add($('#fruits'));
+
+        expect($selection).toHaveLength(2);
+        expect($selection[0]).toBe($fruits[0]);
+        expect($selection[1]).toBe($orange[0]);
+      });
+      it('is a child of the current selection', function () {
+        var $selection = $fruits.add($('.orange'));
+
+        expect($selection).toHaveLength(2);
+        expect($selection[0]).toBe($fruits[0]);
+        expect($selection[1]).toBe($orange[0]);
+      });
+    });
+    describe('(selection) elements in the selection :', function () {
+      it('occur before the current selection', function () {
+        var $selection = $pear.add($('.apple, .orange'));
+
+        expect($selection).toHaveLength(3);
+        expect($selection[0]).toBe($apple[0]);
+        expect($selection[1]).toBe($orange[0]);
+        expect($selection[2]).toBe($pear[0]);
+      });
+      it('include the current selection', function () {
+        var $selection = $pear.add($('#fruits li'));
+
+        expect($selection).toHaveLength(3);
+        expect($selection[0]).toBe($apple[0]);
+        expect($selection[1]).toBe($orange[0]);
+        expect($selection[2]).toBe($pear[0]);
+      });
+      it('occur after the current selection', function () {
+        var $selection = $apple.add($('.orange, .pear'));
+
+        expect($selection).toHaveLength(3);
+        expect($selection[0]).toBe($apple[0]);
+        expect($selection[1]).toBe($orange[0]);
+        expect($selection[2]).toBe($pear[0]);
+      });
+      it('occur within the current selection', function () {
+        var $selection = $fruits.add($('#fruits li'));
+
+        expect($selection).toHaveLength(4);
+        expect($selection[0]).toBe($fruits[0]);
+        expect($selection[1]).toBe($apple[0]);
+        expect($selection[2]).toBe($orange[0]);
+        expect($selection[3]).toBe($pear[0]);
+      });
+    });
+
     describe('(selection) :', function () {
-      describe('element in selection', function () {
-        it('occurs before current selection', function () {
-          var $selection = $orange.add($('.apple'));
-
-          expect($selection).toHaveLength(2);
-          expect($selection[0]).toBe($apple[0]);
-          expect($selection[1]).toBe($orange[0]);
-        });
-        it('is identical to the current selection', function () {
-          var $selection = $orange.add($('.orange'));
-
-          expect($selection).toHaveLength(1);
-          expect($selection[0]).toBe($orange[0]);
-        });
-        it('occurs after current selection', function () {
-          var $selection = $orange.add($('.pear'));
-
-          expect($selection).toHaveLength(2);
-          expect($selection[0]).toBe($orange[0]);
-          expect($selection[1]).toBe($pear[0]);
-        });
-        it('contains the current selection', function () {
-          var $selection = $orange.add($('#fruits'));
-
-          expect($selection).toHaveLength(2);
-          expect($selection[0]).toBe($fruits[0]);
-          expect($selection[1]).toBe($orange[0]);
-        });
-        it('is a child of the current selection', function () {
-          var $selection = $fruits.add($('.orange'));
-
-          expect($selection).toHaveLength(2);
-          expect($selection[0]).toBe($fruits[0]);
-          expect($selection[1]).toBe($orange[0]);
-        });
-      });
-      describe('elements in the selection', function () {
-        it('occur before the current selection', function () {
-          var $selection = $pear.add($('.apple, .orange'));
-
-          expect($selection).toHaveLength(3);
-          expect($selection[0]).toBe($apple[0]);
-          expect($selection[1]).toBe($orange[0]);
-          expect($selection[2]).toBe($pear[0]);
-        });
-        it('include the current selection', function () {
-          var $selection = $pear.add($('#fruits li'));
-
-          expect($selection).toHaveLength(3);
-          expect($selection[0]).toBe($apple[0]);
-          expect($selection[1]).toBe($orange[0]);
-          expect($selection[2]).toBe($pear[0]);
-        });
-        it('occur after the current selection', function () {
-          var $selection = $apple.add($('.orange, .pear'));
-
-          expect($selection).toHaveLength(3);
-          expect($selection[0]).toBe($apple[0]);
-          expect($selection[1]).toBe($orange[0]);
-          expect($selection[2]).toBe($pear[0]);
-        });
-        it('occur within the current selection', function () {
-          var $selection = $fruits.add($('#fruits li'));
-
-          expect($selection).toHaveLength(4);
-          expect($selection[0]).toBe($fruits[0]);
-          expect($selection[1]).toBe($apple[0]);
-          expect($selection[2]).toBe($orange[0]);
-          expect($selection[3]).toBe($pear[0]);
-        });
-      });
-
       it('modifying nested selections should not impact the parent [#834]', function () {
         var apple_pear = $apple.add($pear);
 
