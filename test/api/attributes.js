@@ -613,6 +613,14 @@ describe('$(...)', function () {
       expect($('.apple').hasClass('fruit')).toBe(true);
       expect($('.orange').hasClass('fruit')).toBe(true);
       expect($('.pear').hasClass('fruit')).toBe(true);
+
+      // mixed with text nodes
+      var $red = $('<html>\n<ul id=one>\n</ul>\t</html>').addClass('red');
+      expect($red).toHaveLength(3);
+      expect($red[0].type).toBe('text');
+      expect($red[1].type).toBe('tag');
+      expect($red[2].type).toBe('text');
+      expect($red.hasClass('red')).toBe(true);
     });
 
     it('(class class class) : should add multiple classes to the element', function () {
@@ -624,10 +632,10 @@ describe('$(...)', function () {
     });
 
     it('(fn) : should add classes returned from the function', function () {
-      var $fruits = $('#fruits').children();
+      var $fruits = $('#fruits').children().add($('#fruits'));
       var args = [];
       var thisVals = [];
-      var toAdd = ['apple red', '', undefined];
+      var toAdd = ['main', 'apple red', '', undefined];
 
       $fruits.addClass(function (idx) {
         args.push(Array.from(arguments));
@@ -636,15 +644,23 @@ describe('$(...)', function () {
       });
 
       expect(args).toStrictEqual([
-        [0, 'apple'],
-        [1, 'orange'],
-        [2, 'pear'],
+        [0, ''],
+        [1, 'apple'],
+        [2, 'orange'],
+        [3, 'pear'],
       ]);
-      expect(thisVals).toStrictEqual([$fruits[0], $fruits[1], $fruits[2]]);
-      expect($fruits.eq(0).hasClass('apple')).toBe(true);
-      expect($fruits.eq(0).hasClass('red')).toBe(true);
-      expect($fruits.eq(1).hasClass('orange')).toBe(true);
-      expect($fruits.eq(2).hasClass('pear')).toBe(true);
+      expect(thisVals).toStrictEqual([
+        $fruits[0],
+        $fruits[1],
+        $fruits[2],
+        $fruits[3],
+      ]);
+      expect($fruits.eq(0).hasClass('main')).toBe(true);
+      expect($fruits.eq(0).hasClass('apple')).toBe(false);
+      expect($fruits.eq(1).hasClass('apple')).toBe(true);
+      expect($fruits.eq(1).hasClass('red')).toBe(true);
+      expect($fruits.eq(2).hasClass('orange')).toBe(true);
+      expect($fruits.eq(3).hasClass('pear')).toBe(true);
     });
   });
 
@@ -680,6 +696,21 @@ describe('$(...)', function () {
       $('.pear').removeClass('fruit');
       expect($('.pear').hasClass('fruit')).toBe(false);
       expect($('.pear').hasClass('pear')).toBe(true);
+
+      // remove one class from set
+      var $li = $('li').removeClass('orange');
+      expect($li.eq(0).attr('class')).toBe('apple');
+      expect($li.eq(1).attr('class')).toBe('');
+      expect($li.eq(2).attr('class')).toBe('pear');
+
+      // mixed with text nodes
+      var $red = $('<html>\n<ul class=one>\n</ul>\t</html>').removeClass('one');
+      expect($red).toHaveLength(3);
+      expect($red[0].type).toBe('text');
+      expect($red[1].type).toBe('tag');
+      expect($red[2].type).toBe('text');
+      expect($red.eq(1).attr('class')).toBe('');
+      expect($red.eq(1).prop('tagName')).toBe('UL');
     });
 
     it('(single class) : should remove a single class from multiple classes on the element', function () {
@@ -757,6 +788,15 @@ describe('$(...)', function () {
       expect($('.fruit').hasClass('apple')).toBe(false);
       expect($('.fruit').hasClass('red')).toBe(true);
       expect($('.fruit').hasClass('fruit')).toBe(true);
+
+      // mixed with text nodes
+      var $red = $('<html>\n<ul class=one>\n</ul>\t</html>').toggleClass('red');
+      expect($red).toHaveLength(3);
+      expect($red.hasClass('red')).toBe(true);
+      expect($red.hasClass('one')).toBe(true);
+      $red.toggleClass('one');
+      expect($red.hasClass('red')).toBe(true);
+      expect($red.hasClass('one')).toBe(false);
     });
 
     it('(class class, true) : should add multiple classes to the element', function () {
