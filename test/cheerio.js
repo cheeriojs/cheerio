@@ -15,7 +15,7 @@ describe('cheerio', function () {
     expect(cheerio.version).toMatch(/\d+\.\d+\.\d+/);
   });
 
-  it('cheerio(null) should return be empty', function () {
+  it('cheerio(null) should be empty', function () {
     expect(cheerio(null)).toHaveLength(0);
   });
 
@@ -23,7 +23,7 @@ describe('cheerio', function () {
     expect(cheerio(undefined)).toHaveLength(0);
   });
 
-  it('cheerio(null) should be empty', function () {
+  it("cheerio('') should be empty", function () {
     expect(cheerio('')).toHaveLength(0);
   });
 
