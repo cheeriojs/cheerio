@@ -19,7 +19,7 @@ cheerio(html);
 cheerio('ul', html);
 cheerio('li', 'ul', html);
 
-const $fromElement = cheerio.load($('ul').get(0));
+const $fromElement = cheerio.load($('ul').toString());
 
 if ($fromElement('ul > li').length !== 3) {
   throw new Error(
@@ -248,7 +248,7 @@ $el.eq(0).text();
 $el.eq(-1).text();
 
 // .get( [i] )
-$el.get(0).tagName;
+$el.get(0)?.tagName;
 $el.get().length;
 
 // .index()
