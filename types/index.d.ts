@@ -125,8 +125,8 @@ declare namespace cheerio {
 
     eq(index: number): Cheerio;
 
-    get(): Node[];
-    get(index: number): Node | undefined;
+    get(): Element[];
+    get(index: number): Element | undefined;
 
     index(): number;
     index(selector: string): number;
@@ -221,7 +221,7 @@ declare namespace cheerio {
 
     // Not Documented
 
-    toArray(): Node[];
+    toArray(): Element[];
   }
 
   interface CheerioParserOptions extends ParserOptions, DomHandlerOptions {
