@@ -1,4 +1,5 @@
 import { expectType } from 'tsd';
+import { Element } from 'domhandler';
 import cheerio from '..';
 
 /*
@@ -19,7 +20,7 @@ cheerio(html);
 cheerio('ul', html);
 cheerio('li', 'ul', html);
 
-const $fromElement = cheerio.load($('ul').toString());
+const $fromElement = cheerio.load($('ul').get(0) as Element);
 
 if ($fromElement('ul > li').length !== 3) {
   throw new Error(
