@@ -125,8 +125,8 @@ declare namespace cheerio {
 
     eq(index: number): Cheerio;
 
-    get(): any[];
-    get(index: number): any;
+    get(): Element[];
+    get(index: number): Element | undefined;
 
     index(): number;
     index(selector: string): number;
