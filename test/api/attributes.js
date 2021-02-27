@@ -149,7 +149,7 @@ describe('$(...)', function () {
     it('(chaining) setting attr to undefined returns a $', function () {
       var $pear = $('.pear').attr('foo', undefined);
       expect($('.pear')).toHaveLength(1);
-      expect($('.pear').attr('foo')).toBe('undefined'); // TODO this is stringified undefined
+      expect($('.pear').attr('foo')).toBeUndefined();
       expect($pear).toBeInstanceOf($);
     });
   });
