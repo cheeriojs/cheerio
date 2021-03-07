@@ -1208,7 +1208,6 @@ describe('$(...)', function () {
         expect($selection[0]).toBe($fruits[0]);
         expect($selection[1]).toBe($orange[0]);
       });
-    });
     describe('(selector) matched elements :', function () {
       it('occur before the current selection', function () {
         var $selection = $pear.add('.apple, .orange');
