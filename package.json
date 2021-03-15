@@ -42,7 +42,7 @@
     "@types/node": "^14.14.32",
     "benchmark": "^2.1.4",
     "clean-jsdoc-theme": "^3.0.8",
-    "eslint": "^7.21.0",
+    "eslint": "^7.22.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-jest": "^24.2.1",
     "eslint-plugin-jsdoc": "^32.2.0",
