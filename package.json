@@ -54,7 +54,7 @@
     "jsdom": "^16.5.1",
     "lint-staged": "^10.5.4",
     "prettier": "^2.2.1",
-    "prettier-plugin-jsdoc": "^0.3.13",
+    "prettier-plugin-jsdoc": "^0.3.14",
     "tsd": "^0.14.0"
   },
   "scripts": {
