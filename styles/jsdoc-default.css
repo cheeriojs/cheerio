@@ -22,6 +22,14 @@ body {
     padding: 0;
 }
 
+article {
+    /**
+    * On mobile screen ham is not visible because of overflow
+    * in the article section. This fix that for now.
+    */
+    overflow: auto;
+}
+
 a,
 a:active {
     text-decoration: none;

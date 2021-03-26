@@ -272,6 +272,12 @@ table .params thead tr,
     color: #000;
 }
 
+.tooltip .pun,
+.tooltip .typ {
+    background: #ffce76;
+    color: #000;
+}
+
 .pln {
     color: #f5d67b;
 }

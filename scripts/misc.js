@@ -4,10 +4,15 @@ var accordionLocalStorageKey = 'accordion-id';
 // eslint-disable-next-line no-undef
 var localStorage = window.localStorage;
 
+/**
+ *
+ * @param {string} value
+ */
 function copy(value) {
     const el = document.createElement('textarea');
+    const editedValue = value.replace(/JAVASCRIPT\nCopied!$/, '');
 
-    el.value = value;
+    el.value = editedValue;
     document.body.appendChild(el);
     el.select();
     document.execCommand('copy');
