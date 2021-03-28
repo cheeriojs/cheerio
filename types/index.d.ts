@@ -262,6 +262,9 @@ declare namespace cheerio {
       context?: Document,
       keepScripts?: boolean
     ): Document[];
+    
+    text(): string;
+    text(text: string): Cheerio;
 
     html(options?: CheerioParserOptions): string;
     html(
