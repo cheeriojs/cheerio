@@ -428,35 +428,38 @@ describe('cheerio', function () {
   describe('parse5 options', function () {
     var noscript = fixtures.noscript;
 
-    // should parse noscript tags only with false option value
+    // should parse noscript tags by default
     test('{scriptingEnabled: ???}', function () {
       var opt = 'scriptingEnabled';
       var options = {};
       var result;
 
-      // [default] scriptingEnabled: true - tag contains one text element
-      result = cheerio.load(noscript)('noscript');
+      // scriptingEnabled: true - tag contains one text element
+      options[opt] = true;
+      result = cheerio.load(noscript, options)('noscript');
       expect(result).toHaveLength(1);
       expect(result[0].children).toHaveLength(1);
       expect(result[0].children[0].type).toBe('text');
 
-      // scriptingEnabled: false - content of noscript will parsed
-      options[opt] = false;
-      result = cheerio.load(fixtures.noscript, options)('noscript');
+      // [default] scriptingEnabled: false - content of noscript will parsed
+      // options[opt] = false;
+      result = cheerio.load(noscript)('noscript');
       expect(result).toHaveLength(1);
       expect(result[0].children).toHaveLength(2);
       expect(result[0].children[0].type).toBe('comment');
       expect(result[0].children[1].type).toBe('tag');
       expect(result[0].children[1].name).toBe('a');
 
-      // scriptingEnabled: ??? - should acts as true
-      var values = [undefined, null, 0, ''];
+      // scriptingEnabled: ??? - should act as false
+      var values = [false, undefined, null, 0, ''];
       for (var val of values) {
         options[opt] = val;
         result = cheerio.load(noscript, options)('noscript');
         expect(result).toHaveLength(1);
-        expect(result[0].children).toHaveLength(1);
-        expect(result[0].children[0].type).toBe('text');
+        expect(result[0].children).toHaveLength(2);
+        expect(result[0].children[0].type).toBe('comment');
+        expect(result[0].children[1].type).toBe('tag');
+        expect(result[0].children[1].name).toBe('a');
       }
     });
 
