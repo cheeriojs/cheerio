@@ -33,7 +33,7 @@
   "dependencies": {
     "cheerio-select": "^1.2.0",
     "dom-serializer": "~1.2.0",
-    "domhandler": "^4.0.0",
+    "domhandler": "^4.1.0",
     "htmlparser2": "^6.0.1",
     "parse5": "^6.0.1",
     "parse5-htmlparser2-tree-adapter": "^6.0.1"
