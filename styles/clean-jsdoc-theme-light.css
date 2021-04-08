@@ -1,6 +1,11 @@
+::selection {
+    background: #ffce76;
+    color: #1d1919;
+}
+
 body {
     background-color: #fff;
-    color: #4d4e53;
+    color: #2f343a;
 }
 
 a,
@@ -18,114 +23,90 @@ h3,
 h4,
 h5,
 h6 {
+    color: #2f343a;
+}
+
+h1,
+h2 {
+    border-bottom: 0.0625rem solid #eee;
+}
+
+.navbar {
+    background: #f8f8fa;
+}
+
+.navbar-ham {
+    background: #ddd;
+}
+
+.navbar-ham .first,
+.navbar-ham .second,
+.navbar-ham .third {
+    background: #000;
+}
+
+blockquote {
+    background: #f7f7f7;
+    color: #888;
+}
+
+
+.search-box-input-container {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.search-icon {
+    fill: #888;
+}
+
+.search-box-input {
     color: #000;
 }
 
-/* stylelint-disable */
-
-h1.page-title::after,
-article h1::after {
-    background: #fbe555;
+.search-box-input::placeholder {
+    color: #888;
 }
 
-/* stylelint-enable */
-
-h4 {
-    color: #4d4e53;
+.search-box-input:focus + .search-icon {
+    fill: #000;
 }
 
-.subsection-title {
-    border-bottom: 1px solid #eee;
-}
-
-tt,
-code,
-kbd,
-samp {
-    background: #f4f4f4;
-}
-
-section {
-    background-color: #fff;
-}
-
-section h2::after {
+.search-item-ul {
     background: #eee;
 }
 
-::selection {
-    background: #ffce76;
-    color: #1d1919;
+.search-item-ul li:hover {
+    background: rgba(0, 0, 0, 0.1);
 }
 
-::selection {
-    background: #ffce76;
-    color: #1d1919;
+.search-item-ul a,
+.search-item-ul li {
+    color: #000;
+}
+
+.accordion-heading {
+    color: #000;
+    fill: #000;
+}
+
+.accordion-content {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.accordion-content a {
+    color: #000;
+}
+
+.methods.accordion-content {
+    background: #e9e9e9;
+}
+
+.menu-link {
+    color: #000;
 }
 
 .signature-attributes {
     color: #aaa;
-}
-
-nav {
-    background: #001628;
-}
-
-nav > h2 > a {
-    color: #fff !important;
-}
-
-/* stylelint-disable */
-nav > h2 > a.filter img {
-    filter: grayscale(100%) brightness(10);
-    filter: grayscale(100%) brightness(10);
-}
-
-/* stylelint-enable */
-
-.search-box .search-item-container {
-    background: #fff;
-}
-
-.search-item-ul li {
-    color: #999;
-}
-
-.search-item-ul li:hover {
-    background: #f7f7f7;
-}
-
-.search-item-ul a:hover {
-    color: #530fff;
-}
-
-nav h2,
-nav h3,
-nav h3 a {
-    color: #fff !important;
-}
-
-nav a:hover {
-    color: #1089ff;
-}
-
-/* stylelint-disable */
-.sidebar-list-div > ul > li a {
-    color: #c9d1d3;
-}
-
-.sidebar-list-div ul ul a {
-    color: #c9d1d3;
-}
-/* stylelint-enable */
-
-.accordion-content {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-footer {
-    color: #222;
-    color: #555;
 }
 
 .ancestors {
@@ -150,23 +131,22 @@ footer {
 }
 
 .details {
-    background: #f7f7f7;
-    border-left: 5px solid #001628;
-    color: #001628;
+    background: #f9f9f9;
+    color: #101010;
 }
 
 .member-item-container strong,
 .method-member-container strong {
-    color: #001628;
+    color: #000;
 }
 
 .prettyprint,
 .pre-top-bar-container {
-    background: #001628;
+    background: #000;
 }
 
 .prettyprint code {
-    background-color: #001628;
+    background-color: #000;
 }
 
 .prettyprint.linenums li {
@@ -183,7 +163,7 @@ footer {
 table,
 .params,
 .props {
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 15px -4px rgba(0, 0, 0, 0.1);
 }
 
 table .name,
@@ -201,16 +181,16 @@ table td,
 table thead tr,
 .params thead tr,
 .props thead tr {
-    background-color: #001628;
-    color: #fff;
+    background-color: #fff;
+    color: #000;
 }
 
 /* stylelint-disable */
 table .params thead tr,
 .params .params thead tr,
 .props .props thead tr {
-    background-color: #001628;
-    color: #fff;
+    background-color: #fff;
+    color: #000;
 }
 
 /* dl.param-type {
@@ -221,38 +201,6 @@ table .params thead tr,
     color: #454545;
 }
 
-/* navicon */
-
-.navicon {
-    background: #000;
-}
-
-.navicon::before,
-.navicon::after {
-    background: #000;
-}
-
-.nav-trigger:checked + label.plus .navicon::before,
-.nav-trigger:checked + label.x .navicon::before {
-    background: #000;
-}
-
-.nav-trigger:checked + label.plus .navicon::after,
-.nav-trigger:checked + label.x .navicon::after {
-    background: #000;
-}
-
-.overlay {
-    background: hsla(0, 0%, 0%, 0.5);
-}
-
-@media only screen and (max-width: 42rem) {
-    /* Navbar icon button color*/
-
-    .navicon-button {
-        background: #f1f1f1;
-    }
-}
 
 .code-copy-icon-container {
     fill: #fff;
@@ -350,4 +298,14 @@ table .params thead tr,
 /* a function name */
 .fun {
     color: #4271ae;
+}
+
+ol.linenums li {
+    color: #fff;
+}
+
+
+code {
+    background: #eee;
+    color: #000;
 }

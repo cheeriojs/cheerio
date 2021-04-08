@@ -125,20 +125,28 @@ function getAccordionIdsFromLocalStorage() {
 }
 
 
-function toggleAccordion(element) {
+function toggleAccordion(element, isImmediate) {
     var currentNode = element;
-
-    console.log(element);
     var isCollapsed = currentNode.classList.contains('collapsed');
-
-    var currentNodeUL = currentNode.querySelector('ul');
+    var currentNodeUL = currentNode.querySelector('.accordion-content');
 
     if (isCollapsed) {
+        if (isImmediate) {
+            currentNode.classList.remove('collapsed');
+            currentNodeUL.style.height = 'auto';
+
+            return;
+        }
+
         var scrollHeight = currentNodeUL.scrollHeight;
 
-        currentNodeUL.style.height = scrollHeight + 20 + 'px';
+        currentNodeUL.style.height = scrollHeight + 'px';
         currentNode.classList.remove('collapsed');
         setAccordionIdToLocalStorage(currentNode.id);
+        setTimeout(function() {
+            if (!currentNode.classList.contains('collapsed'))
+            { currentNodeUL.style.height = 'auto'; }
+        }, 600);
     } else {
         currentNodeUL.style.height = '0px';
         currentNode.classList.add('collapsed');
@@ -153,17 +161,54 @@ function toggleAccordion(element) {
         console.log('reset', localStorage.getItem(accordionLocalStorageKey));
         localStorage.setItem(accordionLocalStorageKey, '{}');
     }
-    var getAllAccordion = document.querySelectorAll('.accordion');
+    var allAccordion = document.querySelectorAll('.accordion-heading');
     var ids = getAccordionIdsFromLocalStorage();
 
-    getAllAccordion.forEach(function(item) {
-        var clickElement = item.querySelector('.accordion-title');
 
-        console.log(clickElement);
+    allAccordion.forEach(function(item) {
+        var parent = item.parentNode;
 
-        clickElement.addEventListener('click', function() { toggleAccordion(item); } );
-        if (item.id in ids) {
-            toggleAccordion( item);
+        item.addEventListener('click', function() { toggleAccordion(parent); } );
+        if (parent.id in ids) {
+            toggleAccordion(parent, true);
         }
     });
+})();
+
+
+/**
+ *
+ * @param {HTMLElement} element
+ * @param {HTMLElement} navbar
+ */
+function toggleNavbar(element, navbar) {
+    console.log('cliced');
+    /**
+     * If class is present than it is expanded.
+     */
+    var isExpanded = element.classList.contains('expanded');
+
+    if (isExpanded) {
+        element.classList.remove('expanded');
+        navbar.classList.remove('expanded');
+    } else {
+        element.classList.add('expanded');
+        navbar.classList.add('expanded');
+    }
+}
+
+/**
+ * Navbar ham
+ */
+(function() {
+    var navbarHam = document.querySelector('#navbar-ham');
+    var navbar = document.querySelector('#navbar');
+
+    console.log('adding', navbarHam, navbar);
+
+    if (navbarHam && navbar) {
+        navbarHam.addEventListener('click', function() {
+            toggleNavbar(navbarHam, navbar);
+        });
+    }
 })();

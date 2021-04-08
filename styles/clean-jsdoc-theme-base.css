@@ -13,20 +13,215 @@
     src: url('../fonts/MavenPro-Regular.ttf') format('truetype');
 }
 
-.accordion {
-    overflow: hidden;
+/*
+* Padding horizontal normal
+*/
+
+.p-h-n {
+    padding: 0.4rem 1rem;
 }
 
-.accordion-title {
+.main-content {
+    /**
+    * This should match with the width of the nav / sidebar.
+    */
+    margin-left: 18.75rem;
+    overflow-x: auto;
+    padding: 1rem 2rem;
+}
+
+.navbar {
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    transition: 0.3s;
+    width: 18.75rem;
+    z-index: 10;
+
+}
+
+.navbar-ham {
+    bottom: 1rem;
+    cursor: pointer;
+    display: none;
+    height: 2.5rem;
+    padding-top: 0.2rem;
+    position: fixed;
+    right: 1rem;
+    width: 3rem;
+    z-index: 100;
+}
+
+.navbar-ham .first,
+.navbar-ham .second,
+.navbar-ham .third {
+    height: 0.125rem;
+    left: 0.5rem;
+    position: absolute;
+    transition: 0.3s;
+    width: 2rem;
+}
+
+.navbar-ham div {
+    height: 2.1rem;
+    overflow: hidden;
+    position: relative;
+    width: 3rem;
+}
+
+.navbar-ham .first {
+    top: 0.5rem;
+}
+
+.navbar-ham .second {
+    top: 1rem;
+}
+
+.navbar-ham .third {
+    top: 1.5rem;
+}
+
+.navbar-ham.expanded .first {
+    transform: rotate(45deg) translate(0.3125rem, 0.3125rem);
+}
+
+.navbar-ham.expanded .second {
+    transform: translateX(200%);
+}
+
+.navbar-ham.expanded .third {
+    transform: rotate(135deg) translate(-0.4rem, 0.3125rem);
+}
+
+
+
+.footer {
+    font-size: 0.8rem;
+    margin-left: 18.75rem;
+    margin-top: 1rem;
+    padding: 1rem 2rem;
+}
+
+.navbar h1,
+.navbar h2,
+.navbar h3,
+.navbar h4,
+.navbar h5,
+.navbar h6 {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-heading {
+    display: flex;
+    justify-content: flex-start;
+    padding: 2rem 1rem;
+}
+
+.navbar-heading a:hover {
+    text-decoration: none;
+}
+
+.navbar-heading-text {
+    font-size: 1.8rem;
+}
+
+.search-box {
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+    position: relative;
+}
+
+.search-box-input-container {
+    align-items: center;
+    display: flex;
+    padding: 0.5rem 1rem;
+}
+
+.search-icon {
+    height: 1rem;
+    width: 1rem;
+
+}
+
+.search-box-input {
+    background-color: transparent;
+    border: 0;
+    display: inline-block;
+    font-family: 'body';
+    font-size: 1rem;
+    margin-right: 0.5rem;
+    outline: 0;
+    width: 100%;
+}
+
+.search-item-container {
+    left: 0;
+    position: absolute;
+    right: 0;
+    /**
+    * height of search container.
+    */
+    top: 2.3125rem;
+    z-index: 10;
+}
+
+.search-item-ul {
+    list-style: none;
+    margin: 0 1rem;
+    max-height: 18.75rem;
+    overflow: auto;
+}
+
+.search-item-ul li {
+    display: flex;
+}
+
+.search-item-ul a {
+    flex: 1;
+    font-size: 0.8rem;
+    padding: 0.4rem 1rem;
+}
+
+.sidebar-main-content {
+    margin: 1rem;
+    overflow: auto;
+}
+
+.accordion {
+    margin: 1rem 0;
+}
+
+
+.accordion-heading {
     cursor: pointer;
     display: flex;
     justify-content: space-between;
-    padding: 4px 10px;
+    padding-right: 1rem;
 }
 
-.accordion-title svg {
-    fill: #fff;
-    margin-right: 0.5rem;
+.accordion-heading svg {
+    height: 1rem;
+    width: 1rem;
+}
+
+.accordion-content {
+    list-style: none;
+    margin: 1rem 0;
+    overflow: hidden;
+    padding: 0;
+    transition: 0.3s;
+}
+
+.accordion.collapsed .accordion-content {
+    height: 0;
+    margin: 0;
+}
+
+.accordion svg {
     transition: 0.3s;
 }
 
@@ -34,21 +229,34 @@
     transform: rotate(180deg);
 }
 
-.accordion.collapsed .accordion-content {
-    padding: 0 !important;
+.accordion-list {
+    margin: 0.5rem 1rem;
 }
 
-.accordion .accordion-content {
-    height: 0;
-    margin-right: 1rem !important;
-    overflow: hidden;
-    padding: 0.625rem 0;
-    transition: 0.3s;
+.accordion-heading.child {
+    padding: 0.5rem 1rem;
+
 }
 
-.accordion .methods a {
-    padding: 0.25rem 1.25rem !important;
+.accordion [data-type=method] {
+    margin: 0.5rem 1rem;
 }
+
+
+.accordion.child {
+    margin: 0;
+    padding: 0;
+}
+
+.methods.accordion-content {
+    margin: 0;
+}
+
+
+.menu-li {
+    margin: 1rem 0;
+}
+
 
 pre {
     position: relative;
@@ -105,4 +313,42 @@ pre {
 .show-tooltip {
     opacity: 1;
     transform: scale(1);
+}
+
+blockquote {
+    font-size: 0.875rem;
+    padding: 0.0625rem 1.25rem;
+}
+
+.allow-overflow {
+    overflow: auto;
+}
+
+
+
+@media screen and (max-width: 50rem) {
+
+    .navbar-ham {
+        display: block;
+    }
+
+    .navbar {
+        width: 0;
+    }
+
+    .navbar.expanded {
+        right: 0;
+        width: 100%;
+    }
+
+    .main-content,
+    .footer {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    .method-member-container {
+        overflow: auto;
+    }
+    
 }
