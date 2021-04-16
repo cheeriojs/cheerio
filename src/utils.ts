@@ -1,6 +1,6 @@
-'use strict';
-const htmlparser2 = require('htmlparser2');
-const domhandler = require('domhandler');
+import { DomUtils } from 'htmlparser2';
+import { Node, cloneNode, Document } from 'domhandler';
+import type { Cheerio } from './cheerio';
 
 /**
  * Check if the DOM element is a tag.
@@ -8,33 +8,47 @@ const domhandler = require('domhandler');
  * `isTag(type)` includes `<script>` and `<style>` tags.
  *
  * @private
- * @param {Node} type - DOM node to check.
- * @returns {boolean}
+ * @category Utils
+ * @param type - DOM node to check.
+ * @returns Whether the node is a tag.
  */
-exports.isTag = htmlparser2.DomUtils.isTag;
+export const { isTag } = DomUtils;
+
+/**
+ * Checks if an object is a Cheerio instance.
+ *
+ * @category Utils
+ * @param maybeCheerio - The object to check.
+ * @returns Whether the object is a Cheerio instance.
+ */
+export function isCheerio<T>(maybeCheerio: any): maybeCheerio is Cheerio<T> {
+  return maybeCheerio.cheerio != null;
+}
 
 /**
  * Convert a string to camel case notation.
  *
  * @private
- * @param {string} str - String to be converted.
- * @returns {string} String in camel case notation.
+ * @category Utils
+ * @param str - String to be converted.
+ * @returns String in camel case notation.
  */
-exports.camelCase = function (str) {
+export function camelCase(str: string): string {
   return str.replace(/[_.-](\w|$)/g, (_, x) => x.toUpperCase());
-};
+}
 
 /**
  * Convert a string from camel case to "CSS case", where word boundaries are
  * described by hyphens ("-") and all characters are lower-case.
  *
  * @private
- * @param {string} str - String to be converted.
- * @returns {string} String in "CSS case".
+ * @category Utils
+ * @param str - String to be converted.
+ * @returns String in "CSS case".
  */
-exports.cssCase = function (str) {
+export function cssCase(str: string): string {
   return str.replace(/[A-Z]/g, '-$&').toLowerCase();
-};
+}
 
 /**
  * Iterate over each DOM element without creating intermediary Cheerio instances.
@@ -42,39 +56,43 @@ exports.cssCase = function (str) {
  * This is indented for use internally to avoid otherwise unnecessary memory
  * pressure introduced by _make.
  *
- * @param {Cheerio} cheerio - Cheerio object.
- * @param {Function} fn - Function to call.
- * @returns {Cheerio} The original instance.
+ * @category Utils
+ * @param array - Array to iterate over.
+ * @param fn - Function to call.
+ * @returns The original instance.
  */
-exports.domEach = function (cheerio, fn) {
-  let i = 0;
-  const len = cheerio.length;
-  while (i < len && fn.call(cheerio, i, cheerio[i]) !== false) ++i;
-  return cheerio;
-};
+export function domEach<T extends Node, Arr extends ArrayLike<T> = Cheerio<T>>(
+  array: Arr,
+  fn: (index: number, elem: T) => void | false
+): Arr {
+  const len = array.length;
+  for (let i = 0; i < len && fn(i, array[i]) !== false; i++);
+  return array;
+}
 
 /**
  * Create a deep copy of the given DOM structure. Sets the parents of the copies
  * of the passed nodes to `null`.
  *
  * @private
- * @param {Node | Node[]} dom - The htmlparser2-compliant DOM structure.
- * @returns {Node[]} - The cloned DOM.
+ * @category Utils
+ * @param dom - The htmlparser2-compliant DOM structure.
+ * @returns - The cloned DOM.
  */
-exports.cloneDom = function (dom) {
+export function cloneDom<T extends Node>(dom: T | T[]): T[] {
   const clone =
     'length' in dom
-      ? Array.prototype.map.call(dom, (el) => domhandler.cloneNode(el, true))
-      : [domhandler.cloneNode(dom, true)];
+      ? (Array.prototype.map.call(dom, (el) => cloneNode(el, true)) as T[])
+      : [cloneNode(dom, true)];
 
   // Add a root node around the cloned nodes
-  const root = new domhandler.Document(clone);
+  const root = new Document(clone);
   clone.forEach((node) => {
     node.parent = root;
   });
 
   return clone;
-};
+}
 
 /**
  * A simple way to check for HTML strings. Tests for a `<` within a string,
@@ -88,10 +106,11 @@ const quickExpr = /<[a-zA-Z][^]*>/;
  * Check if string is HTML.
  *
  * @private
- * @param {string} str - String to check.
- * @returns {boolean} Indicates if `str` is HTML.
+ * @category Utils
+ * @param str - String to check.
+ * @returns Indicates if `str` is HTML.
  */
-exports.isHtml = function (str) {
+export function isHtml(str: string): boolean {
   // Run the regex
   return quickExpr.test(str);
-};
+}

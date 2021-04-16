@@ -3,14 +3,10 @@
   "extends": [
     "eslint:recommended",
     "plugin:jsdoc/recommended",
-    "plugin:jest/recommended",
     "plugin:node/recommended",
     "prettier"
   ],
-  "env": {
-    "node": true,
-    "es6": true
-  },
+  "env": { "node": true },
   "rules": {
     "array-callback-return": [
       2,
@@ -18,7 +14,6 @@
         "allowImplicit": true
       }
     ],
-    "block-scoped-var": 2,
     "no-lonely-if": 2,
     "no-proto": 2,
     "eqeqeq": [2, "smart"],
@@ -48,7 +43,6 @@
     "no-useless-call": 2,
     "no-use-before-define": [2, "nofunc"],
     "no-void": 2,
-    "strict": 2,
 
     "jsdoc/require-jsdoc": 0,
     "jsdoc/check-param-names": 0,
@@ -62,17 +56,18 @@
     "jsdoc/require-param-type": 0,
     "jsdoc/require-returns-type": 0,
     "jsdoc/require-param": 0,
+    "jsdoc/no-types": 2,
     "jsdoc/valid-types": 2,
 
     "node/no-unsupported-features/es-syntax": 0,
-    "node/no-missing-import": [
-      2,
-      { "tryExtensions": [".js", ".json", ".node", ".ts"] }
-    ]
+    "node/no-missing-import": [2, { "tryExtensions": [".js", ".json", ".ts"] }]
   },
   "settings": {
     "jsdoc": {
-      "mode": "typescript"
+      "mode": "typescript",
+      "tagNamePreference": {
+        "category": "category"
+      }
     }
   },
   "overrides": [
@@ -103,9 +98,15 @@
         "@typescript-eslint/switch-exhaustiveness-check": 2,
         "@typescript-eslint/prefer-nullish-coalescing": 2,
 
-        "@typescript-eslint/no-explicit-any": 1, // TODO
-        "@typescript-eslint/ban-ts-comment": 0, // TODO
-        "@typescript-eslint/no-non-null-assertion": 0 // TODO
+        "@typescript-eslint/no-explicit-any": 1 // TODO
+      }
+    },
+    {
+      "files": "*.spec.ts",
+      "extends": "plugin:jest/recommended",
+      "rules": {
+        "@typescript-eslint/no-explicit-any": 0,
+        "@typescript-eslint/ban-ts-comment": 0
       }
     }
   ]

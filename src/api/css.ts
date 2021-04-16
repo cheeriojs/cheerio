@@ -1,47 +1,106 @@
-'use strict';
-/** @module cheerio/css */
-
-const { domEach } = require('../utils');
-
-const { toString } = Object.prototype;
+import { domEach, isTag } from '../utils';
+import type { Element, Node } from 'domhandler';
+import type { Cheerio } from '../cheerio';
 
 /**
- * Get the value of a style property for the first element in the set of matched
- * elements or set one or more CSS properties for every matched element.
+ * Get the value of a style property for the first element in the set of matched elements.
  *
- * @param {string | object} prop - The name of the property.
- * @param {string} [val] - If specified the new value.
- * @returns {Cheerio} The instance itself.
+ * @category CSS
+ * @param names - Optionally the names of the property of interest.
+ * @returns A map of all of the style properties.
  * @see {@link https://api.jquery.com/css/}
  */
-exports.css = function (prop, val) {
+export function css<T extends Node>(
+  this: Cheerio<T>,
+  names?: string[]
+): Record<string, string>;
+/**
+ * Get the value of a style property for the first element in the set of matched elements.
+ *
+ * @category CSS
+ * @param names - The name of the property.
+ * @returns The property value for the given name.
+ * @see {@link https://api.jquery.com/css/}
+ */
+export function css<T extends Node>(
+  this: Cheerio<T>,
+  name: string
+): string | undefined;
+/**
+ * Set one CSS property for every matched element.
+ *
+ * @category CSS
+ * @param prop - The name of the property.
+ * @param val - The new value.
+ * @returns The instance itself.
+ * @see {@link https://api.jquery.com/css/}
+ */
+export function css<T extends Node>(
+  this: Cheerio<T>,
+  prop: string,
+  val:
+    | string
+    | ((this: Element, i: number, style: string) => string | undefined)
+): Cheerio<T>;
+/**
+ * Set multiple CSS properties for every matched element.
+ *
+ * @category CSS
+ * @param prop - The name of the property.
+ * @param val - The new value.
+ * @returns The instance itself.
+ * @see {@link https://api.jquery.com/css/}
+ */
+export function css<T extends Node>(
+  this: Cheerio<T>,
+  prop: Record<string, string>
+): Cheerio<T>;
+export function css<T extends Node>(
+  this: Cheerio<T>,
+  prop?: string | string[] | Record<string, string>,
+  val?:
+    | string
+    | ((this: Element, i: number, style: string) => string | undefined)
+): Cheerio<T> | Record<string, string> | string | undefined {
   if (
-    arguments.length === 2 ||
+    (prop != null && val != null) ||
     // When `prop` is a "plain" object
-    toString.call(prop) === '[object Object]'
+    (typeof prop === 'object' && !Array.isArray(prop))
   ) {
     return domEach(this, (idx, el) => {
-      setCss(el, prop, val, idx);
+      if (isTag(el)) {
+        // `prop` can't be an array here anymore.
+        setCss(el, prop as string, val, idx);
+      }
     });
   }
-  return getCss(this[0], prop);
-};
+
+  return getCss(this[0], prop as string);
+}
 
 /**
  * Set styles of all elements.
  *
  * @private
- * @param {Element} el - Element to set style of.
- * @param {string | object} prop - Name of property.
- * @param {string | Function} val - Value to set property to.
- * @param {number} [idx] - Optional index within the selection.
+ * @param el - Element to set style of.
+ * @param prop - Name of property.
+ * @param value - Value to set property to.
+ * @param idx - Optional index within the selection.
  */
-function setCss(el, prop, val, idx) {
+function setCss(
+  el: Element,
+  prop: string | Record<string, string>,
+  value:
+    | string
+    | ((this: Element, i: number, style: string) => string | undefined)
+    | undefined,
+  idx: number
+) {
   if (typeof prop === 'string') {
     const styles = getCss(el);
-    if (typeof val === 'function') {
-      val = val.call(el, idx, styles[prop]);
-    }
+
+    const val =
+      typeof value === 'function' ? value.call(el, idx, styles[prop]) : value;
 
     if (val === '') {
       delete styles[prop];
@@ -51,29 +110,44 @@ function setCss(el, prop, val, idx) {
 
     el.attribs.style = stringify(styles);
   } else if (typeof prop === 'object') {
-    Object.keys(prop).forEach((k) => {
-      setCss(el, k, prop[k]);
+    Object.keys(prop).forEach((k, i) => {
+      setCss(el, k, prop[k], i);
     });
   }
 }
 
 /**
- * Get parsed styles of the first element.
+ * Get the parsed styles of the first element.
  *
  * @private
- * @param {Element} el - Element to get styles from.
- * @param {string | string[]} [prop] - Name of the prop.
- * @returns {object | undefined} The parsed styles.
+ * @category CSS
+ * @param el - Element to get styles from.
+ * @param props - Optionally the names of the properties of interest.
+ * @returns The parsed styles.
  */
-function getCss(el, prop) {
-  if (!el || !el.attribs) return;
+function getCss(el?: Node, props?: string[]): Record<string, string>;
+/**
+ * Get a property from the parsed styles of the first element.
+ *
+ * @private
+ * @category CSS
+ * @param el - Element to get styles from.
+ * @param prop - Name of the prop.
+ * @returns The value of the property.
+ */
+function getCss(el: Node, prop: string): string | undefined;
+function getCss(
+  el?: Node,
+  prop?: string | string[]
+): Record<string, string> | string | undefined {
+  if (!el || !isTag(el)) return;
 
   const styles = parse(el.attribs.style);
   if (typeof prop === 'string') {
     return styles[prop];
   }
   if (Array.isArray(prop)) {
-    const newStyles = {};
+    const newStyles: Record<string, string> = {};
     prop.forEach((item) => {
       if (styles[item] != null) {
         newStyles[item] = styles[item];
@@ -88,12 +162,13 @@ function getCss(el, prop) {
  * Stringify `obj` to styles.
  *
  * @private
- * @param {object} obj - Object to stringify.
- * @returns {string} The serialized styles.
+ * @category CSS
+ * @param obj - Object to stringify.
+ * @returns The serialized styles.
  */
-function stringify(obj) {
-  return Object.keys(obj || {}).reduce(
-    (str, prop) => (str += `${str ? ' ' : ''}${prop}: ${obj[prop]};`),
+function stringify(obj: Record<string, string>): string {
+  return Object.keys(obj).reduce(
+    (str, prop) => `${str}${str ? ' ' : ''}${prop}: ${obj[prop]};`,
     ''
   );
 }
@@ -102,15 +177,16 @@ function stringify(obj) {
  * Parse `styles`.
  *
  * @private
- * @param {string} styles - Styles to be parsed.
- * @returns {object} The parsed styles.
+ * @category CSS
+ * @param styles - Styles to be parsed.
+ * @returns The parsed styles.
  */
-function parse(styles) {
+function parse(styles: string): Record<string, string> {
   styles = (styles || '').trim();
 
   if (!styles) return {};
 
-  return styles.split(';').reduce((obj, str) => {
+  return styles.split(';').reduce<Record<string, string>>((obj, str) => {
     const n = str.indexOf(':');
     // Skip if there is no :, or if it is the first/last character
     if (n < 1 || n === str.length - 1) return obj;

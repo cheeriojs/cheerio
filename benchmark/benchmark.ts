@@ -1,6 +1,7 @@
-'use strict';
+import Suites from './suite';
+import type { Cheerio } from '../src/cheerio';
+import type { Element } from 'domhandler';
 
-const Suites = require('./suite');
 const suites = new Suites();
 
 const regexIdx = process.argv.indexOf('--regex') + 1;
@@ -10,16 +11,22 @@ if (regexIdx > 0) {
   }
   suites.filter(process.argv[regexIdx]);
 }
-if (process.argv.indexOf('--cheerio-only') >= 0) {
+if (process.argv.includes('--cheerio-only')) {
   suites.cheerioOnly();
 }
 
-suites.add('Select all', 'jquery.html', {
+suites.add<void>('Select all', 'jquery.html', {
+  setup() {
+    return;
+  },
   test($) {
     return $('*').length;
   },
 });
-suites.add('Select some', 'jquery.html', {
+suites.add<void>('Select some', 'jquery.html', {
+  setup() {
+    return;
+  },
   test($) {
     return $('li').length;
   },
@@ -28,42 +35,46 @@ suites.add('Select some', 'jquery.html', {
 /*
  * Manipulation Tests
  */
-suites.add('manipulation - append', 'jquery.html', {
+suites.add<Cheerio<Element>>('manipulation - append', 'jquery.html', {
   setup($) {
     return $('body');
   },
-  test($, $body) {
+  test(_, $body) {
     $body.append(new Array(50).join('<div>'));
   },
 });
 
 // These tests run out of memory in jsdom
-suites.add('manipulation - prepend - highmem', 'jquery.html', {
+suites.add<Cheerio<Element>>(
+  'manipulation - prepend - highmem',
+  'jquery.html',
+  {
+    setup($) {
+      return $('body');
+    },
+    test(_, $body) {
+      $body.prepend(new Array(50).join('<div>'));
+    },
+  }
+);
+suites.add<Cheerio<Element>>('manipulation - after - highmem', 'jquery.html', {
   setup($) {
     return $('body');
   },
-  test($, $body) {
-    $body.prepend(new Array(50).join('<div>'));
-  },
-});
-suites.add('manipulation - after - highmem', 'jquery.html', {
-  setup($) {
-    return $('body');
-  },
-  test($, $body) {
+  test(_, $body) {
     $body.after(new Array(50).join('<div>'));
   },
 });
-suites.add('manipulation - before - highmem', 'jquery.html', {
+suites.add<Cheerio<Element>>('manipulation - before - highmem', 'jquery.html', {
   setup($) {
     return $('body');
   },
-  test($, $body) {
+  test(_, $body) {
     $body.before(new Array(50).join('<div>'));
   },
 });
 
-suites.add('manipulation - remove', 'jquery.html', {
+suites.add<Cheerio<Element>>('manipulation - remove', 'jquery.html', {
   setup($) {
     return $('body');
   },
@@ -74,7 +85,7 @@ suites.add('manipulation - remove', 'jquery.html', {
   },
 });
 
-suites.add('manipulation - replaceWith', 'jquery.html', {
+suites.add<void>('manipulation - replaceWith', 'jquery.html', {
   setup($) {
     $('body').append('<div id="foo">');
   },
@@ -83,32 +94,32 @@ suites.add('manipulation - replaceWith', 'jquery.html', {
   },
 });
 
-suites.add('manipulation - empty', 'jquery.html', {
+suites.add<Cheerio<Element>>('manipulation - empty', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     $lis.empty();
   },
 });
-suites.add('manipulation - html', 'jquery.html', {
+suites.add<Cheerio<Element>>('manipulation - html', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     $lis.html();
     $lis.html('foo');
   },
 });
-suites.add('manipulation - html render', 'jquery.html', {
+suites.add<Cheerio<Element>>('manipulation - html render', 'jquery.html', {
   setup($) {
     return $('body');
   },
-  test($, $lis) {
+  test(_, $lis) {
     $lis.html();
   },
 });
-suites.add('manipulation - html independent', 'jquery.html', {
+suites.add<string>('manipulation - html independent', 'jquery.html', {
   setup() {
     return (
       '<div class="foo"><div id="bar">bat<hr>baz</div> </div>' +
@@ -123,11 +134,11 @@ suites.add('manipulation - html independent', 'jquery.html', {
     $(content).html();
   },
 });
-suites.add('manipulation - text', 'jquery.html', {
+suites.add<Cheerio<Element>>('manipulation - text', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     $lis.text();
     $lis.text('foo');
   },
@@ -136,131 +147,131 @@ suites.add('manipulation - text', 'jquery.html', {
 /*
  * Traversing Tests
  */
-suites.add('traversing - Find', 'jquery.html', {
+suites.add<Cheerio<Element>>('traversing - Find', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     return $lis.find('li').length;
   },
 });
-suites.add('traversing - Parent', 'jquery.html', {
+suites.add<Cheerio<Element>>('traversing - Parent', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     return $lis.parent('div').length;
   },
 });
-suites.add('traversing - Parents', 'jquery.html', {
+suites.add<Cheerio<Element>>('traversing - Parents', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     return $lis.parents('div').length;
   },
 });
-suites.add('traversing - Closest', 'jquery.html', {
+suites.add<Cheerio<Element>>('traversing - Closest', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     return $lis.closest('div').length;
   },
 });
-suites.add('traversing - next', 'jquery.html', {
+suites.add<Cheerio<Element>>('traversing - next', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     return $lis.next().length;
   },
 });
-suites.add('traversing - nextAll', 'jquery.html', {
+suites.add<Cheerio<Element>>('traversing - nextAll', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     return $lis.nextAll('li').length;
   },
 });
-suites.add('traversing - nextUntil', 'jquery.html', {
+suites.add<Cheerio<Element>>('traversing - nextUntil', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     return $lis.nextUntil('li').length;
   },
 });
-suites.add('traversing - prev', 'jquery.html', {
+suites.add<Cheerio<Element>>('traversing - prev', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     return $lis.prev().length;
   },
 });
-suites.add('traversing - prevAll', 'jquery.html', {
+suites.add<Cheerio<Element>>('traversing - prevAll', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     return $lis.prevAll('li').length;
   },
 });
-suites.add('traversing - prevUntil', 'jquery.html', {
+suites.add<Cheerio<Element>>('traversing - prevUntil', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     return $lis.prevUntil('li').length;
   },
 });
-suites.add('traversing - siblings', 'jquery.html', {
+suites.add<Cheerio<Element>>('traversing - siblings', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     return $lis.siblings('li').length;
   },
 });
-suites.add('traversing - Children', 'jquery.html', {
+suites.add<Cheerio<Element>>('traversing - Children', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     return $lis.children('a').length;
   },
 });
-suites.add('traversing - Filter', 'jquery.html', {
+suites.add<Cheerio<Element>>('traversing - Filter', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     return $lis.filter('li').length;
   },
 });
-suites.add('traversing - First', 'jquery.html', {
+suites.add<Cheerio<Element>>('traversing - First', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     return $lis.first().first().length;
   },
 });
-suites.add('traversing - Last', 'jquery.html', {
+suites.add<Cheerio<Element>>('traversing - Last', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     return $lis.last().last().length;
   },
 });
-suites.add('traversing - Eq', 'jquery.html', {
+suites.add<Cheerio<Element>>('traversing - Eq', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     return $lis.eq(0).eq(0).length;
   },
 });
@@ -268,36 +279,36 @@ suites.add('traversing - Eq', 'jquery.html', {
 /*
  * Attributes Tests
  */
-suites.add('attributes - Attributes', 'jquery.html', {
+suites.add<Cheerio<Element>>('attributes - Attributes', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     $lis.attr('foo', 'bar');
     $lis.attr('foo');
     $lis.removeAttr('foo');
   },
 });
-suites.add('attributes - Single Attribute', 'jquery.html', {
+suites.add<Cheerio<Element>>('attributes - Single Attribute', 'jquery.html', {
   setup($) {
     return $('body');
   },
-  test($, $lis) {
+  test(_, $lis) {
     $lis.attr('foo', 'bar');
     $lis.attr('foo');
     $lis.removeAttr('foo');
   },
 });
-suites.add('attributes - Data', 'jquery.html', {
+suites.add<Cheerio<Element>>('attributes - Data', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     $lis.data('foo', 'bar');
     $lis.data('foo');
   },
 });
-suites.add('attributes - Val', 'jquery.html', {
+suites.add<Cheerio<Element>>('attributes - Val', 'jquery.html', {
   setup($) {
     return $('select,input,textarea,option');
   },
@@ -309,27 +320,27 @@ suites.add('attributes - Val', 'jquery.html', {
   },
 });
 
-suites.add('attributes - Has class', 'jquery.html', {
+suites.add<Cheerio<Element>>('attributes - Has class', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     $lis.hasClass('foo');
   },
 });
-suites.add('attributes - Toggle class', 'jquery.html', {
+suites.add<Cheerio<Element>>('attributes - Toggle class', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     $lis.toggleClass('foo');
   },
 });
-suites.add('attributes - Add Remove class', 'jquery.html', {
+suites.add<Cheerio<Element>>('attributes - Add Remove class', 'jquery.html', {
   setup($) {
     return $('li');
   },
-  test($, $lis) {
+  test(_, $lis) {
     $lis.addClass('foo');
     $lis.removeClass('foo');
   },

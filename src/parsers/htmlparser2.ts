@@ -1,3 +1,2 @@
-'use strict';
-exports.parse = require('htmlparser2').parseDocument;
-exports.render = require('dom-serializer').default;
+export { parseDocument as parse } from 'htmlparser2';
+export { default as render } from 'dom-serializer';

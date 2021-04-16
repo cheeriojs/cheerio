@@ -1,5 +1,7 @@
-'use strict';
-const cheerio = require('../..');
+import cheerio from '..';
+import type { Cheerio } from '../cheerio';
+import type { Element } from 'domhandler';
+import { mixedText } from '../__fixtures__/fixtures';
 
 describe('$(...)', () => {
   describe('.css', () => {
@@ -25,10 +27,27 @@ describe('$(...)', () => {
       expect(el.eq(1).attr('style')).toBe('color: red;');
     });
 
+    it('(prop, val) : should skip text nodes', () => {
+      const $text = cheerio.load(mixedText);
+      const $body = $text($text('body')[0].children);
+
+      $body.css('test', 'value');
+
+      expect($text('body').html()).toBe(
+        '<a style="test: value;">1</a>TEXT<b style="test: value;">2</b>'
+      );
+    });
+
     it('(prop, ""): should unset a css property', () => {
       const el = cheerio('<li style="padding: 1px; margin: 0;">');
       el.css('padding', '');
       expect(el.attr('style')).toBe('margin: 0;');
+    });
+
+    it('(any, val): should ignore unsupported prop types', () => {
+      const el = cheerio('<li style="padding: 1px;">');
+      el.css(123 as any, 'test');
+      expect(el.attr('style')).toBe('padding: 1px;');
     });
 
     it('(prop): should not mangle embedded urls', () => {
@@ -61,11 +80,11 @@ describe('$(...)', () => {
     });
 
     describe('(prop, function):', () => {
-      let $el;
+      let $el: Cheerio<Element>;
       beforeEach(() => {
         $el = cheerio(
           '<div style="margin: 0px;"></div><div style="margin: 1px;"></div><div style="margin: 2px;">'
-        );
+        ) as Cheerio<Element>;
       });
 
       it('should iterate over the selection', () => {
@@ -75,6 +94,7 @@ describe('$(...)', () => {
           expect(value).toBe(`${count}px`);
           expect(this).toBe($el[count]);
           count++;
+          return undefined;
         });
         expect(count).toBe(3);
       });
@@ -90,7 +110,7 @@ describe('$(...)', () => {
 
     it('(obj): should set each key and val', () => {
       const el = cheerio('<li style="padding: 0;"></li><li></li>');
-      el.css({ foo: 0 });
+      el.css({ foo: 0 } as any);
       expect(el.eq(0).attr('style')).toBe('padding: 0; foo: 0;');
       expect(el.eq(1).attr('style')).toBe('foo: 0;');
     });
@@ -98,7 +118,10 @@ describe('$(...)', () => {
     describe('parser', () => {
       it('should allow any whitespace between declarations', () => {
         const el = cheerio('<li style="one \t:\n 0;\n two \f\r:\v 1">');
-        expect(el.css(['one', 'two'])).toStrictEqual({ one: '0', two: '1' });
+        expect(el.css(['one', 'two', 'five'])).toStrictEqual({
+          one: '0',
+          two: '1',
+        });
       });
     });
   });

@@ -1,10 +1,10 @@
-'use strict';
-const htmlparser2 = require('htmlparser2');
-const cheerio = require('..');
-const utils = require('../lib/utils');
-const fixtures = require('./__fixtures__/fixtures');
-const { fruits } = fixtures;
-const { food } = fixtures;
+import { parseDOM } from 'htmlparser2';
+import cheerio, { version } from '.';
+import * as utils from './utils';
+import { fruits, food, noscript } from './__fixtures__/fixtures';
+import { Cheerio } from './cheerio';
+import type { Element } from 'domhandler';
+import type { CheerioOptions } from './options';
 
 // HTML
 const script = '<script src="script.js" type="text/javascript"></script>';
@@ -12,11 +12,11 @@ const multiclass = '<p><a class="btn primary" href="#">Save</a></p>';
 
 describe('cheerio', () => {
   it('should get the version', () => {
-    expect(cheerio.version).toMatch(/\d+\.\d+\.\d+/);
+    expect(version).toMatch(/\d+\.\d+\.\d+/);
   });
 
   it('cheerio(null) should be empty', () => {
-    expect(cheerio(null)).toHaveLength(0);
+    expect(cheerio(null as any)).toHaveLength(0);
   });
 
   it('cheerio(undefined) should be empty', () => {
@@ -43,26 +43,26 @@ describe('cheerio', () => {
     const $h2 = cheerio('<h2>');
     expect($h2).not.toHaveLength(0);
     expect($h2).toHaveLength(1);
-    expect($h2[0].tagName).toBe('h2');
+    expect($h2[0]).toHaveProperty('tagName', 'h2');
   });
 
   it('should be able to create complicated html', () => {
-    const $script = cheerio(script);
+    const $script = cheerio(script) as Cheerio<Element>;
     expect($script).not.toHaveLength(0);
     expect($script).toHaveLength(1);
     expect($script[0].attribs.src).toBe('script.js');
-    expect($script[0].attribs.type).toBe('text/javascript');
+    expect($script[0].attribs).toHaveProperty('type', 'text/javascript');
     expect($script[0].childNodes).toHaveLength(0);
   });
 
-  function testAppleSelect($apple) {
+  function testAppleSelect($apple: ArrayLike<Element>) {
     expect($apple).toHaveLength(1);
-    $apple = $apple[0];
-    expect($apple.parentNode.tagName).toBe('ul');
-    expect($apple.prev).toBe(null);
-    expect($apple.next.attribs.class).toBe('orange');
-    expect($apple.childNodes).toHaveLength(1);
-    expect($apple.childNodes[0].data).toBe('Apple');
+    const apple = $apple[0];
+    expect(apple.parentNode).toHaveProperty('tagName', 'ul');
+    expect(apple.prev).toBe(null);
+    expect((apple.next as Element).attribs.class).toBe('orange');
+    expect(apple.childNodes).toHaveLength(1);
+    expect(apple.childNodes[0]).toHaveProperty('data', 'Apple');
   }
 
   // eslint-disable-next-line jest/expect-expect
@@ -143,7 +143,7 @@ describe('cheerio', () => {
   it('should be able to select multiple classes: cheerio(".btn.primary")', () => {
     const $a = cheerio('.btn.primary', multiclass);
     expect($a).toHaveLength(1);
-    expect($a[0].childNodes[0].data).toBe('Save');
+    expect($a[0].childNodes[0]).toHaveProperty('data', 'Save');
   });
 
   it('should not create a top-level node', () => {
@@ -225,8 +225,10 @@ describe('cheerio', () => {
   });
 
   it('(extended Array) should not interfere with prototype methods (issue #119)', () => {
-    const extended = [];
-    extended.find = extended.children = extended.each = function () {};
+    const extended: any = [];
+    extended.find = extended.children = extended.each = function () {
+      /* Ignore */
+    };
     const $empty = cheerio(extended);
 
     expect($empty.find).toBe(cheerio.prototype.find);
@@ -235,17 +237,19 @@ describe('cheerio', () => {
   });
 
   it('cheerio.html(null) should return a "" string', () => {
-    expect(cheerio.html(null)).toBe('');
+    expect(cheerio.html(null as any)).toBe('');
   });
 
   it('should set html(number) as a string', () => {
     const $elem = cheerio('<div>');
+    // @ts-expect-error Passing a number
     $elem.html(123);
     expect(typeof $elem.text()).toBe('string');
   });
 
   it('should set text(number) as a string', () => {
     const $elem = cheerio('<div>');
+    // @ts-expect-error Passing a number
     $elem.text(123);
     expect(typeof $elem.text()).toBe('string');
   });
@@ -276,14 +280,14 @@ describe('cheerio', () => {
     });
 
     it('should allow loading a pre-parsed DOM', () => {
-      const dom = htmlparser2.parseDOM(food);
+      const dom = parseDOM(food);
       const $ = cheerio.load(dom);
 
       expect($('ul')).toHaveLength(3);
     });
 
     it('should allow loading a single element', () => {
-      const el = htmlparser2.parseDOM(food)[0];
+      const el = parseDOM(food)[0];
       const $ = cheerio.load(el);
 
       expect($('ul')).toHaveLength(3);
@@ -294,7 +298,10 @@ describe('cheerio', () => {
       const expected = '<MixedCaseTag UPPERCASEATTRIBUTE=""/>';
       const $ = cheerio.load(str, { xml: true });
 
-      expect($('MixedCaseTag').get(0).tagName).toBe('MixedCaseTag');
+      expect($('MixedCaseTag').get(0)).toHaveProperty(
+        'tagName',
+        'MixedCaseTag'
+      );
       expect($.html()).toBe(expected);
     });
 
@@ -307,7 +314,10 @@ describe('cheerio', () => {
         '<html><head></head><body><mixedcasetag uppercaseattribute=""></mixedcasetag></body></html>';
       const $ = cheerio.load(str);
 
-      expect($('MixedCaseTag').get(0).tagName).toBe('mixedcasetag');
+      expect($('MixedCaseTag').get(0)).toHaveProperty(
+        'tagName',
+        'mixedcasetag'
+      );
       expect($.html()).toBe(expectedNoXml);
       expect($.html({ xml: true })).toBe(expectedXml);
     });
@@ -341,46 +351,55 @@ describe('cheerio', () => {
     describe('prototype extensions', () => {
       it('should honor extensions defined on `prototype` property', () => {
         const $ = cheerio.load('<div>');
-        $.prototype.myPlugin = function () {
+
+        // @ts-ignore
+        $.prototype.myPlugin = function (...args: unknown[]) {
           return {
             context: this,
-            args: arguments,
+            args,
           };
         };
 
         const $div = $('div');
 
+        // @ts-ignore
         expect(typeof $div.myPlugin).toBe('function');
+        // @ts-ignore
         expect($div.myPlugin().context).toBe($div);
-        expect(
-          Array.prototype.slice.call($div.myPlugin(1, 2, 3).args)
-        ).toStrictEqual([1, 2, 3]);
+        // @ts-ignore
+        expect($div.myPlugin(1, 2, 3).args).toStrictEqual([1, 2, 3]);
       });
 
       it('should honor extensions defined on `fn` property', () => {
         const $ = cheerio.load('<div>');
-        $.fn.myPlugin = function () {
+        // @ts-ignore
+        $.fn.myPlugin = function (...args: unknown[]) {
           return {
             context: this,
-            args: arguments,
+            args,
           };
         };
 
         const $div = $('div');
 
+        // @ts-ignore
         expect(typeof $div.myPlugin).toBe('function');
+        // @ts-ignore
         expect($div.myPlugin().context).toBe($div);
-        expect(
-          Array.prototype.slice.call($div.myPlugin(1, 2, 3).args)
-        ).toStrictEqual([1, 2, 3]);
+        // @ts-ignore
+        expect($div.myPlugin(1, 2, 3).args).toStrictEqual([1, 2, 3]);
       });
 
       it('should isolate extensions between loaded functions', () => {
         const $a = cheerio.load('<div>');
         const $b = cheerio.load('<div>');
 
-        $a.prototype.foo = function () {};
+        // @ts-ignore
+        $a.prototype.foo = function () {
+          /* Ignore */
+        };
 
+        // @ts-ignore
         expect($b('div').foo).toBeUndefined();
       });
     });
@@ -401,10 +420,10 @@ describe('cheerio', () => {
     });
 
     it('cloneDom : should be able clone single Elements', () => {
-      const main = cheerio('<p>Cheerio</p>');
-      let result = [];
-      utils.domEach(main, (i, el) => {
-        result = result.concat(utils.cloneDom(el));
+      const main = cheerio('<p>Cheerio</p>') as Cheerio<Element>;
+      let result: Element[] = [];
+      utils.domEach<Element>(main, (_, el) => {
+        result = [...result, ...utils.cloneDom(el)];
       });
       expect(result).toHaveLength(1);
       expect(result[0]).not.toBe(main[0]);
@@ -426,12 +445,10 @@ describe('cheerio', () => {
   });
 
   describe('parse5 options', () => {
-    const { noscript } = fixtures;
-
     // Should parse noscript tags only with false option value
     test('{scriptingEnabled: ???}', () => {
       const opt = 'scriptingEnabled';
-      const options = {};
+      const options: CheerioOptions = {};
       let result;
 
       // [default] scriptingEnabled: true - tag contains one text element
@@ -442,17 +459,17 @@ describe('cheerio', () => {
 
       // ScriptingEnabled: false - content of noscript will parsed
       options[opt] = false;
-      result = cheerio.load(fixtures.noscript, options)('noscript');
+      result = cheerio.load(noscript, options)('noscript');
       expect(result).toHaveLength(1);
       expect(result[0].children).toHaveLength(2);
       expect(result[0].children[0].type).toBe('comment');
       expect(result[0].children[1].type).toBe('tag');
-      expect(result[0].children[1].name).toBe('a');
+      expect(result[0].children[1]).toHaveProperty('name', 'a');
 
       // ScriptingEnabled: ??? - should acts as true
       const values = [undefined, null, 0, ''];
       for (const val of values) {
-        options[opt] = val;
+        options[opt] = val as any;
         result = cheerio.load(noscript, options)('noscript');
         expect(result).toHaveLength(1);
         expect(result[0].children).toHaveLength(1);
@@ -464,14 +481,14 @@ describe('cheerio', () => {
     test('{sourceCodeLocationInfo: ???}', () => {
       const prop = 'sourceCodeLocation';
       const opt = 'sourceCodeLocationInfo';
-      const options = {};
+      const options: CheerioOptions = {};
       let result;
       let i;
 
       // Location data should not be present
       let values = [undefined, null, 0, false, ''];
       for (i = 0; i < values.length; i++) {
-        options[opt] = values[i];
+        options[opt] = values[i] as any;
         result = cheerio.load(noscript, options)('noscript');
         expect(result).toHaveLength(1);
         expect(result[0]).not.toHaveProperty(prop);
@@ -480,11 +497,11 @@ describe('cheerio', () => {
       // Location data should be present
       values = [true, 1, 'test'];
       for (i = 0; i < values.length; i++) {
-        options[opt] = values[i];
+        options[opt] = values[i] as any;
         result = cheerio.load(noscript, options)('noscript');
         expect(result).toHaveLength(1);
         expect(result[0]).toHaveProperty(prop);
-        expect(typeof result[0][prop]).toBe('object');
+        expect(typeof (result[0] as any)[prop]).toBe('object');
       }
     });
   });

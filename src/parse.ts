@@ -1,16 +1,22 @@
-'use strict';
-/*
- *Module Dependencies
- */
-const { DomUtils } = require('htmlparser2');
-const parseWithHtmlparser2 = require('./parsers/htmlparser2').parse;
-const parseWithParse5 = require('./parsers/parse5').parse;
-const { Document } = require('domhandler');
+import { DomUtils } from 'htmlparser2';
+import { parse as parseWithHtmlparser2 } from './parsers/htmlparser2';
+import { parse as parseWithParse5 } from './parsers/parse5';
+import {
+  Node,
+  Document,
+  NodeWithChildren,
+  isDocument as checkIsDocument,
+} from 'domhandler';
+import type { InternalOptions } from './options';
 
 /*
- *Parser
+ * Parser
  */
-exports = module.exports = function parse(content, options, isDocument) {
+export default function parse(
+  content: string | Document | Node | Node[] | Buffer,
+  options: InternalOptions,
+  isDocument: boolean
+): Document {
   if (typeof Buffer !== 'undefined' && Buffer.isBuffer(content)) {
     content = content.toString();
   }
@@ -21,34 +27,35 @@ exports = module.exports = function parse(content, options, isDocument) {
       : parseWithParse5(content, options, isDocument);
   }
 
-  if (
-    typeof content === 'object' &&
-    content != null &&
-    content.type === 'root'
-  ) {
-    // If `content` is already a root, just return it
-    return content;
+  const doc = content as Node | Node[] | Document;
+
+  if (!Array.isArray(doc) && checkIsDocument(doc)) {
+    // If `doc` is already a root, just return it
+    return doc;
   }
 
   // Add conent to new root element
-  const root = new Document(content);
+  const root = new Document([]);
 
   // Update the DOM using the root
-  exports.update(content, root);
+  update(doc, root);
 
   return root;
-};
+}
 
 /**
  * Update the dom structure, for one changed layer.
  *
- * @param {Node[] | Node} arr - The new children.
- * @param {NodeWithChildren} parent - The new parent.
- * @returns {Node} The parent node.
+ * @param newChilds - The new children.
+ * @param parent - The new parent.
+ * @returns The parent node.
  */
-exports.update = function (arr, parent) {
+export function update(
+  newChilds: Node[] | Node,
+  parent: NodeWithChildren | null
+): Node | null {
   // Normalize
-  if (!Array.isArray(arr)) arr = [arr];
+  const arr = Array.isArray(newChilds) ? newChilds : [newChilds];
 
   // Update parent
   if (parent) {
@@ -77,4 +84,4 @@ exports.update = function (arr, parent) {
   }
 
   return parent;
-};
+}
