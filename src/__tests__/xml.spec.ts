@@ -1,13 +1,13 @@
-'use strict';
-const cheerio = require('..');
+import cheerio from '..';
+import type { CheerioOptions } from '../options';
 
-function xml(str, options) {
-  options = Object.assign({ xml: true }, options);
+function xml(str: string, options?: CheerioOptions) {
+  options = { xml: true, ...options };
   const $ = cheerio.load(str, options);
   return $.xml();
 }
 
-function dom(str, options) {
+function dom(str: string, options?: CheerioOptions) {
   const $ = cheerio.load('', options);
   return $(str).html();
 }

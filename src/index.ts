@@ -1,27 +1,44 @@
-'use strict';
-/**
- * @module cheerio
- * @borrows load.load as load
- * @borrows static.html as html
- * @borrows static.text as text
- * @borrows static.xml as xml
- */
-exports = module.exports = require('./lib/cheerio');
-
-const staticMethods = require('./lib/static');
-const loadMethod = require('./lib/load');
+import Cheerio from './cheerio';
 
 /**
- * An identifier describing the version of Cheerio which has been executed.
+ * The default cheerio instance.
  *
- * @type {string}
+ * @deprecated Use the function returned by `load` instead.
  */
-exports.version = require('./package.json').version;
+export default Cheerio;
 
-exports.load = loadMethod.load;
-exports.html = staticMethods.html;
-exports.text = staticMethods.text;
-exports.xml = staticMethods.xml;
+/**
+ * The main types of Cheerio objects.
+ *
+ * @category Cheerio
+ */
+export type { Cheerio, CheerioAPI } from './cheerio';
+/**
+ * Types used in signatures of Cheerio methods.
+ *
+ * @category Cheerio
+ */
+export * from './types';
+export type {
+  CheerioOptions,
+  HTMLParser2Options,
+  Parse5Options,
+} from './options';
+/**
+ * Re-exporting all of the node types.
+ *
+ * @category DOM Node
+ */
+export type { Node, NodeWithChildren, Element, Document } from 'domhandler';
+
+/** The current version of Cheerio. */
+export { version } from '../package.json';
+
+export * from './load';
+import { load } from './load';
+// We add this here, to avoid a cyclic depenency
+Cheerio.load = load;
+import * as staticMethods from './static';
 
 /**
  * In order to promote consistency with the jQuery library, users are encouraged
@@ -29,14 +46,20 @@ exports.xml = staticMethods.xml;
  *
  * @deprecated
  * @example
- *   var $ = cheerio.load('<div><p></p></div>');
- *   $.contains($('div').get(0), $('p').get(0)); // true
- *   $.contains($('p').get(0), $('div').get(0)); // false
  *
- * @function
+ * ```js
+ * const $ = cheerio.load('<div><p></p></div>');
+ *
+ * $.contains($('div').get(0), $('p').get(0));
+ * //=> true
+ *
+ * $.contains($('p').get(0), $('div').get(0));
+ * //=> false
+ * ```
+ *
  * @returns {boolean}
  */
-exports.contains = staticMethods.contains;
+export const { contains } = staticMethods;
 
 /**
  * In order to promote consistency with the jQuery library, users are encouraged
@@ -44,12 +67,15 @@ exports.contains = staticMethods.contains;
  *
  * @deprecated
  * @example
- *   var $ = cheerio.load('');
- *   $.merge([1, 2], [3, 4]); // [1, 2, 3, 4]
  *
- * @function
+ * ```js
+ * const $ = cheerio.load('');
+ *
+ * $.merge([1, 2], [3, 4]);
+ * //=> [1, 2, 3, 4]
+ * ```
  */
-exports.merge = staticMethods.merge;
+export const { merge } = staticMethods;
 
 /**
  * In order to promote consistency with the jQuery library, users are encouraged
@@ -58,12 +84,13 @@ exports.merge = staticMethods.merge;
  *
  * @deprecated See {@link static/parseHTML}.
  * @example
- *   var $ = cheerio.load('');
- *   $.parseHTML('<b>markup</b>');
  *
- * @function
+ * ```js
+ * const $ = cheerio.load('');
+ * $.parseHTML('<b>markup</b>');
+ * ```
  */
-exports.parseHTML = staticMethods.parseHTML;
+export const { parseHTML } = staticMethods;
 
 /**
  * Users seeking to access the top-level element of a parsed document should
@@ -71,9 +98,10 @@ exports.parseHTML = staticMethods.parseHTML;
  *
  * @deprecated
  * @example
- *   var $ = cheerio.load('');
- *   $.root();
  *
- * @function
+ * ```js
+ * const $ = cheerio.load('');
+ * $.root();
+ * ```
  */
-exports.root = staticMethods.root;
+export const { root } = staticMethods;

@@ -1,5 +1,4 @@
-'use strict';
-exports.fruits = [
+export const fruits = [
   '<ul id="fruits">',
   '<li class="apple">Apple</li>',
   '<li class="orange">Orange</li>',
@@ -7,14 +6,14 @@ exports.fruits = [
   '</ul>',
 ].join('');
 
-exports.vegetables = [
+export const vegetables = [
   '<ul id="vegetables">',
   '<li class="carrot">Carrot</li>',
   '<li class="sweetcorn">Sweetcorn</li>',
   '</ul>',
 ].join('');
 
-exports.divcontainers = [
+export const divcontainers = [
   '<div class="container">',
   '<div class="inner">First</div>',
   '<div class="inner">Second</div>',
@@ -28,7 +27,7 @@ exports.divcontainers = [
   '</div>',
 ].join('');
 
-exports.chocolates = [
+export const chocolates = [
   '<ul id="chocolates">',
   '<li class="linth" data-highlight="Lindor" data-origin="swiss">Linth</li>',
   '<li class="frey" data-taste="sweet" data-best-collection="Mahony">Frey</li>',
@@ -36,7 +35,7 @@ exports.chocolates = [
   '</ul>',
 ].join('');
 
-exports.drinks = [
+export const drinks = [
   '<ul id="drinks">',
   '<li class="beer">Beer</li>',
   '<li class="juice">Juice</li>',
@@ -46,14 +45,9 @@ exports.drinks = [
   '</ul>',
 ].join('');
 
-exports.food = [
-  '<ul id="food">',
-  exports.fruits,
-  exports.vegetables,
-  '</ul>',
-].join('');
+export const food = ['<ul id="food">', fruits, vegetables, '</ul>'].join('');
 
-exports.inputs = [
+export const inputs = [
   '<select id="one"><option value="option_not_selected">Option not selected</option><option value="option_selected" selected>Option selected</option></select>',
   '<select id="one-valueless"><option>Option not selected</option><option selected>Option selected</option></select>',
   '<select id="one-html-entity"><option>Option not selected</option><option selected>Option &lt;selected&gt;</option></select>',
@@ -68,12 +62,12 @@ exports.inputs = [
   '<select id="multi-valueless" multiple><option>1</option><option selected>2</option><option selected>3</option><option>4</option></select>',
 ].join('');
 
-exports.text = [
+export const text = [
   '<p>Apples, <b>oranges</b> and pears.</p>',
   '<p>Carrots and <!-- sweetcorn --></p>',
 ].join('');
 
-exports.forms = [
+export const forms = [
   '<form id="simple"><input type="text" name="fruit" value="Apple" /></form>',
   '<form id="nested"><div><input type="text" name="fruit" value="Apple" /></div><input type="text" name="vegetable" value="Carrot" /></form>',
   '<form id="disabled"><input type="text" name="fruit" value="Apple" disabled /></form>',
@@ -85,7 +79,7 @@ exports.forms = [
   '<form id="spaces"><input type="text" name="fruit" value="Blood orange" /></form>',
 ].join('');
 
-exports.noscript = [
+export const noscript = [
   '</body>',
   '<noscript>',
   '<!-- anchor linking to external file -->',
@@ -94,3 +88,5 @@ exports.noscript = [
   '<p>Rocks!</p>',
   '</body>',
 ].join('');
+
+export const mixedText = '<a>1</a>TEXT<b>2</b>';

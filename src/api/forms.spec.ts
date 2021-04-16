@@ -1,9 +1,9 @@
-'use strict';
-const cheerio = require('../..');
-const { forms } = require('../__fixtures__/fixtures');
+import cheerio from '../../src';
+import type { CheerioAPI } from '../cheerio';
+import { forms } from '../__fixtures__/fixtures';
 
 describe('$(...)', () => {
-  let $;
+  let $: CheerioAPI;
 
   beforeEach(() => {
     $ = cheerio.load(forms);
@@ -22,7 +22,7 @@ describe('$(...)', () => {
     it('() : should get nested form controls', () => {
       expect($('form#nested').serializeArray()).toHaveLength(2);
       const data = $('form#nested').serializeArray();
-      data.sort((a, b) => a.value - b.value);
+      data.sort((a, b) => (a.value > b.value ? 1 : -1));
       expect(data).toStrictEqual([
         {
           name: 'fruit',
@@ -69,7 +69,7 @@ describe('$(...)', () => {
     it('() : should get multiple selected options', () => {
       expect($('form#multiple').serializeArray()).toHaveLength(2);
       const data = $('form#multiple').serializeArray();
-      data.sort((a, b) => a.value - b.value);
+      data.sort((a, b) => (a.value > b.value ? 1 : -1));
       expect(data).toStrictEqual([
         {
           name: 'fruit',
@@ -84,7 +84,7 @@ describe('$(...)', () => {
 
     it('() : should get individually selected elements', () => {
       const data = $('form#nested input').serializeArray();
-      data.sort((a, b) => a.value - b.value);
+      data.sort((a, b) => (a.value > b.value ? 1 : -1));
       expect(data).toStrictEqual([
         {
           name: 'fruit',

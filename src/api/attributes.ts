@@ -1,24 +1,21 @@
-'use strict';
 /**
  * Methods for getting and modifying attributes.
  *
  * @module cheerio/attributes
  */
 
-const { text } = require('../static');
-const utils = require('../utils');
-const { isTag } = utils;
-const { domEach } = utils;
+import { text } from '../static';
+import { isTag, domEach, camelCase, cssCase } from '../utils';
+import type { Node, Element } from 'domhandler';
+import type { Cheerio } from '../cheerio';
 const hasOwn = Object.prototype.hasOwnProperty;
-const { camelCase } = utils;
-const { cssCase } = utils;
 const rspace = /\s+/;
 const dataAttrPrefix = 'data-';
 /*
  * Lookup table for coercing string data-* attributes to their corresponding
  * JavaScript primitives
  */
-const primitives = {
+const primitives: Record<string, unknown> = {
   null: null,
   true: true,
   false: false,
@@ -35,16 +32,20 @@ const rbrace = /^(?:{[\w\W]*}|\[[\w\W]*])$/;
  * Also supports getting the `value` of several form elements.
  *
  * @private
- * @param {Element} elem - Elenent to get the attribute of.
- * @param {string} name - Name of the attribute.
- * @returns {object | string | undefined} The attribute's value.
+ * @category Attributes
+ * @param elem - Elenent to get the attribute of.
+ * @param name - Name of the attribute.
+ * @returns The attribute's value.
  */
-function getAttr(elem, name) {
-  if (!elem || !isTag(elem)) return;
+function getAttr(elem: Node, name: undefined): Record<string, string>;
+function getAttr(elem: Node, name: string): string | undefined;
+function getAttr(
+  elem: Node,
+  name: string | undefined
+): Record<string, string> | string | undefined {
+  if (!elem || !isTag(elem)) return undefined;
 
-  if (!elem.attribs) {
-    elem.attribs = {};
-  }
+  elem.attribs ??= {};
 
   // Return the entire attribs object if no attribute specified
   if (!name) {
@@ -69,17 +70,19 @@ function getAttr(elem, name) {
   ) {
     return 'on';
   }
+
+  return undefined;
 }
 
 /**
  * Sets the value of an attribute. The attribute will be deleted if the value is `null`.
  *
  * @private
- * @param {Element} el - The element to set the attribute on.
- * @param {string} name - The attribute's name.
- * @param {string | null} value - The attribute's value.
+ * @param el - The element to set the attribute on.
+ * @param name - The attribute's name.
+ * @param value - The attribute's value.
  */
-function setAttr(el, name, value) {
+function setAttr(el: Element, name: string, value: string | null) {
   if (value === null) {
     removeAttribute(el, name);
   } else {
@@ -88,33 +91,110 @@ function setAttr(el, name, value) {
 }
 
 /**
- * Method for getting and setting attributes. Gets the attribute value for only
- * the first element in the matched set. If you set an attribute's value to
- * `null`, you remove that attribute. You may also pass a `map` and `function`
- * like jQuery.
+ * Method for getting attributes. Gets the attribute value for only the first
+ * element in the matched set.
  *
+ * @category Attributes
  * @example
- *   $('ul').attr('id');
- *   //=> fruits
  *
- *   $('.apple').attr('id', 'favorite').html();
- *   //=> <li class="apple" id="favorite">Apple</li>
+ * ```js
+ * $('ul').attr('id');
+ * //=> fruits
+ * ```
  *
- * @param {string} name - Name of the attribute.
- * @param {string | Function} [value] - If specified sets the value of the attribute.
- * @returns {string | Cheerio} If `value` is specified the instance itself,
- *   otherwise the attribute's value.
+ * @param name - Name of the attribute.
+ * @returns The attribute's value.
  * @see {@link https://api.jquery.com/attr/}
  */
-exports.attr = function (name, value) {
+export function attr<T extends Node>(
+  this: Cheerio<T>,
+  name: string
+): string | undefined;
+/**
+ * Method for getting all attributes and their values of the first element in
+ * the matched set.
+ *
+ * @category Attributes
+ * @example
+ *
+ * ```js
+ * $('ul').attr();
+ * //=> { id: 'fruits' }
+ * ```
+ *
+ * @returns The attribute's values.
+ * @see {@link https://api.jquery.com/attr/}
+ */
+export function attr<T extends Node>(this: Cheerio<T>): Record<string, string>;
+
+/**
+ * Method for setting attributes. Sets the attribute value for only the first
+ * element in the matched set. If you set an attribute's value to `null`, you
+ * remove that attribute. You may also pass a `map` and `function`.
+ *
+ * @category Attributes
+ * @example
+ *
+ * ```js
+ * $('.apple').attr('id', 'favorite').html();
+ * //=> <li class="apple" id="favorite">Apple</li>
+ * ```
+ *
+ * @param name - Name of the attribute.
+ * @param value - The new value of the attribute.
+ * @returns The instance itself.
+ * @see {@link https://api.jquery.com/attr/}
+ */
+export function attr<T extends Node>(
+  this: Cheerio<T>,
+  name: string,
+  value?:
+    | string
+    | null
+    | ((this: Element, i: number, attrib: string) => string | null)
+): Cheerio<T>;
+/**
+ * Method for setting multiple attributes at once. Sets the attribute value for
+ * only the first element in the matched set. If you set an attribute's value to
+ * `null`, you remove that attribute.
+ *
+ * @category Attributes
+ * @example
+ *
+ * ```js
+ * $('.apple').attr({ id: 'favorite' }).html();
+ * //=> <li class="apple" id="favorite">Apple</li>
+ * ```
+ *
+ * @param values - Map of attribute names and values.
+ * @returns The instance itself.
+ * @see {@link https://api.jquery.com/attr/}
+ */
+export function attr<T extends Node>(
+  this: Cheerio<T>,
+  values: Record<string, string | null>
+): Cheerio<T>;
+export function attr<T extends Node>(
+  this: Cheerio<T>,
+  name?: string | Record<string, string | null>,
+  value?:
+    | string
+    | null
+    | ((this: Element, i: number, attrib: string) => string | null)
+): string | Cheerio<T> | undefined | Record<string, string> {
   // Set the value (with attr map support)
   if (typeof name === 'object' || value !== undefined) {
     if (typeof value === 'function') {
+      if (typeof name !== 'string') {
+        {
+          throw new Error('Bad combination of arguments.');
+        }
+      }
       return domEach(this, (i, el) => {
-        setAttr(el, name, value.call(el, i, el.attribs[name]));
+        if (isTag(el)) setAttr(el, name, value.call(el, i, el.attribs[name]));
       });
     }
-    return domEach(this, (i, el) => {
+    return domEach(this, (_, el) => {
       if (!isTag(el)) return;
 
       if (typeof name === 'object') {
@@ -123,27 +203,32 @@ exports.attr = function (name, value) {
           setAttr(el, objName, objValue);
         });
       } else {
-        setAttr(el, name, value);
+        setAttr(el, name as string, value as string);
       }
     });
   }
 
-  return arguments.length > 1 ? this : getAttr(this[0], name);
-};
+  return arguments.length > 1 ? this : getAttr(this[0], name as string);
+}
 
 /**
  * Gets a node's prop.
  *
  * @private
- * @param {Node} el - Elenent to get the prop of.
- * @param {string} name - Name of the prop.
- * @returns {string | undefined} The prop's value.
+ * @category Attributes
+ * @param el - Elenent to get the prop of.
+ * @param name - Name of the prop.
+ * @returns The prop's value.
  */
-function getProp(el, name) {
+function getProp(
+  el: Node | undefined,
+  name: string
+): string | undefined | Element[keyof Element] {
   if (!el || !isTag(el)) return;
 
   return name in el
-    ? el[name]
+    ? // @ts-expect-error TS doesn't like us accessing the value directly here.
+      el[name]
     : rboolean.test(name)
     ? getAttr(el, name) !== undefined
     : getAttr(el, name);
@@ -153,40 +238,97 @@ function getProp(el, name) {
  * Sets the value of a prop.
  *
  * @private
- * @param {Element} el - The element to set the prop on.
- * @param {string} name - The prop's name.
- * @param {string | null} value - The prop's value.
+ * @param el - The element to set the prop on.
+ * @param name - The prop's name.
+ * @param value - The prop's value.
  */
-function setProp(el, name, value) {
+function setProp(el: Element, name: string, value: unknown) {
   if (name in el) {
+    // @ts-expect-error Overriding value
     el[name] = value;
   } else {
-    setAttr(el, name, rboolean.test(name) ? (value ? '' : null) : value);
+    setAttr(el, name, rboolean.test(name) ? (value ? '' : null) : `${value}`);
   }
+}
+
+interface StyleProp {
+  length: number;
+  [key: string]: string | number;
+  [index: number]: string;
 }
 
 /**
  * Method for getting and setting properties. Gets the property value for only
  * the first element in the matched set.
  *
+ * @category Attributes
  * @example
- *   $('input[type="checkbox"]').prop('checked');
- *   //=> false
  *
- *   $('input[type="checkbox"]').prop('checked', true).val();
- *   //=> ok
+ * ```js
+ * $('input[type="checkbox"]').prop('checked');
+ * //=> false
  *
- * @param {string} name - Name of the property.
- * @param {any} [value] - If specified set the property to this.
- * @returns {string | Cheerio} If `value` is specified the instance itself,
- *   otherwise the prop's value.
+ * $('input[type="checkbox"]').prop('checked', true).val();
+ * //=> ok
+ * ```
+ *
+ * @param name - Name of the property.
+ * @param value - If specified set the property to this.
+ * @returns If `value` is specified the instance itself, otherwise the prop's value.
  * @see {@link https://api.jquery.com/prop/}
  */
-exports.prop = function (name, value) {
+export function prop<T extends Node>(
+  this: Cheerio<T>,
+  name: 'tagName' | 'nodeName'
+): T extends Element ? string : undefined;
+export function prop<T extends Node>(
+  this: Cheerio<T>,
+  name: 'innerHTML' | 'outerHTML'
+): string | null;
+export function prop<T extends Node>(
+  this: Cheerio<T>,
+  name: 'style'
+): StyleProp;
+export function prop<T extends Node, K extends keyof Element>(
+  this: Cheerio<T>,
+  name: K
+): Element[K];
+export function prop<T extends Node, K extends keyof Element>(
+  this: Cheerio<T>,
+  name: K,
+  value:
+    | Element[K]
+    | ((this: Element, i: number, prop: K) => Element[keyof Element])
+): Cheerio<T>;
+export function prop<T extends Node>(
+  this: Cheerio<T>,
+  name: Record<string, string | Element[keyof Element] | boolean>
+): Cheerio<T>;
+export function prop<T extends Node>(
+  this: Cheerio<T>,
+  name: string,
+  value:
+    | string
+    | boolean
+    | null
+    | ((this: Element, i: number, prop: string) => string | boolean)
+): Cheerio<T>;
+export function prop<T extends Node>(this: Cheerio<T>, name: string): string;
+export function prop<T extends Node>(
+  this: Cheerio<T>,
+  name: string | Record<string, string | Element[keyof Element] | boolean>,
+  value?:
+    | ((
+        this: Element,
+        i: number,
+        prop: string | undefined
+      ) => string | Element[keyof Element] | boolean)
+    | unknown
+): Cheerio<T> | string | undefined | null | Element[keyof Element] | StyleProp {
   if (typeof name === 'string' && value === undefined) {
     switch (name) {
       case 'style': {
-        const property = this.css();
+        const property = this.css() as StyleProp;
         const keys = Object.keys(property);
         keys.forEach((p, i) => {
           property[i] = p;
@@ -197,8 +339,10 @@ exports.prop = function (name, value) {
         return property;
       }
       case 'tagName':
-      case 'nodeName':
-        return this[0].name.toUpperCase();
+      case 'nodeName': {
+        const el = this[0];
+        return isTag(el) ? el.name.toUpperCase() : undefined;
+      }
 
       case 'outerHTML':
         return this.clone().wrap('<container />').parent().html();
@@ -213,8 +357,11 @@ exports.prop = function (name, value) {
 
   if (typeof name === 'object' || value !== undefined) {
     if (typeof value === 'function') {
+      if (typeof name === 'object') {
+        throw new Error('Bad combination of arguments.');
+      }
       return domEach(this, (j, el) => {
-        setProp(el, name, value.call(el, j, getProp(el, name)));
+        if (isTag(el)) setProp(el, name, value.call(el, j, getProp(el, name)));
       });
     }
 
@@ -231,24 +378,34 @@ exports.prop = function (name, value) {
       }
     });
   }
-};
+
+  return undefined;
+}
+
+interface DataElement extends Element {
+  data?: Record<string, unknown>;
+}
 
 /**
  * Sets the value of a data attribute.
  *
  * @private
- * @param {Element} el - The element to set the data attribute on.
- * @param {string | object} name - The data attribute's name.
- * @param {string | null} value - The data attribute's value.
+ * @param el - The element to set the data attribute on.
+ * @param name - The data attribute's name.
+ * @param value - The data attribute's value.
  */
-function setData(el, name, value) {
-  if (!el.data) {
-    el.data = {};
-  }
+function setData(
+  el: Element,
+  name: string | Record<string, unknown>,
+  value?: unknown
+) {
+  const elem: DataElement = el;
 
-  if (typeof name === 'object') Object.assign(el.data, name);
+  elem.data ??= {};
+
+  if (typeof name === 'object') Object.assign(elem.data, name);
   else if (typeof name === 'string' && value !== undefined) {
-    el.data[name] = value;
+    elem.data[name] = value;
   }
 }
 
@@ -258,22 +415,22 @@ function setData(el, name, value) {
  * attribute name is specified, read *all* HTML5 `data-*` attributes in this manner.
  *
  * @private
- * @param {Element} el - Elenent to get the data attribute of.
- * @param {string} [name] - Name of the data attribute.
- * @returns {any} The data attribute's value, or a map with all of the data attribute.
+ * @category Attributes
+ * @param el - Elenent to get the data attribute of.
+ * @param name - Name of the data attribute.
+ * @returns The data attribute's value, or a map with all of the data attribute.
  */
-function readData(el, name) {
-  const readAll = arguments.length === 1;
+function readData(el: DataElement, name?: string): unknown {
   let domNames;
   let jsNames;
   let value;
 
-  if (readAll) {
-    domNames = Object.keys(el.attribs).filter(
-      (attrName) => attrName.slice(0, dataAttrPrefix.length) === dataAttrPrefix
+  if (name == null) {
+    domNames = Object.keys(el.attribs).filter((attrName) =>
+      attrName.startsWith(dataAttrPrefix)
     );
-    jsNames = domNames.map((_domName) =>
-      camelCase(_domName.slice(dataAttrPrefix.length))
+    jsNames = domNames.map((domName) =>
+      camelCase(domName.slice(dataAttrPrefix.length))
     );
   } else {
     domNames = [dataAttrPrefix + cssCase(name)];
@@ -283,7 +440,10 @@ function readData(el, name) {
   for (let idx = 0; idx < domNames.length; ++idx) {
     const domName = domNames[idx];
     const jsName = jsNames[idx];
-    if (hasOwn.call(el.attribs, domName) && !hasOwn.call(el.data, jsName)) {
+    if (
+      hasOwn.call(el.attribs, domName) &&
+      !hasOwn.call((el as DataElement).data, jsName)
+    ) {
       value = el.attribs[domName];
 
       if (hasOwn.call(primitives, value)) {
@@ -298,122 +458,215 @@ function readData(el, name) {
         }
       }
 
-      el.data[jsName] = value;
+      (el.data as Record<string, unknown>)[jsName] = value;
     }
   }
 
-  return readAll ? el.data : value;
+  return name == null ? el.data : value;
 }
 
 /**
- * Method for getting and setting data attributes. Gets or sets the data
- * attribute value for only the first element in the matched set.
+ * Method for getting data attributes, for only the first element in the matched set.
  *
+ * @category Attributes
  * @example
- *   $('<div data-apple-color="red"></div>').data();
- *   //=> { appleColor: 'red' }
  *
- *   $('<div data-apple-color="red"></div>').data('apple-color');
- *   //=> 'red'
+ * ```js
+ * $('<div data-apple-color="red"></div>').data('apple-color');
+ * //=> 'red'
+ * ```
  *
- *   const apple = $('.apple').data('kind', 'mac');
- *   apple.data('kind');
- *   //=> 'mac'
- *
- * @param {string} name - Name of the attribute.
- * @param {any} [value] - If specified new value.
- * @returns {string | Cheerio | undefined} If `value` is specified the instance
- *   itself, otherwise the data attribute's value.
+ * @param name - Name of the data attribute.
+ * @returns The data attribute's value.
  * @see {@link https://api.jquery.com/data/}
  */
-exports.data = function (name, value) {
+export function data<T extends Node>(
+  this: Cheerio<T>,
+  name: string
+): unknown | undefined;
+/**
+ * Method for getting all of an element's data attributes, for only the first
+ * element in the matched set.
+ *
+ * @category Attributes
+ * @example
+ *
+ * ```js
+ * $('<div data-apple-color="red"></div>').data();
+ * //=> { appleColor: 'red' }
+ * ```
+ *
+ * @returns The data attribute's values.
+ * @see {@link https://api.jquery.com/data/}
+ */
+export function data<T extends Node>(this: Cheerio<T>): Record<string, unknown>;
+/**
+ * Method for setting data attributes, for only the first element in the matched set.
+ *
+ * @category Attributes
+ * @example
+ *
+ * ```js
+ * const apple = $('.apple').data('kind', 'mac');
+ *
+ * apple.data('kind');
+ * //=> 'mac'
+ * ```
+ *
+ * @param name - Name of the data attribute.
+ * @param value - The new value.
+ * @returns The instance itself.
+ * @see {@link https://api.jquery.com/data/}
+ */
+export function data<T extends Node>(
+  this: Cheerio<T>,
+  name: string,
+  value: unknown
+): Cheerio<T>;
+/**
+ * Method for setting multiple data attributes at once, for only the first
+ * element in the matched set.
+ *
+ * @category Attributes
+ * @example
+ *
+ * ```js
+ * const apple = $('.apple').data({ kind: 'mac' });
+ *
+ * apple.data('kind');
+ * //=> 'mac'
+ * ```
+ *
+ * @param values - Map of names to values.
+ * @returns The instance itself.
+ * @see {@link https://api.jquery.com/data/}
+ */
+export function data<T extends Node>(
+  this: Cheerio<T>,
+  values: Record<string, unknown>
+): Cheerio<T>;
+export function data<T extends Node>(
+  this: Cheerio<T>,
+  name?: string | Record<string, unknown>,
+  value?: unknown
+): unknown | Cheerio<T> | undefined | Record<string, unknown> {
   const elem = this[0];
 
   if (!elem || !isTag(elem)) return;
 
-  if (!elem.data) {
-    elem.data = {};
-  }
+  const dataEl: DataElement = elem;
+  dataEl.data ??= {};
 
   // Return the entire data object if no data specified
   if (!name) {
-    return readData(elem);
+    return readData(dataEl);
   }
 
   // Set the value (with attr map support)
   if (typeof name === 'object' || value !== undefined) {
-    domEach(this, (i, el) => {
-      setData(el, name, value);
+    domEach(this, (_, el) => {
+      if (isTag(el))
+        if (typeof name === 'object') setData(el, name);
+        else setData(el, name, value as unknown);
     });
     return this;
   }
-  if (hasOwn.call(elem.data, name)) {
-    return elem.data[name];
+  if (hasOwn.call(dataEl.data, name)) {
+    return dataEl.data[name];
   }
 
-  return readData(elem, name);
-};
+  return readData(dataEl, name);
+}
 
 /**
- * Method for getting and setting the value of input, select, and textarea.
- * Note: Support for `map`, and `function` has not been added yet.
+ * Method for getting the value of input, select, and textarea. Note: Support
+ * for `map`, and `function` has not been added yet.
  *
+ * @category Attributes
  * @example
- *   $('input[type="text"]').val();
- *   //=> input_text
  *
- *   $('input[type="text"]').val('test').html();
- *   //=> <input type="text" value="test"/>
+ * ```js
+ * $('input[type="text"]').val();
+ * //=> input_text
+ * ```
  *
- * @param {string | string[]} [value] - If specified new value.
- * @returns {string | Cheerio | undefined} If a new `value` is specified the
- *   instance itself, otherwise the value.
+ * @returns The value.
  * @see {@link https://api.jquery.com/val/}
  */
-exports.val = function (value) {
+export function val<T extends Node>(
+  this: Cheerio<T>
+): string | undefined | string[];
+/**
+ * Method for setting the value of input, select, and textarea. Note: Support
+ * for `map`, and `function` has not been added yet.
+ *
+ * @category Attributes
+ * @example
+ *
+ * ```js
+ * $('input[type="text"]').val('test').html();
+ * //=> <input type="text" value="test"/>
+ * ```
+ *
+ * @param value - The new value.
+ * @returns The instance itself.
+ * @see {@link https://api.jquery.com/val/}
+ */
+export function val<T extends Node>(
+  this: Cheerio<T>,
+  value: string | string[]
+): Cheerio<T>;
+export function val<T extends Node>(
+  this: Cheerio<T>,
+  value?: string | string[]
+): string | string[] | Cheerio<T> | undefined {
   const querying = arguments.length === 0;
   const element = this[0];
 
-  if (!element) return;
+  if (!element || !isTag(element)) return querying ? undefined : this;
 
   switch (element.name) {
     case 'textarea':
-      return this.text(value);
+      return this.text(value as string);
     case 'select': {
       const option = this.find('option:selected');
-      if (!option) return;
       if (!querying) {
         if (this.attr('multiple') == null && typeof value === 'object') {
           return this;
         }
-        if (typeof value !== 'object') {
-          value = [value];
-        }
+
         this.find('option').removeAttr('selected');
-        for (let i = 0; i < value.length; i++) {
-          this.find(`option[value="${value[i]}"]`).attr('selected', '');
+
+        const values = typeof value !== 'object' ? [value] : value;
+        for (let i = 0; i < values.length; i++) {
+          this.find(`option[value="${values[i]}"]`).attr('selected', '');
         }
+
         return this;
       }
 
       return this.attr('multiple')
-        ? option.toArray().map((el) => getAttr(el, 'value'))
+        ? option.toArray().map((el) => text(el.children))
         : option.attr('value');
     }
     case 'input':
     case 'option':
-      return querying ? this.attr('value') : this.attr('value', value);
+      return querying
+        ? this.attr('value')
+        : this.attr('value', value as string);
   }
-};
+
+  return undefined;
+}
 
 /**
  * Remove an attribute.
  *
  * @private
- * @param {Element} elem - Node to remove attribute from.
- * @param {string} name - Name of the attribute to remove.
+ * @param elem - Node to remove attribute from.
+ * @param name - Name of the attribute to remove.
  */
-function removeAttribute(elem, name) {
+function removeAttribute(elem: Element, name: string) {
   if (!elem.attribs || !hasOwn.call(elem.attribs, name)) return;
 
   delete elem.attribs[name];
@@ -422,60 +675,75 @@ function removeAttribute(elem, name) {
 /**
  * Splits a space-separated list of names to individual names.
  *
- * @param {string} names - Names to split.
- * @returns {string[]} - Split names.
+ * @category Attributes
+ * @param names - Names to split.
+ * @returns - Split names.
  */
-function splitNames(names) {
+function splitNames(names?: string): string[] {
   return names ? names.trim().split(rspace) : [];
 }
 
 /**
  * Method for removing attributes by `name`.
  *
+ * @category Attributes
  * @example
- *   $('.pear').removeAttr('class').html();
- *   //=> <li>Pear</li>
  *
- *   $('.apple').attr('id', 'favorite');
- *   $('.apple').removeAttr('id class').html();
- *   //=> <li>Apple</li>
+ * ```js
+ * $('.pear').removeAttr('class').html();
+ * //=> <li>Pear</li>
  *
- * @param {string} name - Name of the attribute.
- * @returns {Cheerio} The instance itself.
+ * $('.apple').attr('id', 'favorite');
+ * $('.apple').removeAttr('id class').html();
+ * //=> <li>Apple</li>
+ * ```
+ *
+ * @param name - Name of the attribute.
+ * @returns The instance itself.
  * @see {@link https://api.jquery.com/removeAttr/}
  */
-exports.removeAttr = function (name) {
+export function removeAttr<T extends Node>(
+  this: Cheerio<T>,
+  name: string
+): Cheerio<T> {
   const attrNames = splitNames(name);
 
-  for (var i = 0; i < attrNames.length; i++) {
+  for (let i = 0; i < attrNames.length; i++) {
     domEach(this, (_, elem) => {
-      removeAttribute(elem, attrNames[i]);
+      if (isTag(elem)) removeAttribute(elem, attrNames[i]);
     });
   }
 
   return this;
-};
+}
 
 /**
  * Check to see if *any* of the matched elements have the given `className`.
  *
+ * @category Attributes
  * @example
- *   $('.pear').hasClass('pear');
- *   //=> true
  *
- *   $('apple').hasClass('fruit');
- *   //=> false
+ * ```js
+ * $('.pear').hasClass('pear');
+ * //=> true
  *
- *   $('li').hasClass('pear');
- *   //=> true
+ * $('apple').hasClass('fruit');
+ * //=> false
  *
- * @param {string} className - Name of the class.
- * @returns {boolean} Indicates if an element has the given `className`.
+ * $('li').hasClass('pear');
+ * //=> true
+ * ```
+ *
+ * @param className - Name of the class.
+ * @returns Indicates if an element has the given `className`.
  * @see {@link https://api.jquery.com/hasClass/}
  */
-exports.hasClass = function (className) {
+export function hasClass<T extends Node>(
+  this: Cheerio<T>,
+  className: string
+): boolean {
   return this.toArray().some((elem) => {
-    const clazz = elem.attribs && elem.attribs.class;
+    const clazz = isTag(elem) && elem.attribs.class;
     let idx = -1;
 
     if (clazz && className.length) {
@@ -493,28 +761,39 @@ exports.hasClass = function (className) {
 
     return false;
   });
-};
+}
 
 /**
- * Adds class(es) to all of the matched elements. Also accepts a `function` like jQuery.
+ * Adds class(es) to all of the matched elements. Also accepts a `function`.
  *
+ * @category Attributes
  * @example
- *   $('.pear').addClass('fruit').html();
- *   //=> <li class="pear fruit">Pear</li>
  *
- *   $('.apple').addClass('fruit red').html();
- *   //=> <li class="apple fruit red">Apple</li>
+ * ```js
+ * $('.pear').addClass('fruit').html();
+ * //=> <li class="pear fruit">Pear</li>
  *
- * @param {string | Function} value - Name of new class.
- * @returns {Cheerio} The instance itself.
+ * $('.apple').addClass('fruit red').html();
+ * //=> <li class="apple fruit red">Apple</li>
+ * ```
+ *
+ * @param value - Name of new class.
+ * @returns The instance itself.
  * @see {@link https://api.jquery.com/addClass/}
  */
-exports.addClass = function (value) {
+export function addClass<T extends Node, R extends ArrayLike<T>>(
+  this: R,
+  value?:
+    | string
+    | ((this: Element, i: number, className: string) => string | undefined)
+): R {
   // Support functions
   if (typeof value === 'function') {
     return domEach(this, (i, el) => {
-      const className = el.attribs.class || '';
-      exports.addClass.call([el], value.call(el, i, className));
+      if (isTag(el)) {
+        const className = el.attribs.class || '';
+        addClass.call([el], value.call(el, i, className));
+      }
     });
   }
 
@@ -525,55 +804,65 @@ exports.addClass = function (value) {
   const numElements = this.length;
 
   for (let i = 0; i < numElements; i++) {
+    const el = this[i];
     // If selected element isn't a tag, move on
-    if (!isTag(this[i])) continue;
+    if (!isTag(el)) continue;
 
     // If we don't already have classes
-    const className = getAttr(this[i], 'class');
+    const className = getAttr(el, 'class');
 
     if (!className) {
-      setAttr(this[i], 'class', classNames.join(' ').trim());
+      setAttr(el, 'class', classNames.join(' ').trim());
     } else {
       let setClass = ` ${className} `;
 
       // Check if class already exists
       for (let j = 0; j < classNames.length; j++) {
         const appendClass = `${classNames[j]} `;
-        if (setClass.indexOf(` ${appendClass}`) < 0) setClass += appendClass;
+        if (!setClass.includes(` ${appendClass}`)) setClass += appendClass;
       }
 
-      setAttr(this[i], 'class', setClass.trim());
+      setAttr(el, 'class', setClass.trim());
     }
   }
 
   return this;
-};
+}
 
 /**
  * Removes one or more space-separated classes from the selected elements. If no
- * `className` is defined, all classes will be removed. Also accepts a
- * `function` like jQuery.
+ * `className` is defined, all classes will be removed. Also accepts a `function`.
  *
+ * @category Attributes
  * @example
- *   $('.pear').removeClass('pear').html();
- *   //=> <li class="">Pear</li>
  *
- *   $('.apple').addClass('red').removeClass().html();
- *   //=> <li class="">Apple</li>
+ * ```js
+ * $('.pear').removeClass('pear').html();
+ * //=> <li class="">Pear</li>
  *
- * @param {string | Function} value - Name of the class.
- * @returns {Cheerio} The instance itself.
+ * $('.apple').addClass('red').removeClass().html();
+ * //=> <li class="">Apple</li>
+ * ```
+ *
+ * @param name - Name of the class. If not specified, removes all elements.
+ * @returns The instance itself.
  * @see {@link https://api.jquery.com/removeClass/}
  */
-exports.removeClass = function (value) {
+export function removeClass<T extends Node, R extends ArrayLike<T>>(
+  this: R,
+  name?:
+    | string
+    | ((this: Element, i: number, className: string) => string | undefined)
+): R {
   // Handle if value is a function
-  if (typeof value === 'function') {
+  if (typeof name === 'function') {
     return domEach(this, (i, el) => {
-      exports.removeClass.call([el], value.call(el, i, el.attribs.class || ''));
+      if (isTag(el))
+        removeClass.call([el], name.call(el, i, el.attribs.class || ''));
     });
   }
 
-  const classes = splitNames(value);
+  const classes = splitNames(name);
   const numClasses = classes.length;
   const removeAll = arguments.length === 0;
 
@@ -606,34 +895,50 @@ exports.removeClass = function (value) {
       }
     }
   });
-};
+}
 
 /**
  * Add or remove class(es) from the matched elements, depending on either the
- * class's presence or the value of the switch argument. Also accepts a
- * `function` like jQuery.
+ * class's presence or the value of the switch argument. Also accepts a `function`.
  *
+ * @category Attributes
  * @example
- *   $('.apple.green').toggleClass('fruit green red').html();
- *   //=> <li class="apple fruit red">Apple</li>
  *
- *   $('.apple.green').toggleClass('fruit green red', true).html();
- *   //=> <li class="apple green fruit red">Apple</li>
+ * ```js
+ * $('.apple.green').toggleClass('fruit green red').html();
+ * //=> <li class="apple fruit red">Apple</li>
  *
- * @param {string | Function} value - Name of the class. Can also be a function.
- * @param {boolean} [stateVal] - If specified the state of the class.
- * @returns {Cheerio} The instance itself.
+ * $('.apple.green').toggleClass('fruit green red', true).html();
+ * //=> <li class="apple green fruit red">Apple</li>
+ * ```
+ *
+ * @param value - Name of the class. Can also be a function.
+ * @param stateVal - If specified the state of the class.
+ * @returns The instance itself.
  * @see {@link https://api.jquery.com/toggleClass/}
  */
-exports.toggleClass = function (value, stateVal) {
+export function toggleClass<T extends Node, R extends ArrayLike<T>>(
+  this: R,
+  value?:
+    | string
+    | ((
+        this: Element,
+        i: number,
+        className: string,
+        stateVal?: boolean
+      ) => string),
+  stateVal?: boolean
+): R {
   // Support functions
   if (typeof value === 'function') {
     return domEach(this, (i, el) => {
-      exports.toggleClass.call(
-        [el],
-        value.call(el, i, el.attribs.class || '', stateVal),
-        stateVal
-      );
+      if (isTag(el)) {
+        toggleClass.call(
+          [el],
+          value.call(el, i, el.attribs.class || '', stateVal),
+          stateVal
+        );
+      }
     });
   }
 
@@ -646,10 +951,11 @@ exports.toggleClass = function (value, stateVal) {
   const numElements = this.length;
 
   for (let i = 0; i < numElements; i++) {
+    const el = this[i];
     // If selected element isn't a tag, move on
-    if (!isTag(this[i])) continue;
+    if (!isTag(el)) continue;
 
-    const elementClasses = splitNames(this[i].attribs.class);
+    const elementClasses = splitNames(el.attribs.class);
 
     // Check if class already exists
     for (let j = 0; j < numClasses; j++) {
@@ -665,11 +971,11 @@ exports.toggleClass = function (value, stateVal) {
       }
     }
 
-    this[i].attribs.class = elementClasses.join(' ');
+    el.attribs.class = elementClasses.join(' ');
   }
 
   return this;
-};
+}
 
 /**
  * Checks the current list of elements and returns `true` if _any_ of the
@@ -678,13 +984,22 @@ exports.toggleClass = function (value, stateVal) {
  * the function is executed in the context of the selected element, so `this`
  * refers to the current element.
  *
- * @param {string | Function | Cheerio | Node} selector - Selector for the selection.
- * @returns {boolean} Whether or not the selector matches an element of the instance.
+ * @category Attributes
+ * @param selector - Selector for the selection.
+ * @returns Whether or not the selector matches an element of the instance.
  * @see {@link https://api.jquery.com/is/}
  */
-exports.is = function (selector) {
+export function is<T extends Node>(
+  this: Cheerio<T>,
+  selector?:
+    | string
+    | ((this: Element, i: number, el: Element) => boolean)
+    | Cheerio<T>
+    | T
+    | null
+): boolean {
   if (selector) {
     return this.filter(selector).length > 0;
   }
   return false;
-};
+}

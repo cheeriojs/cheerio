@@ -1,11 +1,10 @@
-'use strict';
 /**
  * This file includes tests for deprecated APIs. The methods are expected to be
  * removed in the next major release of Cheerio, but their stability should be
  * maintained until that time.
  */
-const fixtures = require('../__fixtures__/fixtures');
-const cheerio = require('../..');
+import * as fixtures from '../__fixtures__/fixtures';
+import cheerio from '..';
 
 describe('deprecated APIs', () => {
   /**
@@ -16,8 +15,11 @@ describe('deprecated APIs', () => {
    * defined on the "loaded" Cheerio factory function.
    *
    * @example
-   *   var $ = cheerio.load('');
-   *   $.parseHTML('<b>markup</b>');
+   *
+   * ```js
+   * const $ = cheerio.load('');
+   * $.parseHTML('<b>markup</b>');
+   * ```
    */
   describe('cheerio module', () => {
     describe('.parseHTML', () => {
@@ -34,12 +36,17 @@ describe('deprecated APIs', () => {
      * encouraged to instead use the static method of the same name.
      *
      * @example
-     *   var $ = cheerio.load('');
-     *   $.merge([1, 2], [3, 4]); // [1, 2, 3, 4]
+     *
+     * ```js
+     * const $ = cheerio.load('');
+     *
+     * $.merge([1, 2], [3, 4]);
+     * //=> [1, 2, 3, 4]
+     * ```
      */
     describe('.merge', () => {
-      let arr1;
-      let arr2;
+      let arr1: ArrayLike<unknown>;
+      let arr2: ArrayLike<unknown>;
       beforeEach(() => {
         arr1 = [1, 2, 3];
         arr2 = [4, 5, 6];
@@ -51,7 +58,7 @@ describe('deprecated APIs', () => {
 
       // #1674 - merge, wont accept Cheerio object
       it('should be a able merge array and cheerio object', () => {
-        const ret = cheerio.merge(new cheerio(), ['elem1', 'elem2']);
+        const ret = cheerio.merge(new cheerio(), ['elem1', 'elem2'] as any);
         expect(typeof ret).toBe('object');
         expect(ret).toHaveLength(2);
       });
@@ -73,16 +80,19 @@ describe('deprecated APIs', () => {
       });
 
       it('(arraylike, arraylike) : should handle objects that arent arrays, but are arraylike', () => {
-        arr1 = {};
-        arr2 = {};
-        arr1.length = 3;
-        arr1[0] = 'a';
-        arr1[1] = 'b';
-        arr1[2] = 'c';
-        arr2.length = 3;
-        arr2[0] = 'd';
-        arr2[1] = 'e';
-        arr2[2] = 'f';
+        arr1 = {
+          length: 3,
+          [0]: 'a',
+          [1]: 'b',
+          [2]: 'c',
+        };
+        arr2 = {
+          length: 3,
+          [0]: 'd',
+          [1]: 'e',
+          [2]: 'f',
+        };
+
         cheerio.merge(arr1, arr2);
         expect(arr1).toHaveLength(6);
         expect(arr1[3]).toBe('d');
@@ -92,24 +102,21 @@ describe('deprecated APIs', () => {
       });
 
       it('(?, ?) : should gracefully reject invalid inputs', () => {
-        let ret = cheerio.merge([4], 3);
+        let ret: ArrayLike<unknown> | undefined = cheerio.merge([4], 3 as any);
         expect(ret).toBeFalsy();
-        ret = cheerio.merge({}, {});
+        ret = cheerio.merge({} as any, {} as any);
         expect(ret).toBeFalsy();
-        ret = cheerio.merge([], {});
+        ret = cheerio.merge([], {} as any);
         expect(ret).toBeFalsy();
-        ret = cheerio.merge({}, []);
+        ret = cheerio.merge({} as any, []);
         expect(ret).toBeFalsy();
-        let fakeArray1 = { length: 3 };
-        fakeArray1[0] = 'a';
-        fakeArray1[1] = 'b';
-        fakeArray1[3] = 'd';
+        let fakeArray1 = { length: 3, [0]: 'a', [1]: 'b', [3]: 'd' };
         ret = cheerio.merge(fakeArray1, []);
         expect(ret).toBeFalsy();
         ret = cheerio.merge([], fakeArray1);
         expect(ret).toBeFalsy();
-        fakeArray1 = {};
-        fakeArray1.length = '7';
+        fakeArray1 = {} as any;
+        fakeArray1.length = '7' as any;
         ret = cheerio.merge(fakeArray1, []);
         expect(ret).toBeFalsy();
         fakeArray1.length = -1;
@@ -118,10 +125,7 @@ describe('deprecated APIs', () => {
       });
 
       it('(?, ?) : should no-op on invalid inputs', () => {
-        const fakeArray1 = { length: 3 };
-        fakeArray1[0] = 'a';
-        fakeArray1[1] = 'b';
-        fakeArray1[3] = 'd';
+        const fakeArray1 = { length: 3, [0]: 'a', [1]: 'b', [3]: 'd' };
         cheerio.merge(fakeArray1, []);
         expect(fakeArray1).toHaveLength(3);
         expect(fakeArray1[0]).toBe('a');
@@ -142,12 +146,19 @@ describe('deprecated APIs', () => {
      * encouraged to instead use the static method of the same name.
      *
      * @example
-     *   var $ = cheerio.load('<div><p></p></div>');
-     *   $.contains($('div').get(0), $('p').get(0)); // true
-     *   $.contains($('p').get(0), $('div').get(0)); // false
+     *
+     * ```js
+     * const $ = cheerio.load('<div><p></p></div>');
+     *
+     * $.contains($('div').get(0), $('p').get(0));
+     * //=> true
+     *
+     * $.contains($('p').get(0), $('div').get(0));
+     * //=> false
+     * ```
      */
     describe('.contains', () => {
-      let $;
+      let $: typeof cheerio;
 
       beforeEach(() => {
         $ = cheerio.load(fixtures.food);
@@ -182,8 +193,11 @@ describe('deprecated APIs', () => {
      * instead use the `root` static method of a "loaded" Cheerio function.
      *
      * @example
-     *   var $ = cheerio.load('');
-     *   $.root();
+     *
+     * ```js
+     * const $ = cheerio.load('');
+     * $.root();
+     * ```
      */
     describe('.root', () => {
       it('returns an empty selection', () => {
@@ -200,7 +214,10 @@ describe('deprecated APIs', () => {
      * function exported by the Cheerio module.
      *
      * @example
-     *   var $ = cheerio.load('<h1>Hello, <span>world</span>.</h1>');
+     *
+     * ```js
+     * const $ = cheerio.load('<h1>Hello, <span>world</span>.</h1>');
+     * ```
      */
     it('.load', () => {
       const $1 = cheerio.load(fixtures.fruits);
@@ -217,12 +234,22 @@ describe('deprecated APIs', () => {
      * encouraged to instead use the instance method of the same name.
      *
      * @example
-     *   var $ = cheerio.load('<h1>Hello, <span>world</span>.</h1>');
-     *   $('h1').html(); // '<h1>Hello, <span>world</span>.'
      *
-     * @example <caption>To render the markup of an entire document, invoke the `html` function
-     * exported by the Cheerio module with a "root" selection.</caption>
-     *   cheerio.html($.root()); // '<html><head></head><body><h1>Hello, <span>world</span>.</h1></body></html>'
+     * ```js
+     * const $ = cheerio.load('<h1>Hello, <span>world</span>.</h1>');
+     *
+     * $('h1').html();
+     * //=> '<h1>Hello, <span>world</span>.'
+     * ```
+     *
+     * @example <caption>To render the markup of an entire document, invoke the
+     *   `html` function exported by the Cheerio module with a "root"
+     *   selection.</caption>
+     *
+     * ```js
+     * cheerio.html($.root());
+     * //=> '<html><head></head><body><h1>Hello, <span>world</span>.</h1></body></html>'
+     * ```
      */
     describe('.html - deprecated API', () => {
       it('() : of empty cheerio object should return null', () => {
@@ -246,7 +273,10 @@ describe('deprecated APIs', () => {
      * exported by the Cheerio module.
      *
      * @example
-     *   cheerio.xml($.root());
+     *
+     * ```js
+     * cheerio.xml($.root());
+     * ```
      */
     describe('.xml  - deprecated API', () => {
       it('() :  renders XML', () => {
@@ -263,12 +293,21 @@ describe('deprecated APIs', () => {
      * encouraged to instead use the instance method of the same name.
      *
      * @example
-     *   var $ = cheerio.load('<h1>Hello, <span>world</span>.</h1>');
-     *   $('h1').text(); // 'Hello, world.'
      *
-     * @example <caption>To render the text content of an entire document, invoke the `text`
-     * function exported by the Cheerio module with a "root" selection. </caption>
-     *   cheerio.text($.root()); // 'Hello, world.'
+     * ```js
+     * const $ = cheerio.load('<h1>Hello, <span>world</span>.</h1>');
+     * $('h1').text();
+     * //=> 'Hello, world.'
+     * ```
+     *
+     * @example <caption>To render the text content of an entire document,
+     *   invoke the `text` function exported by the Cheerio module with a "root"
+     *   selection. </caption>
+     *
+     * ```js
+     * cheerio.text($.root());
+     * //=> 'Hello, world.'
+     * ```
      */
     describe('.text  - deprecated API', () => {
       it('(cheerio object) : should return the text contents of the specified elements', () => {

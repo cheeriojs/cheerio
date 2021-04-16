@@ -9,9 +9,6 @@
   <a href="https://coveralls.io/github/cheeriojs/cheerio">
     <img src="https://img.shields.io/coveralls/github/cheeriojs/cheerio/main" alt="Coverage">
   </a>
-  <a href="https://gitter.im/cheeriojs/cheerio">
-    <img src="https://img.shields.io/gitter/room/cheeriojs/cheerio?color=%2348b293" alt="Join the chat at https://gitter.im/cheeriojs/cheerio">
-  </a>
   <a href="#backers">
     <img src="https://img.shields.io/opencollective/backers/cheerio" alt="OpenCollective backers">
   </a>
@@ -79,7 +76,12 @@ First you need to load in the HTML. This step in jQuery is implicit, since jQuer
 This is the _preferred_ method:
 
 ```js
+// ES6 or TypeScript:
+import * as cheerio from 'cheerio';
+
+// In other environments:
 const cheerio = require('cheerio');
+
 const $ = cheerio.load('<ul id="fruits">...</ul>');
 
 $.html();
@@ -131,7 +133,7 @@ The options in the `xml` object are taken directly from [htmlparser2](https://gi
 }
 ```
 
-For a full list of options and their effects, see [this](https://github.com/fb55/DomHandler) and
+For a full list of options and their effects, see [domhandler](https://github.com/fb55/DomHandler) and
 [htmlparser2's options](https://github.com/fb55/htmlparser2/wiki/Parser-options).
 
 Some users may wish to parse markup with the `htmlparser2` library, and
@@ -149,9 +151,9 @@ structure as its first argument. Users may install `htmlparser2`, use it to
 parse input, and pass the result to `load`:
 
 ```js
-// Usage as of htmlparser2 version 3:
+// Usage as of htmlparser2 version 6:
 const htmlparser2 = require('htmlparser2');
-const dom = htmlparser2.parseDOM(document, options);
+const dom = htmlparser2.parseDocument(document, options);
 
 const $ = cheerio.load(dom);
 ```

@@ -1,6 +1,6 @@
-'use strict';
-const fixtures = require('../__fixtures__/fixtures');
-const cheerio = require('../..');
+import * as fixtures from './__fixtures__/fixtures';
+import cheerio from '.';
+import { CheerioAPI } from './cheerio';
 
 describe('cheerio', () => {
   describe('.html', () => {
@@ -38,6 +38,12 @@ describe('cheerio', () => {
       const expected =
         '<html><head></head><body><div>a div</div><span>a span</span></body></html><div>a div</div><span>a span</span>';
       expect(cheerio.html($collection)).toBe(expected);
+    });
+
+    it('() : does not crash with `null` as `this` value', () => {
+      const { html } = cheerio;
+      expect(html.call(null as any)).toBe('');
+      expect(html.call(null as any, '#nothing')).toBe('');
     });
   });
 
@@ -92,76 +98,10 @@ describe('cheerio', () => {
         'Welcome Hello, testing text function,End of messege'
       );
     });
-  });
 
-  describe('.load', () => {
-    it('(html) : should retain original root after creating a new node', () => {
-      const $ = cheerio.load('<body><ul id="fruits"></ul></body>');
-      expect($('body')).toHaveLength(1);
-      $('<script>');
-      expect($('body')).toHaveLength(1);
-    });
-
-    it('(html) : should handle lowercase tag options', () => {
-      const $ = cheerio.load('<BODY><ul id="fruits"></ul></BODY>', {
-        xml: { lowerCaseTags: true },
-      });
-      expect($.html()).toBe('<body><ul id="fruits"/></body>');
-    });
-
-    it('(html) : should handle the `normalizeWhitepace` option', () => {
-      const $ = cheerio.load('<body><b>foo</b>  <b>bar</b></body>', {
-        xml: { normalizeWhitespace: true },
-      });
-      expect($.html()).toBe('<body><b>foo</b> <b>bar</b></body>');
-    });
-
-    it('(html) : should handle xml tag option', () => {
-      const $ = cheerio.load('<body><script><foo></script></body>', {
-        xml: true,
-      });
-      expect($('script')[0].children[0].type).toBe('tag');
-    });
-
-    it('(buffer) : should accept a buffer', () => {
-      const html = '<html><head></head><body>foo</body></html>';
-      // eslint-disable-next-line node/no-unsupported-features/node-builtins
-      const $html = cheerio.load(Buffer.from(html));
-      expect($html.html()).toBe(html);
-    });
-  });
-
-  describe('.clone', () => {
-    it('() : should return a copy', () => {
-      const $src = cheerio(
-        '<div><span>foo</span><span>bar</span><span>baz</span></div>'
-      ).children();
-      const $elem = $src.clone();
-      expect($elem.length).toBe(3);
-      expect($elem.parent()).toHaveLength(0);
-      expect($elem.text()).toBe($src.text());
-      $src.text('rofl');
-      expect($elem.text()).not.toBe($src.text());
-    });
-
-    it('() : should return a copy of document', () => {
-      const $src = cheerio
-        .load('<html><body><div>foo</div>bar</body></html>')
-        .root()
-        .children();
-      const $elem = $src.clone();
-      expect($elem.length).toBe(1);
-      expect($elem.parent()).toHaveLength(0);
-      expect($elem.text()).toBe($src.text());
-      $src.text('rofl');
-      expect($elem.text()).not.toBe($src.text());
-    });
-
-    it('() : should preserve parsing options', () => {
-      const $ = cheerio.load('<div>π</div>', { decodeEntities: false });
-      const $div = $('div');
-
-      expect($div.text()).toBe($div.clone().text());
+    it('() : does not crash with `null` as `this` value', () => {
+      const { text } = cheerio;
+      expect(text.call(null as any)).toBe('');
     });
   });
 
@@ -195,17 +135,17 @@ describe('cheerio', () => {
 
     it('("<script>", true) : preserves scripts when requested', () => {
       const html = '<script>undefined()</script>';
-      expect($.parseHTML(html, true)[0].tagName).toMatch(/script/i);
+      expect($.parseHTML(html, true)[0]).toHaveProperty('tagName', 'script');
     });
 
     it('("scriptAndNonScript) : preserves non-script nodes', () => {
       const html = '<script>undefined()</script><div></div>';
-      expect($.parseHTML(html)[0].tagName).toMatch(/div/i);
+      expect($.parseHTML(html)[0]).toHaveProperty('tagName', 'div');
     });
 
     it('(scriptAndNonScript, true) : Preserves script position', () => {
       const html = '<script>undefined()</script><div></div>';
-      expect($.parseHTML(html, true)[0].tagName).toMatch(/script/i);
+      expect($.parseHTML(html, true)[0]).toHaveProperty('tagName', 'script');
     });
 
     it('(text) : returns a text node', () => {
@@ -213,7 +153,7 @@ describe('cheerio', () => {
     });
 
     it('(\\ttext) : preserves leading whitespace', () => {
-      expect($.parseHTML('\t<div></div>')[0].data).toBe('\t');
+      expect($.parseHTML('\t<div></div>')[0]).toHaveProperty('data', '\t');
     });
 
     it('( text) : Leading spaces are treated as text nodes', () => {
@@ -231,7 +171,7 @@ describe('cheerio', () => {
 
     it('(garbageInput) : should not cause an error', () => {
       expect(
-        $.parseHTML('<#if><tr><p>This is a test.</p></tr><#/if>') || true
+        $.parseHTML('<#if><tr><p>This is a test.</p></tr><#/if>')
       ).toBeTruthy();
     });
 
@@ -243,12 +183,34 @@ describe('cheerio', () => {
 
       expect(elems).toHaveLength(2);
     });
+
+    it('(html, context) : should ignore context argument', () => {
+      const $div = cheerio.load('<div>');
+      const elems = $div.parseHTML('<script>foo</script><a>', { foo: 123 });
+
+      $div('div').append(elems);
+
+      expect(elems).toHaveLength(1);
+    });
+
+    it('(html, context, keepScripts) : should ignore context argument', () => {
+      const $div = cheerio.load('<div>');
+      const elems = $div.parseHTML(
+        '<script>foo</script><a>',
+        { foo: 123 },
+        true
+      );
+
+      $div('div').append(elems);
+
+      expect(elems).toHaveLength(2);
+    });
   });
 
   describe('.merge', () => {
     const $ = cheerio.load('');
-    let arr1;
-    let arr2;
+    let arr1: ArrayLike<number>;
+    let arr2: ArrayLike<number>;
 
     beforeEach(() => {
       arr1 = [1, 2, 3];
@@ -276,16 +238,19 @@ describe('cheerio', () => {
     });
 
     it('(arraylike, arraylike) : should handle objects that arent arrays, but are arraylike', () => {
-      arr1 = {};
-      arr2 = {};
-      arr1.length = 3;
-      arr1[0] = 'a';
-      arr1[1] = 'b';
-      arr1[2] = 'c';
-      arr2.length = 3;
-      arr2[0] = 'd';
-      arr2[1] = 'e';
-      arr2[2] = 'f';
+      const arr1: ArrayLike<string> = {
+        length: 3,
+        [0]: 'a',
+        [1]: 'b',
+        [2]: 'c',
+      };
+      const arr2 = {
+        length: 3,
+        [0]: 'd',
+        [1]: 'e',
+        [2]: 'f',
+      };
+
       $.merge(arr1, arr2);
       expect(arr1).toHaveLength(6);
       expect(arr1[3]).toBe('d');
@@ -295,36 +260,21 @@ describe('cheerio', () => {
     });
 
     it('(?, ?) : should gracefully reject invalid inputs', () => {
-      let ret = $.merge([4], 3);
-      expect(ret).toBeFalsy();
-      ret = $.merge({}, {});
-      expect(ret).toBeFalsy();
-      ret = $.merge([], {});
-      expect(ret).toBeFalsy();
-      ret = $.merge({}, []);
-      expect(ret).toBeFalsy();
-      let fakeArray1 = { length: 3 };
-      fakeArray1[0] = 'a';
-      fakeArray1[1] = 'b';
-      fakeArray1[3] = 'd';
-      ret = $.merge(fakeArray1, []);
-      expect(ret).toBeFalsy();
-      ret = $.merge([], fakeArray1);
-      expect(ret).toBeFalsy();
-      fakeArray1 = {};
-      fakeArray1.length = '7';
-      ret = $.merge(fakeArray1, []);
-      expect(ret).toBeFalsy();
-      fakeArray1.length = -1;
-      ret = $.merge(fakeArray1, []);
-      expect(ret).toBeFalsy();
+      expect($.merge([4], 3 as any)).toBeFalsy();
+      expect($.merge({} as any, {} as any)).toBeFalsy();
+      expect($.merge([], {} as any)).toBeFalsy();
+      expect($.merge({} as any, [])).toBeFalsy();
+      const fakeArray1 = { length: 3, [0]: 'a', [1]: 'b', [3]: 'd' };
+      expect($.merge(fakeArray1, [])).toBeFalsy();
+      expect($.merge([], fakeArray1)).toBeFalsy();
+      const fakeArray2 = { length: '7' };
+      expect($.merge(fakeArray2 as any, [])).toBeFalsy();
+      const fakeArray3 = { length: -1 };
+      expect($.merge(fakeArray3, [])).toBeFalsy();
     });
 
     it('(?, ?) : should no-op on invalid inputs', () => {
-      const fakeArray1 = { length: 3 };
-      fakeArray1[0] = 'a';
-      fakeArray1[1] = 'b';
-      fakeArray1[3] = 'd';
+      const fakeArray1 = { length: 3, [0]: 'a', [1]: 'b', [3]: 'd' };
       $.merge(fakeArray1, []);
       expect(fakeArray1).toHaveLength(3);
       expect(fakeArray1[0]).toBe('a');
@@ -339,7 +289,7 @@ describe('cheerio', () => {
   });
 
   describe('.contains', () => {
-    let $;
+    let $: CheerioAPI;
 
     beforeEach(() => {
       $ = cheerio.load(fixtures.food);

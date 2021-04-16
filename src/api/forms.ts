@@ -1,5 +1,6 @@
-'use strict';
-/** @module cheerio/forms */
+import type { Node } from 'domhandler';
+import type { Cheerio, CheerioAPI } from '../cheerio';
+import { isTag } from '../utils';
 
 /*
  * https://github.com/jquery/jquery/blob/2.1.3/src/manipulation/var/rcheckableType.js
@@ -12,10 +13,11 @@ const rCRLF = /\r?\n/g;
 /**
  * Encode a set of form elements as a string for submission.
  *
- * @returns {string} The serialized form.
+ * @category Forms
+ * @returns The serialized form.
  * @see {@link https://api.jquery.com/serialize/}
  */
-exports.serialize = function () {
+export function serialize<T extends Node>(this: Cheerio<T>): string {
   // Convert form elements into name/value objects
   const arr = this.serializeArray();
 
@@ -27,25 +29,35 @@ exports.serialize = function () {
 
   // Return the resulting serialization
   return retArr.join('&').replace(r20, '+');
-};
+}
+
+interface SerializedField {
+  name: string;
+  value: string;
+}
 
 /**
  * Encode a set of form elements as an array of names and values.
  *
+ * @category Forms
  * @example
- *   $('<form><input name="foo" value="bar" /></form>').serializeArray();
- *   //=> [ { name: 'foo', value: 'bar' } ]
  *
- * @returns {object[]} The serialized form.
- * @this {Cheerio}
+ * ```js
+ * $('<form><input name="foo" value="bar" /></form>').serializeArray();
+ * //=> [ { name: 'foo', value: 'bar' } ]
+ * ```
+ *
+ * @returns The serialized form.
  * @see {@link https://api.jquery.com/serializeArray/}
  */
-exports.serializeArray = function () {
+export function serializeArray<T extends Node>(
+  this: Cheerio<T>
+): SerializedField[] {
   // Resolve all form elements from either forms or collections of form elements
-  const Cheerio = this.constructor;
+  const Cheerio = this.constructor as CheerioAPI;
   return this.map((_, elem) => {
     const $elem = Cheerio(elem);
-    if (elem.name === 'form') {
+    if (isTag(elem) && elem.name === 'form') {
       return $elem.find(submittableSelector).toArray();
     }
     return $elem.filter(submittableSelector).toArray();
@@ -59,30 +71,24 @@ exports.serializeArray = function () {
         ':matches([checked], :not(:checkbox, :radio))'
       // Convert each of the elements to its value(s)
     )
-    .map((_, elem) => {
+    .map<Node, SerializedField>((_, elem) => {
       const $elem = Cheerio(elem);
-      const name = $elem.attr('name');
-      let value = $elem.val();
-
+      const name = $elem.attr('name') as string; // We have filtered for elements with a name before.
       // If there is no value set (e.g. `undefined`, `null`), then default value to empty
-      if (value == null) {
-        value = '';
-      }
+      const value = $elem.val() ?? '';
 
       // If we have an array of values (e.g. `<select multiple>`), return an array of key/value pairs
       if (Array.isArray(value)) {
         return value.map((val) =>
           /*
            * We trim replace any line endings (e.g. `\r` or `\r\n` with `\r\n`) to guarantee consistency across platforms
-           *   These can occur inside of `<textarea>'s`
+           * These can occur inside of `<textarea>'s`
            */
           ({ name, value: val.replace(rCRLF, '\r\n') })
         );
-        // Otherwise (e.g. `<input type="text">`, return only one key/value pair
       }
+      // Otherwise (e.g. `<input type="text">`, return only one key/value pair
       return { name, value: value.replace(rCRLF, '\r\n') };
-
-      // Convert our result to an array
     })
-    .get();
-};
+    .toArray();
+}

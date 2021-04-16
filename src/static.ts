@@ -1,58 +1,96 @@
-'use strict';
-/**
- * @module cheerio/static
- * @ignore
- */
-const defaultOptions = require('./options').default;
-const flattenOptions = require('./options').flatten;
-const { select } = require('cheerio-select');
-const renderWithParse5 = require('./parsers/parse5').render;
-const renderWithHtmlparser2 = require('./parsers/htmlparser2').render;
+import type { CheerioAPI, Cheerio } from './cheerio';
+import { Node, Document } from 'domhandler';
+import {
+  InternalOptions,
+  CheerioOptions,
+  default as defaultOptions,
+  flatten as flattenOptions,
+} from './options';
+import { select } from 'cheerio-select';
+import { ElementType, DomUtils } from 'htmlparser2';
+import { render as renderWithParse5 } from './parsers/parse5';
+import { render as renderWithHtmlparser2 } from './parsers/htmlparser2';
 
 /**
  * Helper function to render a DOM.
  *
- * @param {Cheerio} that - Cheerio instance to render.
- * @param {Node[] | undefined} dom - The DOM to render. Defaults to `that`'s root.
- * @param {object} options - Options for rendering.
- * @returns {string} The rendered document.
+ * @param that - Cheerio instance to render.
+ * @param dom - The DOM to render. Defaults to `that`'s root.
+ * @param options - Options for rendering.
+ * @returns The rendered document.
  */
-function render(that, dom, options) {
+function render(
+  that: typeof Cheerio | undefined,
+  dom: ArrayLike<Node> | Node | string | undefined,
+  options: InternalOptions
+): string {
   if (!dom) {
-    if (that._root && that._root.children) {
+    if (that?._root?.children) {
       dom = that._root.children;
     } else {
       return '';
     }
   } else if (typeof dom === 'string') {
-    dom = select(dom, that._root, options);
+    dom = select(dom, that?._root ?? [], options);
   }
 
   return options.xmlMode || options._useHtmlParser2
-    ? renderWithHtmlparser2(dom, options)
+    ? // FIXME: Pull in new version of dom-serializer to fix this.
+      renderWithHtmlparser2(dom as Node[], options)
     : renderWithParse5(dom);
+}
+
+/**
+ * Checks if a passed object is an options object.
+ *
+ * @param dom - Object to check if it is an options object.
+ * @returns Whether the object is an options object.
+ */
+function isOptions(
+  dom?: string | ArrayLike<Node> | Node | InternalOptions | null
+): dom is InternalOptions {
+  return (
+    typeof dom === 'object' &&
+    dom != null &&
+    !('length' in dom) &&
+    !('type' in dom)
+  );
 }
 
 /**
  * Renders the document.
  *
- * @param {string | Cheerio | Node | object} [dom] - Element to render.
- * @param {object} [options] - Options for the renderer.
- * @returns {string} The rendered document.
+ * @param options - Options for the renderer.
+ * @returns The rendered document.
  */
-exports.html = function (dom, options) {
+export function html(
+  this: typeof Cheerio | void,
+  options?: CheerioOptions
+): string;
+/**
+ * Renders the document.
+ *
+ * @param dom - Element to render.
+ * @param options - Options for the renderer.
+ * @returns The rendered document.
+ */
+export function html(
+  this: typeof Cheerio | void,
+  dom?: string | ArrayLike<Node> | Node,
+  options?: CheerioOptions
+): string;
+export function html(
+  this: typeof Cheerio | void,
+  dom?: string | ArrayLike<Node> | Node | CheerioOptions,
+  options?: CheerioOptions
+): string {
   /*
    * Be flexible about parameters, sometimes we call html(),
    * with options as only parameter
    * check dom argument for dom element specific properties
    * assume there is no 'length' or 'type' properties in the options object
    */
-  if (
-    Object.prototype.toString.call(dom) === '[object Object]' &&
-    !options &&
-    !('length' in dom) &&
-    !('type' in dom)
-  ) {
+  if (!options && isOptions(dom)) {
     options = dom;
     dom = undefined;
   }
@@ -61,71 +99,89 @@ exports.html = function (dom, options) {
    * Sometimes `$.html()` is used without preloading html,
    * so fallback non-existing options to the default ones.
    */
-  options = Object.assign(
-    {},
-    defaultOptions,
-    this ? this._options : {},
-    flattenOptions(options || {})
-  );
+  options = {
+    ...defaultOptions,
+    ...(this ? this._options : {}),
+    ...flattenOptions(options ?? {}),
+  };
 
-  return render(this, dom, options);
-};
+  return render(
+    this || undefined,
+    dom as string | Cheerio<Node> | Node | undefined,
+    options
+  );
+}
 
 /**
  * Render the document as XML.
  *
- * @param {string | Cheerio | Node} [dom] - Element to render.
- * @returns {string} THe rendered document.
+ * @param dom - Element to render.
+ * @returns THe rendered document.
  */
-exports.xml = function (dom) {
-  const options = Object.assign({}, this._options, { xmlMode: true });
+export function xml(
+  this: typeof Cheerio,
+  dom?: string | ArrayLike<Node> | Node
+): string {
+  const options = { ...this._options, xmlMode: true };
 
   return render(this, dom, options);
-};
+}
 
 /**
  * Render the document as text.
  *
- * @param {Cheerio | Node[]} [elems] - Elements to render.
- * @returns {string} The rendered document.
+ * @param elements - Elements to render.
+ * @returns The rendered document.
  */
-exports.text = function (elems) {
-  if (!elems) {
-    elems = this.root();
-  }
+export function text(
+  this: typeof Cheerio | void,
+  elements?: ArrayLike<Node>
+): string {
+  const elems = elements ? elements : this ? this.root() : [];
 
   let ret = '';
-  const len = elems.length;
 
-  for (let i = 0; i < len; i++) {
+  for (let i = 0; i < elems.length; i++) {
     const elem = elems[i];
-    if (elem.type === 'text') ret += elem.data;
+    if (DomUtils.isText(elem)) ret += elem.data;
     else if (
-      elem.children &&
-      elem.type !== 'comment' &&
-      elem.tagName !== 'script' &&
-      elem.tagName !== 'style'
+      DomUtils.hasChildren(elem) &&
+      elem.type !== ElementType.Comment &&
+      elem.type !== ElementType.Script &&
+      elem.type !== ElementType.Style
     ) {
-      ret += exports.text(elem.children);
+      ret += text(elem.children);
     }
   }
 
   return ret;
-};
+}
 
 /**
  * Parses a string into an array of DOM nodes. The `context` argument has no
  * meaning for Cheerio, but it is maintained for API compatibility with jQuery.
  *
- * @param {string} data - Markup that will be parsed.
- * @param {any | boolean} [context] - Will be ignored. If it is a boolean it
- *   will be used as the value of `keepScripts`.
- * @param {boolean} [keepScripts] - If false all scripts will be removed.
- * @returns {Node[]} The parsed DOM.
+ * @param data - Markup that will be parsed.
+ * @param context - Will be ignored. If it is a boolean it will be used as the
+ *   value of `keepScripts`.
+ * @param keepScripts - If false all scripts will be removed.
+ * @returns The parsed DOM.
  * @alias Cheerio.parseHTML
  * @see {@link https://api.jquery.com/jQuery.parseHTML/}
  */
-exports.parseHTML = function (data, context, keepScripts) {
+export function parseHTML(
+  this: typeof Cheerio,
+  data: string,
+  context?: unknown | boolean,
+  keepScripts?: boolean
+): Node[];
+export function parseHTML(this: typeof Cheerio, data?: '' | null): null;
+export function parseHTML(
+  this: typeof Cheerio,
+  data?: string | null,
+  context?: unknown | boolean,
+  keepScripts = typeof context === 'boolean' ? context : false
+): Node[] | null {
   if (!data || typeof data !== 'string') {
     return null;
   }
@@ -147,34 +203,38 @@ exports.parseHTML = function (data, context, keepScripts) {
    * constant across these operations, so a shallow copy should be returned.
    */
   return parsed.root()[0].children.slice();
-};
+}
 
 /**
  * Sometimes you need to work with the top-level root element. To query it, you
  * can use `$.root()`.
  *
  * @example
- *   $.root().append('<ul id="vegetables"></ul>').html();
- *   //=> <ul id="fruits">...</ul><ul id="vegetables"></ul>
  *
- * @returns {Cheerio} Cheerio instance wrapping the root node.
+ * ```js
+ * $.root().append('<ul id="vegetables"></ul>').html();
+ * //=> <ul id="fruits">...</ul><ul id="vegetables"></ul>
+ * ```
+ *
+ * @returns Cheerio instance wrapping the root node.
  * @alias Cheerio.root
  */
-exports.root = function () {
-  return this(this._root);
-};
+export function root(this: typeof Cheerio): Cheerio<Document> {
+  const fn = (this as unknown) as CheerioAPI;
+  return fn(this._root);
+}
 
 /**
  * Checks to see if the `contained` DOM element is a descendant of the
  * `container` DOM element.
  *
- * @param {Node} container - Potential parent node.
- * @param {Node} contained - Potential child node.
- * @returns {boolean} Indicates if the nodes contain one another.
+ * @param container - Potential parent node.
+ * @param contained - Potential child node.
+ * @returns Indicates if the nodes contain one another.
  * @alias Cheerio.contains
  * @see {@link https://api.jquery.com/jQuery.contains/}
  */
-exports.contains = function (container, contained) {
+export function contains(container: Node, contained: Node): boolean {
   // According to the jQuery API, an element does not "contain" itself
   if (contained === container) {
     return false;
@@ -184,26 +244,35 @@ exports.contains = function (container, contained) {
    * Step up the descendants, stopping when the root element is reached
    * (signaled by `.parent` returning a reference to the same object)
    */
-  while (contained && contained !== contained.parent) {
-    contained = contained.parent;
-    if (contained === container) {
+  let next: Node | null = contained;
+  while (next && next !== next.parent) {
+    next = next.parent;
+    if (next === container) {
       return true;
     }
   }
 
   return false;
-};
+}
+
+interface WritableArrayLike<T> extends ArrayLike<T> {
+  length: number;
+  [n: number]: T;
+}
 
 /**
  * $.merge().
  *
- * @param {Array | Cheerio} arr1 - First array.
- * @param {Array | Cheerio} arr2 - Second array.
- * @returns {Array | Cheerio} `arr1`, with elements of `arr2` inserted.
+ * @param arr1 - First array.
+ * @param arr2 - Second array.
+ * @returns `arr1`, with elements of `arr2` inserted.
  * @alias Cheerio.merge
  * @see {@link https://api.jquery.com/jQuery.merge/}
  */
-exports.merge = function (arr1, arr2) {
+export function merge<T>(
+  arr1: WritableArrayLike<T>,
+  arr2: ArrayLike<T>
+): ArrayLike<T> | undefined {
   if (!isArrayLike(arr1) || !isArrayLike(arr2)) {
     return;
   }
@@ -215,13 +284,13 @@ exports.merge = function (arr1, arr2) {
   }
   arr1.length = newLength;
   return arr1;
-};
+}
 
 /**
- * @param {any} item - Item to check.
- * @returns {boolean} Indicates if the item is array-like.
+ * @param item - Item to check.
+ * @returns Indicates if the item is array-like.
  */
-function isArrayLike(item) {
+function isArrayLike(item: any): item is ArrayLike<unknown> {
   if (Array.isArray(item)) {
     return true;
   }

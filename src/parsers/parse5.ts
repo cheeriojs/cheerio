@@ -1,8 +1,17 @@
-'use strict';
-const parse5 = require('parse5');
-const htmlparser2Adapter = require('parse5-htmlparser2-tree-adapter');
+import { Node, Document, isDocument } from 'domhandler';
+import { parse as parseDocument, parseFragment, serialize } from 'parse5';
+import htmlparser2Adapter from 'parse5-htmlparser2-tree-adapter';
+import type { InternalOptions } from '../options';
 
-exports.parse = function (content, options, isDocument) {
+interface Parse5Options extends InternalOptions {
+  context?: Node;
+}
+
+export function parse(
+  content: string,
+  options: Parse5Options,
+  isDocument?: boolean
+): Document {
   const opts = {
     scriptingEnabled:
       typeof options.scriptingEnabled === 'boolean'
@@ -14,12 +23,14 @@ exports.parse = function (content, options, isDocument) {
 
   const { context } = options;
 
+  // @ts-expect-error The tree adapter unfortunately doesn't return the exact types.
   return isDocument
-    ? parse5.parse(content, opts)
-    : parse5.parseFragment(context, content, opts);
-};
+    ? parseDocument(content, opts)
+    : // @ts-expect-error Same issue again.
+      parseFragment(context, content, opts);
+}
 
-exports.render = function (dom) {
+export function render(dom: Node | ArrayLike<Node>): string {
   /*
    * `dom-serializer` passes over the special "root" node and renders the
    * node's children in its place. To mimic this behavior with `parse5`, an
@@ -27,13 +38,12 @@ exports.render = function (dom) {
    */
   const nodes = 'length' in dom ? dom : [dom];
   for (let index = 0; index < nodes.length; index += 1) {
-    if (nodes[index].type === 'root') {
-      nodes.splice.apply(nodes, [index, 1].concat(nodes[index].children));
+    const node = nodes[index];
+    if (isDocument(node)) {
+      Array.prototype.splice.call(nodes, index, 1, ...node.children);
     }
   }
 
-  return parse5.serialize(
-    { children: nodes },
-    { treeAdapter: htmlparser2Adapter }
-  );
-};
+  // @ts-expect-error Types don't align here either.
+  return serialize({ children: nodes }, { treeAdapter: htmlparser2Adapter });
+}

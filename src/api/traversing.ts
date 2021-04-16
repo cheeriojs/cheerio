@@ -1,42 +1,49 @@
-'use strict';
 /**
  * Methods for traversing the DOM structure.
  *
  * @module cheerio/traversing
  */
 
-const select = require('cheerio-select');
-const utils = require('../utils');
-const { domEach } = utils;
-const { uniqueSort } = require('htmlparser2').DomUtils;
-const { isTag } = utils;
-const { slice } = Array.prototype;
+import { Node, Element, hasChildren } from 'domhandler';
+import type { Cheerio } from '../cheerio';
+import * as select from 'cheerio-select';
+import { domEach, isTag, isCheerio } from '../utils';
+import { DomUtils } from 'htmlparser2';
+import type { FilterFunction, AcceptedFilters } from '../types';
+const { uniqueSort } = DomUtils;
 const reSiblingSelector = /^\s*[~+]/;
 
 /**
  * Get the descendants of each element in the current set of matched elements,
  * filtered by a selector, jQuery object, or element.
  *
+ * @category Traversing
  * @example
- *   $('#fruits').find('li').length;
- *   //=> 3
- *   $('#fruits').find($('.apple')).length;
- *   //=> 1
  *
- * @param {string | Cheerio | Node} selectorOrHaystack - Element to look for.
- * @returns {Cheerio} The found elements.
+ * ```js
+ * $('#fruits').find('li').length;
+ * //=> 3
+ * $('#fruits').find($('.apple')).length;
+ * //=> 1
+ * ```
+ *
+ * @param selectorOrHaystack - Element to look for.
+ * @returns The found elements.
  * @see {@link https://api.jquery.com/find/}
  */
-exports.find = function (selectorOrHaystack) {
+export function find<T extends Node>(
+  this: Cheerio<T>,
+  selectorOrHaystack?: string | Cheerio<Element> | Element
+): Cheerio<Element> {
   if (!selectorOrHaystack) {
     return this._make([]);
   }
 
-  const context = this.toArray();
+  const context: Node[] = this.toArray();
 
   if (typeof selectorOrHaystack !== 'string') {
-    const { contains } = this.constructor;
-    const haystack = selectorOrHaystack.cheerio
+    const { contains } = this.constructor as typeof Cheerio;
+    const haystack = isCheerio(selectorOrHaystack)
       ? selectorOrHaystack.get()
       : [selectorOrHaystack];
 
@@ -47,68 +54,78 @@ exports.find = function (selectorOrHaystack) {
 
   const elems = reSiblingSelector.test(selectorOrHaystack)
     ? context
-    : context.reduce(
+    : context.reduce<Node[]>(
         (newElems, elem) =>
-          Array.isArray(elem.children)
+          hasChildren(elem)
             ? newElems.concat(elem.children.filter(isTag))
             : newElems,
         []
       );
 
-  const options = Object.assign({ context }, this.options);
+  const options = { context, xmlMode: this.options.xmlMode };
 
   return this._make(select.select(selectorOrHaystack, elems, options));
-};
+}
 
 /**
  * Get the parent of each element in the current set of matched elements,
  * optionally filtered by a selector.
  *
+ * @category Traversing
  * @example
- *   $('.pear').parent().attr('id');
- *   //=> fruits
  *
- * @param {string} [selector] - If specified filter for parent.
- * @returns {Cheerio} The parents.
+ * ```js
+ * $('.pear').parent().attr('id');
+ * //=> fruits
+ * ```
+ *
+ * @param selector - If specified filter for parent.
+ * @returns The parents.
  * @see {@link https://api.jquery.com/parent/}
  */
-exports.parent = function (selector) {
-  let set = [];
+export function parent<T extends Node>(
+  this: Cheerio<T>,
+  selector?: AcceptedFilters
+): Cheerio<Element> {
+  const set: Element[] = [];
 
   domEach(this, (_, elem) => {
     const parentElem = elem.parent;
     if (
       parentElem &&
       parentElem.type !== 'root' &&
-      set.indexOf(parentElem) < 0
+      !set.includes(parentElem as Element)
     ) {
-      set.push(parentElem);
+      set.push(parentElem as Element);
     }
   });
 
-  if (selector) {
-    set = exports.filter.call(set, selector, this);
-  }
-
-  return this._make(set);
-};
+  return selector ? filter.call(set, selector, this) : this._make(set);
+}
 
 /**
  * Get a set of parents filtered by `selector` of each element in the current
  * set of match elements.
  *
+ * @category Traversing
  * @example
- *   $('.orange').parents().length;
- *   // => 2
- *   $('.orange').parents('#fruits').length;
- *   // => 1
  *
- * @param {string} [selector] - If specified filter for parents.
- * @returns {Cheerio} The parents.
+ * ```js
+ * $('.orange').parents().length;
+ * //=> 2
+ * $('.orange').parents('#fruits').length;
+ * //=> 1
+ * ```
+ *
+ * @param selector - If specified filter for parents.
+ * @returns The parents.
  * @see {@link https://api.jquery.com/parents/}
  */
-exports.parents = function (selector) {
-  const parentNodes = [];
+export function parents<T extends Node>(
+  this: Cheerio<T>,
+  selector?: AcceptedFilters
+): Cheerio<Element> {
+  const parentNodes: Element[] = [];
 
   /*
    * When multiple DOM elements are in the original set, the resulting set will
@@ -117,38 +134,47 @@ exports.parents = function (selector) {
    */
   this.get()
     .reverse()
-    .forEach(function (elem) {
+    .forEach((elem) =>
       traverseParents(this, elem.parent, selector, Infinity).forEach((node) => {
-        if (parentNodes.indexOf(node) === -1) {
-          parentNodes.push(node);
+        // We know these must be `Element`s, as we filter out root nodes.
+        if (!parentNodes.includes(node as Element)) {
+          parentNodes.push(node as Element);
         }
-      });
-    }, this);
+      })
+    );
 
   return this._make(parentNodes);
-};
+}
 
 /**
  * Get the ancestors of each element in the current set of matched elements, up
  * to but not including the element matched by the selector, DOM node, or cheerio object.
  *
+ * @category Traversing
  * @example
- *   $('.orange').parentsUntil('#food').length;
- *   // => 1
  *
- * @param {string | Node | Cheerio} selector - Selector for element to stop at.
- * @param {string | Function} [filter] - Optional filter for parents.
- * @returns {Cheerio} The parents.
+ * ```js
+ * $('.orange').parentsUntil('#food').length;
+ * //=> 1
+ * ```
+ *
+ * @param selector - Selector for element to stop at.
+ * @param filterBy - Optional filter for parents.
+ * @returns The parents.
  * @see {@link https://api.jquery.com/parentsUntil/}
  */
-exports.parentsUntil = function (selector, filter) {
-  const parentNodes = [];
-  let untilNode;
-  let untilNodes;
+export function parentsUntil<T extends Node>(
+  this: Cheerio<T>,
+  selector?: string | Node | Cheerio<Node>,
+  filterBy?: AcceptedFilters
+): Cheerio<Element> {
+  const parentNodes: Element[] = [];
+  let untilNode: Node | undefined;
+  let untilNodes: Node[] | undefined;
 
   if (typeof selector === 'string') {
     untilNodes = this.parents(selector).toArray();
-  } else if (selector && selector.cheerio) {
+  } else if (selector && isCheerio(selector)) {
     untilNodes = selector.toArray();
   } else if (selector) {
     untilNode = selector;
@@ -162,14 +188,15 @@ exports.parentsUntil = function (selector, filter) {
 
   this.toArray()
     .reverse()
-    .forEach((elem) => {
-      while ((elem = elem.parent)) {
+    .forEach((elem: Node) => {
+      while (elem.parent) {
+        elem = elem.parent;
         if (
           (untilNode && elem !== untilNode) ||
-          (untilNodes && untilNodes.indexOf(elem) === -1) ||
+          (untilNodes && !untilNodes.includes(elem)) ||
           (!untilNode && !untilNodes)
         ) {
-          if (isTag(elem) && parentNodes.indexOf(elem) === -1) {
+          if (isTag(elem) && !parentNodes.includes(elem)) {
             parentNodes.push(elem);
           }
         } else {
@@ -178,67 +205,82 @@ exports.parentsUntil = function (selector, filter) {
       }
     }, this);
 
-  return filter
-    ? exports.filter.call(parentNodes, filter, this)
+  return filterBy
+    ? filter.call(parentNodes, filterBy, this)
     : this._make(parentNodes);
-};
+}
 
 /**
  * For each element in the set, get the first element that matches the selector
  * by testing the element itself and traversing up through its ancestors in the DOM tree.
  *
+ * @category Traversing
  * @example
- *   $('.orange').closest();
- *   // => []
- *   $('.orange').closest('.apple');
- *   // => []
- *   $('.orange').closest('li');
- *   // => [<li class="orange">Orange</li>]
- *   $('.orange').closest('#fruits');
- *   // => [<ul id="fruits"> ... </ul>]
  *
- * @param {string} [selector] - Selector for the element to find.
- * @returns {Cheerio} The closest nodes.
+ * ```js
+ * $('.orange').closest();
+ * //=> []
+ *
+ * $('.orange').closest('.apple');
+ * // => []
+ *
+ * $('.orange').closest('li');
+ * //=> [<li class="orange">Orange</li>]
+ *
+ * $('.orange').closest('#fruits');
+ * //=> [<ul id="fruits"> ... </ul>]
+ * ```
+ *
+ * @param selector - Selector for the element to find.
+ * @returns The closest nodes.
  * @see {@link https://api.jquery.com/closest/}
  */
-exports.closest = function (selector) {
-  const set = [];
+export function closest<T extends Node>(
+  this: Cheerio<T>,
+  selector?: AcceptedFilters
+): Cheerio<Node> {
+  const set: Node[] = [];
 
   if (!selector) {
     return this._make(set);
   }
 
-  domEach(this, function (_, elem) {
+  domEach(this, (_, elem) => {
     const closestElem = traverseParents(this, elem, selector, 1)[0];
 
     // Do not add duplicate elements to the set
-    if (closestElem && set.indexOf(closestElem) < 0) {
+    if (closestElem && !set.includes(closestElem)) {
       set.push(closestElem);
     }
   });
 
   return this._make(set);
-};
+}
 
 /**
  * Gets the next sibling of the first selected element, optionally filtered by a selector.
  *
+ * @category Traversing
  * @example
- *   $('.apple').next().hasClass('orange');
- *   //=> true
  *
- * @param {string} [selector] - If specified filter for sibling.
- * @returns {Cheerio} The next nodes.
+ * ```js
+ * $('.apple').next().hasClass('orange');
+ * //=> true
+ * ```
+ *
+ * @param selector - If specified filter for sibling.
+ * @returns The next nodes.
  * @see {@link https://api.jquery.com/next/}
  */
-exports.next = function (selector) {
-  if (!this[0]) {
-    return this;
-  }
-  const elems = [];
+export function next<T extends Node>(
+  this: Cheerio<T>,
+  selector?: AcceptedFilters
+): Cheerio<Element> {
+  const elems: Element[] = [];
 
   domEach(this, (_, elem) => {
-    while ((elem = elem.next)) {
+    while (elem.next) {
+      elem = elem.next;
       if (isTag(elem)) {
         elems.push(elem);
         return;
@@ -246,81 +288,88 @@ exports.next = function (selector) {
     }
   });
 
-  return selector
-    ? exports.filter.call(elems, selector, this)
-    : this._make(elems);
-};
+  return selector ? filter.call(elems, selector, this) : this._make(elems);
+}
 
 /**
  * Gets all the following siblings of the first selected element, optionally
  * filtered by a selector.
  *
+ * @category Traversing
  * @example
- *   $('.apple').nextAll();
- *   //=> [<li class="orange">Orange</li>, <li class="pear">Pear</li>]
- *   $('.apple').nextAll('.orange');
- *   //=> [<li class="orange">Orange</li>]
  *
- * @param {string} [selector] - If specified filter for siblings.
- * @returns {Cheerio} The next nodes.
+ * ```js
+ * $('.apple').nextAll();
+ * //=> [<li class="orange">Orange</li>, <li class="pear">Pear</li>]
+ * $('.apple').nextAll('.orange');
+ * //=> [<li class="orange">Orange</li>]
+ * ```
+ *
+ * @param selector - If specified filter for siblings.
+ * @returns The next nodes.
  * @see {@link https://api.jquery.com/nextAll/}
  */
-exports.nextAll = function (selector) {
-  if (!this[0]) {
-    return this;
-  }
-  const elems = [];
+export function nextAll<T extends Node>(
+  this: Cheerio<T>,
+  selector?: AcceptedFilters
+): Cheerio<Element> {
+  const elems: Element[] = [];
 
-  domEach(this, (_, elem) => {
-    while ((elem = elem.next)) {
-      if (isTag(elem) && elems.indexOf(elem) === -1) {
+  domEach(this, (_, elem: Node) => {
+    while (elem.next) {
+      elem = elem.next;
+      if (isTag(elem) && !elems.includes(elem)) {
         elems.push(elem);
       }
     }
   });
 
-  return selector
-    ? exports.filter.call(elems, selector, this)
-    : this._make(elems);
-};
+  return selector ? filter.call(elems, selector, this) : this._make(elems);
+}
 
 /**
  * Gets all the following siblings up to but not including the element matched
  * by the selector, optionally filtered by another selector.
  *
+ * @category Traversing
  * @example
- *   $('.apple').nextUntil('.pear');
- *   //=> [<li class="orange">Orange</li>]
  *
- * @param {string | Cheerio | Node} selector - Selector for element to stop at.
- * @param {string} [filterSelector] - If specified filter for siblings.
- * @returns {Cheerio} The next nodes.
+ * ```js
+ * $('.apple').nextUntil('.pear');
+ * //=> [<li class="orange">Orange</li>]
+ * ```
+ *
+ * @param selector - Selector for element to stop at.
+ * @param filterSelector - If specified filter for siblings.
+ * @returns The next nodes.
  * @see {@link https://api.jquery.com/nextUntil/}
  */
-exports.nextUntil = function (selector, filterSelector) {
-  if (!this[0]) {
-    return this;
-  }
-  const elems = [];
-  let untilNode;
-  let untilNodes;
+export function nextUntil<T extends Node>(
+  this: Cheerio<T>,
+  selector?: string | Cheerio<Node> | Node | null,
+  filterSelector?: AcceptedFilters
+): Cheerio<Element> {
+  const elems: Element[] = [];
+  let untilNode: Node | undefined;
+  let untilNodes: Node[] | undefined;
 
   if (typeof selector === 'string') {
     untilNodes = this.nextAll(selector).toArray();
-  } else if (selector && selector.cheerio) {
+  } else if (selector && isCheerio(selector)) {
     untilNodes = selector.get();
   } else if (selector) {
     untilNode = selector;
   }
 
   domEach(this, (_, elem) => {
-    while ((elem = elem.next)) {
+    while (elem.next) {
+      elem = elem.next;
       if (
         (untilNode && elem !== untilNode) ||
-        (untilNodes && untilNodes.indexOf(elem) === -1) ||
+        (untilNodes && !untilNodes.includes(elem)) ||
         (!untilNode && !untilNodes)
       ) {
-        if (isTag(elem) && elems.indexOf(elem) === -1) {
+        if (isTag(elem) && !elems.includes(elem)) {
           elems.push(elem);
         }
       } else {
@@ -330,30 +379,35 @@ exports.nextUntil = function (selector, filterSelector) {
   });
 
   return filterSelector
-    ? exports.filter.call(elems, filterSelector, this)
+    ? filter.call(elems, filterSelector, this)
     : this._make(elems);
-};
+}
 
 /**
  * Gets the previous sibling of the first selected element optionally filtered
  * by a selector.
  *
+ * @category Traversing
  * @example
- *   $('.orange').prev().hasClass('apple');
- *   //=> true
  *
- * @param {string} [selector] - If specified filter for siblings.
- * @returns {Cheerio} The previous nodes.
+ * ```js
+ * $('.orange').prev().hasClass('apple');
+ * //=> true
+ * ```
+ *
+ * @param selector - If specified filter for siblings.
+ * @returns The previous nodes.
  * @see {@link https://api.jquery.com/prev/}
  */
-exports.prev = function (selector) {
-  if (!this[0]) {
-    return this;
-  }
-  const elems = [];
+export function prev<T extends Node>(
+  this: Cheerio<T>,
+  selector?: AcceptedFilters
+): Cheerio<Element> {
+  const elems: Element[] = [];
 
-  domEach(this, (_, elem) => {
-    while ((elem = elem.prev)) {
+  domEach(this, (_, elem: Node) => {
+    while (elem.prev) {
+      elem = elem.prev;
       if (isTag(elem)) {
         elems.push(elem);
         return;
@@ -361,81 +415,89 @@ exports.prev = function (selector) {
     }
   });
 
-  return selector
-    ? exports.filter.call(elems, selector, this)
-    : this._make(elems);
-};
+  return selector ? filter.call(elems, selector, this) : this._make(elems);
+}
 
 /**
  * Gets all the preceding siblings of the first selected element, optionally
  * filtered by a selector.
  *
+ * @category Traversing
  * @example
- *   $('.pear').prevAll();
- *   //=> [<li class="orange">Orange</li>, <li class="apple">Apple</li>]
- *   $('.pear').prevAll('.orange');
- *   //=> [<li class="orange">Orange</li>]
  *
- * @param {string} [selector] - If specified filter for siblings.
- * @returns {Cheerio} The previous nodes.
+ * ```js
+ * $('.pear').prevAll();
+ * //=> [<li class="orange">Orange</li>, <li class="apple">Apple</li>]
+ *
+ * $('.pear').prevAll('.orange');
+ * //=> [<li class="orange">Orange</li>]
+ * ```
+ *
+ * @param selector - If specified filter for siblings.
+ * @returns The previous nodes.
  * @see {@link https://api.jquery.com/prevAll/}
  */
-exports.prevAll = function (selector) {
-  if (!this[0]) {
-    return this;
-  }
-  const elems = [];
+export function prevAll<T extends Node>(
+  this: Cheerio<T>,
+  selector?: AcceptedFilters
+): Cheerio<Element> {
+  const elems: Element[] = [];
 
   domEach(this, (_, elem) => {
-    while ((elem = elem.prev)) {
-      if (isTag(elem) && elems.indexOf(elem) === -1) {
+    while (elem.prev) {
+      elem = elem.prev;
+      if (isTag(elem) && !elems.includes(elem)) {
         elems.push(elem);
       }
     }
   });
 
-  return selector
-    ? exports.filter.call(elems, selector, this)
-    : this._make(elems);
-};
+  return selector ? filter.call(elems, selector, this) : this._make(elems);
+}
 
 /**
  * Gets all the preceding siblings up to but not including the element matched
  * by the selector, optionally filtered by another selector.
  *
+ * @category Traversing
  * @example
- *   $('.pear').prevUntil('.apple');
- *   //=> [<li class="orange">Orange</li>]
  *
- * @param {string | Cheerio | Node} selector - Selector for element to stop at.
- * @param {string} [filterSelector] - If specified filter for siblings.
- * @returns {Cheerio} The previous nodes.
+ * ```js
+ * $('.pear').prevUntil('.apple');
+ * //=> [<li class="orange">Orange</li>]
+ * ```
+ *
+ * @param selector - Selector for element to stop at.
+ * @param filterSelector - If specified filter for siblings.
+ * @returns The previous nodes.
  * @see {@link https://api.jquery.com/prevUntil/}
  */
-exports.prevUntil = function (selector, filterSelector) {
-  if (!this[0]) {
-    return this;
-  }
-  const elems = [];
-  let untilNode;
-  let untilNodes;
+export function prevUntil<T extends Node>(
+  this: Cheerio<T>,
+  selector?: string | Cheerio<Node> | Node | null,
+  filterSelector?: AcceptedFilters
+): Cheerio<Element> {
+  const elems: Element[] = [];
+  let untilNode: Node | undefined;
+  let untilNodes: Node[] | undefined;
 
   if (typeof selector === 'string') {
     untilNodes = this.prevAll(selector).toArray();
-  } else if (selector && selector.cheerio) {
+  } else if (selector && isCheerio(selector)) {
     untilNodes = selector.get();
   } else if (selector) {
     untilNode = selector;
   }
 
   domEach(this, (_, elem) => {
-    while ((elem = elem.prev)) {
+    while (elem.prev) {
+      elem = elem.prev;
       if (
         (untilNode && elem !== untilNode) ||
-        (untilNodes && untilNodes.indexOf(elem) === -1) ||
+        (untilNodes && !untilNodes.includes(elem)) ||
         (!untilNode && !untilNodes)
       ) {
-        if (isTag(elem) && elems.indexOf(elem) === -1) {
+        if (isTag(elem) && !elems.includes(elem)) {
           elems.push(elem);
         }
       } else {
@@ -445,82 +507,101 @@ exports.prevUntil = function (selector, filterSelector) {
   });
 
   return filterSelector
-    ? exports.filter.call(elems, filterSelector, this)
+    ? filter.call(elems, filterSelector, this)
     : this._make(elems);
-};
+}
 
 /**
- * Gets the first selected element's siblings, excluding itself.
+ * Get the siblings of each element (excluding the element) in the set of
+ * matched elements, optionally filtered by a selector.
  *
+ * @category Traversing
  * @example
- *   $('.pear').siblings().length;
- *   //=> 2
  *
- *   $('.pear').siblings('.orange').length;
- *   //=> 1
+ * ```js
+ * $('.pear').siblings().length;
+ * //=> 2
  *
- * @param {string} [selector] - If specified filter for siblings.
- * @returns {Cheerio} The siblings.
+ * $('.pear').siblings('.orange').length;
+ * //=> 1
+ * ```
+ *
+ * @param selector - If specified filter for siblings.
+ * @returns The siblings.
  * @see {@link https://api.jquery.com/siblings/}
  */
-exports.siblings = function (selector) {
+export function siblings<T extends Node>(
+  this: Cheerio<T>,
+  selector?: AcceptedFilters
+): Cheerio<Element> {
+  // TODO Still get siblings if `parent` is null; see DomUtils' `getSiblings`.
   const parent = this.parent();
 
-  const elems = (parent ? parent.children() : this.siblingsAndMe())
+  const elems = parent
+    .children()
     .toArray()
-    .filter(function (elem) {
-      return isTag(elem) && !this.is(elem);
-    }, this);
+    // TODO: This removes all elements in the selection. Note that they could be added here, if siblings are part of the selection.
+    .filter((elem: Node) => !this.is(elem));
 
-  if (selector !== undefined) {
-    return exports.filter.call(elems, selector, this);
-  }
-  return this._make(elems);
-};
+  return selector ? filter.call(elems, selector, this) : this._make(elems);
+}
 
 /**
  * Gets the children of the first selected element.
  *
+ * @category Traversing
  * @example
- *   $('#fruits').children().length;
- *   //=> 3
  *
- *   $('#fruits').children('.pear').text();
- *   //=> Pear
+ * ```js
+ * $('#fruits').children().length;
+ * //=> 3
  *
- * @param {string} [selector] - If specified filter for children.
- * @returns {Cheerio} The children.
+ * $('#fruits').children('.pear').text();
+ * //=> Pear
+ * ```
+ *
+ * @param selector - If specified filter for children.
+ * @returns The children.
  * @see {@link https://api.jquery.com/children/}
  */
-exports.children = function (selector) {
-  const elems = this.toArray().reduce(
-    (newElems, elem) => newElems.concat(elem.children.filter(isTag)),
+export function children<T extends Node>(
+  this: Cheerio<T>,
+  selector?: AcceptedFilters
+): Cheerio<Element> {
+  const elems = this.toArray().reduce<Element[]>(
+    (newElems, elem) =>
+      hasChildren(elem)
+        ? newElems.concat(elem.children.filter(isTag))
+        : newElems,
     []
   );
 
-  if (selector === undefined) return this._make(elems);
-
-  return exports.filter.call(elems, selector, this);
-};
+  return selector ? filter.call(elems, selector, this) : this._make(elems);
+}
 
 /**
  * Gets the children of each element in the set of matched elements, including
  * text and comment nodes.
  *
+ * @category Traversing
  * @example
- *   $('#fruits').contents().length;
- *   //=> 3
  *
- * @returns {Cheerio} The children.
+ * ```js
+ * $('#fruits').contents().length;
+ * //=> 3
+ * ```
+ *
+ * @returns The children.
  * @see {@link https://api.jquery.com/contents/}
  */
-exports.contents = function () {
-  const elems = this.toArray().reduce(
-    (newElems, elem) => newElems.concat(elem.children),
+export function contents<T extends Node>(this: Cheerio<T>): Cheerio<Node> {
+  const elems = this.toArray().reduce<Node[]>(
+    (newElems, elem) =>
+      hasChildren(elem) ? newElems.concat(elem.children) : newElems,
     []
   );
   return this._make(elems);
-};
+}
 
 /**
  * Iterates over a cheerio object, executing a function for each matched
@@ -529,26 +610,33 @@ exports.contents = function () {
  * to the function parameter `element`. To break out of the `each` loop early,
  * return with `false`.
  *
+ * @category Traversing
  * @example
- *   const fruits = [];
  *
- *   $('li').each(function (i, elem) {
- *     fruits[i] = $(this).text();
- *   });
+ * ```js
+ * const fruits = [];
  *
- *   fruits.join(', ');
- *   //=> Apple, Orange, Pear
+ * $('li').each(function (i, elem) {
+ *   fruits[i] = $(this).text();
+ * });
  *
- * @param {Function} fn - Function to execute.
- * @returns {Cheerio} The instance itself, useful for chaining.
+ * fruits.join(', ');
+ * //=> Apple, Orange, Pear
+ * ```
+ *
+ * @param fn - Function to execute.
+ * @returns The instance itself, useful for chaining.
  * @see {@link https://api.jquery.com/each/}
  */
-exports.each = function (fn) {
+export function each<T>(
+  this: Cheerio<T>,
+  fn: (this: T, i: number, el: T) => void | boolean
+): Cheerio<T> {
   let i = 0;
   const len = this.length;
   while (i < len && fn.call(this[i], i, this[i]) !== false) ++i;
   return this;
-};
+}
 
 /**
  * Pass each element in the current matched set through a function, producing a
@@ -558,22 +646,29 @@ exports.each = function (fn) {
  * inserted into the set. If the function returns null or undefined, no element
  * will be inserted.
  *
+ * @category Traversing
  * @example
- *   $('li')
- *     .map(function (i, el) {
- *       // this === el
- *       return $(this).text();
- *     })
- *     .get()
- *     .join(' ');
- *   //=> "apple orange pear"
  *
- * @param {Function} fn - Function to execute.
- * @returns {Cheerio} The mapped elements, wrapped in a Cheerio collection.
+ * ```js
+ * $('li')
+ *   .map(function (i, el) {
+ *     // this === el
+ *     return $(this).text();
+ *   })
+ *   .toArray()
+ *   .join(' ');
+ * //=> "apple orange pear"
+ * ```
+ *
+ * @param fn - Function to execute.
+ * @returns The mapped elements, wrapped in a Cheerio collection.
  * @see {@link https://api.jquery.com/map/}
  */
-exports.map = function (fn) {
-  let elems = [];
+export function map<T, M>(
+  this: Cheerio<T>,
+  fn: (this: T, i: number, el: T) => M[] | M | null | undefined
+): Cheerio<M> {
+  let elems: M[] = [];
   for (let i = 0; i < this.length; i++) {
     const el = this[i];
     const val = fn.call(el, i, el);
@@ -582,15 +677,17 @@ exports.map = function (fn) {
     }
   }
   return this._make(elems);
-};
+}
 
-function getFilterFn(match) {
+function getFilterFn<T extends Node, S extends T>(
+  match: ((this: S, i: number, el: S) => boolean) | Cheerio<T> | T
+): (el: S, i: number) => boolean {
   if (typeof match === 'function') {
     return function (el, i) {
       return match.call(el, i, el);
     };
   }
-  if (match.cheerio) {
+  if (isCheerio(match)) {
     return match.is.bind(match);
   }
   return function (el) {
@@ -607,28 +704,41 @@ function getFilterFn(match) {
  * executed in the context of the selected element, so `this` refers to the
  * current element.
  *
+ * @category Traversing
  * @example <caption>Selector</caption>
- *   $('li').filter('.orange').attr('class');
- *   //=> orange
+ *
+ * ```js
+ * $('li').filter('.orange').attr('class');
+ * //=> orange
+ * ```
  *
  * @example <caption>Function</caption>
- *   $('li')
- *     .filter(function (i, el) {
- *       // this === el
- *       return $(this).attr('class') === 'orange';
- *     })
- *     .attr('class');
- *   //=> orange
  *
- * @function
- * @param {string | Function} match - Value to look for, following the rules above.
- * @param {Cheerio} [container] - Optional node to filter instead.
- * @returns {Cheerio} The filtered collection.
+ * ```js
+ * $('li')
+ *   .filter(function (i, el) {
+ *     // this === el
+ *     return $(this).attr('class') === 'orange';
+ *   })
+ *   .attr('class'); //=> orange
+ * ```
+ *
+ * @param match - Value to look for, following the rules above.
+ * @param container - Optional node to filter instead.
+ * @returns The filtered collection.
  * @see {@link https://api.jquery.com/filter/}
  */
-exports.filter = function (match, container) {
-  container = container || this;
-  let elements = this.toArray ? this.toArray() : this;
+export function filter(
+  this: Cheerio<Node> | Node[],
+  match: AcceptedFilters,
+  container = this
+): Cheerio<Element> {
+  if (!isCheerio(container)) {
+    throw new Error('Not able to create a Cheerio instance.');
+  }
+
+  const nodes = isCheerio(this) ? this.toArray() : this;
+  let elements: Element[] = nodes.filter(isTag);
 
   elements =
     typeof match === 'string'
@@ -636,212 +746,286 @@ exports.filter = function (match, container) {
       : elements.filter(getFilterFn(match));
 
   return container._make(elements);
-};
+}
 
 /**
- * Remove elements from the set of matched elements. Given a jQuery object that
- * represents a set of DOM elements, the `.not()` method constructs a new jQuery
- * object from a subset of the matching elements. The supplied selector is
- * tested against each element; the elements that don't match the selector will
- * be included in the result. The `.not()` method can take a function as its
- * argument in the same way that `.filter()` does. Elements for which the
- * function returns true are excluded from the filtered set; all other elements
- * are included.
+ * Remove elements from the set of matched elements. Given a Cheerio object that
+ * represents a set of DOM elements, the `.not()` method constructs a new
+ * Cheerio object from a subset of the matching elements. The supplied selector
+ * is tested against each element; the elements that don't match the selector
+ * will be included in the result.
  *
+ * The `.not()` method can take a function as its argument in the same way that
+ * `.filter()` does. Elements for which the function returns `true` are excluded
+ * from the filtered set; all other elements are included.
+ *
+ * @category Traversing
  * @example <caption>Selector</caption>
- *   $('li').not('.apple').length;
- *   //=> 2
+ *
+ * ```js
+ * $('li').not('.apple').length;
+ * //=> 2
+ * ```
  *
  * @example <caption>Function</caption>
- *   $('li').not(function (i, el) {
- *     // this === el
- *     return $(this).attr('class') === 'orange';
- *   }).length;
- *   //=> 2
  *
- * @function
- * @param {string | Function} match - Value to look for, following the rules above.
- * @param {Node[] | Cheerio} [container] - Optional node to filter instead.
- * @returns {Cheerio} The filtered collection.
+ * ```js
+ * $('li').not(function (i, el) {
+ *   // this === el
+ *   return $(this).attr('class') === 'orange';
+ * }).length; //=> 2
+ * ```
+ *
+ * @param match - Value to look for, following the rules above.
+ * @param container - Optional node to filter instead.
+ * @returns The filtered collection.
  * @see {@link https://api.jquery.com/not/}
  */
-exports.not = function (match, container) {
-  container = container || this;
-  let elements = container.toArray ? container.toArray() : container;
-
-  if (typeof match === 'string') {
-    const matches = new Set(select.filter(match, elements, this.options));
-    elements = elements.filter((el) => !matches.has(el));
-  } else {
-    const filterFn = getFilterFn(match);
-    elements = elements.filter((el, i) => !filterFn(el, i));
+export function not<T extends Node>(
+  this: Cheerio<T> | T[],
+  match: Node | Cheerio<Node> | string | FilterFunction<T>,
+  container = this
+): Cheerio<T> {
+  if (!isCheerio(container)) {
+    throw new Error('Not able to create a Cheerio instance.');
   }
 
-  return container._make(elements);
-};
+  let nodes = isCheerio(this) ? this.toArray() : this;
+
+  if (typeof match === 'string') {
+    const elements = (nodes as Node[]).filter(isTag);
+    const matches = new Set<Node>(
+      select.filter(match, elements, container.options)
+    );
+    nodes = nodes.filter((el) => !matches.has(el));
+  } else {
+    const filterFn = getFilterFn(match);
+    nodes = nodes.filter((el, i) => !filterFn(el, i));
+  }
+
+  return container._make(nodes);
+}
 
 /**
  * Filters the set of matched elements to only those which have the given DOM
  * element as a descendant or which have a descendant that matches the given
  * selector. Equivalent to `.filter(':has(selector)')`.
  *
+ * @category Traversing
  * @example <caption>Selector</caption>
- *   $('ul').has('.pear').attr('id');
- *   //=> fruits
+ *
+ * ```js
+ * $('ul').has('.pear').attr('id');
+ * //=> fruits
+ * ```
  *
  * @example <caption>Element</caption>
- *   $('ul').has($('.pear')[0]).attr('id');
- *   //=> fruits
  *
- * @param {string | Cheerio | Node} selectorOrHaystack - Element to look for.
- * @returns {Cheerio} The filtered collection.
+ * ```js
+ * $('ul').has($('.pear')[0]).attr('id');
+ * //=> fruits
+ * ```
+ *
+ * @param selectorOrHaystack - Element to look for.
+ * @returns The filtered collection.
  * @see {@link https://api.jquery.com/has/}
  */
-exports.has = function (selectorOrHaystack) {
-  const that = this;
-  return exports.filter.call(
+export function has(
+  this: Cheerio<Node | Element>,
+  selectorOrHaystack: string | Cheerio<Element> | Element
+): Cheerio<Node | Element> {
+  return filter.call(
     this,
-    (_, el) => that._make(el).find(selectorOrHaystack).length > 0
+    typeof selectorOrHaystack === 'string'
+      ? // Using the `:has` selector here short-circuits searches.
+        `:has(${selectorOrHaystack})`
+      : (_, el) => this._make(el).find(selectorOrHaystack).length > 0
   );
-};
+}
 
 /**
  * Will select the first element of a cheerio object.
  *
+ * @category Traversing
  * @example
- *   $('#fruits').children().first().text();
- *   //=> Apple
  *
- * @returns {Cheerio} The first element.
+ * ```js
+ * $('#fruits').children().first().text();
+ * //=> Apple
+ * ```
+ *
+ * @returns The first element.
  * @see {@link https://api.jquery.com/first/}
  */
-exports.first = function () {
+export function first<T extends Node>(this: Cheerio<T>): Cheerio<T> {
   return this.length > 1 ? this._make(this[0]) : this;
-};
+}
 
 /**
  * Will select the last element of a cheerio object.
  *
+ * @category Traversing
  * @example
- *   $('#fruits').children().last().text();
- *   //=> Pear
  *
- * @returns {Cheerio} The last element.
+ * ```js
+ * $('#fruits').children().last().text();
+ * //=> Pear
+ * ```
+ *
+ * @returns The last element.
  * @see {@link https://api.jquery.com/last/}
  */
-exports.last = function () {
-  return this.length > 1 ? this._make(this[this.length - 1]) : this;
-};
+export function last<T>(this: Cheerio<T>): Cheerio<T> {
+  return this.length > 0 ? this._make(this[this.length - 1]) : this;
+}
 
 /**
  * Reduce the set of matched elements to the one at the specified index. Use
  * `.eq(-i)` to count backwards from the last selected element.
  *
+ * @category Traversing
  * @example
- *   $('li').eq(0).text();
- *   //=> Apple
  *
- *   $('li').eq(-1).text();
- *   //=> Pear
+ * ```js
+ * $('li').eq(0).text();
+ * //=> Apple
  *
- * @param {number} i - Index of the element to select.
- * @returns {Cheerio} The element at the `i`th position.
+ * $('li').eq(-1).text();
+ * //=> Pear
+ * ```
+ *
+ * @param i - Index of the element to select.
+ * @returns The element at the `i`th position.
  * @see {@link https://api.jquery.com/eq/}
  */
-exports.eq = function (i) {
+export function eq<T>(this: Cheerio<T>, i: number): Cheerio<T> {
   i = +i;
 
   // Use the first identity optimization if possible
   if (i === 0 && this.length <= 1) return this;
 
   if (i < 0) i = this.length + i;
-  return this[i] ? this._make(this[i]) : this._make([]);
-};
+  return this._make(this[i] ?? []);
+}
 
 /**
- * Retrieve the DOM elements matched by the Cheerio object. If an index is
- * specified, retrieve one of the elements matched by the Cheerio object.
+ * Retrieve one of the elements matched by the Cheerio object, at the `i`th position.
  *
+ * @category Traversing
  * @example
- *   $('li').get(0).tagName
- *   //=> li
  *
- *   If no index is specified, retrieve all elements matched by the Cheerio object:
+ * ```js
+ * $('li').get(0).tagName;
+ * //=> li
+ * ```
  *
- * @example
- *   $('li').get().length;
- *   //=> 3
- *
- * @param {number} [i] - Element to retrieve.
- * @returns {Node} The node at the `i`th position.
+ * @param i - Element to retrieve.
+ * @returns The element at the `i`th position.
  * @see {@link https://api.jquery.com/get/}
  */
-exports.get = function (i) {
+export function get<T>(this: Cheerio<T>, i: number): T;
+/**
+ * Retrieve all elements matched by the Cheerio object, as an array.
+ *
+ * @category Traversing
+ * @example
+ *
+ * ```js
+ * $('li').get().length;
+ * //=> 3
+ * ```
+ *
+ * @returns All elements matched by the Cheerio object.
+ * @see {@link https://api.jquery.com/get/}
+ */
+export function get<T>(this: Cheerio<T>): T[];
+export function get<T>(this: Cheerio<T>, i?: number): T | T[] {
   if (i == null) {
-    return slice.call(this);
+    return Array.prototype.slice.call(this);
   }
   return this[i < 0 ? this.length + i : i];
-};
+}
 
 /**
  * Search for a given element from among the matched elements.
  *
+ * @category Traversing
  * @example
- *   $('.pear').index();
- *   //=> 2
- *   $('.orange').index('li');
- *   //=> 1
- *   $('.apple').index($('#fruit, li'));
- *   //=> 1
  *
- * @param {string | Cheerio | Node} [selectorOrNeedle] - Element to look for.
- * @returns {number} The index of the element.
+ * ```js
+ * $('.pear').index();
+ * //=> 2 $('.orange').index('li');
+ * //=> 1
+ * $('.apple').index($('#fruit, li'));
+ * //=> 1
+ * ```
+ *
+ * @param selectorOrNeedle - Element to look for.
+ * @returns The index of the element.
  * @see {@link https://api.jquery.com/index/}
  */
-exports.index = function (selectorOrNeedle) {
-  let $haystack;
+export function index<T extends Node>(
+  this: Cheerio<T>,
+  selectorOrNeedle?: string | Cheerio<Node> | Node
+): number {
+  let $haystack: Cheerio<Node>;
   let needle;
 
-  if (arguments.length === 0) {
+  if (selectorOrNeedle == null) {
     $haystack = this.parent().children();
     needle = this[0];
   } else if (typeof selectorOrNeedle === 'string') {
-    $haystack = this._make(selectorOrNeedle);
+    $haystack = this._make<Node>(selectorOrNeedle);
     needle = this[0];
   } else {
     $haystack = this;
-    needle = selectorOrNeedle.cheerio ? selectorOrNeedle[0] : selectorOrNeedle;
+    needle = isCheerio(selectorOrNeedle)
+      ? selectorOrNeedle[0]
+      : selectorOrNeedle;
   }
 
   return $haystack.get().indexOf(needle);
-};
+}
 
 /**
  * Gets the elements matching the specified range (0-based position).
  *
+ * @category Traversing
  * @example
- *   $('li').slice(1).eq(0).text();
- *   //=> 'Orange'
  *
- *   $('li').slice(1, 2).length;
- *   //=> 1
+ * ```js
+ * $('li').slice(1).eq(0).text();
+ * //=> 'Orange'
  *
- * @param {number} [start] - An position at which the elements begin to be
- *   selected. If negative, it indicates an offset from the end of the set.
- * @param {number} [end] - An position at which the elements stop being
- *   selected. If negative, it indicates an offset from the end of the set. If
- *   omitted, the range continues until the end of the set.
- * @returns {Cheerio} The elements matching the specified range.
+ * $('li').slice(1, 2).length;
+ * //=> 1
+ * ```
+ *
+ * @param start - An position at which the elements begin to be selected. If
+ *   negative, it indicates an offset from the end of the set.
+ * @param end - An position at which the elements stop being selected. If
+ *   negative, it indicates an offset from the end of the set. If omitted, the
+ *   range continues until the end of the set.
+ * @returns The elements matching the specified range.
  * @see {@link https://api.jquery.com/slice/}
  */
-exports.slice = function (start, end) {
-  return this._make(slice.call(this, start, end));
-};
+export function slice<T>(
+  this: Cheerio<T>,
+  start?: number,
+  end?: number
+): Cheerio<T> {
+  return this._make(Array.prototype.slice.call(this, start, end));
+}
 
-function traverseParents(self, elem, selector, limit) {
-  const elems = [];
+function traverseParents<T extends Node>(
+  self: Cheerio<T>,
+  elem: Node | null,
+  selector: AcceptedFilters | undefined,
+  limit: number
+): Node[] {
+  const elems: Node[] = [];
   while (elem && elems.length < limit && elem.type !== 'root') {
-    if (!selector || exports.filter.call([elem], selector, self).length) {
+    if (!selector || filter.call([elem], selector, self).length) {
       elems.push(elem);
     }
     elem = elem.parent;
@@ -853,49 +1037,68 @@ function traverseParents(self, elem, selector, limit) {
  * End the most recent filtering operation in the current chain and return the
  * set of matched elements to its previous state.
  *
+ * @category Traversing
  * @example
- *   $('li').eq(0).end().length;
- *   //=> 3
  *
- * @returns {Cheerio} The previous state of the set of matched elements.
+ * ```js
+ * $('li').eq(0).end().length;
+ * //=> 3
+ * ```
+ *
+ * @returns The previous state of the set of matched elements.
  * @see {@link https://api.jquery.com/end/}
  */
-exports.end = function () {
-  return this.prevObject || this._make([]);
-};
+export function end<T>(this: Cheerio<T>): Cheerio<Node> {
+  return this.prevObject ?? this._make([]);
+}
 
 /**
  * Add elements to the set of matched elements.
  *
+ * @category Traversing
  * @example
- *   $('.apple').add('.orange').length;
- *   //=> 2
  *
- * @param {string | Cheerio} other - Elements to add.
- * @param {Cheerio} [context] - Optionally the context of the new selection.
- * @returns {Cheerio} The combined set.
+ * ```js
+ * $('.apple').add('.orange').length;
+ * //=> 2
+ * ```
+ *
+ * @param other - Elements to add.
+ * @param context - Optionally the context of the new selection.
+ * @returns The combined set.
  * @see {@link https://api.jquery.com/add/}
  */
-exports.add = function (other, context) {
+export function add<S extends Node, T extends Node>(
+  this: Cheerio<T>,
+  other: string | Cheerio<S> | S | S[],
+  context?: Cheerio<S> | string
+): Cheerio<S | T> {
   const selection = this._make(other, context);
-  const contents = uniqueSort(this.get().concat(selection.get()));
+  const contents = uniqueSort([...this.get(), ...selection.get()]);
   return this._make(contents);
-};
+}
 
 /**
  * Add the previous set of elements on the stack to the current set, optionally
  * filtered by a selector.
  *
+ * @category Traversing
  * @example
- *   $('li').eq(0).addBack('.orange').length;
- *   //=> 2
  *
- * @param {string} selector - Selector for the elements to add.
- * @returns {Cheerio} The combined set.
+ * ```js
+ * $('li').eq(0).addBack('.orange').length;
+ * //=> 2
+ * ```
+ *
+ * @param selector - Selector for the elements to add.
+ * @returns The combined set.
  * @see {@link https://api.jquery.com/addBack/}
  */
-exports.addBack = function (selector) {
-  return this.add(
-    arguments.length ? this.prevObject.filter(selector) : this.prevObject
-  );
-};
+export function addBack<T extends Node>(
+  this: Cheerio<T>,
+  selector?: string
+): Cheerio<Node> {
+  return this.prevObject
+    ? this.add(selector ? this.prevObject.filter(selector) : this.prevObject)
+    : this;
+}

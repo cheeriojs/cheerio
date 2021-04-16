@@ -1,13 +1,12 @@
-'use strict';
-/**
- * @module cheerio/load
- * @ignore
- */
-const defaultOptions = require('./options').default;
-const flattenOptions = require('./options').flatten;
-const staticMethods = require('./static');
-const Cheerio = require('./cheerio');
-const parse = require('./parse');
+import {
+  CheerioOptions,
+  default as defaultOptions,
+  flatten as flattenOptions,
+} from './options';
+import * as staticMethods from './static';
+import { CheerioAPI, Cheerio } from './cheerio';
+import parse from './parse';
+import type { Node, Document } from 'domhandler';
 
 /**
  * Create a querying function, bound to a document created from the provided
@@ -17,39 +16,45 @@ const parse = require('./parse');
  *
  * See the README section titled "Loading" for additional usage information.
  *
- * @param {string} content - Markup to be loaded.
- * @param {object} [options] - Options for the created instance.
- * @param {boolean} [isDocument] - Allows parser to be switched to fragment mode.
- * @returns {Cheerio} - The loaded document.
+ * @param content - Markup to be loaded.
+ * @param options - Options for the created instance.
+ * @param isDocument - Allows parser to be switched to fragment mode.
+ * @returns The loaded document.
  */
-exports.load = function (content, options, isDocument) {
-  if (content === null || content === undefined) {
+export function load(
+  content: string | Node | Node[] | Buffer,
+  options?: CheerioOptions | null,
+  isDocument?: boolean
+): CheerioAPI {
+  if ((content as string | null) == null) {
     throw new Error('cheerio.load() expects a string');
   }
 
-  options = Object.assign({}, defaultOptions, flattenOptions(options));
+  options = { ...defaultOptions, ...flattenOptions(options) };
 
   if (typeof isDocument === 'undefined') isDocument = true;
 
   const root = parse(content, options, isDocument);
 
-  function initialize(selector, context, r, opts) {
-    if (!(this instanceof initialize)) {
-      return new initialize(selector, context, r, opts);
+  class initialize<T> extends Cheerio<T> {
+    // Mimic jQuery's prototype alias for plugin authors.
+    static fn = initialize.prototype;
+
+    constructor(
+      selector?: T extends Node
+        ? string | Cheerio<T> | T[] | T
+        : Cheerio<T> | T[],
+      context?: string | Cheerio<Node> | Node[] | Node,
+      r: string | Cheerio<Document> | Document = root,
+      opts?: CheerioOptions
+    ) {
+      // @ts-expect-error Using `this` before calling the constructor.
+      if (!(this instanceof initialize)) {
+        return new initialize(selector, context, r, opts);
+      }
+      super(selector, context, r, { ...options, ...opts });
     }
-    opts = Object.assign({}, options, opts);
-    return Cheerio.call(this, selector, context, r || root, opts);
   }
-
-  /*
-   * Ensure that selections created by the "loaded" `initialize` function are
-   * true Cheerio instances.
-   */
-  initialize.prototype = Object.create(Cheerio.prototype);
-  initialize.prototype.constructor = initialize;
-
-  // Mimic jQuery's prototype alias for plugin authors.
-  initialize.fn = initialize.prototype;
 
   /*
    * Keep a reference to the top-level scope so we can chain methods that implicitly
@@ -58,12 +63,12 @@ exports.load = function (content, options, isDocument) {
   initialize.prototype._originalRoot = root;
 
   // Add in the static methods
-  Object.assign(initialize, staticMethods, exports);
+  Object.assign(initialize, staticMethods, { load });
 
   // Add in the root
   initialize._root = root;
   // Store options
   initialize._options = options;
 
-  return initialize;
-};
+  return (initialize as unknown) as CheerioAPI;
+}
