@@ -1,21 +1,21 @@
 'use strict';
-var fs = require('fs');
-var path = require('path');
+const fs = require('fs');
+const path = require('path');
 
-var Benchmark = require('benchmark');
-var JSDOM = require('jsdom').JSDOM;
-var Script = require('vm').Script;
-var cheerio = require('..');
+const Benchmark = require('benchmark');
+const { JSDOM } = require('jsdom');
+const { Script } = require('vm');
+const cheerio = require('..');
 
-var documentDir = path.join(__dirname, 'documents');
-var jQuerySrc = fs.readFileSync(
+const documentDir = path.join(__dirname, 'documents');
+const jQuerySrc = fs.readFileSync(
   path.join(__dirname, '../node_modules/jquery/dist/jquery.slim.js')
 );
-var jQueryScript = new Script(jQuerySrc);
-var filterRe = /./;
-var cheerioOnly = false;
+const jQueryScript = new Script(jQuerySrc);
+let filterRe = /./;
+let cheerioOnly = false;
 
-var Suites = (module.exports = function () {});
+const Suites = (module.exports = function () {});
 
 Suites.prototype.filter = function (str) {
   filterRe = new RegExp(str, 'i');
@@ -29,21 +29,21 @@ Suites.prototype.add = function (name, fileName, options) {
   if (!filterRe.test(name)) {
     return;
   }
-  var markup = fs.readFileSync(path.join(documentDir, fileName), 'utf8');
-  var suite = new Benchmark.Suite(name);
+  const markup = fs.readFileSync(path.join(documentDir, fileName), 'utf8');
+  const suite = new Benchmark.Suite(name);
 
-  suite.on('start', function () {
-    console.log('Test: ' + name + ' (file: ' + fileName + ')');
+  suite.on('start', () => {
+    console.log(`Test: ${name} (file: ${fileName})`);
   });
-  suite.on('cycle', function (event) {
+  suite.on('cycle', (event) => {
     if (event.target.error) {
       return;
     }
-    console.log('\t' + String(event.target));
+    console.log(`\t${String(event.target)}`);
   });
-  suite.on('error', function (event) {
-    console.log('*** Error in ' + event.target.name + ': ***');
-    console.log('\t' + event.target.error);
+  suite.on('error', (event) => {
+    console.log(`*** Error in ${event.target.name}: ***`);
+    console.log(`\t${event.target.error}`);
     console.log('*** Test invalidated. ***');
   });
   suite.on('complete', function (event) {
@@ -51,7 +51,7 @@ Suites.prototype.add = function (name, fileName, options) {
       console.log();
       return;
     }
-    console.log('\tFastest: ' + this.filter('fastest')[0].name + '\n');
+    console.log(`\tFastest: ${this.filter('fastest')[0].name}\n`);
   });
 
   this._benchCheerio(suite, markup, options);
@@ -63,26 +63,26 @@ Suites.prototype.add = function (name, fileName, options) {
 };
 
 Suites.prototype._benchJsDom = function (suite, markup, options) {
-  var testFn = options.test;
+  const testFn = options.test;
 
-  var dom = new JSDOM(markup, { runScripts: 'outside-only' });
+  const dom = new JSDOM(markup, { runScripts: 'outside-only' });
 
   jQueryScript.runInContext(dom.getInternalVMContext());
 
-  var setupData = options.setup && options.setup.call(null, dom.window.$);
+  const setupData = options.setup && options.setup.call(null, dom.window.$);
 
-  suite.add('jsdom', function () {
+  suite.add('jsdom', () => {
     testFn(dom.window.$, setupData);
   });
   suite.run();
 };
 
 Suites.prototype._benchCheerio = function (suite, markup, options) {
-  var $ = cheerio.load(markup);
-  var testFn = options.test;
-  var setupData = options.setup && options.setup.call(null, $);
+  const $ = cheerio.load(markup);
+  const testFn = options.test;
+  const setupData = options.setup && options.setup.call(null, $);
 
-  suite.add('cheerio', function () {
+  suite.add('cheerio', () => {
     testFn($, setupData);
   });
 };

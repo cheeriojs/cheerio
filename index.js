@@ -8,8 +8,8 @@
  */
 exports = module.exports = require('./lib/cheerio');
 
-var staticMethods = require('./lib/static');
-var loadMethod = require('./lib/load');
+const staticMethods = require('./lib/static');
+const loadMethod = require('./lib/load');
 
 /**
  * An identifier describing the version of Cheerio which has been executed.

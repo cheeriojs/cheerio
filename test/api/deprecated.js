@@ -4,10 +4,10 @@
  * removed in the next major release of Cheerio, but their stability should be
  * maintained until that time.
  */
-var fixtures = require('../__fixtures__/fixtures');
-var cheerio = require('../..');
+const fixtures = require('../__fixtures__/fixtures');
+const cheerio = require('../..');
 
-describe('deprecated APIs', function () {
+describe('deprecated APIs', () => {
   /**
    * The `.parseHTML` method exported by the Cheerio module is deprecated.
    *
@@ -19,10 +19,10 @@ describe('deprecated APIs', function () {
    *   var $ = cheerio.load('');
    *   $.parseHTML('<b>markup</b>');
    */
-  describe('cheerio module', function () {
-    describe('.parseHTML', function () {
-      it('(html) : should preserve content', function () {
-        var html = '<div>test div</div>';
+  describe('cheerio module', () => {
+    describe('.parseHTML', () => {
+      it('(html) : should preserve content', () => {
+        const html = '<div>test div</div>';
         expect(cheerio(cheerio.parseHTML(html)[0]).html()).toBe('test div');
       });
     });
@@ -37,42 +37,42 @@ describe('deprecated APIs', function () {
      *   var $ = cheerio.load('');
      *   $.merge([1, 2], [3, 4]); // [1, 2, 3, 4]
      */
-    describe('.merge', function () {
-      var arr1;
-      var arr2;
-      beforeEach(function () {
+    describe('.merge', () => {
+      let arr1;
+      let arr2;
+      beforeEach(() => {
         arr1 = [1, 2, 3];
         arr2 = [4, 5, 6];
       });
 
-      it('should be a function', function () {
+      it('should be a function', () => {
         expect(typeof cheerio.merge).toBe('function');
       });
 
       // #1674 - merge, wont accept Cheerio object
-      it('should be a able merge array and cheerio object', function () {
-        var ret = cheerio.merge(new cheerio(), ['elem1', 'elem2']);
+      it('should be a able merge array and cheerio object', () => {
+        const ret = cheerio.merge(new cheerio(), ['elem1', 'elem2']);
         expect(typeof ret).toBe('object');
         expect(ret).toHaveLength(2);
       });
 
-      it('(arraylike, arraylike) : should return an array', function () {
-        var ret = cheerio.merge(arr1, arr2);
+      it('(arraylike, arraylike) : should return an array', () => {
+        const ret = cheerio.merge(arr1, arr2);
         expect(typeof ret).toBe('object');
         expect(Array.isArray(ret)).toBe(true);
       });
 
-      it('(arraylike, arraylike) : should modify the first array', function () {
+      it('(arraylike, arraylike) : should modify the first array', () => {
         cheerio.merge(arr1, arr2);
         expect(arr1).toHaveLength(6);
       });
 
-      it('(arraylike, arraylike) : should not modify the second array', function () {
+      it('(arraylike, arraylike) : should not modify the second array', () => {
         cheerio.merge(arr1, arr2);
         expect(arr2).toHaveLength(3);
       });
 
-      it('(arraylike, arraylike) : should handle objects that arent arrays, but are arraylike', function () {
+      it('(arraylike, arraylike) : should handle objects that arent arrays, but are arraylike', () => {
         arr1 = {};
         arr2 = {};
         arr1.length = 3;
@@ -91,8 +91,8 @@ describe('deprecated APIs', function () {
         expect(arr2).toHaveLength(3);
       });
 
-      it('(?, ?) : should gracefully reject invalid inputs', function () {
-        var ret = cheerio.merge([4], 3);
+      it('(?, ?) : should gracefully reject invalid inputs', () => {
+        let ret = cheerio.merge([4], 3);
         expect(ret).toBeFalsy();
         ret = cheerio.merge({}, {});
         expect(ret).toBeFalsy();
@@ -100,7 +100,7 @@ describe('deprecated APIs', function () {
         expect(ret).toBeFalsy();
         ret = cheerio.merge({}, []);
         expect(ret).toBeFalsy();
-        var fakeArray1 = { length: 3 };
+        let fakeArray1 = { length: 3 };
         fakeArray1[0] = 'a';
         fakeArray1[1] = 'b';
         fakeArray1[3] = 'd';
@@ -117,8 +117,8 @@ describe('deprecated APIs', function () {
         expect(ret).toBeFalsy();
       });
 
-      it('(?, ?) : should no-op on invalid inputs', function () {
-        var fakeArray1 = { length: 3 };
+      it('(?, ?) : should no-op on invalid inputs', () => {
+        const fakeArray1 = { length: 3 };
         fakeArray1[0] = 'a';
         fakeArray1[1] = 'b';
         fakeArray1[3] = 'd';
@@ -146,26 +146,26 @@ describe('deprecated APIs', function () {
      *   $.contains($('div').get(0), $('p').get(0)); // true
      *   $.contains($('p').get(0), $('div').get(0)); // false
      */
-    describe('.contains', function () {
-      var $;
+    describe('.contains', () => {
+      let $;
 
-      beforeEach(function () {
+      beforeEach(() => {
         $ = cheerio.load(fixtures.food);
       });
 
-      it('(container, contained) : should correctly detect the provided element', function () {
-        var $food = $('#food');
-        var $fruits = $('#fruits');
-        var $apple = $('.apple');
+      it('(container, contained) : should correctly detect the provided element', () => {
+        const $food = $('#food');
+        const $fruits = $('#fruits');
+        const $apple = $('.apple');
 
         expect(cheerio.contains($food[0], $fruits[0])).toBe(true);
         expect(cheerio.contains($food[0], $apple[0])).toBe(true);
       });
 
-      it('(container, other) : should not detect elements that are not contained', function () {
-        var $fruits = $('#fruits');
-        var $vegetables = $('#vegetables');
-        var $apple = $('.apple');
+      it('(container, other) : should not detect elements that are not contained', () => {
+        const $fruits = $('#fruits');
+        const $vegetables = $('#vegetables');
+        const $apple = $('.apple');
 
         expect(cheerio.contains($vegetables[0], $apple[0])).toBe(false);
         expect(cheerio.contains($fruits[0], $vegetables[0])).toBe(false);
@@ -185,15 +185,15 @@ describe('deprecated APIs', function () {
      *   var $ = cheerio.load('');
      *   $.root();
      */
-    describe('.root', function () {
-      it('returns an empty selection', function () {
-        var $empty = cheerio.root();
+    describe('.root', () => {
+      it('returns an empty selection', () => {
+        const $empty = cheerio.root();
         expect($empty).toHaveLength(0);
       });
     });
   });
 
-  describe('Cheerio function', function () {
+  describe('Cheerio function', () => {
     /**
      * The `.load` static method defined on the "loaded" Cheerio factory
      * function is deprecated. Users are encouraged to instead use the `load`
@@ -202,9 +202,9 @@ describe('deprecated APIs', function () {
      * @example
      *   var $ = cheerio.load('<h1>Hello, <span>world</span>.</h1>');
      */
-    it('.load', function () {
-      var $1 = cheerio.load(fixtures.fruits);
-      var $2 = $1.load('<div><p>Some <a>text</a>.</p></div>');
+    it('.load', () => {
+      const $1 = cheerio.load(fixtures.fruits);
+      const $2 = $1.load('<div><p>Some <a>text</a>.</p></div>');
 
       expect($2('a')).toHaveLength(1);
     });
@@ -224,16 +224,18 @@ describe('deprecated APIs', function () {
      * exported by the Cheerio module with a "root" selection.</caption>
      *   cheerio.html($.root()); // '<html><head></head><body><h1>Hello, <span>world</span>.</h1></body></html>'
      */
-    describe('.html - deprecated API', function () {
-      it('() : of empty cheerio object should return null', function () {
-        // Note: the direct invocation of the Cheerio constructor function is
-        // also deprecated.
-        var $ = cheerio();
+    describe('.html - deprecated API', () => {
+      it('() : of empty cheerio object should return null', () => {
+        /*
+         * Note: the direct invocation of the Cheerio constructor function is
+         * also deprecated.
+         */
+        const $ = cheerio();
         expect($.html()).toBe(null);
       });
 
-      it('(selector) : should return the outerHTML of the selected element', function () {
-        var $ = cheerio.load(fixtures.fruits);
+      it('(selector) : should return the outerHTML of the selected element', () => {
+        const $ = cheerio.load(fixtures.fruits);
         expect($.html('.pear')).toBe('<li class="pear">Pear</li>');
       });
     });
@@ -246,9 +248,9 @@ describe('deprecated APIs', function () {
      * @example
      *   cheerio.xml($.root());
      */
-    describe('.xml  - deprecated API', function () {
-      it('() :  renders XML', function () {
-        var $ = cheerio.load('<foo></foo>', { xmlMode: true });
+    describe('.xml  - deprecated API', () => {
+      it('() :  renders XML', () => {
+        const $ = cheerio.load('<foo></foo>', { xmlMode: true });
         expect($.xml()).toBe('<foo/>');
       });
     });
@@ -268,21 +270,21 @@ describe('deprecated APIs', function () {
      * function exported by the Cheerio module with a "root" selection. </caption>
      *   cheerio.text($.root()); // 'Hello, world.'
      */
-    describe('.text  - deprecated API', function () {
-      it('(cheerio object) : should return the text contents of the specified elements', function () {
-        var $ = cheerio.load('<a>This is <em>content</em>.</a>');
+    describe('.text  - deprecated API', () => {
+      it('(cheerio object) : should return the text contents of the specified elements', () => {
+        const $ = cheerio.load('<a>This is <em>content</em>.</a>');
         expect($.text($('a'))).toBe('This is content.');
       });
 
-      it('(cheerio object) : should omit comment nodes', function () {
-        var $ = cheerio.load(
+      it('(cheerio object) : should omit comment nodes', () => {
+        const $ = cheerio.load(
           '<a>This is <!-- a comment --> not a comment.</a>'
         );
         expect($.text($('a'))).toBe('This is  not a comment.');
       });
 
-      it('(cheerio object) : should include text contents of children recursively', function () {
-        var $ = cheerio.load(
+      it('(cheerio object) : should include text contents of children recursively', () => {
+        const $ = cheerio.load(
           '<a>This is <div>a child with <span>another child and <!-- a comment --> not a comment</span> followed by <em>one last child</em> and some final</div> text.</a>'
         );
         expect($.text($('a'))).toBe(
@@ -290,8 +292,8 @@ describe('deprecated APIs', function () {
         );
       });
 
-      it('() : should return the rendered text content of the root', function () {
-        var $ = cheerio.load(
+      it('() : should return the rendered text content of the root', () => {
+        const $ = cheerio.load(
           '<a>This is <div>a child with <span>another child and <!-- a comment --> not a comment</span> followed by <em>one last child</em> and some final</div> text.</a>'
         );
         expect($.text()).toBe(
@@ -299,20 +301,20 @@ describe('deprecated APIs', function () {
         );
       });
 
-      it('(cheerio object) : should omit script tags', function () {
-        var $ = cheerio.load('<script>console.log("test")</script>');
+      it('(cheerio object) : should omit script tags', () => {
+        const $ = cheerio.load('<script>console.log("test")</script>');
         expect($.text()).toBe('');
       });
 
-      it('(cheerio object) : should omit style tags', function () {
-        var $ = cheerio.load(
+      it('(cheerio object) : should omit style tags', () => {
+        const $ = cheerio.load(
           '<style type="text/css">.cf-hidden { display: none; } .cf-invisible { visibility: hidden; }</style>'
         );
         expect($.text()).toBe('');
       });
 
-      it('(cheerio object) : should include text contents of children omitting style and script tags', function () {
-        var $ = cheerio.load(
+      it('(cheerio object) : should include text contents of children omitting style and script tags', () => {
+        const $ = cheerio.load(
           '<body>Welcome <div>Hello, testing text function,<script>console.log("hello")</script></div><style type="text/css">.cf-hidden { display: none; }</style>End of messege</body>'
         );
         expect($.text()).toBe(
