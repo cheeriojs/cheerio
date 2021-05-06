@@ -21,8 +21,9 @@ import type { Node, Document } from 'domhandler';
  * @param isDocument - Allows parser to be switched to fragment mode.
  * @returns The loaded document.
  */
+
 export function load(
-  content: string | Node | Node[] | Buffer,
+  content: string | Node | Node[] | Uint8Array,
   options?: CheerioOptions | null,
   isDocument?: boolean
 ): CheerioAPI {

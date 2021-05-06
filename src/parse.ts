@@ -13,7 +13,7 @@ import type { InternalOptions } from './options';
  * Parser
  */
 export default function parse(
-  content: string | Document | Node | Node[] | Buffer,
+  content: string | Document | Node | Node[] | Uint8Array,
   options: InternalOptions,
   isDocument: boolean
 ): Document {
