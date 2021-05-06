@@ -35,4 +35,11 @@ describe('.load', () => {
     const $html = cheerio.load(Buffer.from(html));
     expect($html.html()).toBe(html);
   });
+
+  it('(Uint8Array) : should accept a Uint8Array', () => {
+    const html = '<html><head></head><body>foo</body></html>';
+    const enc = new TextEncoder();
+    const $html = cheerio.load(enc.encode(html));
+    expect($html.html()).toBe(html);
+  });
 });
