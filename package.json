@@ -3,6 +3,7 @@
   "version": "1.0.0-rc.6",
   "description": "Tiny, fast, and elegant implementation of core jQuery designed specifically for the server",
   "author": "Matt Mueller <mattmuelle@gmail.com> (mat.io)",
+  "funding": "https://github.com/cheeriojs/cheerio?sponsor=1",
   "license": "MIT",
   "keywords": [
     "htmlparser",
@@ -38,10 +39,12 @@
     "tslib": "^2.2.0"
   },
   "devDependencies": {
+    "@octokit/graphql": "^4.6.1",
     "@types/benchmark": "^2.1.0",
     "@types/jest": "^26.0.22",
     "@types/jsdom": "^16.2.10",
     "@types/node": "^14.14.41",
+    "@types/node-fetch": "^2.5.10",
     "@types/parse5": "^6.0.0",
     "@types/parse5-htmlparser2-tree-adapter": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
@@ -57,6 +60,7 @@
     "jquery": "^3.6.0",
     "jsdom": "^16.5.3",
     "lint-staged": "^10.5.4",
+    "node-fetch": "^2.6.1",
     "prettier": "^2.2.1",
     "prettier-plugin-jsdoc": "0.3.14",
     "ts-jest": "^26.5.5",
@@ -77,6 +81,7 @@
     "format:prettier:raw": "prettier \"**/*.{js,ts,md,json,yml}\" --ignore-path .gitignore",
     "build:docs": "typedoc --hideGenerator src/index.ts",
     "benchmark": "ts-node benchmark/benchmark.ts --regex \"^(?!.*highmem)\"",
+    "update-sponsors": "ts-node scripts/fetch-sponsors.ts",
     "bench": "npm run benchmark",
     "pre-commit": "lint-staged"
   },
