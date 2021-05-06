@@ -9,7 +9,6 @@ env:
   FORCE_COLOR: 2
   NODE: 16
 
-
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -43,7 +42,7 @@ jobs:
       - name: Create commit
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: docs(readme): Update Sponsors
+          commit_message: 'docs(readme): Update Sponsors'
           branch: main
           file_pattern: Readme.md
           disable_globbing: true
