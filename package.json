@@ -83,7 +83,9 @@
     "benchmark": "ts-node benchmark/benchmark.ts --regex \"^(?!.*highmem)\"",
     "update-sponsors": "ts-node scripts/fetch-sponsors.ts",
     "bench": "npm run benchmark",
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged",
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
   },
   "prettier": {
     "singleQuote": true,
