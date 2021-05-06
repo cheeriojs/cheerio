@@ -243,8 +243,7 @@ describe('deprecated APIs', () => {
      * ```
      *
      * @example <caption>To render the markup of an entire document, invoke the
-     *   `html` function exported by the Cheerio module with a "root"
-     *   selection.</caption>
+     * `html` function exported by the Cheerio module with a "root" selection.</caption>
      *
      * ```js
      * cheerio.html($.root());
@@ -301,8 +300,8 @@ describe('deprecated APIs', () => {
      * ```
      *
      * @example <caption>To render the text content of an entire document,
-     *   invoke the `text` function exported by the Cheerio module with a "root"
-     *   selection. </caption>
+     * invoke the `text` function exported by the Cheerio module with a "root"
+     * selection. </caption>
      *
      * ```js
      * cheerio.text($.root());

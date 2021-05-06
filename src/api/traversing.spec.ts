@@ -1358,8 +1358,8 @@ describe('$(...)', () => {
     /**
      * Element order is undefined in this case, so it should not be asserted here.
      *
-     * > If the collection consists of elements from different documents or ones
-     * > not in any document, the sort order is undefined.
+     * If the collection consists of elements from different documents or ones
+     * not in any document, the sort order is undefined.
      *
      * @see {@link https://api.jquery.com/add/}
      */

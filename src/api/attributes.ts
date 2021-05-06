@@ -978,9 +978,9 @@ export function toggleClass<T extends Node, R extends ArrayLike<T>>(
 }
 
 /**
- * Checks the current list of elements and returns `true` if _any_ of the
+ * Checks the current list of elements and returns `true` if *any* of the
  * elements match the selector. If using an element or Cheerio selection,
- * returns `true` if _any_ of the elements match. If using a predicate function,
+ * returns `true` if *any* of the elements match. If using a predicate function,
  * the function is executed in the context of the selected element, so `this`
  * refers to the current element.
  *
