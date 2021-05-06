@@ -1,5 +1,5 @@
 import { parseDOM } from 'htmlparser2';
-import cheerio, { version } from '.';
+import cheerio from '.';
 import * as utils from './utils';
 import { fruits, food, noscript } from './__fixtures__/fixtures';
 import { Cheerio } from './cheerio';
@@ -11,10 +11,6 @@ const script = '<script src="script.js" type="text/javascript"></script>';
 const multiclass = '<p><a class="btn primary" href="#">Save</a></p>';
 
 describe('cheerio', () => {
-  it('should get the version', () => {
-    expect(version).toMatch(/\d+\.\d+\.\d+/);
-  });
-
   it('cheerio(null) should be empty', () => {
     expect(cheerio(null as any)).toHaveLength(0);
   });

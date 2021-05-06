@@ -31,9 +31,6 @@ export type {
  */
 export type { Node, NodeWithChildren, Element, Document } from 'domhandler';
 
-/** The current version of Cheerio. */
-export { version } from '../package.json';
-
 export * from './load';
 import { load } from './load';
 // We add this here, to avoid a cyclic depenency
