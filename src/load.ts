@@ -56,12 +56,6 @@ export function load(
     }
   }
 
-  /*
-   * Keep a reference to the top-level scope so we can chain methods that implicitly
-   * resolve selectors; e.g. $("<span>").(".bar"), which otherwise loses ._root
-   */
-  initialize.prototype._originalRoot = root;
-
   // Add in the static methods
   Object.assign(initialize, staticMethods, { load });
 

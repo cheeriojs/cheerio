@@ -45,13 +45,6 @@ export class Cheerio<T> implements ArrayLike<T> {
   _root: Cheerio<Document> | undefined;
   /** @function */
   find!: typeof Traversing.find;
-  /**
-   * The root the document was originally loaded with. Same as the static
-   * `_root` property.
-   *
-   * @private
-   */
-  _originalRoot: Document | undefined;
 
   /**
    * The root the document was originally loaded with. Set in `.load`.
@@ -145,14 +138,14 @@ export class Cheerio<T> implements ArrayLike<T> {
       : typeof context === 'string'
       ? isHtml(context)
         ? // $('li', '<ul>...</ul>')
-          new Cheerio(parse(context, this.options, false))
+          this._make(parse(context, this.options, false))
         : // $('li', 'ul')
           ((search = `${context} ${search}`), this._root)
       : isCheerio(context)
       ? // $('li', $)
         context
       : // $('li', node), $('li', [nodes])
-        new Cheerio(context);
+        this._make(context);
 
     // If we still don't have a context, return
     if (!searchContext) return this;
@@ -175,13 +168,12 @@ export class Cheerio<T> implements ArrayLike<T> {
    */
   _make<T>(
     dom: Cheerio<T> | T[] | T | string,
-    context?: BasicAcceptedElems<Node> | null,
-    root: BasicAcceptedElems<Document> | undefined = this._root
+    context?: BasicAcceptedElems<Node> | null
   ): Cheerio<T> {
     const cheerio = new (this.constructor as any)(
       dom,
       context,
-      root,
+      undefined,
       this.options
     );
     cheerio.prevObject = this;
