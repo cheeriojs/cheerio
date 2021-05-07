@@ -941,9 +941,25 @@ export function get<T>(this: Cheerio<T>, i: number): T;
 export function get<T>(this: Cheerio<T>): T[];
 export function get<T>(this: Cheerio<T>, i?: number): T | T[] {
   if (i == null) {
-    return Array.prototype.slice.call(this);
+    return this.toArray();
   }
   return this[i < 0 ? this.length + i : i];
+}
+
+/**
+ * Retrieve all the DOM elements contained in the jQuery set as an array.
+ *
+ * @example
+ *
+ * ```js
+ * $('li').toArray();
+ * //=> [ {...}, {...}, {...} ]
+ * ```
+ *
+ * @returns The contained items.
+ */
+export function toArray<T>(this: Cheerio<T>): T[] {
+  return Array.prototype.slice.call(this);
 }
 
 /**

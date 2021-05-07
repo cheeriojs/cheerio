@@ -185,22 +185,6 @@ export class Cheerio<T> implements ArrayLike<T> {
 
     return cheerio;
   }
-
-  /**
-   * Retrieve all the DOM elements contained in the jQuery set as an array.
-   *
-   * @example
-   *
-   * ```js
-   * $('li').toArray();
-   * //=> [ {...}, {...}, {...} ]
-   * ```
-   *
-   * @returns The contained items.
-   */
-  toArray(): T[] {
-    return this.get();
-  }
 }
 
 export interface Cheerio<T>
