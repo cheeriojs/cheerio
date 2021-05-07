@@ -32,7 +32,7 @@ type LoadType = typeof Load;
 const api = [Attributes, Traversing, Manipulation, Css, Forms];
 
 export class Cheerio<T> implements ArrayLike<T> {
-  length!: number;
+  length = 0;
   [index: number]: T;
 
   options!: InternalOptions;
@@ -86,15 +86,8 @@ export class Cheerio<T> implements ArrayLike<T> {
     root?: BasicAcceptedElems<Document> | null,
     options?: CheerioOptions
   ) {
-    if (!(this instanceof Cheerio)) {
-      return new Cheerio(selector, context, root, options);
-    }
-
-    this.length = 0;
-
     this.options = {
       ...defaultOptions,
-      ...this.options,
       ...flattenOptions(options),
     };
 

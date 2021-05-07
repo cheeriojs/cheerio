@@ -1,5 +1,5 @@
 import cheerio from '../../src';
-import type { CheerioAPI, Cheerio } from '../cheerio';
+import { CheerioAPI, Cheerio } from '../cheerio';
 import { Node, Element, isText } from 'domhandler';
 import {
   food,
@@ -689,7 +689,7 @@ describe('$(...)', () => {
     it('() : should return an empty array', () => {
       const result = $('.orange').closest();
       expect(result).toHaveLength(0);
-      expect(result).toBeInstanceOf(cheerio);
+      expect(result).toBeInstanceOf(Cheerio);
     });
 
     it('(selector) : should find the closest element that matches the selector, searching through its ancestors and itself', () => {

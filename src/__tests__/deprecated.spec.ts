@@ -58,7 +58,7 @@ describe('deprecated APIs', () => {
 
       // #1674 - merge, wont accept Cheerio object
       it('should be a able merge array and cheerio object', () => {
-        const ret = cheerio.merge(new cheerio(), ['elem1', 'elem2'] as any);
+        const ret = cheerio.merge(cheerio(), ['elem1', 'elem2'] as any);
         expect(typeof ret).toBe('object');
         expect(ret).toHaveLength(2);
       });
@@ -202,7 +202,8 @@ describe('deprecated APIs', () => {
     describe('.root', () => {
       it('returns an empty selection', () => {
         const $empty = cheerio.root();
-        expect($empty).toHaveLength(0);
+        expect($empty).toHaveLength(1);
+        expect($empty[0].children).toHaveLength(0);
       });
     });
   });
