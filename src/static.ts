@@ -20,7 +20,7 @@ import { render as renderWithHtmlparser2 } from './parsers/htmlparser2';
  * @returns The rendered document.
  */
 function render(
-  that: typeof Cheerio | undefined,
+  that: CheerioAPI | undefined,
   dom: ArrayLike<Node> | Node | string | undefined,
   options: InternalOptions
 ): string {
@@ -63,10 +63,7 @@ function isOptions(
  * @param options - Options for the renderer.
  * @returns The rendered document.
  */
-export function html(
-  this: typeof Cheerio | void,
-  options?: CheerioOptions
-): string;
+export function html(this: CheerioAPI | void, options?: CheerioOptions): string;
 /**
  * Renders the document.
  *
@@ -75,12 +72,12 @@ export function html(
  * @returns The rendered document.
  */
 export function html(
-  this: typeof Cheerio | void,
+  this: CheerioAPI | void,
   dom?: string | ArrayLike<Node> | Node,
   options?: CheerioOptions
 ): string;
 export function html(
-  this: typeof Cheerio | void,
+  this: CheerioAPI | void,
   dom?: string | ArrayLike<Node> | Node | CheerioOptions,
   options?: CheerioOptions
 ): string {
@@ -119,7 +116,7 @@ export function html(
  * @returns THe rendered document.
  */
 export function xml(
-  this: typeof Cheerio,
+  this: CheerioAPI,
   dom?: string | ArrayLike<Node> | Node
 ): string {
   const options = { ...this._options, xmlMode: true };
@@ -134,7 +131,7 @@ export function xml(
  * @returns The rendered document.
  */
 export function text(
-  this: typeof Cheerio | void,
+  this: CheerioAPI | void,
   elements?: ArrayLike<Node>
 ): string {
   const elems = elements ? elements : this ? this.root() : [];
@@ -170,14 +167,14 @@ export function text(
  * @see {@link https://api.jquery.com/jQuery.parseHTML/}
  */
 export function parseHTML(
-  this: typeof Cheerio,
+  this: CheerioAPI,
   data: string,
   context?: unknown | boolean,
   keepScripts?: boolean
 ): Node[];
-export function parseHTML(this: typeof Cheerio, data?: '' | null): null;
+export function parseHTML(this: CheerioAPI, data?: '' | null): null;
 export function parseHTML(
-  this: typeof Cheerio,
+  this: CheerioAPI,
   data?: string | null,
   context?: unknown | boolean,
   keepScripts = typeof context === 'boolean' ? context : false
@@ -219,7 +216,7 @@ export function parseHTML(
  * @returns Cheerio instance wrapping the root node.
  * @alias Cheerio.root
  */
-export function root(this: typeof Cheerio): Cheerio<Document> {
+export function root(this: CheerioAPI): Cheerio<Document> {
   const fn = (this as unknown) as CheerioAPI;
   return fn(this._root);
 }
