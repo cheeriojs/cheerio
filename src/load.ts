@@ -45,7 +45,7 @@ export function load(
         ? string | Cheerio<T> | T[] | T
         : Cheerio<T> | T[],
       context?: string | Cheerio<Node> | Node[] | Node,
-      r: string | Cheerio<Document> | Document = root,
+      r: string | Cheerio<Document> | Document | null = root,
       opts?: CheerioOptions
     ) {
       // @ts-expect-error Using `this` before calling the constructor.

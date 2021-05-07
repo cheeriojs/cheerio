@@ -87,7 +87,7 @@ export class Cheerio<T> implements ArrayLike<T> {
   constructor(
     selector?: T extends Node ? BasicAcceptedElems<T> : Cheerio<T> | T[],
     context?: BasicAcceptedElems<Node> | null,
-    root?: BasicAcceptedElems<Document>,
+    root?: BasicAcceptedElems<Document> | null,
     options?: CheerioOptions
   ) {
     if (!(this instanceof Cheerio)) {
@@ -107,7 +107,7 @@ export class Cheerio<T> implements ArrayLike<T> {
 
     if (root) {
       if (typeof root === 'string') root = parse(root, this.options, false);
-      this._root = (Cheerio as any).call(this, root);
+      this._root = new (this.constructor as typeof Cheerio)(root, null, null);
     }
 
     // $($)
