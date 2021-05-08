@@ -20,7 +20,7 @@ export class Cheerio<T> implements ArrayLike<T> {
   length = 0;
   [index: number]: T;
 
-  options!: InternalOptions;
+  options: InternalOptions;
   /**
    * The root of the document. Can be overwritten by using the `root` argument
    * of the constructor.

@@ -8,11 +8,10 @@ import * as staticMethods from './static';
 import { Cheerio } from './cheerio';
 import parse from './parse';
 import type { Node, Document, Element } from 'domhandler';
-import * as Static from './static';
 import type * as Load from './load';
 import { SelectorType, BasicAcceptedElems } from './types';
 
-type StaticType = typeof Static;
+type StaticType = typeof staticMethods;
 type LoadType = typeof Load;
 
 /**
@@ -51,26 +50,22 @@ export interface CheerioAPI extends StaticType, LoadType {
  * introduce `<html>`, `<head>`, and `<body>` elements; set `isDocument` to
  * `false` to switch to fragment mode and disable this.
  *
- * See the README section titled "Loading" for additional usage information.
- *
  * @param content - Markup to be loaded.
  * @param options - Options for the created instance.
  * @param isDocument - Allows parser to be switched to fragment mode.
  * @returns The loaded document.
+ * @see {@link https://cheerio.js.org#loading} for additional usage information.
  */
 export function load(
   content: string | Node | Node[] | Buffer,
   options?: CheerioOptions | null,
-  isDocument?: boolean
+  isDocument = true
 ): CheerioAPI {
   if ((content as string | null) == null) {
     throw new Error('cheerio.load() expects a string');
   }
 
   const internalOpts = { ...defaultOptions, ...flattenOptions(options) };
-
-  if (typeof isDocument === 'undefined') isDocument = true;
-
   const root = parse(content, internalOpts, isDocument);
 
   /** Create an extended class here, so that extensions only live on one instance. */

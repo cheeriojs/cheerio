@@ -1,5 +1,6 @@
 import cheerio from '../../src';
-import { CheerioAPI, Cheerio } from '../cheerio';
+import { Cheerio } from '../cheerio';
+import type { CheerioAPI } from '../load';
 import { Node, Element, isText } from 'domhandler';
 import {
   food,
