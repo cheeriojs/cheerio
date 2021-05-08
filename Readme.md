@@ -212,15 +212,17 @@ cheerio.html($('.pear'));
 
 By default, `html` will leave some tags open. Sometimes you may instead want to render a valid XML document. For example, you might parse the following XML snippet:
 
-```xml
-const $ = cheerio.load('<media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123"/>');
+```js
+const $ = cheerio.load(
+  '<media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123"/>'
+);
 ```
 
 ... and later want to render to XML. To do this, you can use the 'xml' utility function:
 
 ```js
 $.xml();
-//=>  <media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123"/>
+//=> <media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123"/>
 ```
 
 You may also render the text content of a Cheerio object using the `text` static method:
@@ -266,17 +268,6 @@ Cheerio collections are made up of objects that bear some resemblance to [browse
 ## Cheerio in the real world
 
 Are you using cheerio in production? Add it to the [wiki](https://github.com/cheeriojs/cheerio/wiki/Cheerio-in-Production)!
-
-## Testing
-
-To run the test suite, download the repository, then within the cheerio directory, run:
-
-```shell
-make setup
-make test
-```
-
-This will download the development packages and run the test suite.
 
 ## Sponsors
 
