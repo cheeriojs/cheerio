@@ -3,7 +3,6 @@ import {
   CheerioOptions,
   InternalOptions,
   default as defaultOptions,
-  flatten as flattenOptions,
 } from './options';
 import { isHtml, isCheerio } from './utils';
 import type { Node, Document, Element } from 'domhandler';
@@ -26,11 +25,6 @@ type FormsType = typeof Forms;
 type StaticType = typeof Static;
 type LoadType = typeof Load;
 
-/*
- * The API
- */
-const api = [Attributes, Traversing, Manipulation, Css, Forms];
-
 export class Cheerio<T> implements ArrayLike<T> {
   length = 0;
   [index: number]: T;
@@ -47,30 +41,6 @@ export class Cheerio<T> implements ArrayLike<T> {
   find!: typeof Traversing.find;
 
   /**
-   * The root the document was originally loaded with. Set in `.load`.
-   *
-   * @private
-   */
-  static _root: Document | undefined;
-  /**
-   * The options the document was originally loaded with. Set in `.load`.
-   *
-   * @private
-   */
-  static _options: InternalOptions | undefined;
-  public static html = Static.html;
-  public static xml = Static.xml;
-  public static text = Static.text;
-  public static parseHTML = Static.parseHTML;
-  public static root = Static.root;
-  public static contains = Static.contains;
-  public static merge = Static.merge;
-  public static load: typeof Load.load;
-
-  /** Mimic jQuery's prototype alias for plugin authors. */
-  public static fn = Cheerio.prototype;
-
-  /**
    * Instance of cheerio. Methods are specified in the modules. Usage of this
    * constructor is not recommended. Please use $.load instead.
    *
@@ -84,19 +54,23 @@ export class Cheerio<T> implements ArrayLike<T> {
     selector?: T extends Node ? BasicAcceptedElems<T> : Cheerio<T> | T[],
     context?: BasicAcceptedElems<Node> | null,
     root?: BasicAcceptedElems<Document> | null,
-    options?: CheerioOptions
+    options: InternalOptions = defaultOptions
   ) {
-    this.options = {
-      ...defaultOptions,
-      ...flattenOptions(options),
-    };
+    this.options = options;
 
     // $(), $(null), $(undefined), $(false)
     if (!selector) return this;
 
     if (root) {
       if (typeof root === 'string') root = parse(root, this.options, false);
-      this._root = new (this.constructor as typeof Cheerio)(root, null, null);
+      this._root = new (this.constructor as typeof Cheerio)(
+        root,
+        null,
+        null,
+        this.options
+      );
+      // Add a cyclic reference, so that calling methods on `_root` never fails.
+      this._root._root = this._root;
     }
 
     // $($)
@@ -166,7 +140,7 @@ export class Cheerio<T> implements ArrayLike<T> {
     const cheerio = new (this.constructor as any)(
       dom,
       context,
-      undefined,
+      this._root,
       this.options
     );
     cheerio.prevObject = this;
@@ -180,11 +154,11 @@ export interface Cheerio<T>
     TraversingType,
     ManipulationType,
     CssType,
-    FormsType {
+    FormsType,
+    Iterable<T> {
   cheerio: '[cheerio object]';
 
   splice: typeof Array.prototype.slice;
-  [Symbol.iterator](): Iterator<T>;
 }
 
 /** Set a signature of the object. */
@@ -199,7 +173,14 @@ Cheerio.prototype.splice = Array.prototype.splice;
 Cheerio.prototype[Symbol.iterator] = Array.prototype[Symbol.iterator];
 
 // Plug in the API
-api.forEach((mod) => Object.assign(Cheerio.prototype, mod));
+Object.assign(
+  Cheerio.prototype,
+  Attributes,
+  Traversing,
+  Manipulation,
+  Css,
+  Forms
+);
 
 function isNode(obj: any): obj is Node {
   return (
@@ -235,7 +216,7 @@ export interface CheerioAPI extends StaticType, LoadType {
    * @private
    */
   _options: InternalOptions | undefined;
-}
 
-// Make it possible to call Cheerio without using `new`.
-export default (Cheerio as unknown) as CheerioAPI;
+  /** Mimic jQuery's prototype alias for plugin authors. */
+  fn: typeof Cheerio.prototype;
+}

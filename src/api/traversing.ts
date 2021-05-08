@@ -8,6 +8,7 @@ import { Node, Element, hasChildren } from 'domhandler';
 import type { Cheerio } from '../cheerio';
 import * as select from 'cheerio-select';
 import { domEach, isTag, isCheerio } from '../utils';
+import { contains } from '../static';
 import { DomUtils } from 'htmlparser2';
 import type { FilterFunction, AcceptedFilters } from '../types';
 const { uniqueSort } = DomUtils;
@@ -42,7 +43,6 @@ export function find<T extends Node>(
   const context: Node[] = this.toArray();
 
   if (typeof selectorOrHaystack !== 'string') {
-    const { contains } = this.constructor as typeof Cheerio;
     const haystack = isCheerio(selectorOrHaystack)
       ? selectorOrHaystack.get()
       : [selectorOrHaystack];

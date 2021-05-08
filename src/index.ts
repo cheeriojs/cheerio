@@ -1,5 +1,3 @@
-import Cheerio from './cheerio';
-
 /**
  * The main types of Cheerio objects.
  *
@@ -26,9 +24,6 @@ export type { Node, NodeWithChildren, Element, Document } from 'domhandler';
 
 export * from './load';
 import { load } from './load';
-
-// We add this here, to avoid a cyclic depenency
-Cheerio.load = load;
 
 /**
  * The default cheerio instance.

@@ -217,8 +217,7 @@ export function parseHTML(
  * @alias Cheerio.root
  */
 export function root(this: CheerioAPI): Cheerio<Document> {
-  const fn = (this as unknown) as CheerioAPI;
-  return fn(this._root);
+  return this(this._root);
 }
 
 /**

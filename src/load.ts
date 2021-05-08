@@ -30,39 +30,40 @@ export function load(
     throw new Error('cheerio.load() expects a string');
   }
 
-  options = { ...defaultOptions, ...flattenOptions(options) };
+  const internalOpts = { ...defaultOptions, ...flattenOptions(options) };
 
   if (typeof isDocument === 'undefined') isDocument = true;
 
-  const root = parse(content, options, isDocument);
+  const root = parse(content, internalOpts, isDocument);
 
-  class initialize<T> extends Cheerio<T> {
-    // Mimic jQuery's prototype alias for plugin authors.
-    static fn = initialize.prototype;
+  /** Create an extended class here, so that extensions only live on one instance. */
+  class LoadedCheerio<T> extends Cheerio<T> {}
 
-    constructor(
-      selector?: T extends Node
-        ? string | Cheerio<T> | T[] | T
-        : Cheerio<T> | T[],
-      context?: string | Cheerio<Node> | Node[] | Node,
-      r: string | Cheerio<Document> | Document | null = root,
-      opts?: CheerioOptions
-    ) {
-      // @ts-expect-error Using `this` before calling the constructor.
-      if (!(this instanceof initialize)) {
-        return new initialize(selector, context, r, opts);
-      }
-      super(selector, context, r, { ...options, ...opts });
-    }
+  function initialize<T>(
+    selector?: T extends Node
+      ? string | Cheerio<T> | T[] | T
+      : Cheerio<T> | T[],
+    context?: string | Cheerio<Node> | Node[] | Node,
+    r: string | Cheerio<Document> | Document | null = root,
+    opts?: CheerioOptions
+  ) {
+    return new LoadedCheerio<T>(selector, context, r, {
+      ...internalOpts,
+      ...flattenOptions(opts),
+    });
   }
 
-  // Add in the static methods
-  Object.assign(initialize, staticMethods, { load });
+  // Add in static methods & properties
+  Object.assign(initialize, staticMethods, {
+    load,
+    // `_root` and `_options` are used in static methods.
+    _root: root,
+    _options: internalOpts,
+    // Add `fn` for plugins
+    fn: LoadedCheerio.prototype,
+    // Add the prototype here to maintain `instanceof` behavior.
+    prototype: LoadedCheerio.prototype,
+  });
 
-  // Add in the root
-  initialize._root = root;
-  // Store options
-  initialize._options = options;
-
-  return (initialize as unknown) as CheerioAPI;
+  return initialize as CheerioAPI;
 }
