@@ -100,14 +100,12 @@ $.html();
 Optionally, you can also load in the HTML by passing the string as the context:
 
 ```js
-const $ = require('cheerio');
 $('ul', '<ul id="fruits">...</ul>');
 ```
 
 Or as the root:
 
 ```js
-const $ = require('cheerio');
 $('li', 'ul', '<ul id="fruits">...</ul>');
 ```
 
