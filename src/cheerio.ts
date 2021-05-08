@@ -1,14 +1,8 @@
 import parse from './parse';
-import {
-  CheerioOptions,
-  InternalOptions,
-  default as defaultOptions,
-} from './options';
+import { InternalOptions, default as defaultOptions } from './options';
 import { isHtml, isCheerio } from './utils';
-import type { Node, Document, Element } from 'domhandler';
-import * as Static from './static';
-import type * as Load from './load';
-import { SelectorType, BasicAcceptedElems } from './types';
+import type { Node, Document } from 'domhandler';
+import { BasicAcceptedElems } from './types';
 
 import * as Attributes from './api/attributes';
 import * as Traversing from './api/traversing';
@@ -21,9 +15,6 @@ type TraversingType = typeof Traversing;
 type ManipulationType = typeof Manipulation;
 type CssType = typeof Css;
 type FormsType = typeof Forms;
-
-type StaticType = typeof Static;
-type LoadType = typeof Load;
 
 export class Cheerio<T> implements ArrayLike<T> {
   length = 0;
@@ -189,34 +180,4 @@ function isNode(obj: any): obj is Node {
     obj.type === 'text' ||
     obj.type === 'comment'
   );
-}
-
-/**
- * Wrapper around the `Cheerio` class, making it possible to create a new
- * instance without using `new`.
- */
-export interface CheerioAPI extends StaticType, LoadType {
-  <T extends Node, S extends string>(
-    selector?: S | BasicAcceptedElems<T>,
-    context?: BasicAcceptedElems<Node> | null,
-    root?: BasicAcceptedElems<Document>,
-    options?: CheerioOptions
-  ): Cheerio<S extends SelectorType ? Element : T>;
-
-  /**
-   * The root the document was originally loaded with. Set in `.load`.
-   *
-   * @private
-   */
-  _root: Document | undefined;
-
-  /**
-   * The options the document was originally loaded with. Set in `.load`.
-   *
-   * @private
-   */
-  _options: InternalOptions | undefined;
-
-  /** Mimic jQuery's prototype alias for plugin authors. */
-  fn: typeof Cheerio.prototype;
 }

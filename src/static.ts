@@ -1,4 +1,4 @@
-import type { CheerioAPI, Cheerio } from './cheerio';
+import type { CheerioAPI, Cheerio } from '.';
 import { Node, Document } from 'domhandler';
 import {
   InternalOptions,
@@ -24,20 +24,18 @@ function render(
   dom: ArrayLike<Node> | Node | string | undefined,
   options: InternalOptions
 ): string {
-  if (!dom) {
-    if (that?._root?.children) {
-      dom = that._root.children;
-    } else {
-      return '';
-    }
-  } else if (typeof dom === 'string') {
-    dom = select(dom, that?._root ?? [], options);
-  }
+  const toRender = dom
+    ? typeof dom === 'string'
+      ? select(dom, that?._root ?? [], options)
+      : dom
+    : that?._root.children;
+
+  if (!toRender) return '';
 
   return options.xmlMode || options._useHtmlParser2
     ? // FIXME: Pull in new version of dom-serializer to fix this.
-      renderWithHtmlparser2(dom as Node[], options)
-    : renderWithParse5(dom);
+      renderWithHtmlparser2(toRender as Node[], options)
+    : renderWithParse5(toRender);
 }
 
 /**
@@ -96,7 +94,7 @@ export function html(
    * Sometimes `$.html()` is used without preloading html,
    * so fallback non-existing options to the default ones.
    */
-  options = {
+  const opts = {
     ...defaultOptions,
     ...(this ? this._options : {}),
     ...flattenOptions(options ?? {}),
@@ -105,7 +103,7 @@ export function html(
   return render(
     this || undefined,
     dom as string | Cheerio<Node> | Node | undefined,
-    options
+    opts
   );
 }
 

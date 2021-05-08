@@ -3,7 +3,7 @@
  *
  * @category Cheerio
  */
-export type { Cheerio, CheerioAPI } from './cheerio';
+export type { Cheerio } from './cheerio';
 /**
  * Types used in signatures of Cheerio methods.
  *

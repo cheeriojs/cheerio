@@ -1,12 +1,49 @@
 import {
   CheerioOptions,
+  InternalOptions,
   default as defaultOptions,
   flatten as flattenOptions,
 } from './options';
 import * as staticMethods from './static';
-import { CheerioAPI, Cheerio } from './cheerio';
+import { Cheerio } from './cheerio';
 import parse from './parse';
-import type { Node, Document } from 'domhandler';
+import type { Node, Document, Element } from 'domhandler';
+import * as Static from './static';
+import type * as Load from './load';
+import { SelectorType, BasicAcceptedElems } from './types';
+
+type StaticType = typeof Static;
+type LoadType = typeof Load;
+
+/**
+ * Wrapper around the `Cheerio` class, making it possible to create a new
+ * instance without using `new`.
+ */
+export interface CheerioAPI extends StaticType, LoadType {
+  <T extends Node, S extends string>(
+    selector?: S | BasicAcceptedElems<T>,
+    context?: BasicAcceptedElems<Node> | null,
+    root?: BasicAcceptedElems<Document>,
+    options?: CheerioOptions
+  ): Cheerio<S extends SelectorType ? Element : T>;
+
+  /**
+   * The root the document was originally loaded with.
+   *
+   * @private
+   */
+  _root: Document;
+
+  /**
+   * The options the document was originally loaded with.
+   *
+   * @private
+   */
+  _options: InternalOptions;
+
+  /** Mimic jQuery's prototype alias for plugin authors. */
+  fn: typeof Cheerio.prototype;
+}
 
 /**
  * Create a querying function, bound to a document created from the provided
