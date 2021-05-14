@@ -126,7 +126,7 @@ export class Cheerio<T> implements ArrayLike<T> {
    */
   _make<T>(
     dom: Cheerio<T> | T[] | T | string,
-    context?: BasicAcceptedElems<Node> | null
+    context?: BasicAcceptedElems<Node>
   ): Cheerio<T> {
     const cheerio = new (this.constructor as any)(
       dom,

@@ -168,7 +168,7 @@ export function appendTo<T extends Node>(
   this: Cheerio<T>,
   target: BasicAcceptedElems<Node>
 ): Cheerio<T> {
-  const appendTarget = isCheerio(target) ? target : this._make(target, null);
+  const appendTarget = isCheerio(target) ? target : this._make(target);
 
   appendTarget.append(this);
 
@@ -200,7 +200,7 @@ export function prependTo<T extends Node>(
   this: Cheerio<T>,
   target: BasicAcceptedElems<Node>
 ): Cheerio<T> {
-  const prependTarget = isCheerio(target) ? target : this._make(target, null);
+  const prependTarget = isCheerio(target) ? target : this._make(target);
 
   prependTarget.prepend(this);
 
@@ -638,7 +638,7 @@ export function insertAfter<T extends Node>(
   target: BasicAcceptedElems<Node>
 ): Cheerio<T> {
   if (typeof target === 'string') {
-    target = this._make<Node>(target, null);
+    target = this._make<Node>(target);
   }
 
   this.remove();
@@ -751,7 +751,7 @@ export function insertBefore<T extends Node>(
   this: Cheerio<T>,
   target: BasicAcceptedElems<Node>
 ): Cheerio<T> {
-  const targetArr = this._make<Node>(target, null);
+  const targetArr = this._make<Node>(target);
 
   this.remove();
 
