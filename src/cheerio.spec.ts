@@ -270,6 +270,15 @@ describe('cheerio', () => {
       expect(lis).toHaveLength(3);
     });
 
+    it('should preserve root content', () => {
+      const $ = cheerio.load(fruits);
+      // Root should not be overwritten
+      const el = $('<div></div>');
+      expect(Object.is(el, el._root)).toBe(false);
+      // Query has to have results
+      expect($('li', 'ul')).toHaveLength(3);
+    });
+
     it('should allow loading a pre-parsed DOM', () => {
       const dom = parseDOM(food);
       const $ = cheerio.load(dom);
