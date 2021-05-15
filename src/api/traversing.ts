@@ -44,7 +44,7 @@ export function find<T extends Node>(
   if (typeof selectorOrHaystack !== 'string') {
     const { contains } = this.constructor as typeof Cheerio;
     const haystack = isCheerio(selectorOrHaystack)
-      ? selectorOrHaystack.get()
+      ? selectorOrHaystack.toArray()
       : [selectorOrHaystack];
 
     return this._make(
@@ -85,7 +85,7 @@ export function find<T extends Node>(
  */
 export function parent<T extends Node>(
   this: Cheerio<T>,
-  selector?: AcceptedFilters
+  selector?: AcceptedFilters<T>
 ): Cheerio<Element> {
   const set: Element[] = [];
 
@@ -123,7 +123,7 @@ export function parent<T extends Node>(
  */
 export function parents<T extends Node>(
   this: Cheerio<T>,
-  selector?: AcceptedFilters
+  selector?: AcceptedFilters<T>
 ): Cheerio<Element> {
   const parentNodes: Element[] = [];
 
@@ -166,7 +166,7 @@ export function parents<T extends Node>(
 export function parentsUntil<T extends Node>(
   this: Cheerio<T>,
   selector?: string | Node | Cheerio<Node>,
-  filterBy?: AcceptedFilters
+  filterBy?: AcceptedFilters<T>
 ): Cheerio<Element> {
   const parentNodes: Element[] = [];
   let untilNode: Node | undefined;
@@ -237,7 +237,7 @@ export function parentsUntil<T extends Node>(
  */
 export function closest<T extends Node>(
   this: Cheerio<T>,
-  selector?: AcceptedFilters
+  selector?: AcceptedFilters<T>
 ): Cheerio<Node> {
   const set: Node[] = [];
 
@@ -274,7 +274,7 @@ export function closest<T extends Node>(
  */
 export function next<T extends Node>(
   this: Cheerio<T>,
-  selector?: AcceptedFilters
+  selector?: AcceptedFilters<T>
 ): Cheerio<Element> {
   const elems: Element[] = [];
 
@@ -311,7 +311,7 @@ export function next<T extends Node>(
  */
 export function nextAll<T extends Node>(
   this: Cheerio<T>,
-  selector?: AcceptedFilters
+  selector?: AcceptedFilters<T>
 ): Cheerio<Element> {
   const elems: Element[] = [];
 
@@ -347,7 +347,7 @@ export function nextAll<T extends Node>(
 export function nextUntil<T extends Node>(
   this: Cheerio<T>,
   selector?: string | Cheerio<Node> | Node | null,
-  filterSelector?: AcceptedFilters
+  filterSelector?: AcceptedFilters<T>
 ): Cheerio<Element> {
   const elems: Element[] = [];
   let untilNode: Node | undefined;
@@ -401,7 +401,7 @@ export function nextUntil<T extends Node>(
  */
 export function prev<T extends Node>(
   this: Cheerio<T>,
-  selector?: AcceptedFilters
+  selector?: AcceptedFilters<T>
 ): Cheerio<Element> {
   const elems: Element[] = [];
 
@@ -439,7 +439,7 @@ export function prev<T extends Node>(
  */
 export function prevAll<T extends Node>(
   this: Cheerio<T>,
-  selector?: AcceptedFilters
+  selector?: AcceptedFilters<T>
 ): Cheerio<Element> {
   const elems: Element[] = [];
 
@@ -475,7 +475,7 @@ export function prevAll<T extends Node>(
 export function prevUntil<T extends Node>(
   this: Cheerio<T>,
   selector?: string | Cheerio<Node> | Node | null,
-  filterSelector?: AcceptedFilters
+  filterSelector?: AcceptedFilters<T>
 ): Cheerio<Element> {
   const elems: Element[] = [];
   let untilNode: Node | undefined;
@@ -532,7 +532,7 @@ export function prevUntil<T extends Node>(
  */
 export function siblings<T extends Node>(
   this: Cheerio<T>,
-  selector?: AcceptedFilters
+  selector?: AcceptedFilters<T>
 ): Cheerio<Element> {
   // TODO Still get siblings if `parent` is null; see DomUtils' `getSiblings`.
   const parent = this.parent();
@@ -566,7 +566,7 @@ export function siblings<T extends Node>(
  */
 export function children<T extends Node>(
   this: Cheerio<T>,
-  selector?: AcceptedFilters
+  selector?: AcceptedFilters<T>
 ): Cheerio<Element> {
   const elems = this.toArray().reduce<Element[]>(
     (newElems, elem) =>
@@ -679,16 +679,16 @@ export function map<T, M>(
   return this._make(elems);
 }
 
-function getFilterFn<T extends Node, S extends T>(
-  match: ((this: S, i: number, el: S) => boolean) | Cheerio<T> | T
-): (el: S, i: number) => boolean {
+function getFilterFn<T>(
+  match: FilterFunction<T> | Cheerio<T> | T
+): (el: T, i: number) => boolean {
   if (typeof match === 'function') {
     return function (el, i) {
-      return match.call(el, i, el);
+      return (match as FilterFunction<T>).call(el, i, el);
     };
   }
-  if (isCheerio(match)) {
-    return match.is.bind(match);
+  if (isCheerio<T>(match)) {
+    return (el) => match.is(el);
   }
   return function (el) {
     return match === el;
@@ -697,12 +697,42 @@ function getFilterFn<T extends Node, S extends T>(
 
 /**
  * Iterates over a cheerio object, reducing the set of selector elements to
- * those that match the selector or pass the function's test. When a Cheerio
- * selection is specified, return only the elements contained in that selection.
- * When an element is specified, return only that element (if it is contained in
- * the original selection). If using the function method, the function is
- * executed in the context of the selected element, so `this` refers to the
- * current element.
+ * those that match the selector or pass the function's test.
+ *
+ * This is the definition for using type guards; have a look below for other
+ * ways to invoke this method. The function is executed in the context of the
+ * selected element, so `this` refers to the current element.
+ *
+ * @category Traversing
+ * @example <caption>Function</caption>
+ *
+ * ```js
+ * $('li')
+ *   .filter(function (i, el) {
+ *     // this === el
+ *     return $(this).attr('class') === 'orange';
+ *   })
+ *   .attr('class'); //=> orange
+ * ```
+ *
+ * @param match - Value to look for, following the rules above.
+ * @returns The filtered collection.
+ * @see {@link https://api.jquery.com/filter/}
+ */
+export function filter<T, S extends T>(
+  this: Cheerio<T>,
+  match: (this: T, index: number, value: T) => value is S
+): Cheerio<S>;
+/**
+ * Iterates over a cheerio object, reducing the set of selector elements to
+ * those that match the selector or pass the function's test.
+ *
+ * - When a Cheerio selection is specified, return only the elements contained in
+ *   that selection.
+ * - When an element is specified, return only that element (if it is contained in
+ *   the original selection).
+ * - If using the function method, the function is executed in the context of the
+ *   selected element, so `this` refers to the current element.
  *
  * @category Traversing
  * @example <caption>Selector</caption>
@@ -723,29 +753,50 @@ function getFilterFn<T extends Node, S extends T>(
  *   .attr('class'); //=> orange
  * ```
  *
- * @param match - Value to look for, following the rules above.
- * @param container - Optional node to filter instead.
+ * @param match - Value to look for, following the rules above. See
+ *   {@link AcceptedFilters}.
  * @returns The filtered collection.
  * @see {@link https://api.jquery.com/filter/}
  */
-export function filter(
-  this: Cheerio<Node> | Node[],
-  match: AcceptedFilters,
+export function filter<T, S extends AcceptedFilters<T>>(
+  this: Cheerio<T>,
+  match: S
+): Cheerio<S extends string ? Element : T>;
+/**
+ * Internal `filter` variant used by other functions to filter their elements.
+ *
+ * @private
+ * @param match - Value to look for, following the rules above.
+ * @param container - The container that is used to create the resulting Cheerio instance.
+ * @returns The filtered collection.
+ * @see {@link https://api.jquery.com/filter/}
+ */
+export function filter<T>(
+  this: T[],
+  match: AcceptedFilters<T>,
+  container: Cheerio<Node>
+): Cheerio<Element>;
+export function filter<T>(
+  this: Cheerio<T> | T[],
+  match: AcceptedFilters<T>,
   container = this
-): Cheerio<Element> {
+): Cheerio<unknown> {
   if (!isCheerio(container)) {
     throw new Error('Not able to create a Cheerio instance.');
   }
 
   const nodes = isCheerio(this) ? this.toArray() : this;
-  let elements: Element[] = nodes.filter(isTag);
 
-  elements =
+  const result =
     typeof match === 'string'
-      ? select.filter(match, elements, container.options)
-      : elements.filter(getFilterFn(match));
+      ? select.filter(
+          match,
+          ((nodes as unknown) as Node[]).filter(isTag),
+          container.options
+        )
+      : nodes.filter(getFilterFn(match));
 
-  return container._make(elements);
+  return container._make<unknown>(result);
 }
 
 /**
@@ -783,7 +834,7 @@ export function filter(
  */
 export function not<T extends Node>(
   this: Cheerio<T> | T[],
-  match: Node | Cheerio<Node> | string | FilterFunction<T>,
+  match: AcceptedFilters<T>,
   container = this
 ): Cheerio<T> {
   if (!isCheerio(container)) {
@@ -834,8 +885,7 @@ export function has(
   this: Cheerio<Node | Element>,
   selectorOrHaystack: string | Cheerio<Element> | Element
 ): Cheerio<Node | Element> {
-  return filter.call(
-    this,
+  return this.filter(
     typeof selectorOrHaystack === 'string'
       ? // Using the `:has` selector here short-circuits searches.
         `:has(${selectorOrHaystack})`
@@ -1020,7 +1070,7 @@ export function slice<T>(
 function traverseParents<T extends Node>(
   self: Cheerio<T>,
   elem: Node | null,
-  selector: AcceptedFilters | undefined,
+  selector: AcceptedFilters<T> | undefined,
   limit: number
 ): Node[] {
   const elems: Node[] = [];
