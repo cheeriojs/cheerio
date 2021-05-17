@@ -41,7 +41,7 @@ export type SelectorType =
   | `${AlphaNumeric}${string}`;
 
 import type { Cheerio } from './cheerio';
-import type { Node, Element } from 'domhandler';
+import type { Node } from 'domhandler';
 
 /** Elements that can be passed to manipulation methods. */
 export type BasicAcceptedElems<T extends Node> = Cheerio<T> | T[] | T | string;
@@ -53,8 +53,4 @@ export type AcceptedElems<T extends Node> =
 /** Function signature, for traversal methods. */
 export type FilterFunction<T> = (this: T, i: number, el: T) => boolean;
 /** Supported filter types, for traversal methods. */
-export type AcceptedFilters =
-  | string
-  | FilterFunction<Element>
-  | Node
-  | Cheerio<Node>;
+export type AcceptedFilters<T> = string | FilterFunction<T> | T | Cheerio<T>;

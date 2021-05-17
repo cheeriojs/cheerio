@@ -8,6 +8,7 @@ import { text } from '../static';
 import { isTag, domEach, camelCase, cssCase } from '../utils';
 import type { Node, Element } from 'domhandler';
 import type { Cheerio } from '../cheerio';
+import { AcceptedFilters } from '../types';
 const hasOwn = Object.prototype.hasOwnProperty;
 const rspace = /\s+/;
 const dataAttrPrefix = 'data-';
@@ -989,14 +990,9 @@ export function toggleClass<T extends Node, R extends ArrayLike<T>>(
  * @returns Whether or not the selector matches an element of the instance.
  * @see {@link https://api.jquery.com/is/}
  */
-export function is<T extends Node>(
+export function is<T>(
   this: Cheerio<T>,
-  selector?:
-    | string
-    | ((this: Element, i: number, el: Element) => boolean)
-    | Cheerio<T>
-    | T
-    | null
+  selector?: AcceptedFilters<T>
 ): boolean {
   if (selector) {
     return this.filter(selector).length > 0;

@@ -1,7 +1,7 @@
 import cheerio from '../../src';
 import { Cheerio } from '../cheerio';
 import type { CheerioAPI } from '../load';
-import { Node, Element, isText } from 'domhandler';
+import { Node, Element, Text, isText } from 'domhandler';
 import {
   food,
   fruits,
@@ -818,6 +818,7 @@ describe('$(...)', () => {
 
   describe('.filter', () => {
     it('should throw if it cannot construct an object', () => {
+      // @ts-expect-error Calling `filter` without a cheerio instance.
       expect(() => $('').filter.call([], '')).toThrow(
         'Not able to create a Cheerio instance.'
       );
@@ -855,6 +856,14 @@ describe('$(...)', () => {
         .text();
 
       expect(orange).toBe('Orange');
+    });
+
+    it('should also iterate over text nodes (#1867)', () => {
+      const text = $('<a>a</a>b<c></c>').filter((_, el): el is Text =>
+        isText(el)
+      );
+
+      expect(text[0].data).toBe('b');
     });
   });
 
