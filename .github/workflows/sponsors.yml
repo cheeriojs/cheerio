@@ -40,7 +40,7 @@ jobs:
           CHEERIO_SPONSORS_GITHUB_TOKEN: ${{ secrets.CHEERIO_SPONSORS_GITHUB_TOKEN }}
 
       - name: Create commit
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v4.11.0
         with:
           commit_message: 'docs(readme): Update Sponsors'
           branch: main
