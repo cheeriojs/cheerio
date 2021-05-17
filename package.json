@@ -46,7 +46,7 @@
     "@types/benchmark": "^2.1.0",
     "@types/jest": "^26.0.23",
     "@types/jsdom": "^16.2.10",
-    "@types/node": "^15.0.2",
+    "@types/node": "^15.3.0",
     "@types/node-fetch": "^2.5.10",
     "@types/parse5": "^6.0.0",
     "@types/parse5-htmlparser2-tree-adapter": "^6.0.0",
