@@ -1,4 +1,4 @@
-import type { CheerioAPI, Cheerio } from './cheerio';
+import type { CheerioAPI, Cheerio } from '.';
 import { Node, Document } from 'domhandler';
 import {
   InternalOptions,
@@ -20,24 +20,22 @@ import { render as renderWithHtmlparser2 } from './parsers/htmlparser2';
  * @returns The rendered document.
  */
 function render(
-  that: typeof Cheerio | undefined,
+  that: CheerioAPI | undefined,
   dom: ArrayLike<Node> | Node | string | undefined,
   options: InternalOptions
 ): string {
-  if (!dom) {
-    if (that?._root?.children) {
-      dom = that._root.children;
-    } else {
-      return '';
-    }
-  } else if (typeof dom === 'string') {
-    dom = select(dom, that?._root ?? [], options);
-  }
+  const toRender = dom
+    ? typeof dom === 'string'
+      ? select(dom, that?._root ?? [], options)
+      : dom
+    : that?._root.children;
+
+  if (!toRender) return '';
 
   return options.xmlMode || options._useHtmlParser2
     ? // FIXME: Pull in new version of dom-serializer to fix this.
-      renderWithHtmlparser2(dom as Node[], options)
-    : renderWithParse5(dom);
+      renderWithHtmlparser2(toRender as Node[], options)
+    : renderWithParse5(toRender);
 }
 
 /**
@@ -63,10 +61,7 @@ function isOptions(
  * @param options - Options for the renderer.
  * @returns The rendered document.
  */
-export function html(
-  this: typeof Cheerio | void,
-  options?: CheerioOptions
-): string;
+export function html(this: CheerioAPI | void, options?: CheerioOptions): string;
 /**
  * Renders the document.
  *
@@ -75,12 +70,12 @@ export function html(
  * @returns The rendered document.
  */
 export function html(
-  this: typeof Cheerio | void,
+  this: CheerioAPI | void,
   dom?: string | ArrayLike<Node> | Node,
   options?: CheerioOptions
 ): string;
 export function html(
-  this: typeof Cheerio | void,
+  this: CheerioAPI | void,
   dom?: string | ArrayLike<Node> | Node | CheerioOptions,
   options?: CheerioOptions
 ): string {
@@ -99,7 +94,7 @@ export function html(
    * Sometimes `$.html()` is used without preloading html,
    * so fallback non-existing options to the default ones.
    */
-  options = {
+  const opts = {
     ...defaultOptions,
     ...(this ? this._options : {}),
     ...flattenOptions(options ?? {}),
@@ -108,7 +103,7 @@ export function html(
   return render(
     this || undefined,
     dom as string | Cheerio<Node> | Node | undefined,
-    options
+    opts
   );
 }
 
@@ -119,7 +114,7 @@ export function html(
  * @returns THe rendered document.
  */
 export function xml(
-  this: typeof Cheerio,
+  this: CheerioAPI,
   dom?: string | ArrayLike<Node> | Node
 ): string {
   const options = { ...this._options, xmlMode: true };
@@ -134,7 +129,7 @@ export function xml(
  * @returns The rendered document.
  */
 export function text(
-  this: typeof Cheerio | void,
+  this: CheerioAPI | void,
   elements?: ArrayLike<Node>
 ): string {
   const elems = elements ? elements : this ? this.root() : [];
@@ -170,14 +165,14 @@ export function text(
  * @see {@link https://api.jquery.com/jQuery.parseHTML/}
  */
 export function parseHTML(
-  this: typeof Cheerio,
+  this: CheerioAPI,
   data: string,
   context?: unknown | boolean,
   keepScripts?: boolean
 ): Node[];
-export function parseHTML(this: typeof Cheerio, data?: '' | null): null;
+export function parseHTML(this: CheerioAPI, data?: '' | null): null;
 export function parseHTML(
-  this: typeof Cheerio,
+  this: CheerioAPI,
   data?: string | null,
   context?: unknown | boolean,
   keepScripts = typeof context === 'boolean' ? context : false
@@ -219,9 +214,8 @@ export function parseHTML(
  * @returns Cheerio instance wrapping the root node.
  * @alias Cheerio.root
  */
-export function root(this: typeof Cheerio): Cheerio<Document> {
-  const fn = (this as unknown) as CheerioAPI;
-  return fn(this._root);
+export function root(this: CheerioAPI): Cheerio<Document> {
+  return this(this._root);
 }
 
 /**

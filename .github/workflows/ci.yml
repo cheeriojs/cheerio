@@ -26,7 +26,7 @@ jobs:
 
     steps:
       - name: Clone repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -34,7 +34,7 @@ jobs:
           node-version: '${{ matrix.node }}'
 
       - name: Set up npm cache
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.5
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-v${{ matrix.node }}-${{ hashFiles('package.json') }}-${{ hashFiles('package-lock.json') }}

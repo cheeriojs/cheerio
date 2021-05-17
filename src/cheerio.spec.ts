@@ -215,11 +215,6 @@ describe('cheerio', () => {
     expect($elem.eq(1).attr('class')).toBe('orange');
   });
 
-  it('should gracefully degrade on complex, unmatched queries', () => {
-    const $elem = cheerio('Eastern States Cup #8-fin&nbsp;<1br>Downhill&nbsp;');
-    expect($elem).toHaveLength(0);
-  });
-
   it('(extended Array) should not interfere with prototype methods (issue #119)', () => {
     const extended: any = [];
     extended.find = extended.children = extended.each = function () {
@@ -273,6 +268,15 @@ describe('cheerio', () => {
 
       expect(apple).toHaveLength(1);
       expect(lis).toHaveLength(3);
+    });
+
+    it('should preserve root content', () => {
+      const $ = cheerio.load(fruits);
+      // Root should not be overwritten
+      const el = $('<div></div>');
+      expect(Object.is(el, el._root)).toBe(false);
+      // Query has to have results
+      expect($('li', 'ul')).toHaveLength(3);
     });
 
     it('should allow loading a pre-parsed DOM', () => {

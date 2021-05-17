@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Clone repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -23,7 +23,7 @@ jobs:
           node-version: '${{ env.NODE }}'
 
       - name: Set up npm cache
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.5
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-v${{ env.NODE }}-${{ hashFiles('package.json') }}-${{ hashFiles('package-lock.json') }}
@@ -40,7 +40,7 @@ jobs:
           CHEERIO_SPONSORS_GITHUB_TOKEN: ${{ secrets.CHEERIO_SPONSORS_GITHUB_TOKEN }}
 
       - name: Create commit
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v4.11.0
         with:
           commit_message: 'docs(readme): Update Sponsors'
           branch: main

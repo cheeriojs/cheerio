@@ -1,5 +1,5 @@
 import cheerio from '../../src';
-import type { CheerioAPI } from '../cheerio';
+import type { CheerioAPI } from '../load';
 import { forms } from '../__fixtures__/fixtures';
 
 describe('$(...)', () => {

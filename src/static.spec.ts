@@ -1,6 +1,5 @@
 import * as fixtures from './__fixtures__/fixtures';
-import cheerio from '.';
-import { CheerioAPI } from './cheerio';
+import cheerio, { CheerioAPI } from '.';
 
 describe('cheerio', () => {
   describe('.html', () => {

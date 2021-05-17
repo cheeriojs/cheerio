@@ -164,7 +164,7 @@ Cheerio's selector implementation is nearly identical to jQuery's, so the API is
 
 `selector` searches within the `context` scope which searches within the `root` scope. `selector` and `context` can be a string expression, DOM Element, array of DOM elements, or cheerio object. `root` is typically the HTML document string.
 
-This selector method is the starting point for traversing and manipulating the document. Like jQuery, it's the primary method for selecting elements in the document, but unlike jQuery it's built on top of the CSSSelect library, which implements most of the Sizzle selectors.
+This selector method is the starting point for traversing and manipulating the document. Like jQuery, it's the primary method for selecting elements in the document.
 
 ```js
 $('.apple', '#fruits').text();
