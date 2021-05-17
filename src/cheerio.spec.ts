@@ -217,9 +217,12 @@ describe('cheerio', () => {
 
   it('(extended Array) should not interfere with prototype methods (issue #119)', () => {
     const extended: any = [];
-    extended.find = extended.children = extended.each = function () {
-      /* Ignore */
-    };
+    extended.find =
+      extended.children =
+      extended.each =
+        function () {
+          /* Ignore */
+        };
     const $empty = cheerio(extended);
 
     expect($empty.find).toBe(cheerio.prototype.find);

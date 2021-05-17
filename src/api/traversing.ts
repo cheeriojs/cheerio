@@ -791,7 +791,7 @@ export function filter<T>(
     typeof match === 'string'
       ? select.filter(
           match,
-          ((nodes as unknown) as Node[]).filter(isTag),
+          (nodes as unknown as Node[]).filter(isTag),
           container.options
         )
       : nodes.filter(getFilterFn(match));
