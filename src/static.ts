@@ -33,8 +33,7 @@ function render(
   if (!toRender) return '';
 
   return options.xmlMode || options._useHtmlParser2
-    ? // FIXME: Pull in new version of dom-serializer to fix this.
-      renderWithHtmlparser2(toRender as Node[], options)
+    ? renderWithHtmlparser2(toRender, options)
     : renderWithParse5(toRender);
 }
 
