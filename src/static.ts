@@ -8,8 +8,8 @@ import {
 } from './options';
 import { select } from 'cheerio-select';
 import { ElementType, DomUtils } from 'htmlparser2';
-import { render as renderWithParse5 } from './parsers/parse5';
-import { render as renderWithHtmlparser2 } from './parsers/htmlparser2';
+import { render as renderWithParse5 } from './parsers/parse5-adapter';
+import { render as renderWithHtmlparser2 } from './parsers/htmlparser2-adapter';
 
 /**
  * Helper function to render a DOM.
