@@ -1,6 +1,6 @@
 import { DomUtils } from 'htmlparser2';
-import { parse as parseWithHtmlparser2 } from './parsers/htmlparser2';
-import { parse as parseWithParse5 } from './parsers/parse5';
+import { parse as parseWithHtmlparser2 } from './parsers/htmlparser2-adapter';
+import { parse as parseWithParse5 } from './parsers/parse5-adapter';
 import {
   Node,
   Document,
