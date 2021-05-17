@@ -1,18 +1,9 @@
-import Cheerio from './cheerio';
-
-/**
- * The default cheerio instance.
- *
- * @deprecated Use the function returned by `load` instead.
- */
-export default Cheerio;
-
 /**
  * The main types of Cheerio objects.
  *
  * @category Cheerio
  */
-export type { Cheerio, CheerioAPI } from './cheerio';
+export type { Cheerio } from './cheerio';
 /**
  * Types used in signatures of Cheerio methods.
  *
@@ -33,8 +24,14 @@ export type { Node, NodeWithChildren, Element, Document } from 'domhandler';
 
 export * from './load';
 import { load } from './load';
-// We add this here, to avoid a cyclic depenency
-Cheerio.load = load;
+
+/**
+ * The default cheerio instance.
+ *
+ * @deprecated Use the function returned by `load` instead.
+ */
+export default load([]);
+
 import * as staticMethods from './static';
 
 /**

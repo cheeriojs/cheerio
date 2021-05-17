@@ -1,5 +1,5 @@
 import type { Node } from 'domhandler';
-import type { Cheerio, CheerioAPI } from '../cheerio';
+import type { Cheerio } from '../cheerio';
 import { isTag } from '../utils';
 
 /*
@@ -54,9 +54,8 @@ export function serializeArray<T extends Node>(
   this: Cheerio<T>
 ): SerializedField[] {
   // Resolve all form elements from either forms or collections of form elements
-  const Cheerio = this.constructor as CheerioAPI;
   return this.map((_, elem) => {
-    const $elem = Cheerio(elem);
+    const $elem = this._make(elem);
     if (isTag(elem) && elem.name === 'form') {
       return $elem.find(submittableSelector).toArray();
     }
@@ -72,7 +71,7 @@ export function serializeArray<T extends Node>(
       // Convert each of the elements to its value(s)
     )
     .map<Node, SerializedField>((_, elem) => {
-      const $elem = Cheerio(elem);
+      const $elem = this._make(elem);
       const name = $elem.attr('name') as string; // We have filtered for elements with a name before.
       // If there is no value set (e.g. `undefined`, `null`), then default value to empty
       const value = $elem.val() ?? '';

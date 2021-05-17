@@ -1,15 +1,8 @@
 import parse from './parse';
-import {
-  CheerioOptions,
-  InternalOptions,
-  default as defaultOptions,
-  flatten as flattenOptions,
-} from './options';
+import { InternalOptions, default as defaultOptions } from './options';
 import { isHtml, isCheerio } from './utils';
-import type { Node, Document, Element } from 'domhandler';
-import * as Static from './static';
-import type { load } from './load';
-import { SelectorType, BasicAcceptedElems } from './types';
+import type { Node, Document } from 'domhandler';
+import { BasicAcceptedElems } from './types';
 
 import * as Attributes from './api/attributes';
 import * as Traversing from './api/traversing';
@@ -23,16 +16,11 @@ type ManipulationType = typeof Manipulation;
 type CssType = typeof Css;
 type FormsType = typeof Forms;
 
-/*
- * The API
- */
-const api = [Attributes, Traversing, Manipulation, Css, Forms];
-
 export class Cheerio<T> implements ArrayLike<T> {
-  length!: number;
+  length = 0;
   [index: number]: T;
 
-  options!: InternalOptions;
+  options: InternalOptions;
   /**
    * The root of the document. Can be overwritten by using the `root` argument
    * of the constructor.
@@ -42,37 +30,6 @@ export class Cheerio<T> implements ArrayLike<T> {
   _root: Cheerio<Document> | undefined;
   /** @function */
   find!: typeof Traversing.find;
-  /**
-   * The root the document was originally loaded with. Same as the static
-   * `_root` property.
-   *
-   * @private
-   */
-  _originalRoot: Document | undefined;
-
-  /**
-   * The root the document was originally loaded with. Set in `.load`.
-   *
-   * @private
-   */
-  static _root: Document | undefined;
-  /**
-   * The options the document was originally loaded with. Set in `.load`.
-   *
-   * @private
-   */
-  static _options: InternalOptions | undefined;
-  public static html = Static.html;
-  public static xml = Static.xml;
-  public static text = Static.text;
-  public static parseHTML = Static.parseHTML;
-  public static root = Static.root;
-  public static contains = Static.contains;
-  public static merge = Static.merge;
-  public static load: typeof load;
-
-  /** Mimic jQuery's prototype alias for plugin authors. */
-  public static fn = Cheerio.prototype;
 
   /**
    * Instance of cheerio. Methods are specified in the modules. Usage of this
@@ -87,27 +44,24 @@ export class Cheerio<T> implements ArrayLike<T> {
   constructor(
     selector?: T extends Node ? BasicAcceptedElems<T> : Cheerio<T> | T[],
     context?: BasicAcceptedElems<Node> | null,
-    root?: BasicAcceptedElems<Document>,
-    options?: CheerioOptions
+    root?: BasicAcceptedElems<Document> | null,
+    options: InternalOptions = defaultOptions
   ) {
-    if (!(this instanceof Cheerio)) {
-      return new Cheerio(selector, context, root, options);
-    }
-
-    this.length = 0;
-
-    this.options = {
-      ...defaultOptions,
-      ...this.options,
-      ...flattenOptions(options),
-    };
+    this.options = options;
 
     // $(), $(null), $(undefined), $(false)
     if (!selector) return this;
 
     if (root) {
       if (typeof root === 'string') root = parse(root, this.options, false);
-      this._root = (Cheerio as any).call(this, root);
+      this._root = new (this.constructor as typeof Cheerio)(
+        root,
+        null,
+        null,
+        this.options
+      );
+      // Add a cyclic reference, so that calling methods on `_root` never fails.
+      this._root._root = this._root;
     }
 
     // $($)
@@ -142,14 +96,14 @@ export class Cheerio<T> implements ArrayLike<T> {
       : typeof context === 'string'
       ? isHtml(context)
         ? // $('li', '<ul>...</ul>')
-          new Cheerio(parse(context, this.options, false))
+          this._make(parse(context, this.options, false))
         : // $('li', 'ul')
           ((search = `${context} ${search}`), this._root)
       : isCheerio(context)
       ? // $('li', $)
         context
       : // $('li', node), $('li', [nodes])
-        new Cheerio(context);
+        this._make(context);
 
     // If we still don't have a context, return
     if (!searchContext) return this;
@@ -172,34 +126,17 @@ export class Cheerio<T> implements ArrayLike<T> {
    */
   _make<T>(
     dom: Cheerio<T> | T[] | T | string,
-    context?: BasicAcceptedElems<Node> | null,
-    root: BasicAcceptedElems<Document> | undefined = this._root
+    context?: BasicAcceptedElems<Node>
   ): Cheerio<T> {
     const cheerio = new (this.constructor as any)(
       dom,
       context,
-      root,
+      this._root,
       this.options
     );
     cheerio.prevObject = this;
 
     return cheerio;
-  }
-
-  /**
-   * Retrieve all the DOM elements contained in the jQuery set as an array.
-   *
-   * @example
-   *
-   * ```js
-   * $('li').toArray();
-   * //=> [ {...}, {...}, {...} ]
-   * ```
-   *
-   * @returns The contained items.
-   */
-  toArray(): T[] {
-    return this.get();
   }
 }
 
@@ -208,11 +145,11 @@ export interface Cheerio<T>
     TraversingType,
     ManipulationType,
     CssType,
-    FormsType {
+    FormsType,
+    Iterable<T> {
   cheerio: '[cheerio object]';
 
   splice: typeof Array.prototype.slice;
-  [Symbol.iterator](): Iterator<T>;
 }
 
 /** Set a signature of the object. */
@@ -227,7 +164,14 @@ Cheerio.prototype.splice = Array.prototype.splice;
 Cheerio.prototype[Symbol.iterator] = Array.prototype[Symbol.iterator];
 
 // Plug in the API
-api.forEach((mod) => Object.assign(Cheerio.prototype, mod));
+Object.assign(
+  Cheerio.prototype,
+  Attributes,
+  Traversing,
+  Manipulation,
+  Css,
+  Forms
+);
 
 function isNode(obj: any): obj is Node {
   return (
@@ -237,21 +181,3 @@ function isNode(obj: any): obj is Node {
     obj.type === 'comment'
   );
 }
-
-type CheerioClassType = typeof Cheerio;
-
-/**
- * Wrapper around the `Cheerio` class, making it possible to create a new
- * instance without using `new`.
- */
-export interface CheerioAPI extends CheerioClassType {
-  <T extends Node, S extends string>(
-    selector?: S | BasicAcceptedElems<T>,
-    context?: BasicAcceptedElems<Node> | null,
-    root?: BasicAcceptedElems<Document>,
-    options?: CheerioOptions
-  ): Cheerio<S extends SelectorType ? Element : T>;
-}
-
-// Make it possible to call Cheerio without using `new`.
-export default (Cheerio as unknown) as CheerioAPI;

@@ -1,12 +1,76 @@
 import {
   CheerioOptions,
+  InternalOptions,
   default as defaultOptions,
   flatten as flattenOptions,
 } from './options';
 import * as staticMethods from './static';
-import { CheerioAPI, Cheerio } from './cheerio';
+import { Cheerio } from './cheerio';
 import parse from './parse';
-import type { Node, Document } from 'domhandler';
+import type { Node, Document, Element } from 'domhandler';
+import type * as Load from './load';
+import { SelectorType, BasicAcceptedElems } from './types';
+
+type StaticType = typeof staticMethods;
+type LoadType = typeof Load;
+
+/**
+ * A querying function, bound to a document created from the provided markup.
+ *
+ * Also provides several helper methods for dealing with the document as a whole.
+ */
+export interface CheerioAPI extends StaticType, LoadType {
+  /**
+   * This selector method is the starting point for traversing and manipulating
+   * the document. Like jQuery, it's the primary method for selecting elements
+   * in the document.
+   *
+   * `selector` searches within the `context` scope which searches within the
+   * `root` scope.
+   *
+   * @example
+   *
+   * ```js
+   * $('.apple', '#fruits').text();
+   * //=> Apple
+   *
+   * $('ul .pear').attr('class');
+   * //=> pear
+   *
+   * $('li[class=orange]').html();
+   * //=> Orange
+   * ```
+   *
+   * @param selector - Either a selector to look for within the document, or the
+   *   contents of a new Cheerio instance.
+   * @param context - Either a selector to look for within the root, or the
+   *   contents of the document to query.
+   * @param root - Optional HTML document string.
+   */
+  <T extends Node, S extends string>(
+    selector?: S | BasicAcceptedElems<T>,
+    context?: BasicAcceptedElems<Node> | null,
+    root?: BasicAcceptedElems<Document>,
+    options?: CheerioOptions
+  ): Cheerio<S extends SelectorType ? Element : T>;
+
+  /**
+   * The root the document was originally loaded with.
+   *
+   * @private
+   */
+  _root: Document;
+
+  /**
+   * The options the document was originally loaded with.
+   *
+   * @private
+   */
+  _options: InternalOptions;
+
+  /** Mimic jQuery's prototype alias for plugin authors. */
+  fn: typeof Cheerio.prototype;
+}
 
 /**
  * Create a querying function, bound to a document created from the provided
@@ -14,61 +78,52 @@ import type { Node, Document } from 'domhandler';
  * introduce `<html>`, `<head>`, and `<body>` elements; set `isDocument` to
  * `false` to switch to fragment mode and disable this.
  *
- * See the README section titled "Loading" for additional usage information.
- *
  * @param content - Markup to be loaded.
  * @param options - Options for the created instance.
  * @param isDocument - Allows parser to be switched to fragment mode.
  * @returns The loaded document.
+ * @see {@link https://cheerio.js.org#loading} for additional usage information.
  */
 export function load(
   content: string | Node | Node[] | Buffer,
   options?: CheerioOptions | null,
-  isDocument?: boolean
+  isDocument = true
 ): CheerioAPI {
   if ((content as string | null) == null) {
     throw new Error('cheerio.load() expects a string');
   }
 
-  options = { ...defaultOptions, ...flattenOptions(options) };
+  const internalOpts = { ...defaultOptions, ...flattenOptions(options) };
+  const root = parse(content, internalOpts, isDocument);
 
-  if (typeof isDocument === 'undefined') isDocument = true;
+  /** Create an extended class here, so that extensions only live on one instance. */
+  class LoadedCheerio<T> extends Cheerio<T> {}
 
-  const root = parse(content, options, isDocument);
-
-  class initialize<T> extends Cheerio<T> {
-    // Mimic jQuery's prototype alias for plugin authors.
-    static fn = initialize.prototype;
-
-    constructor(
-      selector?: T extends Node
-        ? string | Cheerio<T> | T[] | T
-        : Cheerio<T> | T[],
-      context?: string | Cheerio<Node> | Node[] | Node,
-      r: string | Cheerio<Document> | Document = root,
-      opts?: CheerioOptions
-    ) {
-      // @ts-expect-error Using `this` before calling the constructor.
-      if (!(this instanceof initialize)) {
-        return new initialize(selector, context, r, opts);
-      }
-      super(selector, context, r, { ...options, ...opts });
-    }
+  function initialize<T>(
+    selector?: T extends Node
+      ? string | Cheerio<T> | T[] | T
+      : Cheerio<T> | T[],
+    context?: string | Cheerio<Node> | Node[] | Node,
+    r: string | Cheerio<Document> | Document | null = root,
+    opts?: CheerioOptions
+  ) {
+    return new LoadedCheerio<T>(selector, context, r, {
+      ...internalOpts,
+      ...flattenOptions(opts),
+    });
   }
 
-  /*
-   * Keep a reference to the top-level scope so we can chain methods that implicitly
-   * resolve selectors; e.g. $("<span>").(".bar"), which otherwise loses ._root
-   */
-  initialize.prototype._originalRoot = root;
+  // Add in static methods & properties
+  Object.assign(initialize, staticMethods, {
+    load,
+    // `_root` and `_options` are used in static methods.
+    _root: root,
+    _options: internalOpts,
+    // Add `fn` for plugins
+    fn: LoadedCheerio.prototype,
+    // Add the prototype here to maintain `instanceof` behavior.
+    prototype: LoadedCheerio.prototype,
+  });
 
-  // Add in the static methods
-  Object.assign(initialize, staticMethods, { load });
-
-  // Add in the root
-  initialize._root = root;
-  // Store options
-  initialize._options = options;
-
-  return (initialize as unknown) as CheerioAPI;
+  return initialize as CheerioAPI;
 }

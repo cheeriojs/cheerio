@@ -8,6 +8,7 @@ import { Node, Element, hasChildren } from 'domhandler';
 import type { Cheerio } from '../cheerio';
 import * as select from 'cheerio-select';
 import { domEach, isTag, isCheerio } from '../utils';
+import { contains } from '../static';
 import { DomUtils } from 'htmlparser2';
 import type { FilterFunction, AcceptedFilters } from '../types';
 const { uniqueSort } = DomUtils;
@@ -42,7 +43,6 @@ export function find<T extends Node>(
   const context: Node[] = this.toArray();
 
   if (typeof selectorOrHaystack !== 'string') {
-    const { contains } = this.constructor as typeof Cheerio;
     const haystack = isCheerio(selectorOrHaystack)
       ? selectorOrHaystack.get()
       : [selectorOrHaystack];
@@ -941,9 +941,25 @@ export function get<T>(this: Cheerio<T>, i: number): T;
 export function get<T>(this: Cheerio<T>): T[];
 export function get<T>(this: Cheerio<T>, i?: number): T | T[] {
   if (i == null) {
-    return Array.prototype.slice.call(this);
+    return this.toArray();
   }
   return this[i < 0 ? this.length + i : i];
+}
+
+/**
+ * Retrieve all the DOM elements contained in the jQuery set as an array.
+ *
+ * @example
+ *
+ * ```js
+ * $('li').toArray();
+ * //=> [ {...}, {...}, {...} ]
+ * ```
+ *
+ * @returns The contained items.
+ */
+export function toArray<T>(this: Cheerio<T>): T[] {
+  return Array.prototype.slice.call(this);
 }
 
 /**
