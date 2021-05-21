@@ -52,7 +52,7 @@ export abstract class Cheerio<T> implements ArrayLike<T> {
   }
 
   abstract _new<T>(
-    selector?: Cheerio<T> | T[] | (T extends Node ? string : never),
+    selector?: ArrayLike<T> | T | string,
     context?: BasicAcceptedElems<Node> | null
   ): Cheerio<T>;
 
@@ -66,10 +66,10 @@ export abstract class Cheerio<T> implements ArrayLike<T> {
    * @returns The new cheerio object.
    */
   _make<T>(
-    dom: Cheerio<T> | T[] | T | string,
+    dom: ArrayLike<T> | T | string,
     context?: BasicAcceptedElems<Node>
   ): Cheerio<T> {
-    const cheerio = (this as any)._new(dom, context);
+    const cheerio = this._new(dom, context);
     cheerio.prevObject = this;
 
     return cheerio;

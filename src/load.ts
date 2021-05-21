@@ -100,15 +100,15 @@ export function load(
   /** Create an extended class here, so that extensions only live on one instance. */
   class LoadedCheerio<T> extends Cheerio<T> {
     _new<T>(
-      selector?: T[] | Cheerio<T> | (T extends Node ? string : never),
+      selector?: ArrayLike<T> | T | string,
       context?: BasicAcceptedElems<Node> | null
     ): Cheerio<T> {
-      return (initialize as any)(selector, context);
+      return initialize(selector, context);
     }
   }
 
-  function initialize<T extends Node, S extends string>(
-    selector?: S | BasicAcceptedElems<T>,
+  function initialize<T = Node, S extends string = string>(
+    selector?: ArrayLike<T> | T | S,
     context?: BasicAcceptedElems<Node> | null,
     root: BasicAcceptedElems<Document> = initialRoot,
     opts?: CheerioOptions
@@ -139,7 +139,7 @@ export function load(
       return new LoadedCheerio<Result>(undefined, rootInstance, options);
     }
 
-    const elements =
+    const elements: Node[] | undefined =
       typeof selector === 'string' && isHtml(selector)
         ? // $(<html>)
           parse(selector, options, false).children
@@ -151,7 +151,7 @@ export function load(
           selector
         : undefined;
 
-    const instance = new LoadedCheerio<Node>(elements, rootInstance, options);
+    const instance = new LoadedCheerio(elements, rootInstance, options);
 
     if (elements || !selector) {
       return instance as any;
@@ -174,7 +174,7 @@ export function load(
             options
           )
         : // $('li', 'ul')
-          ((search = `${context} ${search}`), rootInstance)
+          ((search = `${context} ${search}` as S), rootInstance)
       : isCheerio<Node>(context)
       ? // $('li', $)
         context
