@@ -192,11 +192,11 @@ export function attr<T extends Node>(
           throw new Error('Bad combination of arguments.');
         }
       }
-      return domEach(this, (i, el) => {
+      return domEach(this, (el, i) => {
         if (isTag(el)) setAttr(el, name, value.call(el, i, el.attribs[name]));
       });
     }
-    return domEach(this, (_, el) => {
+    return domEach(this, (el) => {
       if (!isTag(el)) return;
 
       if (typeof name === 'object') {
@@ -362,12 +362,12 @@ export function prop<T extends Node>(
       if (typeof name === 'object') {
         throw new Error('Bad combination of arguments.');
       }
-      return domEach(this, (j, el) => {
-        if (isTag(el)) setProp(el, name, value.call(el, j, getProp(el, name)));
+      return domEach(this, (el, i) => {
+        if (isTag(el)) setProp(el, name, value.call(el, i, getProp(el, name)));
       });
     }
 
-    return domEach(this, (__, el) => {
+    return domEach(this, (el) => {
       if (!isTag(el)) return;
 
       if (typeof name === 'object') {
@@ -566,7 +566,7 @@ export function data<T extends Node>(
 
   // Set the value (with attr map support)
   if (typeof name === 'object' || value !== undefined) {
-    domEach(this, (_, el) => {
+    domEach(this, (el) => {
       if (isTag(el))
         if (typeof name === 'object') setData(el, name);
         else setData(el, name, value as unknown);
@@ -711,7 +711,7 @@ export function removeAttr<T extends Node>(
   const attrNames = splitNames(name);
 
   for (let i = 0; i < attrNames.length; i++) {
-    domEach(this, (_, elem) => {
+    domEach(this, (elem) => {
       if (isTag(elem)) removeAttribute(elem, attrNames[i]);
     });
   }
@@ -791,7 +791,7 @@ export function addClass<T extends Node, R extends ArrayLike<T>>(
 ): R {
   // Support functions
   if (typeof value === 'function') {
-    return domEach(this, (i, el) => {
+    return domEach(this, (el, i) => {
       if (isTag(el)) {
         const className = el.attribs.class || '';
         addClass.call([el], value.call(el, i, className));
@@ -858,7 +858,7 @@ export function removeClass<T extends Node, R extends ArrayLike<T>>(
 ): R {
   // Handle if value is a function
   if (typeof name === 'function') {
-    return domEach(this, (i, el) => {
+    return domEach(this, (el, i) => {
       if (isTag(el))
         removeClass.call([el], name.call(el, i, el.attribs.class || ''));
     });
@@ -868,7 +868,7 @@ export function removeClass<T extends Node, R extends ArrayLike<T>>(
   const numClasses = classes.length;
   const removeAll = arguments.length === 0;
 
-  return domEach(this, (_, el) => {
+  return domEach(this, (el) => {
     if (!isTag(el)) return;
 
     if (removeAll) {
@@ -933,7 +933,7 @@ export function toggleClass<T extends Node, R extends ArrayLike<T>>(
 ): R {
   // Support functions
   if (typeof value === 'function') {
-    return domEach(this, (i, el) => {
+    return domEach(this, (el, i) => {
       if (isTag(el)) {
         toggleClass.call(
           [el],
