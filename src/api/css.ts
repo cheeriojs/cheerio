@@ -67,10 +67,10 @@ export function css<T extends Node>(
     // When `prop` is a "plain" object
     (typeof prop === 'object' && !Array.isArray(prop))
   ) {
-    return domEach(this, (idx, el) => {
+    return domEach(this, (el, i) => {
       if (isTag(el)) {
         // `prop` can't be an array here anymore.
-        setCss(el, prop as string, val, idx);
+        setCss(el, prop as string, val, i);
       }
     });
   }

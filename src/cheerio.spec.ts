@@ -425,7 +425,7 @@ describe('cheerio', () => {
     it('cloneDom : should be able clone single Elements', () => {
       const main = cheerio('<p>Cheerio</p>') as Cheerio<Element>;
       let result: Element[] = [];
-      utils.domEach<Element>(main, (_, el) => {
+      utils.domEach<Element>(main, (el) => {
         result = [...result, ...utils.cloneDom(el)];
       });
       expect(result).toHaveLength(1);

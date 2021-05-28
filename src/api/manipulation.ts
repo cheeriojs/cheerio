@@ -60,7 +60,7 @@ function _insert(
   ) {
     const lastIdx = this.length - 1;
 
-    return domEach(this, (i, el) => {
+    return domEach(this, (el, i) => {
       if (!hasChildren(el)) return;
       const domSrc =
         typeof elems[0] === 'function'
@@ -585,7 +585,7 @@ export function after<T extends Node>(
 ): Cheerio<T> {
   const lastIdx = this.length - 1;
 
-  return domEach(this, (i, el) => {
+  return domEach(this, (el, i) => {
     const { parent } = el;
     if (!DomUtils.hasChildren(el) || !parent) {
       return;
@@ -645,7 +645,7 @@ export function insertAfter<T extends Node>(
 
   const clones: T[] = [];
 
-  domEach(this._makeDomArray(target), (_, el) => {
+  this._makeDomArray(target).forEach((el) => {
     const clonedSelf = this.clone().toArray();
     const { parent } = el;
     if (!parent) {
@@ -699,7 +699,7 @@ export function before<T extends Node>(
 ): Cheerio<T> {
   const lastIdx = this.length - 1;
 
-  return domEach(this, (i, el) => {
+  return domEach(this, (el, i) => {
     const { parent } = el;
     if (!DomUtils.hasChildren(el) || !parent) {
       return;
@@ -757,7 +757,7 @@ export function insertBefore<T extends Node>(
 
   const clones: T[] = [];
 
-  domEach(targetArr, (_, el) => {
+  domEach(targetArr, (el) => {
     const clonedSelf = this.clone().toArray();
     const { parent } = el;
     if (!parent) {
@@ -806,7 +806,7 @@ export function remove<T extends Node>(
   // Filter if we have selector
   const elems = selector ? this.filter(selector) : this;
 
-  domEach(elems, (_, el) => {
+  domEach(elems, (el) => {
     DomUtils.removeElement(el);
     el.prev = el.next = el.parent = null;
   });
@@ -839,7 +839,7 @@ export function replaceWith<T extends Node>(
   this: Cheerio<T>,
   content: AcceptedElems<Node>
 ): Cheerio<T> {
-  return domEach(this, (i, el) => {
+  return domEach(this, (el, i) => {
     const { parent } = el;
     if (!parent) {
       return;
@@ -883,7 +883,7 @@ export function replaceWith<T extends Node>(
  * @see {@link https://api.jquery.com/empty/}
  */
 export function empty<T extends Node>(this: Cheerio<T>): Cheerio<T> {
-  return domEach(this, (_, el) => {
+  return domEach(this, (el) => {
     if (!DomUtils.hasChildren(el)) return;
     el.children.forEach((child) => {
       child.next = child.prev = child.parent = null;
@@ -930,7 +930,7 @@ export function html<T extends Node>(
   // Keep main options unchanged
   const opts = { ...this.options, context: null as NodeWithChildren | null };
 
-  return domEach(this, (_, el) => {
+  return domEach(this, (el) => {
     if (!DomUtils.hasChildren(el)) return;
     el.children.forEach((child) => {
       child.next = child.prev = child.parent = null;
@@ -993,13 +993,13 @@ export function text<T extends Node>(
   }
   if (typeof str === 'function') {
     // Function support
-    return domEach(this, (i, el) => {
+    return domEach(this, (el, i) => {
       text.call(this._make(el), str.call(el, i, staticText([el])));
     });
   }
 
   // Append text node to each selected elements
-  return domEach(this, (_, el) => {
+  return domEach(this, (el) => {
     if (!DomUtils.hasChildren(el)) return;
     el.children.forEach((child) => {
       child.next = child.prev = child.parent = null;

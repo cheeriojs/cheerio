@@ -63,10 +63,10 @@ export function cssCase(str: string): string {
  */
 export function domEach<T extends Node, Arr extends ArrayLike<T> = Cheerio<T>>(
   array: Arr,
-  fn: (index: number, elem: T) => void | false
+  fn: (elem: T, index: number) => void
 ): Arr {
   const len = array.length;
-  for (let i = 0; i < len && fn(i, array[i]) !== false; i++);
+  for (let i = 0; i < len; i++) fn(array[i], i);
   return array;
 }
 

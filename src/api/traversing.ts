@@ -89,7 +89,7 @@ export function parent<T extends Node>(
 ): Cheerio<Element> {
   const set: Element[] = [];
 
-  domEach(this, (_, elem) => {
+  domEach(this, (elem) => {
     const parentElem = elem.parent;
     if (
       parentElem &&
@@ -245,7 +245,7 @@ export function closest<T extends Node>(
     return this._make(set);
   }
 
-  domEach(this, (_, elem) => {
+  domEach(this, (elem) => {
     const closestElem = traverseParents(this, elem, selector, 1)[0];
 
     // Do not add duplicate elements to the set
@@ -278,7 +278,7 @@ export function next<T extends Node>(
 ): Cheerio<Element> {
   const elems: Element[] = [];
 
-  domEach(this, (_, elem) => {
+  domEach(this, (elem) => {
     while (elem.next) {
       elem = elem.next;
       if (isTag(elem)) {
@@ -315,7 +315,7 @@ export function nextAll<T extends Node>(
 ): Cheerio<Element> {
   const elems: Element[] = [];
 
-  domEach(this, (_, elem: Node) => {
+  domEach(this, (elem: Node) => {
     while (elem.next) {
       elem = elem.next;
       if (isTag(elem) && !elems.includes(elem)) {
@@ -361,7 +361,7 @@ export function nextUntil<T extends Node>(
     untilNode = selector;
   }
 
-  domEach(this, (_, elem) => {
+  domEach(this, (elem) => {
     while (elem.next) {
       elem = elem.next;
       if (
@@ -405,7 +405,7 @@ export function prev<T extends Node>(
 ): Cheerio<Element> {
   const elems: Element[] = [];
 
-  domEach(this, (_, elem: Node) => {
+  domEach(this, (elem: Node) => {
     while (elem.prev) {
       elem = elem.prev;
       if (isTag(elem)) {
@@ -443,7 +443,7 @@ export function prevAll<T extends Node>(
 ): Cheerio<Element> {
   const elems: Element[] = [];
 
-  domEach(this, (_, elem) => {
+  domEach(this, (elem) => {
     while (elem.prev) {
       elem = elem.prev;
       if (isTag(elem) && !elems.includes(elem)) {
@@ -489,7 +489,7 @@ export function prevUntil<T extends Node>(
     untilNode = selector;
   }
 
-  domEach(this, (_, elem) => {
+  domEach(this, (elem) => {
     while (elem.prev) {
       elem = elem.prev;
       if (
