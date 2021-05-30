@@ -66,7 +66,7 @@
     "node-fetch": "^2.6.1",
     "prettier": "^2.3.0",
     "prettier-plugin-jsdoc": "0.3.22",
-    "ts-jest": "^26.5.6",
+    "ts-jest": "^27.0.1",
     "ts-node": "^10.0.0",
     "typedoc": "^0.20.36",
     "typescript": "^4.3.2"
