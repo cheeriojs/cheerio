@@ -25,7 +25,7 @@ const primitives: Record<string, unknown> = {
 const rboolean =
   /^(?:autofocus|autoplay|async|checked|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped|selected)$/i;
 // Matches strings that look like JSON objects or arrays
-const rbrace = /^(?:{[\w\W]*}|\[[\w\W]*])$/;
+const rbrace = /^{[^]*}$|^\[[^]*]$/;
 
 /**
  * Gets a node's attribute. For boolean attributes, it will return the value's
@@ -39,11 +39,20 @@ const rbrace = /^(?:{[\w\W]*}|\[[\w\W]*])$/;
  * @param name - Name of the attribute.
  * @returns The attribute's value.
  */
-function getAttr(elem: Node, name: undefined): Record<string, string>;
-function getAttr(elem: Node, name: string): string | undefined;
 function getAttr(
   elem: Node,
-  name: string | undefined
+  name: undefined,
+  xmlMode?: boolean
+): Record<string, string>;
+function getAttr(
+  elem: Node,
+  name: string,
+  xmlMode?: boolean
+): string | undefined;
+function getAttr(
+  elem: Node,
+  name: string | undefined,
+  xmlMode?: boolean
 ): Record<string, string> | string | undefined {
   if (!elem || !isTag(elem)) return undefined;
 
@@ -56,7 +65,7 @@ function getAttr(
 
   if (hasOwn.call(elem.attribs, name)) {
     // Get the (decoded) attribute
-    return rboolean.test(name) ? name : elem.attribs[name];
+    return !xmlMode && rboolean.test(name) ? name : elem.attribs[name];
   }
 
   // Mimic the DOM and return text content as value for `option's`
@@ -210,7 +219,9 @@ export function attr<T extends Node>(
     });
   }
 
-  return arguments.length > 1 ? this : getAttr(this[0], name as string);
+  return arguments.length > 1
+    ? this
+    : getAttr(this[0], name as string, this.options.xmlMode);
 }
 
 /**
@@ -224,16 +235,17 @@ export function attr<T extends Node>(
  */
 function getProp(
   el: Node | undefined,
-  name: string
+  name: string,
+  xmlMode?: boolean
 ): string | undefined | Element[keyof Element] {
   if (!el || !isTag(el)) return;
 
   return name in el
     ? // @ts-expect-error TS doesn't like us accessing the value directly here.
       el[name]
-    : rboolean.test(name)
-    ? getAttr(el, name) !== undefined
-    : getAttr(el, name);
+    : !xmlMode && rboolean.test(name)
+    ? getAttr(el, name, false) !== undefined
+    : getAttr(el, name, xmlMode);
 }
 
 /**
@@ -244,12 +256,16 @@ function getProp(
  * @param name - The prop's name.
  * @param value - The prop's value.
  */
-function setProp(el: Element, name: string, value: unknown) {
+function setProp(el: Element, name: string, value: unknown, xmlMode?: boolean) {
   if (name in el) {
     // @ts-expect-error Overriding value
     el[name] = value;
   } else {
-    setAttr(el, name, rboolean.test(name) ? (value ? '' : null) : `${value}`);
+    setAttr(
+      el,
+      name,
+      !xmlMode && rboolean.test(name) ? (value ? '' : null) : `${value}`
+    );
   }
 }
 
@@ -353,7 +369,7 @@ export function prop<T extends Node>(
         return this.html();
 
       default:
-        return getProp(this[0], name);
+        return getProp(this[0], name, this.options.xmlMode);
     }
   }
 
@@ -363,7 +379,13 @@ export function prop<T extends Node>(
         throw new Error('Bad combination of arguments.');
       }
       return domEach(this, (el, i) => {
-        if (isTag(el)) setProp(el, name, value.call(el, i, getProp(el, name)));
+        if (isTag(el))
+          setProp(
+            el,
+            name,
+            value.call(el, i, getProp(el, name, this.options.xmlMode)),
+            this.options.xmlMode
+          );
       });
     }
 
@@ -373,10 +395,10 @@ export function prop<T extends Node>(
       if (typeof name === 'object') {
         Object.keys(name).forEach((key) => {
           const val = name[key];
-          setProp(el, key, val);
+          setProp(el, key, val, this.options.xmlMode);
         });
       } else {
-        setProp(el, name, value);
+        setProp(el, name, value, this.options.xmlMode);
       }
     });
   }
@@ -810,8 +832,8 @@ export function addClass<T extends Node, R extends ArrayLike<T>>(
     // If selected element isn't a tag, move on
     if (!isTag(el)) continue;
 
-    // If we don't already have classes
-    const className = getAttr(el, 'class');
+    // If we don't already have classes — always set xmlMode to false here, as it doesn't matter for classes
+    const className = getAttr(el, 'class', false);
 
     if (!className) {
       setAttr(el, 'class', classNames.join(' ').trim());
