@@ -17,8 +17,10 @@ export interface InternalOptions extends HTMLParser2Options, Parse5Options {
 }
 
 /**
- * Options accepted by Cheerio. Please note that parser-specific options are
- * *only recognized* if the relevant parser is used.
+ * Options accepted by Cheerio.
+ *
+ * Please note that parser-specific options are *only recognized* if the
+ * relevant parser is used.
  */
 export interface CheerioOptions extends HTMLParser2Options, Parse5Options {
   /** Suggested way of configuring htmlparser2 when wanting to parse XML. */
