@@ -179,6 +179,15 @@ describe('$(...)', () => {
       expect($('.pear').attr('foo')).toBeUndefined();
       expect($pear).toBeInstanceOf($);
     });
+
+    it("(bool) shouldn't treat boolean attributes differently in XML mode", () => {
+      const $xml = $.load(`<input checked=checked disabled=yes />`, {
+        xml: true,
+      })('input');
+
+      expect($xml.attr('checked')).toBe('checked');
+      expect($xml.attr('disabled')).toBe('yes');
+    });
   });
 
   describe('.prop', () => {
@@ -301,6 +310,15 @@ describe('$(...)', () => {
       expect($text('body').html()).toBe(
         '<a test-name="tester">1</a>TEXT<b test-name="tester">2</b>'
       );
+    });
+
+    it("(bool) shouldn't treat boolean attributes differently in XML mode", () => {
+      const $xml = $.load(`<input checked=checked disabled=yes />`, {
+        xml: true,
+      })('input');
+
+      expect($xml.prop('checked')).toBe('checked');
+      expect($xml.prop('disabled')).toBe('yes');
     });
   });
 
