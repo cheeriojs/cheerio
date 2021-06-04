@@ -274,12 +274,16 @@ export function closest<T extends Node>(
     return this._make(set);
   }
 
-  domEach(this, (elem) => {
-    const closestElem = traverseParents(this, elem, selector, 1)[0];
-
-    // Do not add duplicate elements to the set
-    if (closestElem && !set.includes(closestElem)) {
-      set.push(closestElem);
+  domEach(this, (elem: Node | null) => {
+    while (elem && elem.type !== 'root') {
+      if (!selector || filter.call([elem], selector, this).length) {
+        // Do not add duplicate elements to the set
+        if (elem && !set.includes(elem)) {
+          set.push(elem);
+        }
+        break;
+      }
+      elem = elem.parent;
     }
   });
 
@@ -974,22 +978,6 @@ export function slice<T>(
   end?: number
 ): Cheerio<T> {
   return this._make(Array.prototype.slice.call(this, start, end));
-}
-
-function traverseParents<T extends Node>(
-  self: Cheerio<T>,
-  elem: Node | null,
-  selector: AcceptedFilters<T> | undefined,
-  limit: number
-): Node[] {
-  const elems: Node[] = [];
-  while (elem && elems.length < limit && elem.type !== 'root') {
-    if (!selector || filter.call([elem], selector, self).length) {
-      elems.push(elem);
-    }
-    elem = elem.parent;
-  }
-  return elems;
 }
 
 /**
