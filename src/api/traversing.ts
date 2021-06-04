@@ -112,6 +112,53 @@ function _matcher(
   };
 }
 
+function _matchUntil(
+  allElems: ReturnType<typeof _matcher>,
+  nextElem: (elem: Node) => Element | null,
+  ...postFns: ((elems: Element[]) => Element[])[]
+) {
+  return function <T extends Node>(
+    this: Cheerio<T>,
+    selector?: AcceptedFilters<Node> | null,
+    filterSelector?: AcceptedFilters<T>
+  ): Cheerio<Element> {
+    if (!selector) return allElems.call(this, filterSelector as any);
+    const matches = getFilterFn(
+      typeof selector === 'string' ? allElems.call(this, selector) : selector
+    );
+
+    let matched: Element[] = [];
+
+    domEach(this, (elem) => {
+      for (;;) {
+        const next = nextElem(elem);
+
+        if (!next) break;
+
+        if (isTag(next)) {
+          // FIXME: `matched` might contain duplicates here
+          if (matches(next, matched.length)) break;
+          matched.push(next);
+        }
+
+        elem = next;
+      }
+    });
+
+    // Select.filter uses uniqueSort already internally
+    if (filterSelector) {
+      matched = filter.call(matched, filterSelector, this).toArray();
+    }
+
+    return this._make(
+      this.length > 1
+        ? // Post processing is only necessary if there is more than one element.
+          postFns.reduce((elems, fn) => fn(elems), matched)
+        : matched
+    );
+  };
+}
+
 function _removeDuplicates<T extends Node>(elems: T[]): T[] {
   return Array.from(new Set<T>(elems));
 }
@@ -185,40 +232,12 @@ export const parents = _matcher(
  * @returns The parents.
  * @see {@link https://api.jquery.com/parentsUntil/}
  */
-export function parentsUntil<T extends Node>(
-  this: Cheerio<T>,
-  selector?: AcceptedFilters<Node> | null,
-  filterSelector?: AcceptedFilters<T>
-): Cheerio<Element> {
-  const parentNodes: Element[] = [];
-  if (!selector) return this.parents(filterSelector);
-
-  const isEnd = getFilterFn(
-    typeof selector === 'string' ? this.parents(selector) : selector
-  );
-
-  /*
-   * When multiple DOM elements are in the original set, the resulting set will
-   * be in *reverse* order of the original elements as well, with duplicates
-   * removed.
-   */
-
-  this.toArray()
-    .reverse()
-    .forEach((elem: Node) => {
-      while (elem.parent) {
-        elem = elem.parent;
-        if (isTag(elem) && !parentNodes.includes(elem)) {
-          if (isEnd?.(elem, parentNodes.length)) break;
-          parentNodes.push(elem);
-        }
-      }
-    }, this);
-
-  return filterSelector
-    ? filter.call(parentNodes, filterSelector, this)
-    : this._make(parentNodes);
-}
+export const parentsUntil = _matchUntil(
+  parents,
+  ({ parent }) => (parent && !isDocument(parent) ? (parent as Element) : null),
+  uniqueSort,
+  (elems) => elems.reverse()
+);
 
 /**
  * For each element in the set, get the first element that matches the selector
@@ -328,32 +347,11 @@ export const nextAll = _matcher((elem) => {
  * @returns The next nodes.
  * @see {@link https://api.jquery.com/nextUntil/}
  */
-export function nextUntil<T extends Node>(
-  this: Cheerio<T>,
-  selector?: AcceptedFilters<Node> | null,
-  filterSelector?: AcceptedFilters<T>
-): Cheerio<Element> {
-  const elems: Element[] = [];
-  if (!selector) return this.nextAll(filterSelector);
-
-  const isEnd = getFilterFn(
-    typeof selector === 'string' ? this.nextAll(selector) : selector
-  );
-
-  domEach(this, (elem) => {
-    while (elem.next) {
-      elem = elem.next;
-      if (isTag(elem) && !elems.includes(elem)) {
-        if (isEnd?.(elem, elems.length)) break;
-        elems.push(elem);
-      }
-    }
-  });
-
-  return filterSelector
-    ? filter.call(elems, filterSelector, this)
-    : this._make(elems);
-}
+export const nextUntil = _matchUntil(
+  nextAll,
+  (el) => DomUtils.nextElementSibling(el),
+  _removeDuplicates
+);
 
 /**
  * Gets the previous sibling of the first selected element optionally filtered
@@ -418,32 +416,11 @@ export const prevAll = _matcher((elem) => {
  * @returns The previous nodes.
  * @see {@link https://api.jquery.com/prevUntil/}
  */
-export function prevUntil<T extends Node>(
-  this: Cheerio<T>,
-  selector?: AcceptedFilters<Node> | null,
-  filterSelector?: AcceptedFilters<T>
-): Cheerio<Element> {
-  const elems: Element[] = [];
-  if (!selector) return this.prevAll(filterSelector);
-
-  const isEnd = getFilterFn(
-    typeof selector === 'string' ? this.prevAll(selector) : selector
-  );
-
-  domEach(this, (elem) => {
-    while (elem.prev) {
-      elem = elem.prev;
-      if (isTag(elem) && !elems.includes(elem)) {
-        if (isEnd?.(elem, elems.length)) break;
-        elems.push(elem);
-      }
-    }
-  });
-
-  return filterSelector
-    ? filter.call(elems, filterSelector, this)
-    : this._make(elems);
-}
+export const prevUntil = _matchUntil(
+  prevAll,
+  (el) => DomUtils.prevElementSibling(el),
+  _removeDuplicates
+);
 
 /**
  * Get the siblings of each element (excluding the element) in the set of
