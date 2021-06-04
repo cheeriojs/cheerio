@@ -103,12 +103,12 @@ function _matcher(
       matched = filter.call(matched, selector, this).toArray();
     }
 
-    // Sorting happend only if collection had more than one elements
-    if (this.length > 1) {
-      return this._make(postFns.reduce((elems, fn) => fn(elems), matched));
-    }
-
-    return this._make(matched);
+    return this._make(
+      this.length > 1
+        ? // Post processing is only necessary if there is more than one element.
+          postFns.reduce((elems, fn) => fn(elems), matched)
+        : matched
+    );
   };
 }
 
@@ -181,26 +181,21 @@ export const parents = _matcher(
  * ```
  *
  * @param selector - Selector for element to stop at.
- * @param filterBy - Optional filter for parents.
+ * @param filterSelector - Optional filter for parents.
  * @returns The parents.
  * @see {@link https://api.jquery.com/parentsUntil/}
  */
 export function parentsUntil<T extends Node>(
   this: Cheerio<T>,
-  selector?: string | Node | Cheerio<Node>,
-  filterBy?: AcceptedFilters<T>
+  selector?: AcceptedFilters<Node> | null,
+  filterSelector?: AcceptedFilters<T>
 ): Cheerio<Element> {
   const parentNodes: Element[] = [];
-  let untilNode: Node | undefined;
-  let untilNodes: Node[] | undefined;
+  if (!selector) return this.parents(filterSelector);
 
-  if (typeof selector === 'string') {
-    untilNodes = this.parents(selector).toArray();
-  } else if (selector && isCheerio(selector)) {
-    untilNodes = selector.toArray();
-  } else if (selector) {
-    untilNode = selector;
-  }
+  const isEnd = getFilterFn(
+    typeof selector === 'string' ? this.parents(selector) : selector
+  );
 
   /*
    * When multiple DOM elements are in the original set, the resulting set will
@@ -213,22 +208,15 @@ export function parentsUntil<T extends Node>(
     .forEach((elem: Node) => {
       while (elem.parent) {
         elem = elem.parent;
-        if (
-          (untilNode && elem !== untilNode) ||
-          (untilNodes && !untilNodes.includes(elem)) ||
-          (!untilNode && !untilNodes)
-        ) {
-          if (isTag(elem) && !parentNodes.includes(elem)) {
-            parentNodes.push(elem);
-          }
-        } else {
-          break;
+        if (isTag(elem) && !parentNodes.includes(elem)) {
+          if (isEnd?.(elem, parentNodes.length)) break;
+          parentNodes.push(elem);
         }
       }
     }, this);
 
-  return filterBy
-    ? filter.call(parentNodes, filterBy, this)
+  return filterSelector
+    ? filter.call(parentNodes, filterSelector, this)
     : this._make(parentNodes);
 }
 
@@ -342,34 +330,22 @@ export const nextAll = _matcher((elem) => {
  */
 export function nextUntil<T extends Node>(
   this: Cheerio<T>,
-  selector?: string | Cheerio<Node> | Node | null,
+  selector?: AcceptedFilters<Node> | null,
   filterSelector?: AcceptedFilters<T>
 ): Cheerio<Element> {
   const elems: Element[] = [];
-  let untilNode: Node | undefined;
-  let untilNodes: Node[] | undefined;
+  if (!selector) return this.nextAll(filterSelector);
 
-  if (typeof selector === 'string') {
-    untilNodes = this.nextAll(selector).toArray();
-  } else if (selector && isCheerio(selector)) {
-    untilNodes = selector.get();
-  } else if (selector) {
-    untilNode = selector;
-  }
+  const isEnd = getFilterFn(
+    typeof selector === 'string' ? this.nextAll(selector) : selector
+  );
 
   domEach(this, (elem) => {
     while (elem.next) {
       elem = elem.next;
-      if (
-        (untilNode && elem !== untilNode) ||
-        (untilNodes && !untilNodes.includes(elem)) ||
-        (!untilNode && !untilNodes)
-      ) {
-        if (isTag(elem) && !elems.includes(elem)) {
-          elems.push(elem);
-        }
-      } else {
-        break;
+      if (isTag(elem) && !elems.includes(elem)) {
+        if (isEnd?.(elem, elems.length)) break;
+        elems.push(elem);
       }
     }
   });
@@ -444,34 +420,22 @@ export const prevAll = _matcher((elem) => {
  */
 export function prevUntil<T extends Node>(
   this: Cheerio<T>,
-  selector?: string | Cheerio<Node> | Node | null,
+  selector?: AcceptedFilters<Node> | null,
   filterSelector?: AcceptedFilters<T>
 ): Cheerio<Element> {
   const elems: Element[] = [];
-  let untilNode: Node | undefined;
-  let untilNodes: Node[] | undefined;
+  if (!selector) return this.prevAll(filterSelector);
 
-  if (typeof selector === 'string') {
-    untilNodes = this.prevAll(selector).toArray();
-  } else if (selector && isCheerio(selector)) {
-    untilNodes = selector.get();
-  } else if (selector) {
-    untilNode = selector;
-  }
+  const isEnd = getFilterFn(
+    typeof selector === 'string' ? this.prevAll(selector) : selector
+  );
 
   domEach(this, (elem) => {
     while (elem.prev) {
       elem = elem.prev;
-      if (
-        (untilNode && elem !== untilNode) ||
-        (untilNodes && !untilNodes.includes(elem)) ||
-        (!untilNode && !untilNodes)
-      ) {
-        if (isTag(elem) && !elems.includes(elem)) {
-          elems.push(elem);
-        }
-      } else {
-        break;
+      if (isTag(elem) && !elems.includes(elem)) {
+        if (isEnd?.(elem, elems.length)) break;
+        elems.push(elem);
       }
     }
   });

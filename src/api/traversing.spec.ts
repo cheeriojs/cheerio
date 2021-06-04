@@ -659,11 +659,11 @@ describe('$(...)', () => {
     it('() : should get all of the parents in reversed order, omitting duplicates', () => {
       const result = $('.apple, .sweetcorn').parentsUntil();
       expect(result).toHaveLength(5);
-      expect(result[0].attribs.id).toBe('vegetables');
-      expect(result[1].attribs.id).toBe('food');
-      expect(result[2].tagName).toBe('body');
-      expect(result[3].tagName).toBe('html');
-      expect(result[4].attribs.id).toBe('fruits');
+      expect(result[0]).toBe($('#vegetables')[0]);
+      expect(result[1]).toBe($('#fruits')[0]);
+      expect(result[2]).toBe($('#food')[0]);
+      expect(result[3]).toBe($('body')[0]);
+      expect(result[4]).toBe($('html')[0]);
     });
 
     it('(selector) : should get all of the parents until selector', () => {
