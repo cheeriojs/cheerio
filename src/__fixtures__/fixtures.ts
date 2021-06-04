@@ -47,6 +47,32 @@ export const drinks = [
 
 export const food = ['<ul id="food">', fruits, vegetables, '</ul>'].join('');
 
+export const eleven = `
+<html>
+  <body>
+    <ul>
+      <li>One</li>
+      <li>Two</li>
+      <li class="blue sel">Three</li>
+      <li class="red">Four</li>
+    </ul>
+
+    <ul>
+      <li class="red">Five</li>
+      <li>Six</li>
+      <li class="blue">Seven</li>
+    </ul>
+
+    <ul>
+      <li>Eight</li>
+      <li class="red sel">Nine</li>
+      <li>Ten</li>
+      <li class="sel">Eleven</li>
+    </ul>
+  </body>
+</html>
+`;
+
 export const inputs = [
   '<select id="one"><option value="option_not_selected">Option not selected</option><option value="option_selected" selected>Option selected</option></select>',
   '<select id="one-valueless"><option>Option not selected</option><option selected>Option selected</option></select>',
