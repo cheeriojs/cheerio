@@ -604,7 +604,7 @@ function getFilterFn<T>(
     };
   }
   if (isCheerio<T>(match)) {
-    return (el) => match.is(el);
+    return (el) => Array.prototype.includes.call(match, el);
   }
   return function (el) {
     return match === el;
