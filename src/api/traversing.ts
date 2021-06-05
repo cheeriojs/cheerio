@@ -89,15 +89,14 @@ function _getMatcher<P>(
     ): Cheerio<Element> {
       let matched: Element[] = matchMap(fn, this);
 
-      // Select.filter uses uniqueSort already internally
       if (selector) {
         matched = filterArray(matched, selector, this.options);
       }
 
       return this._make(
-        this.length > 1
-          ? // Post processing is only necessary if there is more than one element.
-            postFns.reduce((elems, fn) => fn(elems), matched)
+        // Post processing is only necessary if there is more than one element.
+        this.length > 1 && matched.length > 1
+          ? postFns.reduce((elems, fn) => fn(elems), matched)
           : matched
       );
     };
@@ -134,45 +133,40 @@ function _matchUntil(
   nextElem: (elem: Node) => Element | null,
   ...postFns: ((elems: Element[]) => Element[])[]
 ) {
+  // We use a variable here that is used from within the matcher.
+  let matches: ((el: Element, i: number) => boolean) | null = null;
+
+  const innerMatcher = _getMatcher(
+    (nextElem: (elem: Node) => Element | null, elems) => {
+      const matched: Element[] = [];
+
+      domEach(elems, (elem) => {
+        for (let next; (next = nextElem(elem)); elem = next) {
+          // FIXME: `matched` might contain duplicates here and the index is too large.
+          if (matches?.(next, matched.length)) break;
+          matched.push(next);
+        }
+      });
+
+      return matched;
+    }
+  )(nextElem, ...postFns);
+
   return function <T extends Node>(
     this: Cheerio<T>,
     selector?: AcceptedFilters<Element> | null,
     filterSelector?: AcceptedFilters<Element>
   ): Cheerio<Element> {
     if (!selector) return allElems.call(this, filterSelector);
-    const matches = getFilterFn(
-      typeof selector === 'string' ? allElems.call(this, selector) : selector
-    );
 
-    let matched: Element[] = [];
+    matches =
+      typeof selector === 'string'
+        ? (elem: Element) => select.is(elem, selector, this.options)
+        : selector
+        ? getFilterFn(selector)
+        : null;
 
-    domEach(this, (elem) => {
-      for (;;) {
-        const next = nextElem(elem);
-
-        if (!next) break;
-
-        if (isTag(next)) {
-          // FIXME: `matched` might contain duplicates here
-          if (matches(next, matched.length)) break;
-          matched.push(next);
-        }
-
-        elem = next;
-      }
-    });
-
-    // Select.filter uses uniqueSort already internally
-    if (filterSelector) {
-      matched = filterArray(matched, filterSelector, this.options);
-    }
-
-    return this._make(
-      this.length > 1
-        ? // Post processing is only necessary if there is more than one element.
-          postFns.reduce((elems, fn) => fn(elems), matched)
-        : matched
-    );
+    return innerMatcher.call(this, filterSelector);
   };
 }
 
