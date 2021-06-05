@@ -69,12 +69,12 @@ export function find<T extends Node>(
 }
 
 /**
- * Matcher provides function, what finds elements based on function provided. It
- * also houses filtering. What may provided later when function is called.
+ * Creates a matcher, using a particular mapping function. Matchers provide a
+ * function that finds elements using a generating function, supporting filtering.
  *
  * @private
- * @param fn - Function for collecting elements.
- * @returns - Wrapped function.
+ * @param matchMap - Mapping function.
+ * @returns - Function for wrapping generating functions.
  */
 function _getMatcher<P>(
   matchMap: (fn: (elem: Node) => P, elems: Cheerio<Node>) => Element[]
@@ -103,6 +103,7 @@ function _getMatcher<P>(
   };
 }
 
+/** Matcher that adds multiple elements for each entry in the input. */
 const _matcher = _getMatcher((fn: (elem: Node) => Element[], elems) => {
   const ret: Element[][] = [];
 
@@ -114,6 +115,7 @@ const _matcher = _getMatcher((fn: (elem: Node) => Element[], elems) => {
   return new Array<Element>().concat(...ret);
 });
 
+/** Matcher that adds at most one element for each entry in the input. */
 const _singleMatcher = _getMatcher(
   (fn: (elem: Node) => Element | null, elems) => {
     const ret: Element[] = [];
@@ -128,8 +130,12 @@ const _singleMatcher = _getMatcher(
   }
 );
 
+/**
+ * Matcher that supports traversing until a condition is met.
+ *
+ * @returns A function usable for `*Until` methods.
+ */
 function _matchUntil(
-  allElems: ReturnType<typeof _matcher>,
   nextElem: (elem: Node) => Element | null,
   ...postFns: ((elems: Element[]) => Element[])[]
 ) {
@@ -157,8 +163,7 @@ function _matchUntil(
     selector?: AcceptedFilters<Element> | null,
     filterSelector?: AcceptedFilters<Element>
   ): Cheerio<Element> {
-    if (!selector) return allElems.call(this, filterSelector);
-
+    // Override `matches` variable with the new target.
     matches =
       typeof selector === 'string'
         ? (elem: Element) => select.is(elem, selector, this.options)
@@ -166,7 +171,12 @@ function _matchUntil(
         ? getFilterFn(selector)
         : null;
 
-    return innerMatcher.call(this, filterSelector);
+    const ret = innerMatcher.call(this, filterSelector);
+
+    // Set `matches` to `null`, so we don't waste memory.
+    matches = null;
+
+    return ret;
   };
 }
 
@@ -244,7 +254,6 @@ export const parents = _matcher(
  * @see {@link https://api.jquery.com/parentsUntil/}
  */
 export const parentsUntil = _matchUntil(
-  parents,
   ({ parent }) => (parent && !isDocument(parent) ? (parent as Element) : null),
   uniqueSort,
   (elems) => elems.reverse()
@@ -363,7 +372,6 @@ export const nextAll = _matcher((elem) => {
  * @see {@link https://api.jquery.com/nextUntil/}
  */
 export const nextUntil = _matchUntil(
-  nextAll,
   (el) => DomUtils.nextElementSibling(el),
   _removeDuplicates
 );
@@ -432,7 +440,6 @@ export const prevAll = _matcher((elem) => {
  * @see {@link https://api.jquery.com/prevUntil/}
  */
 export const prevUntil = _matchUntil(
-  prevAll,
   (el) => DomUtils.prevElementSibling(el),
   _removeDuplicates
 );
@@ -587,6 +594,12 @@ export function map<T, M>(
   return this._make(elems);
 }
 
+/**
+ * Creates a function to test if a filter is matched.
+ *
+ * @param match A filter.
+ * @returns A function that determines if a filter has been matched.
+ */
 function getFilterFn<T>(
   match: FilterFunction<T> | Cheerio<T> | T
 ): (el: T, i: number) => boolean {
