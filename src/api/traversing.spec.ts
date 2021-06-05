@@ -9,6 +9,7 @@ import {
   text,
   forms,
   mixedText,
+  vegetables,
 } from '../__fixtures__/fixtures';
 
 function getText(el: Cheerio<Element>) {
@@ -1526,6 +1527,58 @@ describe('$(...)', () => {
     it('() : fails gracefully when no args are passed', () => {
       const $div = cheerio('<div>');
       expect($div.addBack()).toBe($div);
+    });
+  });
+
+  describe('.is', () => {
+    it('() : should return false', () => {
+      expect($('li.apple').is()).toBe(false);
+    });
+
+    it('(true selector) : should return true', () => {
+      expect(cheerio('#vegetables', vegetables).is('ul')).toBe(true);
+    });
+
+    it('(false selector) : should return false', () => {
+      expect(cheerio('#vegetables', vegetables).is('div')).toBe(false);
+    });
+
+    it('(true selection) : should return true', () => {
+      const $vegetables = cheerio('li', vegetables);
+      expect($vegetables.is($vegetables.eq(1))).toBe(true);
+    });
+
+    it('(false selection) : should return false', () => {
+      const $vegetableList = cheerio(vegetables);
+      const $vegetables = $vegetableList.find('li');
+      expect($vegetables.is($vegetableList)).toBe(false);
+    });
+
+    it('(true element) : should return true', () => {
+      const $vegetables = cheerio('li', vegetables);
+      expect($vegetables.is($vegetables[0])).toBe(true);
+    });
+
+    it('(false element) : should return false', () => {
+      const $vegetableList = cheerio(vegetables);
+      const $vegetables = $vegetableList.find('li');
+      expect($vegetables.is($vegetableList[0])).toBe(false);
+    });
+
+    it('(true predicate) : should return true', () => {
+      const result = $('li').is(function () {
+        return this.tagName === 'li' && $(this).hasClass('pear');
+      });
+      expect(result).toBe(true);
+    });
+
+    it('(false predicate) : should return false', () => {
+      const result = $('li')
+        .last()
+        .is(function () {
+          return this.tagName === 'ul';
+        });
+      expect(result).toBe(false);
     });
   });
 });
