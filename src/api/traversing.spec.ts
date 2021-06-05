@@ -899,12 +899,6 @@ describe('$(...)', () => {
   });
 
   describe('.filter', () => {
-    it('should throw if it cannot construct an object', () => {
-      // @ts-expect-error Calling `filter` without a cheerio instance.
-      expect(() => $('').filter.call([], '')).toThrow(
-        'Not able to create a Cheerio instance.'
-      );
-    });
     it('(selector) : should reduce the set of matched elements to those that match the selector', () => {
       const pear = $('li').filter('.pear').text();
       expect(pear).toBe('Pear');

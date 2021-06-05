@@ -9,6 +9,7 @@ import type { Cheerio } from '../cheerio';
 import * as select from 'cheerio-select';
 import { domEach, isTag, isCheerio } from '../utils';
 import { contains } from '../static';
+import { InternalOptions } from '../options';
 import { DomUtils } from 'htmlparser2';
 import type { FilterFunction, AcceptedFilters } from '../types';
 const { uniqueSort } = DomUtils;
@@ -75,13 +76,48 @@ export function find<T extends Node>(
  * @param fn - Function for collecting elements.
  * @returns - Wrapped function.
  */
-function _matcher(
-  fn: (elem: Node) => Element | Element[] | null,
-  ...postFns: ((elems: Element[]) => Element[])[]
+function _getMatcher<P>(
+  matchMap: (fn: (elem: Node) => P, elems: Cheerio<Node>) => Element[]
 ) {
-  // Customized Map, discards null elements
-  function matchMap(elems: Cheerio<Node>): Element[] {
-    const ret: (Element[] | Element)[] = [];
+  return function (
+    fn: (elem: Node) => P,
+    ...postFns: ((elems: Element[]) => Element[])[]
+  ) {
+    return function <T extends Node>(
+      this: Cheerio<T>,
+      selector?: AcceptedFilters<Element>
+    ): Cheerio<Element> {
+      let matched: Element[] = matchMap(fn, this);
+
+      // Select.filter uses uniqueSort already internally
+      if (selector) {
+        matched = filterArray(matched, selector, this.options);
+      }
+
+      return this._make(
+        this.length > 1
+          ? // Post processing is only necessary if there is more than one element.
+            postFns.reduce((elems, fn) => fn(elems), matched)
+          : matched
+      );
+    };
+  };
+}
+
+const _matcher = _getMatcher((fn: (elem: Node) => Element[], elems) => {
+  const ret: Element[][] = [];
+
+  for (let i = 0; i < elems.length; i++) {
+    const value = fn(elems[i]);
+    ret.push(value);
+  }
+
+  return new Array<Element>().concat(...ret);
+});
+
+const _singleMatcher = _getMatcher(
+  (fn: (elem: Node) => Element | null, elems) => {
+    const ret: Element[] = [];
 
     for (let i = 0; i < elems.length; i++) {
       const value = fn(elems[i]);
@@ -89,28 +125,9 @@ function _matcher(
         ret.push(value);
       }
     }
-    return new Array<Element>().concat(...ret);
+    return ret;
   }
-
-  return function <T extends Node>(
-    this: Cheerio<T>,
-    selector?: AcceptedFilters<T>
-  ): Cheerio<Element> {
-    let matched: Element[] = matchMap(this);
-
-    // Select.filter uses uniqueSort already internally
-    if (selector) {
-      matched = filter.call(matched, selector, this).toArray();
-    }
-
-    return this._make(
-      this.length > 1
-        ? // Post processing is only necessary if there is more than one element.
-          postFns.reduce((elems, fn) => fn(elems), matched)
-        : matched
-    );
-  };
-}
+);
 
 function _matchUntil(
   allElems: ReturnType<typeof _matcher>,
@@ -119,10 +136,10 @@ function _matchUntil(
 ) {
   return function <T extends Node>(
     this: Cheerio<T>,
-    selector?: AcceptedFilters<Node> | null,
-    filterSelector?: AcceptedFilters<T>
+    selector?: AcceptedFilters<Element> | null,
+    filterSelector?: AcceptedFilters<Element>
   ): Cheerio<Element> {
-    if (!selector) return allElems.call(this, filterSelector as any);
+    if (!selector) return allElems.call(this, filterSelector);
     const matches = getFilterFn(
       typeof selector === 'string' ? allElems.call(this, selector) : selector
     );
@@ -147,7 +164,7 @@ function _matchUntil(
 
     // Select.filter uses uniqueSort already internally
     if (filterSelector) {
-      matched = filter.call(matched, filterSelector, this).toArray();
+      matched = filterArray(matched, filterSelector, this.options);
     }
 
     return this._make(
@@ -179,7 +196,7 @@ function _removeDuplicates<T extends Node>(elems: T[]): T[] {
  * @returns The parents.
  * @see {@link https://api.jquery.com/parent/}
  */
-export const parent = _matcher(
+export const parent = _singleMatcher(
   ({ parent }) => (parent && !isDocument(parent) ? (parent as Element) : null),
   _removeDuplicates
 );
@@ -266,7 +283,7 @@ export const parentsUntil = _matchUntil(
  */
 export function closest<T extends Node>(
   this: Cheerio<T>,
-  selector?: AcceptedFilters<T>
+  selector?: AcceptedFilters<Node>
 ): Cheerio<Node> {
   const set: Node[] = [];
 
@@ -276,7 +293,7 @@ export function closest<T extends Node>(
 
   domEach(this, (elem: Node | null) => {
     while (elem && elem.type !== 'root') {
-      if (!selector || filter.call([elem], selector, this).length) {
+      if (!selector || filterArray([elem], selector, this.options).length) {
         // Do not add duplicate elements to the set
         if (elem && !set.includes(elem)) {
           set.push(elem);
@@ -305,7 +322,7 @@ export function closest<T extends Node>(
  * @returns The next nodes.
  * @see {@link https://api.jquery.com/next/}
  */
-export const next = _matcher((elem) => DomUtils.nextElementSibling(elem));
+export const next = _singleMatcher((elem) => DomUtils.nextElementSibling(elem));
 
 /**
  * Gets all the following siblings of the first selected element, optionally
@@ -328,8 +345,8 @@ export const next = _matcher((elem) => DomUtils.nextElementSibling(elem));
 export const nextAll = _matcher((elem) => {
   const matched = [];
   while (elem.next) {
-    if (isTag(elem.next)) matched.push(elem.next);
     elem = elem.next;
+    if (isTag(elem)) matched.push(elem);
   }
   return matched;
 }, _removeDuplicates);
@@ -373,7 +390,7 @@ export const nextUntil = _matchUntil(
  * @returns The previous nodes.
  * @see {@link https://api.jquery.com/prev/}
  */
-export const prev = _matcher((elem) => DomUtils.prevElementSibling(elem));
+export const prev = _singleMatcher((elem) => DomUtils.prevElementSibling(elem));
 
 /**
  * Gets all the preceding siblings of the first selected element, optionally
@@ -397,8 +414,8 @@ export const prev = _matcher((elem) => DomUtils.prevElementSibling(elem));
 export const prevAll = _matcher((elem) => {
   const matched = [];
   while (elem.prev) {
-    if (isTag(elem.prev)) matched.push(elem.prev);
     elem = elem.prev;
+    if (isTag(elem)) matched.push(elem);
   }
   return matched;
 }, _removeDuplicates);
@@ -659,41 +676,21 @@ export function filter<T, S extends AcceptedFilters<T>>(
   this: Cheerio<T>,
   match: S
 ): Cheerio<S extends string ? Element : T>;
-/**
- * Internal `filter` variant used by other functions to filter their elements.
- *
- * @private
- * @param match - Value to look for, following the rules above.
- * @param container - The container that is used to create the resulting Cheerio instance.
- * @returns The filtered collection.
- * @see {@link https://api.jquery.com/filter/}
- */
 export function filter<T>(
-  this: T[],
-  match: AcceptedFilters<T>,
-  container: Cheerio<Node>
-): Cheerio<Element>;
-export function filter<T>(
-  this: Cheerio<T> | T[],
-  match: AcceptedFilters<T>,
-  container = this
+  this: Cheerio<T>,
+  match: AcceptedFilters<T>
 ): Cheerio<unknown> {
-  if (!isCheerio(container)) {
-    throw new Error('Not able to create a Cheerio instance.');
-  }
+  return this._make<unknown>(filterArray(this.toArray(), match, this.options));
+}
 
-  const nodes = isCheerio(this) ? this.toArray() : this;
-
-  const result =
-    typeof match === 'string'
-      ? select.filter(
-          match,
-          (nodes as unknown as Node[]).filter(isTag),
-          container.options
-        )
-      : nodes.filter(getFilterFn(match));
-
-  return container._make<unknown>(result);
+export function filterArray<T>(
+  nodes: T[],
+  match: AcceptedFilters<T>,
+  options: InternalOptions
+): Element[] | T[] {
+  return typeof match === 'string'
+    ? select.filter(match, (nodes as unknown as Node[]).filter(isTag), options)
+    : nodes.filter(getFilterFn<T>(match));
 }
 
 /**
@@ -947,7 +944,7 @@ export function index<T extends Node>(
       : selectorOrNeedle;
   }
 
-  return $haystack.get().indexOf(needle);
+  return Array.prototype.indexOf.call($haystack, needle);
 }
 
 /**
