@@ -604,9 +604,7 @@ function getFilterFn<T>(
   match: FilterFunction<T> | Cheerio<T> | T
 ): (el: T, i: number) => boolean {
   if (typeof match === 'function') {
-    return function (el, i) {
-      return (match as FilterFunction<T>).call(el, i, el);
-    };
+    return (el, i) => (match as FilterFunction<T>).call(el, i, el);
   }
   if (isCheerio<T>(match)) {
     return (el) => Array.prototype.includes.call(match, el);
@@ -698,6 +696,34 @@ export function filterArray<T>(
   return typeof match === 'string'
     ? select.filter(match, (nodes as unknown as Node[]).filter(isTag), options)
     : nodes.filter(getFilterFn<T>(match));
+}
+
+/**
+ * Checks the current list of elements and returns `true` if *any* of the
+ * elements match the selector. If using an element or Cheerio selection,
+ * returns `true` if *any* of the elements match. If using a predicate function,
+ * the function is executed in the context of the selected element, so `this`
+ * refers to the current element.
+ *
+ * @category Attributes
+ * @param selector - Selector for the selection.
+ * @returns Whether or not the selector matches an element of the instance.
+ * @see {@link https://api.jquery.com/is/}
+ */
+export function is<T>(
+  this: Cheerio<T>,
+  selector?: AcceptedFilters<T>
+): boolean {
+  const nodes = this.toArray();
+  return typeof selector === 'string'
+    ? select.some(
+        (nodes as unknown as Node[]).filter(isTag),
+        selector,
+        this.options
+      )
+    : selector
+    ? nodes.some(getFilterFn<T>(selector))
+    : false;
 }
 
 /**
