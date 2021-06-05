@@ -8,7 +8,6 @@ import { text } from '../static';
 import { isTag, domEach, camelCase, cssCase } from '../utils';
 import type { Node, Element } from 'domhandler';
 import type { Cheerio } from '../cheerio';
-import { AcceptedFilters } from '../types';
 const hasOwn = Object.prototype.hasOwnProperty;
 const rspace = /\s+/;
 const dataAttrPrefix = 'data-';
@@ -999,26 +998,4 @@ export function toggleClass<T extends Node, R extends ArrayLike<T>>(
   }
 
   return this;
-}
-
-/**
- * Checks the current list of elements and returns `true` if *any* of the
- * elements match the selector. If using an element or Cheerio selection,
- * returns `true` if *any* of the elements match. If using a predicate function,
- * the function is executed in the context of the selected element, so `this`
- * refers to the current element.
- *
- * @category Attributes
- * @param selector - Selector for the selection.
- * @returns Whether or not the selector matches an element of the instance.
- * @see {@link https://api.jquery.com/is/}
- */
-export function is<T>(
-  this: Cheerio<T>,
-  selector?: AcceptedFilters<T>
-): boolean {
-  if (selector) {
-    return this.filter(selector).length > 0;
-  }
-  return false;
 }
