@@ -945,12 +945,6 @@ describe('$(...)', () => {
   });
 
   describe('.not', () => {
-    it('should throw if it cannot construct an object', () => {
-      expect(() => $('').not.call([], '')).toThrow(
-        'Not able to create a Cheerio instance.'
-      );
-    });
-
     it('(selector) : should reduce the set of matched elements to those that do not match the selector', () => {
       const $fruits = $('li');
 
@@ -1001,12 +995,6 @@ describe('$(...)', () => {
       expect($notOrange).toHaveLength(2);
       expect($notOrange[0]).toBe($fruits[0]);
       expect($notOrange[1]).toBe($fruits[2]);
-    });
-
-    it('(arr, str, $) : should take cheerio instance as last arg', () => {
-      const $fruits = $('#fruits');
-      const lis = $fruits.not.call($fruits.toArray(), 'li', $fruits);
-      expect(lis).toHaveLength(1);
     });
   });
 

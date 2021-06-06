@@ -597,7 +597,7 @@ export function map<T, M>(
 /**
  * Creates a function to test if a filter is matched.
  *
- * @param match A filter.
+ * @param match - A filter.
  * @returns A function that determines if a filter has been matched.
  */
 function getFilterFn<T>(
@@ -760,28 +760,21 @@ export function is<T>(
  * @see {@link https://api.jquery.com/not/}
  */
 export function not<T extends Node>(
-  this: Cheerio<T> | T[],
-  match: AcceptedFilters<T>,
-  container = this
+  this: Cheerio<T>,
+  match: AcceptedFilters<T>
 ): Cheerio<T> {
-  if (!isCheerio(container)) {
-    throw new Error('Not able to create a Cheerio instance.');
-  }
-
-  let nodes = isCheerio(this) ? this.toArray() : this;
+  let nodes = this.toArray();
 
   if (typeof match === 'string') {
     const elements = (nodes as Node[]).filter(isTag);
-    const matches = new Set<Node>(
-      select.filter(match, elements, container.options)
-    );
+    const matches = new Set<Node>(select.filter(match, elements, this.options));
     nodes = nodes.filter((el) => !matches.has(el));
   } else {
     const filterFn = getFilterFn(match);
     nodes = nodes.filter((el, i) => !filterFn(el, i));
   }
 
-  return container._make(nodes);
+  return this._make(nodes);
 }
 
 /**
