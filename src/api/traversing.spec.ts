@@ -5,6 +5,7 @@ import { Node, Element, Text, isText } from 'domhandler';
 import {
   food,
   fruits,
+  eleven,
   drinks,
   text,
   forms,
@@ -214,6 +215,21 @@ describe('$(...)', () => {
       expect($('.apple, .orange', food).next()).toHaveLength(2);
     });
 
+    it('() : should return elements in order', () => {
+      const result = cheerio.load(eleven)('.red').next();
+      expect(result).toHaveLength(2);
+      expect(result.eq(0).text()).toBe('Six');
+      expect(result.eq(1).text()).toBe('Ten');
+    });
+
+    it('should reject elements that violate the filter', () => {
+      expect($('.apple').next('.non-existent')).toHaveLength(0);
+    });
+
+    it('should accept elements that satisify the filter', () => {
+      expect($('.apple').next('.orange')).toHaveLength(1);
+    });
+
     describe('(selector) :', () => {
       it('should reject elements that violate the filter', () => {
         expect($('.apple').next('.non-existent')).toHaveLength(0);
@@ -247,6 +263,11 @@ describe('$(...)', () => {
 
     it('() : should not contain duplicate elements', () => {
       const elems = $('.apple, .orange', food);
+      expect(elems.nextAll()).toHaveLength(2);
+    });
+
+    it('() : should not contain text elements', () => {
+      const elems = $('.apple', fruits.replace(/></g, '>\n<'));
       expect(elems.nextAll()).toHaveLength(2);
     });
 
@@ -359,12 +380,39 @@ describe('$(...)', () => {
       expect($('.orange, .pear', food).prev()).toHaveLength(2);
     });
 
+    it('() : should maintain elements order', () => {
+      const sel = cheerio.load(eleven)('.sel');
+      expect(sel).toHaveLength(3);
+      expect(sel.eq(0).text()).toBe('Three');
+      expect(sel.eq(1).text()).toBe('Nine');
+      expect(sel.eq(2).text()).toBe('Eleven');
+
+      // Swap last elements
+      const el = sel[2];
+      sel[2] = sel[1];
+      sel[1] = el;
+
+      const result = sel.prev();
+      expect(result).toHaveLength(3);
+      expect(result.eq(0).text()).toBe('Two');
+      expect(result.eq(1).text()).toBe('Ten');
+      expect(result.eq(2).text()).toBe('Eight');
+    });
+
     describe('(selector) :', () => {
       it('should reject elements that violate the filter', () => {
         expect($('.orange').prev('.non-existent')).toHaveLength(0);
       });
 
       it('should accept elements that satisify the filter', () => {
+        expect($('.orange').prev('.apple')).toHaveLength(1);
+      });
+
+      it('(selector) : should reject elements that violate the filter', () => {
+        expect($('.orange').prev('.non-existent')).toHaveLength(0);
+      });
+
+      it('(selector) : should accept elements that satisify the filter', () => {
         expect($('.orange').prev('.apple')).toHaveLength(1);
       });
     });
@@ -376,6 +424,11 @@ describe('$(...)', () => {
       expect(elems).toHaveLength(2);
       expect(elems[0].attribs.class).toBe('orange');
       expect(elems[1].attribs.class).toBe('apple');
+    });
+
+    it('() : should not contain text elements', () => {
+      const elems = $('.pear', fruits.replace(/></g, '>\n<'));
+      expect(elems.prevAll()).toHaveLength(2);
     });
 
     it('(no prev) : should return empty for first child', () => {
@@ -508,6 +561,35 @@ describe('$(...)', () => {
     it('(selector) : does not consider the contents of siblings when filtering (GH-374)', () => {
       expect($('#fruits', food).siblings('li')).toHaveLength(0);
     });
+
+    it('() : when two elements are siblings to each other they have to be included', () => {
+      const result = cheerio.load(eleven)('.sel').siblings();
+      expect(result).toHaveLength(7);
+      expect(result.eq(0).text()).toBe('One');
+      expect(result.eq(1).text()).toBe('Two');
+      expect(result.eq(2).text()).toBe('Four');
+      expect(result.eq(3).text()).toBe('Eight');
+      expect(result.eq(4).text()).toBe('Nine');
+      expect(result.eq(5).text()).toBe('Ten');
+      expect(result.eq(6).text()).toBe('Eleven');
+    });
+
+    it('(selector) : when two elements are siblings to each other they have to be included', () => {
+      const result = cheerio.load(eleven)('.sel').siblings('.red');
+      expect(result).toHaveLength(2);
+      expect(result.eq(0).text()).toBe('Four');
+      expect(result.eq(1).text()).toBe('Nine');
+    });
+
+    it('(cheerio) : test filtering with cheerio object', () => {
+      const doc = cheerio.load(eleven);
+      const result = doc('.sel').siblings(doc(':not([class])'));
+      expect(result).toHaveLength(4);
+      expect(result.eq(0).text()).toBe('One');
+      expect(result.eq(1).text()).toBe('Two');
+      expect(result.eq(2).text()).toBe('Eight');
+      expect(result.eq(3).text()).toBe('Ten');
+    });
   });
 
   describe('.parents', () => {
@@ -554,10 +636,10 @@ describe('$(...)', () => {
 
       expect($parents).toHaveLength(5);
       expect($parents[0]).toBe($('#vegetables')[0]);
-      expect($parents[1]).toBe($('#food')[0]);
-      expect($parents[2]).toBe($('body')[0]);
-      expect($parents[3]).toBe($('html')[0]);
-      expect($parents[4]).toBe($('#fruits')[0]);
+      expect($parents[1]).toBe($('#fruits')[0]);
+      expect($parents[2]).toBe($('#food')[0]);
+      expect($parents[3]).toBe($('body')[0]);
+      expect($parents[4]).toBe($('html')[0]);
     });
   });
 
@@ -578,11 +660,11 @@ describe('$(...)', () => {
     it('() : should get all of the parents in reversed order, omitting duplicates', () => {
       const result = $('.apple, .sweetcorn').parentsUntil();
       expect(result).toHaveLength(5);
-      expect(result[0].attribs.id).toBe('vegetables');
-      expect(result[1].attribs.id).toBe('food');
-      expect(result[2].tagName).toBe('body');
-      expect(result[3].tagName).toBe('html');
-      expect(result[4].attribs.id).toBe('fruits');
+      expect(result[0]).toBe($('#vegetables')[0]);
+      expect(result[1]).toBe($('#fruits')[0]);
+      expect(result[2]).toBe($('#food')[0]);
+      expect(result[3]).toBe($('body')[0]);
+      expect(result[4]).toBe($('html')[0]);
     });
 
     it('(selector) : should get all of the parents until selector', () => {
@@ -818,12 +900,6 @@ describe('$(...)', () => {
   });
 
   describe('.filter', () => {
-    it('should throw if it cannot construct an object', () => {
-      // @ts-expect-error Calling `filter` without a cheerio instance.
-      expect(() => $('').filter.call([], '')).toThrow(
-        'Not able to create a Cheerio instance.'
-      );
-    });
     it('(selector) : should reduce the set of matched elements to those that match the selector', () => {
       const pear = $('li').filter('.pear').text();
       expect(pear).toBe('Pear');
@@ -869,12 +945,6 @@ describe('$(...)', () => {
   });
 
   describe('.not', () => {
-    it('should throw if it cannot construct an object', () => {
-      expect(() => $('').not.call([], '')).toThrow(
-        'Not able to create a Cheerio instance.'
-      );
-    });
-
     it('(selector) : should reduce the set of matched elements to those that do not match the selector', () => {
       const $fruits = $('li');
 
@@ -925,12 +995,6 @@ describe('$(...)', () => {
       expect($notOrange).toHaveLength(2);
       expect($notOrange[0]).toBe($fruits[0]);
       expect($notOrange[1]).toBe($fruits[2]);
-    });
-
-    it('(arr, str, $) : should take cheerio instance as last arg', () => {
-      const $fruits = $('#fruits');
-      const lis = $fruits.not.call($fruits.toArray(), 'li', $fruits);
-      expect(lis).toHaveLength(1);
     });
   });
 

@@ -4,11 +4,12 @@
  * @module cheerio/traversing
  */
 
-import { Node, Element, hasChildren } from 'domhandler';
+import { Node, Element, hasChildren, isDocument } from 'domhandler';
 import type { Cheerio } from '../cheerio';
 import * as select from 'cheerio-select';
 import { domEach, isTag, isCheerio } from '../utils';
 import { contains } from '../static';
+import { InternalOptions } from '../options';
 import { DomUtils } from 'htmlparser2';
 import type { FilterFunction, AcceptedFilters } from '../types';
 const { uniqueSort } = DomUtils;
@@ -68,6 +69,122 @@ export function find<T extends Node>(
 }
 
 /**
+ * Creates a matcher, using a particular mapping function. Matchers provide a
+ * function that finds elements using a generating function, supporting filtering.
+ *
+ * @private
+ * @param matchMap - Mapping function.
+ * @returns - Function for wrapping generating functions.
+ */
+function _getMatcher<P>(
+  matchMap: (fn: (elem: Node) => P, elems: Cheerio<Node>) => Element[]
+) {
+  return function (
+    fn: (elem: Node) => P,
+    ...postFns: ((elems: Element[]) => Element[])[]
+  ) {
+    return function <T extends Node>(
+      this: Cheerio<T>,
+      selector?: AcceptedFilters<Element>
+    ): Cheerio<Element> {
+      let matched: Element[] = matchMap(fn, this);
+
+      if (selector) {
+        matched = filterArray(matched, selector, this.options);
+      }
+
+      return this._make(
+        // Post processing is only necessary if there is more than one element.
+        this.length > 1 && matched.length > 1
+          ? postFns.reduce((elems, fn) => fn(elems), matched)
+          : matched
+      );
+    };
+  };
+}
+
+/** Matcher that adds multiple elements for each entry in the input. */
+const _matcher = _getMatcher((fn: (elem: Node) => Element[], elems) => {
+  const ret: Element[][] = [];
+
+  for (let i = 0; i < elems.length; i++) {
+    const value = fn(elems[i]);
+    ret.push(value);
+  }
+
+  return new Array<Element>().concat(...ret);
+});
+
+/** Matcher that adds at most one element for each entry in the input. */
+const _singleMatcher = _getMatcher(
+  (fn: (elem: Node) => Element | null, elems) => {
+    const ret: Element[] = [];
+
+    for (let i = 0; i < elems.length; i++) {
+      const value = fn(elems[i]);
+      if (value !== null) {
+        ret.push(value);
+      }
+    }
+    return ret;
+  }
+);
+
+/**
+ * Matcher that supports traversing until a condition is met.
+ *
+ * @returns A function usable for `*Until` methods.
+ */
+function _matchUntil(
+  nextElem: (elem: Node) => Element | null,
+  ...postFns: ((elems: Element[]) => Element[])[]
+) {
+  // We use a variable here that is used from within the matcher.
+  let matches: ((el: Element, i: number) => boolean) | null = null;
+
+  const innerMatcher = _getMatcher(
+    (nextElem: (elem: Node) => Element | null, elems) => {
+      const matched: Element[] = [];
+
+      domEach(elems, (elem) => {
+        for (let next; (next = nextElem(elem)); elem = next) {
+          // FIXME: `matched` might contain duplicates here and the index is too large.
+          if (matches?.(next, matched.length)) break;
+          matched.push(next);
+        }
+      });
+
+      return matched;
+    }
+  )(nextElem, ...postFns);
+
+  return function <T extends Node>(
+    this: Cheerio<T>,
+    selector?: AcceptedFilters<Element> | null,
+    filterSelector?: AcceptedFilters<Element>
+  ): Cheerio<Element> {
+    // Override `matches` variable with the new target.
+    matches =
+      typeof selector === 'string'
+        ? (elem: Element) => select.is(elem, selector, this.options)
+        : selector
+        ? getFilterFn(selector)
+        : null;
+
+    const ret = innerMatcher.call(this, filterSelector);
+
+    // Set `matches` to `null`, so we don't waste memory.
+    matches = null;
+
+    return ret;
+  };
+}
+
+function _removeDuplicates<T extends Node>(elems: T[]): T[] {
+  return Array.from(new Set<T>(elems));
+}
+
+/**
  * Get the parent of each element in the current set of matched elements,
  * optionally filtered by a selector.
  *
@@ -83,25 +200,10 @@ export function find<T extends Node>(
  * @returns The parents.
  * @see {@link https://api.jquery.com/parent/}
  */
-export function parent<T extends Node>(
-  this: Cheerio<T>,
-  selector?: AcceptedFilters<T>
-): Cheerio<Element> {
-  const set: Element[] = [];
-
-  domEach(this, (elem) => {
-    const parentElem = elem.parent;
-    if (
-      parentElem &&
-      parentElem.type !== 'root' &&
-      !set.includes(parentElem as Element)
-    ) {
-      set.push(parentElem as Element);
-    }
-  });
-
-  return selector ? filter.call(set, selector, this) : this._make(set);
-}
+export const parent = _singleMatcher(
+  ({ parent }) => (parent && !isDocument(parent) ? (parent as Element) : null),
+  _removeDuplicates
+);
 
 /**
  * Get a set of parents filtered by `selector` of each element in the current
@@ -121,30 +223,18 @@ export function parent<T extends Node>(
  * @returns The parents.
  * @see {@link https://api.jquery.com/parents/}
  */
-export function parents<T extends Node>(
-  this: Cheerio<T>,
-  selector?: AcceptedFilters<T>
-): Cheerio<Element> {
-  const parentNodes: Element[] = [];
-
-  /*
-   * When multiple DOM elements are in the original set, the resulting set will
-   * be in *reverse* order of the original elements as well, with duplicates
-   * removed.
-   */
-  this.get()
-    .reverse()
-    .forEach((elem) =>
-      traverseParents(this, elem.parent, selector, Infinity).forEach((node) => {
-        // We know these must be `Element`s, as we filter out root nodes.
-        if (!parentNodes.includes(node as Element)) {
-          parentNodes.push(node as Element);
-        }
-      })
-    );
-
-  return this._make(parentNodes);
-}
+export const parents = _matcher(
+  (elem) => {
+    const matched = [];
+    while (elem.parent && !isDocument(elem.parent)) {
+      matched.push(elem.parent as Element);
+      elem = elem.parent;
+    }
+    return matched;
+  },
+  uniqueSort,
+  (elems) => elems.reverse()
+);
 
 /**
  * Get the ancestors of each element in the current set of matched elements, up
@@ -159,56 +249,15 @@ export function parents<T extends Node>(
  * ```
  *
  * @param selector - Selector for element to stop at.
- * @param filterBy - Optional filter for parents.
+ * @param filterSelector - Optional filter for parents.
  * @returns The parents.
  * @see {@link https://api.jquery.com/parentsUntil/}
  */
-export function parentsUntil<T extends Node>(
-  this: Cheerio<T>,
-  selector?: string | Node | Cheerio<Node>,
-  filterBy?: AcceptedFilters<T>
-): Cheerio<Element> {
-  const parentNodes: Element[] = [];
-  let untilNode: Node | undefined;
-  let untilNodes: Node[] | undefined;
-
-  if (typeof selector === 'string') {
-    untilNodes = this.parents(selector).toArray();
-  } else if (selector && isCheerio(selector)) {
-    untilNodes = selector.toArray();
-  } else if (selector) {
-    untilNode = selector;
-  }
-
-  /*
-   * When multiple DOM elements are in the original set, the resulting set will
-   * be in *reverse* order of the original elements as well, with duplicates
-   * removed.
-   */
-
-  this.toArray()
-    .reverse()
-    .forEach((elem: Node) => {
-      while (elem.parent) {
-        elem = elem.parent;
-        if (
-          (untilNode && elem !== untilNode) ||
-          (untilNodes && !untilNodes.includes(elem)) ||
-          (!untilNode && !untilNodes)
-        ) {
-          if (isTag(elem) && !parentNodes.includes(elem)) {
-            parentNodes.push(elem);
-          }
-        } else {
-          break;
-        }
-      }
-    }, this);
-
-  return filterBy
-    ? filter.call(parentNodes, filterBy, this)
-    : this._make(parentNodes);
-}
+export const parentsUntil = _matchUntil(
+  ({ parent }) => (parent && !isDocument(parent) ? (parent as Element) : null),
+  uniqueSort,
+  (elems) => elems.reverse()
+);
 
 /**
  * For each element in the set, get the first element that matches the selector
@@ -237,7 +286,7 @@ export function parentsUntil<T extends Node>(
  */
 export function closest<T extends Node>(
   this: Cheerio<T>,
-  selector?: AcceptedFilters<T>
+  selector?: AcceptedFilters<Node>
 ): Cheerio<Node> {
   const set: Node[] = [];
 
@@ -245,12 +294,16 @@ export function closest<T extends Node>(
     return this._make(set);
   }
 
-  domEach(this, (elem) => {
-    const closestElem = traverseParents(this, elem, selector, 1)[0];
-
-    // Do not add duplicate elements to the set
-    if (closestElem && !set.includes(closestElem)) {
-      set.push(closestElem);
+  domEach(this, (elem: Node | null) => {
+    while (elem && elem.type !== 'root') {
+      if (!selector || filterArray([elem], selector, this.options).length) {
+        // Do not add duplicate elements to the set
+        if (elem && !set.includes(elem)) {
+          set.push(elem);
+        }
+        break;
+      }
+      elem = elem.parent;
     }
   });
 
@@ -272,24 +325,7 @@ export function closest<T extends Node>(
  * @returns The next nodes.
  * @see {@link https://api.jquery.com/next/}
  */
-export function next<T extends Node>(
-  this: Cheerio<T>,
-  selector?: AcceptedFilters<T>
-): Cheerio<Element> {
-  const elems: Element[] = [];
-
-  domEach(this, (elem) => {
-    while (elem.next) {
-      elem = elem.next;
-      if (isTag(elem)) {
-        elems.push(elem);
-        return;
-      }
-    }
-  });
-
-  return selector ? filter.call(elems, selector, this) : this._make(elems);
-}
+export const next = _singleMatcher((elem) => DomUtils.nextElementSibling(elem));
 
 /**
  * Gets all the following siblings of the first selected element, optionally
@@ -309,23 +345,14 @@ export function next<T extends Node>(
  * @returns The next nodes.
  * @see {@link https://api.jquery.com/nextAll/}
  */
-export function nextAll<T extends Node>(
-  this: Cheerio<T>,
-  selector?: AcceptedFilters<T>
-): Cheerio<Element> {
-  const elems: Element[] = [];
-
-  domEach(this, (elem: Node) => {
-    while (elem.next) {
-      elem = elem.next;
-      if (isTag(elem) && !elems.includes(elem)) {
-        elems.push(elem);
-      }
-    }
-  });
-
-  return selector ? filter.call(elems, selector, this) : this._make(elems);
-}
+export const nextAll = _matcher((elem) => {
+  const matched = [];
+  while (elem.next) {
+    elem = elem.next;
+    if (isTag(elem)) matched.push(elem);
+  }
+  return matched;
+}, _removeDuplicates);
 
 /**
  * Gets all the following siblings up to but not including the element matched
@@ -344,44 +371,10 @@ export function nextAll<T extends Node>(
  * @returns The next nodes.
  * @see {@link https://api.jquery.com/nextUntil/}
  */
-export function nextUntil<T extends Node>(
-  this: Cheerio<T>,
-  selector?: string | Cheerio<Node> | Node | null,
-  filterSelector?: AcceptedFilters<T>
-): Cheerio<Element> {
-  const elems: Element[] = [];
-  let untilNode: Node | undefined;
-  let untilNodes: Node[] | undefined;
-
-  if (typeof selector === 'string') {
-    untilNodes = this.nextAll(selector).toArray();
-  } else if (selector && isCheerio(selector)) {
-    untilNodes = selector.get();
-  } else if (selector) {
-    untilNode = selector;
-  }
-
-  domEach(this, (elem) => {
-    while (elem.next) {
-      elem = elem.next;
-      if (
-        (untilNode && elem !== untilNode) ||
-        (untilNodes && !untilNodes.includes(elem)) ||
-        (!untilNode && !untilNodes)
-      ) {
-        if (isTag(elem) && !elems.includes(elem)) {
-          elems.push(elem);
-        }
-      } else {
-        break;
-      }
-    }
-  });
-
-  return filterSelector
-    ? filter.call(elems, filterSelector, this)
-    : this._make(elems);
-}
+export const nextUntil = _matchUntil(
+  (el) => DomUtils.nextElementSibling(el),
+  _removeDuplicates
+);
 
 /**
  * Gets the previous sibling of the first selected element optionally filtered
@@ -399,24 +392,7 @@ export function nextUntil<T extends Node>(
  * @returns The previous nodes.
  * @see {@link https://api.jquery.com/prev/}
  */
-export function prev<T extends Node>(
-  this: Cheerio<T>,
-  selector?: AcceptedFilters<T>
-): Cheerio<Element> {
-  const elems: Element[] = [];
-
-  domEach(this, (elem: Node) => {
-    while (elem.prev) {
-      elem = elem.prev;
-      if (isTag(elem)) {
-        elems.push(elem);
-        return;
-      }
-    }
-  });
-
-  return selector ? filter.call(elems, selector, this) : this._make(elems);
-}
+export const prev = _singleMatcher((elem) => DomUtils.prevElementSibling(elem));
 
 /**
  * Gets all the preceding siblings of the first selected element, optionally
@@ -437,23 +413,14 @@ export function prev<T extends Node>(
  * @returns The previous nodes.
  * @see {@link https://api.jquery.com/prevAll/}
  */
-export function prevAll<T extends Node>(
-  this: Cheerio<T>,
-  selector?: AcceptedFilters<T>
-): Cheerio<Element> {
-  const elems: Element[] = [];
-
-  domEach(this, (elem) => {
-    while (elem.prev) {
-      elem = elem.prev;
-      if (isTag(elem) && !elems.includes(elem)) {
-        elems.push(elem);
-      }
-    }
-  });
-
-  return selector ? filter.call(elems, selector, this) : this._make(elems);
-}
+export const prevAll = _matcher((elem) => {
+  const matched = [];
+  while (elem.prev) {
+    elem = elem.prev;
+    if (isTag(elem)) matched.push(elem);
+  }
+  return matched;
+}, _removeDuplicates);
 
 /**
  * Gets all the preceding siblings up to but not including the element matched
@@ -472,44 +439,10 @@ export function prevAll<T extends Node>(
  * @returns The previous nodes.
  * @see {@link https://api.jquery.com/prevUntil/}
  */
-export function prevUntil<T extends Node>(
-  this: Cheerio<T>,
-  selector?: string | Cheerio<Node> | Node | null,
-  filterSelector?: AcceptedFilters<T>
-): Cheerio<Element> {
-  const elems: Element[] = [];
-  let untilNode: Node | undefined;
-  let untilNodes: Node[] | undefined;
-
-  if (typeof selector === 'string') {
-    untilNodes = this.prevAll(selector).toArray();
-  } else if (selector && isCheerio(selector)) {
-    untilNodes = selector.get();
-  } else if (selector) {
-    untilNode = selector;
-  }
-
-  domEach(this, (elem) => {
-    while (elem.prev) {
-      elem = elem.prev;
-      if (
-        (untilNode && elem !== untilNode) ||
-        (untilNodes && !untilNodes.includes(elem)) ||
-        (!untilNode && !untilNodes)
-      ) {
-        if (isTag(elem) && !elems.includes(elem)) {
-          elems.push(elem);
-        }
-      } else {
-        break;
-      }
-    }
-  });
-
-  return filterSelector
-    ? filter.call(elems, filterSelector, this)
-    : this._make(elems);
-}
+export const prevUntil = _matchUntil(
+  (el) => DomUtils.prevElementSibling(el),
+  _removeDuplicates
+);
 
 /**
  * Get the siblings of each element (excluding the element) in the set of
@@ -530,21 +463,13 @@ export function prevUntil<T extends Node>(
  * @returns The siblings.
  * @see {@link https://api.jquery.com/siblings/}
  */
-export function siblings<T extends Node>(
-  this: Cheerio<T>,
-  selector?: AcceptedFilters<T>
-): Cheerio<Element> {
-  // TODO Still get siblings if `parent` is null; see DomUtils' `getSiblings`.
-  const parent = this.parent();
-
-  const elems = parent
-    .children()
-    .toArray()
-    // TODO: This removes all elements in the selection. Note that they could be added here, if siblings are part of the selection.
-    .filter((elem: Node) => !this.is(elem));
-
-  return selector ? filter.call(elems, selector, this) : this._make(elems);
-}
+export const siblings = _matcher(
+  (elem) =>
+    DomUtils.getSiblings(elem).filter(
+      (el): el is Element => isTag(el) && el !== elem
+    ),
+  uniqueSort
+);
 
 /**
  * Gets the children of the first selected element.
@@ -564,20 +489,10 @@ export function siblings<T extends Node>(
  * @returns The children.
  * @see {@link https://api.jquery.com/children/}
  */
-export function children<T extends Node>(
-  this: Cheerio<T>,
-  selector?: AcceptedFilters<T>
-): Cheerio<Element> {
-  const elems = this.toArray().reduce<Element[]>(
-    (newElems, elem) =>
-      hasChildren(elem)
-        ? newElems.concat(elem.children.filter(isTag))
-        : newElems,
-    []
-  );
-
-  return selector ? filter.call(elems, selector, this) : this._make(elems);
-}
+export const children = _matcher(
+  (elem) => DomUtils.getChildren(elem).filter(isTag),
+  _removeDuplicates
+);
 
 /**
  * Gets the children of each element in the set of matched elements, including
@@ -679,6 +594,12 @@ export function map<T, M>(
   return this._make(elems);
 }
 
+/**
+ * Creates a function to test if a filter is matched.
+ *
+ * @param match - A filter.
+ * @returns A function that determines if a filter has been matched.
+ */
 function getFilterFn<T>(
   match: FilterFunction<T> | Cheerio<T> | T
 ): (el: T, i: number) => boolean {
@@ -686,7 +607,7 @@ function getFilterFn<T>(
     return (el, i) => (match as FilterFunction<T>).call(el, i, el);
   }
   if (isCheerio<T>(match)) {
-    return (el) => match.is(el);
+    return (el) => Array.prototype.includes.call(match, el);
   }
   return function (el) {
     return match === el;
@@ -760,41 +681,21 @@ export function filter<T, S extends AcceptedFilters<T>>(
   this: Cheerio<T>,
   match: S
 ): Cheerio<S extends string ? Element : T>;
-/**
- * Internal `filter` variant used by other functions to filter their elements.
- *
- * @private
- * @param match - Value to look for, following the rules above.
- * @param container - The container that is used to create the resulting Cheerio instance.
- * @returns The filtered collection.
- * @see {@link https://api.jquery.com/filter/}
- */
 export function filter<T>(
-  this: T[],
-  match: AcceptedFilters<T>,
-  container: Cheerio<Node>
-): Cheerio<Element>;
-export function filter<T>(
-  this: Cheerio<T> | T[],
-  match: AcceptedFilters<T>,
-  container = this
+  this: Cheerio<T>,
+  match: AcceptedFilters<T>
 ): Cheerio<unknown> {
-  if (!isCheerio(container)) {
-    throw new Error('Not able to create a Cheerio instance.');
-  }
+  return this._make<unknown>(filterArray(this.toArray(), match, this.options));
+}
 
-  const nodes = isCheerio(this) ? this.toArray() : this;
-
-  const result =
-    typeof match === 'string'
-      ? select.filter(
-          match,
-          (nodes as unknown as Node[]).filter(isTag),
-          container.options
-        )
-      : nodes.filter(getFilterFn(match));
-
-  return container._make<unknown>(result);
+export function filterArray<T>(
+  nodes: T[],
+  match: AcceptedFilters<T>,
+  options: InternalOptions
+): Element[] | T[] {
+  return typeof match === 'string'
+    ? select.filter(match, (nodes as unknown as Node[]).filter(isTag), options)
+    : nodes.filter(getFilterFn<T>(match));
 }
 
 /**
@@ -859,28 +760,21 @@ export function is<T>(
  * @see {@link https://api.jquery.com/not/}
  */
 export function not<T extends Node>(
-  this: Cheerio<T> | T[],
-  match: AcceptedFilters<T>,
-  container = this
+  this: Cheerio<T>,
+  match: AcceptedFilters<T>
 ): Cheerio<T> {
-  if (!isCheerio(container)) {
-    throw new Error('Not able to create a Cheerio instance.');
-  }
-
-  let nodes = isCheerio(this) ? this.toArray() : this;
+  let nodes = this.toArray();
 
   if (typeof match === 'string') {
     const elements = (nodes as Node[]).filter(isTag);
-    const matches = new Set<Node>(
-      select.filter(match, elements, container.options)
-    );
+    const matches = new Set<Node>(select.filter(match, elements, this.options));
     nodes = nodes.filter((el) => !matches.has(el));
   } else {
     const filterFn = getFilterFn(match);
     nodes = nodes.filter((el, i) => !filterFn(el, i));
   }
 
-  return container._make(nodes);
+  return this._make(nodes);
 }
 
 /**
@@ -1076,7 +970,7 @@ export function index<T extends Node>(
       : selectorOrNeedle;
   }
 
-  return $haystack.get().indexOf(needle);
+  return Array.prototype.indexOf.call($haystack, needle);
 }
 
 /**
@@ -1107,22 +1001,6 @@ export function slice<T>(
   end?: number
 ): Cheerio<T> {
   return this._make(Array.prototype.slice.call(this, start, end));
-}
-
-function traverseParents<T extends Node>(
-  self: Cheerio<T>,
-  elem: Node | null,
-  selector: AcceptedFilters<T> | undefined,
-  limit: number
-): Node[] {
-  const elems: Node[] = [];
-  while (elem && elems.length < limit && elem.type !== 'root') {
-    if (!selector || filter.call([elem], selector, self).length) {
-      elems.push(elem);
-    }
-    elem = elem.parent;
-  }
-  return elems;
 }
 
 /**
