@@ -246,6 +246,16 @@ $.prototype.logHtml = function () {
 $('body').logHtml(); // logs "Hello, <b>world</b>!" to the console
 ```
 
+If you're using TypeScript, you should also add a type definition for your new method:
+
+```ts
+declare module 'cheerio' {
+  interface Cheerio<T> {
+    logHtml(this: Cheerio<T>): void;
+  }
+}
+```
+
 ### The "DOM Node" object
 
 Cheerio collections are made up of objects that bear some resemblance to [browser-based DOM nodes](https://developer.mozilla.org/en-US/docs/Web/API/Node). You can expect them to define the following properties:

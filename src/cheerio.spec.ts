@@ -6,6 +6,16 @@ import { Cheerio } from './cheerio';
 import type { Element } from 'domhandler';
 import type { CheerioOptions } from './options';
 
+declare module '.' {
+  interface Cheerio<T> {
+    myPlugin(...args: unknown[]): {
+      context: Cheerio<T>;
+      args: unknown[];
+    };
+    foo(): void;
+  }
+}
+
 // HTML
 const script = '<script src="script.js" type="text/javascript"></script>';
 const multiclass = '<p><a class="btn primary" href="#">Save</a></p>';
@@ -355,7 +365,6 @@ describe('cheerio', () => {
       it('should honor extensions defined on `prototype` property', () => {
         const $ = cheerio.load('<div>');
 
-        // @ts-ignore
         $.prototype.myPlugin = function (...args: unknown[]) {
           return {
             context: this,
@@ -365,17 +374,13 @@ describe('cheerio', () => {
 
         const $div = $('div');
 
-        // @ts-ignore
         expect(typeof $div.myPlugin).toBe('function');
-        // @ts-ignore
         expect($div.myPlugin().context).toBe($div);
-        // @ts-ignore
         expect($div.myPlugin(1, 2, 3).args).toStrictEqual([1, 2, 3]);
       });
 
       it('should honor extensions defined on `fn` property', () => {
         const $ = cheerio.load('<div>');
-        // @ts-ignore
         $.fn.myPlugin = function (...args: unknown[]) {
           return {
             context: this,
@@ -385,11 +390,8 @@ describe('cheerio', () => {
 
         const $div = $('div');
 
-        // @ts-ignore
         expect(typeof $div.myPlugin).toBe('function');
-        // @ts-ignore
         expect($div.myPlugin().context).toBe($div);
-        // @ts-ignore
         expect($div.myPlugin(1, 2, 3).args).toStrictEqual([1, 2, 3]);
       });
 
@@ -397,12 +399,10 @@ describe('cheerio', () => {
         const $a = cheerio.load('<div>');
         const $b = cheerio.load('<div>');
 
-        // @ts-ignore
         $a.prototype.foo = function () {
           /* Ignore */
         };
 
-        // @ts-ignore
         expect($b('div').foo).toBeUndefined();
       });
     });

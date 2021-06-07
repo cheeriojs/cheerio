@@ -94,7 +94,6 @@
         "@typescript-eslint/prefer-string-starts-ends-with": 2,
         "@typescript-eslint/prefer-readonly": 2,
         "@typescript-eslint/prefer-includes": 2,
-        "@typescript-eslint/no-unnecessary-condition": 0, // TODO
         "@typescript-eslint/switch-exhaustiveness-check": 2,
         "@typescript-eslint/prefer-nullish-coalescing": 2,
 
@@ -105,8 +104,7 @@
       "files": "*.spec.ts",
       "extends": "plugin:jest/recommended",
       "rules": {
-        "@typescript-eslint/no-explicit-any": 0,
-        "@typescript-eslint/ban-ts-comment": 0
+        "@typescript-eslint/no-explicit-any": 0
       }
     }
   ]
