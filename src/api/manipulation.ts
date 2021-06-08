@@ -939,7 +939,7 @@ export function html<T extends Node>(
     opts.context = el;
 
     const content = isCheerio(str)
-      ? str.clone().get()
+      ? str.toArray()
       : parse(`${str}`, opts, false).children;
 
     updateDOM(content, el);
