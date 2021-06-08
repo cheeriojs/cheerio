@@ -4,12 +4,11 @@
  * @module cheerio/traversing
  */
 
-import { Node, Element, hasChildren, isDocument } from 'domhandler';
+import { Node, Element, hasChildren, isDocument, Document } from 'domhandler';
 import type { Cheerio } from '../cheerio';
 import * as select from 'cheerio-select';
 import { domEach, isTag, isCheerio } from '../utils';
 import { contains } from '../static';
-import { InternalOptions } from '../options';
 import { DomUtils } from 'htmlparser2';
 import type { FilterFunction, AcceptedFilters } from '../types';
 const { uniqueSort } = DomUtils;
@@ -55,15 +54,13 @@ export function find<T extends Node>(
 
   const elems = reSiblingSelector.test(selectorOrHaystack)
     ? context
-    : context.reduce<Node[]>(
-        (newElems, elem) =>
-          hasChildren(elem)
-            ? newElems.concat(elem.children.filter(isTag))
-            : newElems,
-        []
-      );
+    : this.children().toArray();
 
-  const options = { context, xmlMode: this.options.xmlMode };
+  const options = {
+    context,
+    root: this._root?.[0],
+    xmlMode: this.options.xmlMode,
+  };
 
   return this._make(select.select(selectorOrHaystack, elems, options));
 }
@@ -90,7 +87,12 @@ function _getMatcher<P>(
       let matched: Element[] = matchMap(fn, this);
 
       if (selector) {
-        matched = filterArray(matched, selector, this.options);
+        matched = filterArray(
+          matched,
+          selector,
+          this.options.xmlMode,
+          this._root?.[0]
+        );
       }
 
       return this._make(
@@ -296,7 +298,11 @@ export function closest<T extends Node>(
 
   domEach(this, (elem: Node | null) => {
     while (elem && elem.type !== 'root') {
-      if (!selector || filterArray([elem], selector, this.options).length) {
+      if (
+        !selector ||
+        filterArray([elem], selector, this.options.xmlMode, this._root?.[0])
+          .length
+      ) {
         // Do not add duplicate elements to the set
         if (elem && !set.includes(elem)) {
           set.push(elem);
@@ -685,16 +691,19 @@ export function filter<T>(
   this: Cheerio<T>,
   match: AcceptedFilters<T>
 ): Cheerio<unknown> {
-  return this._make<unknown>(filterArray(this.toArray(), match, this.options));
+  return this._make<unknown>(
+    filterArray(this.toArray(), match, this.options.xmlMode, this._root?.[0])
+  );
 }
 
 export function filterArray<T>(
   nodes: T[],
   match: AcceptedFilters<T>,
-  options: InternalOptions
+  xmlMode?: boolean,
+  root?: Document
 ): Element[] | T[] {
   return typeof match === 'string'
-    ? select.filter(match, (nodes as unknown as Node[]).filter(isTag), options)
+    ? select.filter(match, nodes as unknown as Node[], { xmlMode, root })
     : nodes.filter(getFilterFn<T>(match));
 }
 
@@ -766,8 +775,7 @@ export function not<T extends Node>(
   let nodes = this.toArray();
 
   if (typeof match === 'string') {
-    const elements = (nodes as Node[]).filter(isTag);
-    const matches = new Set<Node>(select.filter(match, elements, this.options));
+    const matches = new Set<Node>(select.filter(match, nodes, this.options));
     nodes = nodes.filter((el) => !matches.has(el));
   } else {
     const filterFn = getFilterFn(match);
