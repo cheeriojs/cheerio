@@ -1770,6 +1770,13 @@ describe('$(...)', () => {
       expect(html).toBe('<li class="durian">Durian</li>');
     });
 
+    it('(elem) : should move the passed element (#940)', () => {
+      $('.apple').html($('.orange'));
+      expect($fruits.html()).toBe(
+        '<li class="apple"><li class="orange">Orange</li></li><li class="pear">Pear</li>'
+      );
+    });
+
     it('() : should allow element reinsertion', () => {
       const $children = $fruits.children();
 
