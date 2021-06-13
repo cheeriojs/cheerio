@@ -6,7 +6,7 @@
  */
 
 // eslint-disable-next-line node/no-missing-import
-import * as fs from 'node:fs/promises';
+import * as fs from 'fs/promises';
 import fetch from 'node-fetch';
 import { graphql as githubGraphQL } from '@octokit/graphql';
 
