@@ -1,5 +1,5 @@
 import type { CheerioAPI, Cheerio } from '.';
-import { Node, Document } from 'domhandler';
+import { Node, Document, isText, hasChildren } from 'domhandler';
 import {
   InternalOptions,
   CheerioOptions,
@@ -7,7 +7,7 @@ import {
   flatten as flattenOptions,
 } from './options';
 import { select } from 'cheerio-select';
-import { ElementType, DomUtils } from 'htmlparser2';
+import { ElementType } from 'htmlparser2';
 import { render as renderWithParse5 } from './parsers/parse5-adapter';
 import { render as renderWithHtmlparser2 } from './parsers/htmlparser2-adapter';
 
@@ -137,9 +137,9 @@ export function text(
 
   for (let i = 0; i < elems.length; i++) {
     const elem = elems[i];
-    if (DomUtils.isText(elem)) ret += elem.data;
+    if (isText(elem)) ret += elem.data;
     else if (
-      DomUtils.hasChildren(elem) &&
+      hasChildren(elem) &&
       elem.type !== ElementType.Comment &&
       elem.type !== ElementType.Script &&
       elem.type !== ElementType.Style

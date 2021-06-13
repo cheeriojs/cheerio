@@ -1,4 +1,3 @@
-import { DomUtils } from 'htmlparser2';
 import { Node, cloneNode, Document } from 'domhandler';
 import type { Cheerio } from './cheerio';
 
@@ -12,7 +11,7 @@ import type { Cheerio } from './cheerio';
  * @param type - DOM node to check.
  * @returns Whether the node is a tag.
  */
-export const { isTag } = DomUtils;
+export { isTag } from 'domhandler';
 
 /**
  * Checks if an object is a Cheerio instance.

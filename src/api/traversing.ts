@@ -9,9 +9,14 @@ import type { Cheerio } from '../cheerio';
 import * as select from 'cheerio-select';
 import { domEach, isTag, isCheerio } from '../utils';
 import { contains } from '../static';
-import { DomUtils } from 'htmlparser2';
+import {
+  getChildren,
+  getSiblings,
+  nextElementSibling,
+  prevElementSibling,
+  uniqueSort,
+} from 'domutils';
 import type { FilterFunction, AcceptedFilters } from '../types';
-const { uniqueSort } = DomUtils;
 const reSiblingSelector = /^\s*[~+]/;
 
 /**
@@ -331,7 +336,7 @@ export function closest<T extends Node>(
  * @returns The next nodes.
  * @see {@link https://api.jquery.com/next/}
  */
-export const next = _singleMatcher((elem) => DomUtils.nextElementSibling(elem));
+export const next = _singleMatcher((elem) => nextElementSibling(elem));
 
 /**
  * Gets all the following siblings of the first selected element, optionally
@@ -378,7 +383,7 @@ export const nextAll = _matcher((elem) => {
  * @see {@link https://api.jquery.com/nextUntil/}
  */
 export const nextUntil = _matchUntil(
-  (el) => DomUtils.nextElementSibling(el),
+  (el) => nextElementSibling(el),
   _removeDuplicates
 );
 
@@ -398,7 +403,7 @@ export const nextUntil = _matchUntil(
  * @returns The previous nodes.
  * @see {@link https://api.jquery.com/prev/}
  */
-export const prev = _singleMatcher((elem) => DomUtils.prevElementSibling(elem));
+export const prev = _singleMatcher((elem) => prevElementSibling(elem));
 
 /**
  * Gets all the preceding siblings of the first selected element, optionally
@@ -446,7 +451,7 @@ export const prevAll = _matcher((elem) => {
  * @see {@link https://api.jquery.com/prevUntil/}
  */
 export const prevUntil = _matchUntil(
-  (el) => DomUtils.prevElementSibling(el),
+  (el) => prevElementSibling(el),
   _removeDuplicates
 );
 
@@ -471,9 +476,7 @@ export const prevUntil = _matchUntil(
  */
 export const siblings = _matcher(
   (elem) =>
-    DomUtils.getSiblings(elem).filter(
-      (el): el is Element => isTag(el) && el !== elem
-    ),
+    getSiblings(elem).filter((el): el is Element => isTag(el) && el !== elem),
   uniqueSort
 );
 
@@ -496,7 +499,7 @@ export const siblings = _matcher(
  * @see {@link https://api.jquery.com/children/}
  */
 export const children = _matcher(
-  (elem) => DomUtils.getChildren(elem).filter(isTag),
+  (elem) => getChildren(elem).filter(isTag),
   _removeDuplicates
 );
 
