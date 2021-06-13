@@ -1,15 +1,14 @@
-import { hasChildren } from 'domhandler';
 /**
  * Methods for modifying the DOM structure.
  *
  * @module cheerio/manipulation
  */
 
-import { Node, NodeWithChildren, Element, Text } from 'domhandler';
+import { Node, NodeWithChildren, Element, Text, hasChildren } from 'domhandler';
 import { default as parse, update as updateDOM } from '../parse';
 import { html as staticHtml, text as staticText } from '../static';
 import { domEach, cloneDom, isTag, isHtml, isCheerio } from '../utils';
-import { DomUtils } from 'htmlparser2';
+import { removeElement } from 'domutils';
 import type { Cheerio } from '../cheerio';
 import type { BasicAcceptedElems, AcceptedElems } from '../types';
 
@@ -279,7 +278,7 @@ function _wrap(
 
       const [wrapperDom] = this._makeDomArray(wrap, i < lastIdx);
 
-      if (!wrapperDom || !DomUtils.hasChildren(wrapperDom)) continue;
+      if (!wrapperDom || !hasChildren(wrapperDom)) continue;
 
       let elInsertLocation = wrapperDom;
 
@@ -587,7 +586,7 @@ export function after<T extends Node>(
 
   return domEach(this, (el, i) => {
     const { parent } = el;
-    if (!DomUtils.hasChildren(el) || !parent) {
+    if (!hasChildren(el) || !parent) {
       return;
     }
 
@@ -701,7 +700,7 @@ export function before<T extends Node>(
 
   return domEach(this, (el, i) => {
     const { parent } = el;
-    if (!DomUtils.hasChildren(el) || !parent) {
+    if (!hasChildren(el) || !parent) {
       return;
     }
 
@@ -807,7 +806,7 @@ export function remove<T extends Node>(
   const elems = selector ? this.filter(selector) : this;
 
   domEach(elems, (el) => {
-    DomUtils.removeElement(el);
+    removeElement(el);
     el.prev = el.next = el.parent = null;
   });
 
@@ -884,7 +883,7 @@ export function replaceWith<T extends Node>(
  */
 export function empty<T extends Node>(this: Cheerio<T>): Cheerio<T> {
   return domEach(this, (el) => {
-    if (!DomUtils.hasChildren(el)) return;
+    if (!hasChildren(el)) return;
     el.children.forEach((child) => {
       child.next = child.prev = child.parent = null;
     });
@@ -923,7 +922,7 @@ export function html<T extends Node>(
 ): Cheerio<T> | string | null {
   if (str === undefined) {
     const el = this[0];
-    if (!el || !DomUtils.hasChildren(el)) return null;
+    if (!el || !hasChildren(el)) return null;
     return staticHtml(el.children, this.options);
   }
 
@@ -931,7 +930,7 @@ export function html<T extends Node>(
   const opts = { ...this.options, context: null as NodeWithChildren | null };
 
   return domEach(this, (el) => {
-    if (!DomUtils.hasChildren(el)) return;
+    if (!hasChildren(el)) return;
     el.children.forEach((child) => {
       child.next = child.prev = child.parent = null;
     });
@@ -1000,7 +999,7 @@ export function text<T extends Node>(
 
   // Append text node to each selected elements
   return domEach(this, (el) => {
-    if (!DomUtils.hasChildren(el)) return;
+    if (!hasChildren(el)) return;
     el.children.forEach((child) => {
       child.next = child.prev = child.parent = null;
     });

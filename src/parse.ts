@@ -1,4 +1,4 @@
-import { DomUtils } from 'htmlparser2';
+import { removeElement } from 'domutils';
 import { parse as parseWithHtmlparser2 } from './parsers/htmlparser2-adapter';
 import { parse as parseWithParse5 } from './parsers/parse5-adapter';
 import {
@@ -70,7 +70,7 @@ export function update(
 
     // Cleanly remove existing nodes from their previous structures.
     if (node.parent && node.parent.children !== arr) {
-      DomUtils.removeElement(node);
+      removeElement(node);
     }
 
     if (parent) {
