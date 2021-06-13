@@ -137,9 +137,9 @@ export function text(
 
   for (let i = 0; i < elems.length; i++) {
     const elem = elems[i];
-    if (DomUtils.isText(elem)) ret += elem.data;
+    if (isText(elem)) ret += elem.data;
     else if (
-      DomUtils.hasChildren(elem) &&
+      hasChildren(elem) &&
       elem.type !== ElementType.Comment &&
       elem.type !== ElementType.Script &&
       elem.type !== ElementType.Style
