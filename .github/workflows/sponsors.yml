@@ -10,7 +10,7 @@ env:
   NODE: 16
 
 jobs:
-  lint:
+  fetch:
     runs-on: ubuntu-latest
 
     steps:
