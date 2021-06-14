@@ -43,7 +43,7 @@
     "tslib": "^2.2.0"
   },
   "devDependencies": {
-    "@octokit/graphql": "^4.6.2",
+    "@octokit/graphql": "^4.6.4",
     "@types/benchmark": "^2.1.0",
     "@types/jest": "^26.0.23",
     "@types/jsdom": "^16.2.11",
