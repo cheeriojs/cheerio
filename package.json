@@ -1,6 +1,6 @@
 {
   "name": "cheerio",
-  "version": "1.0.0-rc.10",
+  "version": "1.0.0-rc.11",
   "description": "Tiny, fast, and elegant implementation of core jQuery designed specifically for the server",
   "author": "Matt Mueller <mattmuelle@gmail.com>",
   "maintainers": [
@@ -59,7 +59,7 @@
     "eslint-plugin-jest": "^24.3.6",
     "eslint-plugin-jsdoc": "^35.2.0",
     "eslint-plugin-node": "^11.1.0",
-    "husky": "^4.3.8",
+    "husky": "^6.0.0",
     "jest": "^27.0.4",
     "jquery": "^3.6.0",
     "jsdom": "^16.6.0",
@@ -87,9 +87,9 @@
     "benchmark": "ts-node benchmark/benchmark.ts --regex \"^(?!.*highmem)\"",
     "update-sponsors": "ts-node scripts/fetch-sponsors.ts",
     "bench": "npm run benchmark",
-    "pre-commit": "lint-staged",
     "build": "tsc",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "prepare": "husky install"
   },
   "prettier": {
     "singleQuote": true,
