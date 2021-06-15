@@ -96,6 +96,15 @@
     "tabWidth": 2,
     "tsdoc": true
   },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "npm run test:lint -- --fix"
+    ],
+    "*.{json,md,ts,yml}": [
+      "prettier --write"
+    ]
+  },
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
