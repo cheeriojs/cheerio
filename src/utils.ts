@@ -94,15 +94,10 @@ export function cloneDom<T extends Node>(dom: T | T[]): T[] {
 }
 
 /**
- * A simple way to check for HTML strings. Tests for a `<` within a string,
- * immediate followed by a letter and eventually followed by a `>`.
- *
- * @private
- */
-const quickExpr = /<[a-zA-Z][^]*>/;
-
-/**
  * Check if string is HTML.
+ *
+ * Tests for a `<` within a string, immediate followed by a letter and
+ * eventually followed by a `>`.
  *
  * @private
  * @category Utils
@@ -110,6 +105,15 @@ const quickExpr = /<[a-zA-Z][^]*>/;
  * @returns Indicates if `str` is HTML.
  */
 export function isHtml(str: string): boolean {
-  // Run the regex
-  return quickExpr.test(str);
+  const tagStart = str.indexOf('<');
+
+  if (tagStart < 0 || tagStart > str.length - 3) return false;
+
+  const tagChar = str.charAt(tagStart + 1);
+
+  return (
+    ((tagChar >= 'a' && tagChar <= 'z') ||
+      (tagChar >= 'A' && tagChar <= 'Z')) &&
+    str.includes('>', tagStart + 2)
+  );
 }
