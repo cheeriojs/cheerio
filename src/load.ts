@@ -99,11 +99,14 @@ export function load(
 
   /** Create an extended class here, so that extensions only live on one instance. */
   class LoadedCheerio<T> extends Cheerio<T> {
-    _new<T>(
+    _make<T>(
       selector?: ArrayLike<T> | T | string,
       context?: BasicAcceptedElems<Node> | null
     ): Cheerio<T> {
-      return initialize(selector, context);
+      const cheerio = initialize(selector, context);
+      cheerio.prevObject = this;
+
+      return cheerio;
     }
   }
 
