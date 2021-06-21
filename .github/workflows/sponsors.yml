@@ -2,8 +2,8 @@ name: Update Sponsors
 
 on:
   schedule:
-    # Run once a week
-    - cron: '0 0 * * 0'
+    # Run once a day, at 4pm
+    - cron: '0 16 * * *'
 
 env:
   FORCE_COLOR: 2
@@ -46,3 +46,4 @@ jobs:
           branch: main
           file_pattern: Readme.md
           disable_globbing: true
+          push_options: '--force'
