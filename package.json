@@ -46,7 +46,7 @@
     "@octokit/graphql": "^4.6.4",
     "@types/benchmark": "^2.1.0",
     "@types/jest": "^26.0.23",
-    "@types/jsdom": "^16.2.11",
+    "@types/jsdom": "^16.2.12",
     "@types/node": "^15.12.4",
     "@types/node-fetch": "^2.5.10",
     "@types/parse5": "^6.0.0",
