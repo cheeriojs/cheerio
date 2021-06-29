@@ -39,11 +39,10 @@ jobs:
         env:
           CHEERIO_SPONSORS_GITHUB_TOKEN: ${{ secrets.CHEERIO_SPONSORS_GITHUB_TOKEN }}
 
-      - name: Create commit
-        uses: stefanzweifel/git-auto-commit-action@v4.11.0
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3.10.0
         with:
-          commit_message: 'docs(readme): Update Sponsors'
-          branch: main
-          file_pattern: Readme.md
-          disable_globbing: true
-          push_options: '--force'
+          commit-message: 'docs(readme): Update Sponsors'
+          title: Update Sponsors
+          branch: docs/sponsors
+          delete-branch: true
