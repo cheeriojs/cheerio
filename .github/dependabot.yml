@@ -9,6 +9,4 @@ updates:
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
-      interval: 'weekly'
-      day: wednesday
-      time: '12:00'
+      interval: daily
