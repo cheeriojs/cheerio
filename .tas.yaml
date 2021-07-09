@@ -2,12 +2,12 @@
 framework: jest
 postmerge:
   pattern:
-    - "./src/**/*.spec.ts"
+    - "./src/*.spec.ts"
   strategy:
     threshold: <5|100s|30m|6h>
     type: <commit|time>
 premerge:
-  - "./src/**/*.spec.ts"
+  - "./src/*.spec.ts"
 prerun:
   - npm ci
 postrun:
