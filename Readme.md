@@ -134,6 +134,11 @@ The options in the `xml` object are taken directly from [htmlparser2](https://gi
 For a full list of options and their effects, see [domhandler](https://github.com/fb55/DomHandler) and
 [htmlparser2's options](https://github.com/fb55/htmlparser2/wiki/Parser-options).
 
+#### Using `htmlparser2`
+
+Cheerio ships with two parsers, `parse5` and `htmlparser2`. The
+former is the default for HTML, the latter the default for XML.
+
 Some users may wish to parse markup with the `htmlparser2` library, and
 traverse/manipulate the resulting structure with Cheerio. This may be the case
 for those upgrading from pre-1.0 releases of Cheerio (which relied on
@@ -154,6 +159,13 @@ const htmlparser2 = require('htmlparser2');
 const dom = htmlparser2.parseDocument(document, options);
 
 const $ = cheerio.load(dom);
+```
+
+If you want to save some bytes, you can use Cheerio's _slim_ export, which
+always uses `htmlparser2`:
+
+```js
+const cheerio = require('cheerio/lib/slim');
 ```
 
 ### Selectors
@@ -210,21 +222,6 @@ cheerio.html($('.pear'));
 //=> <li class="pear">Pear</li>
 ```
 
-By default, `html` will leave some tags open. Sometimes you may instead want to render a valid XML document. For example, you might parse the following XML snippet:
-
-```js
-const $ = cheerio.load(
-  '<media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123"/>'
-);
-```
-
-... and later want to render to XML. To do this, you can use the 'xml' utility function:
-
-```js
-$.xml();
-//=> <media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123"/>
-```
-
 You may also render the text content of a Cheerio object using the `text` static method:
 
 ```js
@@ -246,7 +243,7 @@ $.prototype.logHtml = function () {
 $('body').logHtml(); // logs "Hello, <b>world</b>!" to the console
 ```
 
-If you're using TypeScript, you should also add a type definition for your new method:
+If you're using TypeScript, you should add a type definition for your new method:
 
 ```ts
 declare module 'cheerio' {

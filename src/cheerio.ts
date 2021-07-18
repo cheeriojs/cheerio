@@ -64,6 +64,30 @@ export abstract class Cheerio<T> implements ArrayLike<T> {
     dom: ArrayLike<T> | T | string,
     context?: BasicAcceptedElems<Node>
   ): Cheerio<T>;
+
+  /**
+   * Parses some content.
+   *
+   * @private
+   * @param content - Content to parse.
+   * @param options - Options for parsing.
+   * @param isDocument - Allows parser to be switched to fragment mode.
+   * @returns A document containing the `content`.
+   */
+  abstract _parse(
+    content: string | Document | Node | Node[] | Buffer,
+    options: InternalOptions,
+    isDocument: boolean
+  ): Document;
+
+  /**
+   * Render an element or a set of elements.
+   *
+   * @private
+   * @param dom - DOM to render.
+   * @returns The rendered DOM.
+   */
+  abstract _render(dom: Node | ArrayLike<Node>): string;
 }
 
 export interface Cheerio<T>

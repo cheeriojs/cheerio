@@ -1,3 +1,4 @@
+import { BasicAcceptedElems } from './types';
 import type { CheerioAPI, Cheerio } from '.';
 import { Node, Document, isText, hasChildren } from 'domhandler';
 import {
@@ -6,10 +7,7 @@ import {
   default as defaultOptions,
   flatten as flattenOptions,
 } from './options';
-import { select } from 'cheerio-select';
 import { ElementType } from 'htmlparser2';
-import { render as renderWithParse5 } from './parsers/parse5-adapter';
-import { render as renderWithHtmlparser2 } from './parsers/htmlparser2-adapter';
 
 /**
  * Helper function to render a DOM.
@@ -20,21 +18,13 @@ import { render as renderWithHtmlparser2 } from './parsers/htmlparser2-adapter';
  * @returns The rendered document.
  */
 function render(
-  that: CheerioAPI | undefined,
-  dom: ArrayLike<Node> | Node | string | undefined,
+  that: CheerioAPI,
+  dom: BasicAcceptedElems<Node> | undefined,
   options: InternalOptions
 ): string {
-  const toRender = dom
-    ? typeof dom === 'string'
-      ? select(dom, that?._root ?? [], options)
-      : dom
-    : that?._root.children;
+  if (!that) return '';
 
-  if (!toRender) return '';
-
-  return options.xmlMode || options._useHtmlParser2
-    ? renderWithHtmlparser2(toRender, options)
-    : renderWithParse5(toRender);
+  return that(dom ?? that._root.children, null, undefined, options).toString();
 }
 
 /**
@@ -44,9 +34,11 @@ function render(
  * @returns Whether the object is an options object.
  */
 function isOptions(
-  dom?: string | ArrayLike<Node> | Node | InternalOptions | null
-): dom is InternalOptions {
+  dom?: BasicAcceptedElems<Node> | CheerioOptions | null,
+  options?: CheerioOptions
+): dom is CheerioOptions {
   return (
+    !options &&
     typeof dom === 'object' &&
     dom != null &&
     !('length' in dom) &&
@@ -60,7 +52,7 @@ function isOptions(
  * @param options - Options for the renderer.
  * @returns The rendered document.
  */
-export function html(this: CheerioAPI | void, options?: CheerioOptions): string;
+export function html(this: CheerioAPI, options?: CheerioOptions): string;
 /**
  * Renders the document.
  *
@@ -69,13 +61,13 @@ export function html(this: CheerioAPI | void, options?: CheerioOptions): string;
  * @returns The rendered document.
  */
 export function html(
-  this: CheerioAPI | void,
-  dom?: string | ArrayLike<Node> | Node,
+  this: CheerioAPI,
+  dom?: BasicAcceptedElems<Node>,
   options?: CheerioOptions
 ): string;
 export function html(
-  this: CheerioAPI | void,
-  dom?: string | ArrayLike<Node> | Node | CheerioOptions,
+  this: CheerioAPI,
+  dom?: BasicAcceptedElems<Node> | CheerioOptions,
   options?: CheerioOptions
 ): string {
   /*
@@ -84,10 +76,7 @@ export function html(
    * check dom argument for dom element specific properties
    * assume there is no 'length' or 'type' properties in the options object
    */
-  if (!options && isOptions(dom)) {
-    options = dom;
-    dom = undefined;
-  }
+  const toRender = isOptions(dom) ? ((options = dom), undefined) : dom;
 
   /*
    * Sometimes `$.html()` is used without preloading html,
@@ -95,15 +84,11 @@ export function html(
    */
   const opts = {
     ...defaultOptions,
-    ...(this ? this._options : {}),
+    ...this?._options,
     ...flattenOptions(options ?? {}),
   };
 
-  return render(
-    this || undefined,
-    dom as string | Cheerio<Node> | Node | undefined,
-    opts
-  );
+  return render(this, toRender, opts);
 }
 
 /**
@@ -112,10 +97,7 @@ export function html(
  * @param dom - Element to render.
  * @returns THe rendered document.
  */
-export function xml(
-  this: CheerioAPI,
-  dom?: string | ArrayLike<Node> | Node
-): string {
+export function xml(this: CheerioAPI, dom?: BasicAcceptedElems<Node>): string {
   const options = { ...this._options, xmlMode: true };
 
   return render(this, dom, options);

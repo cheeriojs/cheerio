@@ -4,6 +4,7 @@
  * @category Cheerio
  */
 export type { Cheerio } from './cheerio';
+
 /**
  * Types used in signatures of Cheerio methods.
  *
@@ -22,8 +23,38 @@ export type {
  */
 export type { Node, NodeWithChildren, Element, Document } from 'domhandler';
 
-export * from './load';
-import { load } from './load';
+export type { CheerioAPI } from './load';
+import { getLoad } from './load';
+import { getParse } from './parse';
+import { renderWithParse5, parseWithParse5 } from './parsers/parse5-adapter';
+import renderWithHtmlparser2 from 'dom-serializer';
+import { parseDocument as parseWithHtmlparser2 } from 'htmlparser2';
+
+const parse = getParse((content, options, isDocument) =>
+  options.xmlMode || options._useHtmlParser2
+    ? parseWithHtmlparser2(content, options)
+    : parseWithParse5(content, options, isDocument)
+);
+
+// Duplicate docs due to https://github.com/TypeStrong/typedoc/issues/1616
+/**
+ * Create a querying function, bound to a document created from the provided markup.
+ *
+ * Note that similar to web browser contexts, this operation may introduce
+ * `<html>`, `<head>`, and `<body>` elements; set `isDocument` to `false` to
+ * switch to fragment mode and disable this.
+ *
+ * @param content - Markup to be loaded.
+ * @param options - Options for the created instance.
+ * @param isDocument - Allows parser to be switched to fragment mode.
+ * @returns The loaded document.
+ * @see {@link https://cheerio.js.org#loading} for additional usage information.
+ */
+export const load = getLoad(parse, (dom, options) =>
+  options.xmlMode || options._useHtmlParser2
+    ? renderWithHtmlparser2(dom, options)
+    : renderWithParse5(dom)
+);
 
 /**
  * The default cheerio instance.

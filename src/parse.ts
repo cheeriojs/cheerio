@@ -1,6 +1,4 @@
 import { removeElement } from 'domutils';
-import { parse as parseWithHtmlparser2 } from './parsers/htmlparser2-adapter';
-import { parse as parseWithParse5 } from './parsers/parse5-adapter';
 import {
   Node,
   Document,
@@ -12,35 +10,41 @@ import type { InternalOptions } from './options';
 /*
  * Parser
  */
-export default function parse(
-  content: string | Document | Node | Node[] | Buffer,
-  options: InternalOptions,
-  isDocument: boolean
-): Document {
-  if (typeof Buffer !== 'undefined' && Buffer.isBuffer(content)) {
-    content = content.toString();
-  }
+export function getParse(
+  parser: (
+    content: string,
+    options: InternalOptions,
+    isDocument: boolean
+  ) => Document
+) {
+  return function parse(
+    content: string | Document | Node | Node[] | Buffer,
+    options: InternalOptions,
+    isDocument: boolean
+  ): Document {
+    if (typeof Buffer !== 'undefined' && Buffer.isBuffer(content)) {
+      content = content.toString();
+    }
 
-  if (typeof content === 'string') {
-    return options.xmlMode || options._useHtmlParser2
-      ? parseWithHtmlparser2(content, options)
-      : parseWithParse5(content, options, isDocument);
-  }
+    if (typeof content === 'string') {
+      return parser(content, options, isDocument);
+    }
 
-  const doc = content as Node | Node[] | Document;
+    const doc = content as Node | Node[] | Document;
 
-  if (!Array.isArray(doc) && checkIsDocument(doc)) {
-    // If `doc` is already a root, just return it
-    return doc;
-  }
+    if (!Array.isArray(doc) && checkIsDocument(doc)) {
+      // If `doc` is already a root, just return it
+      return doc;
+    }
 
-  // Add conent to new root element
-  const root = new Document([]);
+    // Add conent to new root element
+    const root = new Document([]);
 
-  // Update the DOM using the root
-  update(doc, root);
+    // Update the DOM using the root
+    update(doc, root);
 
-  return root;
+    return root;
+  };
 }
 
 /**

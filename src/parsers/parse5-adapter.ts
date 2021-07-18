@@ -7,7 +7,7 @@ interface Parse5Options extends InternalOptions {
   context?: Node;
 }
 
-export function parse(
+export function parseWithParse5(
   content: string,
   options: Parse5Options,
   isDocument?: boolean
@@ -30,7 +30,7 @@ export function parse(
       parseFragment(context, content, opts);
 }
 
-export function render(dom: Node | ArrayLike<Node>): string {
+export function renderWithParse5(dom: Node | ArrayLike<Node>): string {
   /*
    * `dom-serializer` passes over the special "root" node and renders the
    * node's children in its place. To mimic this behavior with `parse5`, an

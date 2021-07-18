@@ -1,6 +1,15 @@
 import type { Document, Element } from 'domhandler';
-import parse from './parse';
+import { getParse } from './parse';
 import defaultOpts from './options';
+
+import { parseDocument as parseWithHtmlparser2 } from 'htmlparser2';
+import { parseWithParse5 } from './parsers/parse5-adapter';
+
+const parse = getParse((content, options, isDocument) =>
+  options.xmlMode || options._useHtmlParser2
+    ? parseWithHtmlparser2(content, options)
+    : parseWithParse5(content, options, isDocument)
+);
 
 // Tags
 const basic = '<html></html>';
