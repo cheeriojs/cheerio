@@ -85,8 +85,9 @@ export interface CheerioAPI extends StaticType, LoadType {
  * @returns The loaded document.
  * @see {@link https://cheerio.js.org#loading} for additional usage information.
  */
+
 export function load(
-  content: string | Node | Node[] | Buffer,
+  content: string | Node | Node[] | Uint8Array,
   options?: CheerioOptions | null,
   isDocument = true
 ): CheerioAPI {
