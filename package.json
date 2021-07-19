@@ -5,7 +5,8 @@
   "author": "Matt Mueller <mattmuelle@gmail.com>",
   "maintainers": [
     "Felix Boehm <me@feedic.com>"
-  ],
+  
+],
   "funding": "https://github.com/cheeriojs/cheerio?sponsor=1",
   "license": "MIT",
   "keywords": [
