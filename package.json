@@ -57,7 +57,7 @@
     "eslint": "^7.31.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-jest": "^24.4.0",
-    "eslint-plugin-jsdoc": "^36.0.2",
+    "eslint-plugin-jsdoc": "^36.0.3",
     "eslint-plugin-node": "^11.1.0",
     "husky": "^7.0.1",
     "jest": "^27.0.6",
