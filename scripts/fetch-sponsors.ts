@@ -49,7 +49,7 @@ function getTierSlug(monthlyDonation: number): Tier | null {
     return 'professional';
   }
 
-  if (monthlyDonation > 5) {
+  if (monthlyDonation >= 5) {
     return 'backer';
   }
 
