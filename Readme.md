@@ -309,6 +309,18 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="https://medium.com/norch" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/espenklem/6075b19/avatar.png" title="Espen Klem" alt="Espen Klem"></img>
           </a>
+<a href="https://nishant-singh.com" target="_blank" rel="noopener noreferrer">
+            <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/10304344?u=9cd1389a1a8211b64979ca3693f96d90f5bf0be9&v=4&s=128" title="Nishant Singh" alt="Nishant Singh"></img>
+          </a>
+<a href="https://github.com/Anthonyzou" target="_blank" rel="noopener noreferrer">
+            <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/1567160?u=4bba43d5946daba6cc84beaf494116ff45a4e260&v=4&s=128" title="Anthony Ou" alt="Anthony Ou"></img>
+          </a>
+<a href="https://github.com/gauthamchandra" target="_blank" rel="noopener noreferrer">
+            <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/5430280?u=1115bcd3ed7aa8b2a62ff28f62ee4c2b92729903&v=4&s=128" title="Gautham Chandra" alt="Gautham Chandra"></img>
+          </a>
+<a href="jonathanoppenheimer.wtf" target="_blank" rel="noopener noreferrer">
+            <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/12973114?u=4535020269598dbdf029a4488e26d834a3c93758&v=4&s=128" title="Jonathan Oppenheimer" alt="Jonathan Oppenheimer"></img>
+          </a>
 
 <!-- END SPONSORS -->
 
