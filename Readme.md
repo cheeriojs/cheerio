@@ -285,10 +285,18 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 
 <!-- BEGIN SPONSORS: sponsor -->
 
-<a href="https://www.casinoonlineaams.com" target="_blank">![Casinoonlineaams.com](https://images.opencollective.com/casinoonlineaamscom/da74236/logo.png)</a>
-<a href="https://cryptocasinos.com/" target="_blank">![CryptoCasinos](https://images.opencollective.com/cryptocasinos/99b168e/logo.png)</a>
-<a href="https://substack.com/" target="_blank">![Substack](https://avatars.githubusercontent.com/u/53023767?v=4&s=128)</a>
-<a href="https://www.airbnb.com/" target="_blank">![Airbnb](https://images.opencollective.com/airbnb/d327d66/logo.png)</a>
+<a href="https://www.airbnb.com/" target="_blank" rel="noopener noreferrer">
+            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/airbnb/d327d66/logo.png" title="Airbnb" alt="Airbnb"></img>
+          </a>
+<a href="https://substack.com/" target="_blank" rel="noopener noreferrer">
+            <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/53023767?v=4&s=128" title="Substack" alt="Substack"></img>
+          </a>
+<a href="https://cryptocasinos.com/" target="_blank" rel="noopener noreferrer">
+            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/cryptocasinos/99b168e/logo.png" title="CryptoCasinos" alt="CryptoCasinos"></img>
+          </a>
+<a href="https://www.casinoonlineaams.com" target="_blank" rel="noopener noreferrer">
+            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/casinoonlineaamscom/da74236/logo.png" title="Casinoonlineaams.com" alt="Casinoonlineaams.com"></img>
+          </a>
 
 <!-- END SPONSORS -->
 
@@ -298,11 +306,9 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 
 <!-- BEGIN SPONSORS: backer -->
 
-<a href="https://medium.com/norch" target="_blank">![Espen Klem](https://images.opencollective.com/espenklem/6075b19/avatar.png)</a>
-<a href="https://github.com/Anthonyzou" target="_blank">![Anthony Ou](https://avatars.githubusercontent.com/u/1567160?u=4bba43d5946daba6cc84beaf494116ff45a4e260&v=4&s=128)</a>
-<a href="https://github.com/gauthamchandra" target="_blank">![Gautham Chandra](https://avatars.githubusercontent.com/u/5430280?u=1115bcd3ed7aa8b2a62ff28f62ee4c2b92729903&v=4&s=128)</a>
-<a href="https://nishant-singh.com" target="_blank">![Nishant Singh](https://avatars.githubusercontent.com/u/10304344?u=9cd1389a1a8211b64979ca3693f96d90f5bf0be9&v=4&s=128)</a>
-<a href="https://github.com/Guanhua1018" target="_blank">![Chris Li](https://avatars.githubusercontent.com/u/59758330?u=5f5ca0046ac11e9fc4c3dd381a26cb1d530108e5&v=4&s=128)</a>
+<a href="https://medium.com/norch" target="_blank" rel="noopener noreferrer">
+            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/espenklem/6075b19/avatar.png" title="Espen Klem" alt="Espen Klem"></img>
+          </a>
 
 <!-- END SPONSORS -->
 
