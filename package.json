@@ -62,7 +62,7 @@
     "husky": "^7.0.1",
     "jest": "^27.0.6",
     "jquery": "^3.6.0",
-    "jsdom": "^16.6.0",
+    "jsdom": "^16.7.0",
     "lint-staged": "^11.1.1",
     "node-fetch": "^2.6.1",
     "prettier": "^2.3.2",
