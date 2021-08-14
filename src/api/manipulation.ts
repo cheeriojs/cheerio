@@ -5,8 +5,8 @@
  */
 
 import { Node, NodeWithChildren, Element, Text, hasChildren } from 'domhandler';
-import { default as parse, update as updateDOM } from '../parse';
-import { html as staticHtml, text as staticText } from '../static';
+import { update as updateDOM } from '../parse';
+import { text as staticText } from '../static';
 import { domEach, cloneDom, isTag, isHtml, isCheerio } from '../utils';
 import { removeElement } from 'domutils';
 import type { Cheerio } from '../cheerio';
@@ -39,7 +39,7 @@ export function _makeDomArray<T extends Node>(
     );
   }
   if (typeof elem === 'string') {
-    return parse(elem, this.options, false).children;
+    return this._parse(elem, this.options, false).children;
   }
   return clone ? cloneDom([elem]) : [elem];
 }
@@ -63,7 +63,7 @@ function _insert(
       if (!hasChildren(el)) return;
       const domSrc =
         typeof elems[0] === 'function'
-          ? elems[0].call(el, i, staticHtml(el.children))
+          ? elems[0].call(el, i, this._render(el.children))
           : (elems as Node[]);
 
       const dom = this._makeDomArray(domSrc, i < lastIdx);
@@ -599,7 +599,7 @@ export function after<T extends Node>(
 
     const domSrc =
       typeof elems[0] === 'function'
-        ? elems[0].call(el, i, staticHtml(el.children))
+        ? elems[0].call(el, i, this._render(el.children))
         : (elems as Node[]);
 
     const dom = this._makeDomArray(domSrc, i < lastIdx);
@@ -713,7 +713,7 @@ export function before<T extends Node>(
 
     const domSrc =
       typeof elems[0] === 'function'
-        ? elems[0].call(el, i, staticHtml(el.children))
+        ? elems[0].call(el, i, this._render(el.children))
         : (elems as Node[]);
 
     const dom = this._makeDomArray(domSrc, i < lastIdx);
@@ -923,7 +923,7 @@ export function html<T extends Node>(
   if (str === undefined) {
     const el = this[0];
     if (!el || !hasChildren(el)) return null;
-    return staticHtml(el.children, this.options);
+    return this._render(el.children);
   }
 
   // Keep main options unchanged
@@ -939,7 +939,7 @@ export function html<T extends Node>(
 
     const content = isCheerio(str)
       ? str.toArray()
-      : parse(`${str}`, opts, false).children;
+      : this._parse(`${str}`, opts, false).children;
 
     updateDOM(content, el);
   });
@@ -952,7 +952,7 @@ export function html<T extends Node>(
  * @returns The rendered document.
  */
 export function toString<T extends Node>(this: Cheerio<T>): string {
-  return staticHtml(this, this.options);
+  return this._render(this);
 }
 
 /**
@@ -992,9 +992,9 @@ export function text<T extends Node>(
   }
   if (typeof str === 'function') {
     // Function support
-    return domEach(this, (el, i) => {
-      text.call(this._make(el), str.call(el, i, staticText([el])));
-    });
+    return domEach(this, (el, i) =>
+      this._make(el).text(str.call(el, i, staticText([el])))
+    );
   }
 
   // Append text node to each selected elements
