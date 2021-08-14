@@ -1004,7 +1004,7 @@ export function text<T extends Node>(
       child.next = child.prev = child.parent = null;
     });
 
-    const textNode = new Text(str);
+    const textNode = new Text(`${str}`);
 
     updateDOM(textNode, el);
   });
