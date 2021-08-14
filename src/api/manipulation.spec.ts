@@ -1901,6 +1901,11 @@ describe('$(...)', () => {
       expect(text).toBe('M&M');
     });
 
+    it('should turn passed values to strings', () => {
+      $('.apple').text(1 as any);
+      expect($('.apple')[0].childNodes[0]).toHaveProperty('data', '1');
+    });
+
     it('( undefined ) : should act as an accessor', () => {
       const $div = $('<div>test</div>');
       expect(typeof $div.text(undefined as any)).toBe('string');
