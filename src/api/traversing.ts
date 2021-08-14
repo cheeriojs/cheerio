@@ -481,7 +481,7 @@ export const siblings = _matcher(
 );
 
 /**
- * Gets the children of the first selected element.
+ * Gets the element children of each element in the set of matched elements.
  *
  * @category Traversing
  * @example
