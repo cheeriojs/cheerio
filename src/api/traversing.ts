@@ -293,7 +293,7 @@ export const parentsUntil = _matchUntil(
  */
 export function closest<T extends Node>(
   this: Cheerio<T>,
-  selector?: AcceptedFilters<Node>
+  selector?: AcceptedFilters<Element>
 ): Cheerio<Node> {
   const set: Node[] = [];
 
@@ -301,15 +301,21 @@ export function closest<T extends Node>(
     return this._make(set);
   }
 
+  const selectOpts = {
+    xmlMode: this.options.xmlMode,
+    root: this._root?.[0],
+  };
+
+  const selectFn =
+    typeof selector === 'string'
+      ? (elem: Element) => select.is(elem, selector, selectOpts)
+      : getFilterFn(selector);
+
   domEach(this, (elem: Node | null) => {
-    while (elem && elem.type !== 'root') {
-      if (
-        !selector ||
-        filterArray([elem], selector, this.options.xmlMode, this._root?.[0])
-          .length
-      ) {
+    while (elem && isTag(elem)) {
+      if (selectFn(elem, 0)) {
         // Do not add duplicate elements to the set
-        if (elem && !set.includes(elem)) {
+        if (!set.includes(elem)) {
           set.push(elem);
         }
         break;
