@@ -321,6 +321,9 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="jonathanoppenheimer.wtf" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/12973114?u=4535020269598dbdf029a4488e26d834a3c93758&v=4&s=128" title="Jonathan Oppenheimer" alt="Jonathan Oppenheimer"></img>
           </a>
+<a href="http://www.dr-chuck.com/" target="_blank" rel="noopener noreferrer">
+            <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/1197222?u=d6dc85c064736ab851c6d9e3318dcdd1be00fb2c&v=4&s=128" title="Charles Severance" alt="Charles Severance"></img>
+          </a>
 
 <!-- END SPONSORS -->
 
