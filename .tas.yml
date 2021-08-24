@@ -1,6 +1,6 @@
 ---
 framework: jest
-postmerge:
+postMerge:
   pattern:
     - "./src/*.spec.ts"
   strategy:
