@@ -6,10 +6,10 @@ postmerge:
   strategy:
     threshold: <5|100s|30m|6h>
     type: <commit|time>
-premerge:
+preMerge:
   - "./src/*.spec.ts"
-prerun:
+preRun:
   - npm ci
-postrun:
+postRun:
   - node --version
 version: 2.0
