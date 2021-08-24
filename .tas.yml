@@ -7,7 +7,8 @@ postMerge:
     threshold: <5|100s|30m|6h>
     type: <commit|time>
 preMerge:
-  - "./src/*.spec.ts"
+  pattern:
+    - "./src/*.spec.ts"
 preRun:
   - npm ci
 postRun:
