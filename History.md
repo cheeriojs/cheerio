@@ -8,6 +8,7 @@ dependencies.
 
 # 1.0.0-rc.2 / 2017-07-02
 
+
 This release changes Cheerio's default parser to [the Parse5 HTML
 parser](https://github.com/inikulin/parse5). Parse5 is an excellent project
 that rigorously conforms to the HTML standard. It does not support XML, so
