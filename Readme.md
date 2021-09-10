@@ -218,7 +218,7 @@ $.root().html();
 If you want to render the [`outerHTML`](https://developer.mozilla.org/en-US/docs/Web/API/Element/outerHTML) of a selection, you can use the `html` utility functon:
 
 ```js
-cheerio.html($('.pear'));
+$.html($('.pear'));
 //=> <li class="pear">Pear</li>
 ```
 
