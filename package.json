@@ -60,7 +60,7 @@
     "eslint-plugin-jsdoc": "^36.1.0",
     "eslint-plugin-node": "^11.1.0",
     "husky": "^7.0.2",
-    "jest": "^27.1.0",
+    "jest": "^27.1.1",
     "jquery": "^3.6.0",
     "jsdom": "^17.0.0",
     "lint-staged": "^11.1.2",
