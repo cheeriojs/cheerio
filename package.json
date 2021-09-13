@@ -65,7 +65,7 @@
     "jsdom": "^17.0.0",
     "lint-staged": "^11.1.2",
     "node-fetch": "^3.0.0",
-    "prettier": "^2.3.2",
+    "prettier": "^2.4.0",
     "prettier-plugin-jsdoc": "0.3.24",
     "ts-jest": "^27.0.5",
     "ts-node": "^10.2.1",
