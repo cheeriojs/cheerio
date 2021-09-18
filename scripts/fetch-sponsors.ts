@@ -6,8 +6,27 @@
  */
 
 import * as fs from 'fs/promises';
-import { graphql as githubGraphQL } from '@octokit/graphql';
 import fetch from 'node-fetch';
+import { graphql as githubGraphQL } from '@octokit/graphql';
+
+type Tier = 'sponsor' | 'professional' | 'backer';
+
+interface Sponsor {
+  createdAt: string;
+  name: string;
+  image: string;
+  url: string;
+  type: 'ORGANIZATION' | 'INDIVIDUAL' | 'FUND';
+  monthlyDonation: number;
+  source: 'github' | 'opencollective';
+  tier: Tier | null;
+}
+
+const tierSponsors: Record<Tier, Sponsor[]> = {
+  sponsor: [],
+  professional: [],
+  backer: [],
+};
 
 const { CHEERIO_SPONSORS_GITHUB_TOKEN } = process.env;
 
@@ -15,19 +34,13 @@ if (!CHEERIO_SPONSORS_GITHUB_TOKEN) {
   throw new Error('Missing CHEERIO_SPONSORS_GITHUB_TOKEN.');
 }
 
-const tierSponsors = {
-  sponsor: [],
-  professional: [],
-  backer: [],
-};
-
 /**
  * Returns the tier ID for a given donation amount.
  *
  * @param monthlyDonation - The monthly donation in dollars.
  * @returns The ID of the tier the donation belongs to.
  */
-function getTierSlug(monthlyDonation) {
+function getTierSlug(monthlyDonation: number): Tier | null {
   if (monthlyDonation >= 100) {
     return 'sponsor';
   }
@@ -48,7 +61,7 @@ function getTierSlug(monthlyDonation) {
  *
  * @returns An array of sponsors.
  */
-async function fetchOpenCollectiveSponsors() {
+async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
   const endpoint = 'https://api.opencollective.com/graphql/v2';
 
   const query = `{
@@ -85,7 +98,7 @@ async function fetchOpenCollectiveSponsors() {
 
   const payload = await result.json();
 
-  return payload.data.account.orders.nodes.map((order) => {
+  return payload.data.account.orders.nodes.map((order: any) => {
     const monthlyDonation =
       order.frequency === 'year'
         ? Math.round((order.amount.value * 100) / 12)
@@ -110,7 +123,7 @@ async function fetchOpenCollectiveSponsors() {
  *
  * @returns An array of sponsors.
  */
-async function fetchGitHubSponsors() {
+async function fetchGitHubSponsors(): Promise<Sponsor[]> {
   const { organization } = await githubGraphQL(
     `{
       organization(login: "cheeriojs") {
@@ -152,7 +165,7 @@ async function fetchGitHubSponsors() {
 
   // Return an array in the same format as Open Collective
   return organization.sponsorshipsAsMaintainer.nodes.map(
-    ({ sponsor, tier, createdAt }) => ({
+    ({ sponsor, tier, createdAt }: any) => ({
       createdAt,
       name: sponsor.name,
       image: `${sponsor.avatarUrl}&s=128`,
@@ -173,7 +186,7 @@ async function fetchGitHubSponsors() {
  */
 const MISLABELED_ORGS = /[ck]as[yi]+no|bet$|poker|coffee/i;
 
-const README_NAME = 'Readme.md';
+const README_PATH = `${__dirname}/../Readme.md`;
 
 const SECTION_START_BEGINNING = '<!-- BEGIN SPONSORS:';
 const SECTION_START_END = '-->';
@@ -205,14 +218,16 @@ const SECTION_END = '<!-- END SPONSORS -->';
   }
 
   // Sort order based on total donations
-  for (const key of Object.keys(tierSponsors)) {
-    tierSponsors[key].sort((a, b) => b.monthlyDonation - a.monthlyDonation);
+  for (const key of Object.keys(tierSponsors) as Tier[]) {
+    tierSponsors[key].sort(
+      (a: Sponsor, b: Sponsor) => b.monthlyDonation - a.monthlyDonation
+    );
   }
 
   // Merge professionals into sponsors for now
   tierSponsors.sponsor.unshift(...tierSponsors.professional);
 
-  let readme = await fs.readFile(README_NAME, 'utf8');
+  let readme = await fs.readFile(README_PATH, 'utf8');
 
   for (let sectionStartIndex = 0; ; ) {
     sectionStartIndex = readme.indexOf(
@@ -230,7 +245,7 @@ const SECTION_END = '<!-- END SPONSORS -->';
     );
     const sectionName = readme
       .slice(sectionStartIndex, sectionStartEndIndex)
-      .trim();
+      .trim() as Tier;
 
     const sectionContentStart = sectionStartEndIndex + SECTION_START_END.length;
 
@@ -240,7 +255,7 @@ const SECTION_END = '<!-- END SPONSORS -->';
       sectionName
     ]
       .map(
-        (s) =>
+        (s: Sponsor) =>
           // Display each sponsor's image in the README.
           `<a href="${s.url}" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="${s.image}" title="${s.name}" alt="${s.name}"></img>
@@ -249,7 +264,7 @@ const SECTION_END = '<!-- END SPONSORS -->';
       .join('\n')}\n\n${readme.slice(sectionEndIndex)}`;
   }
 
-  await fs.writeFile(README_NAME, readme, {
+  await fs.writeFile(README_PATH, readme, {
     encoding: 'utf8',
   });
 })();
