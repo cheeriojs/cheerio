@@ -297,6 +297,9 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="https://casinofiables.com/" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/casinofiables-com/b824bab/logo.png" title="Casinofiables.com" alt="Casinofiables.com"></img>
           </a>
+<a href="https://www.cryptosnacks.org/bitcoin-casino/" target="_blank" rel="noopener noreferrer">
+            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/snack_crypto/a20c8a9/logo.png" title="Crypo SNACK" alt="Crypo SNACK"></img>
+          </a>
 
 <!-- END SPONSORS -->
 
