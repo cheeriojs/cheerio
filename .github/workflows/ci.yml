@@ -48,5 +48,6 @@ jobs:
       - name: Run Coveralls
         uses: coverallsapp/github-action@master
         if: matrix.node == env.NODE_COV
+        continue-on-error: true
         with:
           github-token: '${{ secrets.GITHUB_TOKEN }}'
