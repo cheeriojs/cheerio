@@ -6,7 +6,6 @@
 
 
 
-
 <h5 align="center">Fast, flexible & lean implementation of core jQuery designed specifically for the server.</h5>
 
 <div align="center">
