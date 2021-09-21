@@ -2,13 +2,13 @@
 framework: jest
 postMerge:
   pattern:
-    - './src/*.spec.ts'
+    - './src/**/*.spec.ts'
   strategy:
     threshold: <5|100s|30m|6h>
     type: <commit|time>
 preMerge:
   pattern:
-    - './src/*.spec.ts'
+    - './src/**/*.spec.ts'
 preRun:
   - npm ci
 postRun:
