@@ -1,5 +1,7 @@
 ---
 framework: jest
+blacklist:
+  - 'src/load.spec.ts##.load##'
 postMerge:
   pattern:
     - './src/**/*.spec.ts'
