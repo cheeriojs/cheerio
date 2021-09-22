@@ -422,7 +422,7 @@ describe('parse', () => {
       const location = (root.children[0] as any).sourceCodeLocation;
 
       expect(typeof location).toBe('object');
-      expect(location.endOffset).toBe(12);
+      expect(location.endOffset).toBe(13);
     });
   });
 });
