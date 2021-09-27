@@ -285,6 +285,9 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="https://www.airbnb.com/" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/airbnb/d327d66/logo.png" title="Airbnb" alt="Airbnb"></img>
           </a>
+<a href="https://bestbitcoincasino.net/" target="_blank" rel="noopener noreferrer">
+            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/bestbitcoincasinonet/178e4b4/logo.png" title="BestBitcoinCasinonet" alt="BestBitcoinCasinonet"></img>
+          </a>
 <a href="https://substack.com/" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/53023767?v=4&s=128" title="Substack" alt="Substack"></img>
           </a>
