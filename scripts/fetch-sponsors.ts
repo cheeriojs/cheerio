@@ -99,10 +99,9 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
   const payload = await result.json();
 
   return payload.data.account.orders.nodes.map((order: any) => {
+    const donation = order.amount.value * 100;
     const monthlyDonation =
-      order.frequency === 'year'
-        ? Math.round((order.amount.value * 100) / 12)
-        : order.amount.value * 100;
+      order.frequency === 'YEARLY' ? Math.round(donation / 12) : donation;
 
     return {
       createdAt: order.createdAt,
