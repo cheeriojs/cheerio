@@ -56,7 +56,7 @@
     "benchmark": "^2.1.4",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-jest": "^24.4.2",
+    "eslint-plugin-jest": "^24.4.3",
     "eslint-plugin-jsdoc": "^36.1.0",
     "eslint-plugin-node": "^11.1.0",
     "husky": "^7.0.2",
