@@ -1,7 +1,10 @@
 ---
 framework: jest
-blacklist:
-  - 'src/load.spec.ts##.load##'
+coverageThreshold:
+  branches: 100
+  lines: 100
+  functions: 100
+  statements: 100
 postMerge:
   pattern:
     - './src/**/*.spec.ts'
