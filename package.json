@@ -63,7 +63,7 @@
     "jest": "^27.3.1",
     "jquery": "^3.6.0",
     "jsdom": "^18.0.0",
-    "lint-staged": "^11.2.4",
+    "lint-staged": "^11.2.6",
     "node-fetch": "^2.6.5",
     "prettier": "^2.4.1",
     "prettier-plugin-jsdoc": "0.3.24",
