@@ -66,7 +66,7 @@
     "lint-staged": "^11.2.6",
     "node-fetch": "^2.6.5",
     "prettier": "^2.4.1",
-    "prettier-plugin-jsdoc": "0.3.24",
+    "prettier-plugin-jsdoc": "0.3.30",
     "ts-jest": "^27.0.7",
     "ts-node": "^10.4.0",
     "typedoc": "^0.22.7",
