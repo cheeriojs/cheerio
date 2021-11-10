@@ -1,4 +1,4 @@
-<h1 align="center">cheerio test</h1>
+<h1 align="center">cheerio</h1>
 
 <h5 align="center">Fast, flexible & lean implementation of core jQuery designed specifically for the server.</h5>
 
