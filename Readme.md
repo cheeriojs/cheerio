@@ -327,6 +327,9 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="http://www.dr-chuck.com/" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/1197222?u=d6dc85c064736ab851c6d9e3318dcdd1be00fb2c&v=4&s=128" title="Charles Severance" alt="Charles Severance"></img>
           </a>
+<a href="https://kodfabrik.se/" target="_blank" rel="noopener noreferrer">
+            <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/34457?v=4&s=128" title="Pelle Wessman" alt="Pelle Wessman"></img>
+          </a>
 
 <!-- END SPONSORS -->
 
