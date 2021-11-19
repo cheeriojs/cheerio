@@ -115,4 +115,14 @@ export const noscript = [
   '</body>',
 ].join('');
 
+export const script = [
+  '<div>',
+  '<a>A</a>',
+  '<script>',
+  '  var foo = "bar";',
+  '</script>',
+  '<b>B</b>',
+  '</div>',
+].join('');
+
 export const mixedText = '<a>1</a>TEXT<b>2</b>';
