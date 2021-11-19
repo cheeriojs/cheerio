@@ -2,6 +2,7 @@ import cheerio from '..';
 import type { Cheerio } from '../cheerio';
 import type { Element } from 'domhandler';
 import {
+  script,
   fruits,
   vegetables,
   food,
@@ -294,6 +295,22 @@ describe('$(...)', () => {
       const $a = $('<div><a></a></div>');
 
       expect($a.prop('innerHTML')).toBe('<a></a>');
+    });
+
+    it('("textContent") : should render properly', () => {
+      expect(selectMenu.children().prop('textContent')).toBe(
+        'Option not selected'
+      );
+
+      expect($(script).prop('textContent')).toBe('A  var foo = "bar";B');
+    });
+
+    it('("innerText") : should render properly', () => {
+      expect(selectMenu.children().prop('innerText')).toBe(
+        'Option not selected'
+      );
+
+      expect($(script).prop('innerText')).toBe('AB');
     });
 
     it('(inherited properties) : prop should support inherited properties', () => {

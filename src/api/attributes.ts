@@ -8,6 +8,7 @@ import { text } from '../static';
 import { isTag, domEach, camelCase, cssCase } from '../utils';
 import type { Node, Element } from 'domhandler';
 import type { Cheerio } from '../cheerio';
+import { innerText, textContent } from 'domutils';
 const hasOwn = Object.prototype.hasOwnProperty;
 const rspace = /\s+/;
 const dataAttrPrefix = 'data-';
@@ -300,7 +301,7 @@ export function prop<T extends Node>(
 ): T extends Element ? string : undefined;
 export function prop<T extends Node>(
   this: Cheerio<T>,
-  name: 'innerHTML' | 'outerHTML'
+  name: 'innerHTML' | 'outerHTML' | 'innerText' | 'textContent'
 ): string | null;
 export function prop<T extends Node>(
   this: Cheerio<T>,
@@ -360,6 +361,12 @@ export function prop<T extends Node>(
         const el = this[0];
         return isTag(el) ? el.name.toUpperCase() : undefined;
       }
+
+      case 'innerText':
+        return innerText(this[0]);
+
+      case 'textContent':
+        return textContent(this[0]);
 
       case 'outerHTML':
         return this.clone().wrap('<container />').parent().html();
