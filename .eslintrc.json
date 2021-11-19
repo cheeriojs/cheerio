@@ -87,6 +87,7 @@
         "@typescript-eslint/member-ordering": 0,
         "@typescript-eslint/explicit-function-return-type": 0,
         "@typescript-eslint/no-unused-vars": 0,
+        "no-use-before-define": 0,
         "@typescript-eslint/no-use-before-define": [2, { "functions": false }],
         "@typescript-eslint/consistent-type-definitions": [2, "interface"],
         "@typescript-eslint/prefer-function-type": 2,
