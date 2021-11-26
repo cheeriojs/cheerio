@@ -285,7 +285,7 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="https://www.airbnb.com/" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/airbnb/d327d66/logo.png" title="Airbnb" alt="Airbnb"></img>
           </a>
-<a href="www.pabloschaffner.cl" target="_blank" rel="noopener noreferrer">
+<a href="https://www.pabloschaffner.cl" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/57605485?v=4&s=128" title="Pablo Schaffner" alt="Pablo Schaffner"></img>
           </a>
 <a href="https://substack.com/" target="_blank" rel="noopener noreferrer">
