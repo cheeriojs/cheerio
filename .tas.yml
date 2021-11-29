@@ -1,16 +1,8 @@
 ---
 framework: jest
-coverageThreshold:
-  branches: 100
-  lines: 100
-  functions: 100
-  statements: 100
 postMerge:
   pattern:
     - './src/**/*.spec.ts'
-  strategy:
-    threshold: <5|100s|30m|6h>
-    type: <commit|time>
 preMerge:
   pattern:
     - './src/**/*.spec.ts'
