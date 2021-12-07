@@ -29,7 +29,7 @@ describe('.load', () => {
     expect($('script')[0].children[0].type).toBe('tag');
   });
 
-  it('(buffer) : should accept a buffer', () => {
+  it.skip('(buffer) : should accept a buffer', () => {
     const html = '<html><head></head><body>foo</body></html>';
     // eslint-disable-next-line node/no-unsupported-features/node-builtins
     const $html = cheerio.load(Buffer.from(html));
