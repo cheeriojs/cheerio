@@ -35,4 +35,12 @@ describe('.load', () => {
     const $html = cheerio.load(Buffer.from(html));
     expect($html.html()).toBe(html);
   });
+  
+  it('(buffer) : should accept a buffer SP test', () => {
+    const html = '<html><head></head><body>foo</body></html>';
+    // eslint-disable-next-line node/no-unsupported-features/node-builtins
+    const $html = cheerio.load(Buffer.from(html));
+    expect($html.html()).toBe(html);
+  });
+  
 });
