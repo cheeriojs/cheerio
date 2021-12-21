@@ -285,9 +285,6 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="https://www.airbnb.com/" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/airbnb/d327d66/logo.png" title="Airbnb" alt="Airbnb"></img>
           </a>
-<a href="https://www.pabloschaffner.cl" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/57605485?v=4&s=128" title="Pablo Schaffner" alt="Pablo Schaffner"></img>
-          </a>
 <a href="https://substack.com/" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/53023767?v=4&s=128" title="Substack" alt="Substack"></img>
           </a>
@@ -308,6 +305,9 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
           </a>
 <a href="https://apify.com/" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/24586296?v=4&s=128" title="Apify" alt="Apify"></img>
+          </a>
+<a href="https://spin-paradise.com" target="_blank" rel="noopener noreferrer">
+            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/spinparadise/fec1271/logo.png" title="Spin-Paradise" alt="Spin-Paradise"></img>
           </a>
 
 <!-- END SPONSORS -->
