@@ -172,11 +172,13 @@ export function getLoad(
 
       const instance = new LoadedCheerio(elements, rootInstance, options);
 
-      if (elements || !selector) {
+      if (elements) {
         return instance as any;
       }
 
-      if (typeof selector !== 'string') throw new Error('');
+      if (typeof selector !== 'string') {
+        throw new Error('Unexpected type of selector');
+      }
 
       // We know that our selector is a string now.
       let search = selector;
