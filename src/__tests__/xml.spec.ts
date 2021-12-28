@@ -61,5 +61,17 @@ describe('render', () => {
         '<someelem someattribute="something">hello</someelem>'
       );
     });
+
+    it('reproduce broken case with symbol', () => {
+      const str =
+        '<div id="special-characters-test">저는 7년 동안 한국에서 살았어요</div>';
+      const buffered = Buffer.from(str).toString('binary');
+      const $ = cheerio.load(buffered);
+      const out = Buffer.from($.html(), 'binary').toString('utf-8');
+
+      expect(out).toBe(
+        '<html><head></head><body><div id="special-characters-test">저는 7년 동안 한국에서 살았어요</div></body></html>'
+      );
+    });
   });
 });
