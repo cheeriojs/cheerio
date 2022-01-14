@@ -97,8 +97,11 @@ function uniqueSplice(
     spliceCount,
     ...newElems,
   ];
-  const prev: Node | null = array[spliceIdx - 1] || null;
-  const next: Node | null = array[spliceIdx + spliceCount] || null;
+  const prev: Node | null = spliceIdx === 0 ? null : array[spliceIdx - 1];
+  const next: Node | null =
+    spliceIdx + spliceCount >= array.length
+      ? null
+      : array[spliceIdx + spliceCount];
 
   /*
    * Before splicing in new elements, ensure they do not already appear in the
@@ -109,7 +112,7 @@ function uniqueSplice(
     const oldParent = node.parent;
 
     if (oldParent) {
-      const prevIdx = oldParent.children.indexOf(newElems[idx]);
+      const prevIdx = oldParent.children.indexOf(node);
 
       if (prevIdx > -1) {
         oldParent.children.splice(prevIdx, 1);
@@ -129,8 +132,8 @@ function uniqueSplice(
       node.next.prev = node.prev ?? null;
     }
 
-    node.prev = newElems[idx - 1] || prev;
-    node.next = newElems[idx + 1] || next;
+    node.prev = idx === 0 ? prev : newElems[idx - 1];
+    node.next = idx === newElems.length - 1 ? next : newElems[idx + 1];
   }
 
   if (prev) {
