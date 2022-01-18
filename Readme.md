@@ -309,6 +309,9 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="https://spin-paradise.com" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/spinparadise/fec1271/logo.png" title="Spin-Paradise" alt="Spin-Paradise"></img>
           </a>
+<a href="https://freebets.ltd.uk" target="_blank" rel="noopener noreferrer">
+            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/freebets/e21c41b/logo.png" title="Free Bets" alt="Free Bets"></img>
+          </a>
 
 <!-- END SPONSORS -->
 
