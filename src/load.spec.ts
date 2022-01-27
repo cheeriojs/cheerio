@@ -35,5 +35,6 @@ describe('.load', () => {
     const $html = cheerio.load(Buffer.from(html));
     expect($html.html()).toBe(html);
   });
-  
 });
+
+// Testing 1
