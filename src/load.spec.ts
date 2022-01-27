@@ -36,5 +36,3 @@ describe('.load', () => {
     expect($html.html()).toBe(html);
   });
 });
-
-// Testing 1
