@@ -51,7 +51,7 @@
     "@types/node-fetch": "^2.5.12",
     "@types/parse5": "^6.0.3",
     "@types/parse5-htmlparser2-tree-adapter": "^6.0.1",
-    "@typescript-eslint/eslint-plugin": "^5.10.2",
+    "@typescript-eslint/eslint-plugin": "^5.11.0",
     "@typescript-eslint/parser": "^5.10.2",
     "benchmark": "^2.1.4",
     "eslint": "^8.8.0",
