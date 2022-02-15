@@ -191,6 +191,10 @@ const SECTION_START_BEGINNING = '<!-- BEGIN SPONSORS:';
 const SECTION_START_END = '-->';
 const SECTION_END = '<!-- END SPONSORS -->';
 
+const professionalToBackerOverrides = new Map([
+  ['Vasy Kafidoff', 'https://kafidoff.com'],
+]);
+
 (async () => {
   const openCollectiveSponsors = fetchOpenCollectiveSponsors();
   const githubSponsors = fetchGitHubSponsors();
@@ -213,6 +217,13 @@ const SECTION_END = '<!-- END SPONSORS -->';
       continue;
     }
 
+    if (
+      (sponsor.tier === 'professional' || sponsor.tier === 'backer') &&
+      professionalToBackerOverrides.has(sponsor.name)
+    ) {
+      sponsor.url = professionalToBackerOverrides.get(sponsor.name);
+    }
+
     tierSponsors[sponsor.tier].push(sponsor);
   }
 
@@ -223,8 +234,8 @@ const SECTION_END = '<!-- END SPONSORS -->';
     );
   }
 
-  // Merge professionals into sponsors for now
-  tierSponsors.sponsor.unshift(...tierSponsors.professional);
+  // Merge professionals into backers for now
+  tierSponsors.backer.unshift(...tierSponsors.professional);
 
   let readme = await fs.readFile(README_PATH, 'utf8');
 
