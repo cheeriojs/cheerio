@@ -221,7 +221,7 @@ const professionalToBackerOverrides = new Map([
       (sponsor.tier === 'professional' || sponsor.tier === 'backer') &&
       professionalToBackerOverrides.has(sponsor.name)
     ) {
-      sponsor.url = professionalToBackerOverrides.get(sponsor.name);
+      sponsor.url = professionalToBackerOverrides.get(sponsor.name)!;
     }
 
     tierSponsors[sponsor.tier].push(sponsor);
