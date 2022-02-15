@@ -285,6 +285,9 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="https://www.airbnb.com/" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/airbnb/d327d66/logo.png" title="Airbnb" alt="Airbnb"></img>
           </a>
+<a href="https://writingmetier.com" target="_blank" rel="noopener noreferrer">
+            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/kafidoff-vasy/d7ff85c/avatar.png" title="Vasy Kafidoff" alt="Vasy Kafidoff"></img>
+          </a>
 <a href="https://substack.com/" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/53023767?v=4&s=128" title="Substack" alt="Substack"></img>
           </a>
@@ -297,17 +300,11 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="https://casinofiables.com/" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/casinofiables-com/b824bab/logo.png" title="Casinofiables.com" alt="Casinofiables.com"></img>
           </a>
-<a href="https://www.cryptosnacks.org/bitcoin-casino/" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/snack_crypto/a20c8a9/logo.png" title="Crypo SNACK" alt="Crypo SNACK"></img>
-          </a>
 <a href="https://casinoenlineahex.com/" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/casinoenlinea-hex/b917401/logo.png" title="CasinoEnLineaHex" alt="CasinoEnLineaHex"></img>
           </a>
 <a href="https://apify.com/" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/24586296?v=4&s=128" title="Apify" alt="Apify"></img>
-          </a>
-<a href="https://spin-paradise.com" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/spinparadise/fec1271/logo.png" title="Spin-Paradise" alt="Spin-Paradise"></img>
           </a>
 <a href="https://freebets.ltd.uk" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/freebets/e21c41b/logo.png" title="Free Bets" alt="Free Bets"></img>
@@ -328,16 +325,13 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
             <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/235875?v=4&s=128" title="Jarrod Davis" alt="Jarrod Davis"></img>
           </a>
 <a href="https://nishant-singh.com" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/10304344?u=9cd1389a1a8211b64979ca3693f96d90f5bf0be9&v=4&s=128" title="Nishant Singh" alt="Nishant Singh"></img>
+            <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/10304344?u=2f98c0a745b5352c6e758b9a5bc7a9d9d4e3e969&v=4&s=128" title="Nishant Singh" alt="Nishant Singh"></img>
           </a>
 <a href="https://github.com/gauthamchandra" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/5430280?u=1115bcd3ed7aa8b2a62ff28f62ee4c2b92729903&v=4&s=128" title="Gautham Chandra" alt="Gautham Chandra"></img>
           </a>
 <a href="http://www.dr-chuck.com/" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/1197222?u=d6dc85c064736ab851c6d9e3318dcdd1be00fb2c&v=4&s=128" title="Charles Severance" alt="Charles Severance"></img>
-          </a>
-<a href="https://kodfabrik.se/" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/34457?v=4&s=128" title="Pelle Wessman" alt="Pelle Wessman"></img>
           </a>
 
 <!-- END SPONSORS -->
