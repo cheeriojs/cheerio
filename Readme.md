@@ -282,12 +282,6 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 
 <!-- BEGIN SPONSORS: sponsor -->
 
-<a href="https://www.airbnb.com/" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/airbnb/d327d66/logo.png" title="Airbnb" alt="Airbnb"></img>
-          </a>
-<a href="https://writingmetier.com" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/kafidoff-vasy/d7ff85c/avatar.png" title="Vasy Kafidoff" alt="Vasy Kafidoff"></img>
-          </a>
 <a href="https://substack.com/" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/53023767?v=4&s=128" title="Substack" alt="Substack"></img>
           </a>
@@ -318,6 +312,12 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 
 <!-- BEGIN SPONSORS: backer -->
 
+<a href="https://www.airbnb.com/" target="_blank" rel="noopener noreferrer">
+            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/airbnb/d327d66/logo.png" title="Airbnb" alt="Airbnb"></img>
+          </a>
+<a href="https://kafidoff.com" target="_blank" rel="noopener noreferrer">
+            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/kafidoff-vasy/d7ff85c/avatar.png" title="Vasy Kafidoff" alt="Vasy Kafidoff"></img>
+          </a>
 <a href="https://medium.com/norch" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/espenklem/6075b19/avatar.png" title="Espen Klem" alt="Espen Klem"></img>
           </a>
