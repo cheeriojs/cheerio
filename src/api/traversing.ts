@@ -910,7 +910,7 @@ export function eq<T>(this: Cheerio<T>, i: number): Cheerio<T> {
  * @returns The element at the `i`th position.
  * @see {@link https://api.jquery.com/get/}
  */
-export function get<T>(this: Cheerio<T>, i: number): T;
+export function get<T>(this: Cheerio<T>, i: number): T | undefined;
 /**
  * Retrieve all elements matched by the Cheerio object, as an array.
  *

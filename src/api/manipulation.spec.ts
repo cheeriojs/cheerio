@@ -738,16 +738,16 @@ describe('$(...)', () => {
       const $style = $('<style>.foo {}</style>');
       $fruits.prepend($style);
       const styleTag = $fruits.children().get(0);
-      expect(styleTag.tagName).toBe('style');
-      expect(styleTag.children[0]).toHaveProperty('data', '.foo {}');
+      expect(styleTag?.tagName).toBe('style');
+      expect(styleTag?.children[0]).toHaveProperty('data', '.foo {}');
     });
 
     it('($(...)) : should add script element as first child', () => {
       const $script = $('<script>var foo;</script>');
       $fruits.prepend($script);
       const scriptTag = $fruits.children().get(0);
-      expect(scriptTag.tagName).toBe('script');
-      expect(scriptTag.children[0]).toHaveProperty('data', 'var foo;');
+      expect(scriptTag?.tagName).toBe('script');
+      expect(scriptTag?.children[0]).toHaveProperty('data', 'var foo;');
     });
 
     it('(Node) : should add node as first child', () => {
