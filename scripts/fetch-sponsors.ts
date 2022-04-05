@@ -6,7 +6,7 @@
  */
 
 import * as fs from 'fs/promises';
-import fetch from 'node-fetch';
+import { request } from 'undici';
 import { graphql as githubGraphQL } from '@octokit/graphql';
 
 type Tier = 'sponsor' | 'professional' | 'backer';
@@ -90,13 +90,13 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
         }
       }`;
 
-  const result = await fetch(endpoint, {
+  const { body } = await request(endpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query }),
   });
 
-  const payload = await result.json();
+  const payload = await body.json();
 
   return payload.data.account.orders.nodes.map((order: any) => {
     const donation = order.amount.value * 100;
