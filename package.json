@@ -64,7 +64,7 @@
     "jsdom": "^19.0.0",
     "lint-staged": "^12.3.7",
     "prettier": "^2.6.2",
-    "prettier-plugin-jsdoc": "0.3.36",
+    "prettier-plugin-jsdoc": "0.3.38",
     "ts-jest": "^27.1.4",
     "ts-node": "^10.7.0",
     "typedoc": "^0.22.15",
