@@ -717,9 +717,9 @@ export function filterArray<T>(
 }
 
 /**
- * Checks the current list of elements and returns `true` if *any* of the
+ * Checks the current list of elements and returns `true` if _any_ of the
  * elements match the selector. If using an element or Cheerio selection,
- * returns `true` if *any* of the elements match. If using a predicate function,
+ * returns `true` if _any_ of the elements match. If using a predicate function,
  * the function is executed in the context of the selected element, so `this`
  * refers to the current element.
  *
@@ -972,7 +972,7 @@ export function index<T extends Node>(
   selectorOrNeedle?: string | Cheerio<Node> | Node
 ): number {
   let $haystack: Cheerio<Node>;
-  let needle;
+  let needle: Node;
 
   if (selectorOrNeedle == null) {
     $haystack = this.parent().children();
@@ -981,6 +981,7 @@ export function index<T extends Node>(
     $haystack = this._make<Node>(selectorOrNeedle);
     needle = this[0];
   } else {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     $haystack = this;
     needle = isCheerio(selectorOrNeedle)
       ? selectorOrNeedle[0]
