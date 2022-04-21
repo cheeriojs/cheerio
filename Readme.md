@@ -303,6 +303,9 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="https://freebets.ltd.uk" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/freebets/e21c41b/logo.png" title="Free Bets" alt="Free Bets"></img>
           </a>
+<a href="https://casinoutansvensklicens.co/" target="_blank" rel="noopener noreferrer">
+            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/casino-utan-svensk-licens3/f7e9357/logo.png" title="Casino utan svensk licens" alt="Casino utan svensk licens"></img>
+          </a>
 
 <!-- END SPONSORS -->
 
