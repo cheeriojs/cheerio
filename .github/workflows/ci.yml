@@ -10,8 +10,14 @@ env:
   FORCE_COLOR: 2
   NODE_COV: 16 # The Node.js version to run coveralls on
 
+permissions:
+  contents: read
+
 jobs:
   run:
+    permissions:
+      checks: write  # for coverallsapp/github-action to create new checks
+      contents: read  # for actions/checkout to fetch code
     name: Node ${{ matrix.node }}
     runs-on: ubuntu-latest
 
