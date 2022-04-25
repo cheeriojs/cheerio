@@ -47,7 +47,7 @@
     "@types/benchmark": "^2.1.1",
     "@types/jest": "^27.4.1",
     "@types/jsdom": "^16.2.14",
-    "@types/node": "^17.0.25",
+    "@types/node": "^17.0.26",
     "@types/parse5": "^6.0.3",
     "@types/parse5-htmlparser2-tree-adapter": "^6.0.1",
     "@typescript-eslint/eslint-plugin": "^5.20.0",
