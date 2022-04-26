@@ -51,7 +51,7 @@
     "@types/parse5": "^6.0.3",
     "@types/parse5-htmlparser2-tree-adapter": "^6.0.1",
     "@typescript-eslint/eslint-plugin": "^5.20.0",
-    "@typescript-eslint/parser": "^5.20.0",
+    "@typescript-eslint/parser": "^5.21.0",
     "benchmark": "^2.1.4",
     "eslint": "^8.14.0",
     "eslint-config-prettier": "^8.5.0",
