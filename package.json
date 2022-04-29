@@ -39,7 +39,7 @@
     "domutils": "^2.8.0",
     "htmlparser2": "^7.2.0",
     "parse5": "^7.0.0",
-    "parse5-htmlparser2-tree-adapter": "^6.0.1",
+    "parse5-htmlparser2-tree-adapter": "^7.0.0",
     "tslib": "^2.4.0"
   },
   "devDependencies": {
