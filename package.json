@@ -68,7 +68,7 @@
     "ts-jest": "^27.1.4",
     "ts-node": "^10.7.0",
     "typedoc": "^0.22.15",
-    "typescript": "^4.6.3",
+    "typescript": "^4.6.4",
     "undici": "^5.0.0"
   },
   "scripts": {
