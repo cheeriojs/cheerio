@@ -1,16 +1,13 @@
-import { Node, Document, isDocument } from 'domhandler';
-import { parse as parseDocument, parseFragment, serialize } from 'parse5';
-import htmlparser2Adapter from 'parse5-htmlparser2-tree-adapter';
+import { AnyNode, Document, isDocument, ParentNode } from 'domhandler';
+import { parse as parseDocument, parseFragment, serializeOuter } from 'parse5';
+import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';
 import type { InternalOptions } from '../options';
-
-interface Parse5Options extends InternalOptions {
-  context?: Node;
-}
 
 export function parseWithParse5(
   content: string,
-  options: Parse5Options,
-  isDocument?: boolean
+  options: InternalOptions,
+  isDocument: boolean,
+  context: ParentNode | null
 ): Document {
   const opts = {
     scriptingEnabled:
@@ -21,16 +18,14 @@ export function parseWithParse5(
     sourceCodeLocationInfo: options.sourceCodeLocationInfo,
   };
 
-  const { context } = options;
-
-  // @ts-expect-error The tree adapter unfortunately doesn't return the exact types.
   return isDocument
     ? parseDocument(content, opts)
-    : // @ts-expect-error Same issue again.
-      parseFragment(context, content, opts);
+    : parseFragment(context, content, opts);
 }
 
-export function renderWithParse5(dom: Node | ArrayLike<Node>): string {
+const renderOpts = { treeAdapter: htmlparser2Adapter };
+
+export function renderWithParse5(dom: AnyNode | ArrayLike<AnyNode>): string {
   /*
    * `dom-serializer` passes over the special "root" node and renders the
    * node's children in its place. To mimic this behavior with `parse5`, an
@@ -44,6 +39,11 @@ export function renderWithParse5(dom: Node | ArrayLike<Node>): string {
     }
   }
 
-  // @ts-expect-error Types don't align here either.
-  return serialize({ children: nodes }, { treeAdapter: htmlparser2Adapter });
+  let result = '';
+  for (let index = 0; index < nodes.length; index += 1) {
+    const node = nodes[index];
+    result += serializeOuter(node, renderOpts);
+  }
+
+  return result;
 }

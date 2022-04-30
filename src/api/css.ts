@@ -1,5 +1,5 @@
 import { domEach, isTag } from '../utils';
-import type { Element, Node } from 'domhandler';
+import type { Element, AnyNode } from 'domhandler';
 import type { Cheerio } from '../cheerio';
 
 /**
@@ -10,7 +10,7 @@ import type { Cheerio } from '../cheerio';
  * @returns A map of all of the style properties.
  * @see {@link https://api.jquery.com/css/}
  */
-export function css<T extends Node>(
+export function css<T extends AnyNode>(
   this: Cheerio<T>,
   names?: string[]
 ): Record<string, string>;
@@ -22,7 +22,7 @@ export function css<T extends Node>(
  * @returns The property value for the given name.
  * @see {@link https://api.jquery.com/css/}
  */
-export function css<T extends Node>(
+export function css<T extends AnyNode>(
   this: Cheerio<T>,
   name: string
 ): string | undefined;
@@ -35,7 +35,7 @@ export function css<T extends Node>(
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/css/}
  */
-export function css<T extends Node>(
+export function css<T extends AnyNode>(
   this: Cheerio<T>,
   prop: string,
   val:
@@ -51,11 +51,11 @@ export function css<T extends Node>(
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/css/}
  */
-export function css<T extends Node>(
+export function css<T extends AnyNode>(
   this: Cheerio<T>,
   prop: Record<string, string>
 ): Cheerio<T>;
-export function css<T extends Node>(
+export function css<T extends AnyNode>(
   this: Cheerio<T>,
   prop?: string | string[] | Record<string, string>,
   val?:
@@ -125,7 +125,7 @@ function setCss(
  * @param props - Optionally the names of the properties of interest.
  * @returns The parsed styles.
  */
-function getCss(el?: Node, props?: string[]): Record<string, string>;
+function getCss(el?: AnyNode, props?: string[]): Record<string, string>;
 /**
  * Get a property from the parsed styles of the first element.
  *
@@ -135,9 +135,9 @@ function getCss(el?: Node, props?: string[]): Record<string, string>;
  * @param prop - Name of the prop.
  * @returns The value of the property.
  */
-function getCss(el: Node, prop: string): string | undefined;
+function getCss(el: AnyNode, prop: string): string | undefined;
 function getCss(
-  el?: Node,
+  el?: AnyNode,
   prop?: string | string[]
 ): Record<string, string> | string | undefined {
   if (!el || !isTag(el)) return;

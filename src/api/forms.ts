@@ -1,4 +1,4 @@
-import type { Node } from 'domhandler';
+import type { AnyNode } from 'domhandler';
 import type { Cheerio } from '../cheerio';
 import { isTag } from '../utils';
 
@@ -17,7 +17,7 @@ const rCRLF = /\r?\n/g;
  * @returns The serialized form.
  * @see {@link https://api.jquery.com/serialize/}
  */
-export function serialize<T extends Node>(this: Cheerio<T>): string {
+export function serialize<T extends AnyNode>(this: Cheerio<T>): string {
   // Convert form elements into name/value objects
   const arr = this.serializeArray();
 
@@ -50,7 +50,7 @@ interface SerializedField {
  * @returns The serialized form.
  * @see {@link https://api.jquery.com/serializeArray/}
  */
-export function serializeArray<T extends Node>(
+export function serializeArray<T extends AnyNode>(
   this: Cheerio<T>
 ): SerializedField[] {
   // Resolve all form elements from either forms or collections of form elements
@@ -70,7 +70,7 @@ export function serializeArray<T extends Node>(
         ':matches([checked], :not(:checkbox, :radio))'
       // Convert each of the elements to its value(s)
     )
-    .map<Node, SerializedField>((_, elem) => {
+    .map<AnyNode, SerializedField>((_, elem) => {
       const $elem = this._make(elem);
       const name = $elem.attr('name') as string; // We have filtered for elements with a name before.
       // If there is no value set (e.g. `undefined`, `null`), then default value to empty

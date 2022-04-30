@@ -30,10 +30,10 @@ import { renderWithParse5, parseWithParse5 } from './parsers/parse5-adapter';
 import renderWithHtmlparser2 from 'dom-serializer';
 import { parseDocument as parseWithHtmlparser2 } from 'htmlparser2';
 
-const parse = getParse((content, options, isDocument) =>
+const parse = getParse((content, options, isDocument, context) =>
   options.xmlMode || options._useHtmlParser2
     ? parseWithHtmlparser2(content, options)
-    : parseWithParse5(content, options, isDocument)
+    : parseWithParse5(content, options, isDocument, context)
 );
 
 // Duplicate docs due to https://github.com/TypeStrong/typedoc/issues/1616

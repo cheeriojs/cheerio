@@ -6,7 +6,7 @@
 
 import { text } from '../static';
 import { isTag, domEach, camelCase, cssCase } from '../utils';
-import type { Node, Element } from 'domhandler';
+import type { AnyNode, Element } from 'domhandler';
 import type { Cheerio } from '../cheerio';
 import { innerText, textContent } from 'domutils';
 const hasOwn = Object.prototype.hasOwnProperty;
@@ -40,17 +40,17 @@ const rbrace = /^{[^]*}$|^\[[^]*]$/;
  * @returns The attribute's value.
  */
 function getAttr(
-  elem: Node,
+  elem: AnyNode,
   name: undefined,
   xmlMode?: boolean
 ): Record<string, string>;
 function getAttr(
-  elem: Node,
+  elem: AnyNode,
   name: string,
   xmlMode?: boolean
 ): string | undefined;
 function getAttr(
-  elem: Node,
+  elem: AnyNode,
   name: string | undefined,
   xmlMode?: boolean
 ): Record<string, string> | string | undefined {
@@ -117,7 +117,7 @@ function setAttr(el: Element, name: string, value: string | null) {
  * @returns The attribute's value.
  * @see {@link https://api.jquery.com/attr/}
  */
-export function attr<T extends Node>(
+export function attr<T extends AnyNode>(
   this: Cheerio<T>,
   name: string
 ): string | undefined;
@@ -136,7 +136,9 @@ export function attr<T extends Node>(
  * @returns The attribute's values.
  * @see {@link https://api.jquery.com/attr/}
  */
-export function attr<T extends Node>(this: Cheerio<T>): Record<string, string>;
+export function attr<T extends AnyNode>(
+  this: Cheerio<T>
+): Record<string, string>;
 
 /**
  * Method for setting attributes. Sets the attribute value for only the first
@@ -156,7 +158,7 @@ export function attr<T extends Node>(this: Cheerio<T>): Record<string, string>;
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/attr/}
  */
-export function attr<T extends Node>(
+export function attr<T extends AnyNode>(
   this: Cheerio<T>,
   name: string,
   value?:
@@ -181,11 +183,11 @@ export function attr<T extends Node>(
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/attr/}
  */
-export function attr<T extends Node>(
+export function attr<T extends AnyNode>(
   this: Cheerio<T>,
   values: Record<string, string | null>
 ): Cheerio<T>;
-export function attr<T extends Node>(
+export function attr<T extends AnyNode>(
   this: Cheerio<T>,
   name?: string | Record<string, string | null>,
   value?:
@@ -234,7 +236,7 @@ export function attr<T extends Node>(
  * @returns The prop's value.
  */
 function getProp(
-  el: Node | undefined,
+  el: AnyNode | undefined,
   name: string,
   xmlMode?: boolean
 ): string | undefined | Element[keyof Element] {
@@ -295,34 +297,34 @@ interface StyleProp {
  * @returns If `value` is specified the instance itself, otherwise the prop's value.
  * @see {@link https://api.jquery.com/prop/}
  */
-export function prop<T extends Node>(
+export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: 'tagName' | 'nodeName'
 ): T extends Element ? string : undefined;
-export function prop<T extends Node>(
+export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: 'innerHTML' | 'outerHTML' | 'innerText' | 'textContent'
 ): string | null;
-export function prop<T extends Node>(
+export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: 'style'
 ): StyleProp;
-export function prop<T extends Node, K extends keyof Element>(
+export function prop<T extends AnyNode, K extends keyof Element>(
   this: Cheerio<T>,
   name: K
 ): Element[K];
-export function prop<T extends Node, K extends keyof Element>(
+export function prop<T extends AnyNode, K extends keyof Element>(
   this: Cheerio<T>,
   name: K,
   value:
     | Element[K]
     | ((this: Element, i: number, prop: K) => Element[keyof Element])
 ): Cheerio<T>;
-export function prop<T extends Node>(
+export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: Record<string, string | Element[keyof Element] | boolean>
 ): Cheerio<T>;
-export function prop<T extends Node>(
+export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: string,
   value:
@@ -331,8 +333,8 @@ export function prop<T extends Node>(
     | null
     | ((this: Element, i: number, prop: string) => string | boolean)
 ): Cheerio<T>;
-export function prop<T extends Node>(this: Cheerio<T>, name: string): string;
-export function prop<T extends Node>(
+export function prop<T extends AnyNode>(this: Cheerio<T>, name: string): string;
+export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: string | Record<string, string | Element[keyof Element] | boolean>,
   value?:
@@ -442,7 +444,7 @@ function setData(
 /**
  * Read the specified attribute from the equivalent HTML5 `data-*` attribute,
  * and (if present) cache the value in the node's internal data store. If no
- * attribute name is specified, read *all* HTML5 `data-*` attributes in this manner.
+ * attribute name is specified, read _all_ HTML5 `data-*` attributes in this manner.
  *
  * @private
  * @category Attributes
@@ -510,7 +512,7 @@ function readData(el: DataElement, name?: string): unknown {
  * @returns The data attribute's value.
  * @see {@link https://api.jquery.com/data/}
  */
-export function data<T extends Node>(
+export function data<T extends AnyNode>(
   this: Cheerio<T>,
   name: string
 ): unknown | undefined;
@@ -529,7 +531,9 @@ export function data<T extends Node>(
  * @returns The data attribute's values.
  * @see {@link https://api.jquery.com/data/}
  */
-export function data<T extends Node>(this: Cheerio<T>): Record<string, unknown>;
+export function data<T extends AnyNode>(
+  this: Cheerio<T>
+): Record<string, unknown>;
 /**
  * Method for setting data attributes, for only the first element in the matched set.
  *
@@ -548,7 +552,7 @@ export function data<T extends Node>(this: Cheerio<T>): Record<string, unknown>;
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/data/}
  */
-export function data<T extends Node>(
+export function data<T extends AnyNode>(
   this: Cheerio<T>,
   name: string,
   value: unknown
@@ -571,11 +575,11 @@ export function data<T extends Node>(
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/data/}
  */
-export function data<T extends Node>(
+export function data<T extends AnyNode>(
   this: Cheerio<T>,
   values: Record<string, unknown>
 ): Cheerio<T>;
-export function data<T extends Node>(
+export function data<T extends AnyNode>(
   this: Cheerio<T>,
   name?: string | Record<string, unknown>,
   value?: unknown
@@ -623,7 +627,7 @@ export function data<T extends Node>(
  * @returns The value.
  * @see {@link https://api.jquery.com/val/}
  */
-export function val<T extends Node>(
+export function val<T extends AnyNode>(
   this: Cheerio<T>
 ): string | undefined | string[];
 /**
@@ -642,11 +646,11 @@ export function val<T extends Node>(
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/val/}
  */
-export function val<T extends Node>(
+export function val<T extends AnyNode>(
   this: Cheerio<T>,
   value: string | string[]
 ): Cheerio<T>;
-export function val<T extends Node>(
+export function val<T extends AnyNode>(
   this: Cheerio<T>,
   value?: string | string[]
 ): string | string[] | Cheerio<T> | undefined {
@@ -732,7 +736,7 @@ function splitNames(names?: string): string[] {
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/removeAttr/}
  */
-export function removeAttr<T extends Node>(
+export function removeAttr<T extends AnyNode>(
   this: Cheerio<T>,
   name: string
 ): Cheerio<T> {
@@ -748,7 +752,7 @@ export function removeAttr<T extends Node>(
 }
 
 /**
- * Check to see if *any* of the matched elements have the given `className`.
+ * Check to see if _any_ of the matched elements have the given `className`.
  *
  * @category Attributes
  * @example
@@ -768,7 +772,7 @@ export function removeAttr<T extends Node>(
  * @returns Indicates if an element has the given `className`.
  * @see {@link https://api.jquery.com/hasClass/}
  */
-export function hasClass<T extends Node>(
+export function hasClass<T extends AnyNode>(
   this: Cheerio<T>,
   className: string
 ): boolean {
@@ -811,7 +815,7 @@ export function hasClass<T extends Node>(
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/addClass/}
  */
-export function addClass<T extends Node, R extends ArrayLike<T>>(
+export function addClass<T extends AnyNode, R extends ArrayLike<T>>(
   this: R,
   value?:
     | string
@@ -878,7 +882,7 @@ export function addClass<T extends Node, R extends ArrayLike<T>>(
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/removeClass/}
  */
-export function removeClass<T extends Node, R extends ArrayLike<T>>(
+export function removeClass<T extends AnyNode, R extends ArrayLike<T>>(
   this: R,
   name?:
     | string
@@ -947,7 +951,7 @@ export function removeClass<T extends Node, R extends ArrayLike<T>>(
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/toggleClass/}
  */
-export function toggleClass<T extends Node, R extends ArrayLike<T>>(
+export function toggleClass<T extends AnyNode, R extends ArrayLike<T>>(
   this: R,
   value?:
     | string

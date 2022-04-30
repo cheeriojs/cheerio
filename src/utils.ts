@@ -1,4 +1,4 @@
-import { Node, cloneNode, Document } from 'domhandler';
+import { type AnyNode, cloneNode, Document } from 'domhandler';
 import type { Cheerio } from './cheerio';
 
 /**
@@ -60,10 +60,10 @@ export function cssCase(str: string): string {
  * @param fn - Function to call.
  * @returns The original instance.
  */
-export function domEach<T extends Node, Arr extends ArrayLike<T> = Cheerio<T>>(
-  array: Arr,
-  fn: (elem: T, index: number) => void
-): Arr {
+export function domEach<
+  T extends AnyNode,
+  Arr extends ArrayLike<T> = Cheerio<T>
+>(array: Arr, fn: (elem: T, index: number) => void): Arr {
   const len = array.length;
   for (let i = 0; i < len; i++) fn(array[i], i);
   return array;
@@ -78,7 +78,7 @@ export function domEach<T extends Node, Arr extends ArrayLike<T> = Cheerio<T>>(
  * @param dom - The htmlparser2-compliant DOM structure.
  * @returns - The cloned DOM.
  */
-export function cloneDom<T extends Node>(dom: T | T[]): T[] {
+export function cloneDom<T extends AnyNode>(dom: T | T[]): T[] {
   const clone =
     'length' in dom
       ? (Array.prototype.map.call(dom, (el) => cloneNode(el, true)) as T[])

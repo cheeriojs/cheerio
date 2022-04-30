@@ -1,7 +1,7 @@
 import cheerio from '../../src';
 import { Cheerio } from '../cheerio';
 import type { CheerioAPI } from '../load';
-import { Node, Element, Text, isText } from 'domhandler';
+import { AnyNode, Element, Text, isText } from 'domhandler';
 import {
   food,
   fruits,
@@ -97,7 +97,7 @@ describe('$(...)', () => {
     it('should throw an Error if given an invalid selector', () => {
       expect(() => {
         $('#fruits').find(':bah');
-      }).toThrow('unmatched pseudo-class');
+      }).toThrow('Unknown pseudo-class :bah');
     });
 
     describe('(cheerio object) :', () => {
@@ -555,7 +555,7 @@ describe('$(...)', () => {
     it('(selector) : should throw an Error if given an invalid selector', () => {
       expect(() => {
         $('.orange').siblings(':bah');
-      }).toThrow('unmatched pseudo-class');
+      }).toThrow('Unknown pseudo-class :bah');
     });
 
     it('(selector) : does not consider the contents of siblings when filtering (GH-374)', () => {
@@ -838,8 +838,8 @@ describe('$(...)', () => {
   describe('.map', () => {
     it('(fn) : should be invoked with the correct arguments and context', () => {
       const $fruits = $('li');
-      const args: [number, Node][] = [];
-      const thisVals: Node[] = [];
+      const args: [number, AnyNode][] = [];
+      const thisVals: AnyNode[] = [];
 
       $fruits.map(function (...myArgs) {
         args.push(myArgs);
@@ -1260,7 +1260,7 @@ describe('$(...)', () => {
   });
 
   describe('.add()', () => {
-    let $fruits: Cheerio<Node>;
+    let $fruits: Cheerio<AnyNode>;
     let $apple: Cheerio<Element>;
     let $orange: Cheerio<Element>;
     let $pear: Cheerio<Element>;

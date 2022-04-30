@@ -1,8 +1,8 @@
 import { removeElement } from 'domutils';
 import {
-  Node,
+  AnyNode,
   Document,
-  NodeWithChildren,
+  ParentNode,
   isDocument as checkIsDocument,
 } from 'domhandler';
 import type { InternalOptions } from './options';
@@ -14,23 +14,25 @@ export function getParse(
   parser: (
     content: string,
     options: InternalOptions,
-    isDocument: boolean
+    isDocument: boolean,
+    context: ParentNode | null
   ) => Document
 ) {
   return function parse(
-    content: string | Document | Node | Node[] | Buffer,
+    content: string | Document | AnyNode | AnyNode[] | Buffer,
     options: InternalOptions,
-    isDocument: boolean
+    isDocument: boolean,
+    context: ParentNode | null
   ): Document {
     if (typeof Buffer !== 'undefined' && Buffer.isBuffer(content)) {
       content = content.toString();
     }
 
     if (typeof content === 'string') {
-      return parser(content, options, isDocument);
+      return parser(content, options, isDocument, context);
     }
 
-    const doc = content as Node | Node[] | Document;
+    const doc = content as AnyNode | AnyNode[] | Document;
 
     if (!Array.isArray(doc) && checkIsDocument(doc)) {
       // If `doc` is already a root, just return it
@@ -55,9 +57,9 @@ export function getParse(
  * @returns The parent node.
  */
 export function update(
-  newChilds: Node[] | Node,
-  parent: NodeWithChildren | null
-): Node | null {
+  newChilds: AnyNode[] | AnyNode,
+  parent: ParentNode | null
+): ParentNode | null {
   // Normalize
   const arr = Array.isArray(newChilds) ? newChilds : [newChilds];
 

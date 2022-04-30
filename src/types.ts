@@ -41,12 +41,16 @@ export type SelectorType =
   | `${AlphaNumeric}${string}`;
 
 import type { Cheerio } from './cheerio';
-import type { Node } from 'domhandler';
+import type { AnyNode } from 'domhandler';
 
 /** Elements that can be passed to manipulation methods. */
-export type BasicAcceptedElems<T extends Node> = Cheerio<T> | T[] | T | string;
+export type BasicAcceptedElems<T extends AnyNode> =
+  | Cheerio<T>
+  | T[]
+  | T
+  | string;
 /** Elements that can be passed to manipulation methods, including functions. */
-export type AcceptedElems<T extends Node> =
+export type AcceptedElems<T extends AnyNode> =
   | BasicAcceptedElems<T>
   | ((this: T, i: number, el: T) => BasicAcceptedElems<T>);
 
