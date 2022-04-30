@@ -13,7 +13,7 @@ import type { Cheerio } from '../cheerio';
 export function css<T extends AnyNode>(
   this: Cheerio<T>,
   names?: string[]
-): Record<string, string>;
+): Record<string, string> | undefined;
 /**
  * Get the value of a style property for the first element in the set of matched elements.
  *
@@ -75,6 +75,10 @@ export function css<T extends AnyNode>(
     });
   }
 
+  if (this.length === 0) {
+    return undefined;
+  }
+
   return getCss(this[0], prop as string);
 }
 
@@ -125,7 +129,7 @@ function setCss(
  * @param props - Optionally the names of the properties of interest.
  * @returns The parsed styles.
  */
-function getCss(el?: AnyNode, props?: string[]): Record<string, string>;
+function getCss(el: AnyNode, props?: string[]): Record<string, string>;
 /**
  * Get a property from the parsed styles of the first element.
  *
@@ -137,7 +141,7 @@ function getCss(el?: AnyNode, props?: string[]): Record<string, string>;
  */
 function getCss(el: AnyNode, prop: string): string | undefined;
 function getCss(
-  el?: AnyNode,
+  el: AnyNode,
   prop?: string | string[]
 ): Record<string, string> | string | undefined {
   if (!el || !isTag(el)) return;
