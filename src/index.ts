@@ -83,6 +83,8 @@ import { filters, pseudos, aliases } from 'cheerio-select';
  */
 export const select = { filters, pseudos, aliases };
 
+export * from './static';
+
 import * as staticMethods from './static';
 
 /**
