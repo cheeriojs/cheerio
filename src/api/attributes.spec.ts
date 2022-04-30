@@ -1,5 +1,5 @@
 import cheerio from '..';
-import type { Cheerio } from '../cheerio';
+import type { Cheerio } from '../cheerio.js';
 import type { Element } from 'domhandler';
 import {
   script,
@@ -9,7 +9,7 @@ import {
   chocolates,
   inputs,
   mixedText,
-} from '../__fixtures__/fixtures';
+} from '../__fixtures__/fixtures.js';
 
 describe('$(...)', () => {
   let $: typeof cheerio;

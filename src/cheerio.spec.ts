@@ -1,10 +1,10 @@
 import { parseDOM } from 'htmlparser2';
 import cheerio from '.';
-import * as utils from './utils';
-import { fruits, food, noscript } from './__fixtures__/fixtures';
-import type { Cheerio } from './cheerio';
+import * as utils from './utils.js';
+import { fruits, food, noscript } from './__fixtures__/fixtures.js';
+import type { Cheerio } from './cheerio.js';
 import type { Element } from 'domhandler';
-import type { CheerioOptions } from './options';
+import type { CheerioOptions } from './options.js';
 
 declare module '.' {
   interface Cheerio<T> {

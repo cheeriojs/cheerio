@@ -3,12 +3,12 @@ import {
   InternalOptions,
   default as defaultOptions,
   flatten as flattenOptions,
-} from './options';
-import * as staticMethods from './static';
-import { Cheerio } from './cheerio';
-import { isHtml, isCheerio } from './utils';
+} from './options.js';
+import * as staticMethods from './static.js';
+import { Cheerio } from './cheerio.js';
+import { isHtml, isCheerio } from './utils.js';
 import type { AnyNode, Document, Element, ParentNode } from 'domhandler';
-import type { SelectorType, BasicAcceptedElems } from './types';
+import type { SelectorType, BasicAcceptedElems } from './types.js';
 
 type StaticType = typeof staticMethods;
 

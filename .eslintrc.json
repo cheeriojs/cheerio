@@ -61,7 +61,8 @@
     "jsdoc/tag-lines": 0,
 
     "node/no-unsupported-features/es-syntax": 0,
-    "node/no-missing-import": [2, { "tryExtensions": [".js", ".json", ".ts"] }]
+    "node/file-extension-in-import": ["error", "always"],
+    "node/no-missing-import": 0
   },
   "settings": {
     "jsdoc": {

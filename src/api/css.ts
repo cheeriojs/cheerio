@@ -1,6 +1,6 @@
-import { domEach, isTag } from '../utils';
+import { domEach, isTag } from '../utils.js';
 import type { Element, AnyNode } from 'domhandler';
-import type { Cheerio } from '../cheerio';
+import type { Cheerio } from '../cheerio.js';
 
 /**
  * Get the value of a style property for the first element in the set of matched elements.

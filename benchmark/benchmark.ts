@@ -1,5 +1,5 @@
-import Suites from './suite';
-import type { Cheerio } from '../src/cheerio';
+import Suites from './suite'; // eslint-disable-line node/file-extension-in-import
+import type { Cheerio } from '../src/cheerio.js';
 import type { Element } from 'domhandler';
 
 const suites = new Suites();

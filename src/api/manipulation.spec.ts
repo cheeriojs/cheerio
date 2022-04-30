@@ -1,6 +1,6 @@
 import { load } from '../../src';
 import type { CheerioAPI, Cheerio } from '..';
-import { fruits, divcontainers, mixedText } from '../__fixtures__/fixtures';
+import { fruits, divcontainers, mixedText } from '../__fixtures__/fixtures.js';
 import type { AnyNode, Element } from 'domhandler';
 
 describe('$(...)', () => {

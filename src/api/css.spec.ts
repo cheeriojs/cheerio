@@ -1,7 +1,7 @@
 import cheerio from '..';
-import type { Cheerio } from '../cheerio';
+import type { Cheerio } from '../cheerio.js';
 import type { Element } from 'domhandler';
-import { mixedText } from '../__fixtures__/fixtures';
+import { mixedText } from '../__fixtures__/fixtures.js';
 
 describe('$(...)', () => {
   describe('.css', () => {

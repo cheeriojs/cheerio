@@ -26,6 +26,17 @@
   "homepage": "https://cheerio.js.org/",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "module": "lib/esm/index.js",
+  "exports": {
+    ".": {
+      "require": "./lib/index.js",
+      "import": "./lib/esm/index.js"
+    },
+    "./lib/slim": {
+      "require": "./lib/slim.js",
+      "import": "./lib/esm/slim.js"
+    }
+  },
   "files": [
     "lib"
   ],
@@ -80,10 +91,12 @@
     "format:prettier": "npm run format:prettier:raw -- --write",
     "format:prettier:raw": "prettier \"**/*.{{m,c,}js,ts,md,json,yml}\" --ignore-path .gitignore",
     "build:docs": "typedoc --hideGenerator src/index.ts",
-    "benchmark": "ts-node benchmark/benchmark.ts --regex \"^(?!.*highmem)\"",
+    "benchmark": "npm run build:cjs && ts-node benchmark/benchmark.ts --regex \"^(?!.*highmem)\"",
     "update-sponsors": "ts-node scripts/fetch-sponsors.ts",
     "bench": "npm run benchmark",
-    "build": "tsc",
+    "build": "npm run build:cjs && npm run build:esm",
+    "build:cjs": "tsc --sourceRoot https://raw.githubusercontent.com/cheeriojs/cheerio/$(git rev-parse HEAD)/src/",
+    "build:esm": "npm run build:cjs -- --module esnext --target es2019 --outDir lib/esm && echo '{\"type\":\"module\"}' > lib/esm/package.json",
     "prepublishOnly": "npm run build",
     "prepare": "husky install"
   },
@@ -107,6 +120,9 @@
     "testPathIgnorePatterns": [
       "/__fixtures__/"
     ],
-    "coverageProvider": "v8"
+    "coverageProvider": "v8",
+    "moduleNameMapper": {
+      "^(.*)\\.js$": "$1"
+    }
   }
 }

@@ -4,10 +4,10 @@
  * @module cheerio/attributes
  */
 
-import { text } from '../static';
-import { isTag, domEach, camelCase, cssCase } from '../utils';
+import { text } from '../static.js';
+import { isTag, domEach, camelCase, cssCase } from '../utils.js';
 import type { AnyNode, Element } from 'domhandler';
-import type { Cheerio } from '../cheerio';
+import type { Cheerio } from '../cheerio.js';
 import { innerText, textContent } from 'domutils';
 const hasOwn = Object.prototype.hasOwnProperty;
 const rspace = /\s+/;

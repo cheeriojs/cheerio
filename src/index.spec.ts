@@ -1,5 +1,5 @@
-import * as cheerio from './index';
-import * as statics from './static';
+import * as cheerio from './index.js';
+import * as statics from './static.js';
 
 describe('index', () => {
   it('should export all static methods', () => {

@@ -1,9 +1,9 @@
 import type { Document, Element } from 'domhandler';
-import { getParse } from './parse';
-import defaultOpts from './options';
+import { getParse } from './parse.js';
+import defaultOpts from './options.js';
 
 import { parseDocument as parseWithHtmlparser2 } from 'htmlparser2';
-import { parseWithParse5 } from './parsers/parse5-adapter';
+import { parseWithParse5 } from './parsers/parse5-adapter.js';
 
 const parse = getParse((content, options, isDocument, context) =>
   options.xmlMode || options._useHtmlParser2
