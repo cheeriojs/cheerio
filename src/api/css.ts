@@ -112,7 +112,7 @@ function setCss(
       styles[prop] = val;
     }
 
-    el.attribs.style = stringify(styles);
+    el.attribs['style'] = stringify(styles);
   } else if (typeof prop === 'object') {
     Object.keys(prop).forEach((k, i) => {
       setCss(el, k, prop[k], i);
@@ -146,7 +146,7 @@ function getCss(
 ): Record<string, string> | string | undefined {
   if (!el || !isTag(el)) return;
 
-  const styles = parse(el.attribs.style);
+  const styles = parse(el.attribs['style']);
   if (typeof prop === 'string') {
     return styles[prop];
   }

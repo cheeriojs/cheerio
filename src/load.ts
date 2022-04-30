@@ -8,7 +8,7 @@ import * as staticMethods from './static';
 import { Cheerio } from './cheerio';
 import { isHtml, isCheerio } from './utils';
 import type { AnyNode, Document, Element, ParentNode } from 'domhandler';
-import { SelectorType, BasicAcceptedElems } from './types';
+import type { SelectorType, BasicAcceptedElems } from './types';
 
 type StaticType = typeof staticMethods;
 

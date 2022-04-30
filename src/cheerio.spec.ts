@@ -2,7 +2,7 @@ import { parseDOM } from 'htmlparser2';
 import cheerio from '.';
 import * as utils from './utils';
 import { fruits, food, noscript } from './__fixtures__/fixtures';
-import { Cheerio } from './cheerio';
+import type { Cheerio } from './cheerio';
 import type { Element } from 'domhandler';
 import type { CheerioOptions } from './options';
 
@@ -56,7 +56,7 @@ describe('cheerio', () => {
     const $script = cheerio(script) as Cheerio<Element>;
     expect($script).not.toHaveLength(0);
     expect($script).toHaveLength(1);
-    expect($script[0].attribs.src).toBe('script.js');
+    expect($script[0].attribs).toHaveProperty('src', 'script.js');
     expect($script[0].attribs).toHaveProperty('type', 'text/javascript');
     expect($script[0].childNodes).toHaveLength(0);
   });
@@ -66,7 +66,7 @@ describe('cheerio', () => {
     const apple = $apple[0];
     expect(apple.parentNode).toHaveProperty('tagName', 'ul');
     expect(apple.prev).toBe(null);
-    expect((apple.next as Element).attribs.class).toBe('orange');
+    expect((apple.next as Element).attribs).toHaveProperty('class', 'orange');
     expect(apple.childNodes).toHaveLength(1);
     expect(apple.childNodes[0]).toHaveProperty('data', 'Apple');
   }
@@ -92,7 +92,7 @@ describe('cheerio', () => {
   it('should be able to select an id', () => {
     const $fruits = cheerio('#fruits', null, fruits);
     expect($fruits).toHaveLength(1);
-    expect($fruits[0].attribs.id).toBe('fruits');
+    expect($fruits[0].attribs).toHaveProperty('id', 'fruits');
   });
 
   it('should be able to select a tag', () => {
@@ -124,7 +124,7 @@ describe('cheerio', () => {
     expect($fruits).toHaveLength(3);
     const classes = ['apple', 'orange', 'pear'];
     $fruits.each((idx, $fruit) => {
-      expect($fruit.attribs.class).toBe(classes[idx]);
+      expect($fruit.attribs).toHaveProperty('class', classes[idx]);
     });
   });
 
@@ -163,12 +163,12 @@ describe('cheerio', () => {
 
     const $apple = $elems
       .toArray()
-      .filter((elem) => elem.attribs.class === 'apple');
+      .filter((elem) => elem.attribs['class'] === 'apple');
     const $fruits = $elems
       .toArray()
-      .filter((elem) => elem.attribs.id === 'fruits');
+      .filter((elem) => elem.attribs['id'] === 'fruits');
     testAppleSelect($apple);
-    expect($fruits[0].attribs.id).toBe('fruits');
+    expect($fruits[0].attribs).toHaveProperty('id', 'fruits');
   });
 
   it('should select first element cheerio(:first)', () => {

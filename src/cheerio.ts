@@ -1,6 +1,6 @@
-import { InternalOptions } from './options';
+import type { InternalOptions } from './options';
 import type { AnyNode, Document, ParentNode } from 'domhandler';
-import { BasicAcceptedElems } from './types';
+import type { BasicAcceptedElems } from './types';
 
 import * as Attributes from './api/attributes';
 import * as Traversing from './api/traversing';
