@@ -1,5 +1,5 @@
 import { InternalOptions } from './options';
-import type { Node, Document } from 'domhandler';
+import type { AnyNode, Document, ParentNode } from 'domhandler';
 import { BasicAcceptedElems } from './types';
 
 import * as Attributes from './api/attributes';
@@ -62,7 +62,7 @@ export abstract class Cheerio<T> implements ArrayLike<T> {
    */
   abstract _make<T>(
     dom: ArrayLike<T> | T | string,
-    context?: BasicAcceptedElems<Node>
+    context?: BasicAcceptedElems<AnyNode>
   ): Cheerio<T>;
 
   /**
@@ -75,9 +75,10 @@ export abstract class Cheerio<T> implements ArrayLike<T> {
    * @returns A document containing the `content`.
    */
   abstract _parse(
-    content: string | Document | Node | Node[] | Buffer,
+    content: string | Document | AnyNode | AnyNode[] | Buffer,
     options: InternalOptions,
-    isDocument: boolean
+    isDocument: boolean,
+    context: ParentNode | null
   ): Document;
 
   /**
@@ -87,7 +88,7 @@ export abstract class Cheerio<T> implements ArrayLike<T> {
    * @param dom - DOM to render.
    * @returns The rendered DOM.
    */
-  abstract _render(dom: Node | ArrayLike<Node>): string;
+  abstract _render(dom: AnyNode | ArrayLike<AnyNode>): string;
 }
 
 export interface Cheerio<T>

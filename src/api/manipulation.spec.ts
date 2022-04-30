@@ -1,7 +1,7 @@
 import { load } from '../../src';
 import type { CheerioAPI, Cheerio } from '..';
 import { fruits, divcontainers, mixedText } from '../__fixtures__/fixtures';
-import type { Node, Element } from 'domhandler';
+import type { AnyNode, Element } from 'domhandler';
 
 describe('$(...)', () => {
   let $: CheerioAPI;
@@ -92,8 +92,8 @@ describe('$(...)', () => {
 
     it('(fn) : should invoke the provided function with the correct arguments and context', () => {
       const $children = $fruits.children();
-      const args: [number, Node][] = [];
-      const thisValues: Node[] = [];
+      const args: [number, AnyNode][] = [];
+      const thisValues: AnyNode[] = [];
 
       $children.wrap(function (...myArgs) {
         args.push(myArgs);
@@ -237,8 +237,8 @@ describe('$(...)', () => {
 
     it('(fn) : should invoke the provided function with the correct arguments and context', () => {
       const $children = $fruits.children();
-      const args: [number, Node][] = [];
-      const thisValues: Node[] = [];
+      const args: [number, AnyNode][] = [];
+      const thisValues: AnyNode[] = [];
 
       $children.wrapInner(function (...myArgs) {
         args.push(myArgs);
@@ -640,7 +640,7 @@ describe('$(...)', () => {
     it('(fn) : should invoke the callback with the correct arguments and context', () => {
       $fruits = $fruits.children();
       const args: [number, string][] = [];
-      const thisValues: Node[] = [];
+      const thisValues: AnyNode[] = [];
 
       $fruits.append(function (...myArgs) {
         args.push(myArgs);
@@ -813,7 +813,7 @@ describe('$(...)', () => {
 
     it('(fn) : should invoke the callback with the correct arguments and context', () => {
       const args: [number, string][] = [];
-      const thisValues: Node[] = [];
+      const thisValues: AnyNode[] = [];
       $fruits = $fruits.children();
 
       $fruits.prepend(function (...myArgs) {
@@ -1021,7 +1021,7 @@ describe('$(...)', () => {
 
     it('(fn) : should invoke the callback with the correct arguments and context', () => {
       const args: [number, string][] = [];
-      const thisValues: Node[] = [];
+      const thisValues: AnyNode[] = [];
       $fruits = $fruits.children();
 
       $fruits.after(function (...myArgs) {
@@ -1304,7 +1304,7 @@ describe('$(...)', () => {
 
     it('(fn) : should invoke the callback with the correct arguments and context', () => {
       const args: [number, string][] = [];
-      const thisValues: Node[] = [];
+      const thisValues: AnyNode[] = [];
       $fruits = $fruits.children();
 
       $fruits.before(function (...myArgs) {
@@ -1597,7 +1597,7 @@ describe('$(...)', () => {
     it('(self) : should be replaced after replacing it with itself', () => {
       const $a = load('<a>foo</a>', null, false);
       const replacement = '<a>bar</a>';
-      $a('a').replaceWith((_, el: Node) => el);
+      $a('a').replaceWith((_, el: AnyNode) => el);
       $a('a').replaceWith(replacement);
       expect($a.html()).toBe(replacement);
     });
@@ -1619,8 +1619,8 @@ describe('$(...)', () => {
 
     it('(fn) : should invoke the callback with the correct argument and context', () => {
       const origChildren = $fruits.children().get();
-      const args: [number, Node][] = [];
-      const thisValues: Node[] = [];
+      const args: [number, AnyNode][] = [];
+      const thisValues: AnyNode[] = [];
 
       $fruits.children().replaceWith(function (...myArgs) {
         args.push(myArgs);
