@@ -340,25 +340,16 @@ describe('deprecated APIs', () => {
         );
       });
 
-      it('(cheerio object) : should omit script tags', () => {
+      it('(cheerio object) : should not omit script tags', () => {
         const $ = cheerio.load('<script>console.log("test")</script>');
-        expect($.text()).toBe('');
+        expect($.text()).toBe('console.log("test")');
       });
 
       it('(cheerio object) : should omit style tags', () => {
         const $ = cheerio.load(
-          '<style type="text/css">.cf-hidden { display: none; } .cf-invisible { visibility: hidden; }</style>'
+          '<style type="text/css">.cf-hidden { display: none; }</style>'
         );
-        expect($.text()).toBe('');
-      });
-
-      it('(cheerio object) : should include text contents of children omitting style and script tags', () => {
-        const $ = cheerio.load(
-          '<body>Welcome <div>Hello, testing text function,<script>console.log("hello")</script></div><style type="text/css">.cf-hidden { display: none; }</style>End of messege</body>'
-        );
-        expect($.text()).toBe(
-          'Welcome Hello, testing text function,End of messege'
-        );
+        expect($.text()).toBe('.cf-hidden { display: none; }');
       });
     });
   });

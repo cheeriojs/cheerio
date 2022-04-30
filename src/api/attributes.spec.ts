@@ -305,12 +305,36 @@ describe('$(...)', () => {
       expect($(script).prop('textContent')).toBe('A  var foo = "bar";B');
     });
 
+    it('("textContent") : should include style and script tags', () => {
+      const $ = cheerio.load(
+        '<body>Welcome <div>Hello, testing text function,<script>console.log("hello")</script></div><style type="text/css">.cf-hidden { display: none; }</style>End of message</body>'
+      );
+      expect($('body').prop('textContent')).toBe(
+        'Welcome Hello, testing text function,console.log("hello").cf-hidden { display: none; }End of message'
+      );
+      expect($('style').prop('textContent')).toBe(
+        '.cf-hidden { display: none; }'
+      );
+      expect($('script').prop('textContent')).toBe('console.log("hello")');
+    });
+
     it('("innerText") : should render properly', () => {
       expect(selectMenu.children().prop('innerText')).toBe(
         'Option not selected'
       );
 
       expect($(script).prop('innerText')).toBe('AB');
+    });
+
+    it('("innerText") : should omit style and script tags', () => {
+      const $ = cheerio.load(
+        '<body>Welcome <div>Hello, testing text function,<script>console.log("hello")</script></div><style type="text/css">.cf-hidden { display: none; }</style>End of message</body>'
+      );
+      expect($('body').prop('innerText')).toBe(
+        'Welcome Hello, testing text function,End of message'
+      );
+      expect($('style').prop('innerText')).toBe('');
+      expect($('script').prop('innerText')).toBe('');
     });
 
     it('(inherited properties) : prop should support inherited properties', () => {
