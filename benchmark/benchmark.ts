@@ -1,5 +1,5 @@
-import Suites from './suite';
-import type { Cheerio } from '../src/cheerio';
+import Suites from './suite.js';
+import type { Cheerio } from '../src/cheerio.js';
 import type { Element } from 'domhandler';
 
 const suites = new Suites();

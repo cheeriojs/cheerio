@@ -1,5 +1,5 @@
 import { type AnyNode, cloneNode, Document } from 'domhandler';
-import type { Cheerio } from './cheerio';
+import type { Cheerio } from './cheerio.js';
 
 /**
  * Check if the DOM element is a tag.

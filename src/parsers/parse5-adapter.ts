@@ -1,7 +1,7 @@
 import { AnyNode, Document, isDocument, ParentNode } from 'domhandler';
 import { parse as parseDocument, parseFragment, serializeOuter } from 'parse5';
 import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';
-import type { InternalOptions } from '../options';
+import type { InternalOptions } from '../options.js';
 
 export function parseWithParse5(
   content: string,

@@ -11,10 +11,10 @@ import {
   isDocument,
   Document,
 } from 'domhandler';
-import type { Cheerio } from '../cheerio';
+import type { Cheerio } from '../cheerio.js';
 import * as select from 'cheerio-select';
-import { domEach, isTag, isCheerio } from '../utils';
-import { contains } from '../static';
+import { domEach, isTag, isCheerio } from '../utils.js';
+import { contains } from '../static.js';
 import {
   getChildren,
   getSiblings,
@@ -22,7 +22,7 @@ import {
   prevElementSibling,
   uniqueSort,
 } from 'domutils';
-import type { FilterFunction, AcceptedFilters } from '../types';
+import type { FilterFunction, AcceptedFilters } from '../types.js';
 const reSiblingSelector = /^\s*[~+]/;
 
 /**

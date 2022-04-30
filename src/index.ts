@@ -3,19 +3,19 @@
  *
  * @category Cheerio
  */
-export type { Cheerio } from './cheerio';
+export type { Cheerio } from './cheerio.js';
 
 /**
  * Types used in signatures of Cheerio methods.
  *
  * @category Cheerio
  */
-export * from './types';
+export * from './types.js';
 export type {
   CheerioOptions,
   HTMLParser2Options,
   Parse5Options,
-} from './options';
+} from './options.js';
 /**
  * Re-exporting all of the node types.
  *
@@ -23,10 +23,10 @@ export type {
  */
 export type { Node, NodeWithChildren, Element, Document } from 'domhandler';
 
-export type { CheerioAPI } from './load';
-import { getLoad } from './load';
-import { getParse } from './parse';
-import { renderWithParse5, parseWithParse5 } from './parsers/parse5-adapter';
+export type { CheerioAPI } from './load.js';
+import { getLoad } from './load.js';
+import { getParse } from './parse.js';
+import { renderWithParse5, parseWithParse5 } from './parsers/parse5-adapter.js';
 import renderWithHtmlparser2 from 'dom-serializer';
 import { parseDocument as parseWithHtmlparser2 } from 'htmlparser2';
 
@@ -83,9 +83,9 @@ import { filters, pseudos, aliases } from 'cheerio-select';
  */
 export const select = { filters, pseudos, aliases };
 
-export * from './static';
+export * from './static.js';
 
-import * as staticMethods from './static';
+import * as staticMethods from './static.js';
 
 /**
  * In order to promote consistency with the jQuery library, users are encouraged

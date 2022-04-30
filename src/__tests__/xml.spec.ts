@@ -1,5 +1,5 @@
 import cheerio from '..';
-import type { CheerioOptions } from '../options';
+import type { CheerioOptions } from '../options.js';
 
 function xml(str: string, options?: CheerioOptions) {
   options = { xml: true, ...options };

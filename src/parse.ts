@@ -5,7 +5,7 @@ import {
   ParentNode,
   isDocument as checkIsDocument,
 } from 'domhandler';
-import type { InternalOptions } from './options';
+import type { InternalOptions } from './options.js';
 
 /*
  * Parser

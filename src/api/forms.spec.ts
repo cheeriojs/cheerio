@@ -1,6 +1,6 @@
 import cheerio from '../../src';
-import type { CheerioAPI } from '../load';
-import { forms } from '../__fixtures__/fixtures';
+import type { CheerioAPI } from '../load.js';
+import { forms } from '../__fixtures__/fixtures.js';
 
 describe('$(...)', () => {
   let $: CheerioAPI;

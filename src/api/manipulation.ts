@@ -5,12 +5,12 @@
  */
 
 import { ParentNode, AnyNode, Element, Text, hasChildren } from 'domhandler';
-import { update as updateDOM } from '../parse';
-import { text as staticText } from '../static';
-import { domEach, cloneDom, isTag, isHtml, isCheerio } from '../utils';
+import { update as updateDOM } from '../parse.js';
+import { text as staticText } from '../static.js';
+import { domEach, cloneDom, isTag, isHtml, isCheerio } from '../utils.js';
 import { removeElement } from 'domutils';
-import type { Cheerio } from '../cheerio';
-import type { BasicAcceptedElems, AcceptedElems } from '../types';
+import type { Cheerio } from '../cheerio.js';
+import type { BasicAcceptedElems, AcceptedElems } from '../types.js';
 
 /**
  * Create an array of nodes, recursing into arrays and parsing strings if necessary.

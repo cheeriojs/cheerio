@@ -1,12 +1,12 @@
-import type { InternalOptions } from './options';
+import type { InternalOptions } from './options.js';
 import type { AnyNode, Document, ParentNode } from 'domhandler';
-import type { BasicAcceptedElems } from './types';
+import type { BasicAcceptedElems } from './types.js';
 
-import * as Attributes from './api/attributes';
-import * as Traversing from './api/traversing';
-import * as Manipulation from './api/manipulation';
-import * as Css from './api/css';
-import * as Forms from './api/forms';
+import * as Attributes from './api/attributes.js';
+import * as Traversing from './api/traversing.js';
+import * as Manipulation from './api/manipulation.js';
+import * as Css from './api/css.js';
+import * as Forms from './api/forms.js';
 
 type AttributesType = typeof Attributes;
 type TraversingType = typeof Traversing;

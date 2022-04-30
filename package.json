@@ -83,7 +83,9 @@
     "benchmark": "ts-node benchmark/benchmark.ts --regex \"^(?!.*highmem)\"",
     "update-sponsors": "ts-node scripts/fetch-sponsors.ts",
     "bench": "npm run benchmark",
-    "build": "tsc",
+    "build": "npm run build:cjs && npm run build:esm",
+    "build:cjs": "tsc --sourceRoot https://raw.githubusercontent.com/cheeriojs/cheerio/$(git rev-parse HEAD)/src/",
+    "build:esm": "npm run build:cjs -- --module esnext --target es2019 --outDir lib/esm && echo '{\"type\":\"module\"}' > lib/esm/package.json",
     "prepublishOnly": "npm run build",
     "prepare": "husky install"
   },
@@ -107,6 +109,9 @@
     "testPathIgnorePatterns": [
       "/__fixtures__/"
     ],
-    "coverageProvider": "v8"
+    "coverageProvider": "v8",
+    "moduleNameMapper": {
+      "^(.*)\\.js$": "$1"
+    }
   }
 }

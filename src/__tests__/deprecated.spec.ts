@@ -3,7 +3,7 @@
  * removed in the next major release of Cheerio, but their stability should be
  * maintained until that time.
  */
-import * as fixtures from '../__fixtures__/fixtures';
+import * as fixtures from '../__fixtures__/fixtures.js';
 import cheerio from '..';
 
 describe('deprecated APIs', () => {

@@ -1,6 +1,6 @@
 import cheerio from '../../src';
-import { Cheerio } from '../cheerio';
-import type { CheerioAPI } from '../load';
+import { Cheerio } from '../cheerio.js';
+import type { CheerioAPI } from '../load.js';
 import { AnyNode, Element, Text, isText } from 'domhandler';
 import {
   food,
@@ -11,7 +11,7 @@ import {
   forms,
   mixedText,
   vegetables,
-} from '../__fixtures__/fixtures';
+} from '../__fixtures__/fixtures.js';
 
 function getText(el: Cheerio<Element>) {
   if (!el.length) return undefined;

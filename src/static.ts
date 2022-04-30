@@ -1,4 +1,4 @@
-import type { BasicAcceptedElems } from './types';
+import type { BasicAcceptedElems } from './types.js';
 import type { CheerioAPI, Cheerio } from '.';
 import { AnyNode, Document, isText, hasChildren } from 'domhandler';
 import {
@@ -6,7 +6,7 @@ import {
   CheerioOptions,
   default as defaultOptions,
   flatten as flattenOptions,
-} from './options';
+} from './options.js';
 import { ElementType } from 'htmlparser2';
 
 /**
