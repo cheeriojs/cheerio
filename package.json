@@ -91,7 +91,7 @@
     "format:prettier": "npm run format:prettier:raw -- --write",
     "format:prettier:raw": "prettier \"**/*.{{m,c,}js,ts,md,json,yml}\" --ignore-path .gitignore",
     "build:docs": "typedoc --hideGenerator src/index.ts",
-    "benchmark": "ts-node benchmark/benchmark.ts --regex \"^(?!.*highmem)\"",
+    "benchmark": "npm run build:cjs && ts-node benchmark/benchmark.ts --regex \"^(?!.*highmem)\"",
     "update-sponsors": "ts-node scripts/fetch-sponsors.ts",
     "bench": "npm run benchmark",
     "build": "npm run build:cjs && npm run build:esm",
