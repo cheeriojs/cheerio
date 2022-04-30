@@ -113,7 +113,8 @@ export function isHtml(str: string): boolean {
 
   return (
     ((tagChar >= 'a' && tagChar <= 'z') ||
-      (tagChar >= 'A' && tagChar <= 'Z')) &&
+      (tagChar >= 'A' && tagChar <= 'Z') ||
+      tagChar === '!') &&
     str.includes('>', tagStart + 2)
   );
 }

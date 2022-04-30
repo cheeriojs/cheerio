@@ -443,6 +443,8 @@ describe('cheerio', () => {
       expect(utils.isHtml('<p>fox<p>cat')).toBe(true);
       expect(utils.isHtml('\n<p>fox<p>cat\n')).toBe(true);
       expect(utils.isHtml('#<p>fox<p>cat#')).toBe(true);
+      expect(utils.isHtml('<!-- comment -->')).toBe(true);
+      expect(utils.isHtml('<!doctype html>')).toBe(true);
       expect(utils.isHtml('<123>')).toBe(false);
     });
   });
