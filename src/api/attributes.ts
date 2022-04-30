@@ -76,7 +76,7 @@ function getAttr(
   // Mimic DOM with default value for radios/checkboxes
   if (
     elem.name === 'input' &&
-    (elem.attribs.type === 'radio' || elem.attribs.type === 'checkbox') &&
+    (elem.attribs['type'] === 'radio' || elem.attribs['type'] === 'checkbox') &&
     name === 'value'
   ) {
     return 'on';
@@ -387,13 +387,14 @@ export function prop<T extends AnyNode>(
         throw new Error('Bad combination of arguments.');
       }
       return domEach(this, (el, i) => {
-        if (isTag(el))
+        if (isTag(el)) {
           setProp(
             el,
             name,
             value.call(el, i, getProp(el, name, this.options.xmlMode)),
             this.options.xmlMode
           );
+        }
       });
     }
 
@@ -599,9 +600,10 @@ export function data<T extends AnyNode>(
   // Set the value (with attr map support)
   if (typeof name === 'object' || value !== undefined) {
     domEach(this, (el) => {
-      if (isTag(el))
+      if (isTag(el)) {
         if (typeof name === 'object') setData(el, name);
         else setData(el, name, value as unknown);
+      }
     });
     return this;
   }
@@ -777,7 +779,7 @@ export function hasClass<T extends AnyNode>(
   className: string
 ): boolean {
   return this.toArray().some((elem) => {
-    const clazz = isTag(elem) && elem.attribs.class;
+    const clazz = isTag(elem) && elem.attribs['class'];
     let idx = -1;
 
     if (clazz && className.length) {
@@ -825,7 +827,7 @@ export function addClass<T extends AnyNode, R extends ArrayLike<T>>(
   if (typeof value === 'function') {
     return domEach(this, (el, i) => {
       if (isTag(el)) {
-        const className = el.attribs.class || '';
+        const className = el.attribs['class'] || '';
         addClass.call([el], value.call(el, i, className));
       }
     });
@@ -891,8 +893,9 @@ export function removeClass<T extends AnyNode, R extends ArrayLike<T>>(
   // Handle if value is a function
   if (typeof name === 'function') {
     return domEach(this, (el, i) => {
-      if (isTag(el))
-        removeClass.call([el], name.call(el, i, el.attribs.class || ''));
+      if (isTag(el)) {
+        removeClass.call([el], name.call(el, i, el.attribs['class'] || ''));
+      }
     });
   }
 
@@ -905,9 +908,9 @@ export function removeClass<T extends AnyNode, R extends ArrayLike<T>>(
 
     if (removeAll) {
       // Short circuit the remove all case as this is the nice one
-      el.attribs.class = '';
+      el.attribs['class'] = '';
     } else {
-      const elClasses = splitNames(el.attribs.class);
+      const elClasses = splitNames(el.attribs['class']);
       let changed = false;
 
       for (let j = 0; j < numClasses; j++) {
@@ -925,7 +928,7 @@ export function removeClass<T extends AnyNode, R extends ArrayLike<T>>(
         }
       }
       if (changed) {
-        el.attribs.class = elClasses.join(' ');
+        el.attribs['class'] = elClasses.join(' ');
       }
     }
   });
@@ -969,7 +972,7 @@ export function toggleClass<T extends AnyNode, R extends ArrayLike<T>>(
       if (isTag(el)) {
         toggleClass.call(
           [el],
-          value.call(el, i, el.attribs.class || '', stateVal),
+          value.call(el, i, el.attribs['class'] || '', stateVal),
           stateVal
         );
       }
@@ -989,7 +992,7 @@ export function toggleClass<T extends AnyNode, R extends ArrayLike<T>>(
     // If selected element isn't a tag, move on
     if (!isTag(el)) continue;
 
-    const elementClasses = splitNames(el.attribs.class);
+    const elementClasses = splitNames(el.attribs['class']);
 
     // Check if class already exists
     for (let j = 0; j < numClasses; j++) {
@@ -1005,7 +1008,7 @@ export function toggleClass<T extends AnyNode, R extends ArrayLike<T>>(
       }
     }
 
-    el.attribs.class = elementClasses.join(' ');
+    el.attribs['class'] = elementClasses.join(' ');
   }
 
   return this;

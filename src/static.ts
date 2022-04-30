@@ -1,4 +1,4 @@
-import { BasicAcceptedElems } from './types';
+import type { BasicAcceptedElems } from './types';
 import type { CheerioAPI, Cheerio } from '.';
 import { AnyNode, Document, isText, hasChildren } from 'domhandler';
 import {

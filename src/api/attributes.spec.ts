@@ -51,9 +51,9 @@ describe('$(...)', () => {
         'pear'
       ) as Cheerio<Element>;
 
-      expect($el[0].attribs.class).toBe('pear');
+      expect($el[0].attribs).toHaveProperty('class', 'pear');
       expect($el[1].attribs).toBeUndefined();
-      expect($el[2].attribs.class).toBe('pear');
+      expect($el[2].attribs).toHaveProperty('class', 'pear');
     });
 
     it('(key, value) : should return an empty object for an empty object', () => {
@@ -204,7 +204,7 @@ describe('$(...)', () => {
     it('(valid key) : valid prop should get value', () => {
       expect(checkbox.prop('checked')).toBe(true);
       checkbox.css('display', 'none');
-      expect(checkbox.prop('style').display).toBe('none');
+      expect(checkbox.prop('style')).toHaveProperty('display', 'none');
       expect(checkbox.prop('style')).toHaveLength(1);
       expect(checkbox.prop('style')).toContain('display');
       expect(checkbox.prop('tagName')).toBe('INPUT');

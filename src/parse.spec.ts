@@ -101,15 +101,15 @@ describe('parse', () => {
       const attrs = parse(attributes, defaultOpts, false, null)
         .children[0] as Element;
       expect(attrs.attribs).toBeTruthy();
-      expect(attrs.attribs.src).toBe('hello.png');
-      expect(attrs.attribs.alt).toBe('man waving');
+      expect(attrs.attribs).toHaveProperty('src', 'hello.png');
+      expect(attrs.attribs).toHaveProperty('alt', 'man waving');
     });
 
     it(`should handle value-less attributes: ${noValueAttribute}`, () => {
       const attrs = parse(noValueAttribute, defaultOpts, false, null)
         .children[0] as Element;
       expect(attrs.attribs).toBeTruthy();
-      expect(attrs.attribs.disabled).toBe('');
+      expect(attrs.attribs).toHaveProperty('disabled', '');
     });
 
     it(`should handle comments: ${comment}`, () => {
@@ -138,7 +138,7 @@ describe('parse', () => {
         .children[0] as Element;
       expect(script_.type).toBe('script');
       expect(script_.tagName).toBe('script');
-      expect(script_.attribs.type).toBe('text/javascript');
+      expect(script_.attribs).toHaveProperty('type', 'text/javascript');
       expect(script_.childNodes).toHaveLength(1);
       expect(script_.childNodes[0].type).toBe('text');
       expect(script_.childNodes[0]).toHaveProperty(
@@ -152,7 +152,7 @@ describe('parse', () => {
         .children[0] as Element;
       expect(style_.type).toBe('style');
       expect(style_.tagName).toBe('style');
-      expect(style_.attribs.type).toBe('text/css');
+      expect(style_.attribs).toHaveProperty('type', 'text/css');
       expect(style_.childNodes).toHaveLength(1);
       expect(style_.childNodes[0].type).toBe('text');
       expect(style_.childNodes[0]).toHaveProperty(
@@ -388,7 +388,7 @@ describe('parse', () => {
       const root = parse(html, defaultOpts, false, null);
       const childNodes = root.childNodes as Element[];
 
-      expect(childNodes[0].attribs.style).toBe(expectedAttr);
+      expect(childNodes[0].attribs).toHaveProperty('style', expectedAttr);
     });
 
     it('Should treat <xmp> tag content as text', () => {

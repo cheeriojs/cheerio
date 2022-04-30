@@ -42,6 +42,7 @@
     "no-unused-expressions": 2,
     "no-useless-call": 2,
     "no-use-before-define": [2, "nofunc"],
+    "no-constant-binary-expression": 2,
     "no-void": 2,
 
     "jsdoc/require-jsdoc": 0,
@@ -83,6 +84,9 @@
         "project": "./tsconfig.eslint.json"
       },
       "rules": {
+        "dot-notation": 0,
+        "curly": [2, "multi-line"],
+
         "@typescript-eslint/prefer-for-of": 0,
         "@typescript-eslint/member-ordering": 0,
         "@typescript-eslint/explicit-function-return-type": 0,
