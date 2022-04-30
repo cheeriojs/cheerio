@@ -43,7 +43,7 @@ function getAttr(
   elem: AnyNode,
   name: undefined,
   xmlMode?: boolean
-): Record<string, string>;
+): Record<string, string> | undefined;
 function getAttr(
   elem: AnyNode,
   name: string,
@@ -138,7 +138,7 @@ export function attr<T extends AnyNode>(
  */
 export function attr<T extends AnyNode>(
   this: Cheerio<T>
-): Record<string, string>;
+): Record<string, string> | undefined;
 
 /**
  * Method for setting attributes. Sets the attribute value for only the first

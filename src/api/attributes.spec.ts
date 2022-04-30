@@ -21,7 +21,7 @@ describe('$(...)', () => {
   describe('.attr', () => {
     it('() : should get all the attributes', () => {
       const attrs = $('ul').attr();
-      expect(attrs.id).toBe('fruits');
+      expect(attrs).toHaveProperty('id', 'fruits');
     });
 
     it('(invalid key) : invalid attr should get undefined', () => {
@@ -69,9 +69,9 @@ describe('$(...)', () => {
         'data-url': 'http://apple.com',
       });
       const attrs = $('.apple').attr();
-      expect(attrs.id).toBe('apple');
-      expect(attrs.style).toBe('color:red;');
-      expect(attrs['data-url']).toBe('http://apple.com');
+      expect(attrs).toHaveProperty('id', 'apple');
+      expect(attrs).toHaveProperty('style', 'color:red;');
+      expect(attrs).toHaveProperty('data-url', 'http://apple.com');
     });
 
     it('(map, val) : should throw with wrong combination of arguments', () => {
@@ -95,7 +95,7 @@ describe('$(...)', () => {
         return 'ninja';
       });
       const attrs = $fruits.attr();
-      expect(attrs.id).toBe('ninja');
+      expect(attrs).toHaveProperty('id', 'ninja');
     });
 
     it('(key, function) : should ignore text nodes', () => {
