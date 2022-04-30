@@ -26,6 +26,17 @@
   "homepage": "https://cheerio.js.org/",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "module": "lib/esm/index.js",
+  "exports": {
+    ".": {
+      "require": "./lib/index.js",
+      "import": "./lib/esm/index.js"
+    },
+    "./lib/slim": {
+      "require": "./lib/slim.js",
+      "import": "./lib/esm/slim.js"
+    }
+  },
   "files": [
     "lib"
   ],
