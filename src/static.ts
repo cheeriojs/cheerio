@@ -1,13 +1,13 @@
 import type { BasicAcceptedElems } from './types.js';
 import type { CheerioAPI, Cheerio } from '.';
-import { AnyNode, Document, isText, hasChildren } from 'domhandler';
+import type { AnyNode, Document } from 'domhandler';
+import { textContent } from 'domutils';
 import {
   InternalOptions,
   CheerioOptions,
   default as defaultOptions,
   flatten as flattenOptions,
 } from './options.js';
-import { ElementType } from 'htmlparser2';
 
 /**
  * Helper function to render a DOM.
@@ -109,6 +109,10 @@ export function xml(
 /**
  * Render the document as text.
  *
+ * This returns the `textContent` of the passed elements. The result will
+ * include the contents of `script` and `stype` elements. To avoid this, use
+ * `.prop('innerText')` instead.
+ *
  * @param elements - Elements to render.
  * @returns The rendered document.
  */
@@ -121,15 +125,7 @@ export function text(
   let ret = '';
 
   for (let i = 0; i < elems.length; i++) {
-    const elem = elems[i];
-    if (isText(elem)) ret += elem.data;
-    else if (
-      hasChildren(elem) &&
-      elem.type !== ElementType.Script &&
-      elem.type !== ElementType.Style
-    ) {
-      ret += text(elem.children);
-    }
+    ret += textContent(elems[i]);
   }
 
   return ret;

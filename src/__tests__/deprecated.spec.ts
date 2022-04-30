@@ -340,9 +340,9 @@ describe('deprecated APIs', () => {
         );
       });
 
-      it('(cheerio object) : should omit script tags', () => {
+      it('(cheerio object) : should not omit script tags', () => {
         const $ = cheerio.load('<script>console.log("test")</script>');
-        expect($.text()).toBe('');
+        expect($.text()).toBe('console.log("test")');
       });
 
       it('(cheerio object) : should omit style tags', () => {
