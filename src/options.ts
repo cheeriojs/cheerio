@@ -14,17 +14,23 @@ export interface Parse5Options {
 /** Internal options for Cheerio. */
 export interface InternalOptions extends HTMLParser2Options, Parse5Options {
   _useHtmlParser2?: boolean;
+
+  /** The base URI for the document. Used for the `href` and `src` props. */
+  baseURI?: string | URL; // eslint-disable-line node/no-unsupported-features/node-builtins
 }
 
 /**
  * Options accepted by Cheerio.
  *
- * Please note that parser-specific options are *only recognized* if the
+ * Please note that parser-specific options are _only recognized_ if the
  * relevant parser is used.
  */
 export interface CheerioOptions extends HTMLParser2Options, Parse5Options {
-  /** Suggested way of configuring htmlparser2 when wanting to parse XML. */
+  /** Recommended way of configuring htmlparser2 when wanting to parse XML. */
   xml?: HTMLParser2Options | boolean;
+
+  /** The base URI for the document. Used for the `href` and `src` props. */
+  baseURI?: string | URL; // eslint-disable-line node/no-unsupported-features/node-builtins
 }
 
 const defaultOpts: CheerioOptions = {

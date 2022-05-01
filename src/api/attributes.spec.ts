@@ -243,6 +243,7 @@ describe('$(...)', () => {
       expect(imgs.prop('namespace')).toBe(nsHtml);
       imgs.prop('attribs', null);
       expect(imgs.prop('src')).toBeUndefined();
+      expect(imgs.prop('data-foo')).toBeUndefined();
     });
 
     it('(map) : object map should set multiple props', () => {
@@ -282,6 +283,44 @@ describe('$(...)', () => {
     it('(invalid element/tag) : prop should return undefined', () => {
       expect($(undefined).prop('prop')).toBeUndefined();
       expect($(null as any).prop('prop')).toBeUndefined();
+    });
+
+    it('("href") : should resolve links with `baseURI`', () => {
+      const $ = cheerio.load(
+        `
+          <a id="1" href="http://example.org">example1</a>
+          <a id="2" href="//example.org">example2</a>
+          <a id="3" href="/example.org">example3</a>
+          <a id="4" href="example.org">example4</a>
+        `,
+        { baseURI: 'http://example.com/page/1' }
+      );
+
+      expect($('#1').prop('href')).toBe('http://example.org/');
+      expect($('#2').prop('href')).toBe('http://example.org/');
+      expect($('#3').prop('href')).toBe('http://example.com/example.org');
+      expect($('#4').prop('href')).toBe('http://example.com/page/example.org');
+    });
+
+    it('("src") : should resolve links with `baseURI`', () => {
+      const $ = cheerio.load(
+        `
+          <img id="1" src="http://example.org/image.png">
+          <iframe id="2" src="//example.org/page.html"></iframe>
+          <audio id="3" src="/example.org/song.mp3"></audio>
+          <source id="4" src="example.org/image.png">
+        `,
+        { baseURI: 'http://example.com/page/1' }
+      );
+
+      expect($('#1').prop('src')).toBe('http://example.org/image.png');
+      expect($('#2').prop('src')).toBe('http://example.org/page.html');
+      expect($('#3').prop('src')).toBe(
+        'http://example.com/example.org/song.mp3'
+      );
+      expect($('#4').prop('src')).toBe(
+        'http://example.com/page/example.org/image.png'
+      );
     });
 
     it('("outerHTML") : should render properly', () => {
