@@ -68,6 +68,7 @@ import { filters, pseudos, aliases } from 'cheerio-select';
 /**
  * Extension points for adding custom pseudo selectors.
  *
+ * @deprecated Use the `options.pseudos` option instead.
  * @example <caption>Adds a custom pseudo selector `:classic`, which matches
  * some fun HTML elements that are no more.</caption>
  *
