@@ -6,7 +6,8 @@ export type {
   CheerioOptions,
   HTMLParser2Options,
   Node,
-  NodeWithChildren,
+  AnyNode,
+  ParentNode,
   Element,
   Document,
 } from '.';

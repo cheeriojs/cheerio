@@ -21,7 +21,7 @@ export type {
  *
  * @category DOM Node
  */
-export type { Node, NodeWithChildren, Element, Document } from 'domhandler';
+export type { Node, AnyNode, ParentNode, Element, Document } from 'domhandler';
 
 export type { CheerioAPI } from './load.js';
 import { getLoad } from './load.js';
@@ -84,7 +84,7 @@ import { filters, pseudos, aliases } from 'cheerio-select';
  */
 export const select = { filters, pseudos, aliases };
 
-export * from './static.js';
+export { html, xml, text } from './static.js';
 
 import * as staticMethods from './static.js';
 
