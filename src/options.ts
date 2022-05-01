@@ -1,5 +1,6 @@
 import type { DomHandlerOptions } from 'domhandler';
 import type { ParserOptions } from 'htmlparser2';
+import type { Options as SelectOptions } from 'cheerio-select';
 
 /** Options accepted by htmlparser2, the default parser for XML. */
 export interface HTMLParser2Options extends DomHandlerOptions, ParserOptions {}
@@ -9,14 +10,6 @@ export interface Parse5Options {
   scriptingEnabled?: boolean;
   /** Enable location support for parse5. */
   sourceCodeLocationInfo?: boolean;
-}
-
-/** Internal options for Cheerio. */
-export interface InternalOptions extends HTMLParser2Options, Parse5Options {
-  _useHtmlParser2?: boolean;
-
-  /** The base URI for the document. Used for the `href` and `src` props. */
-  baseURI?: string | URL; // eslint-disable-line node/no-unsupported-features/node-builtins
 }
 
 /**
@@ -31,6 +24,50 @@ export interface CheerioOptions extends HTMLParser2Options, Parse5Options {
 
   /** The base URI for the document. Used for the `href` and `src` props. */
   baseURI?: string | URL; // eslint-disable-line node/no-unsupported-features/node-builtins
+
+  /**
+   * Is the document in quirks mode?
+   *
+   * This will lead to `.className` and `#id` being case-insensitive.
+   *
+   * @default false
+   */
+  quirksMode?: SelectOptions['quirksMode'];
+  /**
+   * Extension point for pseudo-classes.
+   *
+   * Maps from names to either strings of functions.
+   *
+   * - A string value is a selector that the element must match to be selected.
+   * - A function is called with the element as its first argument, and optional
+   *   parameters second. If it returns true, the element is selected.
+   *
+   * @example
+   *
+   * ```js
+   * const $ = cheerio.load(
+   *   '<div class="foo"></div><div data-bar="boo"></div>',
+   *   {
+   *     pseudos: {
+   *       // `:foo` is an alias for `div.foo`
+   *       foo: 'div.foo',
+   *       // `:bar(val)` is equivalent to `[data-bar=val s]`
+   *       bar: (el, val) => el.attribs['data-bar'] === val,
+   *     },
+   *   }
+   * );
+   *
+   * $(':foo').length; // 1
+   * $('div:bar(boo)').length; // 1
+   * $('div:bar(baz)').length; // 0
+   * ```
+   */
+  pseudos?: SelectOptions['pseudos'];
+}
+
+/** Internal options for Cheerio. */
+export interface InternalOptions extends Omit<CheerioOptions, 'xml'> {
+  _useHtmlParser2?: boolean;
 }
 
 const defaultOpts: CheerioOptions = {

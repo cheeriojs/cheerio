@@ -70,7 +70,13 @@ export function find<T extends AnyNode>(
   const options = {
     context,
     root: this._root?.[0],
+
+    // Pass options that are recognized by `cheerio-select`
     xmlMode: this.options.xmlMode,
+    lowerCaseTags: this.options.lowerCaseTags,
+    lowerCaseAttributeNames: this.options.lowerCaseAttributeNames,
+    pseudos: this.options.pseudos,
+    quirksMode: this.options.quirksMode,
   };
 
   return this._make(select.select(selectorOrHaystack, elems, options));
