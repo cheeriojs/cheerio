@@ -305,10 +305,19 @@ export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: 'innerHTML' | 'outerHTML' | 'innerText' | 'textContent'
 ): string | null;
+/** Get a parsed CSS style object. */
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: 'style'
 ): StyleProp;
+/**
+ * Resolve `href` or `src` of supported elements. Requires the `baseURI` option
+ * to be set, and a global `URL` object to be part of the environment.
+ */
+export function prop<T extends AnyNode>(
+  this: Cheerio<T>,
+  name: 'href' | 'src'
+): string | undefined;
 export function prop<T extends AnyNode, K extends keyof Element>(
   this: Cheerio<T>,
   name: K
@@ -362,6 +371,36 @@ export function prop<T extends AnyNode>(
       case 'nodeName': {
         const el = this[0];
         return isTag(el) ? el.name.toUpperCase() : undefined;
+      }
+
+      case 'href':
+      case 'src': {
+        const el = this[0];
+
+        if (!isTag(el)) {
+          return undefined;
+        }
+
+        const prop = el.attribs?.[name];
+
+        /* eslint-disable node/no-unsupported-features/node-builtins */
+        if (
+          typeof URL !== 'undefined' &&
+          ((name === 'href' && (el.tagName === 'a' || el.name === 'link')) ||
+            (name === 'src' &&
+              (el.tagName === 'img' ||
+                el.tagName === 'iframe' ||
+                el.tagName === 'audio' ||
+                el.tagName === 'video' ||
+                el.tagName === 'source'))) &&
+          prop !== undefined &&
+          this.options.baseURI
+        ) {
+          return new URL(prop, this.options.baseURI).href;
+        }
+        /* eslint-enable node/no-unsupported-features/node-builtins */
+
+        return prop;
       }
 
       case 'innerText':
