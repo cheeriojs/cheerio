@@ -190,11 +190,23 @@ function parse(styles: string): Record<string, string> {
 
   if (!styles) return {};
 
-  return styles.split(';').reduce<Record<string, string>>((obj, str) => {
+  const obj: Record<string, string> = {};
+
+  let key: string | undefined;
+
+  for (const str of styles.split(';')) {
     const n = str.indexOf(':');
-    // Skip if there is no :, or if it is the first/last character
-    if (n < 1 || n === str.length - 1) return obj;
-    obj[str.slice(0, n).trim()] = str.slice(n + 1).trim();
-    return obj;
-  }, {});
+    // If there is no :, or if it is the first/last character, add to the previous item's value
+    if (n < 1 || n === str.length - 1) {
+      const trimmed = str.trimEnd();
+      if (trimmed.length > 0 && key !== undefined) {
+        obj[key] += `;${trimmed}`;
+      }
+    } else {
+      key = str.slice(0, n).trim();
+      obj[key] = str.slice(n + 1).trim();
+    }
+  }
+
+  return obj;
 }
