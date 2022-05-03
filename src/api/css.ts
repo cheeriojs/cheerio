@@ -6,7 +6,7 @@ import type { Cheerio } from '../cheerio.js';
  * Get the value of a style property for the first element in the set of matched elements.
  *
  * @category CSS
- * @param names - Optionally the names of the property of interest.
+ * @param names - Optionally the names of the properties of interest.
  * @returns A map of all of the style properties.
  * @see {@link https://api.jquery.com/css/}
  */
@@ -46,15 +46,23 @@ export function css<T extends AnyNode>(
  * Set multiple CSS properties for every matched element.
  *
  * @category CSS
- * @param prop - The name of the property.
- * @param val - The new value.
+ * @param map - A map of property names and values.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/css/}
  */
 export function css<T extends AnyNode>(
   this: Cheerio<T>,
-  prop: Record<string, string>
+  map: Record<string, string>
 ): Cheerio<T>;
+/**
+ * Set multiple CSS properties for every matched element.
+ *
+ * @category CSS
+ * @param prop - The names of the properties.
+ * @param val - The new values.
+ * @returns The instance itself.
+ * @see {@link https://api.jquery.com/css/}
+ */
 export function css<T extends AnyNode>(
   this: Cheerio<T>,
   prop?: string | string[] | Record<string, string>,

@@ -14,6 +14,13 @@ const rCRLF = /\r?\n/g;
  * Encode a set of form elements as a string for submission.
  *
  * @category Forms
+ * @example
+ *
+ * ```js
+ * $('<form><input name="foo" value="bar" /></form>').serialize();
+ * //=> 'foo=bar'
+ * ```
+ *
  * @returns The serialized form.
  * @see {@link https://api.jquery.com/serialize/}
  */

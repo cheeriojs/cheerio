@@ -2,7 +2,11 @@ import type { DomHandlerOptions } from 'domhandler';
 import type { ParserOptions } from 'htmlparser2';
 import type { Options as SelectOptions } from 'cheerio-select';
 
-/** Options accepted by htmlparser2, the default parser for XML. */
+/**
+ * Options accepted by htmlparser2, the default parser for XML.
+ *
+ * @see https://github.com/fb55/htmlparser2/wiki/Parser-options
+ */
 export interface HTMLParser2Options extends DomHandlerOptions, ParserOptions {}
 /** Options for parse5, the default parser for HTML. */
 export interface Parse5Options {
@@ -67,6 +71,11 @@ export interface CheerioOptions extends HTMLParser2Options, Parse5Options {
 
 /** Internal options for Cheerio. */
 export interface InternalOptions extends Omit<CheerioOptions, 'xml'> {
+  /**
+   * Whether to use htmlparser2.
+   *
+   * This is set to true if `xml` is set to true.
+   */
   _useHtmlParser2?: boolean;
 }
 
@@ -83,6 +92,14 @@ const xmlModeDefault: InternalOptions = {
   xmlMode: true,
 };
 
+/**
+ * Flatten the options for Cheerio.
+ *
+ * This will set `_useHtmlParser2` to true if `xml` is set to true.
+ *
+ * @param options - The options to flatten.
+ * @returns The flattened options.
+ */
 export function flatten(
   options?: CheerioOptions | null
 ): InternalOptions | undefined {

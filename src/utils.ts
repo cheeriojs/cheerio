@@ -8,7 +8,7 @@ import type { Cheerio } from './cheerio.js';
  *
  * @private
  * @category Utils
- * @param type - DOM node to check.
+ * @param type - The DOM node to check.
  * @returns Whether the node is a tag.
  */
 export { isTag } from 'domhandler';
@@ -29,7 +29,7 @@ export function isCheerio<T>(maybeCheerio: any): maybeCheerio is Cheerio<T> {
  *
  * @private
  * @category Utils
- * @param str - String to be converted.
+ * @param str - The string to be converted.
  * @returns String in camel case notation.
  */
 export function camelCase(str: string): string {
@@ -42,7 +42,7 @@ export function camelCase(str: string): string {
  *
  * @private
  * @category Utils
- * @param str - String to be converted.
+ * @param str - The string to be converted.
  * @returns String in "CSS case".
  */
 export function cssCase(str: string): string {
@@ -56,7 +56,7 @@ export function cssCase(str: string): string {
  * pressure introduced by _make.
  *
  * @category Utils
- * @param array - Array to iterate over.
+ * @param array - The array to iterate over.
  * @param fn - Function to call.
  * @returns The original instance.
  */
@@ -75,7 +75,7 @@ export function domEach<
  *
  * @private
  * @category Utils
- * @param dom - The htmlparser2-compliant DOM structure.
+ * @param dom - The domhandler-compliant DOM structure.
  * @returns - The cloned DOM.
  */
 export function cloneDom<T extends AnyNode>(dom: T | T[]): T[] {
@@ -101,7 +101,7 @@ export function cloneDom<T extends AnyNode>(dom: T | T[]): T[] {
  *
  * @private
  * @category Utils
- * @param str - String to check.
+ * @param str - The string to check.
  * @returns Indicates if `str` is HTML.
  */
 export function isHtml(str: string): boolean {

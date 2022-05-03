@@ -7,8 +7,11 @@ import {
 } from 'domhandler';
 import type { InternalOptions } from './options.js';
 
-/*
- * Parser
+/**
+ * Get the parse function with options.
+ *
+ * @param parser - The parser function.
+ * @returns The parse function with options.
  */
 export function getParse(
   parser: (
@@ -18,6 +21,15 @@ export function getParse(
     context: ParentNode | null
   ) => Document
 ) {
+  /**
+   * Parse a HTML string or a node.
+   *
+   * @param content - The HTML string or node.
+   * @param options - The parser options.
+   * @param isDocument - If `content` is a document.
+   * @param context - The context node in the DOM tree.
+   * @returns The parsed document node.
+   */
   return function parse(
     content: string | Document | AnyNode | AnyNode[] | Buffer,
     options: InternalOptions,

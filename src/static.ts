@@ -260,6 +260,8 @@ export function merge<T>(
 }
 
 /**
+ * Checks if an object is array-like.
+ *
  * @param item - Item to check.
  * @returns Indicates if the item is array-like.
  */

@@ -28,7 +28,7 @@ export abstract class Cheerio<T> implements ArrayLike<T> {
 
   /**
    * Instance of cheerio. Methods are specified in the modules. Usage of this
-   * constructor is not recommended. Please use $.load instead.
+   * constructor is not recommended. Please use `$.load` instead.
    *
    * @private
    * @param elements - The new selection.

@@ -35,7 +35,7 @@ const rbrace = /^{[^]*}$|^\[[^]*]$/;
  *
  * @private
  * @category Attributes
- * @param elem - Elenent to get the attribute of.
+ * @param elem - Element to get the attribute of.
  * @param name - Name of the attribute.
  * @returns The attribute's value.
  */
@@ -139,7 +139,6 @@ export function attr<T extends AnyNode>(
 export function attr<T extends AnyNode>(
   this: Cheerio<T>
 ): Record<string, string> | undefined;
-
 /**
  * Method for setting attributes. Sets the attribute value for only the first
  * element in the matched set. If you set an attribute's value to `null`, you
@@ -231,7 +230,7 @@ export function attr<T extends AnyNode>(
  *
  * @private
  * @category Attributes
- * @param el - Elenent to get the prop of.
+ * @param el - Element to get the prop of.
  * @param name - Name of the prop.
  * @returns The prop's value.
  */
@@ -313,6 +312,13 @@ export function prop<T extends AnyNode>(
 /**
  * Resolve `href` or `src` of supported elements. Requires the `baseURI` option
  * to be set, and a global `URL` object to be part of the environment.
+ *
+ * @example With `baseURI` set to `'https://example.com'`:
+ *
+ * ```js
+ * $('<img src="image.png">).prop('src');
+ * //=> 'https://example.com/image.png'
+ * ```
  */
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
@@ -454,7 +460,13 @@ export function prop<T extends AnyNode>(
   return undefined;
 }
 
+/**
+ * An element with a data attribute.
+ *
+ * @private
+ */
 interface DataElement extends Element {
+  /** The data attribute. */
   data?: Record<string, unknown>;
 }
 
@@ -488,9 +500,9 @@ function setData(
  *
  * @private
  * @category Attributes
- * @param el - Elenent to get the data attribute of.
+ * @param el - Element to get the data attribute of.
  * @param name - Name of the data attribute.
- * @returns The data attribute's value, or a map with all of the data attribute.
+ * @returns The data attribute's value, or a map with all of the data attributes.
  */
 function readData(el: DataElement, name?: string): unknown {
   let domNames;
@@ -549,7 +561,7 @@ function readData(el: DataElement, name?: string): unknown {
  * ```
  *
  * @param name - Name of the data attribute.
- * @returns The data attribute's value.
+ * @returns The data attribute's value, or `undefined` if the attribute does not exist.
  * @see {@link https://api.jquery.com/data/}
  */
 export function data<T extends AnyNode>(
@@ -568,7 +580,7 @@ export function data<T extends AnyNode>(
  * //=> { appleColor: 'red' }
  * ```
  *
- * @returns The data attribute's values.
+ * @returns A map with all of the data attributes.
  * @see {@link https://api.jquery.com/data/}
  */
 export function data<T extends AnyNode>(
