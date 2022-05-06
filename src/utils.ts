@@ -93,6 +93,14 @@ export function cloneDom<T extends AnyNode>(dom: T | T[]): T[] {
   return clone;
 }
 
+const enum CharacterCodes {
+  LowerA = 97,
+  LowerZ = 122,
+  UpperA = 65,
+  UpperZ = 90,
+  Exclamation = 33,
+}
+
 /**
  * Check if string is HTML.
  *
@@ -109,12 +117,12 @@ export function isHtml(str: string): boolean {
 
   if (tagStart < 0 || tagStart > str.length - 3) return false;
 
-  const tagChar = str.charAt(tagStart + 1);
+  const tagChar = str.charCodeAt(tagStart + 1);
 
   return (
-    ((tagChar >= 'a' && tagChar <= 'z') ||
-      (tagChar >= 'A' && tagChar <= 'Z') ||
-      tagChar === '!') &&
+    ((tagChar >= CharacterCodes.LowerA && tagChar <= CharacterCodes.LowerZ) ||
+      (tagChar >= CharacterCodes.UpperA && tagChar <= CharacterCodes.UpperZ) ||
+      tagChar === CharacterCodes.Exclamation) &&
     str.includes('>', tagStart + 2)
   );
 }
