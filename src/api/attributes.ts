@@ -324,10 +324,12 @@ export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: 'href' | 'src'
 ): string | undefined;
+/** Get a property of an element. */
 export function prop<T extends AnyNode, K extends keyof Element>(
   this: Cheerio<T>,
   name: K
 ): Element[K];
+/** Set a property of an element. */
 export function prop<T extends AnyNode, K extends keyof Element>(
   this: Cheerio<T>,
   name: K,

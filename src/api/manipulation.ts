@@ -903,8 +903,7 @@ export function empty<T extends AnyNode>(this: Cheerio<T>): Cheerio<T> {
 }
 
 /**
- * Gets an HTML content string from the first selected element. If `htmlString`
- * is specified, each selected element's content is replaced by the new content.
+ * Gets an HTML content string from the first selected element.
  *
  * @category Manipulation
  * @example
@@ -917,11 +916,25 @@ export function empty<T extends AnyNode>(this: Cheerio<T>): Cheerio<T> {
  * //=> <li class="mango">Mango</li>
  * ```
  *
- * @param str - If specified used to replace selection's contents.
- * @returns The instance itself.
+ * @returns The HTML content string.
  * @see {@link https://api.jquery.com/html/}
  */
 export function html<T extends AnyNode>(this: Cheerio<T>): string | null;
+/**
+ * Replaces each selected element's content with the specified content.
+ *
+ * @category Manipulation
+ * @example
+ *
+ * ```js
+ * $('.orange').html('<li class="mango">Mango</li>').html();
+ * //=> <li class="mango">Mango</li>
+ * ```
+ *
+ * @param str - The content to replace selection's contents with.
+ * @returns The instance itself.
+ * @see {@link https://api.jquery.com/html/}
+ */
 export function html<T extends AnyNode>(
   this: Cheerio<T>,
   str: string | Cheerio<T>
@@ -962,8 +975,7 @@ export function toString<T extends AnyNode>(this: Cheerio<T>): string {
 
 /**
  * Get the combined text contents of each element in the set of matched
- * elements, including their descendants. If `textString` is specified, each
- * selected element's content is replaced by the new text content.
+ * elements, including their descendants.
  *
  * @category Manipulation
  * @example
@@ -978,11 +990,25 @@ export function toString<T extends AnyNode>(this: Cheerio<T>): string {
  * //    Pear
  * ```
  *
- * @param str - If specified replacement for the selected element's contents.
- * @returns The instance itself when setting text, otherwise the rendered document.
+ * @returns The text contents of the collection.
  * @see {@link https://api.jquery.com/text/}
  */
 export function text<T extends AnyNode>(this: Cheerio<T>): string;
+/**
+ * Set the content of each element in the set of matched elements to the specified text.
+ *
+ * @category Manipulation
+ * @example
+ *
+ * ```js
+ * $('.orange').text('Orange');
+ * //=> <div class="orange">Orange</div>
+ * ```
+ *
+ * @param str - The text to set as the content of each matched element.
+ * @returns The instance itself.
+ * @see {@link https://api.jquery.com/text/}
+ */
 export function text<T extends AnyNode>(
   this: Cheerio<T>,
   str: string | ((this: AnyNode, i: number, text: string) => string)
