@@ -58,7 +58,7 @@
     "@types/benchmark": "^2.1.1",
     "@types/jest": "^27.5.0",
     "@types/node": "^17.0.34",
-    "@typescript-eslint/eslint-plugin": "^5.23.0",
+    "@typescript-eslint/eslint-plugin": "^5.24.0",
     "@typescript-eslint/parser": "^5.24.0",
     "benchmark": "^2.1.4",
     "eslint": "^8.15.0",
