@@ -63,27 +63,6 @@ export const load = getLoad(parse, (dom, options) =>
  */
 export default load([]);
 
-import { filters, pseudos, aliases } from 'cheerio-select';
-
-/**
- * Extension points for adding custom pseudo selectors.
- *
- * @deprecated Use the `options.pseudos` option instead.
- * @example <caption>Adds a custom pseudo selector `:classic`, which matches
- * some fun HTML elements that are no more.</caption>
- *
- * ```js
- * import { load, select } from 'cheerio';
- *
- * // Aliases are short hands for longer HTML selectors
- * select.aliases.classic = 'marquee,blink';
- *
- * const $ = load(doc);
- * $(':classic').html();
- * ```
- */
-export const select = { filters, pseudos, aliases };
-
 export { html, xml, text } from './static.js';
 
 import * as staticMethods from './static.js';
