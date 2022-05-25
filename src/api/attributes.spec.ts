@@ -211,6 +211,13 @@ describe('$(...)', () => {
       expect(checkbox.prop('nodeName')).toBe('INPUT');
     });
 
+    it('(valid key) : should return on empty collection', () => {
+      expect($(undefined).prop('checked')).toBeUndefined();
+      expect($(undefined).prop('style')).toBeUndefined();
+      expect($(undefined).prop('tagName')).toBeUndefined();
+      expect($(undefined).prop('nodeName')).toBeUndefined();
+    });
+
     it('(invalid key) : invalid prop should get undefined', () => {
       expect(checkbox.prop('lol')).toBeUndefined();
       expect(checkbox.prop(4 as any)).toBeUndefined();
@@ -244,6 +251,12 @@ describe('$(...)', () => {
       imgs.prop('attribs', null);
       expect(imgs.prop('src')).toBeUndefined();
       expect(imgs.prop('data-foo')).toBeUndefined();
+    });
+
+    it('(key, value) : should ignore empty collection', () => {
+      expect($(undefined).prop('checked')).toBeUndefined();
+      $(undefined).prop('checked', true);
+      expect($(undefined).prop('checked')).toBeUndefined();
     });
 
     it('(map) : object map should set multiple props', () => {
@@ -300,6 +313,8 @@ describe('$(...)', () => {
       expect($('#2').prop('href')).toBe('http://example.org/');
       expect($('#3').prop('href')).toBe('http://example.com/example.org');
       expect($('#4').prop('href')).toBe('http://example.com/page/example.org');
+
+      expect($(undefined).prop('href')).toBeUndefined();
     });
 
     it('("src") : should resolve links with `baseURI`', () => {
@@ -321,6 +336,8 @@ describe('$(...)', () => {
       expect($('#4').prop('src')).toBe(
         'http://example.com/page/example.org/image.png'
       );
+
+      expect($(undefined).prop('src')).toBeUndefined();
     });
 
     it('("outerHTML") : should render properly', () => {
@@ -328,12 +345,16 @@ describe('$(...)', () => {
       const $a = $(outerHtml);
 
       expect($a.prop('outerHTML')).toBe(outerHtml);
+
+      expect($(undefined).prop('outerHTML')).toBeUndefined();
     });
 
     it('("innerHTML") : should render properly', () => {
       const $a = $('<div><a></a></div>');
 
       expect($a.prop('innerHTML')).toBe('<a></a>');
+
+      expect($(undefined).prop('innerHTML')).toBeUndefined();
     });
 
     it('("textContent") : should render properly', () => {
@@ -342,6 +363,8 @@ describe('$(...)', () => {
       );
 
       expect($(script).prop('textContent')).toBe('A  var foo = "bar";B');
+
+      expect($(undefined).prop('textContent')).toBeUndefined();
     });
 
     it('("textContent") : should include style and script tags', () => {
@@ -363,6 +386,8 @@ describe('$(...)', () => {
       );
 
       expect($(script).prop('innerText')).toBe('AB');
+
+      expect($(undefined).prop('innerText')).toBeUndefined();
     });
 
     it('("innerText") : should omit style and script tags', () => {

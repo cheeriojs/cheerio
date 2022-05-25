@@ -235,12 +235,10 @@ export function attr<T extends AnyNode>(
  * @returns The prop's value.
  */
 function getProp(
-  el: AnyNode | undefined,
+  el: Element,
   name: string,
   xmlMode?: boolean
 ): string | undefined | Element[keyof Element] {
-  if (!el || !isTag(el)) return;
-
   return name in el
     ? // @ts-expect-error TS doesn't like us accessing the value directly here.
       el[name]
@@ -308,7 +306,7 @@ export function prop<T extends AnyNode>(
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: 'style'
-): StyleProp;
+): StyleProp | undefined;
 /**
  * Resolve `href` or `src` of supported elements. Requires the `baseURI` option
  * to be set, and a global `URL` object to be part of the environment.
@@ -363,6 +361,10 @@ export function prop<T extends AnyNode>(
     | unknown
 ): Cheerio<T> | string | undefined | null | Element[keyof Element] | StyleProp {
   if (typeof name === 'string' && value === undefined) {
+    const el = this[0];
+
+    if (!el || !isTag(el)) return undefined;
+
     switch (name) {
       case 'style': {
         const property = this.css() as StyleProp;
@@ -377,18 +379,11 @@ export function prop<T extends AnyNode>(
       }
       case 'tagName':
       case 'nodeName': {
-        const el = this[0];
-        return isTag(el) ? el.name.toUpperCase() : undefined;
+        return el.name.toUpperCase();
       }
 
       case 'href':
       case 'src': {
-        const el = this[0];
-
-        if (!isTag(el)) {
-          return undefined;
-        }
-
         const prop = el.attribs?.[name];
 
         /* eslint-disable node/no-unsupported-features/node-builtins */
@@ -411,11 +406,13 @@ export function prop<T extends AnyNode>(
         return prop;
       }
 
-      case 'innerText':
-        return innerText(this[0]);
+      case 'innerText': {
+        return innerText(el);
+      }
 
-      case 'textContent':
-        return textContent(this[0]);
+      case 'textContent': {
+        return textContent(el);
+      }
 
       case 'outerHTML':
         return this.clone().wrap('<container />').parent().html();
@@ -424,7 +421,7 @@ export function prop<T extends AnyNode>(
         return this.html();
 
       default:
-        return getProp(this[0], name, this.options.xmlMode);
+        return getProp(el, name, this.options.xmlMode);
     }
   }
 
