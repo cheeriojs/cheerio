@@ -314,7 +314,7 @@ export function prop<T extends AnyNode>(
  * @example With `baseURI` set to `'https://example.com'`:
  *
  * ```js
- * $('<img src="image.png">).prop('src');
+ * $('<img src="image.png">').prop('src');
  * //=> 'https://example.com/image.png'
  * ```
  */
