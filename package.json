@@ -28,6 +28,10 @@
   "types": "lib/index.d.ts",
   "module": "lib/esm/index.js",
   "exports": {
+    "./lib/utils": {
+      "default": "./lib/utils.js",
+      "import": "./lib/utils.js"
+    },
     ".": {
       "require": "./lib/index.js",
       "import": "./lib/esm/index.js"
