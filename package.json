@@ -35,6 +35,10 @@
     "./lib/slim": {
       "require": "./lib/slim.js",
       "import": "./lib/esm/slim.js"
+    },
+    "./lib/utils": {
+      "require": "./lib/utils.js",
+      "import": "./lib/esm/utils.js"
     }
   },
   "files": [
