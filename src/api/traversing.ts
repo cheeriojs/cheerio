@@ -1019,9 +1019,9 @@ export function index<T extends AnyNode>(
  * //=> 1
  * ```
  *
- * @param start - An position at which the elements begin to be selected. If
+ * @param start - A position at which the elements begin to be selected. If
  *   negative, it indicates an offset from the end of the set.
- * @param end - An position at which the elements stop being selected. If
+ * @param end - A position at which the elements stop being selected. If
  *   negative, it indicates an offset from the end of the set. If omitted, the
  *   range continues until the end of the set.
  * @returns The elements matching the specified range.
