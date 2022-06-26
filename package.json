@@ -54,8 +54,7 @@
     "domutils": "^3.0.1",
     "htmlparser2": "^8.0.1",
     "parse5": "^7.0.0",
-    "parse5-htmlparser2-tree-adapter": "^7.0.0",
-    "tslib": "^2.4.0"
+    "parse5-htmlparser2-tree-adapter": "^7.0.0"
   },
   "devDependencies": {
     "@octokit/graphql": "^4.8.0",
