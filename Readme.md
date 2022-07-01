@@ -291,9 +291,6 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="https://www.casinoonlineaams.com" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/casinoonlineaamscom/da74236/logo.png" title="Casinoonlineaams.com" alt="Casinoonlineaams.com"></img>
           </a>
-<a href="https://casinofiables.com/" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/casinofiables-com/b824bab/logo.png" title="Casinofiables.com" alt="Casinofiables.com"></img>
-          </a>
 <a href="https://apify.com/" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/24586296?v=4&s=128" title="Apify" alt="Apify"></img>
           </a>
