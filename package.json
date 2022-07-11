@@ -78,7 +78,7 @@
     "prettier-plugin-jsdoc": "0.3.38",
     "ts-jest": "^28.0.5",
     "ts-node": "^10.8.2",
-    "typedoc": "^0.23.6",
+    "typedoc": "^0.23.7",
     "typescript": "^4.7.4",
     "undici": "^5.6.1"
   },
