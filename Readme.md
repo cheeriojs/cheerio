@@ -318,6 +318,9 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="https://kafidoff.com" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/kafidoff-vasy/d7ff85c/avatar.png" title="Vasy Kafidoff" alt="Vasy Kafidoff"></img>
           </a>
+<a href="https://tuxedo.org/" target="_blank" rel="noopener noreferrer">
+            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/olle-jaervi-laturi/660c722/avatar.png" title="Olle Järvi-Laturi" alt="Olle Järvi-Laturi"></img>
+          </a>
 <a href="https://medium.com/norch" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/espenklem/6075b19/avatar.png" title="Espen Klem" alt="Espen Klem"></img>
           </a>
