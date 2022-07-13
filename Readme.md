@@ -303,6 +303,9 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="https://starwarscasinos.com/" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/casino-utan-svensk-licens1/f3487ff/logo.png" title="Casino utan svensk licens" alt="Casino utan svensk licens"></img>
           </a>
+<a href="https://www.casinoutanlicens.io/" target="_blank" rel="noopener noreferrer">
+            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/casino-utan-svensk-licens2/a3efb14/logo.png" title="Casino utan svensk licens" alt="Casino utan svensk licens"></img>
+          </a>
 
 <!-- END SPONSORS -->
 
