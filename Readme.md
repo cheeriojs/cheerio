@@ -71,7 +71,7 @@ This is the HTML markup we will be using in all of the API examples.
 
 ### Loading
 
-First you need to load in the HTML. This step in jQuery is implicit, since jQuery operates on the one, baked-in DOM. With Cheerio, we need to pass in the HTML document.
+First you need to load the HTML. This step in jQuery is implicit, since jQuery operates on the one, baked-in DOM. With Cheerio, we need to pass it in the HTML document.
 
 This is the _preferred_ method:
 
@@ -109,7 +109,7 @@ Or as the root:
 $('li', 'ul', '<ul id="fruits">...</ul>');
 ```
 
-If you need to modify parsing options for XML input, you may pass an extra
+If you need to modify parsing options for the XML input, you may pass an extra
 object to `.load()`:
 
 ```js
@@ -137,7 +137,7 @@ For a full list of options and their effects, see [domhandler](https://github.co
 #### Using `htmlparser2`
 
 Cheerio ships with two parsers, `parse5` and `htmlparser2`. The
-former is the default for HTML, the latter the default for XML.
+former is the default for HTML, the latter is the default for XML.
 
 Some users may wish to parse markup with the `htmlparser2` library, and
 traverse/manipulate the resulting structure with Cheerio. This may be the case
