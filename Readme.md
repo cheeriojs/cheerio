@@ -113,11 +113,7 @@ If you need to modify parsing options for XML input, you may pass an extra
 object to `.load()`:
 
 ```js
-const $ = cheerio.load('<ul id="fruits">...</ul>', {
-  xml: {
-    normalizeWhitespace: true,
-  },
-});
+const $ = cheerio.load('<ul id="fruits">...</ul>');
 ```
 
 The options in the `xml` object are taken directly from [htmlparser2](https://github.com/fb55/htmlparser2/wiki/Parser-options), therefore any options that can be used in `htmlparser2` are valid in cheerio as well. When `xml` is set, the default options are:
