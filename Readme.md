@@ -115,7 +115,8 @@ object to `.load()`:
 ```js
 const $ = cheerio.load('<ul id="fruits">...</ul>', {
   xml: {
-    normalizeWhitespace: true,
+    xmlMode: true,
+    withStartIndices: true,
   },
 });
 ```
