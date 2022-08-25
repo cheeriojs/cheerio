@@ -10,6 +10,10 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  FORCE_COLOR: 2
+  NODE: 16
+
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
@@ -31,7 +35,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3.4.1
         with:
-          node-version: '16'
+          node-version: '${{ env.NODE }}'
           cache: 'npm'
       - name: Setup Pages
         id: pages
