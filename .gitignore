@@ -1,7 +1,8 @@
 node_modules
 npm-debug.log
 .DS_Store
-/.netlify/
+.docusaurus
+.cache-loader
 /coverage
-/docs
 /lib
+/website/docs/api
