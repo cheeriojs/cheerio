@@ -283,9 +283,6 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 
 <!-- BEGIN SPONSORS: sponsor -->
 
-<a href="https://github.com/about" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/9919?v=4&s=128" title="GitHub" alt="GitHub"></img>
-          </a>
 <a href="https://cryptocasinos.com/" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/cryptocasinos/99b168e/logo.png" title="CryptoCasinos" alt="CryptoCasinos"></img>
           </a>
@@ -306,6 +303,9 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
           </a>
 <a href="https://www.casinoutanlicens.io/" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/casino-utan-svensk-licens2/a3efb14/logo.png" title="Casino utan svensk licens" alt="Casino utan svensk licens"></img>
+          </a>
+<a href="https://www.zenrows.com" target="_blank" rel="noopener noreferrer">
+            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/zenrows/3199d4b/logo.png" title="ZenRows" alt="ZenRows"></img>
           </a>
 
 <!-- END SPONSORS -->
