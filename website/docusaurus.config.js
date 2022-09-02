@@ -89,6 +89,10 @@ const config = {
                 label: 'Tutorial',
                 to: '/docs/intro',
               },
+              {
+                label: 'API',
+                to: 'docs/api/',
+              },
             ],
           },
           {
