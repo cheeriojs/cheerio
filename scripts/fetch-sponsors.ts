@@ -123,7 +123,7 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
  * @returns An array of sponsors.
  */
 async function fetchGitHubSponsors(): Promise<Sponsor[]> {
-  const { organization } = await githubGraphQL(
+  const { organization } = await githubGraphQL<any>(
     `{
       organization(login: "cheeriojs") {
         sponsorshipsAsMaintainer(first: 100) {
