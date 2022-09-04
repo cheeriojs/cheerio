@@ -350,14 +350,14 @@ describe('cheerio', () => {
       // Should support custom `prop`s.
       expect(
         $.extract({
-          red: { selector: '.red', prop: 'outerHTML' },
-          sel: { selector: '.sel', prop: 'tagName' },
+          red: { selector: '.red', out: 'outerHTML' },
+          sel: { selector: '.sel', out: 'tagName' },
         })
       ).toStrictEqual({ red: '<li class="red">Four</li>', sel: 'LI' });
       // Should support custom `prop`s for multiple values.
       expect(
         $.extract({
-          red: [{ selector: '.red', prop: 'outerHTML' }],
+          red: [{ selector: '.red', out: 'outerHTML' }],
         })
       ).toStrictEqual({
         red: [

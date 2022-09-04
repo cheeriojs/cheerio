@@ -1,6 +1,6 @@
 import type { BasicAcceptedElems } from './types.js';
 import type { CheerioAPI, Cheerio } from '.';
-import type { AnyNode, Document } from 'domhandler';
+import type { AnyNode, Document, Element } from 'domhandler';
 import { textContent } from 'domutils';
 import {
   InternalOptions,
@@ -230,19 +230,19 @@ export function contains(container: AnyNode, contained: AnyNode): boolean {
 
 interface ExtractDescriptor {
   selector: string;
-  prop?: string;
+  out?: string;
 }
 
 function getExtractDescr(
   descr: string | ExtractDescriptor
 ): Required<ExtractDescriptor> {
   if (typeof descr === 'string') {
-    return { selector: descr, prop: 'textContent' };
+    return { selector: descr, out: 'textContent' };
   }
 
   return {
     selector: descr.selector,
-    prop: descr.prop ?? 'textContent',
+    out: descr.out ?? 'textContent',
   };
 }
 
@@ -268,7 +268,7 @@ export function extract<
   for (const key in map) {
     const descr = map[key];
     const isArray = Array.isArray(descr);
-    const { selector, prop } = getExtractDescr(isArray ? descr[0] : descr);
+    const { selector, out: prop } = getExtractDescr(isArray ? descr[0] : descr);
 
     const $ = this(selector);
     ret[key] = isArray
