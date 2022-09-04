@@ -337,6 +337,35 @@ describe('cheerio', () => {
           sel: { selector: '.sel' },
         })
       ).toStrictEqual({ red: 'Four', sel: 'Three' });
+      // Should support extraction of multiple values.
+      expect(
+        $.extract({
+          red: ['.red'],
+          sel: ['.sel'],
+        })
+      ).toStrictEqual({
+        red: ['Four', 'Five', 'Nine'],
+        sel: ['Three', 'Nine', 'Eleven'],
+      });
+      // Should support custom `prop`s.
+      expect(
+        $.extract({
+          red: { selector: '.red', prop: 'outerHTML' },
+          sel: { selector: '.sel', prop: 'tagName' },
+        })
+      ).toStrictEqual({ red: '<li class="red">Four</li>', sel: 'LI' });
+      // Should support custom `prop`s for multiple values.
+      expect(
+        $.extract({
+          red: [{ selector: '.red', prop: 'outerHTML' }],
+        })
+      ).toStrictEqual({
+        red: [
+          '<li class="red">Four</li>',
+          '<li class="red">Five</li>',
+          '<li class="red sel">Nine</li>',
+        ],
+      });
     });
   });
 });

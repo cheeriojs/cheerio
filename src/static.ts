@@ -230,6 +230,27 @@ export function contains(container: AnyNode, contained: AnyNode): boolean {
 
 interface ExtractDescriptor {
   selector: string;
+  prop?: string;
+}
+
+function getExtractOpts(
+  descr: string | ExtractDescriptor | [string | ExtractDescriptor]
+): { isArray: boolean; selector: string; prop: string } {
+  if (Array.isArray(descr)) {
+    const rec = getExtractOpts(descr[0]);
+    rec.isArray = true;
+    return rec;
+  }
+
+  if (typeof descr === 'string') {
+    return { isArray: false, selector: descr, prop: 'textContent' };
+  }
+
+  return {
+    isArray: false,
+    selector: descr.selector,
+    prop: descr.prop ?? 'textContent',
+  };
 }
 
 /**
@@ -240,20 +261,27 @@ interface ExtractDescriptor {
  *   selectors to be used to extract the values.
  * @returns An object containing the extracted values.
  */
-export function extract<M extends Record<string, string | ExtractDescriptor>>(
+export function extract<
+  M extends Record<
+    string,
+    string | ExtractDescriptor | [string | ExtractDescriptor]
+  >
+>(
   this: CheerioAPI,
   map: M
-): { [K in keyof M]: string | null } {
-  const ret: Record<string, string | null> = {};
+): { [K in keyof M]: string | string[] | null | undefined } {
+  const ret: Record<string, string | string[] | null | undefined> = {};
 
   for (const key in map) {
-    const descriptor = map[key];
-    ret[key] = this(
-      typeof descriptor === 'string' ? descriptor : descriptor.selector
-    ).prop('textContent');
+    const { isArray, selector, prop } = getExtractOpts(map[key]);
+
+    const $ = this(selector);
+    ret[key] = isArray
+      ? $.map((_, el) => this(el).prop(prop)).get()
+      : $.prop(prop);
   }
 
-  return ret as { [K in keyof M]: string | null };
+  return ret as { [K in keyof M]: string | null | undefined };
 }
 
 interface WritableArrayLike<T> extends ArrayLike<T> {
