@@ -1,6 +1,6 @@
 import type { BasicAcceptedElems } from './types.js';
 import type { CheerioAPI, Cheerio } from '.';
-import type { AnyNode, Document, Element } from 'domhandler';
+import type { AnyNode, Document } from 'domhandler';
 import { textContent } from 'domutils';
 import {
   InternalOptions,
@@ -233,6 +233,12 @@ interface ExtractDescriptor {
   out?: string;
 }
 
+type ExtractValue = string | ExtractDescriptor | [string | ExtractDescriptor];
+
+interface ExtractMap {
+  [key: string]: ExtractValue;
+}
+
 function getExtractDescr(
   descr: string | ExtractDescriptor
 ): Required<ExtractDescriptor> {
@@ -254,12 +260,7 @@ function getExtractDescr(
  *   selectors to be used to extract the values.
  * @returns An object containing the extracted values.
  */
-export function extract<
-  M extends Record<
-    string,
-    string | ExtractDescriptor | [string | ExtractDescriptor]
-  >
->(
+export function extract<M extends ExtractMap>(
   this: CheerioAPI,
   map: M
 ): { [K in keyof M]: string | string[] | null | undefined } {
