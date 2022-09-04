@@ -233,21 +233,14 @@ interface ExtractDescriptor {
   prop?: string;
 }
 
-function getExtractOpts(
-  descr: string | ExtractDescriptor | [string | ExtractDescriptor]
-): { isArray: boolean; selector: string; prop: string } {
-  if (Array.isArray(descr)) {
-    const rec = getExtractOpts(descr[0]);
-    rec.isArray = true;
-    return rec;
-  }
-
+function getExtractDescr(
+  descr: string | ExtractDescriptor
+): Required<ExtractDescriptor> {
   if (typeof descr === 'string') {
-    return { isArray: false, selector: descr, prop: 'textContent' };
+    return { selector: descr, prop: 'textContent' };
   }
 
   return {
-    isArray: false,
     selector: descr.selector,
     prop: descr.prop ?? 'textContent',
   };
@@ -273,7 +266,9 @@ export function extract<
   const ret: Record<string, string | string[] | null | undefined> = {};
 
   for (const key in map) {
-    const { isArray, selector, prop } = getExtractOpts(map[key]);
+    const descr = map[key];
+    const isArray = Array.isArray(descr);
+    const { selector, prop } = getExtractDescr(isArray ? descr[0] : descr);
 
     const $ = this(selector);
     ret[key] = isArray
