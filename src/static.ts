@@ -228,6 +228,10 @@ export function contains(container: AnyNode, contained: AnyNode): boolean {
   return false;
 }
 
+interface ExtractDescriptor {
+  selector: string;
+}
+
 /**
  * Extract multiple values from a document, and store them in an object.
  *
@@ -236,14 +240,17 @@ export function contains(container: AnyNode, contained: AnyNode): boolean {
  *   selectors to be used to extract the values.
  * @returns An object containing the extracted values.
  */
-export function extract<M extends Record<string, string>>(
+export function extract<M extends Record<string, string | ExtractDescriptor>>(
   this: CheerioAPI,
   map: M
 ): { [K in keyof M]: string | null } {
   const ret: Record<string, string | null> = {};
 
   for (const key in map) {
-    ret[key] = this(map[key]).prop('textContent');
+    const descriptor = map[key];
+    ret[key] = this(
+      typeof descriptor === 'string' ? descriptor : descriptor.selector
+    ).prop('textContent');
   }
 
   return ret as { [K in keyof M]: string | null };

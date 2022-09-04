@@ -318,7 +318,7 @@ describe('cheerio', () => {
   });
 
   describe('.extract', () => {
-    it('() : should return a cheerio-wrapped root object', () => {
+    it('() : should extract values for selectors', () => {
       const $ = cheerio.load(fixtures.eleven);
       // An empty object should lead to an empty extraction.
       expect($.extract({})).toStrictEqual({});
@@ -330,6 +330,13 @@ describe('cheerio', () => {
         red: 'Four',
         sel: 'Three',
       });
+      // Descriptors for extractions should be supported
+      expect(
+        $.extract({
+          red: { selector: '.red' },
+          sel: { selector: '.sel' },
+        })
+      ).toStrictEqual({ red: 'Four', sel: 'Three' });
     });
   });
 });
