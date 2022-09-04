@@ -228,6 +228,27 @@ export function contains(container: AnyNode, contained: AnyNode): boolean {
   return false;
 }
 
+/**
+ * Extract multiple values from a document, and store them in an object.
+ *
+ * @param map - An object containing key-value pairs. The keys are the names of
+ *   the properties to be created on the object, and the values are the
+ *   selectors to be used to extract the values.
+ * @returns An object containing the extracted values.
+ */
+export function extract<M extends Record<string, string>>(
+  this: CheerioAPI,
+  map: M
+): { [K in keyof M]: string | null } {
+  const ret: Record<string, string | null> = {};
+
+  for (const key in map) {
+    ret[key] = this(map[key]).prop('textContent');
+  }
+
+  return ret as { [K in keyof M]: string | null };
+}
+
 interface WritableArrayLike<T> extends ArrayLike<T> {
   length: number;
   [n: number]: T;

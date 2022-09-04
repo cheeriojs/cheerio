@@ -316,4 +316,20 @@ describe('cheerio', () => {
       );
     });
   });
+
+  describe('.extract', () => {
+    it('() : should return a cheerio-wrapped root object', () => {
+      const $ = cheerio.load(fixtures.eleven);
+      // An empty object should lead to an empty extraction.
+      expect($.extract({})).toStrictEqual({});
+      // Non-existent values should be undefined.
+      expect($.extract({ foo: 'bar' })).toStrictEqual({ foo: undefined });
+      // Existing values should be extracted.
+      expect($.extract({ red: '.red' })).toStrictEqual({ red: 'Four' });
+      expect($.extract({ red: '.red', sel: '.sel' })).toStrictEqual({
+        red: 'Four',
+        sel: 'Three',
+      });
+    });
+  });
 });

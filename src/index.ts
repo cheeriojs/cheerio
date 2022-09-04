@@ -38,7 +38,8 @@ const parse = getParse((content, options, isDocument, context) =>
 
 // Duplicate docs due to https://github.com/TypeStrong/typedoc/issues/1616
 /**
- * Create a querying function, bound to a document created from the provided markup.
+ * Create a querying function, bound to a document created from the provided
+ * markup.
  *
  * Note that similar to web browser contexts, this operation may introduce
  * `<html>`, `<head>`, and `<body>` elements; set `isDocument` to `false` to
@@ -63,7 +64,7 @@ export const load = getLoad(parse, (dom, options) =>
  */
 export default load([]);
 
-export { html, xml, text } from './static.js';
+export { html, xml, text, extract } from './static.js';
 
 import * as staticMethods from './static.js';
 
