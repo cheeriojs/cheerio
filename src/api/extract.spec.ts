@@ -3,27 +3,28 @@ import cheerio from '..';
 
 describe('$.extract', () => {
   it('() : should extract values for selectors', () => {
-    const $ = cheerio.load(fixtures.eleven).root();
+    const $ = cheerio.load(fixtures.eleven);
+    const $root = cheerio.load(fixtures.eleven).root();
     // An empty object should lead to an empty extraction.
-    expect($.extract({})).toStrictEqual({});
+    expect($root.extract({})).toStrictEqual({});
     // Non-existent values should be undefined.
-    expect($.extract({ foo: 'bar' })).toStrictEqual({ foo: undefined });
+    expect($root.extract({ foo: 'bar' })).toStrictEqual({ foo: undefined });
     // Existing values should be extracted.
-    expect($.extract({ red: '.red' })).toStrictEqual({ red: 'Four' });
-    expect($.extract({ red: '.red', sel: '.sel' })).toStrictEqual({
+    expect($root.extract({ red: '.red' })).toStrictEqual({ red: 'Four' });
+    expect($root.extract({ red: '.red', sel: '.sel' })).toStrictEqual({
       red: 'Four',
       sel: 'Three',
     });
     // Descriptors for extractions should be supported
     expect(
-      $.extract({
+      $root.extract({
         red: { selector: '.red' },
         sel: { selector: '.sel' },
       })
     ).toStrictEqual({ red: 'Four', sel: 'Three' });
     // Should support extraction of multiple values.
     expect(
-      $.extract({
+      $root.extract({
         red: ['.red'],
         sel: ['.sel'],
       })
@@ -33,14 +34,14 @@ describe('$.extract', () => {
     });
     // Should support custom `prop`s.
     expect(
-      $.extract({
+      $root.extract({
         red: { selector: '.red', out: 'outerHTML' },
         sel: { selector: '.sel', out: 'tagName' },
       })
     ).toStrictEqual({ red: '<li class="red">Four</li>', sel: 'LI' });
     // Should support custom `prop`s for multiple values.
     expect(
-      $.extract({
+      $root.extract({
         red: [{ selector: '.red', out: 'outerHTML' }],
       })
     ).toStrictEqual({
@@ -49,6 +50,43 @@ describe('$.extract', () => {
         '<li class="red">Five</li>',
         '<li class="red sel">Nine</li>',
       ],
+    });
+    // Should support custom extraction functions.
+    expect(
+      $root.extract({
+        red: {
+          selector: '.red',
+          out: (el, key) => `${key}=${$(el).text()}`,
+        },
+      })
+    ).toStrictEqual({ red: 'red=Four' });
+    // Should support custom extraction functions for multiple values.
+    expect(
+      $root.extract({
+        red: [
+          {
+            selector: '.red',
+            out: (el, key) => `${key}=${$(el).text()}`,
+          },
+        ],
+      })
+    ).toStrictEqual({ red: ['red=Four', 'red=Five', 'red=Nine'] });
+    // Should support extraction objects
+    expect(
+      $root.extract({
+        section: {
+          selector: 'ul:nth(1)',
+          out: {
+            red: '.red',
+            blue: '.blue',
+          },
+        },
+      })
+    ).toStrictEqual({
+      section: {
+        red: 'Five',
+        blue: 'Seven',
+      },
     });
   });
 });
