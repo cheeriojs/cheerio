@@ -8,6 +8,7 @@ import {
   default as defaultOptions,
   flatten as flattenOptions,
 } from './options.js';
+import type { ExtractedMap, ExtractMap } from './api/extract.js';
 
 /**
  * Helper function to render a DOM.
@@ -228,30 +229,6 @@ export function contains(container: AnyNode, contained: AnyNode): boolean {
   return false;
 }
 
-interface ExtractDescriptor {
-  selector: string;
-  out?: string;
-}
-
-type ExtractValue = string | ExtractDescriptor | [string | ExtractDescriptor];
-
-interface ExtractMap {
-  [key: string]: ExtractValue;
-}
-
-function getExtractDescr(
-  descr: string | ExtractDescriptor
-): Required<ExtractDescriptor> {
-  if (typeof descr === 'string') {
-    return { selector: descr, out: 'textContent' };
-  }
-
-  return {
-    selector: descr.selector,
-    out: descr.out ?? 'textContent',
-  };
-}
-
 /**
  * Extract multiple values from a document, and store them in an object.
  *
@@ -263,21 +240,8 @@ function getExtractDescr(
 export function extract<M extends ExtractMap>(
   this: CheerioAPI,
   map: M
-): { [K in keyof M]: string | string[] | null | undefined } {
-  const ret: Record<string, string | string[] | null | undefined> = {};
-
-  for (const key in map) {
-    const descr = map[key];
-    const isArray = Array.isArray(descr);
-    const { selector, out: prop } = getExtractDescr(isArray ? descr[0] : descr);
-
-    const $ = this(selector);
-    ret[key] = isArray
-      ? $.map((_, el) => this(el).prop(prop)).get()
-      : $.prop(prop);
-  }
-
-  return ret as { [K in keyof M]: string | null | undefined };
+): ExtractedMap<M> {
+  return this.root().extract(map);
 }
 
 interface WritableArrayLike<T> extends ArrayLike<T> {
