@@ -78,11 +78,14 @@ export function extract<M extends ExtractMap, T extends AnyNode>(
         ? (el: Element) => this._make(el).prop(prop)
         : (el: Element) => this._make(el).extract(prop);
 
-    // TODO: Limit to one element
-    const $ = this.find(selector);
-    ret[key] = isArray
-      ? $.map((_, el) => fn(el, key, ret)).get()
-      : fn($[0], key, ret);
+    if (isArray) {
+      ret[key] = this._findBySelector(selector, Infinity)
+        .map((_, el) => fn(el, key, ret))
+        .get();
+    } else {
+      const $ = this._findBySelector(selector, 1);
+      ret[key] = $.length > 0 ? fn($[0], key, ret) : undefined;
+    }
   }
 
   return ret as ExtractedMap<M>;
