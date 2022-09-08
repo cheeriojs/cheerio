@@ -307,6 +307,9 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="https://www.zenrows.com" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/zenrows/3199d4b/logo.png" title="ZenRows" alt="ZenRows"></img>
           </a>
+<a href="https://www.gamblingbitcoin.com" target="_blank" rel="noopener noreferrer">
+            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/gamblingbitcoin/f037937/logo.png" title="GamblingBitcoin" alt="GamblingBitcoin"></img>
+          </a>
 
 <!-- END SPONSORS -->
 
