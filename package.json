@@ -39,6 +39,10 @@
     "./lib/utils": {
       "require": "./lib/utils.js",
       "import": "./lib/esm/utils.js"
+    },
+    "./lib/api/attributes": {
+      "require": "./lib/api/attributes.js",
+      "import": "./lib/esm/api/attributes.js"
     }
   },
   "files": [
