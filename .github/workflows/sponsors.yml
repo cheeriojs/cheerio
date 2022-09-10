@@ -4,6 +4,8 @@ on:
   schedule:
     # Run once a day, at 4pm
     - cron: '0 16 * * *'
+  # Allow manual trigger
+  workflow_dispatch:
 
 env:
   FORCE_COLOR: 2
