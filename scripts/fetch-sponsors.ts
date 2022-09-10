@@ -8,6 +8,7 @@
 import * as fs from 'fs/promises';
 import { request } from 'undici';
 import { graphql as githubGraphQL } from '@octokit/graphql';
+import ImgixClient from '@imgix/js-core';
 
 type Tier = 'sponsor' | 'professional' | 'backer';
 
@@ -28,11 +29,16 @@ const tierSponsors: Record<Tier, Sponsor[]> = {
   backer: [],
 };
 
-const { CHEERIO_SPONSORS_GITHUB_TOKEN } = process.env;
+const { CHEERIO_SPONSORS_GITHUB_TOKEN, IMGIX_TOKEN } = process.env;
 
 if (!CHEERIO_SPONSORS_GITHUB_TOKEN) {
   throw new Error('Missing CHEERIO_SPONSORS_GITHUB_TOKEN.');
 }
+
+const imgix = new ImgixClient({
+  domain: 'humble.imgix.net',
+  secureURLToken: IMGIX_TOKEN,
+});
 
 /**
  * Returns the tier ID for a given donation amount.
@@ -269,7 +275,10 @@ const professionalToBackerOverrides = new Map([
         (s: Sponsor) =>
           // Display each sponsor's image in the README.
           `<a href="${s.url}" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="${s.image}" title="${s.name}" alt="${s.name}"></img>
+            <img height="128px" width="128px" src="${imgix.buildURL(s.image, {
+              w: 128,
+              h: 128,
+            })}" title="${s.name}" alt="${s.name}"></img>
           </a>`
       )
       .join('\n')}\n\n${readme.slice(sectionEndIndex)}`;
