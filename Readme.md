@@ -331,7 +331,7 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="https://jarrodldavis.com" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/235875?v=4&s=128" title="Jarrod Davis" alt="Jarrod Davis"></img>
           </a>
-<a href="https://nishant-singh.com" target="_blank" rel="noopener noreferrer">
+<a href="https://nishantsingh.in" target="_blank" rel="noopener noreferrer">
             <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/10304344?u=2f98c0a745b5352c6e758b9a5bc7a9d9d4e3e969&v=4&s=128" title="Nishant Singh" alt="Nishant Singh"></img>
           </a>
 <a href="https://github.com/gauthamchandra" target="_blank" rel="noopener noreferrer">
