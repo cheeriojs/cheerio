@@ -284,28 +284,28 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <!-- BEGIN SPONSORS: sponsor -->
 
 <a href="https://cryptocasinos.com/" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/cryptocasinos/99b168e/logo.png" title="CryptoCasinos" alt="CryptoCasinos"></img>
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcryptocasinos%2F99b168e%2Flogo.png?ixlib=js-3.6.0&w=128&h=128&s=e4e31790379d3d0ef29212a630f5fe02" title="CryptoCasinos" alt="CryptoCasinos"></img>
           </a>
 <a href="https://www.casinoonlineaams.com" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/casinoonlineaamscom/da74236/logo.png" title="Casinoonlineaams.com" alt="Casinoonlineaams.com"></img>
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasinoonlineaamscom%2Fda74236%2Flogo.png?ixlib=js-3.6.0&w=128&h=128&s=77c79b01297c14f247b0de8b2d0932e4" title="Casinoonlineaams.com" alt="Casinoonlineaams.com"></img>
           </a>
 <a href="https://apify.com/" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/24586296?v=4&s=128" title="Apify" alt="Apify"></img>
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F24586296%3Fv%3D4%26s%3D128?ixlib=js-3.6.0&w=128&h=128&s=2302c202d1dfb93ee7009e3e0fdf839a" title="Apify" alt="Apify"></img>
           </a>
 <a href="https://freebets.ltd.uk" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/freebets/e21c41b/logo.png" title="Free Bets" alt="Free Bets"></img>
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Ffreebets%2Fe21c41b%2Flogo.png?ixlib=js-3.6.0&w=128&h=128&s=4604b72d9eaeda96696803e035148b21" title="Free Bets" alt="Free Bets"></img>
           </a>
 <a href="https://casinoutansvensklicens.co/" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/casino-utan-svensk-licens3/f7e9357/logo.png" title="Casino utan svensk licens" alt="Casino utan svensk licens"></img>
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasino-utan-svensk-licens3%2Ff7e9357%2Flogo.png?ixlib=js-3.6.0&w=128&h=128&s=e419e91476e710fc3cf03ef1e0edff22" title="Casino utan svensk licens" alt="Casino utan svensk licens"></img>
           </a>
 <a href="https://starwarscasinos.com/" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/casino-utan-svensk-licens1/f3487ff/logo.png" title="Casino utan svensk licens" alt="Casino utan svensk licens"></img>
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasino-utan-svensk-licens1%2Ff3487ff%2Flogo.png?ixlib=js-3.6.0&w=128&h=128&s=e8f7ffd3518643dc54eb28f58e7b2842" title="Casino utan svensk licens" alt="Casino utan svensk licens"></img>
           </a>
 <a href="https://www.casinoutanlicens.io/" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/casino-utan-svensk-licens2/a3efb14/logo.png" title="Casino utan svensk licens" alt="Casino utan svensk licens"></img>
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasino-utan-svensk-licens2%2Fa3efb14%2Flogo.png?ixlib=js-3.6.0&w=128&h=128&s=426656abfb0b29087c19aec1d1cb8d61" title="Casino utan svensk licens" alt="Casino utan svensk licens"></img>
           </a>
 <a href="https://www.zenrows.com" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/zenrows/3199d4b/logo.png" title="ZenRows" alt="ZenRows"></img>
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fzenrows%2F3199d4b%2Flogo.png?ixlib=js-3.6.0&w=128&h=128&s=a518a24612603171490257d61643efd0" title="ZenRows" alt="ZenRows"></img>
           </a>
 
 <!-- END SPONSORS -->
@@ -317,28 +317,25 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <!-- BEGIN SPONSORS: backer -->
 
 <a href="https://www.airbnb.com/" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/airbnb/d327d66/logo.png" title="Airbnb" alt="Airbnb"></img>
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fairbnb%2Fd327d66%2Flogo.png?ixlib=js-3.6.0&w=128&h=128&s=1f2950fbc185f9fa3bb3902dfcacf8ef" title="Airbnb" alt="Airbnb"></img>
           </a>
 <a href="https://kafidoff.com" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/kafidoff-vasy/d7ff85c/avatar.png" title="Vasy Kafidoff" alt="Vasy Kafidoff"></img>
-          </a>
-<a href="https://tuxedo.org/" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/olle-jaervi-laturi/660c722/avatar.png" title="Olle Järvi-Laturi" alt="Olle Järvi-Laturi"></img>
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fkafidoff-vasy%2Fd7ff85c%2Favatar.png?ixlib=js-3.6.0&w=128&h=128&s=8f34339e4e6b4643b19984a5c00dda99" title="Vasy Kafidoff" alt="Vasy Kafidoff"></img>
           </a>
 <a href="https://medium.com/norch" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://images.opencollective.com/espenklem/6075b19/avatar.png" title="Espen Klem" alt="Espen Klem"></img>
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fespenklem%2F6075b19%2Favatar.png?ixlib=js-3.6.0&w=128&h=128&s=7de4b57fa6a78b5d6d6509fe1c78ac06" title="Espen Klem" alt="Espen Klem"></img>
           </a>
 <a href="https://jarrodldavis.com" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/235875?v=4&s=128" title="Jarrod Davis" alt="Jarrod Davis"></img>
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F235875%3Fv%3D4%26s%3D128?ixlib=js-3.6.0&w=128&h=128&s=bbe4c9efae413d91f0e22d8f584fc955" title="Jarrod Davis" alt="Jarrod Davis"></img>
           </a>
 <a href="https://nishantsingh.in" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/10304344?u=2f98c0a745b5352c6e758b9a5bc7a9d9d4e3e969&v=4&s=128" title="Nishant Singh" alt="Nishant Singh"></img>
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F10304344%3Fu%3D2f98c0a745b5352c6e758b9a5bc7a9d9d4e3e969%26v%3D4%26s%3D128?ixlib=js-3.6.0&w=128&h=128&s=cd528afcb0636fbc4a1dc053ccc14808" title="Nishant Singh" alt="Nishant Singh"></img>
           </a>
 <a href="https://github.com/gauthamchandra" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/5430280?u=1115bcd3ed7aa8b2a62ff28f62ee4c2b92729903&v=4&s=128" title="Gautham Chandra" alt="Gautham Chandra"></img>
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F5430280%3Fu%3D1115bcd3ed7aa8b2a62ff28f62ee4c2b92729903%26v%3D4%26s%3D128?ixlib=js-3.6.0&w=128&h=128&s=57319e148a262faef41639b76905d29e" title="Gautham Chandra" alt="Gautham Chandra"></img>
           </a>
 <a href="http://www.dr-chuck.com/" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="https://avatars.githubusercontent.com/u/1197222?u=d6dc85c064736ab851c6d9e3318dcdd1be00fb2c&v=4&s=128" title="Charles Severance" alt="Charles Severance"></img>
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F1197222%3Fu%3Dd6dc85c064736ab851c6d9e3318dcdd1be00fb2c%26v%3D4%26s%3D128?ixlib=js-3.6.0&w=128&h=128&s=bd6b8723f6604134a9cbdf8d4b2803fd" title="Charles Severance" alt="Charles Severance"></img>
           </a>
 
 <!-- END SPONSORS -->
