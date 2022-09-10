@@ -57,6 +57,7 @@
     "parse5-htmlparser2-tree-adapter": "^7.0.0"
   },
   "devDependencies": {
+    "@imgix/js-core": "^3.6.0",
     "@octokit/graphql": "^5.0.1",
     "@types/benchmark": "^2.1.2",
     "@types/jest": "^28.1.8",
