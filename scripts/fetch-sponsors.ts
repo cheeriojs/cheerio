@@ -183,7 +183,7 @@ async function fetchGitHubSponsors(): Promise<Sponsor[]> {
  * Remove sponsors from lower tiers that have individual accounts,
  * but are clearly orgs.
  */
-const MISLABELED_ORGS = /[ck]as[yi]+no|bet$|poker|gambling|coffee/i;
+const MISLABELED_ORGS = /[ck]as[yi]+no|bet$|poker|gambling|coffee|tuxedo/i;
 
 const README_PATH = `${__dirname}/../Readme.md`;
 
@@ -212,7 +212,8 @@ const professionalToBackerOverrides = new Map([
       sponsor.tier !== 'sponsor' &&
       (!sponsor.tier ||
         sponsor.type === 'ORGANIZATION' ||
-        MISLABELED_ORGS.test(sponsor.name))
+        MISLABELED_ORGS.test(sponsor.name) ||
+        MISLABELED_ORGS.test(sponsor.url))
     ) {
       continue;
     }
