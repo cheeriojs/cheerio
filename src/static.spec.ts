@@ -323,7 +323,7 @@ describe('cheerio', () => {
 
       expect(
         $.extract({
-          red: [{ selector: '.red', out: 'outerHTML' }],
+          red: [{ selector: '.red', value: 'outerHTML' }],
         })
       ).toStrictEqual({
         red: [

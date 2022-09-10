@@ -35,14 +35,14 @@ describe('$.extract', () => {
     // Should support custom `prop`s.
     expect(
       $root.extract({
-        red: { selector: '.red', out: 'outerHTML' },
-        sel: { selector: '.sel', out: 'tagName' },
+        red: { selector: '.red', value: 'outerHTML' },
+        sel: { selector: '.sel', value: 'tagName' },
       })
     ).toStrictEqual({ red: '<li class="red">Four</li>', sel: 'LI' });
     // Should support custom `prop`s for multiple values.
     expect(
       $root.extract({
-        red: [{ selector: '.red', out: 'outerHTML' }],
+        red: [{ selector: '.red', value: 'outerHTML' }],
       })
     ).toStrictEqual({
       red: [
@@ -56,7 +56,7 @@ describe('$.extract', () => {
       $root.extract({
         red: {
           selector: '.red',
-          out: (el, key) => `${key}=${$(el).text()}`,
+          value: (el, key) => `${key}=${$(el).text()}`,
         },
       })
     ).toStrictEqual({ red: 'red=Four' });
@@ -66,7 +66,7 @@ describe('$.extract', () => {
         red: [
           {
             selector: '.red',
-            out: (el, key) => `${key}=${$(el).text()}`,
+            value: (el, key) => `${key}=${$(el).text()}`,
           },
         ],
       })
@@ -76,7 +76,7 @@ describe('$.extract', () => {
       $root.extract({
         section: {
           selector: 'ul:nth(1)',
-          out: {
+          value: {
             red: '.red',
             blue: '.blue',
           },

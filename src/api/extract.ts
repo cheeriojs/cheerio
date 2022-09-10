@@ -11,7 +11,7 @@ type ExtractDescriptorFn = (
 
 interface ExtractDescriptor {
   selector: string;
-  out?: string | ExtractDescriptorFn | ExtractMap;
+  value?: string | ExtractDescriptorFn | ExtractMap;
 }
 
 type ExtractValue = string | ExtractDescriptor | [string | ExtractDescriptor];
@@ -27,10 +27,10 @@ type ExtractedValue<V extends ExtractValue, M extends ExtractMap> = V extends [
   : V extends string
   ? string
   : V extends ExtractDescriptor
-  ? V['out'] extends ExtractMap
-    ? ExtractedMap<V['out']>
-    : V['out'] extends ExtractDescriptorFn
-    ? ReturnType<V['out']>
+  ? V['value'] extends ExtractMap
+    ? ExtractedMap<V['value']>
+    : V['value'] extends ExtractDescriptorFn
+    ? ReturnType<V['value']>
     : ReturnType<typeof prop>
   : never;
 
@@ -42,12 +42,12 @@ function getExtractDescr(
   descr: string | ExtractDescriptor
 ): Required<ExtractDescriptor> {
   if (typeof descr === 'string') {
-    return { selector: descr, out: 'textContent' };
+    return { selector: descr, value: 'textContent' };
   }
 
   return {
     selector: descr.selector,
-    out: descr.out ?? 'textContent',
+    value: descr.value ?? 'textContent',
   };
 }
 
@@ -69,14 +69,14 @@ export function extract<M extends ExtractMap, T extends AnyNode>(
     const descr = map[key];
     const isArray = Array.isArray(descr);
 
-    const { selector, out: prop } = getExtractDescr(isArray ? descr[0] : descr);
+    const { selector, value } = getExtractDescr(isArray ? descr[0] : descr);
 
     const fn: ExtractDescriptorFn =
-      typeof prop === 'function'
-        ? prop
-        : typeof prop === 'string'
-        ? (el: Element) => this._make(el).prop(prop)
-        : (el: Element) => this._make(el).extract(prop);
+      typeof value === 'function'
+        ? value
+        : typeof value === 'string'
+        ? (el: Element) => this._make(el).prop(value)
+        : (el: Element) => this._make(el).extract(value);
 
     if (isArray) {
       ret[key] = this._findBySelector(selector, Infinity)
