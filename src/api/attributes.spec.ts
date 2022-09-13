@@ -1,4 +1,4 @@
-import cheerio from '..';
+import cheerio from '../index.js';
 import type { Cheerio } from '../cheerio.js';
 import type { Element } from 'domhandler';
 import {
