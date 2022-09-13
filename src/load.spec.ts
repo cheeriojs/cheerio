@@ -1,4 +1,4 @@
-import cheerio from '.';
+import cheerio from './index.js';
 
 describe('.load', () => {
   it('(html) : should retain original root after creating a new node', () => {

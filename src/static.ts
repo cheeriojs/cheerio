@@ -1,5 +1,5 @@
 import type { BasicAcceptedElems } from './types.js';
-import type { CheerioAPI, Cheerio } from '.';
+import type { CheerioAPI, Cheerio } from './index.js';
 import type { AnyNode, Document } from 'domhandler';
 import { textContent } from 'domutils';
 import {
