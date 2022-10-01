@@ -189,7 +189,7 @@ async function fetchGitHubSponsors(): Promise<Sponsor[]> {
  * Remove sponsors from lower tiers that have individual accounts,
  * but are clearly orgs.
  */
-const MISLABELED_ORGS = /[ck]as[yi]+no|bet$|poker|gambling|coffee|tuxedo/i;
+const MISLABELED_ORGS = /[ck]as[yi]+no|bet$|poker|gambling|coffee|tuxedo|aorg/i;
 
 const README_PATH = `${__dirname}/../Readme.md`;
 
@@ -278,6 +278,8 @@ const professionalToBackerOverrides = new Map([
             <img height="128px" width="128px" src="${imgix.buildURL(s.image, {
               w: 128,
               h: 128,
+              fit: 'fillmax',
+              fill: 'solid',
             })}" title="${s.name}" alt="${s.name}"></img>
           </a>`
       )
