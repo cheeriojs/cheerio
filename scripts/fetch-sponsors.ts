@@ -189,7 +189,8 @@ async function fetchGitHubSponsors(): Promise<Sponsor[]> {
  * Remove sponsors from lower tiers that have individual accounts,
  * but are clearly orgs.
  */
-const MISLABELED_ORGS = /[ck]as[yi]+no|bet$|poker|gambling|coffee|tuxedo|aorg/i;
+const MISLABELED_ORGS =
+  /[ck]as[yi]+no|bet$|poker|gambling|coffee|tuxedo|(?:ph|f)oto/i;
 
 const README_PATH = `${__dirname}/../Readme.md`;
 
