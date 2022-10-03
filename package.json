@@ -61,7 +61,7 @@
     "@octokit/graphql": "^5.0.1",
     "@types/benchmark": "^2.1.2",
     "@types/jest": "^28.1.8",
-    "@types/node": "^18.7.23",
+    "@types/node": "^18.8.0",
     "@typescript-eslint/eslint-plugin": "^5.38.1",
     "@typescript-eslint/parser": "^5.38.1",
     "benchmark": "^2.1.4",
