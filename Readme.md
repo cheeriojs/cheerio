@@ -287,7 +287,7 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcryptocasinos%2F99b168e%2Flogo.png?ixlib=js-3.6.0&w=128&h=128&fit=fillmax&fill=solid&s=5c862b89514b97911c56b703efceba0c" title="CryptoCasinos" alt="CryptoCasinos"></img>
           </a>
 <a href="https://www.casinoonlineaams.com" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasinoonlineaamscom%2Fda74236%2Flogo.png?ixlib=js-3.6.0&w=128&h=128&fit=fillmax&fill=solid&s=02e7db604e88f29607710f78fe89cdfc" title="Casinoonlineaams.com" alt="Casinoonlineaams.com"></img>
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasinoonlineaamscom%2Fc59b0fd%2Flogo.png?ixlib=js-3.6.0&w=128&h=128&fit=fillmax&fill=solid&s=f4ad018ea50d1cab6d2f3c47eff9580e" title="Casinoonlineaams.com" alt="Casinoonlineaams.com"></img>
           </a>
 <a href="https://apify.com/" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F24586296%3Fv%3D4%26s%3D128?ixlib=js-3.6.0&w=128&h=128&fit=fillmax&fill=solid&s=eff582035ec78f28921aa8b2a8c6d20c" title="Apify" alt="Apify"></img>
@@ -306,6 +306,9 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
           </a>
 <a href="https://www.zenrows.com" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fzenrows%2F3199d4b%2Flogo.png?ixlib=js-3.6.0&w=128&h=128&fit=fillmax&fill=solid&s=c0ab419ba46652a2e9053d74763a5ac2" title="ZenRows" alt="ZenRows"></img>
+          </a>
+<a href="https://scommessesportivemania.com/" target="_blank" rel="noopener noreferrer">
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fscommessesportivemania-com%2Fe6941a3%2Favatar.png?ixlib=js-3.6.0&w=128&h=128&fit=fillmax&fill=solid&s=d4b9275b907e65d379e92df47c6396e6" title="Scommessesportivemania.com" alt="Scommessesportivemania.com"></img>
           </a>
 
 <!-- END SPONSORS -->
