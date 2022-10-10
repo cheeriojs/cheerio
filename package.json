@@ -52,9 +52,11 @@
     "dom-serializer": "^2.0.0",
     "domhandler": "^5.0.3",
     "domutils": "^3.0.1",
+    "encoding-sniffer": "^0.0.0",
     "htmlparser2": "^8.0.1",
     "parse5": "^7.1.2",
-    "parse5-htmlparser2-tree-adapter": "^7.0.0"
+    "parse5-htmlparser2-tree-adapter": "^7.0.0",
+    "parse5-parser-stream": "^7.1.2"
   },
   "devDependencies": {
     "@imgix/js-core": "^3.7.0",
@@ -112,7 +114,7 @@
   "lint-staged": {
     "*.js": [
       "prettier --write",
-      "npm run test:lint -- --fix"
+      "npm run lint:es -- --fix"
     ],
     "*.{json,md,ts,yml}": [
       "prettier --write"
