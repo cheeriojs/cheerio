@@ -10,9 +10,10 @@ import { WritableStream as Htmlparser2Stream } from 'htmlparser2/lib/WritableStr
 import DomHandler from 'domhandler';
 import { ParserStream as Parse5Stream } from 'parse5-parser-stream';
 import { DecodeStream } from 'encoding-sniffer';
+import * as undici from 'undici';
 import { type Writable, finished } from 'node:stream';
 
-export function stream(
+export function stringStream(
   options: CheerioOptions,
   cb: (err: Error | null | undefined, $: CheerioAPI) => void
 ): Writable {
@@ -34,32 +35,53 @@ export function stream(
   return stream;
 }
 
+export function decodeStream(
+  options: CheerioOptions,
+  cb: (err: Error | null | undefined, $: CheerioAPI) => void
+): Writable {
+  // TODO: Set the encoding to UTF8 for XML mode
+  const decodeStream = new DecodeStream();
+  const loadStream = stringStream(options, cb);
+
+  decodeStream.pipe(loadStream);
+
+  return decodeStream;
+}
+
 // Get a document from a URL
 export async function request(
+  // eslint-disable-next-line node/no-unsupported-features/node-builtins
   url: string | URL,
   options: CheerioOptions
 ): Promise<CheerioAPI> {
-  const opts = flattenOptions(options);
-  const str = stream(opts, (err, $) => {
-    if (err) {
-      throw err;
-    }
+  let undiciStream: Promise<undici.Dispatcher.StreamData> | undefined;
+
+  const promise = new Promise<CheerioAPI>((resolve, reject) => {
+    undiciStream = undici.stream(
+      url,
+      {
+        method: 'GET',
+        headers: {
+          'user-agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36',
+        },
+      },
+      (data) => {
+        // TODO Add support for handling status codes.
+        if (!data.statusCode) {
+          throw new Error(`Received ${data.statusCode}`);
+        }
+
+        // TODO: Forward the charset from the header to the decodeStream.
+        return decodeStream(options, (err, $) =>
+          err ? reject(err) : resolve($)
+        );
+      }
+    );
   });
 
-  const res = await fetch(url, {
-    method: 'GET',
-    headers: {
-      'user-agent':
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36',
-    },
-  });
+  // Let's make sure the request is completed before returning the promise.
+  await undiciStream;
 
-  if (!res.ok) {
-    throw new Error(`${res.status} ${res.statusText}`);
-  }
-
-  str.write(res.body);
-  str.end();
-
-  return stream;
+  return promise;
 }
