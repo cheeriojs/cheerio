@@ -324,6 +324,9 @@ export function closest<T extends AnyNode>(
       : getFilterFn(selector);
 
   domEach(this, (elem: AnyNode | null) => {
+    if (elem && !isDocument(elem) && !isTag(elem)) {
+      elem = elem.parent;
+    }
     while (elem && isTag(elem)) {
       if (selectFn(elem, 0)) {
         // Do not add duplicate elements to the set

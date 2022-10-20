@@ -798,6 +798,12 @@ describe('$(...)', () => {
       const result = $('.saladbar', food).closest('ul');
       expect(result).toHaveLength(0);
     });
+
+    it('(selector) : should find closest element for text nodes', () => {
+      const textNode = $('.apple', food).contents().first();
+      const result = textNode.closest('#food') as Cheerio<Element>;
+      expect(result[0].attribs).toHaveProperty('id', 'food');
+    });
   });
 
   describe('.each', () => {
