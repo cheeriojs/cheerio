@@ -495,61 +495,77 @@ function setData(
 }
 
 /**
+ * Read _all_ HTML5 `data-*` attributes from the equivalent HTML5 `data-*`
+ * attribute, and (if present) cache the value in the node's internal data
+ * store.
+ *
+ * @private
+ * @category Attributes
+ * @param el - Element to get the data attribute of.
+ * @returns A map with all of the data attributes.
+ */
+function readAllData(el: DataElement): unknown {
+  const domNames = Object.keys(el.attribs).filter((attrName) =>
+    attrName.startsWith(dataAttrPrefix)
+  );
+
+  for (let idx = 0; idx < domNames.length; ++idx) {
+    const domName = domNames[idx];
+    const jsName = camelCase(domName.slice(dataAttrPrefix.length));
+
+    if (
+      hasOwn.call(el.attribs, domName) &&
+      !hasOwn.call((el as DataElement).data, jsName)
+    ) {
+      (el.data as Record<string, unknown>)[jsName] = parseDataValue(
+        el.attribs[domName]
+      );
+    }
+  }
+
+  return el.data;
+}
+
+/**
  * Read the specified attribute from the equivalent HTML5 `data-*` attribute,
- * and (if present) cache the value in the node's internal data store. If no
- * attribute name is specified, read _all_ HTML5 `data-*` attributes in this
- * manner.
+ * and (if present) cache the value in the node's internal data store.
  *
  * @private
  * @category Attributes
  * @param el - Element to get the data attribute of.
  * @param name - Name of the data attribute.
- * @returns The data attribute's value, or a map with all of the data
- *   attributes.
+ * @returns The data attribute's value.
  */
-function readData(el: DataElement, name?: string): unknown {
-  let domNames;
-  let jsNames;
-  let value;
+function readData(el: DataElement, name: string): unknown {
+  const domName = dataAttrPrefix + cssCase(name);
+  const data = el.data!;
 
-  if (name == null) {
-    domNames = Object.keys(el.attribs).filter((attrName) =>
-      attrName.startsWith(dataAttrPrefix)
-    );
-    jsNames = domNames.map((domName) =>
-      camelCase(domName.slice(dataAttrPrefix.length))
-    );
-  } else {
-    domNames = [dataAttrPrefix + cssCase(name)];
-    jsNames = [name];
+  if (hasOwn.call(data, name)) {
+    return data[name];
   }
 
-  for (let idx = 0; idx < domNames.length; ++idx) {
-    const domName = domNames[idx];
-    const jsName = jsNames[idx];
-    if (
-      hasOwn.call(el.attribs, domName) &&
-      !hasOwn.call((el as DataElement).data, jsName)
-    ) {
-      value = el.attribs[domName];
+  if (hasOwn.call(el.attribs, domName)) {
+    return (data[name] = parseDataValue(el.attribs[domName]));
+  }
 
-      if (hasOwn.call(primitives, value)) {
-        value = primitives[value];
-      } else if (value === String(Number(value))) {
-        value = Number(value);
-      } else if (rbrace.test(value)) {
-        try {
-          value = JSON.parse(value);
-        } catch (e) {
-          /* Ignore */
-        }
-      }
+  return undefined;
+}
 
-      (el.data as Record<string, unknown>)[jsName] = value;
+function parseDataValue(value: string) {
+  if (hasOwn.call(primitives, value)) {
+    return primitives[value];
+  }
+  if (value === String(Number(value))) {
+    return Number(value);
+  }
+  if (rbrace.test(value)) {
+    try {
+      return JSON.parse(value);
+    } catch (e) {
+      /* Ignore */
     }
   }
-
-  return name == null ? el.data : value;
+  return value;
 }
 
 /**
@@ -651,7 +667,7 @@ export function data<T extends AnyNode>(
 
   // Return the entire data object if no data specified
   if (!name) {
-    return readData(dataEl);
+    return readAllData(dataEl);
   }
 
   // Set the value (with attr map support)
