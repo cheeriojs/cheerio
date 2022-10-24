@@ -20,7 +20,8 @@ export abstract class Cheerio<T> implements ArrayLike<T> {
 
   options: InternalOptions;
   /**
-   * The root of the document. Can be set by using the `root` argument of the constructor.
+   * The root of the document. Can be set by using the `root` argument of the
+   * constructor.
    *
    * @private
    */

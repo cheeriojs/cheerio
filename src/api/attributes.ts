@@ -86,7 +86,8 @@ function getAttr(
 }
 
 /**
- * Sets the value of an attribute. The attribute will be deleted if the value is `null`.
+ * Sets the value of an attribute. The attribute will be deleted if the value is
+ * `null`.
  *
  * @private
  * @param el - The element to set the attribute on.
@@ -291,7 +292,8 @@ interface StyleProp {
  *
  * @param name - Name of the property.
  * @param value - If specified set the property to this.
- * @returns If `value` is specified the instance itself, otherwise the prop's value.
+ * @returns If `value` is specified the instance itself, otherwise the prop's
+ *   value.
  * @see {@link https://api.jquery.com/prop/}
  */
 export function prop<T extends AnyNode>(
@@ -495,13 +497,15 @@ function setData(
 /**
  * Read the specified attribute from the equivalent HTML5 `data-*` attribute,
  * and (if present) cache the value in the node's internal data store. If no
- * attribute name is specified, read _all_ HTML5 `data-*` attributes in this manner.
+ * attribute name is specified, read _all_ HTML5 `data-*` attributes in this
+ * manner.
  *
  * @private
  * @category Attributes
  * @param el - Element to get the data attribute of.
  * @param name - Name of the data attribute.
- * @returns The data attribute's value, or a map with all of the data attributes.
+ * @returns The data attribute's value, or a map with all of the data
+ *   attributes.
  */
 function readData(el: DataElement, name?: string): unknown {
   let domNames;
@@ -549,7 +553,8 @@ function readData(el: DataElement, name?: string): unknown {
 }
 
 /**
- * Method for getting data attributes, for only the first element in the matched set.
+ * Method for getting data attributes, for only the first element in the matched
+ * set.
  *
  * @category Attributes
  * @example
@@ -560,7 +565,8 @@ function readData(el: DataElement, name?: string): unknown {
  * ```
  *
  * @param name - Name of the data attribute.
- * @returns The data attribute's value, or `undefined` if the attribute does not exist.
+ * @returns The data attribute's value, or `undefined` if the attribute does not
+ *   exist.
  * @see {@link https://api.jquery.com/data/}
  */
 export function data<T extends AnyNode>(
@@ -586,7 +592,8 @@ export function data<T extends AnyNode>(
   this: Cheerio<T>
 ): Record<string, unknown>;
 /**
- * Method for setting data attributes, for only the first element in the matched set.
+ * Method for setting data attributes, for only the first element in the matched
+ * set.
  *
  * @category Attributes
  * @example
@@ -917,7 +924,8 @@ export function addClass<T extends AnyNode, R extends ArrayLike<T>>(
 
 /**
  * Removes one or more space-separated classes from the selected elements. If no
- * `className` is defined, all classes will be removed. Also accepts a `function`.
+ * `className` is defined, all classes will be removed. Also accepts a
+ * `function`.
  *
  * @category Attributes
  * @example
@@ -986,7 +994,8 @@ export function removeClass<T extends AnyNode, R extends ArrayLike<T>>(
 
 /**
  * Add or remove class(es) from the matched elements, depending on either the
- * class's presence or the value of the switch argument. Also accepts a `function`.
+ * class's presence or the value of the switch argument. Also accepts a
+ * `function`.
  *
  * @category Attributes
  * @example
