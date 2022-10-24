@@ -488,8 +488,7 @@ function setData(
 
 /**
  * Read _all_ HTML5 `data-*` attributes from the equivalent HTML5 `data-*`
- * attribute, and (if present) cache the value in the node's internal data
- * store.
+ * attribute, and cache the value in the node's internal data store.
  *
  * @private
  * @category Attributes
