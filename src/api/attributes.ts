@@ -472,17 +472,15 @@ interface DataElement extends Element {
  * @param value - The data attribute's value.
  */
 function setData(
-  el: Element,
+  el: DataElement,
   name: string | Record<string, unknown>,
   value?: unknown
 ) {
-  const elem: DataElement = el;
+  const data = el.data!;
 
-  elem.data ??= {};
-
-  if (typeof name === 'object') Object.assign(elem.data, name);
+  if (typeof name === 'object') Object.assign(data, name);
   else if (typeof name === 'string' && value !== undefined) {
-    elem.data[name] = value;
+    data[name] = value;
   }
 }
 
