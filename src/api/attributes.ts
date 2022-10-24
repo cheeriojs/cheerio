@@ -12,15 +12,7 @@ import { innerText, textContent } from 'domutils';
 const hasOwn = Object.prototype.hasOwnProperty;
 const rspace = /\s+/;
 const dataAttrPrefix = 'data-';
-/*
- * Lookup table for coercing string data-* attributes to their corresponding
- * JavaScript primitives
- */
-const primitives: Record<string, unknown> = {
-  null: null,
-  true: true,
-  false: false,
-};
+
 // Attributes that are booleans
 const rboolean =
   /^(?:autofocus|autoplay|async|checked|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped|selected)$/i;
@@ -86,7 +78,8 @@ function getAttr(
 }
 
 /**
- * Sets the value of an attribute. The attribute will be deleted if the value is `null`.
+ * Sets the value of an attribute. The attribute will be deleted if the value is
+ * `null`.
  *
  * @private
  * @param el - The element to set the attribute on.
@@ -291,7 +284,8 @@ interface StyleProp {
  *
  * @param name - Name of the property.
  * @param value - If specified set the property to this.
- * @returns If `value` is specified the instance itself, otherwise the prop's value.
+ * @returns If `value` is specified the instance itself, otherwise the prop's
+ *   value.
  * @see {@link https://api.jquery.com/prop/}
  */
 export function prop<T extends AnyNode>(
@@ -473,17 +467,15 @@ interface DataElement extends Element {
  * Sets the value of a data attribute.
  *
  * @private
- * @param el - The element to set the data attribute on.
+ * @param elem - The element to set the data attribute on.
  * @param name - The data attribute's name.
  * @param value - The data attribute's value.
  */
 function setData(
-  el: Element,
+  elem: DataElement,
   name: string | Record<string, unknown>,
   value?: unknown
 ) {
-  const elem: DataElement = el;
-
   elem.data ??= {};
 
   if (typeof name === 'object') Object.assign(elem.data, name);
@@ -493,63 +485,81 @@ function setData(
 }
 
 /**
+ * Read _all_ HTML5 `data-*` attributes from the equivalent HTML5 `data-*`
+ * attribute, and cache the value in the node's internal data store.
+ *
+ * @private
+ * @category Attributes
+ * @param el - Element to get the data attribute of.
+ * @returns A map with all of the data attributes.
+ */
+function readAllData(el: DataElement): unknown {
+  for (const domName of Object.keys(el.attribs)) {
+    if (!domName.startsWith(dataAttrPrefix)) {
+      continue;
+    }
+
+    const jsName = camelCase(domName.slice(dataAttrPrefix.length));
+
+    if (!hasOwn.call(el.data, jsName)) {
+      el.data![jsName] = parseDataValue(el.attribs[domName]);
+    }
+  }
+
+  return el.data;
+}
+
+/**
  * Read the specified attribute from the equivalent HTML5 `data-*` attribute,
- * and (if present) cache the value in the node's internal data store. If no
- * attribute name is specified, read _all_ HTML5 `data-*` attributes in this manner.
+ * and (if present) cache the value in the node's internal data store.
  *
  * @private
  * @category Attributes
  * @param el - Element to get the data attribute of.
  * @param name - Name of the data attribute.
- * @returns The data attribute's value, or a map with all of the data attributes.
+ * @returns The data attribute's value.
  */
-function readData(el: DataElement, name?: string): unknown {
-  let domNames;
-  let jsNames;
-  let value;
+function readData(el: DataElement, name: string): unknown {
+  const domName = dataAttrPrefix + cssCase(name);
+  const data = el.data!;
 
-  if (name == null) {
-    domNames = Object.keys(el.attribs).filter((attrName) =>
-      attrName.startsWith(dataAttrPrefix)
-    );
-    jsNames = domNames.map((domName) =>
-      camelCase(domName.slice(dataAttrPrefix.length))
-    );
-  } else {
-    domNames = [dataAttrPrefix + cssCase(name)];
-    jsNames = [name];
+  if (hasOwn.call(data, name)) {
+    return data[name];
   }
 
-  for (let idx = 0; idx < domNames.length; ++idx) {
-    const domName = domNames[idx];
-    const jsName = jsNames[idx];
-    if (
-      hasOwn.call(el.attribs, domName) &&
-      !hasOwn.call((el as DataElement).data, jsName)
-    ) {
-      value = el.attribs[domName];
-
-      if (hasOwn.call(primitives, value)) {
-        value = primitives[value];
-      } else if (value === String(Number(value))) {
-        value = Number(value);
-      } else if (rbrace.test(value)) {
-        try {
-          value = JSON.parse(value);
-        } catch (e) {
-          /* Ignore */
-        }
-      }
-
-      (el.data as Record<string, unknown>)[jsName] = value;
-    }
+  if (hasOwn.call(el.attribs, domName)) {
+    return (data[name] = parseDataValue(el.attribs[domName]));
   }
 
-  return name == null ? el.data : value;
+  return undefined;
 }
 
 /**
- * Method for getting data attributes, for only the first element in the matched set.
+ * Coerce string data-* attributes to their corresponding JavaScript primitives.
+ *
+ * @private
+ * @category Attributes
+ * @returns The parsed value.
+ */
+function parseDataValue(value: string): unknown {
+  if (value === 'null') return null;
+  if (value === 'true') return true;
+  if (value === 'false') return false;
+  const num = Number(value);
+  if (value === String(num)) return num;
+  if (rbrace.test(value)) {
+    try {
+      return JSON.parse(value);
+    } catch (e) {
+      /* Ignore */
+    }
+  }
+  return value;
+}
+
+/**
+ * Method for getting data attributes, for only the first element in the matched
+ * set.
  *
  * @category Attributes
  * @example
@@ -560,7 +570,8 @@ function readData(el: DataElement, name?: string): unknown {
  * ```
  *
  * @param name - Name of the data attribute.
- * @returns The data attribute's value, or `undefined` if the attribute does not exist.
+ * @returns The data attribute's value, or `undefined` if the attribute does not
+ *   exist.
  * @see {@link https://api.jquery.com/data/}
  */
 export function data<T extends AnyNode>(
@@ -586,7 +597,8 @@ export function data<T extends AnyNode>(
   this: Cheerio<T>
 ): Record<string, unknown>;
 /**
- * Method for setting data attributes, for only the first element in the matched set.
+ * Method for setting data attributes, for only the first element in the matched
+ * set.
  *
  * @category Attributes
  * @example
@@ -643,8 +655,8 @@ export function data<T extends AnyNode>(
   dataEl.data ??= {};
 
   // Return the entire data object if no data specified
-  if (!name) {
-    return readData(dataEl);
+  if (name == null) {
+    return readAllData(dataEl);
   }
 
   // Set the value (with attr map support)
@@ -656,9 +668,6 @@ export function data<T extends AnyNode>(
       }
     });
     return this;
-  }
-  if (hasOwn.call(dataEl.data, name)) {
-    return dataEl.data[name];
   }
 
   return readData(dataEl, name);
@@ -917,7 +926,8 @@ export function addClass<T extends AnyNode, R extends ArrayLike<T>>(
 
 /**
  * Removes one or more space-separated classes from the selected elements. If no
- * `className` is defined, all classes will be removed. Also accepts a `function`.
+ * `className` is defined, all classes will be removed. Also accepts a
+ * `function`.
  *
  * @category Attributes
  * @example
@@ -986,7 +996,8 @@ export function removeClass<T extends AnyNode, R extends ArrayLike<T>>(
 
 /**
  * Add or remove class(es) from the matched elements, depending on either the
- * class's presence or the value of the switch argument. Also accepts a `function`.
+ * class's presence or the value of the switch argument. Also accepts a
+ * `function`.
  *
  * @category Attributes
  * @example

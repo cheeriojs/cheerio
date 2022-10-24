@@ -84,7 +84,8 @@ export function find<T extends AnyNode>(
 
 /**
  * Creates a matcher, using a particular mapping function. Matchers provide a
- * function that finds elements using a generating function, supporting filtering.
+ * function that finds elements using a generating function, supporting
+ * filtering.
  *
  * @private
  * @param matchMap - Mapping function.
@@ -257,7 +258,8 @@ export const parents = _matcher(
 
 /**
  * Get the ancestors of each element in the current set of matched elements, up
- * to but not including the element matched by the selector, DOM node, or cheerio object.
+ * to but not including the element matched by the selector, DOM node, or
+ * cheerio object.
  *
  * @category Traversing
  * @example
@@ -280,7 +282,8 @@ export const parentsUntil = _matchUntil(
 
 /**
  * For each element in the set, get the first element that matches the selector
- * by testing the element itself and traversing up through its ancestors in the DOM tree.
+ * by testing the element itself and traversing up through its ancestors in the
+ * DOM tree.
  *
  * @category Traversing
  * @example
@@ -343,7 +346,8 @@ export function closest<T extends AnyNode>(
 }
 
 /**
- * Gets the next sibling of the first selected element, optionally filtered by a selector.
+ * Gets the next sibling of the first selected element, optionally filtered by a
+ * selector.
  *
  * @category Traversing
  * @example
@@ -913,7 +917,8 @@ export function eq<T>(this: Cheerio<T>, i: number): Cheerio<T> {
 }
 
 /**
- * Retrieve one of the elements matched by the Cheerio object, at the `i`th position.
+ * Retrieve one of the elements matched by the Cheerio object, at the `i`th
+ * position.
  *
  * @category Traversing
  * @example

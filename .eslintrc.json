@@ -88,6 +88,8 @@
         "dot-notation": 0,
         "curly": [2, "multi-line"],
 
+        "jsdoc/require-returns-check": 0, // Broken with overloaded fns
+
         "@typescript-eslint/prefer-for-of": 0,
         "@typescript-eslint/member-ordering": 0,
         "@typescript-eslint/explicit-function-return-type": 0,
