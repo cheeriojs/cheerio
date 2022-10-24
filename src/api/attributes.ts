@@ -476,11 +476,11 @@ function setData(
   name: string | Record<string, unknown>,
   value?: unknown
 ) {
-  const data = el.data!;
+  el.data ??= {};
 
-  if (typeof name === 'object') Object.assign(data, name);
+  if (typeof name === 'object') Object.assign(el.data, name);
   else if (typeof name === 'string' && value !== undefined) {
-    data[name] = value;
+    el.data[name] = value;
   }
 }
 
