@@ -504,7 +504,7 @@ function readAllData(el: DataElement): unknown {
     const jsName = camelCase(domName.slice(dataAttrPrefix.length));
 
     if (!hasOwn.call(el.data, jsName)) {
-      el.data![jsName] ??= parseDataValue(el.attribs[domName]);
+      el.data![jsName] = parseDataValue(el.attribs[domName]);
     }
   }
 
