@@ -658,7 +658,7 @@ export function data<T extends AnyNode>(
   dataEl.data ??= {};
 
   // Return the entire data object if no data specified
-  if (!name) {
+  if (name == null) {
     return readAllData(dataEl);
   }
 
