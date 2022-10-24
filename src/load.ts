@@ -15,7 +15,8 @@ type StaticType = typeof staticMethods;
 /**
  * A querying function, bound to a document created from the provided markup.
  *
- * Also provides several helper methods for dealing with the document as a whole.
+ * Also provides several helper methods for dealing with the document as a
+ * whole.
  */
 export interface CheerioAPI extends StaticType {
   /**
@@ -80,7 +81,8 @@ export function getLoad(
   ) => string
 ) {
   /**
-   * Create a querying function, bound to a document created from the provided markup.
+   * Create a querying function, bound to a document created from the provided
+   * markup.
    *
    * Note that similar to web browser contexts, this operation may introduce
    * `<html>`, `<head>`, and `<body>` elements; set `isDocument` to `false` to
@@ -104,7 +106,10 @@ export function getLoad(
     const internalOpts = { ...defaultOptions, ...flattenOptions(options) };
     const initialRoot = parse(content, internalOpts, isDocument, null);
 
-    /** Create an extended class here, so that extensions only live on one instance. */
+    /**
+     * Create an extended class here, so that extensions only live on one
+     * instance.
+     */
     class LoadedCheerio<T> extends Cheerio<T> {
       _make<T>(
         selector?: ArrayLike<T> | T | string,

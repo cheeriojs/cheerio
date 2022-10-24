@@ -13,7 +13,8 @@ import type { Cheerio } from '../cheerio.js';
 import type { BasicAcceptedElems, AcceptedElems } from '../types.js';
 
 /**
- * Create an array of nodes, recursing into arrays and parsing strings if necessary.
+ * Create an array of nodes, recursing into arrays and parsing strings if
+ * necessary.
  *
  * @private
  * @category Manipulation
@@ -185,7 +186,8 @@ export function appendTo<T extends AnyNode>(
 }
 
 /**
- * Insert every element in the set of matched elements to the beginning of the target.
+ * Insert every element in the set of matched elements to the beginning of the
+ * target.
  *
  * @category Manipulation
  * @example
@@ -354,7 +356,8 @@ function _wrap(
  * //   </ul>
  * ```
  *
- * @param wrapper - The DOM structure to wrap around each element in the selection.
+ * @param wrapper - The DOM structure to wrap around each element in the
+ *   selection.
  * @see {@link https://api.jquery.com/wrap/}
  */
 export const wrap = _wrap((el, elInsertLocation, wrapperDom) => {
@@ -457,7 +460,8 @@ export const wrapInner = _wrap((el, elInsertLocation, wrapperDom) => {
  * ```
  *
  * @param selector - A selector to check the parent element against. If an
- *   element's parent does not match the selector, the element won't be unwrapped.
+ *   element's parent does not match the selector, the element won't be
+ *   unwrapped.
  * @returns The instance itself, for chaining.
  * @see {@link https://api.jquery.com/unwrap/}
  */
@@ -995,7 +999,8 @@ export function toString<T extends AnyNode>(this: Cheerio<T>): string {
  */
 export function text<T extends AnyNode>(this: Cheerio<T>): string;
 /**
- * Set the content of each element in the set of matched elements to the specified text.
+ * Set the content of each element in the set of matched elements to the
+ * specified text.
  *
  * @category Manipulation
  * @example

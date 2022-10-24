@@ -50,7 +50,8 @@ export function cssCase(str: string): string {
 }
 
 /**
- * Iterate over each DOM element without creating intermediary Cheerio instances.
+ * Iterate over each DOM element without creating intermediary Cheerio
+ * instances.
  *
  * This is indented for use internally to avoid otherwise unnecessary memory
  * pressure introduced by _make.
