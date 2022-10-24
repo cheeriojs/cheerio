@@ -12,15 +12,7 @@ import { innerText, textContent } from 'domutils';
 const hasOwn = Object.prototype.hasOwnProperty;
 const rspace = /\s+/;
 const dataAttrPrefix = 'data-';
-/*
- * Lookup table for coercing string data-* attributes to their corresponding
- * JavaScript primitives
- */
-const primitives: Record<string, unknown> = {
-  null: null,
-  true: true,
-  false: false,
-};
+
 // Attributes that are booleans
 const rboolean =
   /^(?:autofocus|autoplay|async|checked|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped|selected)$/i;
@@ -505,19 +497,15 @@ function setData(
  * @returns A map with all of the data attributes.
  */
 function readAllData(el: DataElement): unknown {
-  const domNames = Object.keys(el.attribs).filter((attrName) =>
-    attrName.startsWith(dataAttrPrefix)
-  );
+  for (const domName of Object.keys(el.attribs)) {
+    if (!domName.startsWith(dataAttrPrefix)) {
+      continue;
+    }
 
-  for (let idx = 0; idx < domNames.length; ++idx) {
-    const domName = domNames[idx];
     const jsName = camelCase(domName.slice(dataAttrPrefix.length));
 
-    if (
-      hasOwn.call(el.attribs, domName) &&
-      !hasOwn.call((el as DataElement).data, jsName)
-    ) {
-      el.data![jsName] = parseDataValue(el.attribs[domName]);
+    if (!hasOwn.call(el.data, jsName)) {
+      el.data![jsName] ??= parseDataValue(el.attribs[domName]);
     }
   }
 
@@ -549,13 +537,19 @@ function readData(el: DataElement, name: string): unknown {
   return undefined;
 }
 
-function parseDataValue(value: string) {
-  if (hasOwn.call(primitives, value)) {
-    return primitives[value];
-  }
-  if (value === String(Number(value))) {
-    return Number(value);
-  }
+/**
+ * Coerce string data-* attributes to their corresponding JavaScript primitives.
+ *
+ * @private
+ * @category Attributes
+ * @returns The parsed value.
+ */
+function parseDataValue(value: string): unknown {
+  if (value === 'null') return null;
+  if (value === 'true') return true;
+  if (value === 'false') return false;
+  const num = Number(value);
+  if (value === String(num)) return num;
   if (rbrace.test(value)) {
     try {
       return JSON.parse(value);
@@ -677,9 +671,6 @@ export function data<T extends AnyNode>(
       }
     });
     return this;
-  }
-  if (hasOwn.call(dataEl.data, name)) {
-    return dataEl.data[name];
   }
 
   return readData(dataEl, name);
