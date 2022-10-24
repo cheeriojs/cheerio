@@ -517,9 +517,7 @@ function readAllData(el: DataElement): unknown {
       hasOwn.call(el.attribs, domName) &&
       !hasOwn.call((el as DataElement).data, jsName)
     ) {
-      (el.data as Record<string, unknown>)[jsName] = parseDataValue(
-        el.attribs[domName]
-      );
+      el.data![jsName] = parseDataValue(el.attribs[domName]);
     }
   }
 
