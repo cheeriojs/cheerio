@@ -530,6 +530,12 @@ describe('$(...)', () => {
       expect($el.data('custom')).toBe('{{templatevar}}');
     });
 
+    it('("") : should accept the empty string as a name', () => {
+      const $el = cheerio('<div data-="a">');
+
+      expect($el.data('')).toBe('a');
+    });
+
     it('(hyphen key) : data addribute with hyphen should be camelized ;-)', () => {
       const data = $('.frey').data();
       expect(data).toStrictEqual({
