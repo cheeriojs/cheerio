@@ -467,20 +467,20 @@ interface DataElement extends Element {
  * Sets the value of a data attribute.
  *
  * @private
- * @param el - The element to set the data attribute on.
+ * @param elem - The element to set the data attribute on.
  * @param name - The data attribute's name.
  * @param value - The data attribute's value.
  */
 function setData(
-  el: DataElement,
+  elem: DataElement,
   name: string | Record<string, unknown>,
   value?: unknown
 ) {
-  el.data ??= {};
+  elem.data ??= {};
 
-  if (typeof name === 'object') Object.assign(el.data, name);
+  if (typeof name === 'object') Object.assign(elem.data, name);
   else if (typeof name === 'string' && value !== undefined) {
-    el.data[name] = value;
+    elem.data[name] = value;
   }
 }
 
