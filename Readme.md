@@ -310,6 +310,9 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="https://scommessesportivemania.com/" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fscommessesportivemania-com%2Fe6941a3%2Favatar.png?ixlib=js-3.6.1&w=128&h=128&fit=fillmax&fill=solid&s=19da67637cd7ec5dc7aa7389a903600a" title="Scommessesportivemania.com" alt="Scommessesportivemania.com"></img>
           </a>
+<a href="https://www.nettikasinot.org" target="_blank" rel="noopener noreferrer">
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fnettikasinot-org%2F53a4b44%2Flogo.png?ixlib=js-3.6.1&w=128&h=128&fit=fillmax&fill=solid&s=f0f8bad8bec42fdb50a73137044d1c8b" title="Nettikasinot.org" alt="Nettikasinot.org"></img>
+          </a>
 
 <!-- END SPONSORS -->
 
