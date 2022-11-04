@@ -331,9 +331,6 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="https://jarrodldavis.com" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F235875%3Fv%3D4%26s%3D128?ixlib=js-3.7.0&w=128&h=128&fit=fillmax&fill=solid&s=dbbae93ad39b17146c1cd28bdadd9d02" title="Jarrod Davis" alt="Jarrod Davis"></img>
           </a>
-<a href="https://nishantsingh.in" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F10304344%3Fu%3D2f98c0a745b5352c6e758b9a5bc7a9d9d4e3e969%26v%3D4%26s%3D128?ixlib=js-3.7.0&w=128&h=128&fit=fillmax&fill=solid&s=4ac965caa57809e029210a4d49d1f0e0" title="Nishant Singh" alt="Nishant Singh"></img>
-          </a>
 <a href="https://github.com/gauthamchandra" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F5430280%3Fu%3D1115bcd3ed7aa8b2a62ff28f62ee4c2b92729903%26v%3D4%26s%3D128?ixlib=js-3.7.0&w=128&h=128&fit=fillmax&fill=solid&s=80a285fd1884b07419f41e4b703fe33b" title="Gautham Chandra" alt="Gautham Chandra"></img>
           </a>
