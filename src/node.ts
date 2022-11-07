@@ -55,7 +55,7 @@ export function decodeStream(
   const { encoding = {}, ...cheerioOptions } = options;
   const opts = flattenOptions(cheerioOptions);
 
-  // Set the encoding to UTF8 for XML mode
+  // Set the default encoding to UTF-8 for XML mode
   encoding.defaultEncoding ??= opts?.xmlMode ? 'utf8' : 'windows-1252';
 
   const decodeStream = new DecodeStream(encoding);
@@ -66,9 +66,18 @@ export function decodeStream(
   return decodeStream;
 }
 
-interface CheerioRequestOptions extends DecodeStreamOptions {
-  requestOptions?: Parameters<typeof undici.stream>[1];
+type UndiciStreamOptions = Parameters<typeof undici.stream>[1];
+
+export interface CheerioRequestOptions extends DecodeStreamOptions {
+  /** The options passed to `undici`'s `stream` method. */
+  requestOptions?: UndiciStreamOptions;
 }
+
+const defaultRequestOptions: UndiciStreamOptions = {
+  method: 'GET',
+  maxRedirections: 5,
+  throwOnError: true,
+};
 
 // Get a document from a URL
 export async function request(
@@ -77,7 +86,7 @@ export async function request(
   options: CheerioRequestOptions = {}
 ): Promise<CheerioAPI> {
   const {
-    requestOptions = { method: 'GET' },
+    requestOptions = defaultRequestOptions,
     encoding = {},
     ...cheerioOptions
   } = options;
@@ -87,11 +96,6 @@ export async function request(
 
   const promise = new Promise<CheerioAPI>((resolve, reject) => {
     undiciStream = undici.stream(url, requestOptions, (res) => {
-      // TODO Add support for handling status codes, such as redirects.
-      if (!res.statusCode) {
-        throw new Error(`Received ${res.statusCode}`);
-      }
-
       const contentType = res.headers['content-type'];
       const mimeType = new MIMEType(contentType ?? 'text/html');
 
@@ -102,16 +106,21 @@ export async function request(
       }
 
       // Forward the charset from the header to the decodeStream.
-      encoding.transportLayerEncodingLabel ??=
-        mimeType.parameters.get('charset');
+      encoding.transportLayerEncodingLabel = mimeType.parameters.get('charset');
+
+      /*
+       * If we allow redirects, we will have entries in the history.
+       * The last entry will be the final URL.
+       */
+      const history = (res.context as any)?.history;
 
       const opts = {
         ...flattenOptions(cheerioOptions),
         encoding,
         // Set XML mode based on the MIME type.
         xmlMode: mimeType.isXML(),
-        // TODO: Set the baseURL based on the final URL.
-        baseURL: (res.context as any)?.url,
+        // Set the `baseURL` to the final URL.
+        baseURL: history ? history[history.length - 1] : url,
       };
 
       return decodeStream(opts, (err, $) => (err ? reject(err) : resolve($)));
