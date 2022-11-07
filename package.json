@@ -56,7 +56,8 @@
     "htmlparser2": "^8.0.1",
     "parse5": "^7.1.2",
     "parse5-htmlparser2-tree-adapter": "^7.0.0",
-    "parse5-parser-stream": "^7.1.2"
+    "parse5-parser-stream": "^7.1.2",
+    "whatwg-mimetype": "^3.0.0"
   },
   "devDependencies": {
     "@imgix/js-core": "^3.7.0",
@@ -64,6 +65,7 @@
     "@types/benchmark": "^2.1.2",
     "@types/jest": "^29.2.3",
     "@types/node": "^18.11.9",
+    "@types/whatwg-mimetype": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^5.44.0",
     "@typescript-eslint/parser": "^5.44.0",
     "benchmark": "^2.1.4",

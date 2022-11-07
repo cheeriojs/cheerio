@@ -11,6 +11,7 @@ import DomHandler from 'domhandler';
 import { ParserStream as Parse5Stream } from 'parse5-parser-stream';
 import { DecodeStream, type SnifferOptions } from 'encoding-sniffer';
 import * as undici from 'undici';
+import MIMEType from 'whatwg-mimetype';
 import { type Writable, finished } from 'node:stream';
 
 function _stringStream(
@@ -43,16 +44,21 @@ export function stringStream(
   return _stringStream(flattenOptions(options), cb);
 }
 
+export interface DecodeStreamOptions extends CheerioOptions {
+  encoding?: SnifferOptions;
+}
+
 export function decodeStream(
-  options: CheerioOptions,
+  options: DecodeStreamOptions,
   cb: (err: Error | null | undefined, $: CheerioAPI) => void
 ): Writable {
-  const opts = flattenOptions(options);
-  const snifferOpts: SnifferOptions = {
-    // Set the encoding to UTF8 for XML mode
-    defaultEncoding: opts?.xmlMode ? 'utf8' : 'windows-1252',
-  };
-  const decodeStream = new DecodeStream(snifferOpts);
+  const { encoding = {}, ...cheerioOptions } = options;
+  const opts = flattenOptions(cheerioOptions);
+
+  // Set the encoding to UTF8 for XML mode
+  encoding.defaultEncoding ??= opts?.xmlMode ? 'utf8' : 'windows-1252';
+
+  const decodeStream = new DecodeStream(encoding);
   const loadStream = _stringStream(opts, cb);
 
   decodeStream.pipe(loadStream);
@@ -60,36 +66,56 @@ export function decodeStream(
   return decodeStream;
 }
 
+interface CheerioRequestOptions extends DecodeStreamOptions {
+  requestOptions?: Parameters<typeof undici.stream>[1];
+}
+
 // Get a document from a URL
 export async function request(
   // eslint-disable-next-line node/no-unsupported-features/node-builtins
   url: string | URL,
-  options: CheerioOptions
+  options: CheerioRequestOptions = {}
 ): Promise<CheerioAPI> {
+  const {
+    requestOptions = { method: 'GET' },
+    encoding = {},
+    ...cheerioOptions
+  } = options;
   let undiciStream: Promise<undici.Dispatcher.StreamData> | undefined;
 
-  const promise = new Promise<CheerioAPI>((resolve, reject) => {
-    undiciStream = undici.stream(
-      url,
-      {
-        method: 'GET',
-        headers: {
-          'user-agent':
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36',
-        },
-      },
-      (data) => {
-        // TODO Add support for handling status codes.
-        if (!data.statusCode) {
-          throw new Error(`Received ${data.statusCode}`);
-        }
+  requestOptions.method ??= 'GET';
 
-        // TODO: Forward the charset from the header to the decodeStream.
-        return decodeStream(options, (err, $) =>
-          err ? reject(err) : resolve($)
+  const promise = new Promise<CheerioAPI>((resolve, reject) => {
+    undiciStream = undici.stream(url, requestOptions, (res) => {
+      // TODO Add support for handling status codes, such as redirects.
+      if (!res.statusCode) {
+        throw new Error(`Received ${res.statusCode}`);
+      }
+
+      const contentType = res.headers['content-type'];
+      const mimeType = new MIMEType(contentType ?? 'text/html');
+
+      if (!mimeType.isHTML() && !mimeType.isXML()) {
+        throw new RangeError(
+          `The content-type "${contentType}" is neither HTML nor XML.`
         );
       }
-    );
+
+      // Forward the charset from the header to the decodeStream.
+      encoding.transportLayerEncodingLabel ??=
+        mimeType.parameters.get('charset');
+
+      const opts = {
+        ...flattenOptions(cheerioOptions),
+        encoding,
+        // Set XML mode based on the MIME type.
+        xmlMode: mimeType.isXML(),
+        // TODO: Set the baseURL based on the final URL.
+        baseURL: (res.context as any)?.url,
+      };
+
+      return decodeStream(opts, (err, $) => (err ? reject(err) : resolve($)));
+    });
   });
 
   // Let's make sure the request is completed before returning the promise.
