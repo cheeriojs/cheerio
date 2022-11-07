@@ -80,7 +80,7 @@ const defaultRequestOptions: UndiciStreamOptions = {
 };
 
 // Get a document from a URL
-export async function request(
+export async function fromURL(
   // eslint-disable-next-line node/no-unsupported-features/node-builtins
   url: string | URL,
   options: CheerioRequestOptions = {}
