@@ -313,6 +313,9 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="https://www.nettikasinot.org" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fnettikasinot-org%2F53a4b44%2Flogo.png?ixlib=js-3.7.0&w=128&h=128&fit=fillmax&fill=solid&s=85708f09fa4c2d50df2636055ed3984d" title="Nettikasinot.org" alt="Nettikasinot.org"></img>
           </a>
+<a href="https://casinosicuri.info/" target="_blank" rel="noopener noreferrer">
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasinosicuri-info%2F5dc691c%2Favatar.png?ixlib=js-3.7.0&w=128&h=128&fit=fillmax&fill=solid&s=912cf1ce6c1e76fb67b6455b4fe9d4a4" title="Casinosicuri.info" alt="Casinosicuri.info"></img>
+          </a>
 
 <!-- END SPONSORS -->
 
