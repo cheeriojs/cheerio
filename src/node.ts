@@ -75,8 +75,14 @@ export interface CheerioRequestOptions extends DecodeStreamOptions {
 
 const defaultRequestOptions: UndiciStreamOptions = {
   method: 'GET',
+  // Allow redirects by default
   maxRedirections: 5,
+  // NOTE: `throwOnError` currently doesn't work https://github.com/nodejs/undici/issues/1753
   throwOnError: true,
+  // Set an Accept header
+  headers: {
+    accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+  },
 };
 
 // Get a document from a URL
@@ -92,7 +98,8 @@ export async function fromURL(
   } = options;
   let undiciStream: Promise<undici.Dispatcher.StreamData> | undefined;
 
-  requestOptions.method ??= 'GET';
+  // Add headers if none were supplied.
+  requestOptions.headers ??= defaultRequestOptions.headers;
 
   const promise = new Promise<CheerioAPI>((resolve, reject) => {
     undiciStream = undici.stream(url, requestOptions, (res) => {
@@ -115,7 +122,7 @@ export async function fromURL(
       const history = (res.context as any)?.history;
 
       const opts = {
-        ...flattenOptions(cheerioOptions),
+        ...cheerioOptions,
         encoding,
         // Set XML mode based on the MIME type.
         xmlMode: mimeType.isXML(),
