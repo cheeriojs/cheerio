@@ -9,10 +9,35 @@ import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';
 import { WritableStream as Htmlparser2Stream } from 'htmlparser2/lib/WritableStream';
 import DomHandler from 'domhandler';
 import { ParserStream as Parse5Stream } from 'parse5-parser-stream';
-import { DecodeStream, type SnifferOptions } from 'encoding-sniffer';
+import {
+  decodeBuffer,
+  DecodeStream,
+  type SnifferOptions,
+} from 'encoding-sniffer';
 import * as undici from 'undici';
 import MIMEType from 'whatwg-mimetype';
 import { type Writable, finished } from 'node:stream';
+
+/**
+ * Sniffs the encoding of a buffer, then creates a querying function bound to a
+ * document created from the buffer.
+ *
+ * @param buffer - The buffer to sniff the encoding of.
+ * @param options - The options to pass to Cheerio.
+ * @returns The loaded document.
+ */
+export function loadBuffer(
+  buffer: Buffer,
+  options: DecodeStreamOptions = {}
+): CheerioAPI {
+  const opts = flattenOptions(options);
+  const str = decodeBuffer(buffer, {
+    defaultEncoding: opts?.xmlMode ? 'utf8' : 'windows-1252',
+    ...options.encoding,
+  });
+
+  return load(str, opts);
+}
 
 function _stringStream(
   options: InternalOptions | undefined,

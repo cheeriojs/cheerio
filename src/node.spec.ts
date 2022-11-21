@@ -16,6 +16,24 @@ const TEST_HTML_UTF16_BOM = Buffer.from([
   ...Array.from(TEST_HTML_UTF16),
 ]);
 
+describe('loadBuffer', () => {
+  it('should parse UTF-8 HTML', () => {
+    const $ = cheerio.loadBuffer(Buffer.from(TEST_HTML));
+
+    expect($.html()).toBe(
+      `<html><head></head><body>${TEST_HTML}</body></html>`
+    );
+  });
+
+  it('should parse UTF-16 HTML', () => {
+    const $ = cheerio.loadBuffer(TEST_HTML_UTF16_BOM);
+
+    expect($.html()).toBe(
+      `<html><head></head><body>${TEST_HTML}</body></html>`
+    );
+  });
+});
+
 describe('stringStream', () => {
   it('should use parse5 by default', (cb) => {
     const stream = cheerio.stringStream({}, (err, $) => {
