@@ -1,7 +1,7 @@
 /* eslint-disable jest/no-done-callback */
 import * as cheerio from './node.js';
 import { Writable } from 'node:stream';
-import { createServer } from 'node:http';
+import { createServer, type Server } from 'node:http';
 
 function noop() {
   // Ignore
@@ -103,29 +103,36 @@ describe('decodeStream', () => {
   });
 });
 
-function createTestServer(
-  contentType: string,
-  body: string | Buffer
-): Promise<number> {
-  return new Promise((resolve, reject) => {
-    const server = createServer((_req, res) => {
-      res.writeHead(200, { 'Content-Type': contentType });
-      res.end(body);
-    });
-
-    server.listen(0, () => {
-      const address = server.address();
-
-      if (typeof address === 'string' || address === null) {
-        reject(new Error('Failed to get port'));
-      } else {
-        resolve(address.port);
-      }
-    });
-  });
-}
-
 describe('fromURL', () => {
+  let server: Server | undefined;
+
+  function createTestServer(
+    contentType: string,
+    body: string | Buffer
+  ): Promise<number> {
+    return new Promise((resolve, reject) => {
+      server = createServer((_req, res) => {
+        res.writeHead(200, { 'Content-Type': contentType });
+        res.end(body);
+      });
+
+      server.listen(0, () => {
+        const address = server?.address();
+
+        if (typeof address === 'string' || address == null) {
+          reject(new Error('Failed to get port'));
+        } else {
+          resolve(address.port);
+        }
+      });
+    });
+  }
+
+  afterEach((cb) => {
+    server?.close(cb);
+    server = undefined;
+  });
+
   it('should fetch UTF-8 HTML', async () => {
     const port = await createTestServer('text/html', TEST_HTML);
     const $ = await cheerio.fromURL(`http://localhost:${port}`);
