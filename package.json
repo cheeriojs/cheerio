@@ -30,7 +30,10 @@
   "exports": {
     ".": {
       "require": "./lib/index.js",
-      "import": "./lib/esm/index.js"
+      "import": {
+        "node": "./lib/esm/node.js",
+        "default": "./lib/esm/index.js"
+      }
     },
     "./lib/slim": {
       "require": "./lib/slim.js",
@@ -39,6 +42,10 @@
     "./lib/utils": {
       "require": "./lib/utils.js",
       "import": "./lib/esm/utils.js"
+    },
+    "./lib/node": {
+      "require": "./lib/node.js",
+      "import": "./lib/esm/node.js"
     }
   },
   "files": [
