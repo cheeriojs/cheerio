@@ -1,9 +1,9 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
+import { Script } from 'node:vm';
 
 import { Suite, Event } from 'benchmark';
 import { JSDOM } from 'jsdom';
-import { Script } from 'vm';
 import cheerio from '../lib/index.js';
 
 const documentDir = path.join(__dirname, 'documents');
@@ -73,11 +73,9 @@ export default class Suites {
 
     jQueryScript.runInContext(dom.getInternalVMContext());
 
-    const setupData: T = options.setup(dom.window.$);
+    const setupData: T = options.setup(dom.window['$']);
 
-    suite.add('jsdom', () => {
-      testFn(dom.window.$, setupData);
-    });
+    suite.add('jsdom', () => testFn(dom.window['$'], setupData));
     suite.run();
   }
 
