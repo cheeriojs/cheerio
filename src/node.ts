@@ -1,6 +1,6 @@
 export * from './index.js';
 
-/* eslint-disable node/no-unsupported-features/node-builtins, node/file-extension-in-import */
+/* eslint-disable n/no-unsupported-features/node-builtins, n/file-extension-in-import */
 
 import type { CheerioAPI, CheerioOptions } from './index.js';
 import { load } from './index.js';
