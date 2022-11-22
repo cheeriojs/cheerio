@@ -380,7 +380,7 @@ export function prop<T extends AnyNode>(
       case 'src': {
         const prop = el.attribs?.[name];
 
-        /* eslint-disable node/no-unsupported-features/node-builtins */
+        /* eslint-disable n/no-unsupported-features/node-builtins */
         if (
           typeof URL !== 'undefined' &&
           ((name === 'href' && (el.tagName === 'a' || el.name === 'link')) ||
@@ -395,7 +395,7 @@ export function prop<T extends AnyNode>(
         ) {
           return new URL(prop, this.options.baseURI).href;
         }
-        /* eslint-enable node/no-unsupported-features/node-builtins */
+        /* eslint-enable n/no-unsupported-features/node-builtins */
 
         return prop;
       }

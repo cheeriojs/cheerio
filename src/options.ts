@@ -27,7 +27,7 @@ export interface CheerioOptions extends HTMLParser2Options, Parse5Options {
   xml?: HTMLParser2Options | boolean;
 
   /** The base URI for the document. Used for the `href` and `src` props. */
-  baseURI?: string | URL; // eslint-disable-line node/no-unsupported-features/node-builtins
+  baseURI?: string | URL; // eslint-disable-line n/no-unsupported-features/node-builtins
 
   /**
    * Is the document in quirks mode?
