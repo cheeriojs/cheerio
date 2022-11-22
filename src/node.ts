@@ -63,6 +63,16 @@ function _stringStream(
   return stream;
 }
 
+/**
+ * Creates a stream that parses a sequence of strings into a document.
+ *
+ * The stream is a `Writable` stream that accepts strings. When the stream is
+ * finished, the callback is called with the loaded document.
+ *
+ * @param options - The options to pass to Cheerio.
+ * @param cb - The callback to call when the stream is finished.
+ * @returns The writable stream.
+ */
 export function stringStream(
   options: CheerioOptions,
   cb: (err: Error | null | undefined, $: CheerioAPI) => void
@@ -74,6 +84,16 @@ export interface DecodeStreamOptions extends CheerioOptions {
   encoding?: SnifferOptions;
 }
 
+/**
+ * Parses a stream of buffers into a document.
+ *
+ * The stream is a `Writable` stream that accepts buffers. When the stream is
+ * finished, the callback is called with the loaded document.
+ *
+ * @param options - The options to pass to Cheerio.
+ * @param cb - The callback to call when the stream is finished.
+ * @returns The writable stream.
+ */
 export function decodeStream(
   options: DecodeStreamOptions,
   cb: (err: Error | null | undefined, $: CheerioAPI) => void
@@ -111,7 +131,15 @@ const defaultRequestOptions: UndiciStreamOptions = {
   },
 };
 
-// Get a document from a URL
+/**
+ * `fromURL` loads a document from a URL.
+ *
+ * By default, redirects are allowed and non-2xx responses are rejected.
+ *
+ * @param url - The URL to load the document from.
+ * @param options - The options to pass to Cheerio.
+ * @returns The loaded document.
+ */
 export async function fromURL(
   url: string | URL,
   options: CheerioRequestOptions = {}
