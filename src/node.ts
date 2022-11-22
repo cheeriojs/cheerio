@@ -1,12 +1,13 @@
 export * from './index.js';
 
-/* eslint-disable n/no-unsupported-features/node-builtins, n/file-extension-in-import */
+/* eslint-disable n/no-unsupported-features/node-builtins */
 
 import type { CheerioAPI, CheerioOptions } from './index.js';
 import { load } from './index.js';
 import { flatten as flattenOptions, InternalOptions } from './options.js';
 import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';
 
+// eslint-disable-next-line n/file-extension-in-import
 import { WritableStream as Htmlparser2Stream } from 'htmlparser2/lib/WritableStream';
 import DomHandler from 'domhandler';
 import { ParserStream as Parse5Stream } from 'parse5-parser-stream';
