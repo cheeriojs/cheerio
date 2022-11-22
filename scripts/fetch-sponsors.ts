@@ -5,7 +5,7 @@
  *   https://github.com/eslint/website/blob/230e73457dcdc2353ad7934e876a5a222a17b1d7/_tools/fetch-sponsors.js.
  */
 
-import * as fs from 'fs/promises';
+import * as fs from 'node:fs/promises';
 import { request } from 'undici';
 import { graphql as githubGraphQL } from '@octokit/graphql';
 import ImgixClient from '@imgix/js-core';

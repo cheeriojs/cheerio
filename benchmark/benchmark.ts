@@ -1,4 +1,4 @@
-import Suites from './suite'; // eslint-disable-line node/file-extension-in-import
+import Suites from './suite'; // eslint-disable-line n/file-extension-in-import
 import type { Cheerio } from '../src/cheerio.js';
 import type { Element } from 'domhandler';
 
