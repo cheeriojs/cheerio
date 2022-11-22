@@ -63,7 +63,7 @@
     "@types/jest": "^28.1.8",
     "@types/node": "^18.11.9",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
-    "@typescript-eslint/parser": "^5.43.0",
+    "@typescript-eslint/parser": "^5.44.0",
     "benchmark": "^2.1.4",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
