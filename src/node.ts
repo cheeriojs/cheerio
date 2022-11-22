@@ -1,11 +1,12 @@
 export * from './index.js';
 
+/* eslint-disable node/no-unsupported-features/node-builtins, node/file-extension-in-import */
+
 import type { CheerioAPI, CheerioOptions } from './index.js';
 import { load } from './index.js';
 import { flatten as flattenOptions, InternalOptions } from './options.js';
 import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';
 
-// eslint-disable-next-line node/file-extension-in-import
 import { WritableStream as Htmlparser2Stream } from 'htmlparser2/lib/WritableStream';
 import DomHandler from 'domhandler';
 import { ParserStream as Parse5Stream } from 'parse5-parser-stream';
@@ -112,7 +113,6 @@ const defaultRequestOptions: UndiciStreamOptions = {
 
 // Get a document from a URL
 export async function fromURL(
-  // eslint-disable-next-line node/no-unsupported-features/node-builtins
   url: string | URL,
   options: CheerioRequestOptions = {}
 ): Promise<CheerioAPI> {
@@ -144,15 +144,21 @@ export async function fromURL(
        * If we allow redirects, we will have entries in the history.
        * The last entry will be the final URL.
        */
-      const history = (res.context as any)?.history;
+      const history = (
+        res.context as
+          | {
+              history?: URL[];
+            }
+          | undefined
+      )?.history;
 
       const opts = {
-        ...cheerioOptions,
         encoding,
         // Set XML mode based on the MIME type.
         xmlMode: mimeType.isXML(),
         // Set the `baseURL` to the final URL.
         baseURL: history ? history[history.length - 1] : url,
+        ...cheerioOptions,
       };
 
       return decodeStream(opts, (err, $) => (err ? reject(err) : resolve($)));
