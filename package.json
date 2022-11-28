@@ -30,7 +30,10 @@
   "exports": {
     ".": {
       "require": "./lib/index.js",
-      "import": "./lib/esm/index.js"
+      "import": {
+        "node": "./lib/esm/node.js",
+        "default": "./lib/esm/index.js"
+      }
     },
     "./lib/slim": {
       "require": "./lib/slim.js",
@@ -39,6 +42,10 @@
     "./lib/utils": {
       "require": "./lib/utils.js",
       "import": "./lib/esm/utils.js"
+    },
+    "./lib/node": {
+      "require": "./lib/node.js",
+      "import": "./lib/esm/node.js"
     }
   },
   "files": [
@@ -52,16 +59,21 @@
     "dom-serializer": "^2.0.0",
     "domhandler": "^5.0.3",
     "domutils": "^3.0.1",
+    "encoding-sniffer": "^0.0.1",
     "htmlparser2": "^8.0.1",
     "parse5": "^7.1.2",
-    "parse5-htmlparser2-tree-adapter": "^7.0.0"
+    "parse5-htmlparser2-tree-adapter": "^7.0.0",
+    "parse5-parser-stream": "^7.1.2",
+    "whatwg-mimetype": "^3.0.0"
   },
   "devDependencies": {
     "@imgix/js-core": "^3.7.0",
     "@octokit/graphql": "^5.0.4",
     "@types/benchmark": "^2.1.2",
     "@types/jest": "^29.2.3",
+    "@types/jsdom": "^20.0.1",
     "@types/node": "^18.11.9",
+    "@types/whatwg-mimetype": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^5.44.0",
     "@typescript-eslint/parser": "^5.44.0",
     "benchmark": "^2.1.4",
@@ -112,7 +124,7 @@
   "lint-staged": {
     "*.js": [
       "prettier --write",
-      "npm run test:lint -- --fix"
+      "npm run lint:es -- --fix"
     ],
     "*.{json,md,ts,yml}": [
       "prettier --write"
