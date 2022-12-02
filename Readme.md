@@ -301,9 +301,6 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="https://starwarscasinos.com/" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasino-utan-svensk-licens1%2Ff3487ff%2Flogo.png?ixlib=js-3.7.0&w=128&h=128&fit=fillmax&fill=solid&s=cb1dfe828f245c704607478a429310fd" title="Casino utan svensk licens" alt="Casino utan svensk licens"></img>
           </a>
-<a href="https://www.casinoutanlicens.io/" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasino-utan-svensk-licens2%2Fa3efb14%2Flogo.png?ixlib=js-3.7.0&w=128&h=128&fit=fillmax&fill=solid&s=3faf110ff188e93aaef43bc0bf18001f" title="Casino utan svensk licens" alt="Casino utan svensk licens"></img>
-          </a>
 <a href="https://www.zenrows.com" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fzenrows%2F3199d4b%2Flogo.png?ixlib=js-3.7.0&w=128&h=128&fit=fillmax&fill=solid&s=b9a921f40e314ac3df943e08e5f7ac26" title="ZenRows" alt="ZenRows"></img>
           </a>
