@@ -1,12 +1,12 @@
 import { parseDOM } from 'htmlparser2';
-import cheerio from '.';
+import cheerio from './index.js';
 import * as utils from './utils.js';
 import { fruits, food, noscript } from './__fixtures__/fixtures.js';
 import type { Cheerio } from './cheerio.js';
 import type { Element } from 'domhandler';
 import type { CheerioOptions } from './options.js';
 
-declare module '.' {
+declare module './index.js' {
   interface Cheerio<T> {
     myPlugin(...args: unknown[]): {
       context: Cheerio<T>;

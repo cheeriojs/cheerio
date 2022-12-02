@@ -1,4 +1,4 @@
-import cheerio from '..';
+import cheerio from '../index.js';
 import type { CheerioOptions } from '../options.js';
 
 function xml(str: string, options?: CheerioOptions) {

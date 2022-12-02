@@ -4,7 +4,7 @@
  * maintained until that time.
  */
 import * as fixtures from '../__fixtures__/fixtures.js';
-import cheerio from '..';
+import cheerio from '../index.js';
 
 describe('deprecated APIs', () => {
   /**
@@ -244,7 +244,8 @@ describe('deprecated APIs', () => {
      * ```
      *
      * @example <caption>To render the markup of an entire document, invoke the
-     * `html` function exported by the Cheerio module with a "root" selection.</caption>
+     * `html` function exported by the Cheerio module with a "root"
+     * selection.</caption>
      *
      * ```js
      * cheerio.html($.root());
