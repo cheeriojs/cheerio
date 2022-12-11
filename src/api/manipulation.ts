@@ -4,7 +4,13 @@
  * @module cheerio/manipulation
  */
 
-import { ParentNode, AnyNode, Element, Text, hasChildren } from 'domhandler';
+import {
+  Text,
+  hasChildren,
+  type ParentNode,
+  type AnyNode,
+  type Element,
+} from 'domhandler';
 import { update as updateDOM } from '../parse.js';
 import { text as staticText } from '../static.js';
 import { domEach, cloneDom, isTag, isHtml, isCheerio } from '../utils.js';

@@ -104,6 +104,9 @@
         "@typescript-eslint/prefer-includes": 2,
         "@typescript-eslint/switch-exhaustiveness-check": 2,
         "@typescript-eslint/prefer-nullish-coalescing": 2,
+        "@typescript-eslint/no-non-null-assertion": "warn",
+        "@typescript-eslint/no-duplicate-imports": "error",
+        "@typescript-eslint/consistent-type-imports": "error",
 
         "@typescript-eslint/no-explicit-any": 1 // TODO
       }

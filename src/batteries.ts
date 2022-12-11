@@ -4,7 +4,7 @@ export * from './index.js';
 
 import type { CheerioAPI, CheerioOptions } from './index.js';
 import { load } from './index.js';
-import { flatten as flattenOptions, InternalOptions } from './options.js';
+import { flatten as flattenOptions, type InternalOptions } from './options.js';
 import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';
 
 // eslint-disable-next-line n/file-extension-in-import

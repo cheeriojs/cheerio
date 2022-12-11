@@ -5,11 +5,11 @@
  */
 
 import {
-  AnyNode,
-  Element,
+  type AnyNode,
+  type Element,
   hasChildren,
   isDocument,
-  Document,
+  type Document,
 } from 'domhandler';
 import type { Cheerio } from '../cheerio.js';
 import * as select from 'cheerio-select';
