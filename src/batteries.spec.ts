@@ -1,5 +1,5 @@
 /* eslint-disable jest/no-done-callback */
-import * as cheerio from './node.js';
+import * as cheerio from './batteries.js';
 import { Writable } from 'node:stream';
 import { createServer, type Server } from 'node:http';
 

@@ -31,7 +31,7 @@
     ".": {
       "require": "./lib/index.js",
       "import": {
-        "node": "./lib/esm/node.js",
+        "node": "./lib/esm/batteries.js",
         "default": "./lib/esm/index.js"
       }
     },
@@ -43,9 +43,9 @@
       "require": "./lib/utils.js",
       "import": "./lib/esm/utils.js"
     },
-    "./lib/node": {
-      "require": "./lib/node.js",
-      "import": "./lib/esm/node.js"
+    "./lib/batteries": {
+      "require": "./lib/batteries.js",
+      "import": "./lib/esm/batteries.js"
     }
   },
   "files": [
