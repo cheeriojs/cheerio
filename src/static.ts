@@ -120,7 +120,7 @@ export function text(
   this: CheerioAPI | void,
   elements?: ArrayLike<AnyNode>
 ): string {
-  const elems = elements ? elements : this ? this.root() : [];
+  const elems = elements ?? (this ? this.root() : []);
 
   let ret = '';
 
@@ -176,7 +176,7 @@ export function parseHTML(
    * from the `children` array. The results of `parseHTML` should remain
    * constant across these operations, so a shallow copy should be returned.
    */
-  return parsed.root()[0].children.slice();
+  return [...parsed.root()[0].children];
 }
 
 /**

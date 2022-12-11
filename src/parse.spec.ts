@@ -46,6 +46,17 @@ const styleEmpty = '<style></style>';
 // Directives
 const directive = '<!doctype html>';
 
+function rootTest(root: Document) {
+  expect(root).toHaveProperty('type', 'root');
+
+  expect(root.nextSibling).toBe(null);
+  expect(root.previousSibling).toBe(null);
+  expect(root.parentNode).toBe(null);
+
+  const child = root.childNodes[0];
+  expect(child.parentNode).toBe(root);
+}
+
 describe('parse', () => {
   describe('evaluate', () => {
     it(`should parse basic empty tags: ${basic}`, () => {
@@ -171,16 +182,6 @@ describe('parse', () => {
 
   describe('.parse', () => {
     // Root test utility
-    function rootTest(root: Document) {
-      expect(root).toHaveProperty('type', 'root');
-
-      expect(root.nextSibling).toBe(null);
-      expect(root.previousSibling).toBe(null);
-      expect(root.parentNode).toBe(null);
-
-      const child = root.childNodes[0];
-      expect(child.parentNode).toBe(root);
-    }
 
     it(`should add root to: ${basic}`, () => {
       const root = parse(basic, defaultOpts, true, null);
@@ -370,14 +371,15 @@ describe('parse', () => {
 
       expect(childNodes.length).toBe(3);
 
-      childNodes.forEach((child, i) => {
+      for (let i = 0; i < childNodes.length; i++) {
+        const child = childNodes[i];
         expect(child.tagName).toBe('tr');
         expect(child.childNodes[0]).toHaveProperty('tagName', 'td');
         expect((child.childNodes[0] as Element).childNodes[0]).toHaveProperty(
           'data',
           `i${i + 1}`
         );
-      });
+      }
     });
 
     it('Should correctly parse data url attributes', () => {

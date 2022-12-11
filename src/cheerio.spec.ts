@@ -20,6 +20,16 @@ declare module './index.js' {
 const script = '<script src="script.js" type="text/javascript"></script>';
 const multiclass = '<p><a class="btn primary" href="#">Save</a></p>';
 
+function testAppleSelect($apple: ArrayLike<Element>) {
+  expect($apple).toHaveLength(1);
+  const apple = $apple[0];
+  expect(apple.parentNode).toHaveProperty('tagName', 'ul');
+  expect(apple.prev).toBe(null);
+  expect((apple.next as Element).attribs).toHaveProperty('class', 'orange');
+  expect(apple.childNodes).toHaveLength(1);
+  expect(apple.childNodes[0]).toHaveProperty('data', 'Apple');
+}
+
 describe('cheerio', () => {
   it('cheerio(null) should be empty', () => {
     expect(cheerio(null as any)).toHaveLength(0);
@@ -60,16 +70,6 @@ describe('cheerio', () => {
     expect($script[0].attribs).toHaveProperty('type', 'text/javascript');
     expect($script[0].childNodes).toHaveLength(0);
   });
-
-  function testAppleSelect($apple: ArrayLike<Element>) {
-    expect($apple).toHaveLength(1);
-    const apple = $apple[0];
-    expect(apple.parentNode).toHaveProperty('tagName', 'ul');
-    expect(apple.prev).toBe(null);
-    expect((apple.next as Element).attribs).toHaveProperty('class', 'orange');
-    expect(apple.childNodes).toHaveLength(1);
-    expect(apple.childNodes[0]).toHaveProperty('data', 'Apple');
-  }
 
   // eslint-disable-next-line jest/expect-expect
   it('should be able to select .apple with only a context', () => {
@@ -164,11 +164,11 @@ describe('cheerio', () => {
     const $apple = $elems
       .toArray()
       .filter((elem) => elem.attribs['class'] === 'apple');
-    const $fruits = $elems
+    const $fruit = $elems
       .toArray()
-      .filter((elem) => elem.attribs['id'] === 'fruits');
+      .find((elem) => elem.attribs['id'] === 'fruits');
     testAppleSelect($apple);
-    expect($fruits[0].attribs).toHaveProperty('id', 'fruits');
+    expect($fruit?.attribs).toHaveProperty('id', 'fruits');
   });
 
   it('should select first element cheerio(:first)', () => {

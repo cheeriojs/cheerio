@@ -177,7 +177,7 @@ async function fetchGitHubSponsors(): Promise<Sponsor[]> {
       url: sponsor.websiteUrl || sponsor.url,
       type:
         // Workaround to get the type — fetch a field that only exists on users.
-        typeof sponsor.isViewer === 'undefined' ? 'ORGANIZATION' : 'INDIVIDUAL',
+        sponsor.isViewer === undefined ? 'ORGANIZATION' : 'INDIVIDUAL',
       monthlyDonation: tier.monthlyPriceInDollars * 100,
       source: 'github',
       tier: getTierSlug(tier.monthlyPriceInDollars),
@@ -185,12 +185,19 @@ async function fetchGitHubSponsors(): Promise<Sponsor[]> {
   );
 }
 
+async function fetchSponsors(): Promise<Sponsor[]> {
+  const openCollectiveSponsors = fetchOpenCollectiveSponsors();
+  const githubSponsors = fetchGitHubSponsors();
+
+  return [...(await openCollectiveSponsors), ...(await githubSponsors)];
+}
+
 /*
  * Remove sponsors from lower tiers that have individual accounts,
  * but are clearly orgs.
  */
 const MISLABELED_ORGS =
-  /[ck]as[yi]+no|bet$|poker|gambling|coffee|tuxedo|(?:ph|f)oto/i;
+  /[ck]as[iy]+no|bet$|poker|gambling|coffee|tuxedo|(?:ph|f)oto/i;
 
 const README_PATH = `${__dirname}/../Readme.md`;
 
@@ -202,80 +209,73 @@ const professionalToBackerOverrides = new Map([
   ['Vasy Kafidoff', 'https://kafidoff.com'],
 ]);
 
-(async () => {
-  const openCollectiveSponsors = fetchOpenCollectiveSponsors();
-  const githubSponsors = fetchGitHubSponsors();
+const sponsors = await fetchSponsors();
 
-  const sponsors = [
-    ...(await openCollectiveSponsors),
-    ...(await githubSponsors),
-  ];
+sponsors.sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt));
 
-  sponsors.sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt));
-
-  // Process into a useful format
-  for (const sponsor of sponsors) {
-    if (
-      sponsor.tier !== 'sponsor' &&
-      (!sponsor.tier ||
-        sponsor.type === 'ORGANIZATION' ||
-        MISLABELED_ORGS.test(sponsor.name) ||
-        MISLABELED_ORGS.test(sponsor.url))
-    ) {
-      continue;
-    }
-
-    if (
-      (sponsor.tier === 'professional' || sponsor.tier === 'backer') &&
-      professionalToBackerOverrides.has(sponsor.name)
-    ) {
-      sponsor.url = professionalToBackerOverrides.get(sponsor.name)!;
-    }
-
-    tierSponsors[sponsor.tier].push(sponsor);
+// Process into a useful format
+for (const sponsor of sponsors) {
+  if (
+    sponsor.tier !== 'sponsor' &&
+    (!sponsor.tier ||
+      sponsor.type === 'ORGANIZATION' ||
+      MISLABELED_ORGS.test(sponsor.name) ||
+      MISLABELED_ORGS.test(sponsor.url))
+  ) {
+    continue;
   }
 
-  // Sort order based on total donations
-  for (const key of Object.keys(tierSponsors) as Tier[]) {
-    tierSponsors[key].sort(
-      (a: Sponsor, b: Sponsor) => b.monthlyDonation - a.monthlyDonation
-    );
+  if (
+    (sponsor.tier === 'professional' || sponsor.tier === 'backer') &&
+    professionalToBackerOverrides.has(sponsor.name)
+  ) {
+    sponsor.url = professionalToBackerOverrides.get(sponsor.name)!;
   }
 
-  // Merge professionals into backers for now
-  tierSponsors.backer.unshift(...tierSponsors.professional);
+  tierSponsors[sponsor.tier].push(sponsor);
+}
 
-  let readme = await fs.readFile(README_PATH, 'utf8');
+// Sort order based on total donations
+for (const key of Object.keys(tierSponsors) as Tier[]) {
+  tierSponsors[key].sort(
+    (a: Sponsor, b: Sponsor) => b.monthlyDonation - a.monthlyDonation
+  );
+}
 
-  for (let sectionStartIndex = 0; ; ) {
-    sectionStartIndex = readme.indexOf(
-      SECTION_START_BEGINNING,
-      sectionStartIndex
-    );
+// Merge professionals into backers for now
+tierSponsors.backer.unshift(...tierSponsors.professional);
 
-    if (sectionStartIndex < 0) break;
+let readme = await fs.readFile(README_PATH, 'utf8');
 
-    sectionStartIndex += SECTION_START_BEGINNING.length;
+for (let sectionStartIndex = 0; ; ) {
+  sectionStartIndex = readme.indexOf(
+    SECTION_START_BEGINNING,
+    sectionStartIndex
+  );
 
-    const sectionStartEndIndex = readme.indexOf(
-      SECTION_START_END,
-      sectionStartIndex
-    );
-    const sectionName = readme
-      .slice(sectionStartIndex, sectionStartEndIndex)
-      .trim() as Tier;
+  if (sectionStartIndex < 0) break;
 
-    const sectionContentStart = sectionStartEndIndex + SECTION_START_END.length;
+  sectionStartIndex += SECTION_START_BEGINNING.length;
 
-    const sectionEndIndex = readme.indexOf(SECTION_END, sectionContentStart);
+  const sectionStartEndIndex = readme.indexOf(
+    SECTION_START_END,
+    sectionStartIndex
+  );
+  const sectionName = readme
+    .slice(sectionStartIndex, sectionStartEndIndex)
+    .trim() as Tier;
 
-    readme = `${readme.slice(0, sectionContentStart)}\n\n${tierSponsors[
-      sectionName
-    ]
-      .map(
-        (s: Sponsor) =>
-          // Display each sponsor's image in the README.
-          `<a href="${s.url}" target="_blank" rel="noopener noreferrer">
+  const sectionContentStart = sectionStartEndIndex + SECTION_START_END.length;
+
+  const sectionEndIndex = readme.indexOf(SECTION_END, sectionContentStart);
+
+  readme = `${readme.slice(0, sectionContentStart)}\n\n${tierSponsors[
+    sectionName
+  ]
+    .map(
+      (s: Sponsor) =>
+        // Display each sponsor's image in the README.
+        `<a href="${s.url}" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="${imgix.buildURL(s.image, {
               w: 128,
               h: 128,
@@ -283,11 +283,10 @@ const professionalToBackerOverrides = new Map([
               fill: 'solid',
             })}" title="${s.name}" alt="${s.name}"></img>
           </a>`
-      )
-      .join('\n')}\n\n${readme.slice(sectionEndIndex)}`;
-  }
+    )
+    .join('\n')}\n\n${readme.slice(sectionEndIndex)}`;
+}
 
-  await fs.writeFile(README_PATH, readme, {
-    encoding: 'utf8',
-  });
-})();
+await fs.writeFile(README_PATH, readme, {
+  encoding: 'utf8',
+});
