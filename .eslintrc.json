@@ -4,6 +4,7 @@
     "eslint:recommended",
     "plugin:jsdoc/recommended",
     "plugin:n/recommended",
+    "plugin:unicorn/recommended",
     "prettier"
   ],
   "env": { "node": true },
@@ -62,7 +63,19 @@
 
     "n/no-unsupported-features/es-syntax": 0,
     "n/file-extension-in-import": ["error", "always"],
-    "n/no-missing-import": 0
+    "n/no-missing-import": 0,
+
+    "unicorn/no-null": "off",
+    "unicorn/prevent-abbreviations": "off",
+    "unicorn/prefer-string-slice": "off",
+    "unicorn/prefer-code-point": "off",
+    "unicorn/no-array-push-push": "off",
+    "unicorn/no-for-loop": "off",
+    "unicorn/consistent-destructuring": "off",
+    "unicorn/prefer-switch": [
+      "error",
+      { "emptyDefaultCase": "do-nothing-comment" }
+    ]
   },
   "settings": {
     "jsdoc": {
