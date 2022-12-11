@@ -3,7 +3,7 @@
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
-// eslint-disable-next-line node/no-unpublished-require
+// eslint-disable-next-line n/no-unpublished-require
 const packageJson = require('../package.json');
 
 /** @type {import('@docusaurus/types').Config} */
