@@ -70,6 +70,18 @@ export interface CheerioAPI extends StaticType {
   /** Mimic jQuery's prototype alias for plugin authors. */
   fn: typeof Cheerio.prototype;
 
+  /**
+   * The `.load` static method defined on the "loaded" Cheerio factory function
+   * is deprecated. Users are encouraged to instead use the `load` function
+   * exported by the Cheerio module.
+   *
+   * @deprecated Use the `load` function exported by the Cheerio module.
+   * @example
+   *
+   * ```js
+   * const $ = cheerio.load('<h1>Hello, <span>world</span>.</h1>');
+   * ```
+   */
   load: ReturnType<typeof getLoad>;
 }
 

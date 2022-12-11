@@ -7,20 +7,6 @@ import * as fixtures from '../__fixtures__/fixtures.js';
 import cheerio from '../index.js';
 
 describe('deprecated APIs', () => {
-  /**
-   * The `.parseHTML` method exported by the Cheerio module is deprecated.
-   *
-   * In order to promote consistency with the jQuery library, users are
-   * encouraged to instead use the static method of the same name as it is
-   * defined on the "loaded" Cheerio factory function.
-   *
-   * @example
-   *
-   * ```js
-   * const $ = cheerio.load('');
-   * $.parseHTML('<b>markup</b>');
-   * ```
-   */
   describe('cheerio module', () => {
     describe('.parseHTML', () => {
       it('(html) : should preserve content', () => {
@@ -29,21 +15,6 @@ describe('deprecated APIs', () => {
       });
     });
 
-    /**
-     * The `.merge` method exported by the Cheerio module is deprecated.
-     *
-     * In order to promote consistency with the jQuery library, users are
-     * encouraged to instead use the static method of the same name.
-     *
-     * @example
-     *
-     * ```js
-     * const $ = cheerio.load('');
-     *
-     * $.merge([1, 2], [3, 4]);
-     * //=> [1, 2, 3, 4]
-     * ```
-     */
     describe('.merge', () => {
       let arr1: ArrayLike<unknown>;
       let arr2: ArrayLike<unknown>;
@@ -139,24 +110,6 @@ describe('deprecated APIs', () => {
       });
     });
 
-    /**
-     * The `.contains` method exported by the Cheerio module is deprecated.
-     *
-     * In order to promote consistency with the jQuery library, users are
-     * encouraged to instead use the static method of the same name.
-     *
-     * @example
-     *
-     * ```js
-     * const $ = cheerio.load('<div><p></p></div>');
-     *
-     * $.contains($('div').get(0), $('p').get(0));
-     * //=> true
-     *
-     * $.contains($('p').get(0), $('div').get(0));
-     * //=> false
-     * ```
-     */
     describe('.contains', () => {
       let $: typeof cheerio;
 
@@ -186,19 +139,6 @@ describe('deprecated APIs', () => {
       });
     });
 
-    /**
-     * The `.root` method exported by the Cheerio module is deprecated.
-     *
-     * Users seeking to access the top-level element of a parsed document should
-     * instead use the `root` static method of a "loaded" Cheerio function.
-     *
-     * @example
-     *
-     * ```js
-     * const $ = cheerio.load('');
-     * $.root();
-     * ```
-     */
     describe('.root', () => {
       it('returns an empty selection', () => {
         const $empty = cheerio.root();
@@ -209,17 +149,6 @@ describe('deprecated APIs', () => {
   });
 
   describe('Cheerio function', () => {
-    /**
-     * The `.load` static method defined on the "loaded" Cheerio factory
-     * function is deprecated. Users are encouraged to instead use the `load`
-     * function exported by the Cheerio module.
-     *
-     * @example
-     *
-     * ```js
-     * const $ = cheerio.load('<h1>Hello, <span>world</span>.</h1>');
-     * ```
-     */
     it('.load', () => {
       const $1 = cheerio.load(fixtures.fruits);
       const $2 = $1.load('<div><p>Some <a>text</a>.</p></div>');
