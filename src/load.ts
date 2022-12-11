@@ -1,6 +1,6 @@
 import {
-  CheerioOptions,
-  InternalOptions,
+  type CheerioOptions,
+  type InternalOptions,
   default as defaultOptions,
   flatten as flattenOptions,
 } from './options.js';

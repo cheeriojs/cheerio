@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { Script } from 'node:vm';
 
-import { Suite, Event } from 'benchmark';
+import { Suite, type Event } from 'benchmark';
 import { JSDOM } from 'jsdom';
 import cheerio from '../lib/index.js';
 
