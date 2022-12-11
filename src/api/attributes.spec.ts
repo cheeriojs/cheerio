@@ -1,4 +1,4 @@
-import cheerio from '..';
+import cheerio from '../index.js';
 import type { Cheerio } from '../cheerio.js';
 import type { Element } from 'domhandler';
 import {
@@ -528,6 +528,12 @@ describe('$(...)', () => {
       const $el = cheerio('<div data-custom="{{templatevar}}">');
 
       expect($el.data('custom')).toBe('{{templatevar}}');
+    });
+
+    it('("") : should accept the empty string as a name', () => {
+      const $el = cheerio('<div data-="a">');
+
+      expect($el.data('')).toBe('a');
     });
 
     it('(hyphen key) : data addribute with hyphen should be camelized ;-)', () => {

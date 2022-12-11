@@ -1,6 +1,6 @@
 import {
-  CheerioOptions,
-  InternalOptions,
+  type CheerioOptions,
+  type InternalOptions,
   default as defaultOptions,
   flatten as flattenOptions,
 } from './options.js';
@@ -15,7 +15,8 @@ type StaticType = typeof staticMethods;
 /**
  * A querying function, bound to a document created from the provided markup.
  *
- * Also provides several helper methods for dealing with the document as a whole.
+ * Also provides several helper methods for dealing with the document as a
+ * whole.
  */
 export interface CheerioAPI extends StaticType {
   /**
@@ -69,6 +70,18 @@ export interface CheerioAPI extends StaticType {
   /** Mimic jQuery's prototype alias for plugin authors. */
   fn: typeof Cheerio.prototype;
 
+  /**
+   * The `.load` static method defined on the "loaded" Cheerio factory function
+   * is deprecated. Users are encouraged to instead use the `load` function
+   * exported by the Cheerio module.
+   *
+   * @deprecated Use the `load` function exported by the Cheerio module.
+   * @example
+   *
+   * ```js
+   * const $ = cheerio.load('<h1>Hello, <span>world</span>.</h1>');
+   * ```
+   */
   load: ReturnType<typeof getLoad>;
 }
 
@@ -80,7 +93,8 @@ export function getLoad(
   ) => string
 ) {
   /**
-   * Create a querying function, bound to a document created from the provided markup.
+   * Create a querying function, bound to a document created from the provided
+   * markup.
    *
    * Note that similar to web browser contexts, this operation may introduce
    * `<html>`, `<head>`, and `<body>` elements; set `isDocument` to `false` to
@@ -104,7 +118,10 @@ export function getLoad(
     const internalOpts = { ...defaultOptions, ...flattenOptions(options) };
     const initialRoot = parse(content, internalOpts, isDocument, null);
 
-    /** Create an extended class here, so that extensions only live on one instance. */
+    /**
+     * Create an extended class here, so that extensions only live on one
+     * instance.
+     */
     class LoadedCheerio<T> extends Cheerio<T> {
       _make<T>(
         selector?: ArrayLike<T> | T | string,

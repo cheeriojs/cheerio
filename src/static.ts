@@ -1,10 +1,10 @@
 import type { BasicAcceptedElems } from './types.js';
-import type { CheerioAPI, Cheerio } from '.';
+import type { CheerioAPI, Cheerio } from './index.js';
 import type { AnyNode, Document } from 'domhandler';
 import { textContent } from 'domutils';
 import {
-  InternalOptions,
-  CheerioOptions,
+  type InternalOptions,
+  type CheerioOptions,
   default as defaultOptions,
   flatten as flattenOptions,
 } from './options.js';

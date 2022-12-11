@@ -5,9 +5,10 @@
  *   https://github.com/eslint/website/blob/230e73457dcdc2353ad7934e876a5a222a17b1d7/_tools/fetch-sponsors.js.
  */
 
-import * as fs from 'fs/promises';
+import * as fs from 'node:fs/promises';
 import { request } from 'undici';
 import { graphql as githubGraphQL } from '@octokit/graphql';
+import ImgixClient from '@imgix/js-core';
 
 type Tier = 'sponsor' | 'professional' | 'backer';
 
@@ -28,11 +29,16 @@ const tierSponsors: Record<Tier, Sponsor[]> = {
   backer: [],
 };
 
-const { CHEERIO_SPONSORS_GITHUB_TOKEN } = process.env;
+const { CHEERIO_SPONSORS_GITHUB_TOKEN, IMGIX_TOKEN } = process.env;
 
 if (!CHEERIO_SPONSORS_GITHUB_TOKEN) {
   throw new Error('Missing CHEERIO_SPONSORS_GITHUB_TOKEN.');
 }
+
+const imgix = new ImgixClient({
+  domain: 'humble.imgix.net',
+  secureURLToken: IMGIX_TOKEN,
+});
 
 /**
  * Returns the tier ID for a given donation amount.
@@ -123,7 +129,7 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
  * @returns An array of sponsors.
  */
 async function fetchGitHubSponsors(): Promise<Sponsor[]> {
-  const { organization } = await githubGraphQL(
+  const { organization } = await githubGraphQL<any>(
     `{
       organization(login: "cheeriojs") {
         sponsorshipsAsMaintainer(first: 100) {
@@ -183,7 +189,8 @@ async function fetchGitHubSponsors(): Promise<Sponsor[]> {
  * Remove sponsors from lower tiers that have individual accounts,
  * but are clearly orgs.
  */
-const MISLABELED_ORGS = /[ck]as[yi]+no|bet$|poker|gambling|coffee/i;
+const MISLABELED_ORGS =
+  /[ck]as[yi]+no|bet$|poker|gambling|coffee|tuxedo|(?:ph|f)oto/i;
 
 const README_PATH = `${__dirname}/../Readme.md`;
 
@@ -212,7 +219,8 @@ const professionalToBackerOverrides = new Map([
       sponsor.tier !== 'sponsor' &&
       (!sponsor.tier ||
         sponsor.type === 'ORGANIZATION' ||
-        MISLABELED_ORGS.test(sponsor.name))
+        MISLABELED_ORGS.test(sponsor.name) ||
+        MISLABELED_ORGS.test(sponsor.url))
     ) {
       continue;
     }
@@ -268,7 +276,12 @@ const professionalToBackerOverrides = new Map([
         (s: Sponsor) =>
           // Display each sponsor's image in the README.
           `<a href="${s.url}" target="_blank" rel="noopener noreferrer">
-            <img style="max-height:128px;max-width:128px" src="${s.image}" title="${s.name}" alt="${s.name}"></img>
+            <img height="128px" width="128px" src="${imgix.buildURL(s.image, {
+              w: 128,
+              h: 128,
+              fit: 'fillmax',
+              fill: 'solid',
+            })}" title="${s.name}" alt="${s.name}"></img>
           </a>`
       )
       .join('\n')}\n\n${readme.slice(sectionEndIndex)}`;

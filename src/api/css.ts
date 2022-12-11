@@ -3,7 +3,8 @@ import type { Element, AnyNode } from 'domhandler';
 import type { Cheerio } from '../cheerio.js';
 
 /**
- * Get the value of a style property for the first element in the set of matched elements.
+ * Get the value of a style property for the first element in the set of matched
+ * elements.
  *
  * @category CSS
  * @param names - Optionally the names of the properties of interest.
@@ -15,7 +16,8 @@ export function css<T extends AnyNode>(
   names?: string[]
 ): Record<string, string> | undefined;
 /**
- * Get the value of a style property for the first element in the set of matched elements.
+ * Get the value of a style property for the first element in the set of matched
+ * elements.
  *
  * @category CSS
  * @param names - The name of the property.

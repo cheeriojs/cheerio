@@ -25,7 +25,7 @@
 
     /* Module Resolution Options */
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "resolveJsonModule": true
   },
   "include": ["src"],

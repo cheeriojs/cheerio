@@ -8,7 +8,7 @@ on:
 
 env:
   FORCE_COLOR: 2
-  NODE_COV: 16 # The Node.js version to run coveralls on
+  NODE_COV: lts/* # The Node.js version to run coveralls on
 
 permissions:
   contents: read
@@ -25,17 +25,17 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - 12
           - 14
           - 16
           - 18
+          - lts/*
 
     steps:
       - name: Clone repository
         uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3.4.1
+        uses: actions/setup-node@v3.5.1
         with:
           node-version: '${{ matrix.node }}'
           cache: 'npm'

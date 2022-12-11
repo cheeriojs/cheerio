@@ -1,5 +1,5 @@
 import { load } from '../../src';
-import type { CheerioAPI, Cheerio } from '..';
+import type { CheerioAPI, Cheerio } from '../index.js';
 import { fruits, divcontainers, mixedText } from '../__fixtures__/fixtures.js';
 import type { AnyNode, Element } from 'domhandler';
 

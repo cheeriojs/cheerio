@@ -1,7 +1,7 @@
 import cheerio from '../../src';
 import { Cheerio } from '../cheerio.js';
 import type { CheerioAPI } from '../load.js';
-import { AnyNode, Element, Text, isText } from 'domhandler';
+import { type AnyNode, type Element, type Text, isText } from 'domhandler';
 import {
   food,
   fruits,
@@ -1441,7 +1441,8 @@ describe('$(...)', () => {
     });
 
     /**
-     * Element order is undefined in this case, so it should not be asserted here.
+     * Element order is undefined in this case, so it should not be asserted
+     * here.
      *
      * If the collection consists of elements from different documents or ones
      * not in any document, the sort order is undefined.
