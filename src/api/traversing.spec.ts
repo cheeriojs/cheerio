@@ -14,7 +14,7 @@ import {
 } from '../__fixtures__/fixtures.js';
 
 function getText(el: Cheerio<Element>) {
-  if (!el.length) return undefined;
+  if (el.length === 0) return undefined;
   const [firstChild] = el[0].childNodes;
   return isText(firstChild) ? firstChild.data : undefined;
 }

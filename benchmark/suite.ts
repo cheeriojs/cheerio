@@ -9,7 +9,7 @@ import cheerio from '../lib/index.js';
 const documentDir = path.join(__dirname, 'documents');
 const jQuerySrc = fs.readFileSync(
   path.join(__dirname, '../node_modules/jquery/dist/jquery.slim.js'),
-  'utf-8'
+  'utf8'
 );
 const jQueryScript = new Script(jQuerySrc);
 let filterRe = /./;
@@ -59,10 +59,10 @@ export default class Suites {
     });
 
     this._benchCheerio(suite, markup, options);
-    if (!cheerioOnly) {
-      this._benchJsDom(suite, markup, options);
-    } else {
+    if (cheerioOnly) {
       suite.run();
+    } else {
+      this._benchJsDom(suite, markup, options);
     }
   }
 

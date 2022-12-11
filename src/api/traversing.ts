@@ -23,7 +23,7 @@ import {
   uniqueSort,
 } from 'domutils';
 import type { FilterFunction, AcceptedFilters } from '../types.js';
-const reSiblingSelector = /^\s*[~+]/;
+const reSiblingSelector = /^\s*[+~]/;
 
 /**
  * Get the descendants of each element in the current set of matched elements,
@@ -1000,7 +1000,7 @@ export function index<T extends AnyNode>(
     $haystack = this._make<AnyNode>(selectorOrNeedle);
     needle = this[0];
   } else {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    // eslint-disable-next-line @typescript-eslint/no-this-alias, unicorn/no-this-assignment
     $haystack = this;
     needle = isCheerio(selectorOrNeedle)
       ? selectorOrNeedle[0]
