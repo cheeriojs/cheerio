@@ -61,7 +61,6 @@
     "jsdoc/valid-types": 2,
     "jsdoc/tag-lines": 0,
 
-    "n/no-unsupported-features/es-syntax": 0,
     "n/file-extension-in-import": ["error", "always"],
     "n/no-missing-import": 0,
 
@@ -103,6 +102,7 @@
       "rules": {
         "dot-notation": 0,
         "curly": [2, "multi-line"],
+        "n/no-unsupported-features/es-syntax": 0,
 
         "jsdoc/require-returns-check": 0, // Broken with overloaded fns
 
