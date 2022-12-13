@@ -23,19 +23,19 @@ export interface ExtractMap {
 type ExtractedValue<V extends ExtractValue, M extends ExtractMap> = V extends [
   string | ExtractDescriptor
 ]
-  ? ExtractedValue<V[0], M>
+  ? NonNullable<ExtractedValue<V[0], M>>[]
   : V extends string
-  ? string
+  ? string | undefined
   : V extends ExtractDescriptor
   ? V['value'] extends ExtractMap
-    ? ExtractedMap<V['value']>
+    ? ExtractedMap<V['value']> | undefined
     : V['value'] extends ExtractDescriptorFn
-    ? ReturnType<V['value']>
-    : ReturnType<typeof prop>
+    ? ReturnType<V['value']> | undefined
+    : ReturnType<typeof prop> | undefined
   : never;
 
 export type ExtractedMap<M extends ExtractMap> = {
-  [key in keyof M]: ExtractedValue<M[key], M> | undefined;
+  [key in keyof M]: ExtractedValue<M[key], M>;
 };
 
 function getExtractDescr(
