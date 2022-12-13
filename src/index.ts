@@ -68,15 +68,43 @@ const defaultInstance = load([]);
 export default defaultInstance;
 
 import * as staticMethods from './static.js';
+import type { BasicAcceptedElems } from './types.js';
+import type { CheerioOptions } from './options.js';
+import type { AnyNode } from 'domhandler';
 
-/** {@inheritdoc staticMethods.html}. */
-export const html = staticMethods.html.bind(defaultInstance);
+/**
+ * Renders the document.
+ *
+ * @param dom - Element to render.
+ * @param options - Options for the renderer.
+ * @returns The rendered document.
+ */
+export const html: (
+  dom: BasicAcceptedElems<AnyNode>,
+  options?: CheerioOptions
+) => string = staticMethods.html.bind(defaultInstance);
 
-/** {@inheritdoc staticMethods.xml}. */
-export const xml = staticMethods.xml.bind(defaultInstance);
+/**
+ * Render the document as XML.
+ *
+ * @param dom - Element to render.
+ * @returns THe rendered document.
+ */
+export const xml: (dom: BasicAcceptedElems<AnyNode>) => string =
+  staticMethods.xml.bind(defaultInstance);
 
-/** {@inheritdoc staticMethods.text}. */
-export const text = staticMethods.text.bind(defaultInstance);
+/**
+ * Render the document as text.
+ *
+ * This returns the `textContent` of the passed elements. The result will
+ * include the contents of `script` and `stype` elements. To avoid this, use
+ * `.prop('innerText')` instead.
+ *
+ * @param elements - Elements to render.
+ * @returns The rendered document.
+ */
+export const text: (elements: ArrayLike<AnyNode>) => string =
+  staticMethods.text.bind(defaultInstance);
 
 /**
  * The `.contains` method exported by the Cheerio module is deprecated.
