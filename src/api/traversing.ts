@@ -51,19 +51,38 @@ export function find<T extends AnyNode>(
     return this._make([]);
   }
 
-  const context: AnyNode[] = this.toArray();
-
   if (typeof selectorOrHaystack !== 'string') {
     const haystack = isCheerio(selectorOrHaystack)
       ? selectorOrHaystack.toArray()
       : [selectorOrHaystack];
+
+    const context = this.toArray();
 
     return this._make(
       haystack.filter((elem) => context.some((node) => contains(node, elem)))
     );
   }
 
-  const elems = reSiblingSelector.test(selectorOrHaystack)
+  return this._findBySelector(selectorOrHaystack, Number.POSITIVE_INFINITY);
+}
+
+/**
+ * Find elements by a specific selector.
+ *
+ * @private
+ * @category Traversing
+ * @param selector - Selector to filter by.
+ * @param limit - Maximum number of elements to match.
+ * @returns The found elements.
+ */
+export function _findBySelector<T extends AnyNode>(
+  this: Cheerio<T>,
+  selector: string,
+  limit: number
+): Cheerio<Element> {
+  const context = this.toArray();
+
+  const elems = reSiblingSelector.test(selector)
     ? context
     : this.children().toArray();
 
@@ -79,7 +98,7 @@ export function find<T extends AnyNode>(
     quirksMode: this.options.quirksMode,
   };
 
-  return this._make(select.select(selectorOrHaystack, elems, options));
+  return this._make(select.select(selector, elems, options, limit));
 }
 
 /**

@@ -8,6 +8,7 @@ import {
   default as defaultOptions,
   flatten as flattenOptions,
 } from './options.js';
+import type { ExtractedMap, ExtractMap } from './api/extract.js';
 
 /**
  * Helper function to render a DOM.
@@ -226,6 +227,21 @@ export function contains(container: AnyNode, contained: AnyNode): boolean {
   }
 
   return false;
+}
+
+/**
+ * Extract multiple values from a document, and store them in an object.
+ *
+ * @param map - An object containing key-value pairs. The keys are the names of
+ *   the properties to be created on the object, and the values are the
+ *   selectors to be used to extract the values.
+ * @returns An object containing the extracted values.
+ */
+export function extract<M extends ExtractMap>(
+  this: CheerioAPI,
+  map: M
+): ExtractedMap<M> {
+  return this.root().extract(map);
 }
 
 interface WritableArrayLike<T> extends ArrayLike<T> {

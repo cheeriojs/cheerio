@@ -1,10 +1,11 @@
 {
-  "plugins": ["jsdoc"],
+  "plugins": ["jsdoc", "expect-type"],
   "extends": [
     "eslint:recommended",
     "plugin:jsdoc/recommended",
     "plugin:n/recommended",
     "plugin:unicorn/recommended",
+    "plugin:expect-type/recommended",
     "prettier"
   ],
   "env": { "node": true },

@@ -316,4 +316,22 @@ describe('cheerio', () => {
       );
     });
   });
+
+  describe('.extract', () => {
+    it('() : should extract values for selectors', () => {
+      const $ = cheerio.load(fixtures.eleven);
+
+      expect(
+        $.extract({
+          red: [{ selector: '.red', value: 'outerHTML' }],
+        })
+      ).toStrictEqual({
+        red: [
+          '<li class="red">Four</li>',
+          '<li class="red">Five</li>',
+          '<li class="red sel">Nine</li>',
+        ],
+      });
+    });
+  });
 });
