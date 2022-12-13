@@ -1,4 +1,9 @@
-import { AnyNode, Document, isDocument, ParentNode } from 'domhandler';
+import {
+  type AnyNode,
+  type Document,
+  type ParentNode,
+  isDocument,
+} from 'domhandler';
 import { parse as parseDocument, parseFragment, serializeOuter } from 'parse5';
 import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';
 import type { InternalOptions } from '../options.js';

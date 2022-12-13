@@ -1,5 +1,5 @@
 import * as fixtures from './__fixtures__/fixtures.js';
-import cheerio, { CheerioAPI } from './index.js';
+import cheerio, { type CheerioAPI } from './index.js';
 
 describe('cheerio', () => {
   describe('.html', () => {
@@ -111,10 +111,10 @@ describe('cheerio', () => {
     });
 
     it('(largeHtmlString) : parses large HTML strings', () => {
-      const html = new Array(10).join('<div></div>');
+      const html = '<div></div>'.repeat(10);
       const nodes = $.parseHTML(html);
 
-      expect(nodes.length).toBeGreaterThan(4);
+      expect(nodes.length).toBe(10);
       expect(nodes).toBeInstanceOf(Array);
     });
 

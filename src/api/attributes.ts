@@ -203,10 +203,10 @@ export function attr<T extends AnyNode>(
       if (!isTag(el)) return;
 
       if (typeof name === 'object') {
-        Object.keys(name).forEach((objName) => {
+        for (const objName of Object.keys(name)) {
           const objValue = name[objName];
           setAttr(el, objName, objValue);
-        });
+        }
       } else {
         setAttr(el, name as string, value as string);
       }
@@ -363,9 +363,9 @@ export function prop<T extends AnyNode>(
       case 'style': {
         const property = this.css() as StyleProp;
         const keys = Object.keys(property);
-        keys.forEach((p, i) => {
-          property[i] = p;
-        });
+        for (let i = 0; i < keys.length; i++) {
+          property[i] = keys[i];
+        }
 
         property.length = keys.length;
 
@@ -408,21 +408,24 @@ export function prop<T extends AnyNode>(
         return textContent(el);
       }
 
-      case 'outerHTML':
+      case 'outerHTML': {
         return this.clone().wrap('<container />').parent().html();
+      }
 
-      case 'innerHTML':
+      case 'innerHTML': {
         return this.html();
+      }
 
-      default:
+      default: {
         return getProp(el, name, this.options.xmlMode);
+      }
     }
   }
 
   if (typeof name === 'object' || value !== undefined) {
     if (typeof value === 'function') {
       if (typeof name === 'object') {
-        throw new Error('Bad combination of arguments.');
+        throw new TypeError('Bad combination of arguments.');
       }
       return domEach(this, (el, i) => {
         if (isTag(el)) {
@@ -440,10 +443,10 @@ export function prop<T extends AnyNode>(
       if (!isTag(el)) return;
 
       if (typeof name === 'object') {
-        Object.keys(name).forEach((key) => {
+        for (const key of Object.keys(name)) {
           const val = name[key];
           setProp(el, key, val, this.options.xmlMode);
-        });
+        }
       } else {
         setProp(el, name, value, this.options.xmlMode);
       }
@@ -550,7 +553,7 @@ function parseDataValue(value: string): unknown {
   if (rbrace.test(value)) {
     try {
       return JSON.parse(value);
-    } catch (e) {
+    } catch {
       /* Ignore */
     }
   }
@@ -721,8 +724,9 @@ export function val<T extends AnyNode>(
   if (!element || !isTag(element)) return querying ? undefined : this;
 
   switch (element.name) {
-    case 'textarea':
+    case 'textarea': {
       return this.text(value as string);
+    }
     case 'select': {
       const option = this.find('option:selected');
       if (!querying) {
@@ -732,9 +736,9 @@ export function val<T extends AnyNode>(
 
         this.find('option').removeAttr('selected');
 
-        const values = typeof value !== 'object' ? [value] : value;
-        for (let i = 0; i < values.length; i++) {
-          this.find(`option[value="${values[i]}"]`).attr('selected', '');
+        const values = typeof value === 'object' ? value : [value];
+        for (const val of values) {
+          this.find(`option[value="${val}"]`).attr('selected', '');
         }
 
         return this;
@@ -745,10 +749,11 @@ export function val<T extends AnyNode>(
         : option.attr('value');
     }
     case 'input':
-    case 'option':
+    case 'option': {
       return querying
         ? this.attr('value')
         : this.attr('value', value as string);
+    }
   }
 
   return undefined;
@@ -803,9 +808,9 @@ export function removeAttr<T extends AnyNode>(
 ): Cheerio<T> {
   const attrNames = splitNames(name);
 
-  for (let i = 0; i < attrNames.length; i++) {
+  for (const attrName of attrNames) {
     domEach(this, (elem) => {
-      if (isTag(elem)) removeAttribute(elem, attrNames[i]);
+      if (isTag(elem)) removeAttribute(elem, attrName);
     });
   }
 
@@ -841,7 +846,7 @@ export function hasClass<T extends AnyNode>(
     const clazz = isTag(elem) && elem.attribs['class'];
     let idx = -1;
 
-    if (clazz && className.length) {
+    if (clazz && className.length > 0) {
       while ((idx = clazz.indexOf(className, idx + 1)) > -1) {
         const end = idx + className.length;
 
@@ -906,18 +911,18 @@ export function addClass<T extends AnyNode, R extends ArrayLike<T>>(
     // If we don't already have classes — always set xmlMode to false here, as it doesn't matter for classes
     const className = getAttr(el, 'class', false);
 
-    if (!className) {
-      setAttr(el, 'class', classNames.join(' ').trim());
-    } else {
+    if (className) {
       let setClass = ` ${className} `;
 
       // Check if class already exists
-      for (let j = 0; j < classNames.length; j++) {
-        const appendClass = `${classNames[j]} `;
+      for (const cn of classNames) {
+        const appendClass = `${cn} `;
         if (!setClass.includes(` ${appendClass}`)) setClass += appendClass;
       }
 
       setAttr(el, 'class', setClass.trim());
+    } else {
+      setAttr(el, 'class', classNames.join(' ').trim());
     }
   }
 

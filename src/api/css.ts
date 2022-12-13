@@ -124,9 +124,11 @@ function setCss(
 
     el.attribs['style'] = stringify(styles);
   } else if (typeof prop === 'object') {
-    Object.keys(prop).forEach((k, i) => {
+    const keys = Object.keys(prop);
+    for (let i = 0; i < keys.length; i++) {
+      const k = keys[i];
       setCss(el, k, prop[k], i);
-    });
+    }
   }
 }
 
@@ -162,11 +164,11 @@ function getCss(
   }
   if (Array.isArray(prop)) {
     const newStyles: Record<string, string> = {};
-    prop.forEach((item) => {
+    for (const item of prop) {
       if (styles[item] != null) {
         newStyles[item] = styles[item];
       }
-    });
+    }
     return newStyles;
   }
   return styles;

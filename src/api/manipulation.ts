@@ -4,7 +4,13 @@
  * @module cheerio/manipulation
  */
 
-import { ParentNode, AnyNode, Element, Text, hasChildren } from 'domhandler';
+import {
+  Text,
+  hasChildren,
+  type ParentNode,
+  type AnyNode,
+  type Element,
+} from 'domhandler';
 import { update as updateDOM } from '../parse.js';
 import { text as staticText } from '../static.js';
 import { domEach, cloneDom, isTag, isHtml, isCheerio } from '../utils.js';
@@ -599,12 +605,11 @@ export function after<T extends AnyNode>(
   const lastIdx = this.length - 1;
 
   return domEach(this, (el, i) => {
-    const { parent } = el;
-    if (!hasChildren(el) || !parent) {
+    if (!hasChildren(el) || !el.parent) {
       return;
     }
 
-    const siblings: AnyNode[] = parent.children;
+    const siblings: AnyNode[] = el.parent.children;
     const index = siblings.indexOf(el);
 
     // If not found, move on
@@ -619,7 +624,7 @@ export function after<T extends AnyNode>(
     const dom = this._makeDomArray(domSrc, i < lastIdx);
 
     // Add element after `this` element
-    uniqueSplice(siblings, index + 1, 0, dom, parent);
+    uniqueSplice(siblings, index + 1, 0, dom, el.parent);
   });
 }
 
@@ -658,11 +663,11 @@ export function insertAfter<T extends AnyNode>(
 
   const clones: T[] = [];
 
-  this._makeDomArray(target).forEach((el) => {
+  for (const el of this._makeDomArray(target)) {
     const clonedSelf = this.clone().toArray();
     const { parent } = el;
     if (!parent) {
-      return;
+      continue;
     }
 
     const siblings: AnyNode[] = parent.children;
@@ -670,12 +675,12 @@ export function insertAfter<T extends AnyNode>(
 
     // If not found, move on
     /* istanbul ignore next */
-    if (index < 0) return;
+    if (index < 0) continue;
 
     // Add cloned `this` element(s) after target element
     uniqueSplice(siblings, index + 1, 0, clonedSelf, parent);
     clones.push(...clonedSelf);
-  });
+  }
 
   return this._make(clones);
 }
@@ -713,12 +718,11 @@ export function before<T extends AnyNode>(
   const lastIdx = this.length - 1;
 
   return domEach(this, (el, i) => {
-    const { parent } = el;
-    if (!hasChildren(el) || !parent) {
+    if (!hasChildren(el) || !el.parent) {
       return;
     }
 
-    const siblings: AnyNode[] = parent.children;
+    const siblings: AnyNode[] = el.parent.children;
     const index = siblings.indexOf(el);
 
     // If not found, move on
@@ -733,7 +737,7 @@ export function before<T extends AnyNode>(
     const dom = this._makeDomArray(domSrc, i < lastIdx);
 
     // Add element before `el` element
-    uniqueSplice(siblings, index, 0, dom, parent);
+    uniqueSplice(siblings, index, 0, dom, el.parent);
   });
 }
 
@@ -898,9 +902,9 @@ export function replaceWith<T extends AnyNode>(
 export function empty<T extends AnyNode>(this: Cheerio<T>): Cheerio<T> {
   return domEach(this, (el) => {
     if (!hasChildren(el)) return;
-    el.children.forEach((child) => {
+    for (const child of el.children) {
       child.next = child.prev = child.parent = null;
-    });
+    }
 
     el.children.length = 0;
   });
@@ -955,9 +959,9 @@ export function html<T extends AnyNode>(
 
   return domEach(this, (el) => {
     if (!hasChildren(el)) return;
-    el.children.forEach((child) => {
+    for (const child of el.children) {
       child.next = child.prev = child.parent = null;
-    });
+    }
 
     const content = isCheerio(str)
       ? str.toArray()
@@ -1036,9 +1040,9 @@ export function text<T extends AnyNode>(
   // Append text node to each selected elements
   return domEach(this, (el) => {
     if (!hasChildren(el)) return;
-    el.children.forEach((child) => {
+    for (const child of el.children) {
       child.next = child.prev = child.parent = null;
-    });
+    }
 
     const textNode = new Text(`${str}`);
 

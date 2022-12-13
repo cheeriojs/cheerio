@@ -1,6 +1,6 @@
 import {
-  CheerioOptions,
-  InternalOptions,
+  type CheerioOptions,
+  type InternalOptions,
   default as defaultOptions,
   flatten as flattenOptions,
 } from './options.js';
@@ -70,6 +70,18 @@ export interface CheerioAPI extends StaticType {
   /** Mimic jQuery's prototype alias for plugin authors. */
   fn: typeof Cheerio.prototype;
 
+  /**
+   * The `.load` static method defined on the "loaded" Cheerio factory function
+   * is deprecated. Users are encouraged to instead use the `load` function
+   * exported by the Cheerio module.
+   *
+   * @deprecated Use the `load` function exported by the Cheerio module.
+   * @example
+   *
+   * ```js
+   * const $ = cheerio.load('<h1>Hello, <span>world</span>.</h1>');
+   * ```
+   */
   load: ReturnType<typeof getLoad>;
 }
 
@@ -186,34 +198,34 @@ export function getLoad(
       }
 
       if (typeof selector !== 'string') {
-        throw new Error('Unexpected type of selector');
+        throw new TypeError('Unexpected type of selector');
       }
 
       // We know that our selector is a string now.
       let search = selector;
 
-      const searchContext: Cheerio<AnyNode> | undefined = !context
+      const searchContext: Cheerio<AnyNode> | undefined = context
         ? // If we don't have a context, maybe we have a root, from loading
-          rootInstance
-        : typeof context === 'string'
-        ? isHtml(context)
-          ? // $('li', '<ul>...</ul>')
-            new LoadedCheerio<Document>(
-              [parse(context, options, false, null)],
+          typeof context === 'string'
+          ? isHtml(context)
+            ? // $('li', '<ul>...</ul>')
+              new LoadedCheerio<Document>(
+                [parse(context, options, false, null)],
+                rootInstance,
+                options
+              )
+            : // $('li', 'ul')
+              ((search = `${context} ${search}` as S), rootInstance)
+          : isCheerio<AnyNode>(context)
+          ? // $('li', $)
+            context
+          : // $('li', node), $('li', [nodes])
+            new LoadedCheerio<AnyNode>(
+              Array.isArray(context) ? context : [context],
               rootInstance,
               options
             )
-          : // $('li', 'ul')
-            ((search = `${context} ${search}` as S), rootInstance)
-        : isCheerio<AnyNode>(context)
-        ? // $('li', $)
-          context
-        : // $('li', node), $('li', [nodes])
-          new LoadedCheerio<AnyNode>(
-            Array.isArray(context) ? context : [context],
-            rootInstance,
-            options
-          );
+        : rootInstance;
 
       // If we still don't have a context, return
       if (!searchContext) return instance as any;

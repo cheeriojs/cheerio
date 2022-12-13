@@ -4,6 +4,7 @@
     "eslint:recommended",
     "plugin:jsdoc/recommended",
     "plugin:n/recommended",
+    "plugin:unicorn/recommended",
     "prettier"
   ],
   "env": { "node": true },
@@ -60,9 +61,23 @@
     "jsdoc/valid-types": 2,
     "jsdoc/tag-lines": 0,
 
-    "n/no-unsupported-features/es-syntax": 0,
     "n/file-extension-in-import": ["error", "always"],
-    "n/no-missing-import": 0
+    "n/no-missing-import": 0,
+
+    "unicorn/no-null": "off",
+    "unicorn/prevent-abbreviations": "off",
+    "unicorn/prefer-code-point": "off",
+    "unicorn/no-for-loop": "off",
+    "unicorn/no-array-callback-reference": 0,
+    "unicorn/prefer-spread": 0,
+    "unicorn/no-useless-undefined": 0,
+    "unicorn/no-array-reduce": 0,
+    "unicorn/prefer-array-find": 0,
+    "unicorn/prefer-module": 0,
+    "unicorn/prefer-switch": [
+      "error",
+      { "emptyDefaultCase": "do-nothing-comment" }
+    ]
   },
   "settings": {
     "jsdoc": {
@@ -87,6 +102,7 @@
       "rules": {
         "dot-notation": 0,
         "curly": [2, "multi-line"],
+        "n/no-unsupported-features/es-syntax": 0,
 
         "jsdoc/require-returns-check": 0, // Broken with overloaded fns
 
@@ -104,6 +120,9 @@
         "@typescript-eslint/prefer-includes": 2,
         "@typescript-eslint/switch-exhaustiveness-check": 2,
         "@typescript-eslint/prefer-nullish-coalescing": 2,
+        "@typescript-eslint/no-non-null-assertion": "warn",
+        "@typescript-eslint/no-duplicate-imports": "error",
+        "@typescript-eslint/consistent-type-imports": "error",
 
         "@typescript-eslint/no-explicit-any": 1 // TODO
       }

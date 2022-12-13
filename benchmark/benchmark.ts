@@ -40,7 +40,7 @@ suites.add<Cheerio<Element>>('manipulation - append', 'jquery.html', {
     return $('body');
   },
   test(_, $body) {
-    $body.append(new Array(50).join('<div>'));
+    $body.append('<div>'.repeat(50));
   },
 });
 
@@ -53,7 +53,7 @@ suites.add<Cheerio<Element>>(
       return $('body');
     },
     test(_, $body) {
-      $body.prepend(new Array(50).join('<div>'));
+      $body.prepend('<div>'.repeat(50));
     },
   }
 );
@@ -62,7 +62,7 @@ suites.add<Cheerio<Element>>('manipulation - after - highmem', 'jquery.html', {
     return $('body');
   },
   test(_, $body) {
-    $body.after(new Array(50).join('<div>'));
+    $body.after('<div>'.repeat(50));
   },
 });
 suites.add<Cheerio<Element>>('manipulation - before - highmem', 'jquery.html', {
@@ -70,7 +70,7 @@ suites.add<Cheerio<Element>>('manipulation - before - highmem', 'jquery.html', {
     return $('body');
   },
   test(_, $body) {
-    $body.before(new Array(50).join('<div>'));
+    $body.before('<div>'.repeat(50));
   },
 });
 

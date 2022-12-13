@@ -5,11 +5,11 @@
  */
 
 import {
-  AnyNode,
-  Element,
+  type AnyNode,
+  type Element,
   hasChildren,
   isDocument,
-  Document,
+  type Document,
 } from 'domhandler';
 import type { Cheerio } from '../cheerio.js';
 import * as select from 'cheerio-select';
@@ -23,7 +23,7 @@ import {
   uniqueSort,
 } from 'domutils';
 import type { FilterFunction, AcceptedFilters } from '../types.js';
-const reSiblingSelector = /^\s*[~+]/;
+const reSiblingSelector = /^\s*[+~]/;
 
 /**
  * Get the descendants of each element in the current set of matched elements,
@@ -346,6 +346,9 @@ export function closest<T extends AnyNode>(
       : getFilterFn(selector);
 
   domEach(this, (elem: AnyNode | null) => {
+    if (elem && !isDocument(elem) && !isTag(elem)) {
+      elem = elem.parent;
+    }
     while (elem && isTag(elem)) {
       if (selectFn(elem, 0)) {
         // Do not add duplicate elements to the set
@@ -1019,7 +1022,7 @@ export function index<T extends AnyNode>(
     $haystack = this._make<AnyNode>(selectorOrNeedle);
     needle = this[0];
   } else {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    // eslint-disable-next-line @typescript-eslint/no-this-alias, unicorn/no-this-assignment
     $haystack = this;
     needle = isCheerio(selectorOrNeedle)
       ? selectorOrNeedle[0]

@@ -1,7 +1,7 @@
 import cheerio from '../../src';
 import { Cheerio } from '../cheerio.js';
 import type { CheerioAPI } from '../load.js';
-import { AnyNode, Element, Text, isText } from 'domhandler';
+import { type AnyNode, type Element, type Text, isText } from 'domhandler';
 import {
   food,
   fruits,
@@ -14,7 +14,7 @@ import {
 } from '../__fixtures__/fixtures.js';
 
 function getText(el: Cheerio<Element>) {
-  if (!el.length) return undefined;
+  if (el.length === 0) return undefined;
   const [firstChild] = el[0].childNodes;
   return isText(firstChild) ? firstChild.data : undefined;
 }
@@ -797,6 +797,12 @@ describe('$(...)', () => {
     it('() : should not break if the selector does not have any results', () => {
       const result = $('.saladbar', food).closest('ul');
       expect(result).toHaveLength(0);
+    });
+
+    it('(selector) : should find closest element for text nodes', () => {
+      const textNode = $('.apple', food).contents().first();
+      const result = textNode.closest('#food') as Cheerio<Element>;
+      expect(result[0].attribs).toHaveProperty('id', 'food');
     });
   });
 

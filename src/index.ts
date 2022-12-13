@@ -57,22 +57,34 @@ export const load = getLoad(parse, (dom, options) =>
     : renderWithParse5(dom)
 );
 
+const defaultInstance = load([]);
+
 /**
  * The default cheerio instance.
  *
- * @deprecated Use the function returned by `load` instead.
+ * @deprecated Use the function returned by `load` instead. To access load, make
+ *   sure you are importing `* as cheerio` instead of this default export.
  */
-export default load([]);
-
-export { html, xml, text, extract } from './static.js';
+export default defaultInstance;
 
 import * as staticMethods from './static.js';
 
+/** {@inheritdoc staticMethods.html}. */
+export const html = staticMethods.html.bind(defaultInstance);
+
+/** {@inheritdoc staticMethods.xml}. */
+export const xml = staticMethods.xml.bind(defaultInstance);
+
+/** {@inheritdoc staticMethods.text}. */
+export const text = staticMethods.text.bind(defaultInstance);
+
 /**
+ * The `.contains` method exported by the Cheerio module is deprecated.
+ *
  * In order to promote consistency with the jQuery library, users are encouraged
  * to instead use the static method of the same name.
  *
- * @deprecated
+ * @deprecated Use `contains` on the loaded instance instead.
  * @example
  *
  * ```js
@@ -90,10 +102,12 @@ import * as staticMethods from './static.js';
 export const { contains } = staticMethods;
 
 /**
+ * The `.merge` method exported by the Cheerio module is deprecated.
+ *
  * In order to promote consistency with the jQuery library, users are encouraged
  * to instead use the static method of the same name.
  *
- * @deprecated
+ * @deprecated Use `merge` on the loaded instance instead.
  * @example
  *
  * ```js
@@ -106,11 +120,13 @@ export const { contains } = staticMethods;
 export const { merge } = staticMethods;
 
 /**
+ * The `.parseHTML` method exported by the Cheerio module is deprecated.
+ *
  * In order to promote consistency with the jQuery library, users are encouraged
  * to instead use the static method of the same name as it is defined on the
  * "loaded" Cheerio factory function.
  *
- * @deprecated See {@link static/parseHTML}.
+ * @deprecated Use `parseHTML` on the loaded instance instead.
  * @example
  *
  * ```js
@@ -121,10 +137,12 @@ export const { merge } = staticMethods;
 export const { parseHTML } = staticMethods;
 
 /**
+ * The `.root` method exported by the Cheerio module is deprecated.
+ *
  * Users seeking to access the top-level element of a parsed document should
  * instead use the `root` static method of a "loaded" Cheerio function.
  *
- * @deprecated
+ * @deprecated Use `root` on the loaded instance instead.
  * @example
  *
  * ```js
