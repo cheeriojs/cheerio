@@ -113,7 +113,7 @@ describe('$.extract', () => {
     ).toStrictEqual({
       section: {
         red: 'Five',
-        sel: 'Nine',
+        sel: 'Seven',
       },
     });
   });
