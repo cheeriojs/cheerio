@@ -79,7 +79,7 @@ export function extract<M extends ExtractMap, T extends AnyNode>(
         : (el: Element) => this._make(el).extract(value);
 
     if (isArray) {
-      ret[key] = this._findBySelector(selector, Infinity)
+      ret[key] = this._findBySelector(selector, Number.POSITIVE_INFINITY)
         .map((_, el) => fn(el, key, ret))
         .get();
     } else {

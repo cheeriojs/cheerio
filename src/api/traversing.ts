@@ -63,7 +63,7 @@ export function find<T extends AnyNode>(
     );
   }
 
-  return this._findBySelector(selectorOrHaystack, Infinity);
+  return this._findBySelector(selectorOrHaystack, Number.POSITIVE_INFINITY);
 }
 
 /**
