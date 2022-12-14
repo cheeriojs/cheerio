@@ -49,7 +49,7 @@ Cheerio implements a subset of core jQuery. Cheerio removes all the DOM inconsis
 Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient.
 
 **&#10049; Incredibly flexible:**
-Cheerio wraps around [parse5](https://github.com/inikulin/parse5) parser and can optionally use @FB55's forgiving [htmlparser2](https://github.com/fb55/htmlparser2/). Cheerio can parse nearly any HTML or XML document.
+Cheerio wraps around [parse5](https://github.com/inikulin/parse5) parser and can optionally use @FB55's forgiving [htmlparser2](https://github.com/fb55/htmlparser2/). Cheerio can parse nearly any HTML or XML document. Cheerio works in both browser and Node environments.
 
 ## Cheerio is not a web browser
 
