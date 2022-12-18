@@ -110,7 +110,7 @@
     "format:prettier:raw": "prettier \"**/*.{{m,c,}js,ts,md,json,yml}\" --ignore-path .gitignore",
     "build:docs": "typedoc --hideGenerator src/index.ts",
     "benchmark": "npm run build:cjs && ts-node benchmark/benchmark.ts --regex \"^(?!.*highmem)\"",
-    "update-sponsors": "ts-node scripts/fetch-sponsors.ts",
+    "update-sponsors": "ts-node --esm -TO '{\"module\":\"node16\",\"target\":\"es2019\"}' scripts/fetch-sponsors.mts",
     "bench": "npm run benchmark",
     "build": "npm run build:cjs && npm run build:esm",
     "build:cjs": "tsc --sourceRoot https://raw.githubusercontent.com/cheeriojs/cheerio/$(git rev-parse HEAD)/src/",
