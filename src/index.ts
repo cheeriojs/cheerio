@@ -124,7 +124,6 @@ export const text: (elements: ArrayLike<AnyNode>) => string =
  * $.contains($('p').get(0), $('div').get(0));
  * //=> false
  * ```
- *
  * @returns {boolean}
  */
 export const { contains } = staticMethods;
