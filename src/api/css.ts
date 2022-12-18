@@ -20,7 +20,7 @@ export function css<T extends AnyNode>(
  * elements.
  *
  * @category CSS
- * @param names - The name of the property.
+ * @param name - The name of the property.
  * @returns The property value for the given name.
  * @see {@link https://api.jquery.com/css/}
  */

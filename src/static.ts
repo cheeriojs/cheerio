@@ -32,6 +32,7 @@ function render(
  * Checks if a passed object is an options object.
  *
  * @param dom - Object to check if it is an options object.
+ * @param options - Options object.
  * @returns Whether the object is an options object.
  */
 function isOptions(
@@ -190,7 +191,6 @@ export function parseHTML(
  * $.root().append('<ul id="vegetables"></ul>').html();
  * //=> <ul id="fruits">...</ul><ul id="vegetables"></ul>
  * ```
- *
  * @returns Cheerio instance wrapping the root node.
  * @alias Cheerio.root
  */

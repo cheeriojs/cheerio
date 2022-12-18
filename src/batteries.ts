@@ -1,3 +1,8 @@
+/**
+ * @file Batteries-included version of Cheerio. This module includes several
+ *   convenience methods for loading documents from various sources.
+ */
+
 export * from './index.js';
 
 /* eslint-disable n/no-unsupported-features/node-builtins */
@@ -24,6 +29,14 @@ import { type Writable, finished } from 'node:stream';
  * Sniffs the encoding of a buffer, then creates a querying function bound to a
  * document created from the buffer.
  *
+ * @example
+ *
+ * ```js
+ * import * as cheerio from 'cheerio';
+ *
+ * const buffer = fs.readFileSync('index.html');
+ * const $ = cheerio.fromBuffer(buffer);
+ * ```
  * @param buffer - The buffer to sniff the encoding of.
  * @param options - The options to pass to Cheerio.
  * @returns The loaded document.
@@ -70,6 +83,25 @@ function _stringStream(
  * The stream is a `Writable` stream that accepts strings. When the stream is
  * finished, the callback is called with the loaded document.
  *
+ * @example
+ *
+ * ```js
+ * import * as cheerio from 'cheerio';
+ * import * as fs from 'fs';
+ *
+ * const writeStream = cheerio.stringStream({}, (err, $) => {
+ *   if (err) {
+ *     // Handle error
+ *   }
+ *
+ *   console.log($('h1').text());
+ *   // Output: Hello, world!
+ * });
+ *
+ * fs.createReadStream('my-document.html', { encoding: 'utf8' }).pipe(
+ *   writeStream
+ * );
+ * ```
  * @param options - The options to pass to Cheerio.
  * @param cb - The callback to call when the stream is finished.
  * @returns The writable stream.
@@ -137,6 +169,13 @@ const defaultRequestOptions: UndiciStreamOptions = {
  *
  * By default, redirects are allowed and non-2xx responses are rejected.
  *
+ * @example
+ *
+ * ```js
+ * import * as cheerio from 'cheerio';
+ *
+ * const $ = await cheerio.fromURL('https://example.com');
+ * ```
  * @param url - The URL to load the document from.
  * @param options - The options to pass to Cheerio.
  * @returns The loaded document.

@@ -48,7 +48,6 @@
     "no-void": 2,
 
     "jsdoc/require-jsdoc": 0,
-    "jsdoc/check-param-names": 0,
     "jsdoc/check-tag-names": 2,
     "jsdoc/newline-after-description": 2,
     "jsdoc/require-description-complete-sentence": 2,
@@ -57,10 +56,8 @@
     "jsdoc/require-param-name": 2,
     "jsdoc/require-param-type": 0,
     "jsdoc/require-returns-type": 0,
-    "jsdoc/require-param": 0,
     "jsdoc/no-types": 2,
     "jsdoc/valid-types": 2,
-    "jsdoc/tag-lines": 0,
 
     "n/file-extension-in-import": ["error", "always"],
     "n/no-missing-import": 0,
