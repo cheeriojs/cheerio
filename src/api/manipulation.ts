@@ -175,7 +175,6 @@ function uniqueSplice(
  * //      <li class="plum">Plum</li>
  * //    </ul>
  * ```
- *
  * @param target - Element to append elements to.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/appendTo/}
@@ -208,7 +207,6 @@ export function appendTo<T extends AnyNode>(
  * //      <li class="pear">Pear</li>
  * //    </ul>
  * ```
- *
  * @param target - Element to prepend elements to.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/prependTo/}
@@ -240,7 +238,6 @@ export function prependTo<T extends AnyNode>(
  * //      <li class="plum">Plum</li>
  * //    </ul>
  * ```
- *
  * @see {@link https://api.jquery.com/append/}
  */
 export const append = _insert((dom, children, parent) => {
@@ -263,7 +260,6 @@ export const append = _insert((dom, children, parent) => {
  * //      <li class="pear">Pear</li>
  * //    </ul>
  * ```
- *
  * @see {@link https://api.jquery.com/prepend/}
  */
 export const prepend = _insert((dom, children, parent) => {
@@ -361,7 +357,6 @@ function _wrap(
  * //     </div>
  * //   </ul>
  * ```
- *
  * @param wrapper - The DOM structure to wrap around each element in the
  *   selection.
  * @see {@link https://api.jquery.com/wrap/}
@@ -420,7 +415,6 @@ export const wrap = _wrap((el, elInsertLocation, wrapperDom) => {
  * //     </li>
  * //   </ul>
  * ```
- *
  * @param wrapper - The DOM structure to wrap around the content of each element
  *   in the selection.
  * @returns The instance itself, for chaining.
@@ -450,7 +444,6 @@ export const wrapInner = _wrap((el, elInsertLocation, wrapperDom) => {
  * //     <p>World</p>
  * //   </div>
  * ```
- *
  * @example <caption>with selector</caption>
  *
  * ```js
@@ -464,7 +457,6 @@ export const wrapInner = _wrap((el, elInsertLocation, wrapperDom) => {
  * //     <p>World</p>
  * //   </div>
  * ```
- *
  * @param selector - A selector to check the parent element against. If an
  *   element's parent does not match the selector, the element won't be
  *   unwrapped.
@@ -506,7 +498,6 @@ export function unwrap<T extends AnyNode>(
  * //     </div>
  * //   </div>
  * ```
- *
  * @example <caption>With an existing cheerio instance</caption>
  *
  * ```js
@@ -528,7 +519,6 @@ export function unwrap<T extends AnyNode>(
  * //   </div>
  * //   <strong>Strong</strong>
  * ```
- *
  * @param wrapper - The DOM structure to wrap around all matched elements in the
  *   selection.
  * @returns The instance itself.
@@ -588,7 +578,6 @@ export function wrapAll<T extends AnyNode>(
  * //      <li class="pear">Pear</li>
  * //    </ul>
  * ```
- *
  * @param elems - HTML string, DOM element, array of DOM elements or Cheerio to
  *   insert after each element in the set of matched elements.
  * @returns The instance itself.
@@ -642,7 +631,6 @@ export function after<T extends AnyNode>(
  * //      <li class="pear">Pear</li>
  * //    </ul>
  * ```
- *
  * @param target - Element to insert elements after.
  * @returns The set of newly inserted elements.
  * @see {@link https://api.jquery.com/insertAfter/}
@@ -697,7 +685,6 @@ export function insertAfter<T extends AnyNode>(
  * //      <li class="pear">Pear</li>
  * //    </ul>
  * ```
- *
  * @param elems - HTML string, DOM element, array of DOM elements or Cheerio to
  *   insert before each element in the set of matched elements.
  * @returns The instance itself.
@@ -751,7 +738,6 @@ export function before<T extends AnyNode>(
  * //      <li class="pear">Pear</li>
  * //    </ul>
  * ```
- *
  * @param target - Element to insert elements before.
  * @returns The set of newly inserted elements.
  * @see {@link https://api.jquery.com/insertBefore/}
@@ -803,7 +789,6 @@ export function insertBefore<T extends AnyNode>(
  * //      <li class="orange">Orange</li>
  * //    </ul>
  * ```
- *
  * @param selector - Optional selector for elements to remove.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/remove/}
@@ -839,7 +824,6 @@ export function remove<T extends AnyNode>(
  * //     <li class="plum">Plum</li>
  * //   </ul>
  * ```
- *
  * @param content - Replacement for matched elements.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/replaceWith/}
@@ -887,7 +871,6 @@ export function replaceWith<T extends AnyNode>(
  * $.html();
  * //=>  <ul id="fruits"></ul>
  * ```
- *
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/empty/}
  */
@@ -915,7 +898,6 @@ export function empty<T extends AnyNode>(this: Cheerio<T>): Cheerio<T> {
  * $('#fruits').html('<li class="mango">Mango</li>').html();
  * //=> <li class="mango">Mango</li>
  * ```
- *
  * @returns The HTML content string.
  * @see {@link https://api.jquery.com/html/}
  */
@@ -930,7 +912,6 @@ export function html<T extends AnyNode>(this: Cheerio<T>): string | null;
  * $('.orange').html('<li class="mango">Mango</li>').html();
  * //=> <li class="mango">Mango</li>
  * ```
- *
  * @param str - The content to replace selection's contents with.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/html/}
@@ -989,7 +970,6 @@ export function toString<T extends AnyNode>(this: Cheerio<T>): string {
  * //    Orange
  * //    Pear
  * ```
- *
  * @returns The text contents of the collection.
  * @see {@link https://api.jquery.com/text/}
  */
@@ -1005,7 +985,6 @@ export function text<T extends AnyNode>(this: Cheerio<T>): string;
  * $('.orange').text('Orange');
  * //=> <div class="orange">Orange</div>
  * ```
- *
  * @param str - The text to set as the content of each matched element.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/text/}
@@ -1051,7 +1030,6 @@ export function text<T extends AnyNode>(
  * ```js
  * const moreFruit = $('#fruits').clone();
  * ```
- *
  * @returns The cloned object.
  * @see {@link https://api.jquery.com/clone/}
  */

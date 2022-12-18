@@ -58,7 +58,6 @@
     "jsdoc/require-returns-type": 0,
     "jsdoc/no-types": 2,
     "jsdoc/valid-types": 2,
-    "jsdoc/tag-lines": 0,
 
     "n/file-extension-in-import": ["error", "always"],
     "n/no-missing-import": 0,

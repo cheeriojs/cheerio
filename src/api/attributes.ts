@@ -106,7 +106,6 @@ function setAttr(el: Element, name: string, value: string | null) {
  * $('ul').attr('id');
  * //=> fruits
  * ```
- *
  * @param name - Name of the attribute.
  * @returns The attribute's value.
  * @see {@link https://api.jquery.com/attr/}
@@ -126,7 +125,6 @@ export function attr<T extends AnyNode>(
  * $('ul').attr();
  * //=> { id: 'fruits' }
  * ```
- *
  * @returns The attribute's values.
  * @see {@link https://api.jquery.com/attr/}
  */
@@ -145,7 +143,6 @@ export function attr<T extends AnyNode>(
  * $('.apple').attr('id', 'favorite').html();
  * //=> <li class="apple" id="favorite">Apple</li>
  * ```
- *
  * @param name - Name of the attribute.
  * @param value - The new value of the attribute.
  * @returns The instance itself.
@@ -171,7 +168,6 @@ export function attr<T extends AnyNode>(
  * $('.apple').attr({ id: 'favorite' }).html();
  * //=> <li class="apple" id="favorite">Apple</li>
  * ```
- *
  * @param values - Map of attribute names and values.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/attr/}
@@ -284,7 +280,6 @@ interface StyleProp {
  * $('input[type="checkbox"]').prop('checked', true).val();
  * //=> ok
  * ```
- *
  * @param name - Name of the property.
  * @returns If `value` is specified the instance itself, otherwise the prop's
  *   value.
@@ -319,7 +314,6 @@ export function prop<T extends AnyNode>(
  * $('<img src="image.png">').prop('src');
  * //=> 'https://example.com/image.png'
  * ```
- *
  * @param name - Name of the property.
  * @returns The resolved URL, or `undefined` if the element is not supported.
  */
@@ -362,7 +356,6 @@ export function prop<T extends AnyNode, K extends keyof Element>(
  *   disabled: false,
  * });
  * ```
- *
  * @param map - Object of properties to set.
  * @returns The instance itself.
  */
@@ -622,7 +615,6 @@ function parseDataValue(value: string): unknown {
  * $('<div data-apple-color="red"></div>').data('apple-color');
  * //=> 'red'
  * ```
- *
  * @param name - Name of the data attribute.
  * @returns The data attribute's value, or `undefined` if the attribute does not
  *   exist.
@@ -643,7 +635,6 @@ export function data<T extends AnyNode>(
  * $('<div data-apple-color="red"></div>').data();
  * //=> { appleColor: 'red' }
  * ```
- *
  * @returns A map with all of the data attributes.
  * @see {@link https://api.jquery.com/data/}
  */
@@ -663,7 +654,6 @@ export function data<T extends AnyNode>(
  * apple.data('kind');
  * //=> 'mac'
  * ```
- *
  * @param name - Name of the data attribute.
  * @param value - The new value.
  * @returns The instance itself.
@@ -687,7 +677,6 @@ export function data<T extends AnyNode>(
  * apple.data('kind');
  * //=> 'mac'
  * ```
- *
  * @param values - Map of names to values.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/data/}
@@ -738,7 +727,6 @@ export function data<T extends AnyNode>(
  * $('input[type="text"]').val();
  * //=> input_text
  * ```
- *
  * @returns The value.
  * @see {@link https://api.jquery.com/val/}
  */
@@ -756,7 +744,6 @@ export function val<T extends AnyNode>(
  * $('input[type="text"]').val('test').html();
  * //=> <input type="text" value="test"/>
  * ```
- *
  * @param value - The new value.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/val/}
@@ -848,7 +835,6 @@ function splitNames(names?: string): string[] {
  * $('.apple').removeAttr('id class').html();
  * //=> <li>Apple</li>
  * ```
- *
  * @param name - Name of the attribute.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/removeAttr/}
@@ -884,7 +870,6 @@ export function removeAttr<T extends AnyNode>(
  * $('li').hasClass('pear');
  * //=> true
  * ```
- *
  * @param className - Name of the class.
  * @returns Indicates if an element has the given `className`.
  * @see {@link https://api.jquery.com/hasClass/}
@@ -927,7 +912,6 @@ export function hasClass<T extends AnyNode>(
  * $('.apple').addClass('fruit red').html();
  * //=> <li class="apple fruit red">Apple</li>
  * ```
- *
  * @param value - Name of new class.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/addClass/}
@@ -995,7 +979,6 @@ export function addClass<T extends AnyNode, R extends ArrayLike<T>>(
  * $('.apple').addClass('red').removeClass().html();
  * //=> <li class="">Apple</li>
  * ```
- *
  * @param name - Name of the class. If not specified, removes all elements.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/removeClass/}
@@ -1065,7 +1048,6 @@ export function removeClass<T extends AnyNode, R extends ArrayLike<T>>(
  * $('.apple.green').toggleClass('fruit green red', true).html();
  * //=> <li class="apple green fruit red">Apple</li>
  * ```
- *
  * @param value - Name of the class. Can also be a function.
  * @param stateVal - If specified the state of the class.
  * @returns The instance itself.

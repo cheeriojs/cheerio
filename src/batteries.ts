@@ -37,7 +37,6 @@ import { type Writable, finished } from 'node:stream';
  * const buffer = fs.readFileSync('index.html');
  * const $ = cheerio.fromBuffer(buffer);
  * ```
- *
  * @param buffer - The buffer to sniff the encoding of.
  * @param options - The options to pass to Cheerio.
  * @returns The loaded document.
@@ -103,7 +102,6 @@ function _stringStream(
  *   writeStream
  * );
  * ```
- *
  * @param options - The options to pass to Cheerio.
  * @param cb - The callback to call when the stream is finished.
  * @returns The writable stream.
@@ -178,7 +176,6 @@ const defaultRequestOptions: UndiciStreamOptions = {
  *
  * const $ = await cheerio.fromURL('https://example.com');
  * ```
- *
  * @param url - The URL to load the document from.
  * @param options - The options to pass to Cheerio.
  * @returns The loaded document.

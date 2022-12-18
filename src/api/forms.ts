@@ -20,7 +20,6 @@ const rCRLF = /\r?\n/g;
  * $('<form><input name="foo" value="bar" /></form>').serialize();
  * //=> 'foo=bar'
  * ```
- *
  * @returns The serialized form.
  * @see {@link https://api.jquery.com/serialize/}
  */
@@ -48,7 +47,6 @@ export function serialize<T extends AnyNode>(this: Cheerio<T>): string {
  * $('<form><input name="foo" value="bar" /></form>').serializeArray();
  * //=> [ { name: 'foo', value: 'bar' } ]
  * ```
- *
  * @returns The serialized form.
  * @see {@link https://api.jquery.com/serializeArray/}
  */

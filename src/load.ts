@@ -39,7 +39,6 @@ export interface CheerioAPI extends StaticType {
    * $('li[class=orange]').html();
    * //=> Orange
    * ```
-   *
    * @param selector - Either a selector to look for within the document, or the
    *   contents of a new Cheerio instance.
    * @param context - Either a selector to look for within the root, or the

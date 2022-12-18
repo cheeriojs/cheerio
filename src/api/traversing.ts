@@ -38,7 +38,6 @@ const reSiblingSelector = /^\s*[+~]/;
  * $('#fruits').find($('.apple')).length;
  * //=> 1
  * ```
- *
  * @param selectorOrHaystack - Element to look for.
  * @returns The found elements.
  * @see {@link https://api.jquery.com/find/}
@@ -236,7 +235,6 @@ function _removeDuplicates<T extends AnyNode>(elems: T[]): T[] {
  * $('.pear').parent().attr('id');
  * //=> fruits
  * ```
- *
  * @param selector - If specified filter for parent.
  * @returns The parents.
  * @see {@link https://api.jquery.com/parent/}
@@ -259,7 +257,6 @@ export const parent = _singleMatcher(
  * $('.orange').parents('#fruits').length;
  * //=> 1
  * ```
- *
  * @param selector - If specified filter for parents.
  * @returns The parents.
  * @see {@link https://api.jquery.com/parents/}
@@ -289,7 +286,6 @@ export const parents = _matcher(
  * $('.orange').parentsUntil('#food').length;
  * //=> 1
  * ```
- *
  * @param selector - Selector for element to stop at.
  * @param filterSelector - Optional filter for parents.
  * @returns The parents.
@@ -322,7 +318,6 @@ export const parentsUntil = _matchUntil(
  * $('.orange').closest('#fruits');
  * //=> [<ul id="fruits"> ... </ul>]
  * ```
- *
  * @param selector - Selector for the element to find.
  * @returns The closest nodes.
  * @see {@link https://api.jquery.com/closest/}
@@ -377,7 +372,6 @@ export function closest<T extends AnyNode>(
  * $('.apple').next().hasClass('orange');
  * //=> true
  * ```
- *
  * @param selector - If specified filter for sibling.
  * @returns The next nodes.
  * @see {@link https://api.jquery.com/next/}
@@ -397,7 +391,6 @@ export const next = _singleMatcher((elem) => nextElementSibling(elem));
  * $('.apple').nextAll('.orange');
  * //=> [<li class="orange">Orange</li>]
  * ```
- *
  * @param selector - If specified filter for siblings.
  * @returns The next nodes.
  * @see {@link https://api.jquery.com/nextAll/}
@@ -422,7 +415,6 @@ export const nextAll = _matcher((elem) => {
  * $('.apple').nextUntil('.pear');
  * //=> [<li class="orange">Orange</li>]
  * ```
- *
  * @param selector - Selector for element to stop at.
  * @param filterSelector - If specified filter for siblings.
  * @returns The next nodes.
@@ -444,7 +436,6 @@ export const nextUntil = _matchUntil(
  * $('.orange').prev().hasClass('apple');
  * //=> true
  * ```
- *
  * @param selector - If specified filter for siblings.
  * @returns The previous nodes.
  * @see {@link https://api.jquery.com/prev/}
@@ -465,7 +456,6 @@ export const prev = _singleMatcher((elem) => prevElementSibling(elem));
  * $('.pear').prevAll('.orange');
  * //=> [<li class="orange">Orange</li>]
  * ```
- *
  * @param selector - If specified filter for siblings.
  * @returns The previous nodes.
  * @see {@link https://api.jquery.com/prevAll/}
@@ -490,7 +480,6 @@ export const prevAll = _matcher((elem) => {
  * $('.pear').prevUntil('.apple');
  * //=> [<li class="orange">Orange</li>]
  * ```
- *
  * @param selector - Selector for element to stop at.
  * @param filterSelector - If specified filter for siblings.
  * @returns The previous nodes.
@@ -515,7 +504,6 @@ export const prevUntil = _matchUntil(
  * $('.pear').siblings('.orange').length;
  * //=> 1
  * ```
- *
  * @param selector - If specified filter for siblings.
  * @returns The siblings.
  * @see {@link https://api.jquery.com/siblings/}
@@ -539,7 +527,6 @@ export const siblings = _matcher(
  * $('#fruits').children('.pear').text();
  * //=> Pear
  * ```
- *
  * @param selector - If specified filter for children.
  * @returns The children.
  * @see {@link https://api.jquery.com/children/}
@@ -560,7 +547,6 @@ export const children = _matcher(
  * $('#fruits').contents().length;
  * //=> 3
  * ```
- *
  * @returns The children.
  * @see {@link https://api.jquery.com/contents/}
  */
@@ -595,7 +581,6 @@ export function contents<T extends AnyNode>(
  * fruits.join(', ');
  * //=> Apple, Orange, Pear
  * ```
- *
  * @param fn - Function to execute.
  * @returns The instance itself, useful for chaining.
  * @see {@link https://api.jquery.com/each/}
@@ -631,7 +616,6 @@ export function each<T>(
  *   .join(' ');
  * //=> "apple orange pear"
  * ```
- *
  * @param fn - Function to execute.
  * @returns The mapped elements, wrapped in a Cheerio collection.
  * @see {@link https://api.jquery.com/map/}
@@ -690,7 +674,6 @@ function getFilterFn<T>(
  *   })
  *   .attr('class'); //=> orange
  * ```
- *
  * @param match - Value to look for, following the rules above.
  * @returns The filtered collection.
  * @see {@link https://api.jquery.com/filter/}
@@ -717,7 +700,6 @@ export function filter<T, S extends T>(
  * $('li').filter('.orange').attr('class');
  * //=> orange
  * ```
- *
  * @example <caption>Function</caption>
  *
  * ```js
@@ -728,7 +710,6 @@ export function filter<T, S extends T>(
  *   })
  *   .attr('class'); //=> orange
  * ```
- *
  * @param match - Value to look for, following the rules above. See
  *   {@link AcceptedFilters}.
  * @returns The filtered collection.
@@ -804,7 +785,6 @@ export function is<T>(
  * $('li').not('.apple').length;
  * //=> 2
  * ```
- *
  * @example <caption>Function</caption>
  *
  * ```js
@@ -813,7 +793,6 @@ export function is<T>(
  *   return $(this).attr('class') === 'orange';
  * }).length; //=> 2
  * ```
- *
  * @param match - Value to look for, following the rules above.
  * @returns The filtered collection.
  * @see {@link https://api.jquery.com/not/}
@@ -847,14 +826,12 @@ export function not<T extends AnyNode>(
  * $('ul').has('.pear').attr('id');
  * //=> fruits
  * ```
- *
  * @example <caption>Element</caption>
  *
  * ```js
  * $('ul').has($('.pear')[0]).attr('id');
  * //=> fruits
  * ```
- *
  * @param selectorOrHaystack - Element to look for.
  * @returns The filtered collection.
  * @see {@link https://api.jquery.com/has/}
@@ -881,7 +858,6 @@ export function has(
  * $('#fruits').children().first().text();
  * //=> Apple
  * ```
- *
  * @returns The first element.
  * @see {@link https://api.jquery.com/first/}
  */
@@ -899,7 +875,6 @@ export function first<T extends AnyNode>(this: Cheerio<T>): Cheerio<T> {
  * $('#fruits').children().last().text();
  * //=> Pear
  * ```
- *
  * @returns The last element.
  * @see {@link https://api.jquery.com/last/}
  */
@@ -921,7 +896,6 @@ export function last<T>(this: Cheerio<T>): Cheerio<T> {
  * $('li').eq(-1).text();
  * //=> Pear
  * ```
- *
  * @param i - Index of the element to select.
  * @returns The element at the `i`th position.
  * @see {@link https://api.jquery.com/eq/}
@@ -947,7 +921,6 @@ export function eq<T>(this: Cheerio<T>, i: number): Cheerio<T> {
  * $('li').get(0).tagName;
  * //=> li
  * ```
- *
  * @param i - Element to retrieve.
  * @returns The element at the `i`th position.
  * @see {@link https://api.jquery.com/get/}
@@ -963,7 +936,6 @@ export function get<T>(this: Cheerio<T>, i: number): T | undefined;
  * $('li').get().length;
  * //=> 3
  * ```
- *
  * @returns All elements matched by the Cheerio object.
  * @see {@link https://api.jquery.com/get/}
  */
@@ -984,7 +956,6 @@ export function get<T>(this: Cheerio<T>, i?: number): T | T[] {
  * $('li').toArray();
  * //=> [ {...}, {...}, {...} ]
  * ```
- *
  * @returns The contained items.
  */
 export function toArray<T>(this: Cheerio<T>): T[] {
@@ -1004,7 +975,6 @@ export function toArray<T>(this: Cheerio<T>): T[] {
  * $('.apple').index($('#fruit, li'));
  * //=> 1
  * ```
- *
  * @param selectorOrNeedle - Element to look for.
  * @returns The index of the element.
  * @see {@link https://api.jquery.com/index/}
@@ -1046,7 +1016,6 @@ export function index<T extends AnyNode>(
  * $('li').slice(1, 2).length;
  * //=> 1
  * ```
- *
  * @param start - A position at which the elements begin to be selected. If
  *   negative, it indicates an offset from the end of the set.
  * @param end - A position at which the elements stop being selected. If
@@ -1074,7 +1043,6 @@ export function slice<T>(
  * $('li').eq(0).end().length;
  * //=> 3
  * ```
- *
  * @returns The previous state of the set of matched elements.
  * @see {@link https://api.jquery.com/end/}
  */
@@ -1092,7 +1060,6 @@ export function end<T>(this: Cheerio<T>): Cheerio<AnyNode> {
  * $('.apple').add('.orange').length;
  * //=> 2
  * ```
- *
  * @param other - Elements to add.
  * @param context - Optionally the context of the new selection.
  * @returns The combined set.
@@ -1119,7 +1086,6 @@ export function add<S extends AnyNode, T extends AnyNode>(
  * $('li').eq(0).addBack('.orange').length;
  * //=> 2
  * ```
- *
  * @param selector - Selector for the elements to add.
  * @returns The combined set.
  * @see {@link https://api.jquery.com/addBack/}
