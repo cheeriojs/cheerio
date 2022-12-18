@@ -38,11 +38,6 @@ export function serialize<T extends AnyNode>(this: Cheerio<T>): string {
   return retArr.join('&').replace(r20, '+');
 }
 
-interface SerializedField {
-  name: string;
-  value: string;
-}
-
 /**
  * Encode a set of form elements as an array of names and values.
  *
@@ -59,7 +54,10 @@ interface SerializedField {
  */
 export function serializeArray<T extends AnyNode>(
   this: Cheerio<T>
-): SerializedField[] {
+): {
+  name: string;
+  value: string;
+}[] {
   // Resolve all form elements from either forms or collections of form elements
   return this.map((_, elem) => {
     const $elem = this._make(elem);
@@ -77,7 +75,13 @@ export function serializeArray<T extends AnyNode>(
         ':matches([checked], :not(:checkbox, :radio))'
       // Convert each of the elements to its value(s)
     )
-    .map<AnyNode, SerializedField>((_, elem) => {
+    .map<
+      AnyNode,
+      {
+        name: string;
+        value: string;
+      }
+    >((_, elem) => {
       const $elem = this._make(elem);
       const name = $elem.attr('name') as string; // We have filtered for elements with a name before.
       // If there is no value set (e.g. `undefined`, `null`), then default value to empty

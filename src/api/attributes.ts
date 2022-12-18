@@ -29,6 +29,7 @@ const rbrace = /^{[^]*}$|^\[[^]*]$/;
  * @category Attributes
  * @param elem - Element to get the attribute of.
  * @param name - Name of the attribute.
+ * @param xmlMode - Disable handling of special HTML attributes.
  * @returns The attribute's value.
  */
 function getAttr(
@@ -225,6 +226,7 @@ export function attr<T extends AnyNode>(
  * @category Attributes
  * @param el - Element to get the prop of.
  * @param name - Name of the prop.
+ * @param xmlMode - Disable handling of special HTML attributes.
  * @returns The prop's value.
  */
 function getProp(
@@ -247,6 +249,7 @@ function getProp(
  * @param el - The element to set the prop on.
  * @param name - The prop's name.
  * @param value - The prop's value.
+ * @param xmlMode - Disable handling of special HTML attributes.
  */
 function setProp(el: Element, name: string, value: unknown, xmlMode?: boolean) {
   if (name in el) {
@@ -283,7 +286,6 @@ interface StyleProp {
  * ```
  *
  * @param name - Name of the property.
- * @param value - If specified set the property to this.
  * @returns If `value` is specified the instance itself, otherwise the prop's
  *   value.
  * @see {@link https://api.jquery.com/prop/}
@@ -291,12 +293,18 @@ interface StyleProp {
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: 'tagName' | 'nodeName'
-): T extends Element ? string : undefined;
+): string | undefined;
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: 'innerHTML' | 'outerHTML' | 'innerText' | 'textContent'
 ): string | null;
-/** Get a parsed CSS style object. */
+/**
+ * Get a parsed CSS style object.
+ *
+ * @param name - Name of the property.
+ * @returns The style object, or `undefined` if the element has no `style`
+ *   attribute.
+ */
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: 'style'
@@ -311,17 +319,31 @@ export function prop<T extends AnyNode>(
  * $('<img src="image.png">').prop('src');
  * //=> 'https://example.com/image.png'
  * ```
+ *
+ * @param name - Name of the property.
+ * @returns The resolved URL, or `undefined` if the element is not supported.
  */
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: 'href' | 'src'
 ): string | undefined;
-/** Get a property of an element. */
+/**
+ * Get a property of an element.
+ *
+ * @param name - Name of the property.
+ * @returns The property's value.
+ */
 export function prop<T extends AnyNode, K extends keyof Element>(
   this: Cheerio<T>,
   name: K
 ): Element[K];
-/** Set a property of an element. */
+/**
+ * Set a property of an element.
+ *
+ * @param name - Name of the property.
+ * @param value - Value to set the property to.
+ * @returns The instance itself.
+ */
 export function prop<T extends AnyNode, K extends keyof Element>(
   this: Cheerio<T>,
   name: K,
@@ -329,10 +351,32 @@ export function prop<T extends AnyNode, K extends keyof Element>(
     | Element[K]
     | ((this: Element, i: number, prop: K) => Element[keyof Element])
 ): Cheerio<T>;
+/**
+ * Set multiple properties of an element.
+ *
+ * @example
+ *
+ * ```js
+ * $('input[type="checkbox"]').prop({
+ *   checked: true,
+ *   disabled: false,
+ * });
+ * ```
+ *
+ * @param map - Object of properties to set.
+ * @returns The instance itself.
+ */
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
-  name: Record<string, string | Element[keyof Element] | boolean>
+  map: Record<string, string | Element[keyof Element] | boolean>
 ): Cheerio<T>;
+/**
+ * Set a property of an element.
+ *
+ * @param name - Name of the property.
+ * @param value - Value to set the property to.
+ * @returns The instance itself.
+ */
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: string,
@@ -342,6 +386,12 @@ export function prop<T extends AnyNode>(
     | null
     | ((this: Element, i: number, prop: string) => string | boolean)
 ): Cheerio<T>;
+/**
+ * Get a property of an element.
+ *
+ * @param name - The property's name.
+ * @returns The property's value.
+ */
 export function prop<T extends AnyNode>(this: Cheerio<T>, name: string): string;
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
@@ -542,6 +592,7 @@ function readData(el: DataElement, name: string): unknown {
  *
  * @private
  * @category Attributes
+ * @param value - The value to parse.
  * @returns The parsed value.
  */
 function parseDataValue(value: string): unknown {

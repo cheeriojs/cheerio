@@ -572,8 +572,6 @@ export function wrapAll<T extends AnyNode>(
   return this;
 }
 
-/* eslint-disable jsdoc/check-param-names*/
-
 /**
  * Insert content next to each element in the set of matched elements.
  *
@@ -591,8 +589,8 @@ export function wrapAll<T extends AnyNode>(
  * //    </ul>
  * ```
  *
- * @param content - HTML string, DOM element, array of DOM elements or Cheerio
- *   to insert after each element in the set of matched elements.
+ * @param elems - HTML string, DOM element, array of DOM elements or Cheerio to
+ *   insert after each element in the set of matched elements.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/after/}
  */
@@ -627,8 +625,6 @@ export function after<T extends AnyNode>(
     uniqueSplice(siblings, index + 1, 0, dom, el.parent);
   });
 }
-
-/* eslint-enable jsdoc/check-param-names*/
 
 /**
  * Insert every element in the set of matched elements after the target.
@@ -685,8 +681,6 @@ export function insertAfter<T extends AnyNode>(
   return this._make(clones);
 }
 
-/* eslint-disable jsdoc/check-param-names*/
-
 /**
  * Insert content previous to each element in the set of matched elements.
  *
@@ -704,8 +698,8 @@ export function insertAfter<T extends AnyNode>(
  * //    </ul>
  * ```
  *
- * @param content - HTML string, DOM element, array of DOM elements or Cheerio
- *   to insert before each element in the set of matched elements.
+ * @param elems - HTML string, DOM element, array of DOM elements or Cheerio to
+ *   insert before each element in the set of matched elements.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/before/}
  */
@@ -740,8 +734,6 @@ export function before<T extends AnyNode>(
     uniqueSplice(siblings, index, 0, dom, el.parent);
   });
 }
-
-/* eslint-enable jsdoc/check-param-names*/
 
 /**
  * Insert every element in the set of matched elements before the target.

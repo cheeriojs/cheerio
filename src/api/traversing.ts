@@ -172,6 +172,8 @@ const _singleMatcher = _getMatcher(
 /**
  * Matcher that supports traversing until a condition is met.
  *
+ * @param nextElem - Function that returns the next element.
+ * @param postFns - Post processing functions.
  * @returns A function usable for `*Until` methods.
  */
 function _matchUntil(
@@ -220,7 +222,7 @@ function _matchUntil(
 }
 
 function _removeDuplicates<T extends AnyNode>(elems: T[]): T[] {
-  return Array.from(new Set<T>(elems));
+  return elems.length > 1 ? Array.from(new Set<T>(elems)) : elems;
 }
 
 /**
@@ -813,7 +815,6 @@ export function is<T>(
  * ```
  *
  * @param match - Value to look for, following the rules above.
- * @param container - Optional node to filter instead.
  * @returns The filtered collection.
  * @see {@link https://api.jquery.com/not/}
  */
