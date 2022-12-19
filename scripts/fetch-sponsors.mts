@@ -199,7 +199,7 @@ async function fetchSponsors(): Promise<Sponsor[]> {
 const MISLABELED_ORGS =
   /[ck]as[iy]+no|bet$|poker|gambling|coffee|tuxedo|(?:ph|f)oto/i;
 
-const README_PATH = `${__dirname}/../Readme.md`;
+const README_PATH = new URL('../Readme.md', import.meta.url);
 
 const SECTION_START_BEGINNING = '<!-- BEGIN SPONSORS:';
 const SECTION_START_END = '-->';
