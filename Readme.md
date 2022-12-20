@@ -319,6 +319,9 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="https://soc-promotion.com" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fsoc-promotion%2F50963d9%2Favatar.png?ixlib=js-3.7.0&w=128&h=128&fit=fillmax&fill=solid&s=158579e61a181e73acb60618afedbe24" title="Soc-Promotion" alt="Soc-Promotion"></img>
           </a>
+<a href="https://www.casino.xyz" target="_blank" rel="noopener noreferrer">
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fguest-3f7631a8%2Ffba44cc%2Favatar.png?ixlib=js-3.7.0&w=128&h=128&fit=fillmax&fill=solid&s=9d77d7971c85f2748a0414cde560f044" title="Mark Taylor" alt="Mark Taylor"></img>
+          </a>
 
 <!-- END SPONSORS -->
 
