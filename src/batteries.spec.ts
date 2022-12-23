@@ -60,7 +60,7 @@ describe('stringStream', () => {
   });
 
   it('should use htmlparser2 for XML', (cb) => {
-    const stream = cheerio.stringStream({ xmlMode: true }, (err, $) => {
+    const stream = cheerio.stringStream({ xml: true }, (err, $) => {
       expect(err).toBeNull();
 
       expect($.html()).toBe(TEST_HTML);

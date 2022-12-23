@@ -5,8 +5,7 @@ import { textContent } from 'domutils';
 import {
   type InternalOptions,
   type CheerioOptions,
-  default as defaultOptions,
-  flatten as flattenOptions,
+  flattenOptions as flattenOptions,
 } from './options.js';
 import type { ExtractedMap, ExtractMap } from './api/extract.js';
 
@@ -85,9 +84,8 @@ export function html(
    * so fallback non-existing options to the default ones.
    */
   const opts = {
-    ...defaultOptions,
     ...this?._options,
-    ...flattenOptions(options ?? {}),
+    ...flattenOptions(options),
   };
 
   return render(this, toRender, opts);
@@ -166,7 +164,7 @@ export function parseHTML(
     keepScripts = context;
   }
 
-  const parsed = this.load(data, defaultOptions, false);
+  const parsed = this.load(data, this._options, false);
   if (!keepScripts) {
     parsed('script').remove();
   }
