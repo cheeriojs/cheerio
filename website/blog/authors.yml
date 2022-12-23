@@ -15,3 +15,9 @@ slorber:
   title: Docusaurus maintainer
   url: https://sebastienlorber.com
   image_url: https://github.com/slorber.png
+
+fb55:
+  name: Felix Boehm
+  title: Maintainer of Cheerio
+  url: https://github.com/fb55
+  image_url: https://github.com/fb55.png
