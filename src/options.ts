@@ -1,5 +1,7 @@
 import type { DomHandlerOptions } from 'domhandler';
-import type { ParserOptions } from 'htmlparser2';
+import type { ParserOptions as HTMLParser2ParserOptions } from 'htmlparser2';
+import type { ParserOptions as Parse5ParserOptions } from 'parse5';
+import type { Htmlparser2TreeAdapterMap } from 'parse5-htmlparser2-tree-adapter';
 import type { Options as SelectOptions } from 'cheerio-select';
 
 /**
@@ -7,14 +9,12 @@ import type { Options as SelectOptions } from 'cheerio-select';
  *
  * @see https://github.com/fb55/htmlparser2/wiki/Parser-options
  */
-export interface HTMLParser2Options extends DomHandlerOptions, ParserOptions {}
+export interface HTMLParser2Options
+  extends DomHandlerOptions,
+    HTMLParser2ParserOptions {}
+
 /** Options for parse5, the default parser for HTML. */
-export interface Parse5Options {
-  /** Disable scripting in parse5, so noscript tags would be parsed. */
-  scriptingEnabled?: boolean;
-  /** Enable location support for parse5. */
-  sourceCodeLocationInfo?: boolean;
-}
+export type Parse5Options = Parse5ParserOptions<Htmlparser2TreeAdapterMap>;
 
 /**
  * Options accepted by Cheerio.
