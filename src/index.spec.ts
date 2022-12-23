@@ -2,8 +2,9 @@ import * as cheerio from './index.js';
 import * as statics from './static.js';
 
 describe('static method re-exports', () => {
-  it('should export all static methods', () => {
+  it('should export expected static methods', () => {
     for (const key of Object.keys(statics) as (keyof typeof statics)[]) {
+      if (key === 'extract') continue;
       expect(typeof cheerio[key]).toBe(typeof statics[key]);
     }
   });

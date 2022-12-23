@@ -33,7 +33,7 @@ export function isCheerio<T>(maybeCheerio: any): maybeCheerio is Cheerio<T> {
  * @returns String in camel case notation.
  */
 export function camelCase(str: string): string {
-  return str.replace(/[_.-](\w|$)/g, (_, x) => x.toUpperCase());
+  return str.replace(/[._-](\w|$)/g, (_, x) => x.toUpperCase());
 }
 
 /**
@@ -87,9 +87,9 @@ export function cloneDom<T extends AnyNode>(dom: T | T[]): T[] {
 
   // Add a root node around the cloned nodes
   const root = new Document(clone);
-  clone.forEach((node) => {
+  for (const node of clone) {
     node.parent = root;
-  });
+  }
 
   return clone;
 }

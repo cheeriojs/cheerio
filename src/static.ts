@@ -8,6 +8,7 @@ import {
   default as defaultOptions,
   flatten as flattenOptions,
 } from './options.js';
+import type { ExtractedMap, ExtractMap } from './api/extract.js';
 
 /**
  * Helper function to render a DOM.
@@ -31,6 +32,7 @@ function render(
  * Checks if a passed object is an options object.
  *
  * @param dom - Object to check if it is an options object.
+ * @param options - Options object.
  * @returns Whether the object is an options object.
  */
 function isOptions(
@@ -120,7 +122,7 @@ export function text(
   this: CheerioAPI | void,
   elements?: ArrayLike<AnyNode>
 ): string {
-  const elems = elements ? elements : this ? this.root() : [];
+  const elems = elements ?? (this ? this.root() : []);
 
   let ret = '';
 
@@ -176,7 +178,7 @@ export function parseHTML(
    * from the `children` array. The results of `parseHTML` should remain
    * constant across these operations, so a shallow copy should be returned.
    */
-  return parsed.root()[0].children.slice();
+  return [...parsed.root()[0].children];
 }
 
 /**
@@ -189,7 +191,6 @@ export function parseHTML(
  * $.root().append('<ul id="vegetables"></ul>').html();
  * //=> <ul id="fruits">...</ul><ul id="vegetables"></ul>
  * ```
- *
  * @returns Cheerio instance wrapping the root node.
  * @alias Cheerio.root
  */
@@ -226,6 +227,21 @@ export function contains(container: AnyNode, contained: AnyNode): boolean {
   }
 
   return false;
+}
+
+/**
+ * Extract multiple values from a document, and store them in an object.
+ *
+ * @param map - An object containing key-value pairs. The keys are the names of
+ *   the properties to be created on the object, and the values are the
+ *   selectors to be used to extract the values.
+ * @returns An object containing the extracted values.
+ */
+export function extract<M extends ExtractMap>(
+  this: CheerioAPI,
+  map: M
+): ExtractedMap<M> {
+  return this.root().extract(map);
 }
 
 interface WritableArrayLike<T> extends ArrayLike<T> {

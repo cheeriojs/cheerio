@@ -3,8 +3,8 @@
 <h5 align="center">Fast, flexible & lean implementation of core jQuery designed specifically for the server.</h5>
 
 <div align="center">
-  <a href="https://github.com/cheeriojs/cheerio/actions?query=workflow%3ACI+branch%3Amain">
-    <img src="https://img.shields.io/github/workflow/status/cheeriojs/cheerio/CI/main" alt="Build Status">
+  <a href="https://github.com/cheeriojs/cheerio/actions/workflows/ci.yml">
+    <img src="https://github.com/cheeriojs/cheerio/actions/workflows/ci.yml/badge.svg" alt="Build Status">
   </a>
   <a href="https://coveralls.io/github/cheeriojs/cheerio">
     <img src="https://img.shields.io/coveralls/github/cheeriojs/cheerio/main" alt="Coverage">
@@ -49,7 +49,7 @@ Cheerio implements a subset of core jQuery. Cheerio removes all the DOM inconsis
 Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient.
 
 **&#10049; Incredibly flexible:**
-Cheerio wraps around [parse5](https://github.com/inikulin/parse5) parser and can optionally use @FB55's forgiving [htmlparser2](https://github.com/fb55/htmlparser2/). Cheerio can parse nearly any HTML or XML document.
+Cheerio wraps around [parse5](https://github.com/inikulin/parse5) parser and can optionally use @FB55's forgiving [htmlparser2](https://github.com/fb55/htmlparser2/). Cheerio can parse nearly any HTML or XML document. Cheerio works in both browser and Node environments.
 
 ## Cheerio is not a web browser
 
@@ -318,6 +318,9 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
           </a>
 <a href="https://soc-promotion.com" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fsoc-promotion%2F50963d9%2Favatar.png?ixlib=js-3.7.0&w=128&h=128&fit=fillmax&fill=solid&s=158579e61a181e73acb60618afedbe24" title="Soc-Promotion" alt="Soc-Promotion"></img>
+          </a>
+<a href="https://www.casino.xyz" target="_blank" rel="noopener noreferrer">
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fguest-3f7631a8%2Ffba44cc%2Favatar.png?ixlib=js-3.7.0&w=128&h=128&fit=fillmax&fill=solid&s=9d77d7971c85f2748a0414cde560f044" title="Mark Taylor" alt="Mark Taylor"></img>
           </a>
 
 <!-- END SPONSORS -->

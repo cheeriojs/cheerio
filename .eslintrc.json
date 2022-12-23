@@ -1,9 +1,11 @@
 {
-  "plugins": ["jsdoc"],
+  "plugins": ["jsdoc", "expect-type"],
   "extends": [
     "eslint:recommended",
     "plugin:jsdoc/recommended",
     "plugin:n/recommended",
+    "plugin:unicorn/recommended",
+    "plugin:expect-type/recommended",
     "prettier"
   ],
   "env": { "node": true },
@@ -46,7 +48,6 @@
     "no-void": 2,
 
     "jsdoc/require-jsdoc": 0,
-    "jsdoc/check-param-names": 0,
     "jsdoc/check-tag-names": 2,
     "jsdoc/newline-after-description": 2,
     "jsdoc/require-description-complete-sentence": 2,
@@ -55,14 +56,26 @@
     "jsdoc/require-param-name": 2,
     "jsdoc/require-param-type": 0,
     "jsdoc/require-returns-type": 0,
-    "jsdoc/require-param": 0,
     "jsdoc/no-types": 2,
     "jsdoc/valid-types": 2,
-    "jsdoc/tag-lines": 0,
 
-    "n/no-unsupported-features/es-syntax": 0,
     "n/file-extension-in-import": ["error", "always"],
-    "n/no-missing-import": 0
+    "n/no-missing-import": 0,
+
+    "unicorn/no-null": "off",
+    "unicorn/prevent-abbreviations": "off",
+    "unicorn/prefer-code-point": "off",
+    "unicorn/no-for-loop": "off",
+    "unicorn/no-array-callback-reference": 0,
+    "unicorn/prefer-spread": 0,
+    "unicorn/no-useless-undefined": 0,
+    "unicorn/no-array-reduce": 0,
+    "unicorn/prefer-array-find": 0,
+    "unicorn/prefer-module": 0,
+    "unicorn/prefer-switch": [
+      "error",
+      { "emptyDefaultCase": "do-nothing-comment" }
+    ]
   },
   "settings": {
     "jsdoc": {
@@ -87,6 +100,7 @@
       "rules": {
         "dot-notation": 0,
         "curly": [2, "multi-line"],
+        "n/no-unsupported-features/es-syntax": 0,
 
         "jsdoc/require-returns-check": 0, // Broken with overloaded fns
 

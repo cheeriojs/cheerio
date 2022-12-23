@@ -11,6 +11,10 @@ import {
   mixedText,
 } from '../__fixtures__/fixtures.js';
 
+function withClass(attr: string) {
+  return cheerio(`<div class="${attr}"></div>`);
+}
+
 describe('$(...)', () => {
   let $: typeof cheerio;
 
@@ -766,10 +770,6 @@ describe('$(...)', () => {
   });
 
   describe('.hasClass', () => {
-    function withClass(attr: string) {
-      return cheerio(`<div class="${attr}"></div>`);
-    }
-
     it('(valid class) : should return true', () => {
       const cls = $('.apple').hasClass('apple');
       expect(cls).toBe(true);

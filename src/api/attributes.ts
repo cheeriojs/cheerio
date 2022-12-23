@@ -29,6 +29,7 @@ const rbrace = /^{[^]*}$|^\[[^]*]$/;
  * @category Attributes
  * @param elem - Element to get the attribute of.
  * @param name - Name of the attribute.
+ * @param xmlMode - Disable handling of special HTML attributes.
  * @returns The attribute's value.
  */
 function getAttr(
@@ -105,7 +106,6 @@ function setAttr(el: Element, name: string, value: string | null) {
  * $('ul').attr('id');
  * //=> fruits
  * ```
- *
  * @param name - Name of the attribute.
  * @returns The attribute's value.
  * @see {@link https://api.jquery.com/attr/}
@@ -125,7 +125,6 @@ export function attr<T extends AnyNode>(
  * $('ul').attr();
  * //=> { id: 'fruits' }
  * ```
- *
  * @returns The attribute's values.
  * @see {@link https://api.jquery.com/attr/}
  */
@@ -144,7 +143,6 @@ export function attr<T extends AnyNode>(
  * $('.apple').attr('id', 'favorite').html();
  * //=> <li class="apple" id="favorite">Apple</li>
  * ```
- *
  * @param name - Name of the attribute.
  * @param value - The new value of the attribute.
  * @returns The instance itself.
@@ -170,7 +168,6 @@ export function attr<T extends AnyNode>(
  * $('.apple').attr({ id: 'favorite' }).html();
  * //=> <li class="apple" id="favorite">Apple</li>
  * ```
- *
  * @param values - Map of attribute names and values.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/attr/}
@@ -203,10 +200,10 @@ export function attr<T extends AnyNode>(
       if (!isTag(el)) return;
 
       if (typeof name === 'object') {
-        Object.keys(name).forEach((objName) => {
+        for (const objName of Object.keys(name)) {
           const objValue = name[objName];
           setAttr(el, objName, objValue);
-        });
+        }
       } else {
         setAttr(el, name as string, value as string);
       }
@@ -225,6 +222,7 @@ export function attr<T extends AnyNode>(
  * @category Attributes
  * @param el - Element to get the prop of.
  * @param name - Name of the prop.
+ * @param xmlMode - Disable handling of special HTML attributes.
  * @returns The prop's value.
  */
 function getProp(
@@ -247,6 +245,7 @@ function getProp(
  * @param el - The element to set the prop on.
  * @param name - The prop's name.
  * @param value - The prop's value.
+ * @param xmlMode - Disable handling of special HTML attributes.
  */
 function setProp(el: Element, name: string, value: unknown, xmlMode?: boolean) {
   if (name in el) {
@@ -281,9 +280,7 @@ interface StyleProp {
  * $('input[type="checkbox"]').prop('checked', true).val();
  * //=> ok
  * ```
- *
  * @param name - Name of the property.
- * @param value - If specified set the property to this.
  * @returns If `value` is specified the instance itself, otherwise the prop's
  *   value.
  * @see {@link https://api.jquery.com/prop/}
@@ -291,12 +288,18 @@ interface StyleProp {
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: 'tagName' | 'nodeName'
-): T extends Element ? string : undefined;
+): string | undefined;
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: 'innerHTML' | 'outerHTML' | 'innerText' | 'textContent'
 ): string | null;
-/** Get a parsed CSS style object. */
+/**
+ * Get a parsed CSS style object.
+ *
+ * @param name - Name of the property.
+ * @returns The style object, or `undefined` if the element has no `style`
+ *   attribute.
+ */
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: 'style'
@@ -311,17 +314,30 @@ export function prop<T extends AnyNode>(
  * $('<img src="image.png">').prop('src');
  * //=> 'https://example.com/image.png'
  * ```
+ * @param name - Name of the property.
+ * @returns The resolved URL, or `undefined` if the element is not supported.
  */
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: 'href' | 'src'
 ): string | undefined;
-/** Get a property of an element. */
+/**
+ * Get a property of an element.
+ *
+ * @param name - Name of the property.
+ * @returns The property's value.
+ */
 export function prop<T extends AnyNode, K extends keyof Element>(
   this: Cheerio<T>,
   name: K
 ): Element[K];
-/** Set a property of an element. */
+/**
+ * Set a property of an element.
+ *
+ * @param name - Name of the property.
+ * @param value - Value to set the property to.
+ * @returns The instance itself.
+ */
 export function prop<T extends AnyNode, K extends keyof Element>(
   this: Cheerio<T>,
   name: K,
@@ -329,10 +345,31 @@ export function prop<T extends AnyNode, K extends keyof Element>(
     | Element[K]
     | ((this: Element, i: number, prop: K) => Element[keyof Element])
 ): Cheerio<T>;
+/**
+ * Set multiple properties of an element.
+ *
+ * @example
+ *
+ * ```js
+ * $('input[type="checkbox"]').prop({
+ *   checked: true,
+ *   disabled: false,
+ * });
+ * ```
+ * @param map - Object of properties to set.
+ * @returns The instance itself.
+ */
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
-  name: Record<string, string | Element[keyof Element] | boolean>
+  map: Record<string, string | Element[keyof Element] | boolean>
 ): Cheerio<T>;
+/**
+ * Set a property of an element.
+ *
+ * @param name - Name of the property.
+ * @param value - Value to set the property to.
+ * @returns The instance itself.
+ */
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: string,
@@ -342,6 +379,12 @@ export function prop<T extends AnyNode>(
     | null
     | ((this: Element, i: number, prop: string) => string | boolean)
 ): Cheerio<T>;
+/**
+ * Get a property of an element.
+ *
+ * @param name - The property's name.
+ * @returns The property's value.
+ */
 export function prop<T extends AnyNode>(this: Cheerio<T>, name: string): string;
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
@@ -363,9 +406,9 @@ export function prop<T extends AnyNode>(
       case 'style': {
         const property = this.css() as StyleProp;
         const keys = Object.keys(property);
-        keys.forEach((p, i) => {
-          property[i] = p;
-        });
+        for (let i = 0; i < keys.length; i++) {
+          property[i] = keys[i];
+        }
 
         property.length = keys.length;
 
@@ -408,21 +451,24 @@ export function prop<T extends AnyNode>(
         return textContent(el);
       }
 
-      case 'outerHTML':
+      case 'outerHTML': {
         return this.clone().wrap('<container />').parent().html();
+      }
 
-      case 'innerHTML':
+      case 'innerHTML': {
         return this.html();
+      }
 
-      default:
+      default: {
         return getProp(el, name, this.options.xmlMode);
+      }
     }
   }
 
   if (typeof name === 'object' || value !== undefined) {
     if (typeof value === 'function') {
       if (typeof name === 'object') {
-        throw new Error('Bad combination of arguments.');
+        throw new TypeError('Bad combination of arguments.');
       }
       return domEach(this, (el, i) => {
         if (isTag(el)) {
@@ -440,10 +486,10 @@ export function prop<T extends AnyNode>(
       if (!isTag(el)) return;
 
       if (typeof name === 'object') {
-        Object.keys(name).forEach((key) => {
+        for (const key of Object.keys(name)) {
           const val = name[key];
           setProp(el, key, val, this.options.xmlMode);
-        });
+        }
       } else {
         setProp(el, name, value, this.options.xmlMode);
       }
@@ -539,6 +585,7 @@ function readData(el: DataElement, name: string): unknown {
  *
  * @private
  * @category Attributes
+ * @param value - The value to parse.
  * @returns The parsed value.
  */
 function parseDataValue(value: string): unknown {
@@ -550,7 +597,7 @@ function parseDataValue(value: string): unknown {
   if (rbrace.test(value)) {
     try {
       return JSON.parse(value);
-    } catch (e) {
+    } catch {
       /* Ignore */
     }
   }
@@ -568,7 +615,6 @@ function parseDataValue(value: string): unknown {
  * $('<div data-apple-color="red"></div>').data('apple-color');
  * //=> 'red'
  * ```
- *
  * @param name - Name of the data attribute.
  * @returns The data attribute's value, or `undefined` if the attribute does not
  *   exist.
@@ -589,7 +635,6 @@ export function data<T extends AnyNode>(
  * $('<div data-apple-color="red"></div>').data();
  * //=> { appleColor: 'red' }
  * ```
- *
  * @returns A map with all of the data attributes.
  * @see {@link https://api.jquery.com/data/}
  */
@@ -609,7 +654,6 @@ export function data<T extends AnyNode>(
  * apple.data('kind');
  * //=> 'mac'
  * ```
- *
  * @param name - Name of the data attribute.
  * @param value - The new value.
  * @returns The instance itself.
@@ -633,7 +677,6 @@ export function data<T extends AnyNode>(
  * apple.data('kind');
  * //=> 'mac'
  * ```
- *
  * @param values - Map of names to values.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/data/}
@@ -684,7 +727,6 @@ export function data<T extends AnyNode>(
  * $('input[type="text"]').val();
  * //=> input_text
  * ```
- *
  * @returns The value.
  * @see {@link https://api.jquery.com/val/}
  */
@@ -702,7 +744,6 @@ export function val<T extends AnyNode>(
  * $('input[type="text"]').val('test').html();
  * //=> <input type="text" value="test"/>
  * ```
- *
  * @param value - The new value.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/val/}
@@ -721,8 +762,9 @@ export function val<T extends AnyNode>(
   if (!element || !isTag(element)) return querying ? undefined : this;
 
   switch (element.name) {
-    case 'textarea':
+    case 'textarea': {
       return this.text(value as string);
+    }
     case 'select': {
       const option = this.find('option:selected');
       if (!querying) {
@@ -732,9 +774,9 @@ export function val<T extends AnyNode>(
 
         this.find('option').removeAttr('selected');
 
-        const values = typeof value !== 'object' ? [value] : value;
-        for (let i = 0; i < values.length; i++) {
-          this.find(`option[value="${values[i]}"]`).attr('selected', '');
+        const values = typeof value === 'object' ? value : [value];
+        for (const val of values) {
+          this.find(`option[value="${val}"]`).attr('selected', '');
         }
 
         return this;
@@ -745,10 +787,11 @@ export function val<T extends AnyNode>(
         : option.attr('value');
     }
     case 'input':
-    case 'option':
+    case 'option': {
       return querying
         ? this.attr('value')
         : this.attr('value', value as string);
+    }
   }
 
   return undefined;
@@ -792,7 +835,6 @@ function splitNames(names?: string): string[] {
  * $('.apple').removeAttr('id class').html();
  * //=> <li>Apple</li>
  * ```
- *
  * @param name - Name of the attribute.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/removeAttr/}
@@ -803,9 +845,9 @@ export function removeAttr<T extends AnyNode>(
 ): Cheerio<T> {
   const attrNames = splitNames(name);
 
-  for (let i = 0; i < attrNames.length; i++) {
+  for (const attrName of attrNames) {
     domEach(this, (elem) => {
-      if (isTag(elem)) removeAttribute(elem, attrNames[i]);
+      if (isTag(elem)) removeAttribute(elem, attrName);
     });
   }
 
@@ -828,7 +870,6 @@ export function removeAttr<T extends AnyNode>(
  * $('li').hasClass('pear');
  * //=> true
  * ```
- *
  * @param className - Name of the class.
  * @returns Indicates if an element has the given `className`.
  * @see {@link https://api.jquery.com/hasClass/}
@@ -841,7 +882,7 @@ export function hasClass<T extends AnyNode>(
     const clazz = isTag(elem) && elem.attribs['class'];
     let idx = -1;
 
-    if (clazz && className.length) {
+    if (clazz && className.length > 0) {
       while ((idx = clazz.indexOf(className, idx + 1)) > -1) {
         const end = idx + className.length;
 
@@ -871,7 +912,6 @@ export function hasClass<T extends AnyNode>(
  * $('.apple').addClass('fruit red').html();
  * //=> <li class="apple fruit red">Apple</li>
  * ```
- *
  * @param value - Name of new class.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/addClass/}
@@ -906,18 +946,18 @@ export function addClass<T extends AnyNode, R extends ArrayLike<T>>(
     // If we don't already have classes — always set xmlMode to false here, as it doesn't matter for classes
     const className = getAttr(el, 'class', false);
 
-    if (!className) {
-      setAttr(el, 'class', classNames.join(' ').trim());
-    } else {
+    if (className) {
       let setClass = ` ${className} `;
 
       // Check if class already exists
-      for (let j = 0; j < classNames.length; j++) {
-        const appendClass = `${classNames[j]} `;
+      for (const cn of classNames) {
+        const appendClass = `${cn} `;
         if (!setClass.includes(` ${appendClass}`)) setClass += appendClass;
       }
 
       setAttr(el, 'class', setClass.trim());
+    } else {
+      setAttr(el, 'class', classNames.join(' ').trim());
     }
   }
 
@@ -939,7 +979,6 @@ export function addClass<T extends AnyNode, R extends ArrayLike<T>>(
  * $('.apple').addClass('red').removeClass().html();
  * //=> <li class="">Apple</li>
  * ```
- *
  * @param name - Name of the class. If not specified, removes all elements.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/removeClass/}
@@ -1009,7 +1048,6 @@ export function removeClass<T extends AnyNode, R extends ArrayLike<T>>(
  * $('.apple.green').toggleClass('fruit green red', true).html();
  * //=> <li class="apple green fruit red">Apple</li>
  * ```
- *
  * @param value - Name of the class. Can also be a function.
  * @param stateVal - If specified the state of the class.
  * @returns The instance itself.

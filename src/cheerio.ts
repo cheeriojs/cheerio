@@ -7,12 +7,14 @@ import * as Traversing from './api/traversing.js';
 import * as Manipulation from './api/manipulation.js';
 import * as Css from './api/css.js';
 import * as Forms from './api/forms.js';
+import * as Extract from './api/extract.js';
 
 type AttributesType = typeof Attributes;
 type TraversingType = typeof Traversing;
 type ManipulationType = typeof Manipulation;
 type CssType = typeof Css;
 type FormsType = typeof Forms;
+type ExtractType = typeof Extract;
 
 export abstract class Cheerio<T> implements ArrayLike<T> {
   length = 0;
@@ -98,6 +100,7 @@ export interface Cheerio<T>
     ManipulationType,
     CssType,
     FormsType,
+    ExtractType,
     Iterable<T> {
   cheerio: '[cheerio object]';
 
@@ -122,5 +125,6 @@ Object.assign(
   Traversing,
   Manipulation,
   Css,
-  Forms
+  Forms,
+  Extract
 );

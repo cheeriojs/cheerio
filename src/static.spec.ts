@@ -111,10 +111,10 @@ describe('cheerio', () => {
     });
 
     it('(largeHtmlString) : parses large HTML strings', () => {
-      const html = new Array(10).join('<div></div>');
+      const html = '<div></div>'.repeat(10);
       const nodes = $.parseHTML(html);
 
-      expect(nodes.length).toBeGreaterThan(4);
+      expect(nodes.length).toBe(10);
       expect(nodes).toBeInstanceOf(Array);
     });
 
@@ -314,6 +314,24 @@ describe('cheerio', () => {
       expect($.html()).toBe(
         '<html><head></head><body>foo</body></html><div id="test"></div>'
       );
+    });
+  });
+
+  describe('.extract', () => {
+    it('() : should extract values for selectors', () => {
+      const $ = cheerio.load(fixtures.eleven);
+
+      expect(
+        $.extract({
+          red: [{ selector: '.red', value: 'outerHTML' }],
+        })
+      ).toStrictEqual({
+        red: [
+          '<li class="red">Four</li>',
+          '<li class="red">Five</li>',
+          '<li class="red sel">Nine</li>',
+        ],
+      });
     });
   });
 });
