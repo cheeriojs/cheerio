@@ -23,18 +23,15 @@ export function parseWithParse5(
   isDocument: boolean,
   context: ParentNode | null
 ): Document {
-  const opts = {
-    scriptingEnabled:
-      typeof options.scriptingEnabled === 'boolean'
-        ? options.scriptingEnabled
-        : true,
-    treeAdapter: htmlparser2Adapter,
-    sourceCodeLocationInfo: options.sourceCodeLocationInfo,
-  };
+  options.treeAdapter ??= htmlparser2Adapter;
+
+  if (options.scriptingEnabled !== false) {
+    options.scriptingEnabled = true;
+  }
 
   return isDocument
-    ? parseDocument(content, opts)
-    : parseFragment(context, content, opts);
+    ? parseDocument(content, options)
+    : parseFragment(context, content, options);
 }
 
 const renderOpts = { treeAdapter: htmlparser2Adapter };

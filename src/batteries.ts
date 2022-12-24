@@ -9,7 +9,7 @@ export * from './index.js';
 
 import type { CheerioAPI, CheerioOptions } from './index.js';
 import { load } from './index.js';
-import { flatten as flattenOptions, type InternalOptions } from './options.js';
+import { flattenOptions, type InternalOptions } from './options.js';
 import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';
 
 // eslint-disable-next-line n/file-extension-in-import
@@ -58,7 +58,7 @@ function _stringStream(
   options: InternalOptions | undefined,
   cb: (err: Error | null | undefined, $: CheerioAPI) => void
 ): Writable {
-  if (options && (options.xmlMode || options._useHtmlParser2)) {
+  if (options?._useHtmlParser2) {
     const handler: DomHandler = new DomHandler(
       (err) => cb(err, load(handler.root)),
       options
@@ -67,10 +67,14 @@ function _stringStream(
     return new Htmlparser2Stream(handler, options);
   }
 
-  const stream = new Parse5Stream({
-    ...options,
-    treeAdapter: htmlparser2Adapter,
-  });
+  options ??= {};
+  options.treeAdapter ??= htmlparser2Adapter;
+
+  if (options.scriptingEnabled !== false) {
+    options.scriptingEnabled = true;
+  }
+
+  const stream = new Parse5Stream(options);
 
   finished(stream, (err) => cb(err, load(stream.document)));
 
@@ -102,6 +106,7 @@ function _stringStream(
  *   writeStream
  * );
  * ```
+ *
  * @param options - The options to pass to Cheerio.
  * @param cb - The callback to call when the stream is finished.
  * @returns The writable stream.
@@ -176,6 +181,7 @@ const defaultRequestOptions: UndiciStreamOptions = {
  *
  * const $ = await cheerio.fromURL('https://example.com');
  * ```
+ *
  * @param url - The URL to load the document from.
  * @param options - The options to pass to Cheerio.
  * @returns The loaded document.

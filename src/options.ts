@@ -22,11 +22,25 @@ export type Parse5Options = Parse5ParserOptions<Htmlparser2TreeAdapterMap>;
  * Please note that parser-specific options are _only recognized_ if the
  * relevant parser is used.
  */
-export interface CheerioOptions extends HTMLParser2Options, Parse5Options {
-  /** Recommended way of configuring htmlparser2 when wanting to parse XML. */
+export interface CheerioOptions extends Parse5Options {
+  /**
+   * Recommended way of configuring htmlparser2 when wanting to parse XML.
+   *
+   * This will switch Cheerio to use htmlparser2.
+   *
+   * @default false
+   */
   xml?: HTMLParser2Options | boolean;
 
-  /** The base URI for the document. Used for the `href` and `src` props. */
+  /**
+   * Enable xml mode, which will switch Cheerio to use htmlparser2.
+   *
+   * @deprecated Please use the `xml` option instead.
+   * @default false
+   */
+  xmlMode?: boolean;
+
+  /** The base URI for the document. Used to resolve the `href` and `src` props. */
   baseURI?: string | URL; // eslint-disable-line n/no-unsupported-features/node-builtins
 
   /**
@@ -70,7 +84,9 @@ export interface CheerioOptions extends HTMLParser2Options, Parse5Options {
 }
 
 /** Internal options for Cheerio. */
-export interface InternalOptions extends Omit<CheerioOptions, 'xml'> {
+export interface InternalOptions
+  extends HTMLParser2Options,
+    Omit<CheerioOptions, 'xml'> {
   /**
    * Whether to use htmlparser2.
    *
@@ -79,17 +95,8 @@ export interface InternalOptions extends Omit<CheerioOptions, 'xml'> {
   _useHtmlParser2?: boolean;
 }
 
-const defaultOpts: CheerioOptions = {
-  xml: false,
-  decodeEntities: true,
-};
-
-/** Cheerio default options. */
-export default defaultOpts;
-
-const xmlModeDefault: InternalOptions = {
-  _useHtmlParser2: true,
-  xmlMode: true,
+const defaultOpts: InternalOptions = {
+  _useHtmlParser2: false,
 };
 
 /**
@@ -98,14 +105,33 @@ const xmlModeDefault: InternalOptions = {
  * This will set `_useHtmlParser2` to true if `xml` is set to true.
  *
  * @param options - The options to flatten.
+ * @param baseOptions - The base options to use.
  * @returns The flattened options.
  */
-export function flatten(
-  options?: CheerioOptions | null
-): InternalOptions | undefined {
-  return options?.xml
-    ? typeof options.xml === 'boolean'
-      ? xmlModeDefault
-      : { ...xmlModeDefault, ...options.xml }
-    : options ?? undefined;
+export function flattenOptions(
+  options?: CheerioOptions | null,
+  baseOptions?: InternalOptions
+): InternalOptions {
+  if (!options) {
+    return baseOptions ?? defaultOpts;
+  }
+
+  const opts: InternalOptions = {
+    _useHtmlParser2: !!options.xmlMode,
+    ...baseOptions,
+    ...options,
+  };
+
+  if (options.xml) {
+    opts._useHtmlParser2 = true;
+    opts.xmlMode = true;
+
+    if (options.xml !== true) {
+      Object.assign(opts, options.xml);
+    }
+  } else if (options.xmlMode) {
+    opts._useHtmlParser2 = true;
+  }
+
+  return opts;
 }

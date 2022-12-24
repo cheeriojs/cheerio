@@ -1974,7 +1974,7 @@ describe('$(...)', () => {
     });
 
     it('() : should preserve parsing options', () => {
-      const $ = load('<div>π</div>', { decodeEntities: false });
+      const $ = load('<div>π</div>', { xml: { decodeEntities: false } });
       const $div = $('div');
 
       expect($div.text()).toBe($div.clone().text());
