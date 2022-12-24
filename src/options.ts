@@ -23,17 +23,24 @@ export interface Parse5Options {
  * relevant parser is used.
  */
 export interface CheerioOptions extends Parse5Options {
-  /** Recommended way of configuring htmlparser2 when wanting to parse XML. */
+  /**
+   * Recommended way of configuring htmlparser2 when wanting to parse XML.
+   *
+   * This will switch Cheerio to use htmlparser2.
+   *
+   * @default false
+   */
   xml?: HTMLParser2Options | boolean;
 
   /**
    * Enable xml mode, which will switch Cheerio to use htmlparser2.
    *
    * @deprecated Please use the `xml` option instead.
+   * @default false
    */
   xmlMode?: boolean;
 
-  /** The base URI for the document. Used for the `href` and `src` props. */
+  /** The base URI for the document. Used to resolve the `href` and `src` props. */
   baseURI?: string | URL; // eslint-disable-line n/no-unsupported-features/node-builtins
 
   /**
