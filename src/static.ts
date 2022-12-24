@@ -242,10 +242,7 @@ export function extract<M extends ExtractMap>(
   return this.root().extract(map);
 }
 
-interface WritableArrayLike<T> extends ArrayLike<T> {
-  length: number;
-  [n: number]: T;
-}
+type Writable<T> = { -readonly [P in keyof T]: T[P] };
 
 /**
  * $.merge().
@@ -257,7 +254,7 @@ interface WritableArrayLike<T> extends ArrayLike<T> {
  * @see {@link https://api.jquery.com/jQuery.merge/}
  */
 export function merge<T>(
-  arr1: WritableArrayLike<T>,
+  arr1: Writable<ArrayLike<T>>,
   arr2: ArrayLike<T>
 ): ArrayLike<T> | undefined {
   if (!isArrayLike(arr1) || !isArrayLike(arr2)) {
@@ -279,14 +276,15 @@ export function merge<T>(
  * @param item - Item to check.
  * @returns Indicates if the item is array-like.
  */
-function isArrayLike(item: any): item is ArrayLike<unknown> {
+function isArrayLike(item: unknown): item is ArrayLike<unknown> {
   if (Array.isArray(item)) {
     return true;
   }
 
   if (
     typeof item !== 'object' ||
-    !Object.prototype.hasOwnProperty.call(item, 'length') ||
+    item === null ||
+    !('length' in item) ||
     typeof item.length !== 'number' ||
     item.length < 0
   ) {
