@@ -67,10 +67,14 @@ function _stringStream(
     return new Htmlparser2Stream(handler, options);
   }
 
-  const stream = new Parse5Stream({
-    ...options,
-    treeAdapter: htmlparser2Adapter,
-  });
+  options ??= {};
+  options.treeAdapter ??= htmlparser2Adapter;
+
+  if (options.scriptingEnabled !== false) {
+    options.scriptingEnabled = true;
+  }
+
+  const stream = new Parse5Stream(options);
 
   finished(stream, (err) => cb(err, load(stream.document)));
 
