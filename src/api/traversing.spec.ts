@@ -887,7 +887,7 @@ describe('$(...)', () => {
     it('(fn) : should preform a shallow merge on arrays returned by iterator', () => {
       const $fruits = $('li');
 
-      const $mapped = $fruits.map(() => [1, [3, 4]] as any);
+      const $mapped = $fruits.map(() => [1, [3, 4]]);
 
       expect($mapped.get()).toStrictEqual([1, [3, 4], 1, [3, 4], 1, [3, 4]]);
     });
@@ -895,7 +895,7 @@ describe('$(...)', () => {
     it('(fn) : should tolerate `null` and `undefined` when flattening arrays returned by iterator', () => {
       const $fruits = $('li');
 
-      const $mapped = $fruits.map(() => [null, undefined] as any);
+      const $mapped = $fruits.map(() => [null, undefined]);
 
       expect($mapped.get()).toStrictEqual([
         null,

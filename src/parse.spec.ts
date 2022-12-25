@@ -441,11 +441,10 @@ describe('parse', () => {
         false,
         null
       );
-      // TODO Add `sourceCodeLocation` to domhandler
-      const location = (root.children[0] as any).sourceCodeLocation;
+      const location = root.children[0].sourceCodeLocation;
 
       expect(typeof location).toBe('object');
-      expect(location.endOffset).toBe(12);
+      expect(location?.endOffset).toBe(12);
     });
   });
 });

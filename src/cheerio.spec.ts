@@ -501,7 +501,7 @@ describe('cheerio', () => {
         const result = cheerio.load(noscript, options)('noscript');
         expect(result).toHaveLength(1);
         expect(result[0]).toHaveProperty('sourceCodeLocation');
-        expect(typeof (result[0] as any)['sourceCodeLocation']).toBe('object');
+        expect(typeof result[0].sourceCodeLocation).toBe('object');
       }
     });
   });
