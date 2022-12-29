@@ -41,8 +41,8 @@ describe('cheerio', () => {
 
     it('() : does not crash with `null` as `this` value', () => {
       const { html } = cheerio;
-      expect(html.call(null as any)).toBe('');
-      expect(html.call(null as any, '#nothing')).toBe('');
+      expect(html.call(null as never)).toBe('');
+      expect(html.call(null as never, '#nothing')).toBe('');
     });
   });
 
@@ -91,7 +91,7 @@ describe('cheerio', () => {
 
     it('() : does not crash with `null` as `this` value', () => {
       const { text } = cheerio;
-      expect(text.call(null as any)).toBe('');
+      expect(text.call(null as never)).toBe('');
     });
   });
 
@@ -199,46 +199,35 @@ describe('cheerio', () => {
 
   describe('.merge', () => {
     const $ = cheerio.load('');
-    let arr1: ArrayLike<number>;
-    let arr2: ArrayLike<number>;
-
-    beforeEach(() => {
-      arr1 = [1, 2, 3];
-      arr2 = [4, 5, 6];
-    });
 
     it('should be a function', () => {
       expect(typeof $.merge).toBe('function');
     });
 
-    it('(arraylike, arraylike) : should return an array', () => {
+    it('(arraylike, arraylike) : should modify the first array, but not the second', () => {
+      const arr1 = [1, 2, 3];
+      const arr2 = [4, 5, 6];
+
       const ret = $.merge(arr1, arr2);
       expect(typeof ret).toBe('object');
       expect(Array.isArray(ret)).toBe(true);
-    });
-
-    it('(arraylike, arraylike) : should modify the first array', () => {
-      $.merge(arr1, arr2);
+      expect(ret).toBe(arr1);
       expect(arr1).toHaveLength(6);
-    });
-
-    it('(arraylike, arraylike) : should not modify the second array', () => {
-      $.merge(arr1, arr2);
       expect(arr2).toHaveLength(3);
     });
 
     it('(arraylike, arraylike) : should handle objects that arent arrays, but are arraylike', () => {
       const arr1: ArrayLike<string> = {
         length: 3,
-        [0]: 'a',
-        [1]: 'b',
-        [2]: 'c',
+        0: 'a',
+        1: 'b',
+        2: 'c',
       };
       const arr2 = {
         length: 3,
-        [0]: 'd',
-        [1]: 'e',
-        [2]: 'f',
+        0: 'd',
+        1: 'e',
+        2: 'f',
       };
 
       $.merge(arr1, arr2);
@@ -250,21 +239,19 @@ describe('cheerio', () => {
     });
 
     it('(?, ?) : should gracefully reject invalid inputs', () => {
-      expect($.merge([4], 3 as any)).toBeFalsy();
-      expect($.merge({} as any, {} as any)).toBeFalsy();
-      expect($.merge([], {} as any)).toBeFalsy();
-      expect($.merge({} as any, [])).toBeFalsy();
-      const fakeArray1 = { length: 3, [0]: 'a', [1]: 'b', [3]: 'd' };
+      expect($.merge([4], 3 as never)).toBeFalsy();
+      expect($.merge({} as never, {} as never)).toBeFalsy();
+      expect($.merge([], {} as never)).toBeFalsy();
+      expect($.merge({} as never, [])).toBeFalsy();
+      const fakeArray1 = { length: 3, 0: 'a', 1: 'b', 3: 'd' };
       expect($.merge(fakeArray1, [])).toBeFalsy();
       expect($.merge([], fakeArray1)).toBeFalsy();
-      const fakeArray2 = { length: '7' };
-      expect($.merge(fakeArray2 as any, [])).toBeFalsy();
-      const fakeArray3 = { length: -1 };
-      expect($.merge(fakeArray3, [])).toBeFalsy();
+      expect($.merge({ length: '7' } as never, [])).toBeFalsy();
+      expect($.merge({ length: -1 }, [])).toBeFalsy();
     });
 
     it('(?, ?) : should no-op on invalid inputs', () => {
-      const fakeArray1 = { length: 3, [0]: 'a', [1]: 'b', [3]: 'd' };
+      const fakeArray1 = { length: 3, 0: 'a', 1: 'b', 3: 'd' };
       $.merge(fakeArray1, []);
       expect(fakeArray1).toHaveLength(3);
       expect(fakeArray1[0]).toBe('a');
