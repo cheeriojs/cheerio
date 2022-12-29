@@ -16,52 +16,41 @@ describe('deprecated APIs', () => {
     });
 
     describe('.merge', () => {
-      let arr1: ArrayLike<unknown>;
-      let arr2: ArrayLike<unknown>;
-      beforeEach(() => {
-        arr1 = [1, 2, 3];
-        arr2 = [4, 5, 6];
-      });
-
       it('should be a function', () => {
         expect(typeof cheerio.merge).toBe('function');
       });
 
       // #1674 - merge, wont accept Cheerio object
       it('should be a able merge array and cheerio object', () => {
-        const ret = cheerio.merge(cheerio(), ['elem1', 'elem2'] as any);
+        const ret = cheerio.merge<unknown>(cheerio(), ['elem1', 'elem2']);
         expect(typeof ret).toBe('object');
         expect(ret).toHaveLength(2);
       });
 
-      it('(arraylike, arraylike) : should return an array', () => {
+      it('(arraylike, arraylike) : should modify the first array, but not the second', () => {
+        const arr1 = [1, 2, 3];
+        const arr2 = [4, 5, 6];
         const ret = cheerio.merge(arr1, arr2);
+
         expect(typeof ret).toBe('object');
         expect(Array.isArray(ret)).toBe(true);
-      });
-
-      it('(arraylike, arraylike) : should modify the first array', () => {
-        cheerio.merge(arr1, arr2);
+        expect(ret).toBe(arr1);
         expect(arr1).toHaveLength(6);
-      });
-
-      it('(arraylike, arraylike) : should not modify the second array', () => {
-        cheerio.merge(arr1, arr2);
         expect(arr2).toHaveLength(3);
       });
 
       it('(arraylike, arraylike) : should handle objects that arent arrays, but are arraylike', () => {
-        arr1 = {
+        const arr1: ArrayLike<string> = {
           length: 3,
-          [0]: 'a',
-          [1]: 'b',
-          [2]: 'c',
+          0: 'a',
+          1: 'b',
+          2: 'c',
         };
-        arr2 = {
+        const arr2 = {
           length: 3,
-          [0]: 'd',
-          [1]: 'e',
-          [2]: 'f',
+          0: 'd',
+          1: 'e',
+          2: 'f',
         };
 
         cheerio.merge(arr1, arr2);
@@ -73,30 +62,21 @@ describe('deprecated APIs', () => {
       });
 
       it('(?, ?) : should gracefully reject invalid inputs', () => {
-        let ret: ArrayLike<unknown> | undefined = cheerio.merge([4], 3 as any);
-        expect(ret).toBeFalsy();
-        ret = cheerio.merge({} as any, {} as any);
-        expect(ret).toBeFalsy();
-        ret = cheerio.merge([], {} as any);
-        expect(ret).toBeFalsy();
-        ret = cheerio.merge({} as any, []);
-        expect(ret).toBeFalsy();
-        let fakeArray1 = { length: 3, [0]: 'a', [1]: 'b', [3]: 'd' };
-        ret = cheerio.merge(fakeArray1, []);
-        expect(ret).toBeFalsy();
-        ret = cheerio.merge([], fakeArray1);
-        expect(ret).toBeFalsy();
-        fakeArray1 = {} as any;
-        fakeArray1.length = '7' as any;
-        ret = cheerio.merge(fakeArray1, []);
-        expect(ret).toBeFalsy();
-        fakeArray1.length = -1;
-        ret = cheerio.merge(fakeArray1, []);
-        expect(ret).toBeFalsy();
+        expect(cheerio.merge([4], 3 as never)).toBeUndefined();
+        expect(cheerio.merge({} as never, {} as never)).toBeUndefined();
+        expect(cheerio.merge([], {} as never)).toBeUndefined();
+        expect(cheerio.merge({} as never, [])).toBeUndefined();
+
+        const fakeArray = { length: 3, 0: 'a', 1: 'b', 3: 'd' };
+        expect(cheerio.merge(fakeArray, [])).toBeUndefined();
+        expect(cheerio.merge([], fakeArray)).toBeUndefined();
+
+        expect(cheerio.merge({ length: '7' } as never, [])).toBeUndefined();
+        expect(cheerio.merge({ length: -1 }, [])).toBeUndefined();
       });
 
       it('(?, ?) : should no-op on invalid inputs', () => {
-        const fakeArray1 = { length: 3, [0]: 'a', [1]: 'b', [3]: 'd' };
+        const fakeArray1 = { length: 3, 0: 'a', 1: 'b', 3: 'd' };
         cheerio.merge(fakeArray1, []);
         expect(fakeArray1).toHaveLength(3);
         expect(fakeArray1[0]).toBe('a');
@@ -171,6 +151,7 @@ describe('deprecated APIs', () => {
      * $('h1').html();
      * //=> '<h1>Hello, <span>world</span>.'
      * ```
+     *
      * @example <caption>To render the markup of an entire document, invoke the
      * `html` function exported by the Cheerio module with a "root"
      * selection.</caption>
@@ -228,6 +209,7 @@ describe('deprecated APIs', () => {
      * $('h1').text();
      * //=> 'Hello, world.'
      * ```
+     *
      * @example <caption>To render the text content of an entire document,
      * invoke the `text` function exported by the Cheerio module with a "root"
      * selection. </caption>
