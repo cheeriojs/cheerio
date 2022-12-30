@@ -54,18 +54,6 @@ server environments.
 
 ## API
 
-### Markup example we'll be using:
-
-```html
-<ul id="fruits">
-  <li class="apple">Apple</li>
-  <li class="orange">Orange</li>
-  <li class="pear">Pear</li>
-</ul>
-```
-
-This is the HTML markup we will be using in all of the API examples.
-
 ### Loading
 
 First you need to load in the HTML. This step in jQuery is implicit, since
