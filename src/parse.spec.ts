@@ -1,12 +1,13 @@
 import type { Document, Element } from 'domhandler';
 import { getParse } from './parse.js';
-import defaultOpts from './options.js';
 
 import { parseDocument as parseWithHtmlparser2 } from 'htmlparser2';
 import { parseWithParse5 } from './parsers/parse5-adapter.js';
 
+const defaultOpts = { _useHtmlParser2: false };
+
 const parse = getParse((content, options, isDocument, context) =>
-  options.xmlMode || options._useHtmlParser2
+  options._useHtmlParser2
     ? parseWithHtmlparser2(content, options)
     : parseWithParse5(content, options, isDocument, context)
 );
@@ -440,11 +441,10 @@ describe('parse', () => {
         false,
         null
       );
-      // TODO Add `sourceCodeLocation` to domhandler
-      const location = (root.children[0] as any).sourceCodeLocation;
+      const location = root.children[0].sourceCodeLocation;
 
       expect(typeof location).toBe('object');
-      expect(location.endOffset).toBe(12);
+      expect(location?.endOffset).toBe(12);
     });
   });
 });

@@ -1,8 +1,7 @@
 import {
   type CheerioOptions,
   type InternalOptions,
-  default as defaultOptions,
-  flatten as flattenOptions,
+  flattenOptions,
 } from './options.js';
 import * as staticMethods from './static.js';
 import { Cheerio } from './cheerio.js';
@@ -114,7 +113,7 @@ export function getLoad(
       throw new Error('cheerio.load() expects a string');
     }
 
-    const internalOpts = { ...defaultOptions, ...flattenOptions(options) };
+    const internalOpts = flattenOptions(options);
     const initialRoot = parse(content, internalOpts, isDocument, null);
 
     /**
@@ -157,10 +156,7 @@ export function getLoad(
       // $($)
       if (selector && isCheerio<Result>(selector)) return selector;
 
-      const options = {
-        ...internalOpts,
-        ...flattenOptions(opts),
-      };
+      const options = flattenOptions(opts, internalOpts);
       const r =
         typeof root === 'string'
           ? [parse(root, options, false, null)]

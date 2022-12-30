@@ -1,11 +1,10 @@
 {
-  "plugins": ["jsdoc", "expect-type"],
+  "plugins": ["jsdoc"],
   "extends": [
     "eslint:recommended",
     "plugin:jsdoc/recommended",
     "plugin:n/recommended",
     "plugin:unicorn/recommended",
-    "plugin:expect-type/recommended",
     "prettier"
   ],
   "env": { "node": true },
@@ -88,7 +87,9 @@
   "overrides": [
     {
       "files": "*.ts",
+      "plugins": ["expect-type"],
       "extends": [
+        "plugin:expect-type/recommended",
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
         "prettier"

@@ -31,7 +31,7 @@ import renderWithHtmlparser2 from 'dom-serializer';
 import { parseDocument as parseWithHtmlparser2 } from 'htmlparser2';
 
 const parse = getParse((content, options, isDocument, context) =>
-  options.xmlMode || options._useHtmlParser2
+  options._useHtmlParser2
     ? parseWithHtmlparser2(content, options)
     : parseWithParse5(content, options, isDocument, context)
 );
@@ -52,7 +52,7 @@ const parse = getParse((content, options, isDocument, context) =>
  * @see {@link https://cheerio.js.org#loading} for additional usage information.
  */
 export const load = getLoad(parse, (dom, options) =>
-  options.xmlMode || options._useHtmlParser2
+  options._useHtmlParser2
     ? renderWithHtmlparser2(dom, options)
     : renderWithParse5(dom)
 );

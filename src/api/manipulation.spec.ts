@@ -1,6 +1,10 @@
-import { load } from '../../src';
-import type { CheerioAPI, Cheerio } from '../index.js';
-import { fruits, divcontainers, mixedText } from '../__fixtures__/fixtures.js';
+import { load, type CheerioAPI, type Cheerio } from '../index.js';
+import {
+  fruits,
+  divcontainers,
+  mixedText,
+  unwrapspans,
+} from '../__fixtures__/fixtures.js';
 import type { AnyNode, Element } from 'domhandler';
 
 describe('$(...)', () => {
@@ -342,13 +346,6 @@ describe('$(...)', () => {
 
   describe('.unwrap', () => {
     let $elem: CheerioAPI;
-    const unwrapspans = [
-      '<div id=unwrap style="display: none;">',
-      '<div id=unwrap1><span class=unwrap>a</span><span class=unwrap>b</span></div>',
-      '<div id=unwrap2><span class=unwrap>c</span><span class=unwrap>d</span></div>',
-      '<div id=unwrap3><b><span class="unwrap unwrap3">e</span></b><b><span class="unwrap unwrap3">f</span></b></div>',
-      '</div>',
-    ].join('');
 
     beforeEach(() => {
       $elem = load(unwrapspans);
@@ -542,7 +539,7 @@ describe('$(...)', () => {
     });
 
     it('(null) :  should do nothing', () => {
-      $fruits.append(null as any);
+      $fruits.append(null as never);
       expect($fruits.children()).toHaveLength(3);
     });
 
@@ -638,7 +635,7 @@ describe('$(...)', () => {
     });
 
     it('(fn) : should invoke the callback with the correct arguments and context', () => {
-      $fruits = $fruits.children();
+      const $fruits = $('#fruits').children();
       const args: [number, string][] = [];
       const thisValues: AnyNode[] = [];
 
@@ -657,7 +654,7 @@ describe('$(...)', () => {
     });
 
     it('(fn) : should add returned string as last child', () => {
-      $fruits = $fruits.children();
+      const $fruits = $('#fruits').children();
 
       $fruits.append(() => '<div class="first">');
 
@@ -671,7 +668,7 @@ describe('$(...)', () => {
     });
 
     it('(fn) : should add returned Cheerio object as last child', () => {
-      $fruits = $fruits.children();
+      const $fruits = $('#fruits').children();
 
       $fruits.append(() => $('<div class="second">'));
 
@@ -685,7 +682,7 @@ describe('$(...)', () => {
     });
 
     it('(fn) : should add returned Node as last child', () => {
-      $fruits = $fruits.children();
+      const $fruits = $('#fruits').children();
 
       $fruits.append(() => $('<div class="third">')[0]);
 
@@ -814,7 +811,7 @@ describe('$(...)', () => {
     it('(fn) : should invoke the callback with the correct arguments and context', () => {
       const args: [number, string][] = [];
       const thisValues: AnyNode[] = [];
-      $fruits = $fruits.children();
+      const $fruits = $('#fruits').children();
 
       $fruits.prepend(function (...myArgs) {
         args.push(myArgs);
@@ -831,7 +828,7 @@ describe('$(...)', () => {
     });
 
     it('(fn) : should add returned string as first child', () => {
-      $fruits = $fruits.children();
+      const $fruits = $('#fruits').children();
 
       $fruits.prepend(() => '<div class="first">');
 
@@ -845,7 +842,7 @@ describe('$(...)', () => {
     });
 
     it('(fn) : should add returned Cheerio object as first child', () => {
-      $fruits = $fruits.children();
+      const $fruits = $('#fruits').children();
 
       $fruits.prepend(() => $('<div class="second">'));
 
@@ -859,7 +856,7 @@ describe('$(...)', () => {
     });
 
     it('(fn) : should add returned Node as first child', () => {
-      $fruits = $fruits.children();
+      const $fruits = $('#fruits').children();
 
       $fruits.prepend(() => $('<div class="third">')[0]);
 
@@ -1022,7 +1019,7 @@ describe('$(...)', () => {
     it('(fn) : should invoke the callback with the correct arguments and context', () => {
       const args: [number, string][] = [];
       const thisValues: AnyNode[] = [];
-      $fruits = $fruits.children();
+      const $fruits = $('#fruits').children();
 
       $fruits.after(function (...myArgs) {
         args.push(myArgs);
@@ -1039,7 +1036,7 @@ describe('$(...)', () => {
     });
 
     it('(fn) : should add returned string as next sibling', () => {
-      $fruits = $fruits.children();
+      const $fruits = $('#fruits').children();
 
       $fruits.after(() => '<li class="first">');
 
@@ -1049,7 +1046,7 @@ describe('$(...)', () => {
     });
 
     it('(fn) : should add returned Cheerio object as next sibling', () => {
-      $fruits = $fruits.children();
+      const $fruits = $('#fruits').children();
 
       $fruits.after(() => $('<li class="second">'));
 
@@ -1059,7 +1056,7 @@ describe('$(...)', () => {
     });
 
     it('(fn) : should add returned element as next sibling', () => {
-      $fruits = $fruits.children();
+      const $fruits = $('#fruits').children();
 
       $fruits.after(() => $('<li class="third">')[0]);
 
@@ -1305,7 +1302,7 @@ describe('$(...)', () => {
     it('(fn) : should invoke the callback with the correct arguments and context', () => {
       const args: [number, string][] = [];
       const thisValues: AnyNode[] = [];
-      $fruits = $fruits.children();
+      const $fruits = $('#fruits').children();
 
       $fruits.before(function (...myArgs) {
         args.push(myArgs);
@@ -1322,7 +1319,7 @@ describe('$(...)', () => {
     });
 
     it('(fn) : should add returned string as previous sibling', () => {
-      $fruits = $fruits.children();
+      const $fruits = $('#fruits').children();
 
       $fruits.before(() => '<li class="first">');
 
@@ -1332,7 +1329,7 @@ describe('$(...)', () => {
     });
 
     it('(fn) : should add returned Cheerio object as previous sibling', () => {
-      $fruits = $fruits.children();
+      const $fruits = $('#fruits').children();
 
       $fruits.before(() => $('<li class="second">'));
 
@@ -1342,7 +1339,7 @@ describe('$(...)', () => {
     });
 
     it('(fn) : should add returned Node as previous sibling', () => {
-      $fruits = $fruits.children();
+      const $fruits = $('#fruits').children();
 
       $fruits.before(() => $('<li class="third">')[0]);
 
@@ -1729,13 +1726,11 @@ describe('$(...)', () => {
     });
 
     it('() : should get innerHTML even if its just text', () => {
-      const item = '<li class="pear">Pear</li>';
-      expect($('.pear', item).html()).toBe('Pear');
+      expect($('.pear', '<li class="pear">Pear</li>').html()).toBe('Pear');
     });
 
     it('() : should return empty string if nothing inside', () => {
-      const item = '<li></li>';
-      expect($('li', item).html()).toBe('');
+      expect($('li', '<li></li>').html()).toBe('');
     });
 
     it('(html) : should set the html for its children', () => {
@@ -1745,7 +1740,7 @@ describe('$(...)', () => {
     });
 
     it('(html) : should add new elements for each element in selection', () => {
-      $fruits = $('li');
+      const $fruits = $('li');
       $fruits.html('<li class="durian">Durian</li>');
       let tested = 0;
       $fruits.each(function () {
@@ -1902,13 +1897,13 @@ describe('$(...)', () => {
     });
 
     it('should turn passed values to strings', () => {
-      $('.apple').text(1 as any);
+      $('.apple').text(1 as never);
       expect($('.apple')[0].childNodes[0]).toHaveProperty('data', '1');
     });
 
     it('( undefined ) : should act as an accessor', () => {
       const $div = $('<div>test</div>');
-      expect(typeof $div.text(undefined as any)).toBe('string');
+      expect(typeof $div.text(undefined as never)).toBe('string');
       expect($div.text()).toBe('test');
     });
 
@@ -1920,7 +1915,7 @@ describe('$(...)', () => {
     it('( null ) : should convert to string', () => {
       expect(
         $('<div>')
-          .text(null as any)
+          .text(null as never)
           .text()
       ).toBe('null');
     });
@@ -1928,7 +1923,7 @@ describe('$(...)', () => {
     it('( 0 ) : should convert to string', () => {
       expect(
         $('<div>')
-          .text(0 as any)
+          .text(0 as never)
           .text()
       ).toBe('0');
     });
@@ -1974,7 +1969,7 @@ describe('$(...)', () => {
     });
 
     it('() : should preserve parsing options', () => {
-      const $ = load('<div>π</div>', { decodeEntities: false });
+      const $ = load('<div>π</div>', { xml: { decodeEntities: false } });
       const $div = $('div');
 
       expect($div.text()).toBe($div.clone().text());

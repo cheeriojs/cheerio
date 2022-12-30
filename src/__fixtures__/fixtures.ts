@@ -73,6 +73,14 @@ export const eleven = `
 </html>
 `;
 
+export const unwrapspans = [
+  '<div id=unwrap style="display: none;">',
+  '<div id=unwrap1><span class=unwrap>a</span><span class=unwrap>b</span></div>',
+  '<div id=unwrap2><span class=unwrap>c</span><span class=unwrap>d</span></div>',
+  '<div id=unwrap3><b><span class="unwrap unwrap3">e</span></b><b><span class="unwrap unwrap3">f</span></b></div>',
+  '</div>',
+].join('');
+
 export const inputs = [
   '<select id="one"><option value="option_not_selected">Option not selected</option><option value="option_selected" selected>Option selected</option></select>',
   '<select id="one-valueless"><option>Option not selected</option><option selected>Option selected</option></select>',

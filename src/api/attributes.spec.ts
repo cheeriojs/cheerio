@@ -1,5 +1,4 @@
-import cheerio from '../index.js';
-import type { Cheerio } from '../cheerio.js';
+import cheerio, { load, type CheerioAPI, type Cheerio } from '../index.js';
 import type { Element } from 'domhandler';
 import {
   script,
@@ -16,13 +15,13 @@ function withClass(attr: string) {
 }
 
 describe('$(...)', () => {
-  let $: typeof cheerio;
-
-  beforeEach(() => {
-    $ = cheerio.load(fruits);
-  });
-
   describe('.attr', () => {
+    let $: CheerioAPI;
+
+    beforeEach(() => {
+      $ = load(fruits);
+    });
+
     it('() : should get all the attributes', () => {
       const attrs = $('ul').attr();
       expect(attrs).toHaveProperty('id', 'fruits');
@@ -85,7 +84,7 @@ describe('$(...)', () => {
             id: 'apple',
             style: 'color:red;',
             'data-url': 'http://apple.com',
-          } as any,
+          } as never,
           () => ''
         )
       ).toThrow('Bad combination of arguments.');
@@ -128,7 +127,7 @@ describe('$(...)', () => {
 
     it('(key, value) : should coerce values to a string', () => {
       const $apple = $('.apple');
-      $apple.attr('data-test', 1 as any);
+      $apple.attr('data-test', 1 as never);
       expect($apple[0].attribs['data-test']).toBe('1');
       expect($apple.attr('data-test')).toBe('1');
     });
@@ -196,12 +195,11 @@ describe('$(...)', () => {
   });
 
   describe('.prop', () => {
+    let $: CheerioAPI;
     let checkbox: Cheerio<Element>;
-    let selectMenu: Cheerio<Element>;
 
     beforeEach(() => {
-      $ = cheerio.load(inputs);
-      selectMenu = $('select');
+      $ = load(inputs);
       checkbox = $('input[name=checkbox_on]');
     });
 
@@ -224,8 +222,8 @@ describe('$(...)', () => {
 
     it('(invalid key) : invalid prop should get undefined', () => {
       expect(checkbox.prop('lol')).toBeUndefined();
-      expect(checkbox.prop(4 as any)).toBeUndefined();
-      expect(checkbox.prop(true as any)).toBeUndefined();
+      expect(checkbox.prop(4 as never)).toBeUndefined();
+      expect(checkbox.prop(true as never)).toBeUndefined();
     });
 
     it('(key, value) : should set prop', () => {
@@ -278,7 +276,7 @@ describe('$(...)', () => {
           {
             id: 'check',
             checked: false,
-          } as any,
+          } as never,
           () => ''
         )
       ).toThrow('Bad combination of arguments.');
@@ -299,11 +297,11 @@ describe('$(...)', () => {
 
     it('(invalid element/tag) : prop should return undefined', () => {
       expect($(undefined).prop('prop')).toBeUndefined();
-      expect($(null as any).prop('prop')).toBeUndefined();
+      expect($(null as never).prop('prop')).toBeUndefined();
     });
 
     it('("href") : should resolve links with `baseURI`', () => {
-      const $ = cheerio.load(
+      const $ = load(
         `
           <a id="1" href="http://example.org">example1</a>
           <a id="2" href="//example.org">example2</a>
@@ -322,7 +320,7 @@ describe('$(...)', () => {
     });
 
     it('("src") : should resolve links with `baseURI`', () => {
-      const $ = cheerio.load(
+      const $ = load(
         `
           <img id="1" src="http://example.org/image.png">
           <iframe id="2" src="//example.org/page.html"></iframe>
@@ -362,7 +360,7 @@ describe('$(...)', () => {
     });
 
     it('("textContent") : should render properly', () => {
-      expect(selectMenu.children().prop('textContent')).toBe(
+      expect($('select').children().prop('textContent')).toBe(
         'Option not selected'
       );
 
@@ -372,7 +370,7 @@ describe('$(...)', () => {
     });
 
     it('("textContent") : should include style and script tags', () => {
-      const $ = cheerio.load(
+      const $ = load(
         '<body>Welcome <div>Hello, testing text function,<script>console.log("hello")</script></div><style type="text/css">.cf-hidden { display: none; }</style>End of message</body>'
       );
       expect($('body').prop('textContent')).toBe(
@@ -385,7 +383,7 @@ describe('$(...)', () => {
     });
 
     it('("innerText") : should render properly', () => {
-      expect(selectMenu.children().prop('innerText')).toBe(
+      expect($('select').children().prop('innerText')).toBe(
         'Option not selected'
       );
 
@@ -395,7 +393,7 @@ describe('$(...)', () => {
     });
 
     it('("innerText") : should omit style and script tags', () => {
-      const $ = cheerio.load(
+      const $ = load(
         '<body>Welcome <div>Hello, testing text function,<script>console.log("hello")</script></div><style type="text/css">.cf-hidden { display: none; }</style>End of message</body>'
       );
       expect($('body').prop('innerText')).toBe(
@@ -406,11 +404,11 @@ describe('$(...)', () => {
     });
 
     it('(inherited properties) : prop should support inherited properties', () => {
-      expect(selectMenu.prop('childNodes')).toBe(selectMenu[0].childNodes);
+      expect($('select').prop('childNodes')).toBe($('select')[0].childNodes);
     });
 
     it('(key) : should skip text nodes', () => {
-      const $text = cheerio.load(mixedText);
+      const $text = load(mixedText);
       const $body = $text($text('body')[0].children);
 
       expect($text($body[1]).prop('tagName')).toBeUndefined();
@@ -432,8 +430,10 @@ describe('$(...)', () => {
   });
 
   describe('.data', () => {
+    let $: CheerioAPI;
+
     beforeEach(() => {
-      $ = cheerio.load(chocolates);
+      $ = load(chocolates);
     });
 
     it('() : should get all data attributes initially declared in the markup', () => {
@@ -557,7 +557,7 @@ describe('$(...)', () => {
       const b = $('.linth').data('snack', 'chocoletti');
 
       expect(() => {
-        a.data(4 as any, 'throw');
+        a.data(4 as never, 'throw');
       }).not.toThrow();
       expect(a.data('balls')).toStrictEqual('giandor');
       expect(b.data('snack')).toStrictEqual('chocoletti');
@@ -577,12 +577,12 @@ describe('$(...)', () => {
         flop: 'Pippilotti Rist',
         top: 'Frigor',
         url: 'http://www.cailler.ch/',
-      })['0' as any] as any;
+      })[0] as never;
 
-      expect(data.id).toBe('Cailler');
-      expect(data.flop).toBe('Pippilotti Rist');
-      expect(data.top).toBe('Frigor');
-      expect(data.url).toBe('http://www.cailler.ch/');
+      expect(data).toHaveProperty('id', 'Cailler');
+      expect(data).toHaveProperty('flop', 'Pippilotti Rist');
+      expect(data).toHaveProperty('top', 'Frigor');
+      expect(data).toHaveProperty('url', 'http://www.cailler.ch/');
     });
 
     describe('(attr) : data-* attribute type coercion :', () => {
@@ -618,7 +618,7 @@ describe('$(...)', () => {
     });
 
     it('(key, value) : should skip text nodes', () => {
-      const $text = cheerio.load(mixedText);
+      const $text = load(mixedText);
       const $body = $text($text('body')[0].children);
 
       $body.data('snack', 'chocoletti');
@@ -628,8 +628,10 @@ describe('$(...)', () => {
   });
 
   describe('.val', () => {
+    let $: CheerioAPI;
+
     beforeEach(() => {
-      $ = cheerio.load(inputs);
+      $ = load(inputs);
     });
 
     it('(): on div should get undefined', () => {
@@ -727,6 +729,12 @@ describe('$(...)', () => {
   });
 
   describe('.removeAttr', () => {
+    let $: CheerioAPI;
+
+    beforeEach(() => {
+      $ = load(fruits);
+    });
+
     it('(key) : should remove a single attr', () => {
       const $fruits = $('#fruits');
       expect($fruits.attr('id')).not.toBeUndefined();
@@ -754,7 +762,7 @@ describe('$(...)', () => {
     });
 
     it('(key) : should skip text nodes', () => {
-      const $text = cheerio.load(mixedText);
+      const $text = load(mixedText);
       const $body = $text($text('body')[0].children);
 
       $body.addClass(() => 'test');
@@ -770,6 +778,12 @@ describe('$(...)', () => {
   });
 
   describe('.hasClass', () => {
+    let $: CheerioAPI;
+
+    beforeEach(() => {
+      $ = load(fruits);
+    });
+
     it('(valid class) : should return true', () => {
       const cls = $('.apple').hasClass('apple');
       expect(cls).toBe(true);
@@ -807,6 +821,12 @@ describe('$(...)', () => {
   });
 
   describe('.addClass', () => {
+    let $: CheerioAPI;
+
+    beforeEach(() => {
+      $ = load(fruits);
+    });
+
     it('(first class) : should add the class to the element', () => {
       const $fruits = $('#fruits');
       $fruits.addClass('fruits');
@@ -877,6 +897,12 @@ describe('$(...)', () => {
   });
 
   describe('.removeClass', () => {
+    let $: CheerioAPI;
+
+    beforeEach(() => {
+      $ = load(fruits);
+    });
+
     it('() : should remove all the classes', () => {
       $('.pear').addClass('fruit');
       $('.pear').removeClass();
@@ -989,7 +1015,7 @@ describe('$(...)', () => {
     });
 
     it('(fn) : should skip text nodes', () => {
-      const $text = cheerio.load(mixedText);
+      const $text = load(mixedText);
       const $body = $text($text('body')[0].children);
 
       $body.addClass(() => 'test');
@@ -1007,6 +1033,12 @@ describe('$(...)', () => {
   });
 
   describe('.toggleClass', () => {
+    let $: CheerioAPI;
+
+    beforeEach(() => {
+      $ = load(fruits);
+    });
+
     it('(class class) : should toggle multiple classes from the element', () => {
       $('.apple').addClass('fruit');
       expect($('.apple').hasClass('apple')).toBe(true);
@@ -1061,7 +1093,7 @@ describe('$(...)', () => {
     });
 
     it('(fn) : should toggle classes returned from the function', () => {
-      $ = cheerio.load(food);
+      const $ = load(food);
 
       $('.apple').addClass('fruit');
       $('.carrot').addClass('vegetable');
@@ -1088,7 +1120,7 @@ describe('$(...)', () => {
     });
 
     it('(fn) : should work with no initial class attribute', () => {
-      const $inputs = cheerio.load(inputs);
+      const $inputs = load(inputs);
       $inputs('input, select').toggleClass(function () {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- `get` should never return undefined here.
         return $inputs(this).get(0)!.tagName === 'select'
@@ -1100,7 +1132,7 @@ describe('$(...)', () => {
     });
 
     it('(fn) : should skip text nodes', () => {
-      const $text = cheerio.load(mixedText);
+      const $text = load(mixedText);
       const $body = $text($text('body')[0].children);
 
       $body.toggleClass(() => 'test');
@@ -1120,24 +1152,12 @@ describe('$(...)', () => {
       const original = $('.apple');
       const testAgainst = original.attr('class');
       expect(original.toggleClass().attr('class')).toStrictEqual(testAgainst);
-      expect(original.toggleClass(true as any).attr('class')).toStrictEqual(
-        testAgainst
-      );
-      expect(original.toggleClass(false as any).attr('class')).toStrictEqual(
-        testAgainst
-      );
-      expect(original.toggleClass(null as any).attr('class')).toStrictEqual(
-        testAgainst
-      );
-      expect(original.toggleClass(0 as any).attr('class')).toStrictEqual(
-        testAgainst
-      );
-      expect(original.toggleClass(1 as any).attr('class')).toStrictEqual(
-        testAgainst
-      );
-      expect(original.toggleClass({} as any).attr('class')).toStrictEqual(
-        testAgainst
-      );
+
+      for (const value of [undefined, true, false, null, 0, 1, {}]) {
+        expect(
+          original.toggleClass(value as never).attr('class')
+        ).toStrictEqual(testAgainst);
+      }
     });
   });
 });

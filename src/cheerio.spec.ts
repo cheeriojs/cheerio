@@ -1,10 +1,8 @@
 import { parseDOM } from 'htmlparser2';
-import cheerio from './index.js';
+import cheerio, { type Cheerio } from './index.js';
 import * as utils from './utils.js';
 import { fruits, food, noscript } from './__fixtures__/fixtures.js';
-import type { Cheerio } from './cheerio.js';
 import type { Element } from 'domhandler';
-import type { CheerioOptions } from './options.js';
 
 declare module './index.js' {
   interface Cheerio<T> {
@@ -32,7 +30,7 @@ function testAppleSelect($apple: ArrayLike<Element>) {
 
 describe('cheerio', () => {
   it('cheerio(null) should be empty', () => {
-    expect(cheerio(null as any)).toHaveLength(0);
+    expect(cheerio(null as never)).toHaveLength(0);
   });
 
   it('cheerio(undefined) should be empty', () => {
@@ -189,20 +187,16 @@ describe('cheerio', () => {
   });
 
   it('should be able to select immediate children: cheerio(".apple + .pear")', () => {
-    let $elem = cheerio('.apple + li', fruits);
-    expect($elem).toHaveLength(1);
-    $elem = cheerio('.apple + .pear', fruits);
-    expect($elem).toHaveLength(0);
-    $elem = cheerio('.apple + .orange', fruits);
+    expect(cheerio('.apple + li', fruits)).toHaveLength(1);
+    expect(cheerio('.apple + .pear', fruits)).toHaveLength(0);
+    const $elem = cheerio('.apple + .orange', fruits);
     expect($elem).toHaveLength(1);
     expect($elem.attr('class')).toBe('orange');
   });
 
   it('should be able to select immediate children: cheerio(".apple ~ .pear")', () => {
-    let $elem = cheerio('.apple ~ li', fruits);
-    expect($elem).toHaveLength(2);
-    $elem = cheerio('.apple ~ .pear', fruits);
-    expect($elem.attr('class')).toBe('pear');
+    expect(cheerio('.apple ~ li', fruits)).toHaveLength(2);
+    expect(cheerio('.apple ~ .pear', fruits).attr('class')).toBe('pear');
   });
 
   it('should handle wildcards on attributes: cheerio("li[class*=r]")', () => {
@@ -241,20 +235,18 @@ describe('cheerio', () => {
   });
 
   it('cheerio.html(null) should return a "" string', () => {
-    expect(cheerio.html(null as any)).toBe('');
+    expect(cheerio.html(null as never)).toBe('');
   });
 
   it('should set html(number) as a string', () => {
     const $elem = cheerio('<div>');
-    // @ts-expect-error Passing a number
-    $elem.html(123);
+    $elem.html(123 as never);
     expect(typeof $elem.text()).toBe('string');
   });
 
   it('should set text(number) as a string', () => {
     const $elem = cheerio('<div>');
-    // @ts-expect-error Passing a number
-    $elem.text(123);
+    $elem.text(123 as never);
     expect(typeof $elem.text()).toBe('string');
   });
 
@@ -424,9 +416,9 @@ describe('cheerio', () => {
 
     it('cloneDom : should be able clone single Elements', () => {
       const main = cheerio('<p>Cheerio</p>') as Cheerio<Element>;
-      let result: Element[] = [];
+      const result: Element[] = [];
       utils.domEach<Element>(main, (el) => {
-        result = [...result, ...utils.cloneDom(el)];
+        result.push(...utils.cloneDom(el));
       });
       expect(result).toHaveLength(1);
       expect(result[0]).not.toBe(main[0]);
@@ -452,30 +444,26 @@ describe('cheerio', () => {
   describe('parse5 options', () => {
     // Should parse noscript tags only with false option value
     test('{scriptingEnabled: ???}', () => {
-      const opt = 'scriptingEnabled';
-      const options: CheerioOptions = {};
-      let result;
+      // [default] `scriptingEnabled: true` - tag contains one text element
+      const withScripts = cheerio.load(noscript)('noscript');
+      expect(withScripts).toHaveLength(1);
+      expect(withScripts[0].children).toHaveLength(1);
+      expect(withScripts[0].children[0].type).toBe('text');
 
-      // [default] scriptingEnabled: true - tag contains one text element
-      result = cheerio.load(noscript)('noscript');
-      expect(result).toHaveLength(1);
-      expect(result[0].children).toHaveLength(1);
-      expect(result[0].children[0].type).toBe('text');
+      // `scriptingEnabled: false` - content of noscript will parsed
+      const noScripts = cheerio.load(noscript, { scriptingEnabled: false })(
+        'noscript'
+      );
+      expect(noScripts).toHaveLength(1);
+      expect(noScripts[0].children).toHaveLength(2);
+      expect(noScripts[0].children[0].type).toBe('comment');
+      expect(noScripts[0].children[1].type).toBe('tag');
+      expect(noScripts[0].children[1]).toHaveProperty('name', 'a');
 
-      // ScriptingEnabled: false - content of noscript will parsed
-      options[opt] = false;
-      result = cheerio.load(noscript, options)('noscript');
-      expect(result).toHaveLength(1);
-      expect(result[0].children).toHaveLength(2);
-      expect(result[0].children[0].type).toBe('comment');
-      expect(result[0].children[1].type).toBe('tag');
-      expect(result[0].children[1]).toHaveProperty('name', 'a');
-
-      // ScriptingEnabled: ??? - should acts as true
-      const values = [undefined, null, 0, ''];
-      for (const val of values) {
-        options[opt] = val as any;
-        result = cheerio.load(noscript, options)('noscript');
+      // `scriptingEnabled: ???` - should acts as true
+      for (const val of [undefined, null, 0, '']) {
+        const options = { scriptingEnabled: val as never };
+        const result = cheerio.load(noscript, options)('noscript');
         expect(result).toHaveLength(1);
         expect(result[0].children).toHaveLength(1);
         expect(result[0].children[0].type).toBe('text');
@@ -484,29 +472,21 @@ describe('cheerio', () => {
 
     // Should contain location data only with truthful option value
     test('{sourceCodeLocationInfo: ???}', () => {
-      const prop = 'sourceCodeLocation';
-      const opt = 'sourceCodeLocationInfo';
-      const options: CheerioOptions = {};
-      let result;
-      let i;
-
       // Location data should not be present
-      let values = [undefined, null, 0, false, ''];
-      for (i = 0; i < values.length; i++) {
-        options[opt] = values[i] as any;
-        result = cheerio.load(noscript, options)('noscript');
+      for (const val of [undefined, null, 0, false, '']) {
+        const options = { sourceCodeLocationInfo: val as never };
+        const result = cheerio.load(noscript, options)('noscript');
         expect(result).toHaveLength(1);
-        expect(result[0]).not.toHaveProperty(prop);
+        expect(result[0]).not.toHaveProperty('sourceCodeLocation');
       }
 
       // Location data should be present
-      values = [true, 1, 'test'];
-      for (i = 0; i < values.length; i++) {
-        options[opt] = values[i] as any;
-        result = cheerio.load(noscript, options)('noscript');
+      for (const val of [true, 1, 'test']) {
+        const options = { sourceCodeLocationInfo: val as never };
+        const result = cheerio.load(noscript, options)('noscript');
         expect(result).toHaveLength(1);
-        expect(result[0]).toHaveProperty(prop);
-        expect(typeof (result[0] as any)[prop]).toBe('object');
+        expect(result[0]).toHaveProperty('sourceCodeLocation');
+        expect(typeof result[0].sourceCodeLocation).toBe('object');
       }
     });
   });

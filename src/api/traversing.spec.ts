@@ -1,6 +1,5 @@
-import cheerio from '../../src';
+import cheerio, { type CheerioAPI } from '../index.js';
 import { Cheerio } from '../cheerio.js';
-import type { CheerioAPI } from '../load.js';
 import { type AnyNode, type Element, type Text, isText } from 'domhandler';
 import {
   food,
@@ -601,27 +600,27 @@ describe('$(...)', () => {
     });
 
     it('() : should get all of the parents in logical order', () => {
-      let result = $('.orange').parents();
-      expect(result).toHaveLength(4);
-      expect(result[0].attribs).toHaveProperty('id', 'fruits');
-      expect(result[1].attribs).toHaveProperty('id', 'food');
-      expect(result[2].tagName).toBe('body');
-      expect(result[3].tagName).toBe('html');
-      result = $('#fruits').parents();
-      expect(result).toHaveLength(3);
-      expect(result[0].attribs).toHaveProperty('id', 'food');
-      expect(result[1].tagName).toBe('body');
-      expect(result[2].tagName).toBe('html');
+      const orange = $('.orange').parents();
+      expect(orange).toHaveLength(4);
+      expect(orange[0].attribs).toHaveProperty('id', 'fruits');
+      expect(orange[1].attribs).toHaveProperty('id', 'food');
+      expect(orange[2].tagName).toBe('body');
+      expect(orange[3].tagName).toBe('html');
+      const fruits = $('#fruits').parents();
+      expect(fruits).toHaveLength(3);
+      expect(fruits[0].attribs).toHaveProperty('id', 'food');
+      expect(fruits[1].tagName).toBe('body');
+      expect(fruits[2].tagName).toBe('html');
     });
 
     it('(selector) : should get all of the parents that match the selector in logical order', () => {
-      let result = $('.orange').parents('#fruits');
-      expect(result).toHaveLength(1);
-      expect(result[0].attribs).toHaveProperty('id', 'fruits');
-      result = $('.orange').parents('ul');
-      expect(result).toHaveLength(2);
-      expect(result[0].attribs).toHaveProperty('id', 'fruits');
-      expect(result[1].attribs).toHaveProperty('id', 'food');
+      const fruits = $('.orange').parents('#fruits');
+      expect(fruits).toHaveLength(1);
+      expect(fruits[0].attribs).toHaveProperty('id', 'fruits');
+      const uls = $('.orange').parents('ul');
+      expect(uls).toHaveLength(2);
+      expect(uls[0].attribs).toHaveProperty('id', 'fruits');
+      expect(uls[1].attribs).toHaveProperty('id', 'food');
     });
 
     it('() : should not break if the selector does not have any results', () => {
@@ -671,11 +670,11 @@ describe('$(...)', () => {
     });
 
     it('(selector) : should get all of the parents until selector', () => {
-      let result = $('.orange').parentsUntil('#food');
-      expect(result).toHaveLength(1);
-      expect(result[0].attribs).toHaveProperty('id', 'fruits');
-      result = $('.orange').parentsUntil('#fruits');
-      expect(result).toHaveLength(0);
+      const food = $('.orange').parentsUntil('#food');
+      expect(food).toHaveLength(1);
+      expect(food[0].attribs).toHaveProperty('id', 'fruits');
+      const fruits = $('.orange').parentsUntil('#fruits');
+      expect(fruits).toHaveLength(0);
     });
 
     it('(selector) : Less simple parentsUntil check with selector', () => {
@@ -763,12 +762,12 @@ describe('$(...)', () => {
     });
 
     it('(selector) : should filter the matched parent elements by the selector', () => {
-      let result = $('.orange').parent();
-      expect(result).toHaveLength(1);
-      expect(result[0].attribs).toHaveProperty('id', 'fruits');
-      result = $('li', food).parent('#fruits');
-      expect(result).toHaveLength(1);
-      expect(result[0].attribs).toHaveProperty('id', 'fruits');
+      const parents = $('.orange').parent();
+      expect(parents).toHaveLength(1);
+      expect(parents[0].attribs).toHaveProperty('id', 'fruits');
+      const fruits = $('li', food).parent('#fruits');
+      expect(fruits).toHaveLength(1);
+      expect(fruits[0].attribs).toHaveProperty('id', 'fruits');
     });
   });
 
@@ -781,12 +780,15 @@ describe('$(...)', () => {
 
     it('(selector) : should find the closest element that matches the selector, searching through its ancestors and itself', () => {
       expect($('.orange').closest('.apple')).toHaveLength(0);
-      let result = $('.orange', food).closest('#food') as Cheerio<Element>;
-      expect(result[0].attribs).toHaveProperty('id', 'food');
-      result = $('.orange', food).closest('ul') as Cheerio<Element>;
-      expect(result[0].attribs).toHaveProperty('id', 'fruits');
-      result = $('.orange', food).closest('li') as Cheerio<Element>;
-      expect(result[0].attribs).toHaveProperty('class', 'orange');
+      expect(
+        ($('.orange', food).closest('#food')[0] as Element).attribs
+      ).toHaveProperty('id', 'food');
+      expect(
+        ($('.orange', food).closest('ul')[0] as Element).attribs
+      ).toHaveProperty('id', 'fruits');
+      expect(
+        ($('.orange', food).closest('li')[0] as Element).attribs
+      ).toHaveProperty('class', 'orange');
     });
 
     it('(selector) : should find the closest element of each item, removing duplicates', () => {
@@ -887,7 +889,7 @@ describe('$(...)', () => {
     it('(fn) : should preform a shallow merge on arrays returned by iterator', () => {
       const $fruits = $('li');
 
-      const $mapped = $fruits.map(() => [1, [3, 4]] as any);
+      const $mapped = $fruits.map(() => [1, [3, 4]]);
 
       expect($mapped.get()).toStrictEqual([1, [3, 4], 1, [3, 4], 1, [3, 4]]);
     });
@@ -895,7 +897,7 @@ describe('$(...)', () => {
     it('(fn) : should tolerate `null` and `undefined` when flattening arrays returned by iterator', () => {
       const $fruits = $('li');
 
-      const $mapped = $fruits.map(() => [null, undefined] as any);
+      const $mapped = $fruits.map(() => [null, undefined]);
 
       expect($mapped.get()).toStrictEqual([
         null,
@@ -1273,8 +1275,6 @@ describe('$(...)', () => {
     let $apple: Cheerio<Element>;
     let $orange: Cheerio<Element>;
     let $pear: Cheerio<Element>;
-    let $carrot: Cheerio<Element>;
-    let $sweetcorn: Cheerio<Element>;
 
     beforeEach(() => {
       $ = cheerio.load(food);
@@ -1282,8 +1282,6 @@ describe('$(...)', () => {
       $apple = $('.apple');
       $orange = $('.orange');
       $pear = $('.pear');
-      $carrot = $('.carrot');
-      $sweetcorn = $('.sweetcorn');
     });
 
     describe('(selector) matched element :', () => {
@@ -1369,8 +1367,8 @@ describe('$(...)', () => {
         const $selection = $fruits.add('li', '#vegetables');
         expect($selection).toHaveLength(3);
         expect($selection[0]).toBe($fruits[0]);
-        expect($selection[1]).toBe($carrot[0]);
-        expect($selection[2]).toBe($sweetcorn[0]);
+        expect($selection[1]).toBe($('.carrot')[0]);
+        expect($selection[2]).toBe($('.sweetcorn')[0]);
       });
     });
 
