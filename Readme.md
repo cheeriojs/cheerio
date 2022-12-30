@@ -370,8 +370,8 @@ support for Cheerio and help us maintain and improve this open source project.
 This library stands on the shoulders of some incredible developers. A special
 thanks to:
 
-**&#8226; @FB55 for node-htmlparser2 & CSSSelect:** Felix has a knack for
-writing speedy parsing engines. He completely re-wrote both @tautologistic's
+**&#8226; @fb55 for htmlparser2 & css-select:** Felix has a knack for writing
+speedy parsing engines. He completely re-wrote both @tautologistic's
 `node-htmlparser` and @harry's `node-soupselect` from the ground up, making both
 of them much faster and more flexible. Cheerio would not be possible without his
 foundational work
@@ -381,10 +381,10 @@ despite dealing with all the browser inconsistencies the code base is extremely
 clean and easy to follow. Much of cheerio's implementation and documentation is
 from jQuery. Thanks guys.
 
-**&#8226; @visionmedia:** The style, the structure, the open-source"-ness" of
-this library comes from studying TJ's style and using many of his libraries.
-This dude consistently pumps out high-quality libraries and has always been more
-than willing to help or answer questions. You rock TJ.
+**&#8226; @tj:** The style, the structure, the open-source"-ness" of this
+library comes from studying TJ's style and using many of his libraries. This
+dude consistently pumps out high-quality libraries and has always been more than
+willing to help or answer questions. You rock TJ.
 
 ## License
 
