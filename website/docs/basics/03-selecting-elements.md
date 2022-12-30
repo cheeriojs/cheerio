@@ -1,9 +1,10 @@
 # Selecting Elements
 
-The Cheerio library allows users to select elements from an HTML document using
+Cheerio allows users to select elements from an HTML document using
 [CSS selectors](https://developer.mozilla.org/en-US/docs/Glossary/CSS_Selector).
 This allows you to select elements based on criteria such as their tag name,
-class name, and attribute values.
+class name, and attribute values. This guide provides an overview of how to use
+CSS selectors to retrieve elements.
 
 To select elements with Cheerio, you first need to import the library and load a
 document. For example:
@@ -48,6 +49,18 @@ const $selected = $('.selected');
 const $selected = $('[data-selected=true]');
 ```
 
+:::tip XML Namespaces
+
+You can select with XML Namespaces but
+[due to the CSS specification](https://www.w3.org/TR/2011/REC-css3-selectors-20110929/#attribute-selectors),
+the colon (`:`) needs to be escaped for the selector to be valid.
+
+```js
+$('[xml\\:id="main"');
+```
+
+:::
+
 - Selectors can be combined to select elements that match multiple criteria. For
   example, to select all `p` elements with the class `selected`:
 
@@ -88,4 +101,6 @@ Have a look at
 the library that implements these extensions, to see what is available.
 
 For further information, please also have a look at jQuery's guide on
-[selecting elements](https://learn.jquery.com/using-jquery-core/selecting-elements/).
+[selecting elements](https://learn.jquery.com/using-jquery-core/selecting-elements/),
+as well as
+[MDN](https://developer.mozilla.org/en-US/docs/Glossary/CSS_Selector).

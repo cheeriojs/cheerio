@@ -189,16 +189,6 @@ $('li[class=orange]').html();
 //=> Orange
 ```
 
-##### XML Namespaces
-
-You can select with XML Namespaces but
-[due to the CSS specification](https://www.w3.org/TR/2011/REC-css3-selectors-20110929/#attribute-selectors),
-the colon (`:`) needs to be escaped for the selector to be valid.
-
-```js
-$('[xml\\:id="main"');
-```
-
 ### Rendering
 
 When you're ready to render the document, you can call the `html` method on the
