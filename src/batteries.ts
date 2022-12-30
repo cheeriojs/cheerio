@@ -29,8 +29,6 @@ import { type Writable, finished } from 'node:stream';
  * Sniffs the encoding of a buffer, then creates a querying function bound to a
  * document created from the buffer.
  *
- * Only available in Node.js ESM, or when importing `cheerio/lib/batteries`.
- *
  * @category Loading
  * @example
  *
@@ -90,8 +88,6 @@ function _stringStream(
  * The stream is a `Writable` stream that accepts strings. When the stream is
  * finished, the callback is called with the loaded document.
  *
- * Only available in Node.js ESM, or when importing `cheerio/lib/batteries`.
- *
  * @category Loading
  * @example
  *
@@ -132,8 +128,6 @@ export interface DecodeStreamOptions extends CheerioOptions {
  *
  * The stream is a `Writable` stream that accepts buffers. When the stream is
  * finished, the callback is called with the loaded document.
- *
- * Only available in Node.js ESM, or when importing `cheerio/lib/batteries`.
  *
  * @category Loading
  * @param options - The options to pass to Cheerio.
@@ -181,8 +175,6 @@ const defaultRequestOptions: UndiciStreamOptions = {
  * `fromURL` loads a document from a URL.
  *
  * By default, redirects are allowed and non-2xx responses are rejected.
- *
- * Only available in Node.js ESM, or when importing `cheerio/lib/batteries`.
  *
  * @category Loading
  * @example

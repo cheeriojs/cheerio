@@ -51,6 +51,8 @@ console.log($('title').text());
 // Output: Hello, world!
 ```
 
+Learn more about the `load` method in the [API documentation](/docs/api/#load).
+
 ## `loadBuffer`
 
 The `loadBuffer` method is similar to the `load` method, but it takes a buffer
@@ -72,6 +74,9 @@ console.log($('title').text());
 // Output: Hello, world!
 ```
 
+Learn more about the `loadBuffer` method in the
+[API documentation](/docs/api/#loadbuffer).
+
 ## `stringStream`
 
 When loading an HTML document from a stream and the encoding is known, you can
@@ -92,6 +97,9 @@ const writeStream = cheerio.stringStream({}, (err, $) => {
 
 fs.createReadStream('document.html', { encoding: 'utf8' }).pipe(writeStream);
 ```
+
+Learn more about the `stringStream` method in the
+[API documentation](/docs/api/#stringstream).
 
 ## `decodeStream`
 
@@ -118,6 +126,9 @@ const writeStream = cheerio.decodeStream({}, (err, $) => {
 fs.createReadStream('document.html').pipe(writeStream);
 ```
 
+Learn more about the `decodeStream` method in the
+[API documentation](/docs/api/#decodestream).
+
 ## `fromURL`
 
 The `fromURL` method allows you to load a document from a URL. This method is
@@ -129,6 +140,9 @@ import * as cheerio from 'cheerio';
 
 const $ = await cheerio.fromURL('https://example.com');
 ```
+
+Learn more about the `fromURL` method in the
+[API documentation](/docs/api/#fromurl).
 
 ## Conclusion
 
