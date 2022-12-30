@@ -1,7 +1,7 @@
-# Loading documents with Cheerio
+# Loading documents
 
 In this guide, we'll take a look at how to load documents with Cheerio and when
-to use the different loading methods
+to use the different loading methods.
 
 :::tip
 
@@ -9,10 +9,6 @@ If you're familiar with jQuery, then this step is new. jQuery operates on the
 one, baked-in DOM. With Cheerio, we need to pass in the HTML document.
 
 :::
-
-Cheerio provides several methods for loading HTML documents and parsing them
-into a DOM structure. These methods are useful for different scenarios,
-depending on the type and source of the HTML data.
 
 :::danger
 
