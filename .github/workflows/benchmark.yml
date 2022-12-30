@@ -15,7 +15,9 @@ permissions:
 jobs:
   benchmark:
     runs-on: ubuntu-latest
-    if: "!contains(github.event.commits[0].message, '[bench skip]') && !contains(github.event.commits[0].message, '[skip bench]')"
+    if:
+      "!contains(github.event.commits[0].message, '[bench skip]') &&
+      !contains(github.event.commits[0].message, '[skip bench]')"
 
     steps:
       - name: Clone repository

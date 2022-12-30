@@ -37,7 +37,8 @@ jobs:
       - name: Update the README
         run: npm run update-sponsors
         env:
-          CHEERIO_SPONSORS_GITHUB_TOKEN: ${{ secrets.CHEERIO_SPONSORS_GITHUB_TOKEN }}
+          CHEERIO_SPONSORS_GITHUB_TOKEN:
+            ${{ secrets.CHEERIO_SPONSORS_GITHUB_TOKEN }}
           IMGIX_TOKEN: ${{ secrets.IMGIX_TOKEN }}
 
       - name: Create Pull Request
