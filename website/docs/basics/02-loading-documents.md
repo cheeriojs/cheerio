@@ -1,4 +1,8 @@
-# Loading documents
+---
+sidebar_position: 2
+---
+
+# Loading Documents
 
 In this guide, we'll take a look at how to load documents with Cheerio and when
 to use the different loading methods.
@@ -10,7 +14,7 @@ one, baked-in DOM. With Cheerio, we need to pass in the HTML document.
 
 :::
 
-:::danger
+:::danger Availability of methods
 
 Only the `load` method is available by default. If you are using current NodeJS
 version, other methods will be available if you use an ES Module imports (your

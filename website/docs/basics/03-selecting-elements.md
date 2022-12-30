@@ -1,3 +1,7 @@
+---
+sidebar_position: 3
+---
+
 # Selecting Elements
 
 Cheerio allows users to select elements from an HTML document using

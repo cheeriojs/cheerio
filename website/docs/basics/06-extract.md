@@ -1,3 +1,8 @@
+---
+sidebar_label: The `extract` method
+sidebar_position: 6
+---
+
 # Extracting Data with the `extract` Method
 
 The `extract` method in Cheerio allows you to extract data from an HTML document
