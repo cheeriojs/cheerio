@@ -45,6 +45,7 @@ const parse = getParse((content, options, isDocument, context) =>
  * `<html>`, `<head>`, and `<body>` elements; set `isDocument` to `false` to
  * switch to fragment mode and disable this.
  *
+ * @category Loading
  * @param content - Markup to be loaded.
  * @param options - Options for the created instance.
  * @param isDocument - Allows parser to be switched to fragment mode.

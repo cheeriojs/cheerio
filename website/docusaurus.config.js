@@ -147,7 +147,7 @@ const config = {
 
       {
         // TypeDoc options
-        entryPoints: ['../src/index.ts'],
+        entryPoints: ['../src/batteries.ts'],
         tsconfig: '../tsconfig.json',
         readme: 'none',
         excludePrivate: true,
