@@ -121,7 +121,7 @@ const cheerio = require('cheerio');
 const $ = cheerio.load('<div><ul><li>Item 1</li></ul></div>');
 
 const ancestors = $('li').parents();
-console.log(ancestors.length); // 2
+console.log(ancestors.length); // 4 (also includes <body> and <html>)
 
 const ancestorsUntil = $('li').parentsUntil('div');
 console.log(ancestorsUntil.length); // 1
