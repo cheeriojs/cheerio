@@ -54,9 +54,9 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'My Site',
+        title: 'Cheerio',
         logo: {
-          alt: 'My Site Logo',
+          alt: 'Cheerio Logo',
           src: 'img/logo.svg',
         },
         items: [
