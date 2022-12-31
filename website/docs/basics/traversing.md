@@ -40,7 +40,7 @@ Here's an example of using `find` to select all `li` elements within a `ul`
 element:
 
 ```js
-const cheerio = require('cheerio');
+import * as cheerio from 'cheerio';
 const $ = cheerio.load('<ul><li>Item 1</li><li>Item 2</li></ul>');
 
 const listItems = $('ul').find('li');
@@ -57,7 +57,7 @@ Here's an example of using `children` to select all `li` elements within a `ul`
 element:
 
 ```js
-const cheerio = require('cheerio');
+import * as cheerio from 'cheerio';
 const $ = cheerio.load('<ul><li>Item 1</li><li>Item 2</li></ul>');
 
 const listItems = $('ul').children('li');
@@ -73,7 +73,7 @@ selection containing all children of the current selection.
 Here's an example of using `contents` to select all children of a `div` element:
 
 ```js
-const cheerio = require('cheerio');
+import * as cheerio from 'cheerio';
 const $ = cheerio.load('<div>Text <p>Paragraph</p></div>');
 
 const contents = $('div').contents();
@@ -95,7 +95,7 @@ Here's an example of using `parent` to select the parent `ul` element of a `li`
 element:
 
 ```js
-const cheerio = require('cheerio');
+import * as cheerio from 'cheerio';
 const $ = cheerio.load('<ul><li>Item 1</li></ul>');
 
 const list = $('li').parent();
@@ -117,7 +117,7 @@ Here's an example of using `parents` and `parentsUntil` to select ancestor
 elements of a `li` element:
 
 ```js
-const cheerio = require('cheerio');
+import * as cheerio from 'cheerio';
 const $ = cheerio.load('<div><ul><li>Item 1</li></ul></div>');
 
 const ancestors = $('li').parents();
@@ -138,7 +138,7 @@ Here's an example of using `closest` to select the closest ancestor `ul` element
 of a `li` element:
 
 ```js
-const cheerio = require('cheerio');
+import * as cheerio from 'cheerio';
 const $ = cheerio.load('<div><ul><li>Item 1</li></ul></div>');
 
 const list = $('li').closest('ul');
@@ -164,13 +164,13 @@ Here's an example of using `next` and `prev` to select sibling elements of a
 `li` element:
 
 ```js
-const cheerio = require('cheerio');
+import * as cheerio from 'cheerio';
 const $ = cheerio.load('<ul><li>Item 1</li><li>Item 2</li></ul>');
 
 const nextItem = $('li:first').next();
 console.log(nextItem.text()); // 'Item 2'
 
-const prevItem = $('li:last').prev();
+const prevItem = $('li:eq(2)').prev();
 console.log(prevItem.text()); // 'Item 1'
 ```
 
@@ -192,7 +192,7 @@ Here's an example of using `nextAll`, `prevAll`, and `siblings` to select
 sibling elements of a `li` element:
 
 ```js
-const cheerio = require('cheerio');
+import * as cheerio from 'cheerio';
 const $ = cheerio.load(
   '<ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>'
 );
@@ -225,7 +225,7 @@ Here's an example of using `nextUntil` and `prevUntil` to select sibling
 elements of a `li` element:
 
 ```js
-const cheerio = require('cheerio');
+import * as cheerio from 'cheerio';
 const $ = cheerio.load(
   '<ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>'
 );
@@ -259,7 +259,7 @@ Here's an example of using `eq` to select the second `li` element within a `ul`
 element:
 
 ```js
-const cheerio = require('cheerio');
+import * as cheerio from 'cheerio';
 const $ = cheerio.load('<ul><li>Item 1</li><li>Item 2</li></ul>');
 
 const secondItem = $('li').eq(2);
@@ -281,14 +281,14 @@ Here's an example of using `filter` and `not` to select `li` elements within a
 `ul` element:
 
 ```js
-const cheerio = require('cheerio') const $ =
-cheerio.load('<ul><li class="item">Item 1</li><li>Item 2</li></ul>')
+import * as cheerio from 'cheerio';
+const $ = cheerio.load('<ul><li class="item">Item 1</li><li>Item 2</li></ul>');
 
-const matchingItems = $('li').filter('.item')
-console.log(matchingItems.length) // 1
+const matchingItems = $('li').filter('.item');
+console.log(matchingItems.length); // 1
 
-const nonMatchingItems = $('li').not('.item')
-console.log(nonMatchingItems.length) // 1
+const nonMatchingItems = $('li').not('.item');
+console.log(nonMatchingItems.length); // 1
 ```
 
 ### `has`
@@ -302,7 +302,7 @@ Here's an example of using `has` to select `li` elements within a `ul` element
 that contain a `strong` element:
 
 ```js
-const cheerio = require('cheerio');
+import * as cheerio from 'cheerio';
 const $ = cheerio.load(
   '<ul><li>Item 1</li><li><strong>Item 2</strong></li></ul>'
 );
@@ -325,7 +325,7 @@ Here's an example of using `first` and `last` to select elements within a `ul`
 element:
 
 ```js
-const cheerio = require('cheerio');
+import * as cheerio from 'cheerio';
 const $ = cheerio.load('<ul><li>Item 1</li><li>Item 2</li></ul>');
 
 const firstItem = $('li').first();
