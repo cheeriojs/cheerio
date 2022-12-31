@@ -51,14 +51,30 @@ console.log($('title').text());
 // Output: Hello, world!
 ```
 
+:::tip
+
+Similar to web browser contexts, `load` will introduce `<html>`, `<head>`, and
+`<body>` elements if they are not already present. You can set `load`'s third
+argument to `false` to disable this.
+
+```js
+const $ = cheerio.load('<ul id="fruits">...</ul>', null, false);
+
+$.html();
+//=> '<ul id="fruits">...</ul>'
+```
+
+:::
+
 Learn more about the `load` method in the [API documentation](/docs/api/#load).
 
 ## `loadBuffer`
 
 The `loadBuffer` method is similar to the `load` method, but it takes a buffer
-containing the document as its argument instead of a string. This is useful when
-you have the document in binary form, such as when you're reading it from a file
-or receiving it over a network connection.
+containing the document as its argument instead of a string. Cheerio will run
+the HTML encoding sniffing algorithm to determine the encoding of the document.
+This is useful when you have the document in binary form, such as when you're
+reading it from a file or receiving it over a network connection.
 
 Here's an example of how to use the `loadBuffer` method:
 

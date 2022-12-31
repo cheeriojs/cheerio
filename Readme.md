@@ -75,17 +75,6 @@ $.html();
 //=> <html><head></head><body><ul id="fruits">...</ul></body></html>
 ```
 
-Similar to web browser contexts, `load` will introduce `<html>`, `<head>`, and
-`<body>` elements if they are not already present. You can set `load`'s third
-argument to `false` to disable this.
-
-```js
-const $ = cheerio.load('<ul id="fruits">...</ul>', null, false);
-
-$.html();
-//=> '<ul id="fruits">...</ul>'
-```
-
 Optionally, you can also load in the HTML by passing the string as the context:
 
 ```js
