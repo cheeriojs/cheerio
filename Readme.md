@@ -1,6 +1,6 @@
 <h1 align="center">cheerio</h1>
 
-<h5 align="center">Fast, flexible & lean implementation of core jQuery designed specifically for the server.</h5>
+<h5 align="center">The fast, flexible, and elegant library for parsing and manipulating HTML.</h5>
 
 <div align="center">
   <a href="https://github.com/cheeriojs/cheerio/actions/workflows/ci.yml">

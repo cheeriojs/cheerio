@@ -1,7 +1,7 @@
 {
   "name": "cheerio",
   "version": "1.0.0-rc.12",
-  "description": "Tiny, fast, and elegant implementation of core jQuery designed specifically for the server",
+  "description": "The fast, flexible & elegant library for parsing and manipulating HTML.",
   "author": "Matt Mueller <mattmuelle@gmail.com>",
   "maintainers": [
     "Felix Boehm <me@feedic.com>"
