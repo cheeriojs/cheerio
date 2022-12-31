@@ -10,38 +10,43 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Easy to Use',
+    title: '❤️ Familiar syntax',
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Cheerio implements a subset of core jQuery. Cheerio removes all the DOM
+        inconsistencies and browser cruft from the jQuery library, revealing its
+        truly gorgeous API.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
+    title: '⚡️ Blazingly fast',
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Cheerio works with a very simple, consistent DOM model. As a result
+        parsing, manipulating, and rendering are incredibly efficient.
       </>
     ),
   },
   {
-    title: 'Powered by React',
+    title: '❁ Incredibly flexible',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Cheerio wraps around{' '}
+        <a href="https://github.com/inikulin/parse5">parse5</a> for parsing HTML
+        and can optionally use the forgiving{' '}
+        <a href="https://github.com/fb55/htmlparser2/">htmlparser2</a>. Cheerio
+        can parse nearly any HTML or XML document. Cheerio works in both browser
+        and server environments.
       </>
     ),
   },
 ];
 
-function Feature({title, Svg, description}: FeatureItem) {
+function Feature({ title, Svg, description }: FeatureItem) {
   return (
     <div className={clsx('col col--4')}>
       <div className="text--center">
