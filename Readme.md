@@ -47,8 +47,8 @@ model. As a result parsing, manipulating, and rendering are incredibly
 efficient.
 
 **&#10049; Incredibly flexible:** Cheerio wraps around
-[parse5](https://github.com/inikulin/parse5) parser and can optionally use
-@fb55's forgiving [htmlparser2](https://github.com/fb55/htmlparser2/). Cheerio
+[parse5](https://github.com/inikulin/parse5) for parsing HTML and can optionally
+use the forgiving [htmlparser2](https://github.com/fb55/htmlparser2/). Cheerio
 can parse nearly any HTML or XML document. Cheerio works in both browser and
 server environments.
 
@@ -199,10 +199,10 @@ $.root().html();
 
 If you want to render the
 [`outerHTML`](https://developer.mozilla.org/en-US/docs/Web/API/Element/outerHTML)
-of a selection, you can use the `html` utility functon:
+of a selection, you can use the `outerHTML` prop:
 
 ```js
-cheerio.html($('.pear'));
+$('.pear').prop('outerHTML');
 //=> <li class="pear">Pear</li>
 ```
 
@@ -213,31 +213,6 @@ method:
 const $ = cheerio.load('This is <em>content</em>.');
 cheerio.text($('body'));
 //=> This is content.
-```
-
-### Plugins
-
-Once you have loaded a document, you may extend the prototype or the equivalent
-`fn` property with custom plugin methods:
-
-```js
-const $ = cheerio.load('<html><body>Hello, <b>world</b>!</body></html>');
-$.prototype.logHtml = function () {
-  console.log(this.html());
-};
-
-$('body').logHtml(); // logs "Hello, <b>world</b>!" to the console
-```
-
-If you're using TypeScript, you should add a type definition for your new
-method:
-
-```ts
-declare module 'cheerio' {
-  interface Cheerio<T> {
-    logHtml(this: Cheerio<T>): void;
-  }
-}
 ```
 
 ### The "DOM Node" object
