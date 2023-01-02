@@ -70,7 +70,7 @@
     "@imgix/js-core": "^3.7.1",
     "@octokit/graphql": "^5.0.4",
     "@types/benchmark": "^2.1.2",
-    "@types/jest": "^29.2.4",
+    "@types/jest": "^29.2.5",
     "@types/jsdom": "^20.0.1",
     "@types/node": "^18.11.18",
     "@types/whatwg-mimetype": "^3.0.0",
