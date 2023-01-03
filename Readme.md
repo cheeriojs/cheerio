@@ -313,6 +313,9 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="https://casinosicuri.info/" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasinosicuri-info%2F5dc691c%2Favatar.png?ixlib=js-3.7.1&w=128&h=128&fit=fillmax&fill=solid&s=8700ac41116b89770d528a9bc4911928" title="Casinosicuri.info" alt="Casinosicuri.info"></img>
           </a>
+<a href="https://soc-promotion.com" target="_blank" rel="noopener noreferrer">
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fsoc-promotion%2F50963d9%2Favatar.png?ixlib=js-3.7.1&w=128&h=128&fit=fillmax&fill=solid&s=fa83ba602cb648df7e7a72571409db71" title="Soc-Promotion" alt="Soc-Promotion"></img>
+          </a>
 <a href="https://www.casino.xyz" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fguest-3f7631a8%2Ffba44cc%2Favatar.png?ixlib=js-3.7.1&w=128&h=128&fit=fillmax&fill=solid&s=0d98c9056f653e08a8e2430279b85acd" title="Mark Taylor" alt="Mark Taylor"></img>
           </a>
