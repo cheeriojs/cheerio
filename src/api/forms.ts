@@ -1,6 +1,5 @@
-import type { AnyNode } from 'domhandler';
+import { isTag, type AnyNode } from 'domhandler';
 import type { Cheerio } from '../cheerio.js';
-import { isTag } from '../utils.js';
 
 /*
  * https://github.com/jquery/jquery/blob/2.1.3/src/manipulation/var/rcheckableType.js

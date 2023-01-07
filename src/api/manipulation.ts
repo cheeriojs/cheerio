@@ -5,6 +5,7 @@
  */
 
 import {
+  isTag,
   Text,
   hasChildren,
   type ParentNode,
@@ -13,7 +14,7 @@ import {
 } from 'domhandler';
 import { update as updateDOM } from '../parse.js';
 import { text as staticText } from '../static.js';
-import { domEach, cloneDom, isTag, isHtml, isCheerio } from '../utils.js';
+import { domEach, cloneDom, isHtml, isCheerio } from '../utils.js';
 import { removeElement } from 'domutils';
 import type { Cheerio } from '../cheerio.js';
 import type { BasicAcceptedElems, AcceptedElems } from '../types.js';

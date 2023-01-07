@@ -2,18 +2,6 @@ import { type AnyNode, cloneNode, Document } from 'domhandler';
 import type { Cheerio } from './cheerio.js';
 
 /**
- * Check if the DOM element is a tag.
- *
- * `isTag(type)` includes `<script>` and `<style>` tags.
- *
- * @private
- * @category Utils
- * @param type - The DOM node to check.
- * @returns Whether the node is a tag.
- */
-export { isTag } from 'domhandler';
-
-/**
  * Checks if an object is a Cheerio instance.
  *
  * @category Utils
