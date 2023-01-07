@@ -5,6 +5,7 @@
  */
 
 import {
+  isTag,
   type AnyNode,
   type Element,
   hasChildren,
@@ -13,7 +14,7 @@ import {
 } from 'domhandler';
 import type { Cheerio } from '../cheerio.js';
 import * as select from 'cheerio-select';
-import { domEach, isTag, isCheerio } from '../utils.js';
+import { domEach, isCheerio } from '../utils.js';
 import { contains } from '../static.js';
 import {
   getChildren,
