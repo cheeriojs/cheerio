@@ -38,6 +38,9 @@ const config = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl: 'https://github.com/cheeriojs/cheerio/tree/main/website/',
+          remarkPlugins: [
+            [require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }],
+          ],
         },
         blog: {
           showReadingTime: true,
