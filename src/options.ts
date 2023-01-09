@@ -14,7 +14,8 @@ export interface HTMLParser2Options
     HTMLParser2ParserOptions {}
 
 /** Options for parse5, the default parser for HTML. */
-export type Parse5Options = Parse5ParserOptions<Htmlparser2TreeAdapterMap>;
+export interface Parse5Options // eslint-disable-line @typescript-eslint/no-empty-interface
+  extends Parse5ParserOptions<Htmlparser2TreeAdapterMap> {}
 
 /**
  * Options accepted by Cheerio.
