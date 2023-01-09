@@ -39,12 +39,16 @@ the current selection.
 Here's an example of using `find` to select all `li` elements within a `ul`
 element:
 
-```js
-import * as cheerio from 'cheerio';
-const $ = cheerio.load('<ul><li>Item 1</li><li>Item 2</li></ul>');
+```js live noInline
+const $ = cheerio.load(
+  `<ul>
+    <li>Item 1</li>
+    <li>Item 2</li>
+  </ul>`
+);
 
 const listItems = $('ul').find('li');
-console.log(listItems.length); // 2
+render(`List item count: ${listItems.length}`);
 ```
 
 ### `children`
@@ -56,12 +60,16 @@ direct children of the current selection.
 Here's an example of using `children` to select all `li` elements within a `ul`
 element:
 
-```js
-import * as cheerio from 'cheerio';
-const $ = cheerio.load('<ul><li>Item 1</li><li>Item 2</li></ul>');
+```js live noInline
+const $ = cheerio.load(
+  `<ul>
+    <li>Item 1</li>
+    <li>Item 2</li>
+  </ul>`
+);
 
 const listItems = $('ul').children('li');
-console.log(listItems.length); // 2
+render(`List item count: ${listItems.length}`);
 ```
 
 ### `contents`
@@ -72,12 +80,15 @@ selection containing all children of the current selection.
 
 Here's an example of using `contents` to select all children of a `div` element:
 
-```js
-import * as cheerio from 'cheerio';
-const $ = cheerio.load('<div>Text <p>Paragraph</p></div>');
+```js live noInline
+const $ = cheerio.load(
+  `<div>
+    Text <p>Paragraph</p>
+  </div>`
+);
 
 const contents = $('div').contents();
-console.log(contents.length); // 2
+render(`Contents count: ${contents.length}`);
 ```
 
 ## Moving Up the DOM Tree
@@ -94,12 +105,15 @@ element of the current selection.
 Here's an example of using `parent` to select the parent `ul` element of a `li`
 element:
 
-```js
-import * as cheerio from 'cheerio';
-const $ = cheerio.load('<ul><li>Item 1</li></ul>');
+```js live noInline
+const $ = cheerio.load(
+  `<ul>
+    <li>Item 1</li>
+  </ul>`
+);
 
 const list = $('li').parent();
-console.log(list.prop('tagName')); // 'ul'
+render(list.prop('tagName'));
 ```
 
 ### `parents` and `parentsUntil`
@@ -116,15 +130,21 @@ selection up to (but not including) the specified ancestor.
 Here's an example of using `parents` and `parentsUntil` to select ancestor
 elements of a `li` element:
 
-```js
-import * as cheerio from 'cheerio';
-const $ = cheerio.load('<div><ul><li>Item 1</li></ul></div>');
+```js live noInline
+const $ = cheerio.load(
+  `<div>
+    <ul>
+      <li>Item 1</li>
+    </ul>
+  </div>`
+);
 
 const ancestors = $('li').parents();
-console.log(ancestors.length); // 4 (also includes <body> and <html>)
-
 const ancestorsUntil = $('li').parentsUntil('div');
-console.log(ancestorsUntil.length); // 1
+
+render(
+  `Ancestor count (also includes <body> and <html>): ${ancestors.length} | Ancestor count (until <div>): ${ancestorsUntil.length}`
+);
 ```
 
 ### `closest`
@@ -137,12 +157,17 @@ matching ancestor is found, the method returns an empty selection.
 Here's an example of using `closest` to select the closest ancestor `ul` element
 of a `li` element:
 
-```js
-import * as cheerio from 'cheerio';
-const $ = cheerio.load('<div><ul><li>Item 1</li></ul></div>');
+```js live noInline
+const $ = cheerio.load(
+  `<div>
+    <ul>
+      <li>Item 1</li>
+    </ul>
+  </div>`
+);
 
 const list = $('li').closest('ul');
-console.log(list.prop('tagName')); // 'ul'
+render(list.prop('tagName'));
 ```
 
 ## Moving Sideways Within the DOM Tree
@@ -163,15 +188,18 @@ containing the previous sibling element.
 Here's an example of using `next` and `prev` to select sibling elements of a
 `li` element:
 
-```js
-import * as cheerio from 'cheerio';
-const $ = cheerio.load('<ul><li>Item 1</li><li>Item 2</li></ul>');
+```js live noInline
+const $ = cheerio.load(
+  `<ul>
+    <li>Item 1</li>
+    <li>Item 2</li>
+  </ul>`
+);
 
 const nextItem = $('li:first').next();
-console.log(nextItem.text()); // 'Item 2'
+const prevItem = $('li:eq(1)').prev();
 
-const prevItem = $('li:eq(2)').prev();
-console.log(prevItem.text()); // 'Item 1'
+render(`Next: ${nextItem.text()} | Prev: ${prevItem.text()}`);
 ```
 
 ## `nextAll`, `prevAll`, and `siblings`
@@ -191,20 +219,22 @@ elements of the current element.
 Here's an example of using `nextAll`, `prevAll`, and `siblings` to select
 sibling elements of a `li` element:
 
-```js
-import * as cheerio from 'cheerio';
+```js live noInline
 const $ = cheerio.load(
-  '<ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>'
+  `<ul>
+    <li>[1]</li>
+    <li>[2]</li>
+    <li>[3]</li>
+  </ul>`
 );
 
 const nextAll = $('li:first').nextAll();
-console.log(nextAll.length); // 2
-
 const prevAll = $('li:last').prevAll();
-console.log(prevAll.length); // 2
+const siblings = $('li:eq(1)').siblings();
 
-const siblings = $('li:eq(2)').siblings();
-console.log(siblings.length); // 2
+render(
+  `Next All: ${nextAll.text()} | Prev All: ${prevAll.text()} | Siblings: ${siblings.text()}`
+);
 ```
 
 ### `nextUntil` and `prevUntil`
@@ -224,17 +254,19 @@ element up to (but not including) the specified element.
 Here's an example of using `nextUntil` and `prevUntil` to select sibling
 elements of a `li` element:
 
-```js
-import * as cheerio from 'cheerio';
+```js live noInline
 const $ = cheerio.load(
-  '<ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>'
+  `<ul>
+    <li>Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
+  </ul>`
 );
 
 const nextUntil = $('li:first').nextUntil('li:last-child');
-console.log(nextUntil.length); // 1
-
 const prevUntil = $('li:last').prevUntil('li:first-child');
-console.log(prevUntil.length); // 1
+
+render(`Next: ${nextUntil.text()} | Prev: ${prevUntil.text()}`);
 ```
 
 ## Filtering elements
@@ -258,12 +290,16 @@ returns a new selection containing the element at the specified index.
 Here's an example of using `eq` to select the second `li` element within a `ul`
 element:
 
-```js
-import * as cheerio from 'cheerio';
-const $ = cheerio.load('<ul><li>Item 1</li><li>Item 2</li></ul>');
+```js live noInline
+const $ = cheerio.load(
+  `<ul>
+    <li>Item 1</li>
+    <li>Item 2</li>
+  </ul>`
+);
 
-const secondItem = $('li').eq(2);
-console.log(secondItem.text()); // 'Item 2'
+const secondItem = $('li').eq(1);
+render(secondItem.text());
 ```
 
 ### `filter` and `not`
@@ -280,15 +316,20 @@ elements that do not match the selector.
 Here's an example of using `filter` and `not` to select `li` elements within a
 `ul` element:
 
-```js
-import * as cheerio from 'cheerio';
-const $ = cheerio.load('<ul><li class="item">Item 1</li><li>Item 2</li></ul>');
+```js live noInline
+const $ = cheerio.load(
+  `<ul>
+    <li class="item">Item 1</li>
+    <li>Item 2</li>
+  </ul>`
+);
 
 const matchingItems = $('li').filter('.item');
-console.log(matchingItems.length); // 1
-
 const nonMatchingItems = $('li').not('.item');
-console.log(nonMatchingItems.length); // 1
+
+render(
+  `Matching: ${matchingItems.text()} | Non-matching: ${nonMatchingItems.text()}`
+);
 ```
 
 ### `has`
@@ -301,14 +342,18 @@ an element matching the selector.
 Here's an example of using `has` to select `li` elements within a `ul` element
 that contain a `strong` element:
 
-```js
-import * as cheerio from 'cheerio';
+```js live noInline
 const $ = cheerio.load(
-  '<ul><li>Item 1</li><li><strong>Item 2</strong></li></ul>'
+  `<ul>
+    <li>Item 1</li>
+    <li>
+      <strong>Item 2</strong>
+    </li>
+  </ul>`
 );
 
 const matchingItems = $('li').has('strong');
-console.log(matchingItems.length); // 1
+render(matchingItems.length);
 ```
 
 ### `first` and `last`
@@ -324,15 +369,18 @@ containing the last element.
 Here's an example of using `first` and `last` to select elements within a `ul`
 element:
 
-```js
-import * as cheerio from 'cheerio';
-const $ = cheerio.load('<ul><li>Item 1</li><li>Item 2</li></ul>');
+```js live noInline
+const $ = cheerio.load(
+  `<ul>
+    <li>Item 1</li>
+    <li>Item 2</li>
+  </ul>`
+);
 
 const firstItem = $('li').first();
-console.log(firstItem.text()); // 'Item 1'
-
 const lastItem = $('li').last();
-console.log(lastItem.text()); // 'Item 2'
+
+render(`First: ${firstItem.text()} | Last: ${lastItem.text()}`);
 ```
 
 ## Conclusion
