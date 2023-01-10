@@ -59,7 +59,7 @@ const config = {
         title: 'Cheerio',
         logo: {
           alt: 'Cheerio Logo',
-          src: 'img/logo.svg',
+          src: 'img/orange-c.svg',
         },
         items: [
           {
