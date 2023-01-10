@@ -10,8 +10,8 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: '❤️ Familiar syntax',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'Familiar syntax',
+    Svg: require('@site/static/img/1F496.svg').default,
     description: (
       <>
         Cheerio implements a subset of core jQuery. Cheerio removes all the DOM
@@ -21,8 +21,8 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
-    title: '⚡️ Blazingly fast',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Blazingly fast',
+    Svg: require('@site/static/img/26A1.svg').default,
     description: (
       <>
         Cheerio works with a very simple, consistent DOM model. As a result
@@ -31,8 +31,8 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
-    title: '❁ Incredibly flexible',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'Incredibly flexible',
+    Svg: require('@site/static/img/1F57A.svg').default,
     description: (
       <>
         Cheerio wraps around{' '}

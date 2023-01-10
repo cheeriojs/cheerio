@@ -124,6 +124,10 @@ const config = {
                 to: '/blog',
               },
               {
+                label: 'Attribution',
+                href: '/attribution',
+              },
+              {
                 label: 'GitHub',
                 href: 'https://github.com/cheeriojs/cheerio',
               },
