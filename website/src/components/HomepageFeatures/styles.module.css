@@ -5,12 +5,11 @@
   width: 100%;
 }
 
-[data-theme='dark'] .features {
-  /** Match the footer color in dark mode, for better contrast with the icons. */
-  background-color: #303846;
-}
-
 .featureSvg {
   height: 200px;
   width: 200px;
+}
+
+.featureSvg > [class~='line'] {
+  stroke: var(--ifm-font-color-base);
 }
