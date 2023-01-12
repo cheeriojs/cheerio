@@ -38,9 +38,9 @@ $.html();
 
 ## Features
 
-**&#10084; Familiar syntax:** Cheerio implements a subset of core jQuery.
-Cheerio removes all the DOM inconsistencies and browser cruft from the jQuery
-library, revealing its truly gorgeous API.
+**&#10084; Proven syntax:** Cheerio implements a subset of core jQuery. Cheerio
+removes all the DOM inconsistencies and browser cruft from the jQuery library,
+revealing its truly gorgeous API.
 
 **&#991; Blazingly fast:** Cheerio works with a very simple, consistent DOM
 model. As a result parsing, manipulating, and rendering are incredibly

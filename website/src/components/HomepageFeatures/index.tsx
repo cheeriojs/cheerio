@@ -10,7 +10,7 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Familiar syntax',
+    title: 'Proven syntax',
     Svg: require('@site/static/img/1F496.svg').default,
     description: (
       <>
@@ -35,12 +35,8 @@ const FeatureList: FeatureItem[] = [
     Svg: require('@site/static/img/1F57A.svg').default,
     description: (
       <>
-        Cheerio wraps around{' '}
-        <a href="https://github.com/inikulin/parse5">parse5</a> for parsing HTML
-        and can optionally use the forgiving{' '}
-        <a href="https://github.com/fb55/htmlparser2/">htmlparser2</a>. Cheerio
-        can parse nearly any HTML or XML document. Cheerio works in both browser
-        and server environments.
+        Cheerio can parse nearly any HTML or XML document. Cheerio works in both
+        browser and server environments.
       </>
     ),
   },
