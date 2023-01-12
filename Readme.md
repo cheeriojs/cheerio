@@ -322,6 +322,9 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="https://mobileslots.se/" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fmobilcasinon-sverige%2F3f05426%2Flogo.png?ixlib=js-3.7.1&w=128&h=128&fit=fillmax&fill=solid&s=e9708a7293f1f46eabb98c48b994e613" title="mobilcasinon" alt="mobilcasinon"></img>
           </a>
+<a href="https://www.mensjournal.com/entertainment/best-crypto-betting-sites/" target="_blank" rel="noopener noreferrer">
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fmensj%2Fee8b704%2Flogo.png?ixlib=js-3.7.1&w=128&h=128&fit=fillmax&fill=solid&s=1ef079e2fbfe28b9e3b98ac2d096d3de" title="Mensjournal.com" alt="Mensjournal.com"></img>
+          </a>
 
 <!-- END SPONSORS -->
 
