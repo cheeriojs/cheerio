@@ -89,7 +89,7 @@ export const html: (
  * Render the document as XML.
  *
  * @param dom - Element to render.
- * @returns THe rendered document.
+ * @returns The rendered document.
  */
 export const xml: (dom: BasicAcceptedElems<AnyNode>) => string =
   staticMethods.xml.bind(defaultInstance);

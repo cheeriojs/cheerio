@@ -271,9 +271,6 @@ development and support.
 <a href="https://starwarscasinos.com/" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasino-utan-svensk-licens1%2Ff3487ff%2Flogo.png?ixlib=js-3.7.1&w=128&h=128&fit=fillmax&fill=solid&s=e0d296e477755a26c07463c00d30ccee" title="Casino utan svensk licens" alt="Casino utan svensk licens"></img>
           </a>
-<a href="https://www.casinoutanlicens.io/" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasino-utan-svensk-licens2%2Fa3efb14%2Flogo.png?ixlib=js-3.7.1&w=128&h=128&fit=fillmax&fill=solid&s=549b9bd003a0b7c309cfd8d3c2aba074" title="Casino utan svensk licens" alt="Casino utan svensk licens"></img>
-          </a>
 <a href="https://www.zenrows.com" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fzenrows%2F3199d4b%2Flogo.png?ixlib=js-3.7.1&w=128&h=128&fit=fillmax&fill=solid&s=46eeac70d67c5086d7aeba803e758b77" title="ZenRows" alt="ZenRows"></img>
           </a>
