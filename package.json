@@ -67,7 +67,7 @@
     "whatwg-mimetype": "^3.0.0"
   },
   "devDependencies": {
-    "@imgix/js-core": "^3.7.1",
+    "@imgix/js-core": "^3.8.0",
     "@octokit/graphql": "^5.0.4",
     "@types/benchmark": "^2.1.2",
     "@types/jest": "^29.2.5",
