@@ -316,9 +316,6 @@ Does your company use Cheerio in production? Please consider [sponsoring this pr
 <a href="https://soc-promotion.com" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fsoc-promotion%2F50963d9%2Favatar.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=989d0447f58a3d1825fa8c4ab7d02cee" title="Soc-Promotion" alt="Soc-Promotion"></img>
           </a>
-<a href="https://www.casino.xyz" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fguest-3f7631a8%2Ffba44cc%2Favatar.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=cd58586454467ded660e3dec557b456e" title="Mark Taylor" alt="Mark Taylor"></img>
-          </a>
 <a href="https://mobileslots.se/" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fmobilcasinon-sverige%2F3f05426%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=3b9ad8602249b2742fc14c54b82ecf61" title="mobilcasinon" alt="mobilcasinon"></img>
           </a>
