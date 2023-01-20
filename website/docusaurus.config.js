@@ -160,6 +160,30 @@ const config = {
         readme: 'none',
         excludePrivate: true,
 
+        externalSymbolLinkMappings: {
+          typescript: {
+            Promise:
+              'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise',
+            URL: 'https://developer.mozilla.org/en-US/docs/Web/API/URL',
+          },
+          domhandler: {
+            Document: 'https://domhandler.js.org/classes/Document.html',
+            Element: 'https://domhandler.js.org/classes/Element.html',
+            Node: 'https://domhandler.js.org/classes/Node.html',
+
+            AnyNode: 'https://domhandler.js.org/types/AnyNode.html',
+            ChildNode: 'https://domhandler.js.org/types/ChildNode.html',
+            ParentNode: 'https://domhandler.js.org/types/ParentNode.html',
+
+            DomHandlerOptions:
+              'https://domhandler.js.org/interfaces/DomHandlerOptions.html',
+          },
+          parse5: {
+            ParserOptions:
+              'https://parse5.js.org/interfaces/parse5.ParserOptions.html',
+          },
+        },
+
         // Plugin options
         sidebar: {
           // Always display the API entry last
