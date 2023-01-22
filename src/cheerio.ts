@@ -123,7 +123,7 @@ export interface Cheerio<T>
     Iterable<T> {
   cheerio: '[cheerio object]';
 
-  splice: typeof Array.prototype.slice;
+  splice: typeof Array.prototype.splice;
 }
 
 /** Set a signature of the object. */

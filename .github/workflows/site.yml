@@ -39,7 +39,7 @@ jobs:
           cache: 'npm'
       - name: Setup Pages
         id: pages
-        uses: actions/configure-pages@v2
+        uses: actions/configure-pages@v3
       - name: Install dependencies
         run: npm ci
       - name: Build docs
