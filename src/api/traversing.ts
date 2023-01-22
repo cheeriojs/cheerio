@@ -747,7 +747,7 @@ export function filterArray<T>(
  * the function is executed in the context of the selected element, so `this`
  * refers to the current element.
  *
- * @category Attributes
+ * @category Traversing
  * @param selector - Selector for the selection.
  * @returns Whether or not the selector matches an element of the instance.
  * @see {@link https://api.jquery.com/is/}
