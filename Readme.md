@@ -75,18 +75,6 @@ $.html();
 //=> <html><head></head><body><ul id="fruits">...</ul></body></html>
 ```
 
-Optionally, you can also load in the HTML by passing the string as the context:
-
-```js
-$('ul', '<ul id="fruits">...</ul>');
-```
-
-Or as the root:
-
-```js
-$('li', 'ul', '<ul id="fruits">...</ul>');
-```
-
 ### Selectors
 
 Cheerio's selector implementation is nearly identical to jQuery's, so the API is

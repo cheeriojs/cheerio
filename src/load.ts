@@ -26,6 +26,24 @@ export interface CheerioAPI extends StaticType {
    * `selector` searches within the `context` scope which searches within the
    * `root` scope.
    *
+   * Optionally, you can also load HTML by passing the string as the selector:
+   *
+   * ```js
+   * $('<ul id="fruits">...</ul>');
+   * ```
+   *
+   * Or the context:
+   *
+   * ```js
+   * $('ul', '<ul id="fruits">...</ul>');
+   * ```
+   *
+   * Or as the root:
+   *
+   * ```js
+   * $('li', 'ul', '<ul id="fruits">...</ul>');
+   * ```
+   *
    * @example
    *
    * ```js
