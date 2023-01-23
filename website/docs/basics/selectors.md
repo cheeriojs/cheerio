@@ -1,5 +1,6 @@
 ---
 sidebar_position: 3
+description: An introduction to CSS selectors.
 ---
 
 # Selecting Elements

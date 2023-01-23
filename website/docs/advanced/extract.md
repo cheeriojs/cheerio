@@ -1,6 +1,7 @@
 ---
 sidebar_label: The `extract` method
 sidebar_position: 1
+description: Extract multiple values at once.
 ---
 
 # Extracting Data with the `extract` Method

@@ -1,5 +1,6 @@
 ---
 sidebar_position: 2
+description: Configure Cheerio to work with different documents.
 ---
 
 # Configuring Cheerio

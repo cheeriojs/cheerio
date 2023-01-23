@@ -1,5 +1,6 @@
 ---
 sidebar_position: 5
+description: Methods to manipulate elements within a document.
 ---
 
 # Manipulating the DOM

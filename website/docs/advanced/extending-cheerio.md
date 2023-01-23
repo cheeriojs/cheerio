@@ -1,3 +1,8 @@
+---
+sidebar_position: 999
+description: Create custom pseudo-classes and plugins.
+---
+
 # Extending Cheerio
 
 Cheerio already provides many ways of working with documents, but sometimes you

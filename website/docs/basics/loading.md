@@ -1,5 +1,6 @@
 ---
 sidebar_position: 2
+description: A walkthrough of different loading methods.
 ---
 
 # Loading Documents

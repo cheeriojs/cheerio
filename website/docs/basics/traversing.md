@@ -1,5 +1,6 @@
 ---
 sidebar_position: 4
+description: Traverse the DOM tree and filter elements.
 ---
 
 # Traversing the DOM
