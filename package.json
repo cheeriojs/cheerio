@@ -68,7 +68,7 @@
   },
   "devDependencies": {
     "@imgix/js-core": "^3.8.0",
-    "@octokit/graphql": "^5.0.4",
+    "@octokit/graphql": "^5.0.5",
     "@types/benchmark": "^2.1.2",
     "@types/jest": "^29.2.6",
     "@types/jsdom": "^20.0.1",
