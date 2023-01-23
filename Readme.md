@@ -84,11 +84,11 @@ very similar.
 
 `selector` searches within the `context` scope which searches within the `root`
 scope. `selector` and `context` can be a string expression, DOM Element, array
-of DOM elements, or cheerio object. `root` is typically the HTML document
-string.
+of DOM elements, or cheerio object. `root`, if provided, is typically the HTML
+document string.
 
 This selector method is the starting point for traversing and manipulating the
-document. Like jQuery, it's the primary method for selecting elements in the
+document. Like in jQuery, it's the primary method for selecting elements in the
 document.
 
 ```js
@@ -130,12 +130,12 @@ $('.pear').prop('outerHTML');
 //=> <li class="pear">Pear</li>
 ```
 
-You may also render the text content of a Cheerio object using the `text` static
+You may also render the text content of a Cheerio object using the `text`
 method:
 
 ```js
 const $ = cheerio.load('This is <em>content</em>.');
-cheerio.text($('body'));
+$('body').text();
 //=> This is content.
 ```
 
