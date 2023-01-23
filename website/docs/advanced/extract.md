@@ -1,6 +1,6 @@
 ---
 sidebar_label: The `extract` method
-sidebar_position: 6
+sidebar_position: 1
 ---
 
 # Extracting Data with the `extract` Method
