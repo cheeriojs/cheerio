@@ -8,25 +8,25 @@ dependencies.
 
 # 1.0.0-rc.2 / 2017-07-02
 
-This release changes Cheerio's default parser to [the Parse5 HTML
-parser](https://github.com/inikulin/parse5). Parse5 is an excellent project
-that rigorously conforms to the HTML standard. It does not support XML, so
-Cheerio continues to use [`htmlparser2`](https://github.com/fb55/htmlparser2/)
-when working with XML documents.
+This release changes Cheerio's default parser to
+[the Parse5 HTML parser](https://github.com/inikulin/parse5). Parse5 is an
+excellent project that rigorously conforms to the HTML standard. It does not
+support XML, so Cheerio continues to use
+[`htmlparser2`](https://github.com/fb55/htmlparser2/) when working with XML
+documents.
 
 This switch addresses many long-standing bugs in Cheerio, but some users may
 experience slower behavior in performance-critical applications. In addition,
-`htmlparser2` is more forgiving of invalid markup which can be useful when
-input sourced from a third party and cannot be corrected. For these reasons,
-the `load` method also accepts a DOM structure as produced by the `htmlparser2`
-library. See the project's "readme" file for more details on this usage
-pattern.
+`htmlparser2` is more forgiving of invalid markup which can be useful when input
+sourced from a third party and cannot be corrected. For these reasons, the
+`load` method also accepts a DOM structure as produced by the `htmlparser2`
+library. See the project's "readme" file for more details on this usage pattern.
 
 ### Migrating from version 0.x
 
 `cheerio.load( html[, options ] )` This method continues to act as a "factory"
-function. It produces functions that define an API that is similar to the
-global `jQuery` function provided by the jQuery library. The generated function
+function. It produces functions that define an API that is similar to the global
+`jQuery` function provided by the jQuery library. The generated function
 operates on a DOM structure based on the provided HTML.
 
 In releases prior to version 1.0, the provided HTML was interpreted as a
@@ -46,14 +46,14 @@ For example, the following code will produce different results between 0.x and
     //=> In version 0.x: '<p>Hello, <b>world</b>!</p>'
     //=> In version 1.0: '<html><head></head><body><p>Hello, <b>world</b>!</p></body></html>'
 
-Users wishing to parse, manipulate, and render full documents should not need
-to modify their code. Likewise, code that does not interact with the "root"
-element should not be effected by this change. (In the above example, the
-expression `$('p')` returns the same result across Cheerio versions--a Cheerio
-collection whose only member is a paragraph element.)
+Users wishing to parse, manipulate, and render full documents should not need to
+modify their code. Likewise, code that does not interact with the "root" element
+should not be effected by this change. (In the above example, the expression
+`$('p')` returns the same result across Cheerio versions--a Cheerio collection
+whose only member is a paragraph element.)
 
-However, users wishing to render document fragments should now explicitly
-create a "wrapper" element to contain their input.
+However, users wishing to render document fragments should now explicitly create
+a "wrapper" element to contain their input.
 
     // First, create a Cheerio function "bound" to an empty document (this is
     // similar to loading an empty page in a web browser)
@@ -81,7 +81,9 @@ Change log:
 - Normalize code style (Mike Pennisi)
 - Added support for nested wrapping. (Diane Looney)
 - Add nested wrapping test (Toni Helenius)
-- Added $.merge following the specification at https://api.jquery.com/jquery.merge/ Added test cases for $.merge (Diane Looney)
+- Added $.merge following the specification at
+  https://api.jquery.com/jquery.merge/ Added test cases for $.merge (Diane
+  Looney)
 - Clarify project scope in README file (Mike Pennisi)
 - .text() ignores script and style tags (#1018) (Haleem Assal)
 - Test suite housekeeping (#1016) (DianeLooney)
@@ -94,7 +96,8 @@ Change log:
 - Use parse5 as a default parser (closes #863) (inikulin)
 - Fix small typo in Readme (Darren Scerri)
 - Report test failures in CI (Mike Pennisi)
-- serializeArray should not ignore input elements without value attributes (Ricardo Gladwell)
+- serializeArray should not ignore input elements without value attributes
+  (Ricardo Gladwell)
 - Disallow variable shadowing (Mike Pennisi)
 - Update hasClass method (sufisaid)
 - Added MIT License fixes #902 (Prasanth Vaaheeswaran)
@@ -128,7 +131,8 @@ Change log:
 - Added appendTo and prependTo with tests #641 (digihaven)
 - Fix #780 by changing options context in '.find()' (Felix Böhm)
 - Add an unit test checking the query of child (Delgan)
-- fix #667: attr({foo: null}) removes attribute foo, like attr('foo', null) (Ray Waldin)
+- fix #667: attr({foo: null}) removes attribute foo, like attr('foo', null) (Ray
+  Waldin)
 - Include reference to dedicated "Loading" section (Mike Pennisi)
 - Added load method to \$ (alanev)
 - update css-select to 1.2.0 (Felix Böhm)
@@ -153,9 +157,12 @@ Change log:
 - use a selector to filter form elements (fb55)
 - fix README.md typo (Yutian Li)
 - README: fix spelling (Chris Rebert)
-- Added support for options without a `value` attribute. Fixes #633 (Todd Wolfson)
-- responding to pull request feedback - remove item() method and related tests (Ray Waldin)
-- add length property and item method to object returned by prop('style'), plus tests (Ray Waldin)
+- Added support for options without a `value` attribute. Fixes #633 (Todd
+  Wolfson)
+- responding to pull request feedback - remove item() method and related tests
+  (Ray Waldin)
+- add length property and item method to object returned by prop('style'), plus
+  tests (Ray Waldin)
 - Added .prop method to readme (Artem Burtsev)
 - Added .prop method (Artem Burtsev)
 - Added Gitter badge (The Gitter Badger)
@@ -164,7 +171,8 @@ Change log:
 
 - fixed allignment (fb55)
 - added test case for malformed json in data attributes (fb55)
-- fix: handle some extreme cases like `data-custom="{{templatevar}}"`. There is possibility error while parsing json . (Harish.K)
+- fix: handle some extreme cases like `data-custom="{{templatevar}}"`. There is
+  possibility error while parsing json . (Harish.K)
 - Add missing optional selector doc for {prev,next}{All,Until} (Jérémie Astori)
 - update to dom-serializer@0.1.0 (Felix Böhm)
 - Document `Cheerio#serialzeArray` (Mike Pennisi)
@@ -181,7 +189,8 @@ Change log:
 - Added: Gittask badge (Matthew Mueller)
 - Isolate prototypes of functions created via `load` (Mike Pennisi)
 - Updates Readme.md: adds JS syntax highlighting (frankcash)
-- #608 -- Add support for insertBefore/insertAfter syntax. Supports target types of: $, [$], selector (both single and multiple results) (Ben Cochran)
+- #608 -- Add support for insertBefore/insertAfter syntax. Supports target types
+  of: $, [$], selector (both single and multiple results) (Ben Cochran)
 - Clone input nodes when inserting over a set (Mike Pennisi)
 - Move unit test files (Mike Pennisi)
 - remove unnecessarily tricky code (David Chambers)
@@ -223,7 +232,8 @@ Change log:
 - Created a wiki for companies using cheerio in production (Matthew Mueller)
 - Implement `$.prototype.index` (Mike Pennisi)
 - Implement `$.prototype.addBack` (Mike Pennisi)
-- Added double quotes to radio attribute name to account for characters such as brackets (akant10)
+- Added double quotes to radio attribute name to account for characters such as
+  brackets (akant10)
 - Update History.md (Gabriel Falkenberg)
 - add 0.17.0 changelog (David Chambers)
 - exit prepublish script if tag not found (David Chambers)
@@ -357,7 +367,8 @@ Change log:
 # 0.13.0 / 2013-12-30
 
 - Remove "root" node (@jugglinmike)
-- Fix bug in `prevAll`, `prev`, `nextAll`, `next`, `prevUntil`, `nextUntil` (@jugglinmike)
+- Fix bug in `prevAll`, `prev`, `nextAll`, `next`, `prevUntil`, `nextUntil`
+  (@jugglinmike)
 - Fix `replaceWith` method (@jugglinmike)
 - added nextUntil() and prevUntil() (@finspin)
 - Remove internal `connect` function (@jugglinmike)
@@ -420,7 +431,8 @@ Change log:
 
 # 0.12.0 / 2013-06-09
 
-- Breaking Change: Changed context from parent to the actual passed one (@swissmanu)
+- Breaking Change: Changed context from parent to the actual passed one
+  (@swissmanu)
 - Fixed: jquery checkbox val behavior (@jhubble)
 - Added: output xml with \$.xml() (@Maciek416)
 - Bumped: htmlparser2 to 3.1.1
@@ -504,7 +516,8 @@ Change log:
 - Removed node 4.x support
 - Add html(dom) support (@wvl)
 - fixed xss vulnerabilities on .attr(), .text(), & .html() (@benatkin, @FB55)
-- Rewrote tests into javascript, removing coffeescript dependency (@davidchambers)
+- Rewrote tests into javascript, removing coffeescript dependency
+  (@davidchambers)
 - Tons of cleanup (@davidchambers)
 
   # 0.8.3 / 2012-06-12
@@ -513,7 +526,8 @@ Change log:
 
   # 0.8.2 / 2012-06-11
 
-- Now fails gracefully in cases that involve special chars, which is inline with jQuery (closes #59)
+- Now fails gracefully in cases that involve special chars, which is inline with
+  jQuery (closes #59)
 - text() now decode special entities (closes #52)
 - updated travis.yml to test node 4.x
 
@@ -524,7 +538,8 @@ Change log:
 
   # 0.8.0 / 2012-05-27
 
-- Updated CSS parser to use FB55/CSSselect. Cheerio now supports most CSS3 pseudo selectors thanks to @FB55.
+- Updated CSS parser to use FB55/CSSselect. Cheerio now supports most CSS3
+  pseudo selectors thanks to @FB55.
 - ignoreWhitespace now on by default again. See #55 for context.
 - Changed $(':root') to $.root(), cleaned up \$.clone()
 - Support for .eq(i) thanks to @alexbardas
@@ -553,14 +568,20 @@ Change log:
 - Many bug fixes to make cheerio more aligned with jQuery.
 - Added \$(':root') to select the highest level element.
 
-Many thanks to the contributors that made this release happen: @ironchefpython and @siddMahen
+Many thanks to the contributors that made this release happen: @ironchefpython
+and @siddMahen
 
 # 0.6.0 / 2012-02-07
 
-- _Important:_ `$(...).html()` now returns inner HTML, which is in line with the jQuery spec
-- `$.html()` returns the full HTML string. `$.html([cheerioObject])` will return the outer(selected element's tag) and inner HTML of that object
-- Fixed bug that prevented HTML strings with depth (eg. `append('<ul><li><li></ul>')`) from getting `parent`, `next`, `prev` attributes.
-- Halted [htmlparser2](https://github.com/FB55/node-htmlparser) at v2.2.2 until single attributes bug gets fixed.
+- _Important:_ `$(...).html()` now returns inner HTML, which is in line with the
+  jQuery spec
+- `$.html()` returns the full HTML string. `$.html([cheerioObject])` will return
+  the outer(selected element's tag) and inner HTML of that object
+- Fixed bug that prevented HTML strings with depth (eg.
+  `append('<ul><li><li></ul>')`) from getting `parent`, `next`, `prev`
+  attributes.
+- Halted [htmlparser2](https://github.com/FB55/node-htmlparser) at v2.2.2 until
+  single attributes bug gets fixed.
 
   # 0.5.1 / 2012-02-05
 
@@ -604,14 +625,18 @@ Many thanks to the contributors that made this release happen: @ironchefpython a
 
 - Now relying on cheerio-soupselect instead of node-soupselect
 - Removed all lingering htmlparser dependencies
-- parser now returns parent "root" element. Root now never needs to be updated when there is multiple roots. This fixes ongoing issues with before(...), after(...) and other manipulation functions
+- parser now returns parent "root" element. Root now never needs to be updated
+  when there is multiple roots. This fixes ongoing issues with before(...),
+  after(...) and other manipulation functions
 - Added jQuery's \$(...).replaceWith(...)
 
   # 0.3.0 / 2011-11-19
 
-- Now using htmlparser2 for parsing (2x speed increase, cleaner, actively developed)
+- Now using htmlparser2 for parsing (2x speed increase, cleaner, actively
+  developed)
 - Added benchmark directory for future speed tests
-- $('...').dom() was funky, so it was removed in favor of $('...').get(). \$.dom() still works the same.
+- $('...').dom() was funky, so it was removed in favor of $('...').get().
+  \$.dom() still works the same.
 - $.root now correctly static across all instances of $
 - Added a screencast
 
