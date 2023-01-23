@@ -102,7 +102,7 @@ const text = $('p').text();
 :::tip Note
 
 `text()` returns the `textContent` of the passed elements. The result will
-include the contents of `script` and `stype` elements. To avoid this, use
+include the contents of `<script>` and `<style>` elements. To avoid this, use
 `.prop('innerText')` instead.
 
 :::

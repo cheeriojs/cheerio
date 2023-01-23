@@ -27,7 +27,7 @@ values.
 
 Here are some examples of how to use the `$` function to select elements:
 
-- To select all the `p` elements in the document:
+- To select all the `<p>` elements in the document:
 
 ```js
 const $p = $('p');
@@ -66,23 +66,23 @@ $('[xml\\:id="main"');
 :::
 
 - Selectors can be combined to select elements that match multiple criteria. For
-  example, to select all `p` elements with the class `selected`:
+  example, to select all `<p>` elements with the class `selected`:
 
 ```js
 const $selected = $('p.selected');
 ```
 
 - Further, you can use spaces (` `) to select elements that are descendants of
-  other elements. For example, to select all `p` elements that are descendants
-  of `div` elements:
+  other elements. For example, to select all `<p>` elements that are descendants
+  of `<div>` elements:
 
 ```js
 const $p = $('div p');
 ```
 
 - You can also use the `>` character to select elements that are direct
-  descendants of other elements. For example, to select all `p` elements that
-  are direct descendants of `div` elements:
+  descendants of other elements. For example, to select all `<p>` elements that
+  are direct descendants of `<div>` elements:
 
 ```js
 const $p = $('div > p');
@@ -94,7 +94,7 @@ library, `css-select`, for
 
 Cheerio also supports several jQuery-specific extensions that allow you to
 select elements based on their position in the document. For example, to select
-the first `p` element in the document:
+the first `<p>` element in the document:
 
 ```js
 const $p = $('p:first');
@@ -108,3 +108,6 @@ For further information, please also have a look at jQuery's guide on
 [selecting elements](https://learn.jquery.com/using-jquery-core/selecting-elements/),
 as well as
 [MDN](https://developer.mozilla.org/en-US/docs/Glossary/CSS_Selector).
+
+Finally, to add custom CSS pseudo-classes, have a look at the
+[Extending Cheerio guide](/docs/advanced/extending-cheerio#adding-custom-css-pseudo-classes).

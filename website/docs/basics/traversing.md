@@ -36,7 +36,7 @@ specific elements within a selection. It takes a CSS selector as an argument and
 returns a new selection containing all elements that match the selector within
 the current selection.
 
-Here's an example of using `find` to select all `li` elements within a `ul`
+Here's an example of using `find` to select all `<li>` elements within a `<ul>`
 element:
 
 ```js live noInline
@@ -57,8 +57,8 @@ The [`children` method](/docs/api/classes/Cheerio#children) allows you to select
 the direct children of an element. It returns a new selection containing all
 direct children of the current selection.
 
-Here's an example of using `children` to select all `li` elements within a `ul`
-element:
+Here's an example of using `children` to select all `<li>` elements within a
+`<ul>` element:
 
 ```js live noInline
 const $ = cheerio.load(
@@ -78,7 +78,8 @@ The [`contents` method](/docs/api/classes/Cheerio#contents) allows you to select
 all children of an element, including text and comment nodes. It returns a new
 selection containing all children of the current selection.
 
-Here's an example of using `contents` to select all children of a `div` element:
+Here's an example of using `contents` to select all children of a `<div>`
+element:
 
 ```js live noInline
 const $ = cheerio.load(
@@ -102,8 +103,8 @@ The [`parent` method](/docs/api/classes/Cheerio#parent) allows you to select the
 parent element of a selection. It returns a new selection containing the parent
 element of the current selection.
 
-Here's an example of using `parent` to select the parent `ul` element of a `li`
-element:
+Here's an example of using `parent` to select the parent `<ul>` element of a
+`<li>` element:
 
 ```js live noInline
 const $ = cheerio.load(
@@ -128,7 +129,7 @@ returns a new selection containing all ancestor elements of the current
 selection up to (but not including) the specified ancestor.
 
 Here's an example of using `parents` and `parentsUntil` to select ancestor
-elements of a `li` element:
+elements of a `<li>` element:
 
 ```js live noInline
 const $ = cheerio.load(
@@ -154,8 +155,8 @@ the closest ancestor matching a given selector. It returns a new selection
 containing the closest ancestor element that matches the selector. If no
 matching ancestor is found, the method returns an empty selection.
 
-Here's an example of using `closest` to select the closest ancestor `ul` element
-of a `li` element:
+Here's an example of using `closest` to select the closest ancestor `<ul>`
+element of a `<li>` element:
 
 ```js live noInline
 const $ = cheerio.load(
@@ -186,7 +187,7 @@ allows you to select the previous sibling element. It returns a new selection
 containing the previous sibling element.
 
 Here's an example of using `next` and `prev` to select sibling elements of a
-`li` element:
+`<li>` element:
 
 ```js live noInline
 const $ = cheerio.load(
@@ -217,7 +218,7 @@ all siblings of a selection. It returns a new selection containing all sibling
 elements of the current element.
 
 Here's an example of using `nextAll`, `prevAll`, and `siblings` to select
-sibling elements of a `li` element:
+sibling elements of a `<li>` element:
 
 ```js live noInline
 const $ = cheerio.load(
@@ -252,7 +253,7 @@ and returns a new selection containing all sibling elements before the current
 element up to (but not including) the specified element.
 
 Here's an example of using `nextUntil` and `prevUntil` to select sibling
-elements of a `li` element:
+elements of a `<li>` element:
 
 ```js live noInline
 const $ = cheerio.load(
@@ -287,8 +288,8 @@ The [`eq` method](/docs/api/classes/Cheerio#eq) allows you to select an element
 at a specified index within a selection. It takes an index as an argument and
 returns a new selection containing the element at the specified index.
 
-Here's an example of using `eq` to select the second `li` element within a `ul`
-element:
+Here's an example of using `eq` to select the second `<li>` element within a
+`<ul>` element:
 
 ```js live noInline
 const $ = cheerio.load(
@@ -313,8 +314,8 @@ allows you to select elements that do not match a given selector. It takes a
 selector as an argument and returns a new selection containing only those
 elements that do not match the selector.
 
-Here's an example of using `filter` and `not` to select `li` elements within a
-`ul` element:
+Here's an example of using `filter` and `not` to select `<li>` elements within a
+`<ul>` element:
 
 ```js live noInline
 const $ = cheerio.load(
@@ -339,8 +340,8 @@ that contain an element matching a given selector. It takes a selector as an
 argument and returns a new selection containing only those elements that contain
 an element matching the selector.
 
-Here's an example of using `has` to select `li` elements within a `ul` element
-that contain a `strong` element:
+Here's an example of using `has` to select `<li>` elements within a `<ul>`
+element that contain a `<strong>` element:
 
 ```js live noInline
 const $ = cheerio.load(
@@ -366,7 +367,7 @@ The [`last` method](/docs/api/classes/Cheerio#last) is similar to `first`, but
 allows you to select the last element in a selection. It returns a new selection
 containing the last element.
 
-Here's an example of using `first` and `last` to select elements within a `ul`
+Here's an example of using `first` and `last` to select elements within a `<ul>`
 element:
 
 ```js live noInline
