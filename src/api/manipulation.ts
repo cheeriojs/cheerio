@@ -78,7 +78,7 @@ function _insert(
       const domSrc =
         typeof elems[0] === 'function'
           ? elems[0].call(el, i, this._render(el.children))
-          : (elems as AnyNode[]);
+          : (elems as BasicAcceptedElems<AnyNode>);
 
       const dom = this._makeDomArray(domSrc, i < lastIdx);
       concatenator(dom, el.children, el);
@@ -184,7 +184,7 @@ export function appendTo<T extends AnyNode>(
   this: Cheerio<T>,
   target: BasicAcceptedElems<AnyNode>
 ): Cheerio<T> {
-  const appendTarget = isCheerio(target) ? target : this._make(target);
+  const appendTarget = isCheerio<T>(target) ? target : this._make(target);
 
   appendTarget.append(this);
 
@@ -216,7 +216,7 @@ export function prependTo<T extends AnyNode>(
   this: Cheerio<T>,
   target: BasicAcceptedElems<AnyNode>
 ): Cheerio<T> {
-  const prependTarget = isCheerio(target) ? target : this._make(target);
+  const prependTarget = isCheerio<T>(target) ? target : this._make(target);
 
   prependTarget.prepend(this);
 
