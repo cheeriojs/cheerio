@@ -72,7 +72,7 @@ const data = $.extract({
 
 The `value` property can be used to specify the name of the property to extract
 from the selected elements. In this case, we are extracting the `href` attribute
-from the `a` elements. This uses Cheerio's
+from the `<a>` elements. This uses Cheerio's
 [`prop` method](/docs/api/classes/Cheerio#prop) under the hood.
 
 `value` defaults to `textContent`, which extracts the text content of the
@@ -100,8 +100,8 @@ const data = $.extract({
 
 You can also extract data from multiple nested elements by specifying an object
 as the `value`. For example, to extract the text content of all `.red` elements
-and the first `.blue` element in the first `ul` element, and the text content of
-all `.sel` elements in the second `ul` element:
+and the first `.blue` element in the first `<ul>` element, and the text content
+of all `.sel` elements in the second `<ul>` element:
 
 ```js
 const data = $.extract({
@@ -125,7 +125,7 @@ This will return an object with `ul1` and `ul2` properties. The `ul1` property
 will be an object with a `red` property, whose value is an array of the text
 content of all `.red` elements in the first ul element, and a `blue` property.
 The `ul2` property will be an object with a `sel` property, whose value is an
-array of the text content of all `.sel` elements in the second `ul` element.
+array of the text content of all `.sel` elements in the second `<ul>` element.
 
 Finally, you can pass a function as the `value` property. The function will be
 called with each of the selected elements, and the `key` of the property:
@@ -144,7 +144,7 @@ const data = $.extract({
 });
 ```
 
-This will extract the `href` attribute of all `a` elements and return a string
+This will extract the `href` attribute of all `<a>` elements and return a string
 in the form `links=href_value` for each element, where `href_value` is the value
 of the `href` attribute. The returned object will have a `links` property whose
 value is an array of these strings.
