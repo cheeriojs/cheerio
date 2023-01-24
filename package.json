@@ -95,7 +95,7 @@
     "ts-node": "^10.9.1",
     "typedoc": "^0.23.24",
     "typescript": "^4.9.4",
-    "undici": "^5.15.2"
+    "undici": "^5.16.0"
   },
   "scripts": {
     "test": "npm run lint && npm run test:jest",
