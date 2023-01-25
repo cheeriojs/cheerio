@@ -44,11 +44,7 @@ import type { Cheerio } from './cheerio.js';
 import type { AnyNode } from 'domhandler';
 
 /** Elements that can be passed to manipulation methods. */
-export type BasicAcceptedElems<T extends AnyNode> =
-  | Cheerio<T>
-  | T[]
-  | T
-  | string;
+export type BasicAcceptedElems<T extends AnyNode> = ArrayLike<T> | T | string;
 /** Elements that can be passed to manipulation methods, including functions. */
 export type AcceptedElems<T extends AnyNode> =
   | BasicAcceptedElems<T>
