@@ -9,12 +9,12 @@ import * as Css from './api/css.js';
 import * as Forms from './api/forms.js';
 import * as Extract from './api/extract.js';
 
-type AttributesType = typeof Attributes;
-type TraversingType = typeof Traversing;
-type ManipulationType = typeof Manipulation;
-type CssType = typeof Css;
-type FormsType = typeof Forms;
-type ExtractType = typeof Extract;
+type MethodsType = typeof Attributes &
+  typeof Traversing &
+  typeof Manipulation &
+  typeof Css &
+  typeof Forms &
+  typeof Extract;
 
 export abstract class Cheerio<T> implements ArrayLike<T> {
   length = 0;
@@ -94,14 +94,7 @@ export abstract class Cheerio<T> implements ArrayLike<T> {
   abstract _render(dom: AnyNode | ArrayLike<AnyNode>): string;
 }
 
-export interface Cheerio<T>
-  extends AttributesType,
-    TraversingType,
-    ManipulationType,
-    CssType,
-    FormsType,
-    ExtractType,
-    Iterable<T> {
+export interface Cheerio<T> extends MethodsType, Iterable<T> {
   cheerio: '[cheerio object]';
 
   splice: typeof Array.prototype.splice;

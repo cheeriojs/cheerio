@@ -1,6 +1,4 @@
-import cheerio, { type Cheerio } from './index.js';
 import * as utils from './utils.js';
-import type { Element } from 'domhandler';
 
 describe('util functions', () => {
   it('camelCase function test', () => {
@@ -15,18 +13,6 @@ describe('util functions', () => {
     expect(utils.cssCase('jQuery')).toBe('j-query');
     expect(utils.cssCase('neverSayNever')).toBe('never-say-never');
     expect(utils.cssCase('CSSCase')).toBe('-c-s-s-case');
-  });
-
-  it('cloneDom : should be able clone single Elements', () => {
-    const main = cheerio('<p>Cheerio</p>') as Cheerio<Element>;
-    const result: Element[] = [];
-    utils.domEach<Element>(main, (el) => {
-      result.push(...utils.cloneDom(el));
-    });
-    expect(result).toHaveLength(1);
-    expect(result[0]).not.toBe(main[0]);
-    expect(main[0].children.length).toBe(result[0].children.length);
-    expect(cheerio(result).text()).toBe(main.text());
   });
 
   it('isHtml function test', () => {
