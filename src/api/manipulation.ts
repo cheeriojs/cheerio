@@ -8,13 +8,15 @@ import {
   isTag,
   Text,
   hasChildren,
+  cloneNode,
+  Document,
   type ParentNode,
   type AnyNode,
   type Element,
 } from 'domhandler';
 import { update as updateDOM } from '../parse.js';
 import { text as staticText } from '../static.js';
-import { domEach, cloneDom, isHtml, isCheerio } from '../utils.js';
+import { domEach, isHtml, isCheerio } from '../utils.js';
 import { removeElement } from 'domutils';
 import type { Cheerio } from '../cheerio.js';
 import type { BasicAcceptedElems, AcceptedElems } from '../types.js';
@@ -31,25 +33,45 @@ import type { BasicAcceptedElems, AcceptedElems } from '../types.js';
  */
 export function _makeDomArray<T extends AnyNode>(
   this: Cheerio<T>,
-  elem?: BasicAcceptedElems<AnyNode>,
+  elem?: BasicAcceptedElems<AnyNode> | BasicAcceptedElems<AnyNode>[],
   clone?: boolean
 ): AnyNode[] {
   if (elem == null) {
     return [];
   }
-  if (isCheerio(elem)) {
-    return clone ? cloneDom(elem.get()) : elem.get();
-  }
-  if (Array.isArray(elem)) {
-    return elem.reduce<AnyNode[]>(
-      (newElems, el) => newElems.concat(this._makeDomArray(el, clone)),
-      []
-    );
-  }
+
   if (typeof elem === 'string') {
-    return this._parse(elem, this.options, false, null).children;
+    return this._parse(elem, this.options, false, null).children.slice(0);
   }
-  return clone ? cloneDom([elem]) : [elem];
+
+  if ('length' in elem) {
+    if (elem.length === 1) {
+      return this._makeDomArray(elem[0], clone);
+    }
+
+    const result: AnyNode[] = [];
+
+    for (let i = 0; i < elem.length; i++) {
+      const el = elem[i];
+
+      if (typeof el === 'object') {
+        if (el == null) {
+          continue;
+        }
+
+        if (!('length' in el)) {
+          result.push(clone ? cloneNode(el, true) : el);
+          continue;
+        }
+      }
+
+      result.push(...this._makeDomArray(el, clone));
+    }
+
+    return result;
+  }
+
+  return [clone ? cloneNode(elem, true) : elem];
 }
 
 function _insert(
@@ -75,10 +97,11 @@ function _insert(
 
     return domEach(this, (el, i) => {
       if (!hasChildren(el)) return;
+
       const domSrc =
         typeof elems[0] === 'function'
           ? elems[0].call(el, i, this._render(el.children))
-          : (elems as BasicAcceptedElems<AnyNode>);
+          : (elems as BasicAcceptedElems<AnyNode>[]);
 
       const dom = this._makeDomArray(domSrc, i < lastIdx);
       concatenator(dom, el.children, el);
@@ -607,7 +630,7 @@ export function after<T extends AnyNode>(
     const domSrc =
       typeof elems[0] === 'function'
         ? elems[0].call(el, i, this._render(el.children))
-        : (elems as AnyNode[]);
+        : (elems as BasicAcceptedElems<AnyNode>[]);
 
     const dom = this._makeDomArray(domSrc, i < lastIdx);
 
@@ -714,7 +737,7 @@ export function before<T extends AnyNode>(
     const domSrc =
       typeof elems[0] === 'function'
         ? elems[0].call(el, i, this._render(el.children))
-        : (elems as AnyNode[]);
+        : (elems as BasicAcceptedElems<AnyNode>[]);
 
     const dom = this._makeDomArray(domSrc, i < lastIdx);
 
@@ -1035,5 +1058,15 @@ export function text<T extends AnyNode>(
  * @see {@link https://api.jquery.com/clone/}
  */
 export function clone<T extends AnyNode>(this: Cheerio<T>): Cheerio<T> {
-  return this._make(cloneDom(this.get()));
+  const clone = Array.prototype.map.call(this.get(), (el) =>
+    cloneNode(el, true)
+  ) as T[];
+
+  // Add a root node around the cloned nodes
+  const root = new Document(clone);
+  for (const node of clone) {
+    node.parent = root;
+  }
+
+  return this._make(clone);
 }

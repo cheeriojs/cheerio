@@ -1,4 +1,4 @@
-import { type AnyNode, cloneNode, Document } from 'domhandler';
+import type { AnyNode } from 'domhandler';
 import type { Cheerio } from './cheerio.js';
 
 /**
@@ -56,30 +56,6 @@ export function domEach<
   const len = array.length;
   for (let i = 0; i < len; i++) fn(array[i], i);
   return array;
-}
-
-/**
- * Create a deep copy of the given DOM structure. Sets the parents of the copies
- * of the passed nodes to `null`.
- *
- * @private
- * @category Utils
- * @param dom - The domhandler-compliant DOM structure.
- * @returns - The cloned DOM.
- */
-export function cloneDom<T extends AnyNode>(dom: T | T[]): T[] {
-  const clone =
-    'length' in dom
-      ? (Array.prototype.map.call(dom, (el) => cloneNode(el, true)) as T[])
-      : [cloneNode(dom, true)];
-
-  // Add a root node around the cloned nodes
-  const root = new Document(clone);
-  for (const node of clone) {
-    node.parent = root;
-  }
-
-  return clone;
 }
 
 const enum CharacterCodes {
