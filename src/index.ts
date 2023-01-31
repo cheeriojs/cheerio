@@ -65,6 +65,7 @@ const defaultInstance = load([]);
  *
  * @deprecated Use the function returned by `load` instead. To access load, make
  *   sure you are importing `* as cheerio` instead of this default export.
+ * @category Deprecated
  */
 export default defaultInstance;
 
@@ -76,6 +77,8 @@ import type { AnyNode } from 'domhandler';
 /**
  * Renders the document.
  *
+ * @deprecated Use `html` on the loaded instance instead.
+ * @category Deprecated
  * @param dom - Element to render.
  * @param options - Options for the renderer.
  * @returns The rendered document.
@@ -88,6 +91,8 @@ export const html: (
 /**
  * Render the document as XML.
  *
+ * @deprecated Use `xml` on the loaded instance instead.
+ * @category Deprecated
  * @param dom - Element to render.
  * @returns The rendered document.
  */
@@ -101,6 +106,8 @@ export const xml: (dom: BasicAcceptedElems<AnyNode>) => string =
  * include the contents of `<script>` and `<style>` elements. To avoid this, use
  * `.prop('innerText')` instead.
  *
+ * @deprecated Use `text` on the loaded instance instead.
+ * @category Deprecated
  * @param elements - Elements to render.
  * @returns The rendered document.
  */
@@ -114,6 +121,7 @@ export const text: (elements: ArrayLike<AnyNode>) => string =
  * to instead use the static method of the same name.
  *
  * @deprecated Use `contains` on the loaded instance instead.
+ * @category Deprecated
  * @example
  *
  * ```js
@@ -125,6 +133,7 @@ export const text: (elements: ArrayLike<AnyNode>) => string =
  * $.contains($('p').get(0), $('div').get(0));
  * //=> false
  * ```
+ *
  * @returns {boolean}
  */
 export const { contains } = staticMethods;
@@ -136,6 +145,7 @@ export const { contains } = staticMethods;
  * to instead use the static method of the same name.
  *
  * @deprecated Use `merge` on the loaded instance instead.
+ * @category Deprecated
  * @example
  *
  * ```js
@@ -155,6 +165,7 @@ export const { merge } = staticMethods;
  * "loaded" Cheerio factory function.
  *
  * @deprecated Use `parseHTML` on the loaded instance instead.
+ * @category Deprecated
  * @example
  *
  * ```js
@@ -171,6 +182,7 @@ export const { parseHTML } = staticMethods;
  * instead use the `root` static method of a "loaded" Cheerio function.
  *
  * @deprecated Use `root` on the loaded instance instead.
+ * @category Deprecated
  * @example
  *
  * ```js
