@@ -22,7 +22,7 @@ type MethodsType = typeof Attributes &
  * the set.
  *
  * Loading a document will return the Cheerio class bound to the root element of
- * the document. The class will be instanciated when querying the document (when
+ * the document. The class will be instantiated when querying the document (when
  * calling `$('selector')`).
  *
  * @example This is the HTML markup we will be using in all of the API examples:
