@@ -60,8 +60,6 @@ First you need to load in the HTML. This step in jQuery is implicit, since
 jQuery operates on the one, baked-in DOM. With Cheerio, we need to pass in the
 HTML document.
 
-This is the _preferred_ method:
-
 ```js
 // ES6 or TypeScript:
 import * as cheerio from 'cheerio';
@@ -77,8 +75,8 @@ $.html();
 
 ### Selectors
 
-Cheerio's selector implementation is nearly identical to jQuery's, so the API is
-very similar.
+Once you've loaded the HTML, you can use jQuery-style selectors to find elements
+within the document.
 
 #### \$( selector, [context], [root] )
 
