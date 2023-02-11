@@ -164,8 +164,9 @@ const config = {
           // Classes
           ...['Cheerio', 'Document', 'Element', 'Node'].map((name) => ({
             from: `/classes/${name}.html`,
-            to: `/docs/api/classes/${name.toLowerCase()}`,
+            to: `/docs/api/classes/${name}`,
           })),
+
           // Interfaces
           ...[
             'CheerioAPI',
@@ -174,41 +175,48 @@ const config = {
             'Parse5Options',
           ].map((name) => ({
             from: `/interfaces/${name}.html`,
-            to: `/docs/api/interfaces/${name.toLowerCase()}`,
+            to: `/docs/api/interfaces/${name}`,
           })),
-          // Type aliases
-          ...[
-            'AcceptedElems',
-            'AcceptedFilters',
-            'AnyNode',
-            'BasicAcceptedElems',
-            'FilterFunction',
-            'ParentNode',
-            'SelectorType',
-          ].map((name) => ({
-            from: `/types/${name}.html`,
-            to: `/docs/api/types/${name.toLowerCase()}`,
-          })),
+
+          // Type aliases and functions
+
           // `Parse5Options` is now an interface.
           {
             from: '/types/Parse5Options.html',
             to: '/docs/api/interfaces/Parse5Options',
           },
-          // Functions
-          ...[
-            'contains',
-            'default',
-            'html',
-            'load',
-            'merge',
-            'parseHTML',
-            'root',
-            'text',
-            'xml',
-          ].map((name) => ({
-            from: `/functions/${name}.html`,
-            to: `/docs/api/functions/${name.toLowerCase()}`,
-          })),
+
+          {
+            /*
+             * Type aliases and functions are all part of the `api` page. We
+             * unfortunately can't redirect to a specific function, so we
+             * redirect to the top of the page.
+             */
+            from: [
+              ...[
+                'AcceptedElems',
+                'AcceptedFilters',
+                'AnyNode',
+                'BasicAcceptedElems',
+                'FilterFunction',
+                'ParentNode',
+                'SelectorType',
+              ].map((name) => `/types/${name}.html`),
+
+              ...[
+                'contains',
+                'default',
+                'html',
+                'load',
+                'merge',
+                'parseHTML',
+                'root',
+                'text',
+                'xml',
+              ].map((name) => `/functions/${name}.html`),
+            ],
+            to: `/docs/api/`,
+          },
         ],
       }),
     ],
