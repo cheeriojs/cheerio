@@ -156,6 +156,63 @@ const config = {
 
   plugins: [
     [
+      'client-redirects',
+      /** @type {import('@docusaurus/plugin-client-redirects').Options} */
+      ({
+        fromExtensions: ['html'],
+        redirects: [
+          // Classes
+          ...['Cheerio', 'Document', 'Element', 'Node'].map((name) => ({
+            from: `/classes/${name}.html`,
+            to: `/docs/api/classes/${name.toLowerCase()}`,
+          })),
+          // Interfaces
+          ...[
+            'CheerioAPI',
+            'CheerioOptions',
+            'HTMLParser2Options',
+            'Parse5Options',
+          ].map((name) => ({
+            from: `/interfaces/${name}.html`,
+            to: `/docs/api/interfaces/${name.toLowerCase()}`,
+          })),
+          // Type aliases
+          ...[
+            'AcceptedElems',
+            'AcceptedFilters',
+            'AnyNode',
+            'BasicAcceptedElems',
+            'FilterFunction',
+            'ParentNode',
+            'SelectorType',
+          ].map((name) => ({
+            from: `/types/${name}.html`,
+            to: `/docs/api/types/${name.toLowerCase()}`,
+          })),
+          // `Parse5Options` is now an interface.
+          {
+            from: '/types/Parse5Options.html',
+            to: '/docs/api/interfaces/Parse5Options',
+          },
+          // Functions
+          ...[
+            'contains',
+            'default',
+            'html',
+            'load',
+            'merge',
+            'parseHTML',
+            'root',
+            'text',
+            'xml',
+          ].map((name) => ({
+            from: `/functions/${name}.html`,
+            to: `/docs/api/functions/${name.toLowerCase()}`,
+          })),
+        ],
+      }),
+    ],
+    [
       'docusaurus-plugin-typedoc',
 
       {
