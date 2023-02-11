@@ -55,6 +55,11 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      announcementBar: {
+        id: 'announcementBar-not-yet-done-1', // Increment on change
+        content:
+          "Cheerio's website is still a work-in-progress, and covers Cheerio's next release that isn't available yet. <a href='https://github.com/cheeriojs/cheerio/discussions/3002'>We would love your help in making this website better!</a>",
+      },
       navbar: {
         title: 'Cheerio',
         logo: {
