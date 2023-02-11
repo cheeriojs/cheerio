@@ -1,7 +1,7 @@
 {
   "name": "cheerio",
   "version": "1.0.0-rc.12",
-  "description": "The fast, flexible & elegant library for parsing and manipulating HTML.",
+  "description": "The fast, flexible & elegant library for parsing and manipulating HTML and XML.",
   "author": "Matt Mueller <mattmuelle@gmail.com>",
   "maintainers": [
     "Felix Boehm <me@feedic.com>"
