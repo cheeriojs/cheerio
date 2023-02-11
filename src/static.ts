@@ -50,6 +50,7 @@ function isOptions(
 /**
  * Renders the document.
  *
+ * @category Static
  * @param options - Options for the renderer.
  * @returns The rendered document.
  */
@@ -57,6 +58,7 @@ export function html(this: CheerioAPI, options?: CheerioOptions): string;
 /**
  * Renders the document.
  *
+ * @category Static
  * @param dom - Element to render.
  * @param options - Options for the renderer.
  * @returns The rendered document.
@@ -94,6 +96,7 @@ export function html(
 /**
  * Render the document as XML.
  *
+ * @category Static
  * @param dom - Element to render.
  * @returns THe rendered document.
  */
@@ -113,6 +116,7 @@ export function xml(
  * include the contents of `<script>` and `<style>` elements. To avoid this, use
  * `.prop('innerText')` instead.
  *
+ * @category Static
  * @param elements - Elements to render.
  * @returns The rendered document.
  */
@@ -135,6 +139,7 @@ export function text(
  * Parses a string into an array of DOM nodes. The `context` argument has no
  * meaning for Cheerio, but it is maintained for API compatibility with jQuery.
  *
+ * @category Static
  * @param data - Markup that will be parsed.
  * @param context - Will be ignored. If it is a boolean it will be used as the
  *   value of `keepScripts`.
@@ -183,6 +188,7 @@ export function parseHTML(
  * Sometimes you need to work with the top-level root element. To query it, you
  * can use `$.root()`.
  *
+ * @category Static
  * @example
  *
  * ```js
@@ -200,6 +206,7 @@ export function root(this: CheerioAPI): Cheerio<Document> {
  * Checks to see if the `contained` DOM element is a descendant of the
  * `container` DOM element.
  *
+ * @category Static
  * @param container - Potential parent node.
  * @param contained - Potential child node.
  * @returns Indicates if the nodes contain one another.
@@ -230,6 +237,7 @@ export function contains(container: AnyNode, contained: AnyNode): boolean {
 /**
  * Extract multiple values from a document, and store them in an object.
  *
+ * @category Static
  * @param map - An object containing key-value pairs. The keys are the names of
  *   the properties to be created on the object, and the values are the
  *   selectors to be used to extract the values.
@@ -247,6 +255,7 @@ type Writable<T> = { -readonly [P in keyof T]: T[P] };
 /**
  * $.merge().
  *
+ * @category Static
  * @param arr1 - First array.
  * @param arr2 - Second array.
  * @returns `arr1`, with elements of `arr2` inserted.
@@ -273,6 +282,7 @@ export function merge<T>(
 /**
  * Checks if an object is array-like.
  *
+ * @category Static
  * @param item - Item to check.
  * @returns Indicates if the item is array-like.
  */

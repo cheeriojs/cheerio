@@ -74,6 +74,8 @@ import type { BasicAcceptedElems } from './types.js';
 import type { CheerioOptions } from './options.js';
 import type { AnyNode } from 'domhandler';
 
+export const { contains, merge } = staticMethods;
+
 /**
  * Renders the document.
  *
@@ -115,49 +117,6 @@ export const text: (elements: ArrayLike<AnyNode>) => string =
   staticMethods.text.bind(defaultInstance);
 
 /**
- * The `.contains` method exported by the Cheerio module is deprecated.
- *
- * In order to promote consistency with the jQuery library, users are encouraged
- * to instead use the static method of the same name.
- *
- * @deprecated Use `contains` on the loaded instance instead.
- * @category Deprecated
- * @example
- *
- * ```js
- * const $ = cheerio.load('<div><p></p></div>');
- *
- * $.contains($('div').get(0), $('p').get(0));
- * //=> true
- *
- * $.contains($('p').get(0), $('div').get(0));
- * //=> false
- * ```
- *
- * @returns {boolean}
- */
-export const { contains } = staticMethods;
-
-/**
- * The `.merge` method exported by the Cheerio module is deprecated.
- *
- * In order to promote consistency with the jQuery library, users are encouraged
- * to instead use the static method of the same name.
- *
- * @deprecated Use `merge` on the loaded instance instead.
- * @category Deprecated
- * @example
- *
- * ```js
- * const $ = cheerio.load('');
- *
- * $.merge([1, 2], [3, 4]);
- * //=> [1, 2, 3, 4]
- * ```
- */
-export const { merge } = staticMethods;
-
-/**
  * The `.parseHTML` method exported by the Cheerio module is deprecated.
  *
  * In order to promote consistency with the jQuery library, users are encouraged
@@ -173,7 +132,7 @@ export const { merge } = staticMethods;
  * $.parseHTML('<b>markup</b>');
  * ```
  */
-export const { parseHTML } = staticMethods;
+export const parseHTML = staticMethods.parseHTML.bind(defaultInstance);
 
 /**
  * The `.root` method exported by the Cheerio module is deprecated.
@@ -190,4 +149,4 @@ export const { parseHTML } = staticMethods;
  * $.root();
  * ```
  */
-export const { root } = staticMethods;
+export const root = staticMethods.root.bind(defaultInstance);

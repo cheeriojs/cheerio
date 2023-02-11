@@ -56,7 +56,6 @@ export interface CheerioAPI extends StaticType {
    * ```js
    * $('li', 'ul', '<ul id="fruits">...</ul>');
    * ```
-   *
    * @param selector - Either a selector to look for within the document, or the
    *   contents of a new Cheerio instance.
    * @param context - Either a selector to look for within the root, or the
@@ -93,6 +92,7 @@ export interface CheerioAPI extends StaticType {
    * exported by the Cheerio module.
    *
    * @deprecated Use the `load` function exported by the Cheerio module.
+   * @category Deprecated
    * @example
    *
    * ```js
