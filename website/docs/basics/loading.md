@@ -10,8 +10,9 @@ to use the different loading methods.
 
 :::tip
 
-If you're familiar with jQuery, then this step is new. jQuery operates on the
-one, baked-in DOM. With Cheerio, we need to pass in the HTML document.
+If you're familiar with jQuery, then this step will be new to you. jQuery
+operates on the one, baked-in DOM. With Cheerio, we need to pass in the HTML
+document.
 
 :::
 
