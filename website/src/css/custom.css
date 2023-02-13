@@ -1,0 +1,55 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  src: url(../../static/fonts/inter.woff) format('woff');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Rubik';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../../static/fonts/rubik.woff) format('woff');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #e88c1f;
+  --ifm-color-primary-dark: #cf7d16;
+  --ifm-color-primary-darker: #c57110;
+  --ifm-color-primary-darkest: #b6660a;
+  --ifm-color-primary-light: #f2932b;
+  --ifm-color-primary-lighter: #f4a02f;
+  --ifm-color-primary-lightest: #fbbc3b;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+
+  --ifm-font-family-base: 'Rubik', system-ui, -apple-system, 'Segoe UI', Roboto,
+    Ubuntu, Cantarell, 'Noto Sans', sans-serif;
+  --ifm-heading-font-family: 'Inter', var(--ifm-font-family-base);
+  --ifm-heading-font-weight: 600;
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  --ifm-color-primary: #f4a02f;
+  --ifm-color-primary-dark: #e79124;
+  --ifm-color-primary-darker: #dc8418;
+  --ifm-color-primary-darkest: #d2760c;
+  --ifm-color-primary-light: #f8b539;
+  --ifm-color-primary-lighter: #fbb843;
+  --ifm-color-primary-lightest: #ffbe4f;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}

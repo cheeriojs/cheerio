@@ -23,20 +23,38 @@ export interface CheerioAPI extends StaticType {
    * the document. Like jQuery, it's the primary method for selecting elements
    * in the document.
    *
-   * `selector` searches within the `context` scope which searches within the
+   * `selector` searches within the `context` scope, which searches within the
    * `root` scope.
    *
    * @example
    *
    * ```js
-   * $('.apple', '#fruits').text();
-   * //=> Apple
-   *
    * $('ul .pear').attr('class');
    * //=> pear
    *
    * $('li[class=orange]').html();
    * //=> Orange
+   *
+   * $('.apple', '#fruits').text();
+   * //=> Apple
+   * ```
+   *
+   * Optionally, you can also load HTML by passing the string as the selector:
+   *
+   * ```js
+   * $('<ul id="fruits">...</ul>');
+   * ```
+   *
+   * Or the context:
+   *
+   * ```js
+   * $('ul', '<ul id="fruits">...</ul>');
+   * ```
+   *
+   * Or as the root:
+   *
+   * ```js
+   * $('li', 'ul', '<ul id="fruits">...</ul>');
    * ```
    * @param selector - Either a selector to look for within the document, or the
    *   contents of a new Cheerio instance.
@@ -74,6 +92,7 @@ export interface CheerioAPI extends StaticType {
    * exported by the Cheerio module.
    *
    * @deprecated Use the `load` function exported by the Cheerio module.
+   * @category Deprecated
    * @example
    *
    * ```js

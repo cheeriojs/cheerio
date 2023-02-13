@@ -29,6 +29,7 @@ import { type Writable, finished } from 'node:stream';
  * Sniffs the encoding of a buffer, then creates a querying function bound to a
  * document created from the buffer.
  *
+ * @category Loading
  * @example
  *
  * ```js
@@ -87,6 +88,7 @@ function _stringStream(
  * The stream is a `Writable` stream that accepts strings. When the stream is
  * finished, the callback is called with the loaded document.
  *
+ * @category Loading
  * @example
  *
  * ```js
@@ -127,6 +129,7 @@ export interface DecodeStreamOptions extends CheerioOptions {
  * The stream is a `Writable` stream that accepts buffers. When the stream is
  * finished, the callback is called with the loaded document.
  *
+ * @category Loading
  * @param options - The options to pass to Cheerio.
  * @param cb - The callback to call when the stream is finished.
  * @returns The writable stream.
@@ -173,6 +176,7 @@ const defaultRequestOptions: UndiciStreamOptions = {
  *
  * By default, redirects are allowed and non-2xx responses are rejected.
  *
+ * @category Loading
  * @example
  *
  * ```js

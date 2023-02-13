@@ -45,6 +45,7 @@ const parse = getParse((content, options, isDocument, context) =>
  * `<html>`, `<head>`, and `<body>` elements; set `isDocument` to `false` to
  * switch to fragment mode and disable this.
  *
+ * @category Loading
  * @param content - Markup to be loaded.
  * @param options - Options for the created instance.
  * @param isDocument - Allows parser to be switched to fragment mode.
@@ -64,6 +65,7 @@ const defaultInstance = load([]);
  *
  * @deprecated Use the function returned by `load` instead. To access load, make
  *   sure you are importing `* as cheerio` instead of this default export.
+ * @category Deprecated
  */
 export default defaultInstance;
 
@@ -72,9 +74,13 @@ import type { BasicAcceptedElems } from './types.js';
 import type { CheerioOptions } from './options.js';
 import type { AnyNode } from 'domhandler';
 
+export const { contains, merge } = staticMethods;
+
 /**
  * Renders the document.
  *
+ * @deprecated Use `html` on the loaded instance instead.
+ * @category Deprecated
  * @param dom - Element to render.
  * @param options - Options for the renderer.
  * @returns The rendered document.
@@ -87,6 +93,8 @@ export const html: (
 /**
  * Render the document as XML.
  *
+ * @deprecated Use `xml` on the loaded instance instead.
+ * @category Deprecated
  * @param dom - Element to render.
  * @returns The rendered document.
  */
@@ -97,54 +105,16 @@ export const xml: (dom: BasicAcceptedElems<AnyNode>) => string =
  * Render the document as text.
  *
  * This returns the `textContent` of the passed elements. The result will
- * include the contents of `script` and `stype` elements. To avoid this, use
+ * include the contents of `<script>` and `<style>` elements. To avoid this, use
  * `.prop('innerText')` instead.
  *
+ * @deprecated Use `text` on the loaded instance instead.
+ * @category Deprecated
  * @param elements - Elements to render.
  * @returns The rendered document.
  */
 export const text: (elements: ArrayLike<AnyNode>) => string =
   staticMethods.text.bind(defaultInstance);
-
-/**
- * The `.contains` method exported by the Cheerio module is deprecated.
- *
- * In order to promote consistency with the jQuery library, users are encouraged
- * to instead use the static method of the same name.
- *
- * @deprecated Use `contains` on the loaded instance instead.
- * @example
- *
- * ```js
- * const $ = cheerio.load('<div><p></p></div>');
- *
- * $.contains($('div').get(0), $('p').get(0));
- * //=> true
- *
- * $.contains($('p').get(0), $('div').get(0));
- * //=> false
- * ```
- * @returns {boolean}
- */
-export const { contains } = staticMethods;
-
-/**
- * The `.merge` method exported by the Cheerio module is deprecated.
- *
- * In order to promote consistency with the jQuery library, users are encouraged
- * to instead use the static method of the same name.
- *
- * @deprecated Use `merge` on the loaded instance instead.
- * @example
- *
- * ```js
- * const $ = cheerio.load('');
- *
- * $.merge([1, 2], [3, 4]);
- * //=> [1, 2, 3, 4]
- * ```
- */
-export const { merge } = staticMethods;
 
 /**
  * The `.parseHTML` method exported by the Cheerio module is deprecated.
@@ -154,6 +124,7 @@ export const { merge } = staticMethods;
  * "loaded" Cheerio factory function.
  *
  * @deprecated Use `parseHTML` on the loaded instance instead.
+ * @category Deprecated
  * @example
  *
  * ```js
@@ -161,7 +132,7 @@ export const { merge } = staticMethods;
  * $.parseHTML('<b>markup</b>');
  * ```
  */
-export const { parseHTML } = staticMethods;
+export const parseHTML = staticMethods.parseHTML.bind(defaultInstance);
 
 /**
  * The `.root` method exported by the Cheerio module is deprecated.
@@ -170,6 +141,7 @@ export const { parseHTML } = staticMethods;
  * instead use the `root` static method of a "loaded" Cheerio function.
  *
  * @deprecated Use `root` on the loaded instance instead.
+ * @category Deprecated
  * @example
  *
  * ```js
@@ -177,4 +149,4 @@ export const { parseHTML } = staticMethods;
  * $.root();
  * ```
  */
-export const { root } = staticMethods;
+export const root = staticMethods.root.bind(defaultInstance);

@@ -1,7 +1,7 @@
 {
   "name": "cheerio",
   "version": "1.0.0-rc.12",
-  "description": "Tiny, fast, and elegant implementation of core jQuery designed specifically for the server",
+  "description": "The fast, flexible & elegant library for parsing and manipulating HTML and XML.",
   "author": "Matt Mueller <mattmuelle@gmail.com>",
   "maintainers": [
     "Felix Boehm <me@feedic.com>"
@@ -14,6 +14,8 @@
     "selector",
     "scraper",
     "parser",
+    "dom",
+    "xml",
     "html"
   ],
   "repository": {
@@ -93,7 +95,6 @@
     "prettier-plugin-jsdoc": "0.4.2",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1",
-    "typedoc": "^0.23.25",
     "typescript": "^4.9.5",
     "undici": "^5.18.0"
   },
@@ -107,8 +108,7 @@
     "format": "npm run format:es && npm run format:prettier",
     "format:es": "npm run lint:es -- --fix",
     "format:prettier": "npm run format:prettier:raw -- --write",
-    "format:prettier:raw": "prettier \"**/*.{{m,c,}js,ts,md,json,yml}\" --ignore-path .gitignore",
-    "build:docs": "typedoc --hideGenerator src/index.ts",
+    "format:prettier:raw": "prettier \"**/*.{{m,c,}{j,t}s{x,},md,json,yml}\" --ignore-path .gitignore",
     "benchmark": "npm run build:cjs && ts-node benchmark/benchmark.ts --regex \"^(?!.*highmem)\"",
     "update-sponsors": "ts-node --esm -TO '{\"module\":\"node16\",\"target\":\"es2019\"}' scripts/fetch-sponsors.mts",
     "bench": "npm run benchmark",

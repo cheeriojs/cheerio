@@ -16,6 +16,25 @@ type MethodsType = typeof Attributes &
   typeof Forms &
   typeof Extract;
 
+/**
+ * The cheerio class is the central class of the library. It wraps a set of
+ * elements and provides an API for traversing, modifying, and interacting with
+ * the set.
+ *
+ * Loading a document will return the Cheerio class bound to the root element of
+ * the document. The class will be instantiated when querying the document (when
+ * calling `$('selector')`).
+ *
+ * @example This is the HTML markup we will be using in all of the API examples:
+ *
+ * ```html
+ * <ul id="fruits">
+ *   <li class="apple">Apple</li>
+ *   <li class="orange">Orange</li>
+ *   <li class="pear">Pear</li>
+ * </ul>
+ * ```
+ */
 export abstract class Cheerio<T> implements ArrayLike<T> {
   length = 0;
   [index: number]: T;

@@ -6,6 +6,16 @@ updates:
       interval: daily
     open-pull-requests-limit: 10
     versioning-strategy: increase
+  - package-ecosystem: npm
+    directory: '/website'
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 4
+    versioning-strategy: increase
+    # TODO: We cannot update React to v18. See https://github.com/facebook/docusaurus/issues/7264
+    ignore:
+      - dependency-name: 'react'
+        versions: ['18.x']
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:

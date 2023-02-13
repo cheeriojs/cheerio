@@ -42,12 +42,14 @@ jobs:
         uses: actions/configure-pages@v3
       - name: Install dependencies
         run: npm ci
+      - name: Install website dependencies
+        run: cd website && npm ci
       - name: Build docs
-        run: npm run build:docs
+        run: cd website && npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: ./docs
+          path: ./website/build
 
   # Deployment job
   deploy:
