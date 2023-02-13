@@ -1,4 +1,4 @@
-name: Deploy TypeDoc docs to GitHub Pages
+name: Deploy website to GitHub Pages
 
 # Based on https://raw.githubusercontent.com/actions/starter-workflows
 
@@ -12,7 +12,6 @@ on:
 
 env:
   FORCE_COLOR: 2
-  NODE: 16
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -35,13 +34,16 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3.6.0
         with:
-          node-version: '${{ env.NODE }}'
+          # Use current Node LTS version
+          node-version: lts/*
           cache: 'npm'
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
       - name: Install dependencies
         run: npm ci
+      - name: Build
+        run: npm run build
       - name: Install website dependencies
         run: cd website && npm ci
       - name: Build docs
