@@ -1,4 +1,9 @@
 {
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
   "rules": {
     "n/no-missing-require": 0
   }
