@@ -46,18 +46,16 @@ jobs:
         run: npm run build
       - name: Install website dependencies
         run: cd website && npm ci
+      - name: Sync Crowdin
+        run: npm run crowdin sync
+        env:
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
       - name: Build docs
         run: cd website && npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
           path: ./website/build
-      - name: Generate translation files
-        run: npm run write-translations
-      - name: Upload translation files
-        run: npm run crowdin upload
-        env:
-          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
   # Deployment job
   deploy:
