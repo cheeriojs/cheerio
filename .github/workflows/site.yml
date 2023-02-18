@@ -52,6 +52,12 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           path: ./website/build
+      - name: Generate translation files
+        run: npm run write-translations
+      - name: Upload translation files
+        run: npm run crowdin upload
+        env:
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
   # Deployment job
   deploy:
