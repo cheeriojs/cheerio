@@ -48,6 +48,7 @@ jobs:
         run: cd website && npm ci
       - name: Sync Crowdin
         run: cd website && npm run crowdin:sync
+        continue-on-error: true
         env:
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
       - name: Build docs
