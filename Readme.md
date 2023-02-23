@@ -211,9 +211,6 @@ development and support.
 <a href="https://mobileslots.se/" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fmobilcasinon-sverige%2F3f05426%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=3b9ad8602249b2742fc14c54b82ecf61" title="mobilcasinon" alt="mobilcasinon"></img>
           </a>
-<a href="https://www.mensjournal.com/entertainment/best-crypto-betting-sites/" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fmensj%2Fee8b704%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=e924cf8f95c31e947fd5ddbd4528e53f" title="Mensjournal.com" alt="Mensjournal.com"></img>
-          </a>
 
 <!-- END SPONSORS -->
 
