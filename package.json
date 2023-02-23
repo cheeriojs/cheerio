@@ -30,6 +30,7 @@
   "types": "lib/index.d.ts",
   "module": "lib/esm/index.js",
   "exports": {
+    "./package.json": "./package.json",
     ".": {
       "require": "./lib/index.js",
       "import": {
