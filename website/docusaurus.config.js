@@ -12,6 +12,7 @@ const config = {
   tagline: packageJson.description,
   url: packageJson.homepage,
   baseUrl: '/',
+  trailingSlash: false,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
