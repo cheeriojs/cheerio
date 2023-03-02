@@ -184,11 +184,8 @@ development and support.
 <a href="https://apify.com/" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F24586296%3Fv%3D4%26s%3D128?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=73d130c03482028ce54fd0871484d6a8" title="Apify" alt="Apify"></img>
           </a>
-<a href="https://freebets.ltd.uk" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Ffreebets%2Fe21c41b%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=c7a5b478fd31853084925dabf9b33208" title="Free Bets" alt="Free Bets"></img>
-          </a>
-<a href="https://casinoutansvensklicens.co/" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasino-utan-svensk-licens3%2Ff7e9357%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=bbd28616e8de4d3e0609059e52db734b" title="Casino utan svensk licens" alt="Casino utan svensk licens"></img>
+<a href="https://freebets.ltd.uk/" target="_blank" rel="noopener noreferrer">
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Ffreebets%2Fe21c41b%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=c7a5b478fd31853084925dabf9b33208" title="freebets.ltd.uk" alt="freebets.ltd.uk"></img>
           </a>
 <a href="https://starwarscasinos.com/" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasino-utan-svensk-licens1%2Ff3487ff%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=f67816267b13ae89fa0702b17fd143cc" title="Spela på Casino utan svensk licens" alt="Spela på Casino utan svensk licens"></img>
@@ -198,9 +195,6 @@ development and support.
           </a>
 <a href="https://scommessesportivemania.com/" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fscommessesportivemania-com%2Fe6941a3%2Favatar.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=01163c3c0aa2f757ab641e6e44ff0e6d" title="Scommessesportivemania.com" alt="Scommessesportivemania.com"></img>
-          </a>
-<a href="https://www.nettikasinot.org" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fnettikasinot-org%2F53a4b44%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=900b4235a9dc2ff2a13c12e49f9f89d5" title="Nettikasinot.org" alt="Nettikasinot.org"></img>
           </a>
 <a href="https://casinosicuri.info/" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasinosicuri-info%2F5dc691c%2Favatar.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=fd570730894e259b3af3a26a8fb3a8da" title="Casinosicuri.info" alt="Casinosicuri.info"></img>
