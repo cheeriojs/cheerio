@@ -10,7 +10,7 @@ import { request } from 'undici';
 import { graphql as githubGraphQL } from '@octokit/graphql';
 import ImgixClient from '@imgix/js-core';
 
-type Tier = 'sponsor' | 'professional' | 'backer';
+type Tier = 'headliner' | 'sponsor' | 'professional' | 'backer';
 
 interface Sponsor {
   createdAt: string;
@@ -19,11 +19,44 @@ interface Sponsor {
   url: string;
   type: 'ORGANIZATION' | 'INDIVIDUAL' | 'FUND';
   monthlyDonation: number;
-  source: 'github' | 'opencollective';
+  source: 'github' | 'opencollective' | 'manual';
   tier: Tier | null;
 }
 
 const tierSponsors: Record<Tier, Sponsor[]> = {
+  headliner: [
+    // Some sponsors are manually added here.
+    {
+      createdAt: '2023-03-03',
+      name: 'Tidelift',
+      image: 'https://github.com/tidelift.png',
+      url: 'https://tidelift.com/subscription/pkg/npm-cheerio',
+      type: 'FUND',
+      monthlyDonation: 0,
+      source: 'manual',
+      tier: 'headliner',
+    },
+    {
+      createdAt: '2022-06-24',
+      name: 'Github',
+      image: 'https://github.com/github.png',
+      url: 'https://github.com/',
+      type: 'ORGANIZATION',
+      monthlyDonation: 0,
+      source: 'manual',
+      tier: 'headliner',
+    },
+    {
+      createdAt: '2018-05-02',
+      name: 'AirBnB',
+      image: 'https://github.com/airbnb.png',
+      url: 'https://www.airbnb.com/',
+      type: 'ORGANIZATION',
+      monthlyDonation: 0,
+      source: 'manual',
+      tier: 'headliner',
+    },
+  ],
   sponsor: [],
   professional: [],
   backer: [],
@@ -47,6 +80,10 @@ const imgix = new ImgixClient({
  * @returns The ID of the tier the donation belongs to.
  */
 function getTierSlug(monthlyDonation: number): Tier | null {
+  if (monthlyDonation >= 250) {
+    return 'headliner';
+  }
+
   if (monthlyDonation >= 100) {
     return 'sponsor';
   }
@@ -200,6 +237,7 @@ const MISLABELED_ORGS =
   /[ck]as[iy]+no|bet$|poker|gambling|coffee|tuxedo|(?:ph|f)oto/i;
 
 const README_PATH = new URL('../Readme.md', import.meta.url);
+const JSON_PATH = new URL('../website/sponsors.json', import.meta.url);
 
 const SECTION_START_BEGINNING = '<!-- BEGIN SPONSORS:';
 const SECTION_START_END = '-->';
@@ -210,6 +248,16 @@ const professionalToBackerOverrides = new Map([
 ]);
 
 const sponsors = await fetchSponsors();
+
+// Remove sponsors that are already in the pre-propulated headliners
+for (let i = 0; i < sponsors.length; i++) {
+  if (
+    tierSponsors.headliner.some((sponsor) => sponsor.url === sponsors[i].url)
+  ) {
+    sponsors.splice(i, 1);
+    i--;
+  }
+}
 
 sponsors.sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt));
 
@@ -235,12 +283,18 @@ for (const sponsor of sponsors) {
   tierSponsors[sponsor.tier].push(sponsor);
 }
 
-// Sort order based on total donations
-for (const key of Object.keys(tierSponsors) as Tier[]) {
-  tierSponsors[key].sort(
-    (a: Sponsor, b: Sponsor) => b.monthlyDonation - a.monthlyDonation
-  );
+for (const tier of Object.values(tierSponsors)) {
+  // Sort order based on total donations
+  tier.sort((a: Sponsor, b: Sponsor) => b.monthlyDonation - a.monthlyDonation);
+
+  // Set all montly donations to 0
+  for (const sponsor of tier) {
+    sponsor.monthlyDonation = 0;
+  }
 }
+
+// Write sponsors.json
+await fs.writeFile(JSON_PATH, JSON.stringify(tierSponsors, null, 2), 'utf8');
 
 // Merge professionals into backers for now
 tierSponsors.backer.unshift(...tierSponsors.professional);

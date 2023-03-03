@@ -173,6 +173,14 @@ Does your company use Cheerio in production? Please consider
 help will allow maintainers to dedicate more time and resources to its
 development and support.
 
+**Headlining Sponsors**
+
+<!-- BEGIN SPONSORS: headliner -->
+
+<!-- END SPONSORS -->
+
+**Other Sponsors**
+
 <!-- BEGIN SPONSORS: sponsor -->
 
 <a href="https://cryptocasinos.com/" target="_blank" rel="noopener noreferrer">
