@@ -49,6 +49,9 @@ const config = {
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
+        gtag: {
+          trackingID: 'G-PZHRH775FB',
+        },
       }),
     ],
   ],
@@ -110,11 +113,11 @@ const config = {
                 label: 'Stack Overflow',
                 href: 'https://stackoverflow.com/questions/tagged/cheerio',
               },
+              {
+                label: 'GitHub',
+                href: 'https://github.com/cheeriojs/cheerio',
+              },
               /*
-               * {
-               *   label: 'Discord',
-               *   href: 'https://discordapp.com/invite/docusaurus',
-               * },
                * {
                *   label: 'Twitter',
                *   href: 'https://twitter.com/docusaurus',
@@ -133,15 +136,17 @@ const config = {
                 label: 'Attribution',
                 href: '/attribution',
               },
-              {
-                label: 'GitHub',
-                href: 'https://github.com/cheeriojs/cheerio',
-              },
             ],
           },
         ],
         copyright: `Copyright © ${new Date().getFullYear()} The Cheerio contributors`,
       },
+      metadata: [
+        {
+          name: 'keywords',
+          content: `${packageJson.keywords.join(', ')}, nodejs`,
+        },
+      ],
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
