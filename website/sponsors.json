@@ -1,0 +1,201 @@
+{
+  "headliner": [
+    {
+      "createdAt": "2023-03-03",
+      "name": "Tidelift",
+      "image": "https://github.com/tidelift.png",
+      "url": "https://tidelift.com/subscription/pkg/npm-cheerio",
+      "type": "FUND",
+      "monthlyDonation": 0,
+      "source": "manual",
+      "tier": "headliner"
+    },
+    {
+      "createdAt": "2022-06-24",
+      "name": "Github",
+      "image": "https://github.com/github.png",
+      "url": "https://github.com/",
+      "type": "ORGANIZATION",
+      "monthlyDonation": 0,
+      "source": "manual",
+      "tier": "headliner"
+    },
+    {
+      "createdAt": "2018-05-02",
+      "name": "AirBnB",
+      "image": "https://github.com/airbnb.png",
+      "url": "https://www.airbnb.com/",
+      "type": "ORGANIZATION",
+      "monthlyDonation": 0,
+      "source": "manual",
+      "tier": "headliner"
+    }
+  ],
+  "sponsor": [
+    {
+      "createdAt": "2021-07-06T15:45:05.151Z",
+      "name": "CryptoCasinos",
+      "url": "https://cryptocasinos.com/",
+      "image": "https://images.opencollective.com/cryptocasinos/99b168e/logo.png",
+      "type": "ORGANIZATION",
+      "monthlyDonation": 0,
+      "totalDonations": 200000,
+      "source": "opencollective",
+      "tier": "sponsor"
+    },
+    {
+      "createdAt": "2021-07-11T11:04:52.058Z",
+      "name": "Casinoonlineaams.com",
+      "url": "https://www.casinoonlineaams.com",
+      "image": "https://images.opencollective.com/casinoonlineaamscom/c59b0fd/logo.png",
+      "type": "ORGANIZATION",
+      "monthlyDonation": 0,
+      "totalDonations": 200000,
+      "source": "opencollective",
+      "tier": "sponsor"
+    },
+    {
+      "createdAt": "2021-10-22T13:47:30Z",
+      "name": "Apify",
+      "image": "https://avatars.githubusercontent.com/u/24586296?v=4&s=128",
+      "url": "https://apify.com/",
+      "type": "ORGANIZATION",
+      "monthlyDonation": 0,
+      "source": "github",
+      "tier": "sponsor"
+    },
+    {
+      "createdAt": "2022-01-18T15:52:44.383Z",
+      "name": "freebets.ltd.uk",
+      "url": "https://freebets.ltd.uk/",
+      "image": "https://images.opencollective.com/freebets/e21c41b/logo.png",
+      "type": "ORGANIZATION",
+      "monthlyDonation": 0,
+      "totalDonations": 140000,
+      "source": "opencollective",
+      "tier": "sponsor"
+    },
+    {
+      "createdAt": "2022-04-21T11:02:44.475Z",
+      "name": "Casino utan svensk licens",
+      "url": "https://casinoutansvensklicens.co/",
+      "image": "https://images.opencollective.com/casino-utan-svensk-licens3/f7e9357/logo.png",
+      "type": "ORGANIZATION",
+      "monthlyDonation": 0,
+      "totalDonations": 110000,
+      "source": "opencollective",
+      "tier": "sponsor"
+    },
+    {
+      "createdAt": "2022-05-26T17:13:28.761Z",
+      "name": "Spela på Casino utan svensk licens",
+      "url": "https://starwarscasinos.com/",
+      "image": "https://images.opencollective.com/casino-utan-svensk-licens1/f3487ff/logo.png",
+      "type": "ORGANIZATION",
+      "monthlyDonation": 0,
+      "totalDonations": 100000,
+      "source": "opencollective",
+      "tier": "sponsor"
+    },
+    {
+      "createdAt": "2022-08-23T11:06:19.597Z",
+      "name": "ZenRows",
+      "url": "https://www.zenrows.com",
+      "image": "https://images.opencollective.com/zenrows/3199d4b/logo.png",
+      "type": "ORGANIZATION",
+      "monthlyDonation": 0,
+      "totalDonations": 70000,
+      "source": "opencollective",
+      "tier": "sponsor"
+    },
+    {
+      "createdAt": "2022-10-05T08:00:56.340Z",
+      "name": "Scommessesportivemania.com",
+      "url": "https://scommessesportivemania.com/",
+      "image": "https://images.opencollective.com/scommessesportivemania-com/e6941a3/avatar.png",
+      "type": "INDIVIDUAL",
+      "monthlyDonation": 0,
+      "totalDonations": 60000,
+      "source": "opencollective",
+      "tier": "sponsor"
+    },
+    {
+      "createdAt": "2022-11-10T14:53:38.177Z",
+      "name": "Casinosicuri.info",
+      "url": "https://casinosicuri.info/",
+      "image": "https://images.opencollective.com/casinosicuri-info/5dc691c/avatar.png",
+      "type": "INDIVIDUAL",
+      "monthlyDonation": 0,
+      "totalDonations": 40000,
+      "source": "opencollective",
+      "tier": "sponsor"
+    },
+    {
+      "createdAt": "2022-12-26T08:40:55.887Z",
+      "name": "mobilcasinon",
+      "url": "https://mobileslots.se/",
+      "image": "https://images.opencollective.com/mobilcasinon-sverige/3f05426/logo.png",
+      "type": "ORGANIZATION",
+      "monthlyDonation": 0,
+      "totalDonations": 30000,
+      "source": "opencollective",
+      "tier": "sponsor"
+    }
+  ],
+  "professional": [
+    {
+      "createdAt": "2022-01-26T15:21:25.562Z",
+      "name": "Vasy Kafidoff",
+      "url": "https://kafidoff.com",
+      "image": "https://images.opencollective.com/kafidoff-vasy/d7ff85c/avatar.png",
+      "type": "INDIVIDUAL",
+      "monthlyDonation": 0,
+      "totalDonations": 35000,
+      "source": "opencollective",
+      "tier": "professional"
+    }
+  ],
+  "backer": [
+    {
+      "createdAt": "2020-08-31T07:40:29.442Z",
+      "name": "Espen Klem",
+      "url": "https://medium.com/norch",
+      "image": "https://images.opencollective.com/espenklem/6075b19/avatar.png",
+      "type": "INDIVIDUAL",
+      "monthlyDonation": 0,
+      "totalDonations": 43000,
+      "source": "opencollective",
+      "tier": "backer"
+    },
+    {
+      "createdAt": "2021-12-31T09:44:57Z",
+      "name": "Jarrod Davis",
+      "image": "https://avatars.githubusercontent.com/u/235875?v=4&s=128",
+      "url": "https://jarrodldavis.com",
+      "type": "INDIVIDUAL",
+      "monthlyDonation": 0,
+      "source": "github",
+      "tier": "backer"
+    },
+    {
+      "createdAt": "2021-06-07T13:30:29Z",
+      "name": "Gautham Chandra",
+      "image": "https://avatars.githubusercontent.com/u/5430280?u=1115bcd3ed7aa8b2a62ff28f62ee4c2b92729903&v=4&s=128",
+      "url": "https://github.com/gauthamchandra",
+      "type": "INDIVIDUAL",
+      "monthlyDonation": 0,
+      "source": "github",
+      "tier": "backer"
+    },
+    {
+      "createdAt": "2021-08-23T13:04:31Z",
+      "name": "Charles Severance",
+      "image": "https://avatars.githubusercontent.com/u/1197222?u=d6dc85c064736ab851c6d9e3318dcdd1be00fb2c&v=4&s=128",
+      "url": "http://www.dr-chuck.com/",
+      "type": "INDIVIDUAL",
+      "monthlyDonation": 0,
+      "source": "github",
+      "tier": "backer"
+    }
+  ]
+}
