@@ -39,7 +39,7 @@
       "image": "https://images.opencollective.com/cryptocasinos/99b168e/logo.png",
       "type": "ORGANIZATION",
       "monthlyDonation": 0,
-      "totalDonations": 200000,
+      "totalDonations": 210000,
       "source": "opencollective",
       "tier": "sponsor"
     },
@@ -50,7 +50,7 @@
       "image": "https://images.opencollective.com/casinoonlineaamscom/c59b0fd/logo.png",
       "type": "ORGANIZATION",
       "monthlyDonation": 0,
-      "totalDonations": 200000,
+      "totalDonations": 210000,
       "source": "opencollective",
       "tier": "sponsor"
     },
@@ -126,7 +126,7 @@
       "image": "https://images.opencollective.com/casinosicuri-info/5dc691c/avatar.png",
       "type": "INDIVIDUAL",
       "monthlyDonation": 0,
-      "totalDonations": 40000,
+      "totalDonations": 50000,
       "source": "opencollective",
       "tier": "sponsor"
     },
@@ -172,16 +172,6 @@
       "name": "Jarrod Davis",
       "image": "https://avatars.githubusercontent.com/u/235875?v=4&s=128",
       "url": "https://jarrodldavis.com",
-      "type": "INDIVIDUAL",
-      "monthlyDonation": 0,
-      "source": "github",
-      "tier": "backer"
-    },
-    {
-      "createdAt": "2021-06-07T13:30:29Z",
-      "name": "Gautham Chandra",
-      "image": "https://avatars.githubusercontent.com/u/5430280?u=1115bcd3ed7aa8b2a62ff28f62ee4c2b92729903&v=4&s=128",
-      "url": "https://github.com/gauthamchandra",
       "type": "INDIVIDUAL",
       "monthlyDonation": 0,
       "source": "github",
