@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@crowdin/cli": "^3.10.0",
-    "@tsconfig/docusaurus": "^1.0.6",
+    "@tsconfig/docusaurus": "^1.0.7",
     "typescript": "^4.9.5"
   },
   "browserslist": {
