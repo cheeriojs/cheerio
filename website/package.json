@@ -32,7 +32,7 @@
     "typedoc-plugin-markdown": "^3.14.0"
   },
   "devDependencies": {
-    "@crowdin/cli": "^3.10.0",
+    "@crowdin/cli": "^3.10.1",
     "@tsconfig/docusaurus": "^1.0.7",
     "typescript": "^4.9.5"
   },
