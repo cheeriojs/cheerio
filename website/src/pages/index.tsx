@@ -6,6 +6,7 @@ import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 
 import styles from './index.module.css';
+import HomepageTweets from '../components/HomepageTweets';
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
@@ -27,6 +28,57 @@ function HomepageHeader() {
   );
 }
 
+import Sponsors from '../../sponsors.json';
+
+function HeadlineSponsors() {
+  return (
+    <div className={styles.sponsors}>
+      <h3 className={styles.sponsorsHeader}>Headline Sponsors</h3>
+      <div className={styles.sponsorsLogos}>
+        {Sponsors.headliner.map((sponsor) => (
+          <a
+            className={styles.sponsorLogo}
+            href={sponsor.url}
+            key={sponsor.name}
+          >
+            <img
+              src={sponsor.image}
+              alt={`${sponsor.name} logo`}
+              height="150"
+              width="150"
+            />
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Shows all sponsors
+function CheerioIsUs(): JSX.Element {
+  return (
+    <div className={styles.sponsors}>
+      <h3 className={styles.sponsorsHeader}>Cheerio is us</h3>
+      <div className={styles.sponsorsLogos}>
+        {Sponsors.sponsor.map((sponsor) => (
+          <a
+            className={styles.sponsorLogo}
+            href={sponsor.url}
+            key={sponsor.name}
+          >
+            <img
+              src={sponsor.image}
+              alt={`${sponsor.name} logo`}
+              height="25"
+              width="25"
+            />
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
   return (
@@ -38,6 +90,9 @@ export default function Home(): JSX.Element {
       <main>
         <HomepageFeatures />
       </main>
+      <HeadlineSponsors />
+      <HomepageTweets />
+      <CheerioIsUs />
     </Layout>
   );
 }
