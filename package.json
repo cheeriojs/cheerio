@@ -92,7 +92,7 @@
     "jquery": "^3.6.4",
     "jsdom": "^21.1.1",
     "lint-staged": "^13.2.0",
-    "prettier": "^2.8.6",
+    "prettier": "^2.8.7",
     "prettier-plugin-jsdoc": "0.4.2",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1",
