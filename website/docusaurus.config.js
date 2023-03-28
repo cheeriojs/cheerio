@@ -238,11 +238,6 @@ const config = {
         excludePrivate: true,
 
         externalSymbolLinkMappings: {
-          typescript: {
-            Promise:
-              'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise',
-            URL: 'https://developer.mozilla.org/en-US/docs/Web/API/URL',
-          },
           domhandler: {
             Document: 'https://domhandler.js.org/classes/Document.html',
             Element: 'https://domhandler.js.org/classes/Element.html',
