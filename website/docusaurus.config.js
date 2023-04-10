@@ -233,7 +233,6 @@ const config = {
         // TypeDoc options
         entryPoints: ['../src/batteries.ts'],
         tsconfig: '../tsconfig.json',
-        plugin: ['./typedoc/typedoc-plugin-class-fns-to-methods.cjs'],
         readme: 'none',
         excludePrivate: true,
 
