@@ -78,7 +78,7 @@ const config = {
             label: 'Tutorial',
           },
           {
-            to: 'docs/api/',
+            to: 'docs/api',
             label: 'API',
             position: 'left',
           },
@@ -102,7 +102,7 @@ const config = {
               },
               {
                 label: 'API',
-                to: 'docs/api/',
+                to: 'docs/api',
               },
             ],
           },
@@ -221,7 +221,7 @@ const config = {
                 'xml',
               ].map((name) => `/functions/${name}.html`),
             ],
-            to: `/docs/api/`,
+            to: '/docs/api',
           },
         ],
       }),
