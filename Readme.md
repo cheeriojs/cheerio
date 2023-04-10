@@ -205,9 +205,6 @@ development and support.
 <a href="https://freebets.ltd.uk/" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Ffreebets%2Fe21c41b%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=c7a5b478fd31853084925dabf9b33208" title="freebets.ltd.uk" alt="freebets.ltd.uk"></img>
           </a>
-<a href="https://casinoutansvensklicens.co/" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasino-utan-svensk-licens3%2Ff7e9357%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=bbd28616e8de4d3e0609059e52db734b" title="Casino utan svensk licens" alt="Casino utan svensk licens"></img>
-          </a>
 <a href="https://starwarscasinos.com/" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasino-utan-svensk-licens1%2Ff3487ff%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=f67816267b13ae89fa0702b17fd143cc" title="Spela på Casino utan svensk licens" alt="Spela på Casino utan svensk licens"></img>
           </a>
@@ -238,6 +235,9 @@ support for Cheerio and help us maintain and improve this open source project.
           </a>
 <a href="https://medium.com/norch" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fespenklem%2F6075b19%2Favatar.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=c864d312e848f4e1ec19480e96503c06" title="Espen Klem" alt="Espen Klem"></img>
+          </a>
+<a href="https://github.com/gauthamchandra" target="_blank" rel="noopener noreferrer">
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F5430280%3Fu%3D1115bcd3ed7aa8b2a62ff28f62ee4c2b92729903%26v%3D4%26s%3D128?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=60101476ca98f2b4a3dd62f577a1ad66" title="Gautham Chandra" alt="Gautham Chandra"></img>
           </a>
 <a href="https://jarrodldavis.com" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F235875%3Fv%3D4%26s%3D128?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=653fd0868005d83df43e78488589ad4a" title="Jarrod Davis" alt="Jarrod Davis"></img>
