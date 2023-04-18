@@ -19,7 +19,7 @@ Cheerio.
 
 :::tip
 
-This guide is intened to give you an overview of the various methods available
+This guide is intended to give you an overview of the various methods available
 in Cheerio for traversing and filtering elements. For a more detailed reference
 of these methods, see the [API documentation](/docs/api/classes/Cheerio).
 
@@ -102,7 +102,7 @@ elements that are ancestors of the current selection.
 
 The [`parent` method](/docs/api/classes/Cheerio#parent) allows you to select the
 parent element of a selection. It returns a new selection containing the parent
-element of the current selection.
+element of each element in the current selection.
 
 Here's an example of using `parent` to select the parent `<ul>` element of a
 `<li>` element:
@@ -181,11 +181,12 @@ selecting elements that are siblings of the current selection.
 
 The [`next` method](/docs/api/classes/Cheerio#next) allows you to select the
 next sibling element of a selection. It returns a new selection containing the
-next sibling element.
+next sibling element (if there is one). If the given selection contains
+multiple elements, `next` includes the next sibling for each one.
 
 The [`prev` method](/docs/api/classes/Cheerio#prev) is similar to `next`, but
 allows you to select the previous sibling element. It returns a new selection
-containing the previous sibling element.
+containing the previous sibling element for each element in the given selection.
 
 Here's an example of using `next` and `prev` to select sibling elements of a
 `<li>` element:
@@ -208,15 +209,16 @@ render(`Next: ${nextItem.text()} | Prev: ${prevItem.text()}`);
 
 The [`nextAll` method](/docs/api/classes/Cheerio#nextall) allows you to select
 all siblings after the current element. It returns a new selection containing
-all sibling elements after the current element.
+all sibling elements after each element in the current selection.
 
 The [`prevAll` method](/docs/api/classes/Cheerio#prevall) is similar to nextAll,
 but allows you to select all siblings before the current element. It returns a
-new selection containing all sibling elements before the current element.
+new selection containing all sibling elements before each element in the current
+selection.
 
 The [`siblings` method](/docs/api/classes/Cheerio#siblings) allows you to select
 all siblings of a selection. It returns a new selection containing all sibling
-elements of the current element.
+elements of each element in the current selection.
 
 Here's an example of using `nextAll`, `prevAll`, and `siblings` to select
 sibling elements of a `<li>` element:

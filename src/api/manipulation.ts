@@ -885,7 +885,7 @@ export function replaceWith<T extends AnyNode>(
 }
 
 /**
- * Empties an element, removing all its children.
+ * Empties an element, removing all its children (but not text or comments).
  *
  * @category Manipulation
  * @example

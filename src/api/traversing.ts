@@ -363,7 +363,7 @@ export function closest<T extends AnyNode>(
 }
 
 /**
- * Gets the next sibling of the first selected element, optionally filtered by a
+ * Gets the next sibling of each selected element, optionally filtered by a
  * selector.
  *
  * @category Traversing
@@ -380,7 +380,7 @@ export function closest<T extends AnyNode>(
 export const next = _singleMatcher((elem) => nextElementSibling(elem));
 
 /**
- * Gets all the following siblings of the first selected element, optionally
+ * Gets all the following siblings of the each selected element, optionally
  * filtered by a selector.
  *
  * @category Traversing
@@ -427,7 +427,7 @@ export const nextUntil = _matchUntil(
 );
 
 /**
- * Gets the previous sibling of the first selected element optionally filtered
+ * Gets the previous sibling of each selected element optionally filtered
  * by a selector.
  *
  * @category Traversing
@@ -444,7 +444,7 @@ export const nextUntil = _matchUntil(
 export const prev = _singleMatcher((elem) => prevElementSibling(elem));
 
 /**
- * Gets all the preceding siblings of the first selected element, optionally
+ * Gets all the preceding siblings of each selected element, optionally
  * filtered by a selector.
  *
  * @category Traversing
