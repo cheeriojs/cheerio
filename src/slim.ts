@@ -1,4 +1,7 @@
-/** @file Alternative Entry point for Cheerio, excluding parse5. */
+/**
+ * @file Alternative entry point for Cheerio that always uses htmlparser2. This
+ *   way, parse5 won't be loaded, saving some memory.
+ */
 
 export type {
   Cheerio,

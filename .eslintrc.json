@@ -48,7 +48,7 @@
 
     "jsdoc/require-jsdoc": 0,
     "jsdoc/check-tag-names": 2,
-    "jsdoc/newline-after-description": 2,
+    "jsdoc/tag-lines": [2, "any", { "startLines": 1 }],
     "jsdoc/require-description-complete-sentence": 2,
     "jsdoc/require-hyphen-before-param-description": 2,
     "jsdoc/require-param-description": 2,
