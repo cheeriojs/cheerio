@@ -885,7 +885,8 @@ export function replaceWith<T extends AnyNode>(
 }
 
 /**
- * Empties an element, removing all its children.
+ * Removes all children from each item in the selection.
+ * Text nodes and comment nodes are left as is.
  *
  * @category Manipulation
  * @example

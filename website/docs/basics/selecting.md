@@ -92,6 +92,11 @@ const $p = $('div > p');
 Please have a look at the documentation of Cheerio's underlying CSS selector
 library, `css-select`, for
 [a list of all supported selectors](https://github.com/fb55/css-select/blob/master/README.md#supported-selectors).
+For example, to select `<p>` elements containing the word "hello":
+
+```js
+const $p = $('p:contains("hello")');
+```
 
 Cheerio also supports several jQuery-specific extensions that allow you to
 select elements based on their position in the document. For example, to select
