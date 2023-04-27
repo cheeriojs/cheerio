@@ -181,8 +181,8 @@ selecting elements that are siblings of the current selection.
 
 The [`next` method](/docs/api/classes/Cheerio#next) allows you to select the
 next sibling element of a selection. It returns a new selection containing the
-next sibling element (if there is one). If the given selection contains
-multiple elements, `next` includes the next sibling for each one.
+next sibling element (if there is one). If the given selection contains multiple
+elements, `next` includes the next sibling for each one.
 
 The [`prev` method](/docs/api/classes/Cheerio#prev) is similar to `next`, but
 allows you to select the previous sibling element. It returns a new selection

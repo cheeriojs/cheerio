@@ -24,9 +24,9 @@ To modify the attributes and properties of a single element, you can use the
 [`attr()`](/docs/api/classes/Cheerio#attr) and
 [`prop()`](/docs/api/classes/Cheerio#prop) methods, respectively. Both methods
 take a key and a value as arguments, and allow you to get and set the attribute
-or property. When setting, they apply to all elements in the selection;
-when getting, they return a single value corresponding to the
-first element in the selection.
+or property. When setting, they apply to all elements in the selection; when
+getting, they return a single value corresponding to the first element in the
+selection.
 
 ```js
 // Set the 'src' attribute of an image element
@@ -117,7 +117,7 @@ include the contents of `<script>` and `<style>` elements. To avoid this, use
 To query or modify the HTML content of an element, you can use the
 [`html()`](/docs/api/classes/Cheerio#html) method. Given an HTML string as an
 argument, it sets the inner HTML of every element in the selection to the given
-string. Without arguments, it returns the inner HTML of the *first* element in
+string. Without arguments, it returns the inner HTML of the _first_ element in
 the selection.
 
 ```js
@@ -134,8 +134,8 @@ To insert new elements into a document, you can use the
 [`append()`](/docs/api/classes/Cheerio#append),
 [`prepend()`](/docs/api/classes/Cheerio#prepend),
 [`before()`](/docs/api/classes/Cheerio#before), and
-[`after()`](/docs/api/classes/Cheerio#after) methods.
-These modify every element in the selection.
+[`after()`](/docs/api/classes/Cheerio#after) methods. These modify every element
+in the selection.
 
 ```js
 // Append an element to the end of a parent element
