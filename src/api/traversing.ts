@@ -144,14 +144,14 @@ function _getMatcher<P>(
 
 /** Matcher that adds multiple elements for each entry in the input. */
 const _matcher = _getMatcher((fn: (elem: AnyNode) => Element[], elems) => {
-  const ret: Element[][] = [];
+  let ret: Element[] = [];
 
   for (let i = 0; i < elems.length; i++) {
     const value = fn(elems[i]);
-    ret.push(value);
+    if (value.length > 0) ret = ret.concat(value);
   }
 
-  return new Array<Element>().concat(...ret);
+  return ret;
 });
 
 /** Matcher that adds at most one element for each entry in the input. */
