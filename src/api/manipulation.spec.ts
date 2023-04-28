@@ -1712,6 +1712,15 @@ describe('$(...)', () => {
 
       expect($text('body').html()).toBe('<a></a>TEXT<b></b>');
     });
+
+    it('() : should skip comment nodes', () => {
+      const $comment = load('<a>1</a><!--Comment-->TEXT<b>2</b>');
+      const $body = $comment($comment('body')[0].children);
+
+      $body.empty();
+
+      expect($comment('body').html()).toBe('<a></a><!--Comment-->TEXT<b></b>');
+    });
   });
 
   describe('.html', () => {
