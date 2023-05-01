@@ -39,7 +39,7 @@
       "image": "https://images.opencollective.com/cryptocasinos/99b168e/logo.png",
       "type": "ORGANIZATION",
       "monthlyDonation": 0,
-      "totalDonations": 210000,
+      "totalDonations": 220000,
       "source": "opencollective",
       "tier": "sponsor"
     },
@@ -50,7 +50,7 @@
       "image": "https://images.opencollective.com/casinoonlineaamscom/c59b0fd/logo.png",
       "type": "ORGANIZATION",
       "monthlyDonation": 0,
-      "totalDonations": 210000,
+      "totalDonations": 220000,
       "source": "opencollective",
       "tier": "sponsor"
     },
@@ -71,18 +71,29 @@
       "image": "https://images.opencollective.com/freebets/e21c41b/logo.png",
       "type": "ORGANIZATION",
       "monthlyDonation": 0,
-      "totalDonations": 150000,
+      "totalDonations": 160000,
+      "source": "opencollective",
+      "tier": "sponsor"
+    },
+    {
+      "createdAt": "2022-04-21T11:02:44.475Z",
+      "name": "Casino utan svensk licens",
+      "url": "https://casinoutansvensklicens.co/",
+      "image": "https://images.opencollective.com/casino-utan-svensk-licens3/f7e9357/logo.png",
+      "type": "ORGANIZATION",
+      "monthlyDonation": 0,
+      "totalDonations": 120000,
       "source": "opencollective",
       "tier": "sponsor"
     },
     {
       "createdAt": "2022-05-26T17:13:28.761Z",
-      "name": "Spela på Casino utan svensk licens",
-      "url": "https://starwarscasinos.com/",
-      "image": "https://images.opencollective.com/casino-utan-svensk-licens1/f3487ff/logo.png",
+      "name": "Casino Utan Svensk Licens",
+      "url": "https://coolspins.net/",
+      "image": "https://images.opencollective.com/casino-utan-svensk-licens1/63947bf/logo.png",
       "type": "ORGANIZATION",
       "monthlyDonation": 0,
-      "totalDonations": 110000,
+      "totalDonations": 120000,
       "source": "opencollective",
       "tier": "sponsor"
     },
@@ -115,7 +126,7 @@
       "image": "https://images.opencollective.com/casinosicuri-info/5dc691c/avatar.png",
       "type": "INDIVIDUAL",
       "monthlyDonation": 0,
-      "totalDonations": 50000,
+      "totalDonations": 60000,
       "source": "opencollective",
       "tier": "sponsor"
     },
@@ -152,7 +163,7 @@
       "image": "https://images.opencollective.com/espenklem/6075b19/avatar.png",
       "type": "INDIVIDUAL",
       "monthlyDonation": 0,
-      "totalDonations": 44000,
+      "totalDonations": 45000,
       "source": "opencollective",
       "tier": "backer"
     },
