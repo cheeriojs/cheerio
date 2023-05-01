@@ -60,7 +60,7 @@
     "cheerio-select": "^2.1.0",
     "dom-serializer": "^2.0.0",
     "domhandler": "^5.0.3",
-    "domutils": "^3.0.1",
+    "domutils": "^3.1.0",
     "encoding-sniffer": "^0.0.2",
     "htmlparser2": "^8.0.2",
     "parse5": "^7.1.2",
