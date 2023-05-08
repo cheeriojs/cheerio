@@ -220,9 +220,6 @@ development and support.
 <a href="https://casinosicuri.info/" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasinosicuri-info%2F5dc691c%2Favatar.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=fd570730894e259b3af3a26a8fb3a8da" title="Casinosicuri.info" alt="Casinosicuri.info"></img>
           </a>
-<a href="https://mobileslots.se/" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fmobilcasinon-sverige%2F3f05426%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=3b9ad8602249b2742fc14c54b82ecf61" title="mobilcasinon" alt="mobilcasinon"></img>
-          </a>
 
 <!-- END SPONSORS -->
 

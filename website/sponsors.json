@@ -39,7 +39,7 @@
       "image": "https://images.opencollective.com/cryptocasinos/99b168e/logo.png",
       "type": "ORGANIZATION",
       "monthlyDonation": 0,
-      "totalDonations": 220000,
+      "totalDonations": 230000,
       "source": "opencollective",
       "tier": "sponsor"
     },
@@ -82,7 +82,7 @@
       "image": "https://images.opencollective.com/casino-utan-svensk-licens3/f7e9357/logo.png",
       "type": "ORGANIZATION",
       "monthlyDonation": 0,
-      "totalDonations": 120000,
+      "totalDonations": 130000,
       "source": "opencollective",
       "tier": "sponsor"
     },
@@ -104,7 +104,7 @@
       "image": "https://images.opencollective.com/zenrows/3199d4b/logo.png",
       "type": "ORGANIZATION",
       "monthlyDonation": 0,
-      "totalDonations": 80000,
+      "totalDonations": 90000,
       "source": "opencollective",
       "tier": "sponsor"
     },
@@ -115,7 +115,7 @@
       "image": "https://images.opencollective.com/scommessesportivemania-com/e6941a3/avatar.png",
       "type": "INDIVIDUAL",
       "monthlyDonation": 0,
-      "totalDonations": 70000,
+      "totalDonations": 80000,
       "source": "opencollective",
       "tier": "sponsor"
     },
@@ -129,17 +129,6 @@
       "totalDonations": 60000,
       "source": "opencollective",
       "tier": "sponsor"
-    },
-    {
-      "createdAt": "2022-12-26T08:40:55.887Z",
-      "name": "mobilcasinon",
-      "url": "https://mobileslots.se/",
-      "image": "https://images.opencollective.com/mobilcasinon-sverige/3f05426/logo.png",
-      "type": "ORGANIZATION",
-      "monthlyDonation": 0,
-      "totalDonations": 40000,
-      "source": "opencollective",
-      "tier": "sponsor"
     }
   ],
   "professional": [
@@ -150,7 +139,7 @@
       "image": "https://images.opencollective.com/kafidoff-vasy/d7ff85c/avatar.png",
       "type": "INDIVIDUAL",
       "monthlyDonation": 0,
-      "totalDonations": 37500,
+      "totalDonations": 40000,
       "source": "opencollective",
       "tier": "professional"
     }
