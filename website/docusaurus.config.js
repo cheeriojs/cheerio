@@ -1,7 +1,7 @@
 // @ts-check
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+// @ts-ignore
+const { themes } = require('prism-react-renderer');
 
 // eslint-disable-next-line n/no-unpublished-require
 const packageJson = require('../package.json');
@@ -148,8 +148,8 @@ const config = {
         },
       ],
       prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
+        theme: themes.github,
+        darkTheme: themes.dracula,
       },
       algolia: {
         appId: 'NRR2XU4QSP',
