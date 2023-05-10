@@ -58,23 +58,22 @@
     "jsdoc/no-types": 2,
     "jsdoc/valid-types": 2,
 
-    "n/file-extension-in-import": ["error", "always"],
+    "n/file-extension-in-import": [2, "always"],
     "n/no-missing-import": 0,
 
-    "unicorn/no-null": "off",
-    "unicorn/prevent-abbreviations": "off",
-    "unicorn/prefer-code-point": "off",
-    "unicorn/no-for-loop": "off",
+    "unicorn/no-null": 0,
+    "unicorn/prevent-abbreviations": 0,
+    "unicorn/prefer-code-point": 0,
+    "unicorn/no-for-loop": 0,
     "unicorn/no-array-callback-reference": 0,
     "unicorn/prefer-spread": 0,
     "unicorn/no-useless-undefined": 0,
     "unicorn/no-array-reduce": 0,
     "unicorn/prefer-array-find": 0,
     "unicorn/prefer-module": 0,
-    "unicorn/prefer-switch": [
-      "error",
-      { "emptyDefaultCase": "do-nothing-comment" }
-    ]
+    "unicorn/prefer-at": 0,
+    "unicorn/prefer-string-replace-all": 0,
+    "unicorn/prefer-switch": [2, { "emptyDefaultCase": "do-nothing-comment" }]
   },
   "settings": {
     "jsdoc": {
@@ -119,9 +118,9 @@
         "@typescript-eslint/prefer-includes": 2,
         "@typescript-eslint/switch-exhaustiveness-check": 2,
         "@typescript-eslint/prefer-nullish-coalescing": 2,
-        "@typescript-eslint/no-non-null-assertion": "warn",
-        "@typescript-eslint/no-duplicate-imports": "error",
-        "@typescript-eslint/consistent-type-imports": "error",
+        "@typescript-eslint/no-non-null-assertion": 1,
+        "@typescript-eslint/no-duplicate-imports": 2,
+        "@typescript-eslint/consistent-type-imports": 2,
 
         "@typescript-eslint/no-explicit-any": 1 // TODO
       }
