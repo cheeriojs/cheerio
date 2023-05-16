@@ -16,7 +16,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@docusaurus/core": "^2.4.0",
+    "@docusaurus/core": "^2.4.1",
     "@docusaurus/module-type-aliases": "^2.4.0",
     "@docusaurus/plugin-client-redirects": "^2.4.0",
     "@docusaurus/preset-classic": "^2.4.0",
