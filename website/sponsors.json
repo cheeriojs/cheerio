@@ -50,18 +50,8 @@
       "image": "https://images.opencollective.com/casinoonlineaamscom/c59b0fd/logo.png",
       "type": "ORGANIZATION",
       "monthlyDonation": 0,
-      "totalDonations": 220000,
+      "totalDonations": 230000,
       "source": "opencollective",
-      "tier": "sponsor"
-    },
-    {
-      "createdAt": "2021-10-22T13:47:30Z",
-      "name": "Apify",
-      "image": "https://avatars.githubusercontent.com/u/24586296?v=4&s=128",
-      "url": "https://apify.com/",
-      "type": "ORGANIZATION",
-      "monthlyDonation": 0,
-      "source": "github",
       "tier": "sponsor"
     },
     {
@@ -71,7 +61,7 @@
       "image": "https://images.opencollective.com/freebets/e21c41b/logo.png",
       "type": "ORGANIZATION",
       "monthlyDonation": 0,
-      "totalDonations": 160000,
+      "totalDonations": 170000,
       "source": "opencollective",
       "tier": "sponsor"
     },
@@ -126,7 +116,7 @@
       "image": "https://images.opencollective.com/casinosicuri-info/5dc691c/avatar.png",
       "type": "INDIVIDUAL",
       "monthlyDonation": 0,
-      "totalDonations": 60000,
+      "totalDonations": 70000,
       "source": "opencollective",
       "tier": "sponsor"
     }
