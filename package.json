@@ -78,7 +78,7 @@
     "@types/node": "^20.2.3",
     "@types/whatwg-mimetype": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^5.59.6",
-    "@typescript-eslint/parser": "^5.59.6",
+    "@typescript-eslint/parser": "^5.59.7",
     "benchmark": "^2.1.4",
     "eslint": "^8.41.0",
     "eslint-config-prettier": "^8.8.0",
