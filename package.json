@@ -80,7 +80,7 @@
     "@typescript-eslint/eslint-plugin": "^5.59.11",
     "@typescript-eslint/parser": "^5.59.11",
     "benchmark": "^2.1.4",
-    "eslint": "^8.42.0",
+    "eslint": "^8.43.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-expect-type": "^0.2.3",
     "eslint-plugin-jest": "^27.2.1",
