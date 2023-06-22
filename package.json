@@ -57,6 +57,7 @@
     "node": ">= 6"
   },
   "dependencies": {
+    "axios": "^1.4.0",
     "cheerio-select": "^2.1.0",
     "dom-serializer": "^2.0.0",
     "domhandler": "^5.0.3",
