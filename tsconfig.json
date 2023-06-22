@@ -8,6 +8,9 @@
     "declarationMap": true,
     "sourceMap": true,
     "outDir": "lib",
+    // esModuleInterop is implied by `--module node16`,
+    // but ts-jest doesn't recognize that and needs it listed.
+    "esModuleInterop": true,
 
     /* Strict Type-Checking Options */
     "strict": true,
