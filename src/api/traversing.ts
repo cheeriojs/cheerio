@@ -144,14 +144,14 @@ function _getMatcher<P>(
 
 /** Matcher that adds multiple elements for each entry in the input. */
 const _matcher = _getMatcher((fn: (elem: AnyNode) => Element[], elems) => {
-  const ret: Element[][] = [];
+  let ret: Element[] = [];
 
   for (let i = 0; i < elems.length; i++) {
     const value = fn(elems[i]);
-    ret.push(value);
+    if (value.length > 0) ret = ret.concat(value);
   }
 
-  return new Array<Element>().concat(...ret);
+  return ret;
 });
 
 /** Matcher that adds at most one element for each entry in the input. */
@@ -363,7 +363,7 @@ export function closest<T extends AnyNode>(
 }
 
 /**
- * Gets the next sibling of the first selected element, optionally filtered by a
+ * Gets the next sibling of each selected element, optionally filtered by a
  * selector.
  *
  * @category Traversing
@@ -380,7 +380,7 @@ export function closest<T extends AnyNode>(
 export const next = _singleMatcher((elem) => nextElementSibling(elem));
 
 /**
- * Gets all the following siblings of the first selected element, optionally
+ * Gets all the following siblings of the each selected element, optionally
  * filtered by a selector.
  *
  * @category Traversing
@@ -427,7 +427,7 @@ export const nextUntil = _matchUntil(
 );
 
 /**
- * Gets the previous sibling of the first selected element optionally filtered
+ * Gets the previous sibling of each selected element optionally filtered
  * by a selector.
  *
  * @category Traversing
@@ -444,7 +444,7 @@ export const nextUntil = _matchUntil(
 export const prev = _singleMatcher((elem) => prevElementSibling(elem));
 
 /**
- * Gets all the preceding siblings of the first selected element, optionally
+ * Gets all the preceding siblings of each selected element, optionally
  * filtered by a selector.
  *
  * @category Traversing

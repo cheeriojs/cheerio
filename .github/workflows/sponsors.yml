@@ -9,7 +9,6 @@ on:
 
 env:
   FORCE_COLOR: 2
-  NODE: 16
 
 permissions:
   contents: read
@@ -28,7 +27,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3.6.0
         with:
-          node-version: '${{ env.NODE }}'
+          node-version: lts/*
           cache: 'npm'
 
       - name: Install npm dependencies
