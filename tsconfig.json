@@ -2,7 +2,7 @@
   "compilerOptions": {
     /* Basic Options */
     "target": "es5",
-    "module": "commonjs",
+    "module": "node16",
     "lib": ["ES2015.Core"],
     "declaration": true,
     "declarationMap": true,
@@ -20,12 +20,7 @@
     "noImplicitReturns": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
-
-    /* Module Resolution Options */
-    "esModuleInterop": true,
-    "moduleResolution": "node16",
-    "resolveJsonModule": true
+    "noUnusedParameters": true
   },
   "include": ["src"],
   "exclude": [
