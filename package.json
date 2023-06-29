@@ -96,7 +96,7 @@
     "prettier-plugin-jsdoc": "0.4.2",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
-    "typescript": "^5.1.5"
+    "typescript": "^5.1.6"
   },
   "scripts": {
     "test": "npm run lint && npm run test:jest",
