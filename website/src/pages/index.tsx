@@ -49,7 +49,7 @@ function HeadlineSponsors() {
             />
           </a>
         ))}
-        <a href="https://opencollective.com/cheerio">…and you?</a>
+        <a href="https://github.com/sponsors/cheeriojs">…and you?</a>
       </div>
     </div>
   );
