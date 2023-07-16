@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-declaration-merging */
 import type { InternalOptions } from './options.js';
 import type { AnyNode, Document, ParentNode } from 'domhandler';
 import type { BasicAcceptedElems } from './types.js';
