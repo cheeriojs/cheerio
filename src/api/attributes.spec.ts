@@ -42,6 +42,12 @@ describe('$(...)', () => {
       expect(attr).toBe('autofocus');
     });
 
+    it('(valid key) should get uppercase attribute with lowercase name', () => {
+      const $pear = $('.pear');
+      expect($pear.attr('FOO')).toBe('true');
+      expect($pear.attr('foo')).toBe('true');
+    });
+
     it('(key, value) : should set one attr', () => {
       const $pear = $('.pear').attr('id', 'pear');
       expect($('#pear')).toHaveLength(1);
@@ -63,6 +69,12 @@ describe('$(...)', () => {
       const $src = $().attr('key', 'value');
       expect($src.length).toBe(0);
       expect($src[0]).toBeUndefined();
+    });
+
+    it('(key, value) should save uppercase attribute name as lowercase', () => {
+      const $pear = $('.pear').attr('BAR', '100');
+      expect($pear.attr('BAR')).toBe('100');
+      expect($pear.attr('bar')).toBe('100');
     });
 
     it('(map) : object map should set multiple attributes', () => {
@@ -168,19 +180,24 @@ describe('$(...)', () => {
     });
 
     it('(chaining) setting value and calling attr returns result', () => {
+      const pearAttr = $('.pear').attr('fizz', 'buzz').attr('fizz');
+      expect(pearAttr).toBe('buzz');
+    });
+
+    it('(chaining) overwriting value and calling attr returns result', () => {
       const pearAttr = $('.pear').attr('foo', 'bar').attr('foo');
       expect(pearAttr).toBe('bar');
     });
 
     it('(chaining) setting attr to null returns a $', () => {
-      const $pear = $('.pear').attr('foo', null);
+      const $pear = $('.pear').attr('bar', null);
       expect($pear).toBeInstanceOf($);
     });
 
     it('(chaining) setting attr to undefined returns a $', () => {
-      const $pear = $('.pear').attr('foo', undefined);
+      const $pear = $('.pear').attr('bar', undefined);
       expect($('.pear')).toHaveLength(1);
-      expect($('.pear').attr('foo')).toBeUndefined();
+      expect($('.pear').attr('bar')).toBeUndefined();
       expect($pear).toBeInstanceOf($);
     });
 

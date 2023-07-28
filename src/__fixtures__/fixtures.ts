@@ -2,7 +2,7 @@ export const fruits = [
   '<ul id="fruits">',
   '<li class="apple">Apple</li>',
   '<li class="orange">Orange</li>',
-  '<li class="pear">Pear</li>',
+  '<li class="pear" FOO="true">Pear</li>',
   '</ul>',
 ].join('');
 
