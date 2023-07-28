@@ -57,15 +57,17 @@ function getAttr(
   }
 
   // Coerce attribute names to lowercase to match load() and setAttr() behavior
-  name = name.toLowerCase();
+  const lowerCasedName = name.toLowerCase();
 
-  if (hasOwn.call(elem.attribs, name)) {
+  if (hasOwn.call(elem.attribs, lowerCasedName)) {
     // Get the (decoded) attribute
-    return !xmlMode && rboolean.test(name) ? name : elem.attribs[name];
+    return !xmlMode && rboolean.test(lowerCasedName)
+      ? lowerCasedName
+      : elem.attribs[lowerCasedName];
   }
 
   // Mimic the DOM and return text content as value for `option's`
-  if (elem.name === 'option' && name === 'value') {
+  if (elem.name === 'option' && lowerCasedName === 'value') {
     return text(elem.children);
   }
 
@@ -73,7 +75,7 @@ function getAttr(
   if (
     elem.name === 'input' &&
     (elem.attribs['type'] === 'radio' || elem.attribs['type'] === 'checkbox') &&
-    name === 'value'
+    lowerCasedName === 'value'
   ) {
     return 'on';
   }
@@ -92,12 +94,12 @@ function getAttr(
  */
 function setAttr(el: Element, name: string, value: string | null) {
   // Coerce attr names to lowercase to match load() behavior
-  name = name.toLowerCase();
+  const lowerCasedName = name.toLowerCase();
 
   if (value === null) {
-    removeAttribute(el, name);
+    removeAttribute(el, lowerCasedName);
   } else {
-    el.attribs[name] = `${value}`;
+    el.attribs[lowerCasedName] = `${value}`;
   }
 }
 
