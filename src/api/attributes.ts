@@ -56,6 +56,9 @@ function getAttr(
     return elem.attribs;
   }
 
+  // Coerce attribute names to lowercase to match load() and setAttr() behavior
+  name = name.toLowerCase();
+
   if (hasOwn.call(elem.attribs, name)) {
     // Get the (decoded) attribute
     return !xmlMode && rboolean.test(name) ? name : elem.attribs[name];
@@ -88,6 +91,9 @@ function getAttr(
  * @param value - The attribute's value.
  */
 function setAttr(el: Element, name: string, value: string | null) {
+  // Coerce attr names to lowercase to match load() behavior
+  name = name.toLowerCase();
+
   if (value === null) {
     removeAttribute(el, name);
   } else {
