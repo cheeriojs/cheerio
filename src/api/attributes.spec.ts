@@ -48,6 +48,12 @@ describe('$(...)', () => {
       expect($pear.attr('foo')).toBe('true');
     });
 
+    it('(valid key) should get lowercase attribute with uppercase name', () => {
+      const $pear = $('.pear');
+      expect($pear.attr('CLASS')).toBe('pear');
+      expect($pear.attr('class')).toBe('pear');
+    });
+
     it('(key, value) : should set one attr', () => {
       const $pear = $('.pear').attr('id', 'pear');
       expect($('#pear')).toHaveLength(1);
