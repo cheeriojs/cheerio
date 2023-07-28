@@ -77,7 +77,7 @@ describe('$(...)', () => {
       expect($src[0]).toBeUndefined();
     });
 
-    it('(key, value) should save uppercase attribute name as lowercase', () => {
+    it('(key, value) should save uppercase attr name as lowercase', () => {
       const $pear = $('.pear').attr('BAR', '100');
       expect($pear.attr('BAR')).toBe('100');
       expect($pear.attr('bar')).toBe('100');
