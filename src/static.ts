@@ -195,6 +195,7 @@ export function parseHTML(
  * $.root().append('<ul id="vegetables"></ul>').html();
  * //=> <ul id="fruits">...</ul><ul id="vegetables"></ul>
  * ```
+ *
  * @returns Cheerio instance wrapping the root node.
  * @alias Cheerio.root
  */
