@@ -125,6 +125,7 @@
     "singleQuote": true,
     "tabWidth": 2,
     "proseWrap": "always",
+    "trailingComma": "es5",
     "tsdoc": true
   },
   "lint-staged": {
