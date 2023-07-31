@@ -42,13 +42,13 @@ describe('$(...)', () => {
       expect(attr).toBe('autofocus');
     });
 
-    it('(valid key) should get uppercase attribute with lowercase name', () => {
+    it('(valid key) should get uppercase attr with lowercase name', () => {
       const $pear = $('.pear');
       expect($pear.attr('FOO')).toBe('true');
       expect($pear.attr('foo')).toBe('true');
     });
 
-    it('(valid key) should get lowercase attribute with uppercase name', () => {
+    it('(valid key) should get lowercase attr with uppercase name', () => {
       const $pear = $('.pear');
       expect($pear.attr('CLASS')).toBe('pear');
       expect($pear.attr('class')).toBe('pear');
@@ -77,7 +77,7 @@ describe('$(...)', () => {
       expect($src[0]).toBeUndefined();
     });
 
-    it('(key, value) should save uppercase attribute name as lowercase', () => {
+    it('(key, value) should save uppercase attr name as lowercase', () => {
       const $pear = $('.pear').attr('BAR', '100');
       expect($pear.attr('BAR')).toBe('100');
       expect($pear.attr('bar')).toBe('100');
