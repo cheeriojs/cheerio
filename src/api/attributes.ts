@@ -57,17 +57,18 @@ function getAttr(
   }
 
   // Coerce attribute names to lowercase to match load() and setAttr() behavior
-  const lowerCasedName = name.toLowerCase();
+  // Only do this for HTML since XML is case-sensitive
+  const nameToUse = xmlMode ? name : name.toLowerCase();
 
-  if (hasOwn.call(elem.attribs, lowerCasedName)) {
+  if (hasOwn.call(elem.attribs, nameToUse)) {
     // Get the (decoded) attribute
-    return !xmlMode && rboolean.test(lowerCasedName)
-      ? lowerCasedName
-      : elem.attribs[lowerCasedName];
+    return !xmlMode && rboolean.test(nameToUse)
+      ? nameToUse
+      : elem.attribs[nameToUse];
   }
 
   // Mimic the DOM and return text content as value for `option's`
-  if (elem.name === 'option' && lowerCasedName === 'value') {
+  if (elem.name === 'option' && nameToUse === 'value') {
     return text(elem.children);
   }
 
@@ -75,7 +76,7 @@ function getAttr(
   if (
     elem.name === 'input' &&
     (elem.attribs['type'] === 'radio' || elem.attribs['type'] === 'checkbox') &&
-    lowerCasedName === 'value'
+    nameToUse === 'value'
   ) {
     return 'on';
   }
@@ -91,15 +92,22 @@ function getAttr(
  * @param el - The element to set the attribute on.
  * @param name - The attribute's name.
  * @param value - The attribute's value.
+ * @param xmlMode - True if running in XML mode.
  */
-function setAttr(el: Element, name: string, value: string | null) {
+function setAttr(
+  el: Element,
+  name: string,
+  value: string | null,
+  xmlMode?: boolean
+) {
   // Coerce attr names to lowercase to match load() behavior
-  const lowerCasedName = name.toLowerCase();
+  // Only do this for HTML since XML is case-sensitive
+  const nameToUse = xmlMode ? name : name.toLowerCase();
 
   if (value === null) {
-    removeAttribute(el, lowerCasedName);
+    removeAttribute(el, nameToUse);
   } else {
-    el.attribs[lowerCasedName] = `${value}`;
+    el.attribs[nameToUse] = `${value}`;
   }
 }
 
@@ -201,7 +209,13 @@ export function attr<T extends AnyNode>(
         }
       }
       return domEach(this, (el, i) => {
-        if (isTag(el)) setAttr(el, name, value.call(el, i, el.attribs[name]));
+        if (isTag(el))
+          setAttr(
+            el,
+            name,
+            value.call(el, i, el.attribs[name]),
+            this.options.xmlMode
+          );
       });
     }
     return domEach(this, (el) => {
@@ -210,10 +224,10 @@ export function attr<T extends AnyNode>(
       if (typeof name === 'object') {
         for (const objName of Object.keys(name)) {
           const objValue = name[objName];
-          setAttr(el, objName, objValue);
+          setAttr(el, objName, objValue, this.options.xmlMode);
         }
       } else {
-        setAttr(el, name as string, value as string);
+        setAttr(el, name as string, value as string, this.options.xmlMode);
       }
     });
   }
