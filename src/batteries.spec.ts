@@ -129,8 +129,12 @@ describe('fromURL', () => {
   }
 
   afterEach((cb) => {
-    server?.close(cb);
-    server = undefined;
+    if (server) {
+      server.close(cb);
+      server = undefined;
+    } else {
+      cb();
+    }
   });
 
   it('should fetch UTF-8 HTML', async () => {
