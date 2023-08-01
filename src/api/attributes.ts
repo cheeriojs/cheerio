@@ -56,8 +56,7 @@ function getAttr(
     return elem.attribs;
   }
 
-  // Coerce attribute names to lowercase to match load() and setAttr() behavior
-  // Only do this for HTML since XML is case-sensitive
+  // Coerce attribute names to lowercase to match load() and setAttr() behavior (HTML only)
   const nameToUse = xmlMode ? name : name.toLowerCase();
 
   if (hasOwn.call(elem.attribs, nameToUse)) {
@@ -100,8 +99,7 @@ function setAttr(
   value: string | null,
   xmlMode?: boolean
 ) {
-  // Coerce attr names to lowercase to match load() behavior
-  // Only do this for HTML since XML is case-sensitive
+  // Coerce attr names to lowercase to match load() behavior (HTML only)
   const nameToUse = xmlMode ? name : name.toLowerCase();
 
   if (value === null) {
@@ -209,13 +207,14 @@ export function attr<T extends AnyNode>(
         }
       }
       return domEach(this, (el, i) => {
-        if (isTag(el))
+        if (isTag(el)) {
           setAttr(
             el,
             name,
             value.call(el, i, el.attribs[name]),
             this.options.xmlMode
           );
+        }
       });
     }
     return domEach(this, (el) => {
