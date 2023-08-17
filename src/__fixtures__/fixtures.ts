@@ -2,7 +2,7 @@ export const fruits = [
   '<ul id="fruits">',
   '<li class="apple">Apple</li>',
   '<li class="orange">Orange</li>',
-  '<li class="pear" FOO="true">Pear</li>',
+  '<li class="pear">Pear</li>',
   '</ul>',
 ].join('');
 
@@ -10,6 +10,14 @@ export const vegetables = [
   '<ul id="vegetables">',
   '<li class="carrot">Carrot</li>',
   '<li class="sweetcorn">Sweetcorn</li>',
+  '</ul>',
+].join('');
+
+export const meats = [
+  '<ul id="meats">',
+  '<li class="beef" COOKED="mediumrare">Beef</li>',
+  '<li class="chicken">Chicken</li>',
+  '<li class="pork">Pork</li>',
   '</ul>',
 ].join('');
 

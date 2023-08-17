@@ -1729,7 +1729,7 @@ describe('$(...)', () => {
         [
           '<li class="apple">Apple</li>',
           '<li class="orange">Orange</li>',
-          '<li class="pear" foo="true">Pear</li>',
+          '<li class="pear">Pear</li>',
         ].join('')
       );
     });
@@ -1777,7 +1777,7 @@ describe('$(...)', () => {
     it('(elem) : should move the passed element (#940)', () => {
       $('.apple').html($('.orange'));
       expect($fruits.html()).toBe(
-        '<li class="apple"><li class="orange">Orange</li></li><li class="pear" foo="true">Pear</li>'
+        '<li class="apple"><li class="orange">Orange</li></li><li class="pear">Pear</li>'
       );
     });
 
@@ -1809,14 +1809,12 @@ describe('$(...)', () => {
 
   describe('.toString', () => {
     it('() : should get the outerHTML for an element', () => {
-      expect($fruits.toString()).toBe(
-        '<ul id="fruits"><li class="apple">Apple</li><li class="orange">Orange</li><li class="pear" foo="true">Pear</li></ul>'
-      );
+      expect($fruits.toString()).toBe(fruits);
     });
 
     it('() : should return an html string for a set of elements', () => {
       expect($fruits.find('li').toString()).toBe(
-        '<li class="apple">Apple</li><li class="orange">Orange</li><li class="pear" foo="true">Pear</li>'
+        '<li class="apple">Apple</li><li class="orange">Orange</li><li class="pear">Pear</li>'
       );
     });
 

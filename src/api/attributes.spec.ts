@@ -8,6 +8,7 @@ import {
   chocolates,
   inputs,
   mixedText,
+  meats,
 } from '../__fixtures__/fixtures.js';
 
 function withClass(attr: string) {
@@ -42,16 +43,32 @@ describe('$(...)', () => {
       expect(attr).toBe('autofocus');
     });
 
-    it('(valid key) should get uppercase attr with lowercase name', () => {
-      const $pear = $('.pear');
-      expect($pear.attr('FOO')).toBe('true');
-      expect($pear.attr('foo')).toBe('true');
+    it('(valid key) should get uppercase attr with lowercase name in HTML mode', () => {
+      const $casetest = load(meats);
+      const $meats = $casetest('.beef');
+      expect($meats.attr('COOKED')).toBe('mediumrare');
+      expect($meats.attr('cooked')).toBe('mediumrare');
     });
 
-    it('(valid key) should get lowercase attr with uppercase name', () => {
-      const $pear = $('.pear');
-      expect($pear.attr('CLASS')).toBe('pear');
-      expect($pear.attr('class')).toBe('pear');
+    it('(valid key) should get lowercase attr with uppercase name in HTML mode', () => {
+      const $casetest = load(meats);
+      const $meats = $casetest('.beef');
+      expect($meats.attr('CLASS')).toBe('beef');
+      expect($meats.attr('class')).toBe('beef');
+    });
+
+    it('(valid key) should get uppercase attr with uppercase name only in XML mode', () => {
+      const $casetest = load(meats, { xmlMode: true });
+      const $meats = $casetest('[class="beef"]');
+      expect($meats.attr('COOKED')).toBe('mediumrare');
+      expect($meats.attr('cooked')).toBeUndefined();
+    });
+
+    it('(valid key) should get lowercase attr with lowercase name only in XML mode', () => {
+      const $casetest = load(meats, { xmlMode: true });
+      const $meats = $casetest('[class="beef"]');
+      expect($meats.attr('CLASS')).toBeUndefined();
+      expect($meats.attr('class')).toBe('beef');
     });
 
     it('(key, value) : should set one attr', () => {
@@ -77,10 +94,18 @@ describe('$(...)', () => {
       expect($src[0]).toBeUndefined();
     });
 
-    it('(key, value) should save uppercase attr name as lowercase', () => {
-      const $pear = $('.pear').attr('BAR', '100');
-      expect($pear.attr('BAR')).toBe('100');
-      expect($pear.attr('bar')).toBe('100');
+    it('(key, value) should save uppercase attr name as lowercase in HTML mode', () => {
+      const $casetest = load(meats);
+      const $meats = $casetest('.beef').attr('USDA', 'choice');
+      expect($meats.attr('USDA')).toBe('choice');
+      expect($meats.attr('usda')).toBe('choice');
+    });
+
+    it('(key, value) should save uppercase attr name as uppercase in XML mode', () => {
+      const $casetest = load(meats, { xmlMode: true });
+      const $meats = $casetest('[class="beef"]').attr('USDA', 'choice');
+      expect($meats.attr('USDA')).toBe('choice');
+      expect($meats.attr('usda')).toBeUndefined();
     });
 
     it('(map) : object map should set multiple attributes', () => {

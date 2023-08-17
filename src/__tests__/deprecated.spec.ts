@@ -172,7 +172,7 @@ describe('deprecated APIs', () => {
 
       it('(selector) : should return the outerHTML of the selected element', () => {
         const $ = cheerio.load(fixtures.fruits);
-        expect($.html('.pear')).toBe('<li class="pear" foo="true">Pear</li>');
+        expect($.html('.pear')).toBe('<li class="pear">Pear</li>');
       });
     });
 
