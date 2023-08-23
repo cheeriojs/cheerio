@@ -58,14 +58,14 @@ describe('$(...)', () => {
     });
 
     it('(valid key) should get uppercase attr with uppercase name only in XML mode', () => {
-      const $casetest = load(meats, { xmlMode: true });
+      const $casetest = load(meats, { xml: true });
       const $meats = $casetest('[class="beef"]');
       expect($meats.attr('COOKED')).toBe('mediumrare');
       expect($meats.attr('cooked')).toBeUndefined();
     });
 
     it('(valid key) should get lowercase attr with lowercase name only in XML mode', () => {
-      const $casetest = load(meats, { xmlMode: true });
+      const $casetest = load(meats, { xml: true });
       const $meats = $casetest('[class="beef"]');
       expect($meats.attr('CLASS')).toBeUndefined();
       expect($meats.attr('class')).toBe('beef');
@@ -102,7 +102,7 @@ describe('$(...)', () => {
     });
 
     it('(key, value) should save uppercase attr name as uppercase in XML mode', () => {
-      const $casetest = load(meats, { xmlMode: true });
+      const $casetest = load(meats, { xml: true });
       const $meats = $casetest('[class="beef"]').attr('USDA', 'choice');
       expect($meats.attr('USDA')).toBe('choice');
       expect($meats.attr('usda')).toBeUndefined();
