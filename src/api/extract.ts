@@ -21,7 +21,7 @@ export interface ExtractMap {
 }
 
 type ExtractedValue<V extends ExtractValue, M extends ExtractMap> = V extends [
-  string | ExtractDescriptor
+  string | ExtractDescriptor,
 ]
   ? NonNullable<ExtractedValue<V[0], M>>[]
   : V extends string
