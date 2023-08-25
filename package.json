@@ -89,7 +89,7 @@
     "eslint-plugin-n": "^16.0.2",
     "eslint-plugin-unicorn": "^48.0.1",
     "husky": "^8.0.3",
-    "jest": "^29.6.3",
+    "jest": "^29.6.4",
     "jquery": "^3.7.0",
     "jsdom": "^22.1.0",
     "lint-staged": "^14.0.1",
