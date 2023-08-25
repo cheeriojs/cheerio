@@ -34,7 +34,7 @@
   "devDependencies": {
     "@crowdin/cli": "^3.13.0",
     "@tsconfig/docusaurus": "^2.0.0",
-    "typescript": "^5.1.6"
+    "typescript": "^5.2.2"
   },
   "browserslist": {
     "production": [
