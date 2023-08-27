@@ -47,9 +47,9 @@ Here's an example of how to use the load method:
 ```js
 import * as cheerio from 'cheerio';
 
-const $ = cheerio.load('<html><body><h1>Hello, world!</h1></body></html>');
+const $ = cheerio.load('<html><body><h1 class="title">Hello, world!</h1></body></html>');
 
-console.log($('title').text());
+console.log($('.title').text());
 // Output: Hello, world!
 ```
 
@@ -88,7 +88,7 @@ const buffer = fs.readFileSync('document.html');
 
 const $ = cheerio.loadBuffer(buffer);
 
-console.log($('title').text());
+console.log($('.title').text());
 // Output: Hello, world!
 ```
 
@@ -109,7 +109,7 @@ const writeStream = cheerio.stringStream({}, (err, $) => {
     // Handle error
   }
 
-  console.log($('title').text());
+  console.log($('.title').text());
   // Output: Hello, world!
 });
 
@@ -137,7 +137,7 @@ const writeStream = cheerio.decodeStream({}, (err, $) => {
     // Handle error
   }
 
-  console.log($('title').text());
+  console.log($('.title').text());
   // Output: Hello, world!
 });
 
