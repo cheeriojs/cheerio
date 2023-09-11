@@ -85,7 +85,7 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-expect-type": "^0.2.3",
     "eslint-plugin-jest": "^27.2.3",
-    "eslint-plugin-jsdoc": "^46.5.1",
+    "eslint-plugin-jsdoc": "^46.6.0",
     "eslint-plugin-n": "^16.0.2",
     "eslint-plugin-unicorn": "^48.0.1",
     "husky": "^8.0.3",
