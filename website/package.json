@@ -28,7 +28,7 @@
     "prism-react-renderer": "^2.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "typedoc": "^0.25.1",
+    "typedoc": "^0.25.2",
     "typedoc-plugin-markdown": "^3.16.0"
   },
   "devDependencies": {
