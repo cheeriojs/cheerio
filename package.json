@@ -77,7 +77,7 @@
     "@types/jest": "^29.5.5",
     "@types/jsdom": "^21.1.4",
     "@types/node": "^20.8.6",
-    "@types/whatwg-mimetype": "^3.0.0",
+    "@types/whatwg-mimetype": "^3.0.1",
     "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@typescript-eslint/parser": "^6.8.0",
     "benchmark": "^2.1.4",
