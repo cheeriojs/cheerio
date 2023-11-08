@@ -74,7 +74,7 @@
     "@imgix/js-core": "^3.8.0",
     "@octokit/graphql": "^6.0.1",
     "@types/benchmark": "^2.1.5",
-    "@types/jest": "^29.5.7",
+    "@types/jest": "^29.5.8",
     "@types/jsdom": "^21.1.4",
     "@types/node": "^20.8.10",
     "@types/whatwg-mimetype": "^3.0.2",
