@@ -68,7 +68,7 @@
     "parse5-htmlparser2-tree-adapter": "^7.0.0",
     "parse5-parser-stream": "^7.1.2",
     "undici": "^5.27.2",
-    "whatwg-mimetype": "^3.0.0"
+    "whatwg-mimetype": "^4.0.0"
   },
   "devDependencies": {
     "@imgix/js-core": "^3.8.0",
