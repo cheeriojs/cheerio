@@ -79,7 +79,7 @@
     "@types/node": "^20.9.2",
     "@types/whatwg-mimetype": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
-    "@typescript-eslint/parser": "^6.11.0",
+    "@typescript-eslint/parser": "^6.12.0",
     "benchmark": "^2.1.4",
     "eslint": "^8.54.0",
     "eslint-config-prettier": "^9.0.0",
