@@ -210,8 +210,8 @@ function _matchUntil(
       typeof selector === 'string'
         ? (elem: Element) => select.is(elem, selector, this.options)
         : selector
-        ? getFilterFn(selector)
-        : null;
+          ? getFilterFn(selector)
+          : null;
 
     const ret = innerMatcher.call(this, filterSelector);
 
@@ -783,8 +783,8 @@ export function is<T>(
         this.options,
       )
     : selector
-    ? nodes.some(getFilterFn<T>(selector))
-    : false;
+      ? nodes.some(getFilterFn<T>(selector))
+      : false;
 }
 
 /**

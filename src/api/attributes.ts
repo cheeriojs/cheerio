@@ -238,8 +238,8 @@ function getProp(
     ? // @ts-expect-error TS doesn't like us accessing the value directly here.
       el[name]
     : !xmlMode && rboolean.test(name)
-    ? getAttr(el, name, false) !== undefined
-    : getAttr(el, name, xmlMode);
+      ? getAttr(el, name, false) !== undefined
+      : getAttr(el, name, xmlMode);
 }
 
 /**

@@ -181,8 +181,8 @@ export function getLoad(
         typeof root === 'string'
           ? [parse(root, options, false, null)]
           : 'length' in root
-          ? root
-          : [root];
+            ? root
+            : [root];
       const rootInstance = isCheerio<Document>(r)
         ? r
         : new LoadedCheerio<Document>(r, null, options);
@@ -199,12 +199,12 @@ export function getLoad(
           ? // $(<html>)
             parse(selector, options, false, null).children
           : isNode(selector)
-          ? // $(dom)
-            [selector]
-          : Array.isArray(selector)
-          ? // $([dom])
-            selector
-          : undefined;
+            ? // $(dom)
+              [selector]
+            : Array.isArray(selector)
+              ? // $([dom])
+                selector
+              : undefined;
 
       const instance = new LoadedCheerio(elements, rootInstance, options);
 
@@ -232,14 +232,14 @@ export function getLoad(
             : // $('li', 'ul')
               ((search = `${context} ${search}` as S), rootInstance)
           : isCheerio<AnyNode>(context)
-          ? // $('li', $)
-            context
-          : // $('li', node), $('li', [nodes])
-            new LoadedCheerio<AnyNode>(
-              Array.isArray(context) ? context : [context],
-              rootInstance,
-              options,
-            )
+            ? // $('li', $)
+              context
+            : // $('li', node), $('li', [nodes])
+              new LoadedCheerio<AnyNode>(
+                Array.isArray(context) ? context : [context],
+                rootInstance,
+                options,
+              )
         : rootInstance;
 
       // If we still don't have a context, return
