@@ -111,7 +111,7 @@
     "format:prettier": "npm run format:prettier:raw -- --write",
     "format:prettier:raw": "prettier \"**/*.{{m,c,}{j,t}s{x,},md,json,yml}\" --ignore-path .gitignore",
     "benchmark": "npm run build:cjs && ts-node benchmark/benchmark.ts --regex \"^(?!.*highmem)\"",
-    "update-sponsors": "ts-node --esm -TO '{\"module\":\"node16\",\"target\":\"es2019\"}' scripts/fetch-sponsors.mts",
+    "update-sponsors": "node --loader ts-node/esm scripts/fetch-sponsors.mts",
     "bench": "npm run benchmark",
     "build": "npm run build:cjs && npm run build:esm",
     "make-esm": "sed -i '' 's/\"type\": \"commonjs\"/\"type\": \"module\"/g' package.json",
