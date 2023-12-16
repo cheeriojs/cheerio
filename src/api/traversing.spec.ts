@@ -41,7 +41,7 @@ describe('$(...)', () => {
     it('(single) : should find one descendant', () => {
       expect($('#fruits').find('.apple')[0].attribs).toHaveProperty(
         'class',
-        'apple'
+        'apple',
       );
     });
 
@@ -473,7 +473,7 @@ describe('$(...)', () => {
 
     it('() : should filter out non-element nodes', () => {
       const elems = $(
-        '<div class="1"><div class="2"></div><!-- comment -->text<div class="3"></div></div>'
+        '<div class="1"><div class="2"></div><!-- comment -->text<div class="3"></div></div>',
       );
       const div = elems.children().last();
       expect(div.prevUntil()).toHaveLength(1);
@@ -694,7 +694,7 @@ describe('$(...)', () => {
     it('(selector, filter) : should get all of the parents that match the filter', () => {
       const result = $('.apple, .sweetcorn').parentsUntil(
         '.saladbar',
-        '#vegetables'
+        '#vegetables',
       );
       expect(result).toHaveLength(1);
       expect(result[0].attribs).toHaveProperty('id', 'vegetables');
@@ -781,13 +781,13 @@ describe('$(...)', () => {
     it('(selector) : should find the closest element that matches the selector, searching through its ancestors and itself', () => {
       expect($('.orange').closest('.apple')).toHaveLength(0);
       expect(
-        ($('.orange', food).closest('#food')[0] as Element).attribs
+        ($('.orange', food).closest('#food')[0] as Element).attribs,
       ).toHaveProperty('id', 'food');
       expect(
-        ($('.orange', food).closest('ul')[0] as Element).attribs
+        ($('.orange', food).closest('ul')[0] as Element).attribs,
       ).toHaveProperty('id', 'fruits');
       expect(
-        ($('.orange', food).closest('li')[0] as Element).attribs
+        ($('.orange', food).closest('li')[0] as Element).attribs,
       ).toHaveProperty('class', 'orange');
     });
 
@@ -948,7 +948,7 @@ describe('$(...)', () => {
 
     it('should also iterate over text nodes (#1867)', () => {
       const text = $('<a>a</a>b<c></c>').filter((_, el): el is Text =>
-        isText(el)
+        isText(el),
       );
 
       expect(text[0].data).toBe('b');
@@ -1043,7 +1043,7 @@ describe('$(...)', () => {
   describe('.first', () => {
     it('() : should return the first item', () => {
       const $src = $(
-        '<span>foo</span><span>bar</span><span>baz</span>'
+        '<span>foo</span><span>bar</span><span>baz</span>',
       ) as Cheerio<Element>;
       const $elem = $src.first();
       expect($elem.length).toBe(1);
@@ -1061,7 +1061,7 @@ describe('$(...)', () => {
   describe('.last', () => {
     it('() : should return the last element', () => {
       const $src = $(
-        '<span>foo</span><span>bar</span><span>baz</span>'
+        '<span>foo</span><span>bar</span><span>baz</span>',
       ) as Cheerio<Element>;
       const $elem = $src.last();
       expect($elem.length).toBe(1);
@@ -1220,7 +1220,7 @@ describe('$(...)', () => {
           .map(function () {
             return this;
           })
-          .end()
+          .end(),
       ).toBe($fruits);
     });
     it('contents', () => {

@@ -108,10 +108,10 @@ describe('$(...)', () => {
     it("() : shouldn't serialize the empty string", () => {
       expect($('<input value=pineapple>').serializeArray()).toStrictEqual([]);
       expect(
-        $('<input name="" value=pineapple>').serializeArray()
+        $('<input name="" value=pineapple>').serializeArray(),
       ).toStrictEqual([]);
       expect(
-        $('<input name="fruit" value=pineapple>').serializeArray()
+        $('<input name="fruit" value=pineapple>').serializeArray(),
       ).toStrictEqual([
         {
           name: 'fruit',

@@ -43,7 +43,7 @@ import { Writable, finished } from 'node:stream';
  */
 export function loadBuffer(
   buffer: Buffer,
-  options: DecodeStreamOptions = {}
+  options: DecodeStreamOptions = {},
 ): CheerioAPI {
   const opts = flattenOptions(options);
   const str = decodeBuffer(buffer, {
@@ -56,12 +56,12 @@ export function loadBuffer(
 
 function _stringStream(
   options: InternalOptions | undefined,
-  cb: (err: Error | null | undefined, $: CheerioAPI) => void
+  cb: (err: Error | null | undefined, $: CheerioAPI) => void,
 ): Writable {
   if (options?._useHtmlParser2) {
     const parser = htmlparser2.createDocumentStream(
       (err, document) => cb(err, load(document)),
-      options
+      options,
     );
 
     return new Writable({
@@ -118,7 +118,7 @@ function _stringStream(
  * });
  *
  * fs.createReadStream('my-document.html', { encoding: 'utf8' }).pipe(
- *   writeStream
+ *   writeStream,
  * );
  * ```
  *
@@ -128,7 +128,7 @@ function _stringStream(
  */
 export function stringStream(
   options: CheerioOptions,
-  cb: (err: Error | null | undefined, $: CheerioAPI) => void
+  cb: (err: Error | null | undefined, $: CheerioAPI) => void,
 ): Writable {
   return _stringStream(flattenOptions(options), cb);
 }
@@ -150,7 +150,7 @@ export interface DecodeStreamOptions extends CheerioOptions {
  */
 export function decodeStream(
   options: DecodeStreamOptions,
-  cb: (err: Error | null | undefined, $: CheerioAPI) => void
+  cb: (err: Error | null | undefined, $: CheerioAPI) => void,
 ): Writable {
   const { encoding = {}, ...cheerioOptions } = options;
   const opts = flattenOptions(cheerioOptions);
@@ -205,7 +205,7 @@ const defaultRequestOptions: UndiciStreamOptions = {
  */
 export async function fromURL(
   url: string | URL,
-  options: CheerioRequestOptions = {}
+  options: CheerioRequestOptions = {},
 ): Promise<CheerioAPI> {
   const {
     requestOptions = defaultRequestOptions,
@@ -221,12 +221,12 @@ export async function fromURL(
     undiciStream = undici.stream(url, requestOptions, (res) => {
       const contentType = res.headers['content-type'] ?? 'text/html';
       const mimeType = new MIMEType(
-        Array.isArray(contentType) ? contentType[0] : contentType
+        Array.isArray(contentType) ? contentType[0] : contentType,
       );
 
       if (!mimeType.isHTML() && !mimeType.isXML()) {
         throw new RangeError(
-          `The content-type "${contentType}" is neither HTML nor XML.`
+          `The content-type "${contentType}" is neither HTML nor XML.`,
         );
       }
 

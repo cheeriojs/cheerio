@@ -55,7 +55,7 @@ suites.add<Cheerio<Element>>(
     test(_, $body) {
       $body.prepend('<div>'.repeat(50));
     },
-  }
+  },
 );
 suites.add<Cheerio<Element>>('manipulation - after - highmem', 'jquery.html', {
   setup($) {

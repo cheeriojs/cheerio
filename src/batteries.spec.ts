@@ -21,7 +21,7 @@ describe('loadBuffer', () => {
     const $ = cheerio.loadBuffer(Buffer.from(TEST_HTML));
 
     expect($.html()).toBe(
-      `<html><head></head><body>${TEST_HTML}</body></html>`
+      `<html><head></head><body>${TEST_HTML}</body></html>`,
     );
   });
 
@@ -29,7 +29,7 @@ describe('loadBuffer', () => {
     const $ = cheerio.loadBuffer(TEST_HTML_UTF16_BOM);
 
     expect($.html()).toBe(
-      `<html><head></head><body>${TEST_HTML}</body></html>`
+      `<html><head></head><body>${TEST_HTML}</body></html>`,
     );
   });
 });
@@ -40,7 +40,7 @@ describe('stringStream', () => {
       expect(err).toBeUndefined();
 
       expect($.html()).toBe(
-        `<html><head></head><body>${TEST_HTML}</body></html>`
+        `<html><head></head><body>${TEST_HTML}</body></html>`,
       );
 
       cb();
@@ -55,7 +55,7 @@ describe('stringStream', () => {
     expect(stream).toBeInstanceOf(Writable);
 
     expect(() => stream.write(Buffer.from(TEST_HTML))).toThrow(
-      'Parser can work only with string streams.'
+      'Parser can work only with string streams.',
     );
   });
 
@@ -79,7 +79,7 @@ describe('decodeStream', () => {
       expect(err).toBeUndefined();
 
       expect($.html()).toBe(
-        `<html><head></head><body>${TEST_HTML}</body></html>`
+        `<html><head></head><body>${TEST_HTML}</body></html>`,
       );
 
       cb();
@@ -108,7 +108,7 @@ describe('fromURL', () => {
 
   function createTestServer(
     contentType: string,
-    body: string | Buffer
+    body: string | Buffer,
   ): Promise<number> {
     return new Promise((resolve, reject) => {
       server = createServer((_req, res) => {
@@ -142,19 +142,19 @@ describe('fromURL', () => {
     const $ = await cheerio.fromURL(`http://localhost:${port}`);
 
     expect($.html()).toBe(
-      `<html><head></head><body>${TEST_HTML}</body></html>`
+      `<html><head></head><body>${TEST_HTML}</body></html>`,
     );
   });
 
   it('should fetch UTF-16 HTML', async () => {
     const port = await createTestServer(
       'text/html; charset=utf-16le',
-      TEST_HTML_UTF16
+      TEST_HTML_UTF16,
     );
     const $ = await cheerio.fromURL(`http://localhost:${port}`);
 
     expect($.html()).toBe(
-      `<html><head></head><body>${TEST_HTML}</body></html>`
+      `<html><head></head><body>${TEST_HTML}</body></html>`,
     );
   });
 

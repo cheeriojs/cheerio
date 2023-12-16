@@ -13,7 +13,7 @@ import type { Cheerio } from '../cheerio.js';
  */
 export function css<T extends AnyNode>(
   this: Cheerio<T>,
-  names?: string[]
+  names?: string[],
 ): Record<string, string> | undefined;
 /**
  * Get the value of a style property for the first element in the set of matched
@@ -26,7 +26,7 @@ export function css<T extends AnyNode>(
  */
 export function css<T extends AnyNode>(
   this: Cheerio<T>,
-  name: string
+  name: string,
 ): string | undefined;
 /**
  * Set one CSS property for every matched element.
@@ -42,7 +42,7 @@ export function css<T extends AnyNode>(
   prop: string,
   val:
     | string
-    | ((this: Element, i: number, style: string) => string | undefined)
+    | ((this: Element, i: number, style: string) => string | undefined),
 ): Cheerio<T>;
 /**
  * Set multiple CSS properties for every matched element.
@@ -54,7 +54,7 @@ export function css<T extends AnyNode>(
  */
 export function css<T extends AnyNode>(
   this: Cheerio<T>,
-  map: Record<string, string>
+  map: Record<string, string>,
 ): Cheerio<T>;
 /**
  * Set multiple CSS properties for every matched element.
@@ -70,7 +70,7 @@ export function css<T extends AnyNode>(
   prop?: string | string[] | Record<string, string>,
   val?:
     | string
-    | ((this: Element, i: number, style: string) => string | undefined)
+    | ((this: Element, i: number, style: string) => string | undefined),
 ): Cheerio<T> | Record<string, string> | string | undefined {
   if (
     (prop != null && val != null) ||
@@ -108,7 +108,7 @@ function setCss(
     | string
     | ((this: Element, i: number, style: string) => string | undefined)
     | undefined,
-  idx: number
+  idx: number,
 ) {
   if (typeof prop === 'string') {
     const styles = getCss(el);
@@ -154,7 +154,7 @@ function getCss(el: AnyNode, props?: string[]): Record<string, string>;
 function getCss(el: AnyNode, prop: string): string | undefined;
 function getCss(
   el: AnyNode,
-  prop?: string | string[]
+  prop?: string | string[],
 ): Record<string, string> | string | undefined {
   if (!el || !isTag(el)) return;
 
@@ -185,7 +185,7 @@ function getCss(
 function stringify(obj: Record<string, string>): string {
   return Object.keys(obj).reduce(
     (str, prop) => `${str}${str ? ' ' : ''}${prop}: ${obj[prop]};`,
-    ''
+    '',
   );
 }
 

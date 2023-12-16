@@ -21,7 +21,7 @@ export function parseWithParse5(
   content: string,
   options: InternalOptions,
   isDocument: boolean,
-  context: ParentNode | null
+  context: ParentNode | null,
 ): Document {
   options.treeAdapter ??= htmlparser2Adapter;
 

@@ -125,7 +125,6 @@
     "singleQuote": true,
     "tabWidth": 2,
     "proseWrap": "always",
-    "trailingComma": "es5",
     "plugins": [
       "./node_modules/prettier-plugin-jsdoc/dist/index.js"
     ],

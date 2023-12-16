@@ -6,7 +6,7 @@ type ExtractDescriptorFn = (
   el: Element,
   key: string,
   // TODO: This could be typed with ExtractedMap
-  obj: Record<string, unknown>
+  obj: Record<string, unknown>,
 ) => unknown;
 
 interface ExtractDescriptor {
@@ -39,7 +39,7 @@ export type ExtractedMap<M extends ExtractMap> = {
 };
 
 function getExtractDescr(
-  descr: string | ExtractDescriptor
+  descr: string | ExtractDescriptor,
 ): Required<ExtractDescriptor> {
   if (typeof descr === 'string') {
     return { selector: descr, value: 'textContent' };
@@ -61,7 +61,7 @@ function getExtractDescr(
  */
 export function extract<M extends ExtractMap, T extends AnyNode>(
   this: Cheerio<T>,
-  map: M
+  map: M,
 ): ExtractedMap<M> {
   const ret: Record<string, unknown> = {};
 

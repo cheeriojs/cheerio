@@ -61,7 +61,7 @@ export abstract class Cheerio<T> implements ArrayLike<T> {
   constructor(
     elements: ArrayLike<T> | undefined,
     root: Cheerio<Document> | null,
-    options: InternalOptions
+    options: InternalOptions,
   ) {
     this.options = options;
     this._root = root;
@@ -85,7 +85,7 @@ export abstract class Cheerio<T> implements ArrayLike<T> {
    */
   abstract _make<T>(
     dom: ArrayLike<T> | T | string,
-    context?: BasicAcceptedElems<AnyNode>
+    context?: BasicAcceptedElems<AnyNode>,
   ): Cheerio<T>;
 
   /**
@@ -101,7 +101,7 @@ export abstract class Cheerio<T> implements ArrayLike<T> {
     content: string | Document | AnyNode | AnyNode[] | Buffer,
     options: InternalOptions,
     isDocument: boolean,
-    context: ParentNode | null
+    context: ParentNode | null,
   ): Document;
 
   /**
@@ -139,5 +139,5 @@ Object.assign(
   Manipulation,
   Css,
   Forms,
-  Extract
+  Extract,
 );

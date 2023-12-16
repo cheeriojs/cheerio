@@ -34,7 +34,7 @@ import type { BasicAcceptedElems, AcceptedElems } from '../types.js';
 export function _makeDomArray<T extends AnyNode>(
   this: Cheerio<T>,
   elem?: BasicAcceptedElems<AnyNode> | BasicAcceptedElems<AnyNode>[],
-  clone?: boolean
+  clone?: boolean,
 ): AnyNode[] {
   if (elem == null) {
     return [];
@@ -78,8 +78,8 @@ function _insert(
   concatenator: (
     dom: AnyNode[],
     children: AnyNode[],
-    parent: ParentNode
-  ) => void
+    parent: ParentNode,
+  ) => void,
 ) {
   return function <T extends AnyNode>(
     this: Cheerio<T>,
@@ -88,7 +88,7 @@ function _insert(
           (
             this: AnyNode,
             i: number,
-            html: string
+            html: string,
           ) => BasicAcceptedElems<AnyNode>,
         ]
       | BasicAcceptedElems<AnyNode>[]
@@ -127,7 +127,7 @@ function uniqueSplice(
   spliceIdx: number,
   spliceCount: number,
   newElems: AnyNode[],
-  parent: ParentNode
+  parent: ParentNode,
 ): AnyNode[] {
   const spliceArgs: Parameters<typeof Array.prototype.splice> = [
     spliceIdx,
@@ -206,7 +206,7 @@ function uniqueSplice(
  */
 export function appendTo<T extends AnyNode>(
   this: Cheerio<T>,
-  target: BasicAcceptedElems<AnyNode>
+  target: BasicAcceptedElems<AnyNode>,
 ): Cheerio<T> {
   const appendTarget = isCheerio<T>(target) ? target : this._make(target);
 
@@ -239,7 +239,7 @@ export function appendTo<T extends AnyNode>(
  */
 export function prependTo<T extends AnyNode>(
   this: Cheerio<T>,
-  target: BasicAcceptedElems<AnyNode>
+  target: BasicAcceptedElems<AnyNode>,
 ): Cheerio<T> {
   const prependTarget = isCheerio<T>(target) ? target : this._make(target);
 
@@ -298,12 +298,12 @@ function _wrap(
   insert: (
     el: AnyNode,
     elInsertLocation: ParentNode,
-    wrapperDom: ParentNode[]
-  ) => void
+    wrapperDom: ParentNode[],
+  ) => void,
 ) {
   return function <T extends AnyNode>(
     this: Cheerio<T>,
-    wrapper: AcceptedElems<AnyNode>
+    wrapper: AcceptedElems<AnyNode>,
   ) {
     const lastIdx = this.length - 1;
     const lastParent = this.parents().last();
@@ -465,7 +465,7 @@ export const wrapInner = _wrap((el, elInsertLocation, wrapperDom) => {
  *
  * ```js
  * const $ = cheerio.load(
- *   '<div id=test>\n  <div><p>Hello</p></div>\n  <div><p>World</p></div>\n</div>'
+ *   '<div id=test>\n  <div><p>Hello</p></div>\n  <div><p>World</p></div>\n</div>',
  * );
  * $('#test p').unwrap();
  *
@@ -479,7 +479,7 @@ export const wrapInner = _wrap((el, elInsertLocation, wrapperDom) => {
  *
  * ```js
  * const $ = cheerio.load(
- *   '<div id=test>\n  <p>Hello</p>\n  <b><p>World</p></b>\n</div>'
+ *   '<div id=test>\n  <p>Hello</p>\n  <b><p>World</p></b>\n</div>',
  * );
  * $('#test p').unwrap('b');
  *
@@ -497,7 +497,7 @@ export const wrapInner = _wrap((el, elInsertLocation, wrapperDom) => {
  */
 export function unwrap<T extends AnyNode>(
   this: Cheerio<T>,
-  selector?: string
+  selector?: string,
 ): Cheerio<T> {
   this.parent(selector)
     .not('body')
@@ -519,7 +519,7 @@ export function unwrap<T extends AnyNode>(
  *
  * ```js
  * const $ = cheerio.load(
- *   '<div class="container"><div class="inner">First</div><div class="inner">Second</div></div>'
+ *   '<div class="container"><div class="inner">First</div><div class="inner">Second</div></div>',
  * );
  * $('.inner').wrapAll("<div class='new'></div>");
  *
@@ -535,7 +535,7 @@ export function unwrap<T extends AnyNode>(
  *
  * ```js
  * const $ = cheerio.load(
- *   '<span>Span 1</span><strong>Strong</strong><span>Span 2</span>'
+ *   '<span>Span 1</span><strong>Strong</strong><span>Span 2</span>',
  * );
  * const wrap = $('<div><p><em><b></b></em></p></div>');
  * $('span').wrapAll(wrap);
@@ -560,12 +560,12 @@ export function unwrap<T extends AnyNode>(
  */
 export function wrapAll<T extends AnyNode>(
   this: Cheerio<T>,
-  wrapper: AcceptedElems<T>
+  wrapper: AcceptedElems<T>,
 ): Cheerio<T> {
   const el = this[0];
   if (el) {
     const wrap: Cheerio<AnyNode> = this._make(
-      typeof wrapper === 'function' ? wrapper.call(el, 0, el) : wrapper
+      typeof wrapper === 'function' ? wrapper.call(el, 0, el) : wrapper,
     ).insertBefore(el);
 
     // If html is given as wrapper, wrap may contain text elements
@@ -673,7 +673,7 @@ export function after<T extends AnyNode>(
  */
 export function insertAfter<T extends AnyNode>(
   this: Cheerio<T>,
-  target: BasicAcceptedElems<AnyNode>
+  target: BasicAcceptedElems<AnyNode>,
 ): Cheerio<T> {
   if (typeof target === 'string') {
     target = this._make<AnyNode>(target);
@@ -782,7 +782,7 @@ export function before<T extends AnyNode>(
  */
 export function insertBefore<T extends AnyNode>(
   this: Cheerio<T>,
-  target: BasicAcceptedElems<AnyNode>
+  target: BasicAcceptedElems<AnyNode>,
 ): Cheerio<T> {
   const targetArr = this._make<AnyNode>(target);
 
@@ -834,7 +834,7 @@ export function insertBefore<T extends AnyNode>(
  */
 export function remove<T extends AnyNode>(
   this: Cheerio<T>,
-  selector?: string
+  selector?: string,
 ): Cheerio<T> {
   // Filter if we have selector
   const elems = selector ? this.filter(selector) : this;
@@ -870,7 +870,7 @@ export function remove<T extends AnyNode>(
  */
 export function replaceWith<T extends AnyNode>(
   this: Cheerio<T>,
-  content: AcceptedElems<AnyNode>
+  content: AcceptedElems<AnyNode>,
 ): Cheerio<T> {
   return domEach(this, (el, i) => {
     const { parent } = el;
@@ -962,11 +962,11 @@ export function html<T extends AnyNode>(this: Cheerio<T>): string | null;
  */
 export function html<T extends AnyNode>(
   this: Cheerio<T>,
-  str: string | Cheerio<T>
+  str: string | Cheerio<T>,
 ): Cheerio<T>;
 export function html<T extends AnyNode>(
   this: Cheerio<T>,
-  str?: string | Cheerio<AnyNode>
+  str?: string | Cheerio<AnyNode>,
 ): Cheerio<T> | string | null {
   if (str === undefined) {
     const el = this[0];
@@ -1037,11 +1037,11 @@ export function text<T extends AnyNode>(this: Cheerio<T>): string;
  */
 export function text<T extends AnyNode>(
   this: Cheerio<T>,
-  str: string | ((this: AnyNode, i: number, text: string) => string)
+  str: string | ((this: AnyNode, i: number, text: string) => string),
 ): Cheerio<T>;
 export function text<T extends AnyNode>(
   this: Cheerio<T>,
-  str?: string | ((this: AnyNode, i: number, text: string) => string)
+  str?: string | ((this: AnyNode, i: number, text: string) => string),
 ): Cheerio<T> | string {
   // If `str` is undefined, act as a "getter"
   if (str === undefined) {
@@ -1050,7 +1050,7 @@ export function text<T extends AnyNode>(
   if (typeof str === 'function') {
     // Function support
     return domEach(this, (el, i) =>
-      this._make(el).text(str.call(el, i, staticText([el])))
+      this._make(el).text(str.call(el, i, staticText([el]))),
     );
   }
 
@@ -1082,7 +1082,7 @@ export function text<T extends AnyNode>(
  */
 export function clone<T extends AnyNode>(this: Cheerio<T>): Cheerio<T> {
   const clone = Array.prototype.map.call(this.get(), (el) =>
-    cloneNode(el, true)
+    cloneNode(el, true),
   ) as T[];
 
   // Add a root node around the cloned nodes

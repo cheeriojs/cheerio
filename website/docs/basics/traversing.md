@@ -45,7 +45,7 @@ const $ = cheerio.load(
   `<ul>
     <li>Item 1</li>
     <li>Item 2</li>
-  </ul>`
+  </ul>`,
 );
 
 const listItems = $('ul').find('li');
@@ -66,7 +66,7 @@ const $ = cheerio.load(
   `<ul>
     <li>Item 1</li>
     <li>Item 2</li>
-  </ul>`
+  </ul>`,
 );
 
 const listItems = $('ul').children('li');
@@ -86,7 +86,7 @@ element:
 const $ = cheerio.load(
   `<div>
     Text <p>Paragraph</p>
-  </div>`
+  </div>`,
 );
 
 const contents = $('div').contents();
@@ -111,7 +111,7 @@ Here's an example of using `parent` to select the parent `<ul>` element of a
 const $ = cheerio.load(
   `<ul>
     <li>Item 1</li>
-  </ul>`
+  </ul>`,
 );
 
 const list = $('li').parent();
@@ -138,14 +138,14 @@ const $ = cheerio.load(
     <ul>
       <li>Item 1</li>
     </ul>
-  </div>`
+  </div>`,
 );
 
 const ancestors = $('li').parents();
 const ancestorsUntil = $('li').parentsUntil('div');
 
 render(
-  `Ancestor count (also includes <body> and <html>): ${ancestors.length} | Ancestor count (until <div>): ${ancestorsUntil.length}`
+  `Ancestor count (also includes <body> and <html>): ${ancestors.length} | Ancestor count (until <div>): ${ancestorsUntil.length}`,
 );
 ```
 
@@ -165,7 +165,7 @@ const $ = cheerio.load(
     <ul>
       <li>Item 1</li>
     </ul>
-  </div>`
+  </div>`,
 );
 
 const list = $('li').closest('ul');
@@ -196,7 +196,7 @@ const $ = cheerio.load(
   `<ul>
     <li>Item 1</li>
     <li>Item 2</li>
-  </ul>`
+  </ul>`,
 );
 
 const nextItem = $('li:first').next();
@@ -229,7 +229,7 @@ const $ = cheerio.load(
     <li>[1]</li>
     <li>[2]</li>
     <li>[3]</li>
-  </ul>`
+  </ul>`,
 );
 
 const nextAll = $('li:first').nextAll();
@@ -237,7 +237,7 @@ const prevAll = $('li:last').prevAll();
 const siblings = $('li:eq(1)').siblings();
 
 render(
-  `Next All: ${nextAll.text()} | Prev All: ${prevAll.text()} | Siblings: ${siblings.text()}`
+  `Next All: ${nextAll.text()} | Prev All: ${prevAll.text()} | Siblings: ${siblings.text()}`,
 );
 ```
 
@@ -264,7 +264,7 @@ const $ = cheerio.load(
     <li>Item 1</li>
     <li>Item 2</li>
     <li>Item 3</li>
-  </ul>`
+  </ul>`,
 );
 
 const nextUntil = $('li:first').nextUntil('li:last-child');
@@ -299,7 +299,7 @@ const $ = cheerio.load(
   `<ul>
     <li>Item 1</li>
     <li>Item 2</li>
-  </ul>`
+  </ul>`,
 );
 
 const secondItem = $('li').eq(1);
@@ -325,14 +325,14 @@ const $ = cheerio.load(
   `<ul>
     <li class="item">Item 1</li>
     <li>Item 2</li>
-  </ul>`
+  </ul>`,
 );
 
 const matchingItems = $('li').filter('.item');
 const nonMatchingItems = $('li').not('.item');
 
 render(
-  `Matching: ${matchingItems.text()} | Non-matching: ${nonMatchingItems.text()}`
+  `Matching: ${matchingItems.text()} | Non-matching: ${nonMatchingItems.text()}`,
 );
 ```
 
@@ -353,7 +353,7 @@ const $ = cheerio.load(
     <li>
       <strong>Item 2</strong>
     </li>
-  </ul>`
+  </ul>`,
 );
 
 const matchingItems = $('li').has('strong');
@@ -378,7 +378,7 @@ const $ = cheerio.load(
   `<ul>
     <li>Item 1</li>
     <li>Item 2</li>
-  </ul>`
+  </ul>`,
 );
 
 const firstItem = $('li').first();

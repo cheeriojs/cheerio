@@ -9,7 +9,7 @@ const defaultOpts = { _useHtmlParser2: false };
 const parse = getParse((content, options, isDocument, context) =>
   options._useHtmlParser2
     ? parseWithHtmlparser2(content, options)
-    : parseWithParse5(content, options, isDocument, context)
+    : parseWithParse5(content, options, isDocument, context),
 );
 
 // Tags
@@ -135,7 +135,7 @@ describe('parse', () => {
       expect(elem.type).toBe('comment');
       expect(elem).toHaveProperty(
         'data',
-        conditional.replace('<!--', '').replace('-->', '')
+        conditional.replace('<!--', '').replace('-->', ''),
       );
     });
 
@@ -155,7 +155,7 @@ describe('parse', () => {
       expect(script_.childNodes[0].type).toBe('text');
       expect(script_.childNodes[0]).toHaveProperty(
         'data',
-        'alert("hi world!");'
+        'alert("hi world!");',
       );
     });
 
@@ -169,7 +169,7 @@ describe('parse', () => {
       expect(style_.childNodes[0].type).toBe('text');
       expect(style_.childNodes[0]).toHaveProperty(
         'data',
-        ' h2 { color:blue; } '
+        ' h2 { color:blue; } ',
       );
     });
 
@@ -249,7 +249,7 @@ describe('parse', () => {
         '<div><a></a><span></span><p></p></div>',
         defaultOpts,
         false,
-        null
+        null,
       ).childNodes[0] as Element;
       const childNodes = root.childNodes as Element[];
 
@@ -291,13 +291,13 @@ describe('parse', () => {
       expect(childNodes[0]).toHaveProperty('tagName', 'i');
       expect((childNodes[0] as Element).childNodes[0]).toHaveProperty(
         'data',
-        'A'
+        'A',
       );
       expect(childNodes[1]).toHaveProperty('data', '<=');
       expect(childNodes[2]).toHaveProperty('tagName', 'i');
       expect((childNodes[2] as Element).childNodes[0]).toHaveProperty(
         'data',
-        'B'
+        'B',
       );
     });
 
@@ -306,7 +306,7 @@ describe('parse', () => {
         '<a></a><script>foo //<![CDATA[ bar</script><b></b>',
         defaultOpts,
         false,
-        null
+        null,
       );
       const childNodes = root.childNodes as Element[];
 
@@ -314,7 +314,7 @@ describe('parse', () => {
       expect(childNodes[1].tagName).toBe('script');
       expect(childNodes[1].childNodes[0]).toHaveProperty(
         'data',
-        'foo //<![CDATA[ bar'
+        'foo //<![CDATA[ bar',
       );
       expect(childNodes[2].tagName).toBe('b');
     });
@@ -332,7 +332,7 @@ describe('parse', () => {
         '<table><td>bar</td></tr></table>',
         defaultOpts,
         false,
-        null
+        null,
       );
       const childNodes = root.childNodes as Element[];
 
@@ -341,14 +341,15 @@ describe('parse', () => {
       expect(childNodes[0].childNodes[0]).toHaveProperty('tagName', 'tbody');
       expect((childNodes[0] as any).childNodes[0].childNodes[0]).toHaveProperty(
         'tagName',
-        'tr'
+        'tr',
       );
       expect(
-        (childNodes[0] as any).childNodes[0].childNodes[0].childNodes[0].tagName
+        (childNodes[0] as any).childNodes[0].childNodes[0].childNodes[0]
+          .tagName,
       ).toBe('td');
       expect(
         (childNodes[0] as any).childNodes[0].childNodes[0].childNodes[0]
-          .childNodes[0].data
+          .childNodes[0].data,
       ).toBe('bar');
     });
 
@@ -366,7 +367,7 @@ describe('parse', () => {
         '<tr><td>i1</td></tr><tr><td>i2</td></td></tr><tr><td>i3</td></td></tr>',
         defaultOpts,
         false,
-        null
+        null,
       );
       const childNodes = root.childNodes as Element[];
 
@@ -378,7 +379,7 @@ describe('parse', () => {
         expect(child.childNodes[0]).toHaveProperty('tagName', 'td');
         expect((child.childNodes[0] as Element).childNodes[0]).toHaveProperty(
           'data',
-          `i${i + 1}`
+          `i${i + 1}`,
         );
       }
     });
@@ -422,7 +423,7 @@ describe('parse', () => {
         '<pre>\nA <- factor(A, levels = c("c","a","b"))\n</pre>',
         defaultOpts,
         false,
-        null
+        null,
       );
       const childNodes = root.childNodes as Element[];
 
@@ -430,7 +431,7 @@ describe('parse', () => {
       expect(childNodes[0].tagName).toBe('pre');
       expect(childNodes[0].childNodes[0]).toHaveProperty(
         'data',
-        'A <- factor(A, levels = c("c","a","b"))\n'
+        'A <- factor(A, levels = c("c","a","b"))\n',
       );
     });
 
@@ -439,7 +440,7 @@ describe('parse', () => {
         '<p>Hello</p>',
         { ...defaultOpts, sourceCodeLocationInfo: true },
         false,
-        null
+        null,
       );
       const location = root.children[0].sourceCodeLocation;
 
