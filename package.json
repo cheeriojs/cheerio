@@ -86,7 +86,7 @@
     "eslint-plugin-expect-type": "^0.2.3",
     "eslint-plugin-jest": "^27.6.0",
     "eslint-plugin-jsdoc": "^46.9.1",
-    "eslint-plugin-n": "^16.4.0",
+    "eslint-plugin-n": "^16.5.0",
     "eslint-plugin-unicorn": "^49.0.0",
     "husky": "^8.0.3",
     "jest": "^29.7.0",
