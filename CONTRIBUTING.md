@@ -5,7 +5,8 @@ we'd like to work with you:
 
 1.  File an issue on GitHub describing the contribution you'd like to make. This
     will help us to get you started on the right foot.
-2.  Create a single commit that addresses the issue:
+2.  Fork the project, and make your changes in a new branch based off of the
+    `main` branch:
     1.  Follow the project's code style (see below)
     2.  Add enough unit tests to "prove" that your patch is correct
     3.  Update the project documentation as needed (see below)

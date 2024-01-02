@@ -78,7 +78,7 @@ const config = {
             label: 'Tutorial',
           },
           {
-            to: 'docs/api/',
+            to: 'docs/api',
             label: 'API',
             position: 'left',
           },
@@ -102,7 +102,7 @@ const config = {
               },
               {
                 label: 'API',
-                to: 'docs/api/',
+                to: 'docs/api',
               },
             ],
           },
@@ -221,7 +221,7 @@ const config = {
                 'xml',
               ].map((name) => `/functions/${name}.html`),
             ],
-            to: `/docs/api/`,
+            to: '/docs/api',
           },
         ],
       }),
@@ -233,16 +233,10 @@ const config = {
         // TypeDoc options
         entryPoints: ['../src/batteries.ts'],
         tsconfig: '../tsconfig.json',
-        plugin: ['./typedoc/typedoc-plugin-class-fns-to-methods.cjs'],
         readme: 'none',
         excludePrivate: true,
 
         externalSymbolLinkMappings: {
-          typescript: {
-            Promise:
-              'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise',
-            URL: 'https://developer.mozilla.org/en-US/docs/Web/API/URL',
-          },
           domhandler: {
             Document: 'https://domhandler.js.org/classes/Document.html',
             Element: 'https://domhandler.js.org/classes/Element.html',
