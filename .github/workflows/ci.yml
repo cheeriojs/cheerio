@@ -32,10 +32,10 @@ jobs:
 
     steps:
       - name: Clone repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3.6.0
+        uses: actions/setup-node@v4.0.1
         with:
           node-version: '${{ matrix.node }}'
           cache: 'npm'
@@ -52,7 +52,7 @@ jobs:
         if: matrix.node == env.NODE_COV
 
       - name: Run Coveralls
-        uses: coverallsapp/github-action@v2.2.0
+        uses: coverallsapp/github-action@v2.2.3
         if: matrix.node == env.NODE_COV
         continue-on-error: true
         with:

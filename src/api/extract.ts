@@ -6,7 +6,7 @@ type ExtractDescriptorFn = (
   el: Element,
   key: string,
   // TODO: This could be typed with ExtractedMap
-  obj: Record<string, unknown>
+  obj: Record<string, unknown>,
 ) => unknown;
 
 interface ExtractDescriptor {
@@ -21,25 +21,25 @@ export interface ExtractMap {
 }
 
 type ExtractedValue<V extends ExtractValue, M extends ExtractMap> = V extends [
-  string | ExtractDescriptor
+  string | ExtractDescriptor,
 ]
   ? NonNullable<ExtractedValue<V[0], M>>[]
   : V extends string
-  ? string | undefined
-  : V extends ExtractDescriptor
-  ? V['value'] extends ExtractMap
-    ? ExtractedMap<V['value']> | undefined
-    : V['value'] extends ExtractDescriptorFn
-    ? ReturnType<V['value']> | undefined
-    : ReturnType<typeof prop> | undefined
-  : never;
+    ? string | undefined
+    : V extends ExtractDescriptor
+      ? V['value'] extends ExtractMap
+        ? ExtractedMap<V['value']> | undefined
+        : V['value'] extends ExtractDescriptorFn
+          ? ReturnType<V['value']> | undefined
+          : ReturnType<typeof prop> | undefined
+      : never;
 
 export type ExtractedMap<M extends ExtractMap> = {
   [key in keyof M]: ExtractedValue<M[key], M>;
 };
 
 function getExtractDescr(
-  descr: string | ExtractDescriptor
+  descr: string | ExtractDescriptor,
 ): Required<ExtractDescriptor> {
   if (typeof descr === 'string') {
     return { selector: descr, value: 'textContent' };
@@ -61,7 +61,7 @@ function getExtractDescr(
  */
 export function extract<M extends ExtractMap, T extends AnyNode>(
   this: Cheerio<T>,
-  map: M
+  map: M,
 ): ExtractedMap<M> {
   const ret: Record<string, unknown> = {};
 
@@ -75,8 +75,8 @@ export function extract<M extends ExtractMap, T extends AnyNode>(
       typeof value === 'function'
         ? value
         : typeof value === 'string'
-        ? (el: Element) => this._make(el).prop(value)
-        : (el: Element) => this._make(el).extract(value);
+          ? (el: Element) => this._make(el).prop(value)
+          : (el: Element) => this._make(el).extract(value);
 
     if (isArray) {
       ret[key] = this._findBySelector(selector, Number.POSITIVE_INFINITY)

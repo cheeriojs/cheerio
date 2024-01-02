@@ -57,7 +57,7 @@ describe('cheerio', () => {
 
   it('should be able to create complicated html', () => {
     const $script = cheerio(
-      '<script src="script.js" type="text/javascript"></script>'
+      '<script src="script.js" type="text/javascript"></script>',
     ) as Cheerio<Element>;
     expect($script).not.toHaveLength(0);
     expect($script).toHaveLength(1);
@@ -144,7 +144,7 @@ describe('cheerio', () => {
   it('should be able to select multiple classes: cheerio(".btn.primary")', () => {
     const $a = cheerio(
       '.btn.primary',
-      '<p><a class="btn primary" href="#">Save</a></p>'
+      '<p><a class="btn primary" href="#">Save</a></p>',
     );
     expect($a).toHaveLength(1);
     expect($a[0].childNodes[0]).toHaveProperty('data', 'Save');
@@ -305,7 +305,7 @@ describe('cheerio', () => {
 
       expect($('MixedCaseTag').get(0)).toHaveProperty(
         'tagName',
-        'MixedCaseTag'
+        'MixedCaseTag',
       );
       expect($.html()).toBe(expected);
     });
@@ -321,7 +321,7 @@ describe('cheerio', () => {
 
       expect($('MixedCaseTag').get(0)).toHaveProperty(
         'tagName',
-        'mixedcasetag'
+        'mixedcasetag',
       );
       expect($.html()).toBe(expectedNoXml);
       expect($.html({ xml: true })).toBe(expectedXml);
@@ -411,7 +411,7 @@ describe('cheerio', () => {
 
       // `scriptingEnabled: false` - content of noscript will parsed
       const noScripts = cheerio.load(noscript, { scriptingEnabled: false })(
-        'noscript'
+        'noscript',
       );
       expect(noScripts).toHaveLength(1);
       expect(noScripts[0].children).toHaveLength(2);

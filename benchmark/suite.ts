@@ -9,7 +9,7 @@ import cheerio from '../lib/index.js';
 const documentDir = path.join(__dirname, 'documents');
 const jQuerySrc = fs.readFileSync(
   path.join(__dirname, '../node_modules/jquery/dist/jquery.slim.js'),
-  'utf8'
+  'utf8',
 );
 const jQueryScript = new Script(jQuerySrc);
 let filterRe = /./;
@@ -82,7 +82,7 @@ export default class Suites {
   _benchCheerio<T>(
     suite: Suite,
     markup: string,
-    options: SuiteOptions<T>
+    options: SuiteOptions<T>,
   ): void {
     const $ = cheerio.load(markup);
     const testFn = options.test;

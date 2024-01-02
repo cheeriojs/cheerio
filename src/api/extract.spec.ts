@@ -28,12 +28,12 @@ describe('$.extract', () => {
 
     // Existing values should be extracted.
     expect<{ red: string | undefined }>(
-      $root.extract({ red: '.red' })
+      $root.extract({ red: '.red' }),
     ).toStrictEqual({
       red: 'Four',
     });
     expect<RedSelObject>(
-      $root.extract({ red: '.red', sel: '.sel' })
+      $root.extract({ red: '.red', sel: '.sel' }),
     ).toStrictEqual({
       red: 'Four',
       sel: 'Three',
@@ -43,7 +43,7 @@ describe('$.extract', () => {
       $root.extract({
         red: { selector: '.red' },
         sel: { selector: '.sel' },
-      })
+      }),
     ).toStrictEqual({ red: 'Four', sel: 'Three' });
     // Should support extraction of multiple values.
 
@@ -61,13 +61,13 @@ describe('$.extract', () => {
       $root.extract({
         red: { selector: '.red', value: 'outerHTML' },
         sel: { selector: '.sel', value: 'tagName' },
-      })
+      }),
     ).toStrictEqual({ red: '<li class="red">Four</li>', sel: 'LI' });
     // Should support custom `prop`s for multiple values.
     expect<{ red: string[] }>(
       $root.extract({
         red: [{ selector: '.red', value: 'outerHTML' }],
-      })
+      }),
     ).toStrictEqual({
       red: [
         '<li class="red">Four</li>',
@@ -82,7 +82,7 @@ describe('$.extract', () => {
           selector: '.red',
           value: (el, key) => `${key}=${$(el).text()}`,
         },
-      })
+      }),
     ).toStrictEqual({ red: 'red=Four' });
     // Should support custom extraction functions for multiple values.
     expect<{ red: string[] }>(
@@ -93,7 +93,7 @@ describe('$.extract', () => {
             value: (el, key) => `${key}=${$(el).text()}`,
           },
         ],
-      })
+      }),
     ).toStrictEqual({ red: ['red=Four', 'red=Five', 'red=Nine'] });
     // Should support extraction objects
 
@@ -109,7 +109,7 @@ describe('$.extract', () => {
     });
 
     expect<{ section: RedSelObject | undefined }>(
-      subExtractObject
+      subExtractObject,
     ).toStrictEqual({
       section: {
         red: 'Five',

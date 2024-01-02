@@ -151,6 +151,7 @@ describe('deprecated APIs', () => {
      * $('h1').html();
      * //=> '<h1>Hello, <span>world</span>.'
      * ```
+     *
      * @example <caption>To render the markup of an entire document, invoke the
      * `html` function exported by the Cheerio module with a "root"
      * selection.</caption>
@@ -208,6 +209,7 @@ describe('deprecated APIs', () => {
      * $('h1').text();
      * //=> 'Hello, world.'
      * ```
+     *
      * @example <caption>To render the text content of an entire document,
      * invoke the `text` function exported by the Cheerio module with a "root"
      * selection. </caption>
@@ -225,26 +227,26 @@ describe('deprecated APIs', () => {
 
       it('(cheerio object) : should omit comment nodes', () => {
         const $ = cheerio.load(
-          '<a>This is <!-- a comment --> not a comment.</a>'
+          '<a>This is <!-- a comment --> not a comment.</a>',
         );
         expect($.text($('a'))).toBe('This is  not a comment.');
       });
 
       it('(cheerio object) : should include text contents of children recursively', () => {
         const $ = cheerio.load(
-          '<a>This is <div>a child with <span>another child and <!-- a comment --> not a comment</span> followed by <em>one last child</em> and some final</div> text.</a>'
+          '<a>This is <div>a child with <span>another child and <!-- a comment --> not a comment</span> followed by <em>one last child</em> and some final</div> text.</a>',
         );
         expect($.text($('a'))).toBe(
-          'This is a child with another child and  not a comment followed by one last child and some final text.'
+          'This is a child with another child and  not a comment followed by one last child and some final text.',
         );
       });
 
       it('() : should return the rendered text content of the root', () => {
         const $ = cheerio.load(
-          '<a>This is <div>a child with <span>another child and <!-- a comment --> not a comment</span> followed by <em>one last child</em> and some final</div> text.</a>'
+          '<a>This is <div>a child with <span>another child and <!-- a comment --> not a comment</span> followed by <em>one last child</em> and some final</div> text.</a>',
         );
         expect($.text()).toBe(
-          'This is a child with another child and  not a comment followed by one last child and some final text.'
+          'This is a child with another child and  not a comment followed by one last child and some final text.',
         );
       });
 
@@ -255,7 +257,7 @@ describe('deprecated APIs', () => {
 
       it('(cheerio object) : should omit style tags', () => {
         const $ = cheerio.load(
-          '<style type="text/css">.cf-hidden { display: none; }</style>'
+          '<style type="text/css">.cf-hidden { display: none; }</style>',
         );
         expect($.text()).toBe('.cf-hidden { display: none; }');
       });

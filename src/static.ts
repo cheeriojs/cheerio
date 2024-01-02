@@ -20,7 +20,7 @@ import type { ExtractedMap, ExtractMap } from './api/extract.js';
 function render(
   that: CheerioAPI,
   dom: BasicAcceptedElems<AnyNode> | undefined,
-  options: InternalOptions
+  options: InternalOptions,
 ): string {
   if (!that) return '';
 
@@ -36,7 +36,7 @@ function render(
  */
 function isOptions(
   dom?: BasicAcceptedElems<AnyNode> | CheerioOptions | null,
-  options?: CheerioOptions
+  options?: CheerioOptions,
 ): dom is CheerioOptions {
   return (
     !options &&
@@ -66,12 +66,12 @@ export function html(this: CheerioAPI, options?: CheerioOptions): string;
 export function html(
   this: CheerioAPI,
   dom?: BasicAcceptedElems<AnyNode>,
-  options?: CheerioOptions
+  options?: CheerioOptions,
 ): string;
 export function html(
   this: CheerioAPI,
   dom?: BasicAcceptedElems<AnyNode> | CheerioOptions,
-  options?: CheerioOptions
+  options?: CheerioOptions,
 ): string {
   /*
    * Be flexible about parameters, sometimes we call html(),
@@ -102,7 +102,7 @@ export function html(
  */
 export function xml(
   this: CheerioAPI,
-  dom?: BasicAcceptedElems<AnyNode>
+  dom?: BasicAcceptedElems<AnyNode>,
 ): string {
   const options = { ...this._options, xmlMode: true };
 
@@ -122,7 +122,7 @@ export function xml(
  */
 export function text(
   this: CheerioAPI | void,
-  elements?: ArrayLike<AnyNode>
+  elements?: ArrayLike<AnyNode>,
 ): string {
   const elems = elements ?? (this ? this.root() : []);
 
@@ -152,14 +152,14 @@ export function parseHTML(
   this: CheerioAPI,
   data: string,
   context?: unknown | boolean,
-  keepScripts?: boolean
+  keepScripts?: boolean,
 ): AnyNode[];
 export function parseHTML(this: CheerioAPI, data?: '' | null): null;
 export function parseHTML(
   this: CheerioAPI,
   data?: string | null,
   context?: unknown | boolean,
-  keepScripts = typeof context === 'boolean' ? context : false
+  keepScripts = typeof context === 'boolean' ? context : false,
 ): AnyNode[] | null {
   if (!data || typeof data !== 'string') {
     return null;
@@ -195,6 +195,7 @@ export function parseHTML(
  * $.root().append('<ul id="vegetables"></ul>').html();
  * //=> <ul id="fruits">...</ul><ul id="vegetables"></ul>
  * ```
+ *
  * @returns Cheerio instance wrapping the root node.
  * @alias Cheerio.root
  */
@@ -245,7 +246,7 @@ export function contains(container: AnyNode, contained: AnyNode): boolean {
  */
 export function extract<M extends ExtractMap>(
   this: CheerioAPI,
-  map: M
+  map: M,
 ): ExtractedMap<M> {
   return this.root().extract(map);
 }
@@ -264,7 +265,7 @@ type Writable<T> = { -readonly [P in keyof T]: T[P] };
  */
 export function merge<T>(
   arr1: Writable<ArrayLike<T>>,
-  arr2: ArrayLike<T>
+  arr2: ArrayLike<T>,
 ): ArrayLike<T> | undefined {
   if (!isArrayLike(arr1) || !isArrayLike(arr2)) {
     return;

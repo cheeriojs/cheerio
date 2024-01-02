@@ -158,7 +158,7 @@ date and the release notes from the release page:
 import * as cheerio from 'cheerio';
 
 const $ = await cheerio.fromURL(
-  'https://github.com/cheeriojs/cheerio/releases'
+  'https://github.com/cheeriojs/cheerio/releases',
 );
 
 const data = $.extract({

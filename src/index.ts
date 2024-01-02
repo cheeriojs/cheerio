@@ -33,7 +33,7 @@ import { parseDocument as parseWithHtmlparser2 } from 'htmlparser2';
 const parse = getParse((content, options, isDocument, context) =>
   options._useHtmlParser2
     ? parseWithHtmlparser2(content, options)
-    : parseWithParse5(content, options, isDocument, context)
+    : parseWithParse5(content, options, isDocument, context),
 );
 
 // Duplicate docs due to https://github.com/TypeStrong/typedoc/issues/1616
@@ -55,7 +55,7 @@ const parse = getParse((content, options, isDocument, context) =>
 export const load = getLoad(parse, (dom, options) =>
   options._useHtmlParser2
     ? renderWithHtmlparser2(dom, options)
-    : renderWithParse5(dom)
+    : renderWithParse5(dom),
 );
 
 const defaultInstance = load([]);
@@ -87,7 +87,7 @@ export const { contains, merge } = staticMethods;
  */
 export const html: (
   dom: BasicAcceptedElems<AnyNode>,
-  options?: CheerioOptions
+  options?: CheerioOptions,
 ) => string = staticMethods.html.bind(defaultInstance);
 
 /**

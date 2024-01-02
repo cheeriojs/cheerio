@@ -34,7 +34,7 @@ import type { BasicAcceptedElems, AcceptedElems } from '../types.js';
 export function _makeDomArray<T extends AnyNode>(
   this: Cheerio<T>,
   elem?: BasicAcceptedElems<AnyNode> | BasicAcceptedElems<AnyNode>[],
-  clone?: boolean
+  clone?: boolean,
 ): AnyNode[] {
   if (elem == null) {
     return [];
@@ -78,8 +78,8 @@ function _insert(
   concatenator: (
     dom: AnyNode[],
     children: AnyNode[],
-    parent: ParentNode
-  ) => void
+    parent: ParentNode,
+  ) => void,
 ) {
   return function <T extends AnyNode>(
     this: Cheerio<T>,
@@ -88,8 +88,8 @@ function _insert(
           (
             this: AnyNode,
             i: number,
-            html: string
-          ) => BasicAcceptedElems<AnyNode>
+            html: string,
+          ) => BasicAcceptedElems<AnyNode>,
         ]
       | BasicAcceptedElems<AnyNode>[]
   ) {
@@ -127,7 +127,7 @@ function uniqueSplice(
   spliceIdx: number,
   spliceCount: number,
   newElems: AnyNode[],
-  parent: ParentNode
+  parent: ParentNode,
 ): AnyNode[] {
   const spliceArgs: Parameters<typeof Array.prototype.splice> = [
     spliceIdx,
@@ -199,13 +199,14 @@ function uniqueSplice(
  * //      <li class="plum">Plum</li>
  * //    </ul>
  * ```
+ *
  * @param target - Element to append elements to.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/appendTo/}
  */
 export function appendTo<T extends AnyNode>(
   this: Cheerio<T>,
-  target: BasicAcceptedElems<AnyNode>
+  target: BasicAcceptedElems<AnyNode>,
 ): Cheerio<T> {
   const appendTarget = isCheerio<T>(target) ? target : this._make(target);
 
@@ -231,13 +232,14 @@ export function appendTo<T extends AnyNode>(
  * //      <li class="pear">Pear</li>
  * //    </ul>
  * ```
+ *
  * @param target - Element to prepend elements to.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/prependTo/}
  */
 export function prependTo<T extends AnyNode>(
   this: Cheerio<T>,
-  target: BasicAcceptedElems<AnyNode>
+  target: BasicAcceptedElems<AnyNode>,
 ): Cheerio<T> {
   const prependTarget = isCheerio<T>(target) ? target : this._make(target);
 
@@ -262,6 +264,7 @@ export function prependTo<T extends AnyNode>(
  * //      <li class="plum">Plum</li>
  * //    </ul>
  * ```
+ *
  * @see {@link https://api.jquery.com/append/}
  */
 export const append = _insert((dom, children, parent) => {
@@ -284,6 +287,7 @@ export const append = _insert((dom, children, parent) => {
  * //      <li class="pear">Pear</li>
  * //    </ul>
  * ```
+ *
  * @see {@link https://api.jquery.com/prepend/}
  */
 export const prepend = _insert((dom, children, parent) => {
@@ -294,12 +298,12 @@ function _wrap(
   insert: (
     el: AnyNode,
     elInsertLocation: ParentNode,
-    wrapperDom: ParentNode[]
-  ) => void
+    wrapperDom: ParentNode[],
+  ) => void,
 ) {
   return function <T extends AnyNode>(
     this: Cheerio<T>,
-    wrapper: AcceptedElems<AnyNode>
+    wrapper: AcceptedElems<AnyNode>,
   ) {
     const lastIdx = this.length - 1;
     const lastParent = this.parents().last();
@@ -311,8 +315,8 @@ function _wrap(
         typeof wrapper === 'function'
           ? wrapper.call(el, i, el)
           : typeof wrapper === 'string' && !isHtml(wrapper)
-          ? lastParent.find(wrapper).clone()
-          : wrapper;
+            ? lastParent.find(wrapper).clone()
+            : wrapper;
 
       const [wrapperDom] = this._makeDomArray(wrap, i < lastIdx);
 
@@ -381,6 +385,7 @@ function _wrap(
  * //     </div>
  * //   </ul>
  * ```
+ *
  * @param wrapper - The DOM structure to wrap around each element in the
  *   selection.
  * @see {@link https://api.jquery.com/wrap/}
@@ -439,6 +444,7 @@ export const wrap = _wrap((el, elInsertLocation, wrapperDom) => {
  * //     </li>
  * //   </ul>
  * ```
+ *
  * @param wrapper - The DOM structure to wrap around the content of each element
  *   in the selection.
  * @returns The instance itself, for chaining.
@@ -459,7 +465,7 @@ export const wrapInner = _wrap((el, elInsertLocation, wrapperDom) => {
  *
  * ```js
  * const $ = cheerio.load(
- *   '<div id=test>\n  <div><p>Hello</p></div>\n  <div><p>World</p></div>\n</div>'
+ *   '<div id=test>\n  <div><p>Hello</p></div>\n  <div><p>World</p></div>\n</div>',
  * );
  * $('#test p').unwrap();
  *
@@ -468,11 +474,12 @@ export const wrapInner = _wrap((el, elInsertLocation, wrapperDom) => {
  * //     <p>World</p>
  * //   </div>
  * ```
+ *
  * @example <caption>with selector</caption>
  *
  * ```js
  * const $ = cheerio.load(
- *   '<div id=test>\n  <p>Hello</p>\n  <b><p>World</p></b>\n</div>'
+ *   '<div id=test>\n  <p>Hello</p>\n  <b><p>World</p></b>\n</div>',
  * );
  * $('#test p').unwrap('b');
  *
@@ -481,6 +488,7 @@ export const wrapInner = _wrap((el, elInsertLocation, wrapperDom) => {
  * //     <p>World</p>
  * //   </div>
  * ```
+ *
  * @param selector - A selector to check the parent element against. If an
  *   element's parent does not match the selector, the element won't be
  *   unwrapped.
@@ -489,7 +497,7 @@ export const wrapInner = _wrap((el, elInsertLocation, wrapperDom) => {
  */
 export function unwrap<T extends AnyNode>(
   this: Cheerio<T>,
-  selector?: string
+  selector?: string,
 ): Cheerio<T> {
   this.parent(selector)
     .not('body')
@@ -511,7 +519,7 @@ export function unwrap<T extends AnyNode>(
  *
  * ```js
  * const $ = cheerio.load(
- *   '<div class="container"><div class="inner">First</div><div class="inner">Second</div></div>'
+ *   '<div class="container"><div class="inner">First</div><div class="inner">Second</div></div>',
  * );
  * $('.inner').wrapAll("<div class='new'></div>");
  *
@@ -522,11 +530,12 @@ export function unwrap<T extends AnyNode>(
  * //     </div>
  * //   </div>
  * ```
+ *
  * @example <caption>With an existing cheerio instance</caption>
  *
  * ```js
  * const $ = cheerio.load(
- *   '<span>Span 1</span><strong>Strong</strong><span>Span 2</span>'
+ *   '<span>Span 1</span><strong>Strong</strong><span>Span 2</span>',
  * );
  * const wrap = $('<div><p><em><b></b></em></p></div>');
  * $('span').wrapAll(wrap);
@@ -543,6 +552,7 @@ export function unwrap<T extends AnyNode>(
  * //   </div>
  * //   <strong>Strong</strong>
  * ```
+ *
  * @param wrapper - The DOM structure to wrap around all matched elements in the
  *   selection.
  * @returns The instance itself.
@@ -550,12 +560,12 @@ export function unwrap<T extends AnyNode>(
  */
 export function wrapAll<T extends AnyNode>(
   this: Cheerio<T>,
-  wrapper: AcceptedElems<T>
+  wrapper: AcceptedElems<T>,
 ): Cheerio<T> {
   const el = this[0];
   if (el) {
     const wrap: Cheerio<AnyNode> = this._make(
-      typeof wrapper === 'function' ? wrapper.call(el, 0, el) : wrapper
+      typeof wrapper === 'function' ? wrapper.call(el, 0, el) : wrapper,
     ).insertBefore(el);
 
     // If html is given as wrapper, wrap may contain text elements
@@ -602,6 +612,7 @@ export function wrapAll<T extends AnyNode>(
  * //      <li class="pear">Pear</li>
  * //    </ul>
  * ```
+ *
  * @param elems - HTML string, DOM element, array of DOM elements or Cheerio to
  *   insert after each element in the set of matched elements.
  * @returns The instance itself.
@@ -655,13 +666,14 @@ export function after<T extends AnyNode>(
  * //      <li class="pear">Pear</li>
  * //    </ul>
  * ```
+ *
  * @param target - Element to insert elements after.
  * @returns The set of newly inserted elements.
  * @see {@link https://api.jquery.com/insertAfter/}
  */
 export function insertAfter<T extends AnyNode>(
   this: Cheerio<T>,
-  target: BasicAcceptedElems<AnyNode>
+  target: BasicAcceptedElems<AnyNode>,
 ): Cheerio<T> {
   if (typeof target === 'string') {
     target = this._make<AnyNode>(target);
@@ -709,6 +721,7 @@ export function insertAfter<T extends AnyNode>(
  * //      <li class="pear">Pear</li>
  * //    </ul>
  * ```
+ *
  * @param elems - HTML string, DOM element, array of DOM elements or Cheerio to
  *   insert before each element in the set of matched elements.
  * @returns The instance itself.
@@ -762,13 +775,14 @@ export function before<T extends AnyNode>(
  * //      <li class="pear">Pear</li>
  * //    </ul>
  * ```
+ *
  * @param target - Element to insert elements before.
  * @returns The set of newly inserted elements.
  * @see {@link https://api.jquery.com/insertBefore/}
  */
 export function insertBefore<T extends AnyNode>(
   this: Cheerio<T>,
-  target: BasicAcceptedElems<AnyNode>
+  target: BasicAcceptedElems<AnyNode>,
 ): Cheerio<T> {
   const targetArr = this._make<AnyNode>(target);
 
@@ -813,13 +827,14 @@ export function insertBefore<T extends AnyNode>(
  * //      <li class="orange">Orange</li>
  * //    </ul>
  * ```
+ *
  * @param selector - Optional selector for elements to remove.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/remove/}
  */
 export function remove<T extends AnyNode>(
   this: Cheerio<T>,
-  selector?: string
+  selector?: string,
 ): Cheerio<T> {
   // Filter if we have selector
   const elems = selector ? this.filter(selector) : this;
@@ -848,13 +863,14 @@ export function remove<T extends AnyNode>(
  * //     <li class="plum">Plum</li>
  * //   </ul>
  * ```
+ *
  * @param content - Replacement for matched elements.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/replaceWith/}
  */
 export function replaceWith<T extends AnyNode>(
   this: Cheerio<T>,
-  content: AcceptedElems<AnyNode>
+  content: AcceptedElems<AnyNode>,
 ): Cheerio<T> {
   return domEach(this, (el, i) => {
     const { parent } = el;
@@ -885,8 +901,8 @@ export function replaceWith<T extends AnyNode>(
 }
 
 /**
- * Removes all children from each item in the selection.
- * Text nodes and comment nodes are left as is.
+ * Removes all children from each item in the selection. Text nodes and comment
+ * nodes are left as is.
  *
  * @category Manipulation
  * @example
@@ -896,6 +912,7 @@ export function replaceWith<T extends AnyNode>(
  * $.html();
  * //=>  <ul id="fruits"></ul>
  * ```
+ *
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/empty/}
  */
@@ -923,6 +940,7 @@ export function empty<T extends AnyNode>(this: Cheerio<T>): Cheerio<T> {
  * $('#fruits').html('<li class="mango">Mango</li>').html();
  * //=> <li class="mango">Mango</li>
  * ```
+ *
  * @returns The HTML content string.
  * @see {@link https://api.jquery.com/html/}
  */
@@ -937,17 +955,18 @@ export function html<T extends AnyNode>(this: Cheerio<T>): string | null;
  * $('.orange').html('<li class="mango">Mango</li>').html();
  * //=> <li class="mango">Mango</li>
  * ```
+ *
  * @param str - The content to replace selection's contents with.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/html/}
  */
 export function html<T extends AnyNode>(
   this: Cheerio<T>,
-  str: string | Cheerio<T>
+  str: string | Cheerio<T>,
 ): Cheerio<T>;
 export function html<T extends AnyNode>(
   this: Cheerio<T>,
-  str?: string | Cheerio<AnyNode>
+  str?: string | Cheerio<AnyNode>,
 ): Cheerio<T> | string | null {
   if (str === undefined) {
     const el = this[0];
@@ -995,6 +1014,7 @@ export function toString<T extends AnyNode>(this: Cheerio<T>): string {
  * //    Orange
  * //    Pear
  * ```
+ *
  * @returns The text contents of the collection.
  * @see {@link https://api.jquery.com/text/}
  */
@@ -1010,17 +1030,18 @@ export function text<T extends AnyNode>(this: Cheerio<T>): string;
  * $('.orange').text('Orange');
  * //=> <div class="orange">Orange</div>
  * ```
+ *
  * @param str - The text to set as the content of each matched element.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/text/}
  */
 export function text<T extends AnyNode>(
   this: Cheerio<T>,
-  str: string | ((this: AnyNode, i: number, text: string) => string)
+  str: string | ((this: AnyNode, i: number, text: string) => string),
 ): Cheerio<T>;
 export function text<T extends AnyNode>(
   this: Cheerio<T>,
-  str?: string | ((this: AnyNode, i: number, text: string) => string)
+  str?: string | ((this: AnyNode, i: number, text: string) => string),
 ): Cheerio<T> | string {
   // If `str` is undefined, act as a "getter"
   if (str === undefined) {
@@ -1029,7 +1050,7 @@ export function text<T extends AnyNode>(
   if (typeof str === 'function') {
     // Function support
     return domEach(this, (el, i) =>
-      this._make(el).text(str.call(el, i, staticText([el])))
+      this._make(el).text(str.call(el, i, staticText([el]))),
     );
   }
 
@@ -1055,12 +1076,13 @@ export function text<T extends AnyNode>(
  * ```js
  * const moreFruit = $('#fruits').clone();
  * ```
+ *
  * @returns The cloned object.
  * @see {@link https://api.jquery.com/clone/}
  */
 export function clone<T extends AnyNode>(this: Cheerio<T>): Cheerio<T> {
   const clone = Array.prototype.map.call(this.get(), (el) =>
-    cloneNode(el, true)
+    cloneNode(el, true),
   ) as T[];
 
   // Add a root node around the cloned nodes

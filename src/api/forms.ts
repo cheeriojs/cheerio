@@ -19,6 +19,7 @@ const rCRLF = /\r?\n/g;
  * $('<form><input name="foo" value="bar" /></form>').serialize();
  * //=> 'foo=bar'
  * ```
+ *
  * @returns The serialized form.
  * @see {@link https://api.jquery.com/serialize/}
  */
@@ -29,7 +30,7 @@ export function serialize<T extends AnyNode>(this: Cheerio<T>): string {
   // Serialize each element into a key/value string
   const retArr = arr.map(
     (data) =>
-      `${encodeURIComponent(data.name)}=${encodeURIComponent(data.value)}`
+      `${encodeURIComponent(data.name)}=${encodeURIComponent(data.value)}`,
   );
 
   // Return the resulting serialization
@@ -46,11 +47,12 @@ export function serialize<T extends AnyNode>(this: Cheerio<T>): string {
  * $('<form><input name="foo" value="bar" /></form>').serializeArray();
  * //=> [ { name: 'foo', value: 'bar' } ]
  * ```
+ *
  * @returns The serialized form.
  * @see {@link https://api.jquery.com/serializeArray/}
  */
 export function serializeArray<T extends AnyNode>(
-  this: Cheerio<T>
+  this: Cheerio<T>,
 ): {
   name: string;
   value: string;
@@ -69,7 +71,7 @@ export function serializeArray<T extends AnyNode>(
         // And cannot be clicked (`[type=submit]`) or are used in `x-www-form-urlencoded` (`[type=file]`)
         ':not(:submit, :button, :image, :reset, :file)' +
         // And are either checked/don't have a checkable state
-        ':matches([checked], :not(:checkbox, :radio))'
+        ':matches([checked], :not(:checkbox, :radio))',
       // Convert each of the elements to its value(s)
     )
     .map<
@@ -91,7 +93,7 @@ export function serializeArray<T extends AnyNode>(
            * We trim replace any line endings (e.g. `\r` or `\r\n` with `\r\n`) to guarantee consistency across platforms
            * These can occur inside of `<textarea>'s`
            */
-          ({ name, value: val.replace(rCRLF, '\r\n') })
+          ({ name, value: val.replace(rCRLF, '\r\n') }),
         );
       }
       // Otherwise (e.g. `<input type="text">`, return only one key/value pair
