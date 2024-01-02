@@ -84,7 +84,7 @@
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-expect-type": "^0.3.0",
-    "eslint-plugin-jest": "^27.6.0",
+    "eslint-plugin-jest": "^27.6.1",
     "eslint-plugin-jsdoc": "^46.9.1",
     "eslint-plugin-n": "^16.6.0",
     "eslint-plugin-unicorn": "^49.0.0",
