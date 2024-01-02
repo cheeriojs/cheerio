@@ -1,6 +1,4 @@
 import React from 'react';
-import clsx from 'clsx';
-import styles from './styles.module.css';
 
 interface TweetItem {
   id: string;
@@ -47,7 +45,7 @@ const TweetList = [
       <>
         You probably shouldn't use jQuery, but if you're great at jQuery, you're
         going to be really popular on server-side projects that need web
-        scraping or HTML transformation. \"npm install cheerio\" ahoy!
+        scraping or HTML transformation. "npm install cheerio" ahoy!
       </>
     ),
   },
@@ -132,46 +130,46 @@ function Tweet({ id, name, user, date, tweet }: TweetItem) {
   });
 
   return (
-    <article className={styles.tweet} key={id}>
-      <header className={styles.tweetHeader}>
-        <img
-          className={styles.tweetAvatar}
-          src={`https://unavatar.io/${user}`}
-          alt={`${name}'s avatar`}
-          loading="lazy"
-        />
-        <div className={styles.tweetUserMeta}>
-          <h3 className={styles.tweetName}>{name}</h3>
-          <p className={styles.tweetUser}>
-            <a
-              href={`https://twitter.com/${user}`}
-              className={styles.tweetUserLink}
-            >
-              @{user}
-            </a>
-          </p>
+    <div className="card-demo col col--4 margin-bottom--sm">
+      <div className="card">
+        <div className="card__header">
+          <div className="avatar">
+            <img
+              className="avatar__photo"
+              src={`https://unavatar.io/${user}`}
+              alt={`${name}'s avatar`}
+              loading="lazy"
+            />
+            <div className="avatar__intro">
+              <div className="avatar__name">{name}</div>
+              <small className="avatar__subtitle">@{user}</small>
+            </div>
+          </div>
         </div>
-      </header>
-      <p className={styles.tweetText}>{tweet}</p>
-      <time className={styles.tweetDate} dateTime={date}>
-        <a
-          href={`https://twitter.com/${user}/status/${id}`}
-          className={styles.tweetUrl}
-        >
-          {formattedDate}
-        </a>
-      </time>
-    </article>
+        <div className="card__body">{tweet}</div>
+        <time className="card__footer">
+          <a
+            href={`https://twitter.com/${user}/status/${id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {formattedDate}
+          </a>
+        </time>
+      </div>
+    </div>
   );
 }
 
-export default function HomepageTweets() {
+export function HomepageTweets() {
   return (
-    <div className={clsx('container', styles.tweets)}>
-      <h2 className={styles.tweetsHeader}>What users say</h2>
-      {TweetList.map((props) => (
-        <Tweet {...props} />
-      ))}
+    <div className="container padding-vert--xl">
+      <h1>What users say</h1>
+      <div className="row">
+        {TweetList.map((props) => (
+          <Tweet {...props} />
+        ))}
+      </div>
     </div>
   );
 }
