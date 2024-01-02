@@ -130,7 +130,7 @@ function Tweet({ id, name, user, date, tweet }: TweetItem) {
   });
 
   return (
-    <div className="card-demo col col--4 margin-bottom--sm">
+    <div className="card-demo col col--4 margin-vert--sm">
       <div className="card">
         <div className="card__header">
           <div className="avatar">
@@ -164,7 +164,7 @@ function Tweet({ id, name, user, date, tweet }: TweetItem) {
 export function HomepageTweets() {
   return (
     <div className="container padding-vert--xl">
-      <h1>What users say</h1>
+      <h2 className="text--center">What Our Users Say</h2>
       <div className="row">
         {TweetList.map((props) => (
           <Tweet {...props} />

@@ -5,12 +5,9 @@ import Sponsors from '../../sponsors.json';
 
 export function HeadlineSponsors() {
   return (
-    <div className="container text--center">
-      <h2>Supported and Backed by</h2>
-      <div
-        className="container row text--left"
-        style={{ justifyContent: 'space-evenly' }}
-      >
+    <div className="container">
+      <h2 className="text--center">Supported and Backed by</h2>
+      <div className="container row" style={{ justifyContent: 'space-evenly' }}>
         {Sponsors.headliner.map((sponsor) => (
           <div className="col col--2 avatar row row--align-center margin-top--sm">
             <a
