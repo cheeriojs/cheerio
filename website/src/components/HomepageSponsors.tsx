@@ -12,7 +12,7 @@ export function HeadlineSponsors() {
         style={{ justifyContent: 'space-evenly' }}
       >
         {Sponsors.headliner.map((sponsor) => (
-          <div className="col col--2 avatar row row--align-center">
+          <div className="col col--2 avatar row row--align-center margin-top--sm">
             <a
               className="avatar__photo-link avatar__photo avatar__photo--lg"
               style={{ borderRadius: '10px' }}
@@ -30,7 +30,7 @@ export function HeadlineSponsors() {
           </div>
         ))}
         <a
-          className="col col--2 avatar row padding--md"
+          className="col col--2 avatar row padding--md margin-top--sm"
           style={{
             border: '1px solid #eaecef',
             borderRadius: '10px',
