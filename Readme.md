@@ -211,8 +211,14 @@ development and support.
 <a href="https://casinosicuri.info/" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasinosicuri-info%2F5dc691c%2Favatar.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=fd570730894e259b3af3a26a8fb3a8da" title="Casinosicuri.info" alt="Casinosicuri.info"></img>
           </a>
-<a href="https://slotoking.ua/games/" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Figrovye-avtomaty-ua%2F96bfde3%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=057f48bd081de8ca456b67f0f792648c" title="Игровые автоматы" alt="Игровые автоматы"></img>
+<a href="https://onlinecasinosspelen.com" target="_blank" rel="noopener noreferrer">
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fonlinecasinosspelen%2F4ce3830%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=4d82525abf323cf8f3681be773f5006a" title="OnlineCasinosSpelen" alt="OnlineCasinosSpelen"></img>
+          </a>
+<a href="https://casinoZonderregistratie.net/" target="_blank" rel="noopener noreferrer">
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fczrnet%2F24e6252%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=6369f37f0cb4c58a7caeeb38073acfea" title="CasinoZonderRegistratie.net" alt="CasinoZonderRegistratie.net"></img>
+          </a>
+<a href="https://Nieuwe-Casinos.net" target="_blank" rel="noopener noreferrer">
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fnieuwecasinos%2Fee150d6%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=61f228d48c19e3e62d085d027a5a30f5" title="Nieuwe-Casinos.net" alt="Nieuwe-Casinos.net"></img>
           </a>
 
 <!-- END SPONSORS -->
@@ -228,16 +234,7 @@ support for Cheerio and help us maintain and improve this open source project.
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fkafidoff-vasy%2Fd7ff85c%2Favatar.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=5f86412e7c79219385b275aaa4ee5e65" title="Vasy Kafidoff" alt="Vasy Kafidoff"></img>
           </a>
 <a href="https://medium.com/norch" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fespenklem%2F6075b19%2Favatar.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=c864d312e848f4e1ec19480e96503c06" title="Espen Klem" alt="Espen Klem"></img>
-          </a>
-<a href="https://github.com/gauthamchandra" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F5430280%3Fu%3D1115bcd3ed7aa8b2a62ff28f62ee4c2b92729903%26v%3D4%26s%3D128?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=60101476ca98f2b4a3dd62f577a1ad66" title="Gautham Chandra" alt="Gautham Chandra"></img>
-          </a>
-<a href="https://jarrodldavis.com" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F235875%3Fv%3D4%26s%3D128?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=653fd0868005d83df43e78488589ad4a" title="Jarrod Davis" alt="Jarrod Davis"></img>
-          </a>
-<a href="http://www.dr-chuck.com/" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F1197222%3Fu%3Dd6dc85c064736ab851c6d9e3318dcdd1be00fb2c%26v%3D4%26s%3D128?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=e68caf732c2bbe4fcd0a59bcb751bd4d" title="Charles Severance" alt="Charles Severance"></img>
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fespenklem%2F7e8cd40%2Favatar.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=113a5117055e25a5bc76df211866f2c4" title="Espen Klem" alt="Espen Klem"></img>
           </a>
 
 <!-- END SPONSORS -->
