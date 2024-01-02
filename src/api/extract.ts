@@ -25,14 +25,14 @@ type ExtractedValue<V extends ExtractValue, M extends ExtractMap> = V extends [
 ]
   ? NonNullable<ExtractedValue<V[0], M>>[]
   : V extends string
-  ? string | undefined
-  : V extends ExtractDescriptor
-  ? V['value'] extends ExtractMap
-    ? ExtractedMap<V['value']> | undefined
-    : V['value'] extends ExtractDescriptorFn
-    ? ReturnType<V['value']> | undefined
-    : ReturnType<typeof prop> | undefined
-  : never;
+    ? string | undefined
+    : V extends ExtractDescriptor
+      ? V['value'] extends ExtractMap
+        ? ExtractedMap<V['value']> | undefined
+        : V['value'] extends ExtractDescriptorFn
+          ? ReturnType<V['value']> | undefined
+          : ReturnType<typeof prop> | undefined
+      : never;
 
 export type ExtractedMap<M extends ExtractMap> = {
   [key in keyof M]: ExtractedValue<M[key], M>;
@@ -75,8 +75,8 @@ export function extract<M extends ExtractMap, T extends AnyNode>(
       typeof value === 'function'
         ? value
         : typeof value === 'string'
-        ? (el: Element) => this._make(el).prop(value)
-        : (el: Element) => this._make(el).extract(value);
+          ? (el: Element) => this._make(el).prop(value)
+          : (el: Element) => this._make(el).extract(value);
 
     if (isArray) {
       ret[key] = this._findBySelector(selector, Number.POSITIVE_INFINITY)

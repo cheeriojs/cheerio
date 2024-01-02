@@ -315,8 +315,8 @@ function _wrap(
         typeof wrapper === 'function'
           ? wrapper.call(el, i, el)
           : typeof wrapper === 'string' && !isHtml(wrapper)
-          ? lastParent.find(wrapper).clone()
-          : wrapper;
+            ? lastParent.find(wrapper).clone()
+            : wrapper;
 
       const [wrapperDom] = this._makeDomArray(wrap, i < lastIdx);
 
