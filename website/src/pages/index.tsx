@@ -31,7 +31,6 @@ export default function Home(): JSX.Element {
     >
       <HomepageHeader />
       <HomepageFeatures />
-      <hr className="margin-vert--xl" />
       <HeadlineSponsors />
       <HomepageTweets />
     </Layout>

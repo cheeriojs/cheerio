@@ -1,0 +1,21 @@
+.emphasis {
+  background-color: var(--ifm-color-emphasis-100);
+}
+
+.you {
+  border: 1px solid var(--ifm-color-emphasis-400);
+  border-radius: 10px;
+  color: var(--ifm-font-color-base);
+  transition:
+    border 0.2s ease-in-out,
+    background-color 0.2s ease-in-out,
+    color 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
+}
+
+.you:hover {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  background-color: var(--ifm-color-info-lightest);
+  color: var(--ifm-font-color-base);
+  box-shadow: 0 0 0.5rem 0 rgba(150, 0, 0, 0.2);
+}
