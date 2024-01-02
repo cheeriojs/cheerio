@@ -6,3 +6,4 @@ npm-debug.log
 /coverage
 /lib
 /website/docs/api
+/website/build

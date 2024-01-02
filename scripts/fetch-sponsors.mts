@@ -226,11 +226,11 @@ async function fetchGitHubSponsors(): Promise<Sponsor[]> {
       type:
         // Workaround to get the type — fetch a field that only exists on users.
         sponsor.isViewer === undefined ? 'ORGANIZATION' : 'INDIVIDUAL',
-      monthlyDonation: tier.monthlyPriceInDollars * 100,
+      monthlyDonation: (tier?.monthlyPriceInDollars ?? 0) * 100,
       totalDonations:
         getMonthsActive(createdAt) * tier.monthlyPriceInDollars * 100,
       source: 'github',
-      tier: getTierSlug(tier.monthlyPriceInDollars),
+      tier: getTierSlug(tier?.monthlyPriceInDollars ?? 0),
     }),
   );
 }
