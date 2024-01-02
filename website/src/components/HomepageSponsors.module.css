@@ -17,6 +17,5 @@
   border: 1px solid var(--ifm-color-emphasis-200);
   background-color: var(--ifm-color-info-lightest);
   color: var(--ifm-font-color-base);
-  /* Add a subtle drop shadow */
   box-shadow: 0 0 0.5rem 0 rgba(150, 0, 0, 0.2);
 }

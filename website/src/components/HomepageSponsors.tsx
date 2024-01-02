@@ -6,9 +6,7 @@ import Sponsors from '../../sponsors.json';
 
 export function HeadlineSponsors() {
   return (
-    <div
-      className={`padding-vert--lg margin-vert--lg ${styles.emphasis}`}
-    >
+    <div className={`padding-vert--lg margin-vert--lg ${styles.emphasis}`}>
       <div className="container">
         <h2 className="text--center">Supported and Backed by</h2>
         <div
