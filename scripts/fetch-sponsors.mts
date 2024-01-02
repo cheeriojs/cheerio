@@ -228,7 +228,7 @@ async function fetchGitHubSponsors(): Promise<Sponsor[]> {
         sponsor.isViewer === undefined ? 'ORGANIZATION' : 'INDIVIDUAL',
       monthlyDonation: (tier?.monthlyPriceInDollars ?? 0) * 100,
       totalDonations:
-        getMonthsActive(createdAt) * tier.monthlyPriceInDollars * 100,
+        getMonthsActive(createdAt) * tier?.monthlyPriceInDollars * 100,
       source: 'github',
       tier: getTierSlug(tier?.monthlyPriceInDollars ?? 0),
     }),
@@ -262,7 +262,7 @@ const professionalToBackerOverrides = new Map([
 
 const sponsors = await fetchSponsors();
 
-// Remove sponsors that are already in the pre-propulated headliners
+// Remove sponsors that are already in the pre-populated headliners
 for (let i = 0; i < sponsors.length; i++) {
   if (
     tierSponsors.headliner.some((sponsor) => sponsor.url === sponsors[i].url)
