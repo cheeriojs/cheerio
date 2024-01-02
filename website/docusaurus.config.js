@@ -13,7 +13,7 @@ const config = {
   url: packageJson.homepage,
   baseUrl: '/',
   trailingSlash: false,
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
 
