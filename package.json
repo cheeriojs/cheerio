@@ -96,7 +96,7 @@
     "prettier": "^3.1.1",
     "prettier-plugin-jsdoc": "^1.3.0",
     "ts-jest": "^29.1.1",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.7.0",
     "typescript": "^5.3.3"
   },
   "scripts": {
@@ -111,7 +111,7 @@
     "format:prettier": "npm run format:prettier:raw -- --write",
     "format:prettier:raw": "prettier \"**/*.{{m,c,}{j,t}s{x,},md{x,},json,y{a,}ml}\" --ignore-path .gitignore",
     "benchmark": "npm run build:cjs && ts-node benchmark/benchmark.ts --regex \"^(?!.*highmem)\"",
-    "update-sponsors": "node --loader ts-node/esm scripts/fetch-sponsors.mts",
+    "update-sponsors": "tsx scripts/fetch-sponsors.mts",
     "bench": "npm run benchmark",
     "build": "npm run build:cjs && npm run build:esm",
     "make-esm": "sed -i '' 's/\"type\": \"commonjs\"/\"type\": \"module\"/g' package.json",
