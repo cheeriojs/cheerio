@@ -49,7 +49,7 @@ import * as cheerio from 'cheerio';
 
 const $ = cheerio.load('<html><body><h1>Hello, world!</h1></body></html>');
 
-console.log($('title').text());
+console.log($('h1').text());
 // Output: Hello, world!
 ```
 
