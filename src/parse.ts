@@ -18,8 +18,8 @@ export function getParse(
     content: string,
     options: InternalOptions,
     isDocument: boolean,
-    context: ParentNode | null
-  ) => Document
+    context: ParentNode | null,
+  ) => Document,
 ) {
   /**
    * Parse a HTML string or a node.
@@ -34,7 +34,7 @@ export function getParse(
     content: string | Document | AnyNode | AnyNode[] | Buffer,
     options: InternalOptions,
     isDocument: boolean,
-    context: ParentNode | null
+    context: ParentNode | null,
   ): Document {
     if (typeof Buffer !== 'undefined' && Buffer.isBuffer(content)) {
       content = content.toString();
@@ -70,7 +70,7 @@ export function getParse(
  */
 export function update(
   newChilds: AnyNode[] | AnyNode,
-  parent: ParentNode | null
+  parent: ParentNode | null,
 ): ParentNode | null {
   // Normalize
   const arr = Array.isArray(newChilds) ? newChilds : [newChilds];

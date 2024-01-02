@@ -202,7 +202,7 @@ async function fetchGitHubSponsors(): Promise<Sponsor[]> {
       headers: {
         authorization: `token ${CHEERIO_SPONSORS_GITHUB_TOKEN}`,
       },
-    }
+    },
   );
 
   // Return an array in the same format as Open Collective
@@ -218,7 +218,7 @@ async function fetchGitHubSponsors(): Promise<Sponsor[]> {
       monthlyDonation: tier.monthlyPriceInDollars * 100,
       source: 'github',
       tier: getTierSlug(tier.monthlyPriceInDollars),
-    })
+    }),
   );
 }
 
@@ -304,7 +304,7 @@ let readme = await fs.readFile(README_PATH, 'utf8');
 for (let sectionStartIndex = 0; ; ) {
   sectionStartIndex = readme.indexOf(
     SECTION_START_BEGINNING,
-    sectionStartIndex
+    sectionStartIndex,
   );
 
   if (sectionStartIndex < 0) break;
@@ -313,7 +313,7 @@ for (let sectionStartIndex = 0; ; ) {
 
   const sectionStartEndIndex = readme.indexOf(
     SECTION_START_END,
-    sectionStartIndex
+    sectionStartIndex,
   );
   const sectionName = readme
     .slice(sectionStartIndex, sectionStartEndIndex)
@@ -336,7 +336,7 @@ for (let sectionStartIndex = 0; ; ) {
               fit: 'fillmax',
               fill: 'solid',
             })}" title="${s.name}" alt="${s.name}"></img>
-          </a>`
+          </a>`,
     )
     .join('\n')}\n\n${readme.slice(sectionEndIndex)}`;
 }

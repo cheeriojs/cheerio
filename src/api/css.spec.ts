@@ -11,7 +11,7 @@ describe('$(...)', () => {
 
     it('([prop1, prop2]): should return the specified property values as an object', () => {
       const el = cheerio(
-        '<li style="margin: 1px; padding: 2px; color: blue;">'
+        '<li style="margin: 1px; padding: 2px; color: blue;">',
       );
       expect(el.css(['margin', 'color'])).toStrictEqual({
         margin: '1px',
@@ -33,7 +33,7 @@ describe('$(...)', () => {
       $body.css('test', 'value');
 
       expect($text('body').html()).toBe(
-        '<a style="test: value;">1</a>TEXT<b style="test: value;">2</b>'
+        '<a style="test: value;">1</a>TEXT<b style="test: value;">2</b>',
       );
     });
 
@@ -51,10 +51,10 @@ describe('$(...)', () => {
 
     it('(prop): should not mangle embedded urls', () => {
       const el = cheerio(
-        '<li style="background-image:url(http://example.com/img.png);">'
+        '<li style="background-image:url(http://example.com/img.png);">',
       );
       expect(el.css('background-image')).toBe(
-        'url(http://example.com/img.png)'
+        'url(http://example.com/img.png)',
       );
     });
 
@@ -82,7 +82,7 @@ describe('$(...)', () => {
       let $el: Cheerio<Element>;
       beforeEach(() => {
         const $ = load(
-          '<div style="margin: 0px;"></div><div style="margin: 1px;"></div><div style="margin: 2px;">'
+          '<div style="margin: 0px;"></div><div style="margin: 1px;"></div><div style="margin: 2px;">',
         );
         $el = $('div');
       });
@@ -126,10 +126,10 @@ describe('$(...)', () => {
 
       it('should add malformed values to previous field (#1134)', () => {
         const el = cheerio(
-          '<button style="background-image: url(data:image/png;base64,iVBORw0KGgo)"></button>'
+          '<button style="background-image: url(data:image/png;base64,iVBORw0KGgo)"></button>',
         );
         expect(el.css('background-image')).toStrictEqual(
-          'url(data:image/png;base64,iVBORw0KGgo)'
+          'url(data:image/png;base64,iVBORw0KGgo)',
         );
       });
     });

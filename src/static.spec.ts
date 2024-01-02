@@ -6,7 +6,7 @@ describe('cheerio', () => {
     it('() : should return innerHTML; $.html(obj) should return outerHTML', () => {
       const $div = cheerio(
         'div',
-        '<div><span>foo</span><span>bar</span></div>'
+        '<div><span>foo</span><span>bar</span></div>',
       );
       const span = $div.children()[1];
       expect(cheerio(span).html()).toBe('bar');
@@ -27,7 +27,7 @@ describe('cheerio', () => {
     it('(<root>) : does not render the root element', () => {
       const $ = cheerio.load('');
       expect(cheerio.html($.root())).toBe(
-        '<html><head></head><body></body></html>'
+        '<html><head></head><body></body></html>',
       );
     });
 
@@ -54,26 +54,26 @@ describe('cheerio', () => {
 
     it('(cheerio object) : should omit comment nodes', () => {
       const $ = cheerio.load(
-        '<a>This is <!-- a comment --> not a comment.</a>'
+        '<a>This is <!-- a comment --> not a comment.</a>',
       );
       expect(cheerio.text($('a'))).toBe('This is  not a comment.');
     });
 
     it('(cheerio object) : should include text contents of children recursively', () => {
       const $ = cheerio.load(
-        '<a>This is <div>a child with <span>another child and <!-- a comment --> not a comment</span> followed by <em>one last child</em> and some final</div> text.</a>'
+        '<a>This is <div>a child with <span>another child and <!-- a comment --> not a comment</span> followed by <em>one last child</em> and some final</div> text.</a>',
       );
       expect(cheerio.text($('a'))).toBe(
-        'This is a child with another child and  not a comment followed by one last child and some final text.'
+        'This is a child with another child and  not a comment followed by one last child and some final text.',
       );
     });
 
     it('() : should return the rendered text content of the root', () => {
       const $ = cheerio.load(
-        '<a>This is <div>a child with <span>another child and <!-- a comment --> not a comment</span> followed by <em>one last child</em> and some final</div> text.</a>'
+        '<a>This is <div>a child with <span>another child and <!-- a comment --> not a comment</span> followed by <em>one last child</em> and some final</div> text.</a>',
       );
       expect(cheerio.text($.root())).toBe(
-        'This is a child with another child and  not a comment followed by one last child and some final text.'
+        'This is a child with another child and  not a comment followed by one last child and some final text.',
       );
     });
 
@@ -84,7 +84,7 @@ describe('cheerio', () => {
 
     it('(cheerio object) : should omit style tags', () => {
       const $ = cheerio.load(
-        '<style type="text/css">.cf-hidden { display: none; }</style>'
+        '<style type="text/css">.cf-hidden { display: none; }</style>',
       );
       expect($.text()).toBe('.cf-hidden { display: none; }');
     });
@@ -161,7 +161,7 @@ describe('cheerio', () => {
 
     it('(garbageInput) : should not cause an error', () => {
       expect(
-        $.parseHTML('<#if><tr><p>This is a test.</p></tr><#/if>')
+        $.parseHTML('<#if><tr><p>This is a test.</p></tr><#/if>'),
       ).toBeTruthy();
     });
 
@@ -188,7 +188,7 @@ describe('cheerio', () => {
       const elems = $div.parseHTML(
         '<script>foo</script><a>',
         { foo: 123 },
-        true
+        true,
       );
 
       $div('div').append(elems);
@@ -299,7 +299,7 @@ describe('cheerio', () => {
       const $ = cheerio.load('<html><head></head><body>foo</body></html>');
       $.root().append('<div id="test"></div>');
       expect($.html()).toBe(
-        '<html><head></head><body>foo</body></html><div id="test"></div>'
+        '<html><head></head><body>foo</body></html><div id="test"></div>',
       );
     });
   });
@@ -311,7 +311,7 @@ describe('cheerio', () => {
       expect(
         $.extract({
           red: [{ selector: '.red', value: 'outerHTML' }],
-        })
+        }),
       ).toStrictEqual({
         red: [
           '<li class="red">Four</li>',

@@ -11,19 +11,19 @@ describe('static method re-exports', () => {
 
   it('should have a functional `html` that is bound to the default instance', () => {
     expect(cheerio.html(cheerio.default('<div>test div</div>'))).toBe(
-      '<div>test div</div>'
+      '<div>test div</div>',
     );
   });
 
   it('should have a functional `xml` that is bound to the default instance', () => {
     expect(cheerio.xml(cheerio.default('<div>test div</div>'))).toBe(
-      '<div>test div</div>'
+      '<div>test div</div>',
     );
   });
 
   it('should have a functional `text` that is bound to the default instance', () => {
     expect(cheerio.text(cheerio.default('<div>test div</div>'))).toBe(
-      'test div'
+      'test div',
     );
   });
 });

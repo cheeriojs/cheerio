@@ -63,13 +63,13 @@ describe('$(...)', () => {
 
     it('(html) : wraps with nested elements', () => {
       const $orangeFruits = $(
-        '<div class="orange-fruits"><div class="and-stuff"></div></div>'
+        '<div class="orange-fruits"><div class="and-stuff"></div></div>',
       );
       $('.orange').wrap($orangeFruits);
 
       expect($fruits.children().eq(1).hasClass('orange-fruits')).toBe(true);
       expect($('.orange-fruits').children().eq(0).hasClass('and-stuff')).toBe(
-        true
+        true,
       );
       expect($fruits.children().eq(2).hasClass('pear')).toBe(true);
       expect($('.orange-fruits').children()).toHaveLength(1);
@@ -166,15 +166,15 @@ describe('$(...)', () => {
       $('li').wrap($fruitDecorator);
       expect($fruits.children().eq(0).hasClass('fruit-decorator')).toBe(true);
       expect($fruits.children().eq(0).children().eq(0).hasClass('apple')).toBe(
-        true
+        true,
       );
       expect($fruits.children().eq(1).hasClass('fruit-decorator')).toBe(true);
       expect($fruits.children().eq(1).children().eq(0).hasClass('orange')).toBe(
-        true
+        true,
       );
       expect($fruits.children().eq(2).hasClass('fruit-decorator')).toBe(true);
       expect($fruits.children().eq(2).children().eq(0).hasClass('pear')).toBe(
-        true
+        true,
       );
     });
   });
@@ -211,7 +211,7 @@ describe('$(...)', () => {
       $test($test('body')[0].children).wrapInner('<test>');
 
       expect($test('body').html()).toBe(
-        '<a><test>1</test></a>TEXT<b><test>2</test></b>'
+        '<a><test>1</test></a>TEXT<b><test>2</test></b>',
       );
     });
 
@@ -307,30 +307,30 @@ describe('$(...)', () => {
 
       expect($('.fruit-decorator')).toHaveLength(3);
       expect($children.eq(0).children().eq(0).hasClass('fruit-decorator')).toBe(
-        true
+        true,
       );
       expect($children.eq(0).hasClass('apple')).toBe(true);
       expect($children.eq(1).children().eq(0).hasClass('fruit-decorator')).toBe(
-        true
+        true,
       );
       expect($children.eq(1).hasClass('orange')).toBe(true);
       expect($children.eq(2).children().eq(0).hasClass('fruit-decorator')).toBe(
-        true
+        true,
       );
       expect($children.eq(2).hasClass('pear')).toBe(true);
     });
 
     it('(html) : wraps with nested elements', () => {
       const $badOrangeJoke = $(
-        '<div class="orange-you-glad"><div class="i-didnt-say-apple"></div></div>'
+        '<div class="orange-you-glad"><div class="i-didnt-say-apple"></div></div>',
       );
       $('.orange').wrapInner($badOrangeJoke);
 
       expect($('.orange').children().eq(0).hasClass('orange-you-glad')).toBe(
-        true
+        true,
       );
       expect(
-        $('.orange-you-glad').children().eq(0).hasClass('i-didnt-say-apple')
+        $('.orange-you-glad').children().eq(0).hasClass('i-didnt-say-apple'),
       ).toBe(true);
       expect($fruits.children().eq(2).hasClass('pear')).toBe(true);
       expect($('.orange-you-glad').children()).toHaveLength(1);
@@ -357,7 +357,7 @@ describe('$(...)', () => {
 
       // Make #unwrap1 and #unwrap2 go away
       expect(
-        $elem('#unwrap1 span').add('#unwrap2 span:first-child').unwrap()
+        $elem('#unwrap1 span').add('#unwrap2 span:first-child').unwrap(),
       ).toHaveLength(3);
 
       /*
@@ -368,12 +368,12 @@ describe('$(...)', () => {
 
       // Make all b elements in #unwrap3 go away
       expect($elem('#unwrap3 span').unwrap().get()).toEqual(
-        $elem('#unwrap3 > span').get()
+        $elem('#unwrap3 > span').get(),
       );
 
       // Make #unwrap3 go away
       expect($elem('#unwrap3 span').unwrap().get()).toEqual(
-        $elem('#unwrap > span.unwrap3').get()
+        $elem('#unwrap > span.unwrap3').get(),
       );
 
       // #unwrap only contains 6 child spans
@@ -381,12 +381,12 @@ describe('$(...)', () => {
 
       // Make the 6 spans become children of body
       expect($elem('#unwrap > span').unwrap().get()).toEqual(
-        $elem('body > span.unwrap').get()
+        $elem('body > span.unwrap').get(),
       );
 
       // Can't unwrap children of body
       expect($elem('body > span.unwrap').unwrap().get()).toEqual(
-        $elem('body > span.unwrap').get()
+        $elem('body > span.unwrap').get(),
       );
 
       // Can't unwrap children of body
@@ -497,7 +497,7 @@ describe('$(...)', () => {
       const p = $container[0].parent;
 
       const result = $container.wrapAll(
-        () => "<div class='red'><div class='tmp'></div></div>"
+        () => "<div class='red'><div class='tmp'></div></div>",
       );
 
       expect(result.parent()).toHaveLength(1);
@@ -627,7 +627,7 @@ describe('$(...)', () => {
 
     it('(Array) : should append all elements in the array', () => {
       const more = $(
-        '<li class="plum">Plum</li><li class="grape">Grape</li>'
+        '<li class="plum">Plum</li><li class="grape">Grape</li>',
       ).get();
       $fruits.append(more);
       expect($fruits.children().eq(3).hasClass('plum')).toBe(true);
@@ -793,7 +793,7 @@ describe('$(...)', () => {
 
     it('(Array) : should add all elements in the array as initial children', () => {
       const more = $(
-        '<li class="plum">Plum</li><li class="grape">Grape</li>'
+        '<li class="plum">Plum</li><li class="grape">Grape</li>',
       ).get();
       $fruits.prepend(more);
       expect($fruits.children().eq(0).hasClass('plum')).toBe(true);
@@ -951,7 +951,7 @@ describe('$(...)', () => {
 
     it('(Array) : should add all elements in the array as next sibling', () => {
       const more = $(
-        '<li class="plum">Plum</li><li class="grape">Grape</li>'
+        '<li class="plum">Plum</li><li class="grape">Grape</li>',
       ).get();
       $('.apple').after(more);
       expect($fruits.children().eq(1).hasClass('plum')).toBe(true);
@@ -1069,11 +1069,11 @@ describe('$(...)', () => {
       const $text = load(mixedText);
 
       $text($text('body')[0].children).after(
-        (_, content) => `<c>${content}added</c>`
+        (_, content) => `<c>${content}added</c>`,
       );
 
       expect($text('body').html()).toBe(
-        '<a>1</a><c>1added</c>TEXT<b>2</b><c>2added</c>'
+        '<a>1</a><c>1added</c>TEXT<b>2</b><c>2added</c>',
       );
     });
 
@@ -1169,7 +1169,7 @@ describe('$(...)', () => {
 
     it('(single) should return the new elements for chaining', () => {
       const $purple = $(
-        '<li class="grape">Grape</li><li class="plum">Plum</li>'
+        '<li class="grape">Grape</li><li class="plum">Plum</li>',
       ).insertAfter('.apple');
       expect($purple.cheerio).toBeTruthy();
       expect($purple.each).toBeTruthy();
@@ -1180,7 +1180,7 @@ describe('$(...)', () => {
 
     it('(multiple) should return the new elements for chaining', () => {
       const $purple = $(
-        '<li class="grape">Grape</li><li class="plum">Plum</li>'
+        '<li class="grape">Grape</li><li class="plum">Plum</li>',
       ).insertAfter('.apple, .pear');
       expect($purple.cheerio).toBeTruthy();
       expect($purple.each).toBeTruthy();
@@ -1284,7 +1284,7 @@ describe('$(...)', () => {
 
     it('(Array) : should add all elements in the array as previous sibling', () => {
       const more = $(
-        '<li class="plum">Plum</li><li class="grape">Grape</li>'
+        '<li class="plum">Plum</li><li class="grape">Grape</li>',
       ).get();
       $('.apple').before(more);
       expect($fruits.children().eq(0).hasClass('plum')).toBe(true);
@@ -1352,11 +1352,11 @@ describe('$(...)', () => {
       const $text = load(mixedText);
 
       $text($text('body')[0].children).before(
-        (_, content) => `<c>${content}added</c>`
+        (_, content) => `<c>${content}added</c>`,
       );
 
       expect($text('body').html()).toBe(
-        '<c>1added</c><a>1</a>TEXT<c>2added</c><b>2</b>'
+        '<c>1added</c><a>1</a>TEXT<c>2added</c><b>2</b>',
       );
     });
 
@@ -1453,7 +1453,7 @@ describe('$(...)', () => {
 
     it('(single) should return the new elements for chaining', () => {
       const $purple = $(
-        '<li class="grape">Grape</li><li class="plum">Plum</li>'
+        '<li class="grape">Grape</li><li class="plum">Plum</li>',
       ).insertBefore('.apple');
       expect($purple.cheerio).toBeTruthy();
       expect($purple.each).toBeTruthy();
@@ -1464,7 +1464,7 @@ describe('$(...)', () => {
 
     it('(multiple) should return the new elements for chaining', () => {
       const $purple = $(
-        '<li class="grape">Grape</li><li class="plum">Plum</li>'
+        '<li class="grape">Grape</li><li class="plum">Plum</li>',
       ).insertBefore('.apple, .pear');
       expect($purple.cheerio).toBeTruthy();
       expect($purple.each).toBeTruthy();
@@ -1546,7 +1546,7 @@ describe('$(...)', () => {
 
     it('(Array) : should replace one <li> tag with the elements in the array', () => {
       const more = $(
-        '<li class="plum">Plum</li><li class="grape">Grape</li>'
+        '<li class="plum">Plum</li><li class="grape">Grape</li>',
       ).get();
       $('.orange').replaceWith(more);
 
@@ -1730,7 +1730,7 @@ describe('$(...)', () => {
           '<li class="apple">Apple</li>',
           '<li class="orange">Orange</li>',
           '<li class="pear">Pear</li>',
-        ].join('')
+        ].join(''),
       );
     });
 
@@ -1777,7 +1777,7 @@ describe('$(...)', () => {
     it('(elem) : should move the passed element (#940)', () => {
       $('.apple').html($('.orange'));
       expect($fruits.html()).toBe(
-        '<li class="apple"><li class="orange">Orange</li></li><li class="pear">Pear</li>'
+        '<li class="apple"><li class="orange">Orange</li></li><li class="pear">Pear</li>',
       );
     });
 
@@ -1814,7 +1814,7 @@ describe('$(...)', () => {
 
     it('() : should return an html string for a set of elements', () => {
       expect($fruits.find('li').toString()).toBe(
-        '<li class="apple">Apple</li><li class="orange">Orange</li><li class="pear">Pear</li>'
+        '<li class="apple">Apple</li><li class="orange">Orange</li><li class="pear">Pear</li>',
       );
     });
 
@@ -1842,7 +1842,7 @@ describe('$(...)', () => {
       $('.apple').text('Granny Smith Apple');
       expect($('.apple')[0].childNodes[0]).toHaveProperty(
         'data',
-        'Granny Smith Apple'
+        'Granny Smith Apple',
       );
     });
 
@@ -1884,7 +1884,7 @@ describe('$(...)', () => {
       });
       expect($('.apple')[0].childNodes[0]).toHaveProperty(
         'data',
-        'whatever mate'
+        'whatever mate',
       );
     });
 
@@ -1925,7 +1925,7 @@ describe('$(...)', () => {
       expect(
         $('<div>')
           .text(null as never)
-          .text()
+          .text(),
       ).toBe('null');
     });
 
@@ -1933,7 +1933,7 @@ describe('$(...)', () => {
       expect(
         $('<div>')
           .text(0 as never)
-          .text()
+          .text(),
       ).toBe('0');
     });
 
@@ -1943,7 +1943,7 @@ describe('$(...)', () => {
       $apple.text('blah <script>alert("XSS!")</script> blah');
       expect($apple[0].childNodes[0]).toHaveProperty(
         'data',
-        'blah <script>alert("XSS!")</script> blah'
+        'blah <script>alert("XSS!")</script> blah',
       );
       expect($apple.text()).toBe('blah <script>alert("XSS!")</script> blah');
 
@@ -1955,7 +1955,7 @@ describe('$(...)', () => {
   describe('.clone', () => {
     it('() : should return a copy', () => {
       const $src = $(
-        '<div><span>foo</span><span>bar</span><span>baz</span></div>'
+        '<div><span>foo</span><span>bar</span><span>baz</span></div>',
       ).children();
       const $elem = $src.clone();
       expect($elem.length).toBe(3);

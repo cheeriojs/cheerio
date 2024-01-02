@@ -67,7 +67,7 @@ export interface CheerioAPI extends StaticType {
     selector?: S | BasicAcceptedElems<T>,
     context?: BasicAcceptedElems<AnyNode> | null,
     root?: BasicAcceptedElems<Document>,
-    options?: CheerioOptions
+    options?: CheerioOptions,
   ): Cheerio<S extends SelectorType ? Element : T>;
 
   /**
@@ -107,8 +107,8 @@ export function getLoad(
   parse: typeof Cheerio.prototype._parse,
   render: (
     dom: AnyNode | ArrayLike<AnyNode>,
-    options: InternalOptions
-  ) => string
+    options: InternalOptions,
+  ) => string,
 ) {
   /**
    * Create a querying function, bound to a document created from the provided
@@ -127,7 +127,7 @@ export function getLoad(
   return function load(
     content: string | AnyNode | AnyNode[] | Buffer,
     options?: CheerioOptions | null,
-    isDocument = true
+    isDocument = true,
   ): CheerioAPI {
     if ((content as string | null) == null) {
       throw new Error('cheerio.load() expects a string');
@@ -143,7 +143,7 @@ export function getLoad(
     class LoadedCheerio<T> extends Cheerio<T> {
       _make<T>(
         selector?: ArrayLike<T> | T | string,
-        context?: BasicAcceptedElems<AnyNode> | null
+        context?: BasicAcceptedElems<AnyNode> | null,
       ): Cheerio<T> {
         const cheerio = initialize(selector, context);
         cheerio.prevObject = this;
@@ -155,7 +155,7 @@ export function getLoad(
         content: string | Document | AnyNode | AnyNode[] | Buffer,
         options: InternalOptions,
         isDocument: boolean,
-        context: ParentNode | null
+        context: ParentNode | null,
       ) {
         return parse(content, options, isDocument, context);
       }
@@ -169,7 +169,7 @@ export function getLoad(
       selector?: ArrayLike<T> | T | S,
       context?: BasicAcceptedElems<AnyNode> | null,
       root: BasicAcceptedElems<Document> = initialRoot,
-      opts?: CheerioOptions
+      opts?: CheerioOptions,
     ): Cheerio<S extends SelectorType ? Element : T> {
       type Result = S extends SelectorType ? Element : T;
 
@@ -181,8 +181,8 @@ export function getLoad(
         typeof root === 'string'
           ? [parse(root, options, false, null)]
           : 'length' in root
-          ? root
-          : [root];
+            ? root
+            : [root];
       const rootInstance = isCheerio<Document>(r)
         ? r
         : new LoadedCheerio<Document>(r, null, options);
@@ -199,12 +199,12 @@ export function getLoad(
           ? // $(<html>)
             parse(selector, options, false, null).children
           : isNode(selector)
-          ? // $(dom)
-            [selector]
-          : Array.isArray(selector)
-          ? // $([dom])
-            selector
-          : undefined;
+            ? // $(dom)
+              [selector]
+            : Array.isArray(selector)
+              ? // $([dom])
+                selector
+              : undefined;
 
       const instance = new LoadedCheerio(elements, rootInstance, options);
 
@@ -227,19 +227,19 @@ export function getLoad(
               new LoadedCheerio<Document>(
                 [parse(context, options, false, null)],
                 rootInstance,
-                options
+                options,
               )
             : // $('li', 'ul')
               ((search = `${context} ${search}` as S), rootInstance)
           : isCheerio<AnyNode>(context)
-          ? // $('li', $)
-            context
-          : // $('li', node), $('li', [nodes])
-            new LoadedCheerio<AnyNode>(
-              Array.isArray(context) ? context : [context],
-              rootInstance,
-              options
-            )
+            ? // $('li', $)
+              context
+            : // $('li', node), $('li', [nodes])
+              new LoadedCheerio<AnyNode>(
+                Array.isArray(context) ? context : [context],
+                rootInstance,
+                options,
+              )
         : rootInstance;
 
       // If we still don't have a context, return

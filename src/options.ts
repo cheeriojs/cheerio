@@ -73,7 +73,7 @@ export interface CheerioOptions extends Parse5Options {
    *       // `:bar(val)` is equivalent to `[data-bar=val s]`
    *       bar: (el, val) => el.attribs['data-bar'] === val,
    *     },
-   *   }
+   *   },
    * );
    *
    * $(':foo').length; // 1
@@ -111,7 +111,7 @@ const defaultOpts: InternalOptions = {
  */
 export function flattenOptions(
   options?: CheerioOptions | null,
-  baseOptions?: InternalOptions
+  baseOptions?: InternalOptions,
 ): InternalOptions {
   if (!options) {
     return baseOptions ?? defaultOpts;

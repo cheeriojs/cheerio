@@ -18,7 +18,7 @@ describe('render', () => {
       const str =
         '<media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123" />';
       expect(xml(str)).toBe(
-        '<media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123"/>'
+        '<media:thumbnail url="http://www.foo.com/keyframe.jpg" width="75" height="50" time="12:05:01.123"/>',
       );
     });
 
@@ -42,14 +42,14 @@ describe('render', () => {
     it('should not keep camelCase for new nodes', () => {
       const str = '<g><someElem someAttribute="something">hello</someElem></g>';
       expect(dom(str, { xml: false })).toBe(
-        '<someelem someattribute="something">hello</someelem>'
+        '<someelem someattribute="something">hello</someelem>',
       );
     });
 
     it('should keep camelCase for new nodes', () => {
       const str = '<g><someElem someAttribute="something">hello</someElem></g>';
       expect(dom(str, { xml: true })).toBe(
-        '<someElem someAttribute="something">hello</someElem>'
+        '<someElem someAttribute="something">hello</someElem>',
       );
     });
 
@@ -58,7 +58,7 @@ describe('render', () => {
       const $ = cheerio.load('', { xml: false });
 
       expect($(str).html()).toBe(
-        '<someelem someattribute="something">hello</someelem>'
+        '<someelem someattribute="something">hello</someelem>',
       );
     });
   });

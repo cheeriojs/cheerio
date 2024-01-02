@@ -35,17 +35,17 @@ const rbrace = /^{[^]*}$|^\[[^]*]$/;
 function getAttr(
   elem: AnyNode,
   name: undefined,
-  xmlMode?: boolean
+  xmlMode?: boolean,
 ): Record<string, string> | undefined;
 function getAttr(
   elem: AnyNode,
   name: string,
-  xmlMode?: boolean
+  xmlMode?: boolean,
 ): string | undefined;
 function getAttr(
   elem: AnyNode,
   name: string | undefined,
-  xmlMode?: boolean
+  xmlMode?: boolean,
 ): Record<string, string> | string | undefined {
   if (!elem || !isTag(elem)) return undefined;
 
@@ -113,7 +113,7 @@ function setAttr(el: Element, name: string, value: string | null) {
  */
 export function attr<T extends AnyNode>(
   this: Cheerio<T>,
-  name: string
+  name: string,
 ): string | undefined;
 /**
  * Method for getting all attributes and their values of the first element in
@@ -131,7 +131,7 @@ export function attr<T extends AnyNode>(
  * @see {@link https://api.jquery.com/attr/}
  */
 export function attr<T extends AnyNode>(
-  this: Cheerio<T>
+  this: Cheerio<T>,
 ): Record<string, string> | undefined;
 /**
  * Method for setting attributes. Sets the attribute value for only the first
@@ -157,7 +157,7 @@ export function attr<T extends AnyNode>(
   value?:
     | string
     | null
-    | ((this: Element, i: number, attrib: string) => string | null)
+    | ((this: Element, i: number, attrib: string) => string | null),
 ): Cheerio<T>;
 /**
  * Method for setting multiple attributes at once. Sets the attribute value for
@@ -178,7 +178,7 @@ export function attr<T extends AnyNode>(
  */
 export function attr<T extends AnyNode>(
   this: Cheerio<T>,
-  values: Record<string, string | null>
+  values: Record<string, string | null>,
 ): Cheerio<T>;
 export function attr<T extends AnyNode>(
   this: Cheerio<T>,
@@ -186,7 +186,7 @@ export function attr<T extends AnyNode>(
   value?:
     | string
     | null
-    | ((this: Element, i: number, attrib: string) => string | null)
+    | ((this: Element, i: number, attrib: string) => string | null),
 ): string | Cheerio<T> | undefined | Record<string, string> {
   // Set the value (with attr map support)
   if (typeof name === 'object' || value !== undefined) {
@@ -232,14 +232,14 @@ export function attr<T extends AnyNode>(
 function getProp(
   el: Element,
   name: string,
-  xmlMode?: boolean
+  xmlMode?: boolean,
 ): string | undefined | Element[keyof Element] {
   return name in el
     ? // @ts-expect-error TS doesn't like us accessing the value directly here.
       el[name]
     : !xmlMode && rboolean.test(name)
-    ? getAttr(el, name, false) !== undefined
-    : getAttr(el, name, xmlMode);
+      ? getAttr(el, name, false) !== undefined
+      : getAttr(el, name, xmlMode);
 }
 
 /**
@@ -259,7 +259,7 @@ function setProp(el: Element, name: string, value: unknown, xmlMode?: boolean) {
     setAttr(
       el,
       name,
-      !xmlMode && rboolean.test(name) ? (value ? '' : null) : `${value}`
+      !xmlMode && rboolean.test(name) ? (value ? '' : null) : `${value}`,
     );
   }
 }
@@ -292,11 +292,11 @@ interface StyleProp {
  */
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
-  name: 'tagName' | 'nodeName'
+  name: 'tagName' | 'nodeName',
 ): string | undefined;
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
-  name: 'innerHTML' | 'outerHTML' | 'innerText' | 'textContent'
+  name: 'innerHTML' | 'outerHTML' | 'innerText' | 'textContent',
 ): string | null;
 /**
  * Get a parsed CSS style object.
@@ -307,7 +307,7 @@ export function prop<T extends AnyNode>(
  */
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
-  name: 'style'
+  name: 'style',
 ): StyleProp | undefined;
 /**
  * Resolve `href` or `src` of supported elements. Requires the `baseURI` option
@@ -325,7 +325,7 @@ export function prop<T extends AnyNode>(
  */
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
-  name: 'href' | 'src'
+  name: 'href' | 'src',
 ): string | undefined;
 /**
  * Get a property of an element.
@@ -335,7 +335,7 @@ export function prop<T extends AnyNode>(
  */
 export function prop<T extends AnyNode, K extends keyof Element>(
   this: Cheerio<T>,
-  name: K
+  name: K,
 ): Element[K];
 /**
  * Set a property of an element.
@@ -349,7 +349,7 @@ export function prop<T extends AnyNode, K extends keyof Element>(
   name: K,
   value:
     | Element[K]
-    | ((this: Element, i: number, prop: K) => Element[keyof Element])
+    | ((this: Element, i: number, prop: K) => Element[keyof Element]),
 ): Cheerio<T>;
 /**
  * Set multiple properties of an element.
@@ -368,7 +368,7 @@ export function prop<T extends AnyNode, K extends keyof Element>(
  */
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
-  map: Record<string, string | Element[keyof Element] | boolean>
+  map: Record<string, string | Element[keyof Element] | boolean>,
 ): Cheerio<T>;
 /**
  * Set a property of an element.
@@ -384,7 +384,7 @@ export function prop<T extends AnyNode>(
     | string
     | boolean
     | null
-    | ((this: Element, i: number, prop: string) => string | boolean)
+    | ((this: Element, i: number, prop: string) => string | boolean),
 ): Cheerio<T>;
 /**
  * Get a property of an element.
@@ -400,9 +400,9 @@ export function prop<T extends AnyNode>(
     | ((
         this: Element,
         i: number,
-        prop: string | undefined
+        prop: string | undefined,
       ) => string | Element[keyof Element] | boolean)
-    | unknown
+    | unknown,
 ): Cheerio<T> | string | undefined | null | Element[keyof Element] | StyleProp {
   if (typeof name === 'string' && value === undefined) {
     const el = this[0];
@@ -483,7 +483,7 @@ export function prop<T extends AnyNode>(
             el,
             name,
             value.call(el, i, getProp(el, name, this.options.xmlMode)),
-            this.options.xmlMode
+            this.options.xmlMode,
           );
         }
       });
@@ -527,7 +527,7 @@ interface DataElement extends Element {
 function setData(
   elem: DataElement,
   name: string | Record<string, unknown>,
-  value?: unknown
+  value?: unknown,
 ) {
   elem.data ??= {};
 
@@ -630,7 +630,7 @@ function parseDataValue(value: string): unknown {
  */
 export function data<T extends AnyNode>(
   this: Cheerio<T>,
-  name: string
+  name: string,
 ): unknown | undefined;
 /**
  * Method for getting all of an element's data attributes, for only the first
@@ -648,7 +648,7 @@ export function data<T extends AnyNode>(
  * @see {@link https://api.jquery.com/data/}
  */
 export function data<T extends AnyNode>(
-  this: Cheerio<T>
+  this: Cheerio<T>,
 ): Record<string, unknown>;
 /**
  * Method for setting data attributes, for only the first element in the matched
@@ -672,7 +672,7 @@ export function data<T extends AnyNode>(
 export function data<T extends AnyNode>(
   this: Cheerio<T>,
   name: string,
-  value: unknown
+  value: unknown,
 ): Cheerio<T>;
 /**
  * Method for setting multiple data attributes at once, for only the first
@@ -694,12 +694,12 @@ export function data<T extends AnyNode>(
  */
 export function data<T extends AnyNode>(
   this: Cheerio<T>,
-  values: Record<string, unknown>
+  values: Record<string, unknown>,
 ): Cheerio<T>;
 export function data<T extends AnyNode>(
   this: Cheerio<T>,
   name?: string | Record<string, unknown>,
-  value?: unknown
+  value?: unknown,
 ): unknown | Cheerio<T> | undefined | Record<string, unknown> {
   const elem = this[0];
 
@@ -743,7 +743,7 @@ export function data<T extends AnyNode>(
  * @see {@link https://api.jquery.com/val/}
  */
 export function val<T extends AnyNode>(
-  this: Cheerio<T>
+  this: Cheerio<T>,
 ): string | undefined | string[];
 /**
  * Method for setting the value of input, select, and textarea. Note: Support
@@ -763,11 +763,11 @@ export function val<T extends AnyNode>(
  */
 export function val<T extends AnyNode>(
   this: Cheerio<T>,
-  value: string | string[]
+  value: string | string[],
 ): Cheerio<T>;
 export function val<T extends AnyNode>(
   this: Cheerio<T>,
-  value?: string | string[]
+  value?: string | string[],
 ): string | string[] | Cheerio<T> | undefined {
   const querying = arguments.length === 0;
   const element = this[0];
@@ -855,7 +855,7 @@ function splitNames(names?: string): string[] {
  */
 export function removeAttr<T extends AnyNode>(
   this: Cheerio<T>,
-  name: string
+  name: string,
 ): Cheerio<T> {
   const attrNames = splitNames(name);
 
@@ -891,7 +891,7 @@ export function removeAttr<T extends AnyNode>(
  */
 export function hasClass<T extends AnyNode>(
   this: Cheerio<T>,
-  className: string
+  className: string,
 ): boolean {
   return this.toArray().some((elem) => {
     const clazz = isTag(elem) && elem.attribs['class'];
@@ -936,7 +936,7 @@ export function addClass<T extends AnyNode, R extends ArrayLike<T>>(
   this: R,
   value?:
     | string
-    | ((this: Element, i: number, className: string) => string | undefined)
+    | ((this: Element, i: number, className: string) => string | undefined),
 ): R {
   // Support functions
   if (typeof value === 'function') {
@@ -1004,7 +1004,7 @@ export function removeClass<T extends AnyNode, R extends ArrayLike<T>>(
   this: R,
   name?:
     | string
-    | ((this: Element, i: number, className: string) => string | undefined)
+    | ((this: Element, i: number, className: string) => string | undefined),
 ): R {
   // Handle if value is a function
   if (typeof name === 'function') {
@@ -1079,9 +1079,9 @@ export function toggleClass<T extends AnyNode, R extends ArrayLike<T>>(
         this: Element,
         i: number,
         className: string,
-        stateVal?: boolean
+        stateVal?: boolean,
       ) => string),
-  stateVal?: boolean
+  stateVal?: boolean,
 ): R {
   // Support functions
   if (typeof value === 'function') {
@@ -1090,7 +1090,7 @@ export function toggleClass<T extends AnyNode, R extends ArrayLike<T>>(
         toggleClass.call(
           [el],
           value.call(el, i, el.attribs['class'] || '', stateVal),
-          stateVal
+          stateVal,
         );
       }
     });
