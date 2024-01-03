@@ -163,7 +163,7 @@ function Tweet({ id, name, user, date, tweet }: TweetItem) {
 
 export function HomepageTweets() {
   return (
-    <div className="container padding-bottom--xl">
+    <div className="container">
       <h2 className="text--center">What Our Users Say</h2>
       <div className="row">
         {TweetList.map((props) => (

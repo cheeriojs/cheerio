@@ -33,6 +33,14 @@ export default function Home(): JSX.Element {
       <HomepageFeatures />
       <HeadlineSponsors />
       <HomepageTweets />
+      <div className="container">
+        <Link
+          className="button button--primary button--block margin-vert--lg padding-vert--md"
+          to="/docs/intro"
+        >
+          Learn more about Cheerio ❯
+        </Link>
+      </div>
     </Layout>
   );
 }
