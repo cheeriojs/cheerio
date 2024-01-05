@@ -321,10 +321,17 @@ for (const tier of Object.values(tierSponsors)) {
 // Write sponsors.json
 await fs.writeFile(JSON_PATH, JSON.stringify(tierSponsors, null, 2), 'utf8');
 
-// Merge professionals into backers for now
+// Prepend professionals to backers for now
 tierSponsors.backer.unshift(...tierSponsors.professional);
 
 let readme = await fs.readFile(README_PATH, 'utf8');
+
+const TIER_IMAGE_SIZES: Record<Tier, number> = {
+  headliner: 128,
+  sponsor: 64,
+  professional: 64,
+  backer: 48,
+};
 
 for (let sectionStartIndex = 0; ; ) {
   sectionStartIndex = readme.indexOf(
@@ -351,18 +358,21 @@ for (let sectionStartIndex = 0; ; ) {
   readme = `${readme.slice(0, sectionContentStart)}\n\n${tierSponsors[
     sectionName
   ]
-    .map(
-      (s: Sponsor) =>
-        // Display each sponsor's image in the README.
-        `<a href="${s.url}" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="${imgix.buildURL(s.image, {
-              w: 128,
-              h: 128,
-              fit: 'fillmax',
-              fill: 'solid',
-            })}" title="${s.name}" alt="${s.name}"></img>
-          </a>`,
-    )
+    .map((s: Sponsor) => {
+      const size = TIER_IMAGE_SIZES[s.tier ?? sectionName];
+      // Display each sponsor's image in the README.
+      return `<a href="${s.url}" target="_blank" rel="noopener noreferrer">
+            <img height="${size}px" width="${size}px" src="${imgix.buildURL(
+              s.image,
+              {
+                w: size,
+                h: size,
+                fit: 'fillmax',
+                fill: 'solid',
+              },
+            )}" title="${s.name}" alt="${s.name}"></img>
+          </a>`;
+    })
     .join('\n')}\n\n${readme.slice(sectionEndIndex)}`;
 }
 
