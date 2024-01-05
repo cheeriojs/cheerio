@@ -154,7 +154,7 @@ const config = {
       algolia: {
         appId: 'NRR2XU4QSP',
         apiKey: '40f62d369f1e54db758fbc13076de406',
-        indexName: 'cheerio',
+        indexName: 'crawler_cheerio',
       },
     }),
 
