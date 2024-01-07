@@ -197,31 +197,34 @@ development and support.
 <!-- BEGIN SPONSORS: sponsor -->
 
 <a href="https://cryptocasinos.com/" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcryptocasinos%2F99b168e%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=66c6bbd273ae37878a1153769aeb7957" title="CryptoCasinos" alt="CryptoCasinos"></img>
+            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcryptocasinos%2F99b168e%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=2ef05a88fcef5338757b09e56ca05cbf" title="CryptoCasinos" alt="CryptoCasinos"></img>
           </a>
 <a href="https://www.casinoonlineaams.com" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasinoonlineaamscom%2Fc59b0fd%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=6f9d59f0947d7b55b0a4fbd06406d2fc" title="Casinoonlineaams.com" alt="Casinoonlineaams.com"></img>
+            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasinoonlineaamscom%2Fc59b0fd%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=7b90355c5df11c3ac489869b01279fee" title="Casinoonlineaams.com" alt="Casinoonlineaams.com"></img>
           </a>
 <a href="https://freebets.ltd.uk/" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Ffreebets%2Fe21c41b%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=c7a5b478fd31853084925dabf9b33208" title="freebets.ltd.uk" alt="freebets.ltd.uk"></img>
+            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Ffreebets%2Fe21c41b%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=af81d017a3336ecb843e6c9b9d8dd96b" title="freebets.ltd.uk" alt="freebets.ltd.uk"></img>
           </a>
 <a href="https://casinoutansvensklicens.co/" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasino-utan-svensk-licens3%2Ff7e9357%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=bbd28616e8de4d3e0609059e52db734b" title="Casino utan svensk licens" alt="Casino utan svensk licens"></img>
+            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasino-utan-svensk-licens3%2Ff7e9357%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=45ea355f0c3411592219714943df29dd" title="Casino utan svensk licens" alt="Casino utan svensk licens"></img>
           </a>
 <a href="https://www.zenrows.com" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fzenrows%2F3199d4b%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=e38415a8afd74473287be5630a341033" title="ZenRows" alt="ZenRows"></img>
+            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fzenrows%2F3199d4b%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=8a51972a1004283672506d2e3aedd25b" title="ZenRows" alt="ZenRows"></img>
           </a>
 <a href="https://casinosicuri.info/" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasinosicuri-info%2F5dc691c%2Favatar.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=fd570730894e259b3af3a26a8fb3a8da" title="Casinosicuri.info" alt="Casinosicuri.info"></img>
+            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasinosicuri-info%2F5dc691c%2Favatar.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=66bff23a6f3379305e049abd87368780" title="Casinosicuri.info" alt="Casinosicuri.info"></img>
+          </a>
+<a href="https://slotoking.ua/games/" target="_blank" rel="noopener noreferrer">
+            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Figrovye-avtomaty-ua%2F96bfde3%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=07091c88a0b859ecaa81ef10fadf3075" title="Игровые автоматы" alt="Игровые автоматы"></img>
           </a>
 <a href="https://onlinecasinosspelen.com" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fonlinecasinosspelen%2F4ce3830%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=4d82525abf323cf8f3681be773f5006a" title="OnlineCasinosSpelen" alt="OnlineCasinosSpelen"></img>
+            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fonlinecasinosspelen%2F4ce3830%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=60e5dd9f3993a754d0e5d47a43ff7462" title="OnlineCasinosSpelen" alt="OnlineCasinosSpelen"></img>
           </a>
 <a href="https://casinoZonderregistratie.net/" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fczrnet%2F24e6252%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=6369f37f0cb4c58a7caeeb38073acfea" title="CasinoZonderRegistratie.net" alt="CasinoZonderRegistratie.net"></img>
+            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fczrnet%2F24e6252%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=d9b81b3c39bca4d3a8f279e79c5eec8d" title="CasinoZonderRegistratie.net" alt="CasinoZonderRegistratie.net"></img>
           </a>
 <a href="https://Nieuwe-Casinos.net" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fnieuwecasinos%2Fee150d6%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=61f228d48c19e3e62d085d027a5a30f5" title="Nieuwe-Casinos.net" alt="Nieuwe-Casinos.net"></img>
+            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fnieuwecasinos%2Fee150d6%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=c2663f8b5dcfc983ef5641028d7b430b" title="Nieuwe-Casinos.net" alt="Nieuwe-Casinos.net"></img>
           </a>
 
 <!-- END SPONSORS -->
@@ -234,10 +237,10 @@ support for Cheerio and help us maintain and improve this open source project.
 <!-- BEGIN SPONSORS: backer -->
 
 <a href="https://kafidoff.com" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fkafidoff-vasy%2Fd7ff85c%2Favatar.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=5f86412e7c79219385b275aaa4ee5e65" title="Vasy Kafidoff" alt="Vasy Kafidoff"></img>
+            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fkafidoff-vasy%2Fd7ff85c%2Favatar.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=a41c66c2f9b1d3a7a241e425e7aa2d09" title="Vasy Kafidoff" alt="Vasy Kafidoff"></img>
           </a>
 <a href="https://medium.com/norch" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fespenklem%2F7e8cd40%2Favatar.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=113a5117055e25a5bc76df211866f2c4" title="Espen Klem" alt="Espen Klem"></img>
+            <img height="48px" width="48px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fespenklem%2F7e8cd40%2Favatar.png?ixlib=js-3.8.0&w=48&h=48&fit=fillmax&fill=solid&s=f727bc0f59d1738188ec8e4499123149" title="Espen Klem" alt="Espen Klem"></img>
           </a>
 
 <!-- END SPONSORS -->
