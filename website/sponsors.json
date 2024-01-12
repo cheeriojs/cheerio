@@ -155,6 +155,17 @@
       "totalDonations": 0,
       "source": "opencollective",
       "tier": "sponsor"
+    },
+    {
+      "createdAt": "2024-01-12T15:41:17.058Z",
+      "name": "Vedonlyontiyhtiot.com",
+      "url": "https://vedonlyontiyhtiot.com/",
+      "image": "https://images.opencollective.com/vedonlyontiyhtiot-com/avatar.png",
+      "type": "INDIVIDUAL",
+      "monthlyDonation": 0,
+      "totalDonations": 0,
+      "source": "opencollective",
+      "tier": "sponsor"
     }
   ],
   "professional": [
