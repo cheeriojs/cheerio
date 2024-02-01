@@ -40,7 +40,7 @@ jobs:
           IMGIX_TOKEN: ${{ secrets.IMGIX_TOKEN }}
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v6
         continue-on-error: true
         with:
           commit-message: 'docs(readme): Update Sponsors'
