@@ -186,9 +186,6 @@ development and support.
 <a href="https://www.airbnb.com/" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fgithub.com%2Fairbnb.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=384cad45e10faea516202ad10801f895" title="AirBnB" alt="AirBnB"></img>
           </a>
-<a href="https://runalloy.com/?utm_source=github&utm_medium=referral&utm_campaign=1224_cheerio" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fgithub.com%2Falloy-automation.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=b4324b43e1dbd4ceb0f354a1274e9a8f" title="Alloy Automation" alt="Alloy Automation"></img>
-          </a>
 
 <!-- END SPONSORS -->
 
