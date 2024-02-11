@@ -32,17 +32,6 @@
       "totalDonations": 0,
       "source": "manual",
       "tier": "headliner"
-    },
-    {
-      "createdAt": "2024-01-02",
-      "name": "Alloy Automation",
-      "image": "https://github.com/alloy-automation.png",
-      "url": "https://runalloy.com/?utm_source=github&utm_medium=referral&utm_campaign=1224_cheerio",
-      "type": "ORGANIZATION",
-      "monthlyDonation": 0,
-      "totalDonations": 0,
-      "source": "opencollective",
-      "tier": "headliner"
     }
   ],
   "sponsor": [
