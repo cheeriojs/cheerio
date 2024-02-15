@@ -199,9 +199,6 @@ development and support.
 <a href="https://www.casinoonlineaams.com" target="_blank" rel="noopener noreferrer">
             <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasinoonlineaamscom%2Fc59b0fd%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=7b90355c5df11c3ac489869b01279fee" title="Casinoonlineaams.com" alt="Casinoonlineaams.com"></img>
           </a>
-<a href="https://freebets.ltd.uk/" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Ffreebets%2Fe21c41b%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=af81d017a3336ecb843e6c9b9d8dd96b" title="freebets.ltd.uk" alt="freebets.ltd.uk"></img>
-          </a>
 <a href="https://casinoutansvensklicens.co/" target="_blank" rel="noopener noreferrer">
             <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasino-utan-svensk-licens3%2Ff7e9357%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=45ea355f0c3411592219714943df29dd" title="Casino utan svensk licens" alt="Casino utan svensk licens"></img>
           </a>
