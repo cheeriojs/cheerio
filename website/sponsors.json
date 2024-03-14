@@ -155,6 +155,17 @@
       "totalDonations": 0,
       "source": "opencollective",
       "tier": "sponsor"
+    },
+    {
+      "createdAt": "2024-03-12T20:12:08.220Z",
+      "name": "No Deposit Bonus",
+      "url": "https://www.nodepositcasinobonus.org/",
+      "image": "https://images.opencollective.com/no-deposit-bonus/912e261/logo.png",
+      "type": "ORGANIZATION",
+      "monthlyDonation": 0,
+      "totalDonations": 0,
+      "source": "opencollective",
+      "tier": "sponsor"
     }
   ],
   "professional": [
