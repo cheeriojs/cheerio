@@ -13,6 +13,14 @@ export const vegetables = [
   '</ul>',
 ].join('');
 
+export const meats = [
+  '<ul id="meats">',
+  '<li class="beef" COOKED="mediumrare">Beef</li>',
+  '<li class="chicken">Chicken</li>',
+  '<li class="pork">Pork</li>',
+  '</ul>',
+].join('');
+
 export const divcontainers = [
   '<div class="container">',
   '<div class="inner">First</div>',
