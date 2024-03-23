@@ -63,7 +63,12 @@ function getAttr(
 
   // Mimic the DOM and return text content as value for `option's`
   if (elem.name === 'option' && name === 'value') {
-    return text(elem.children);
+    if (elem.getAttribute('value') !== null) {
+      return text(elem.children);
+    }
+    else {
+      return undefined
+    }
   }
 
   // Mimic DOM with default value for radios/checkboxes
