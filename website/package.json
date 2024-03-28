@@ -33,7 +33,7 @@
     "typedoc-plugin-mdn-links": "^3.1.18"
   },
   "devDependencies": {
-    "@crowdin/cli": "^3.19.0",
+    "@crowdin/cli": "^3.19.1",
     "@tsconfig/docusaurus": "^2.0.3",
     "typescript": "^5.4.3"
   },
