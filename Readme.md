@@ -208,6 +208,9 @@ development and support.
 <a href="https://casinosicuri.info/" target="_blank" rel="noopener noreferrer">
             <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasinosicuri-info%2F5dc691c%2Favatar.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=66bff23a6f3379305e049abd87368780" title="Casinosicuri.info" alt="Casinosicuri.info"></img>
           </a>
+<a href="https://slotoking.ua/" target="_blank" rel="noopener noreferrer">
+            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Figrovye-avtomaty-ua%2F96bfde3%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=07091c88a0b859ecaa81ef10fadf3075" title="Ігрові автомати" alt="Ігрові автомати"></img>
+          </a>
 <a href="https://onlinecasinosspelen.com" target="_blank" rel="noopener noreferrer">
             <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fonlinecasinosspelen%2F4ce3830%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=60e5dd9f3993a754d0e5d47a43ff7462" title="OnlineCasinosSpelen" alt="OnlineCasinosSpelen"></img>
           </a>
@@ -222,6 +225,9 @@ development and support.
           </a>
 <a href="https://puter.com/" target="_blank" rel="noopener noreferrer">
             <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fputer%2Ff8643c4%2Favatar.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=533e28124d885c9d8b261e464db029c5" title="Puter.com" alt="Puter.com"></img>
+          </a>
+<a href="https://www.nodepositcasinobonus.org/" target="_blank" rel="noopener noreferrer">
+            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fno-deposit-bonus%2F912e261%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=ce708f21996657eef8c5207fb84312b5" title="No Deposit Bonus" alt="No Deposit Bonus"></img>
           </a>
 
 <!-- END SPONSORS -->
