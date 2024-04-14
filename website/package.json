@@ -30,12 +30,12 @@
     "react-dom": "^18.2.0",
     "typedoc": "^0.25.13",
     "typedoc-plugin-markdown": "^3.17.1",
-    "typedoc-plugin-mdn-links": "^3.1.19"
+    "typedoc-plugin-mdn-links": "^3.1.20"
   },
   "devDependencies": {
     "@crowdin/cli": "^3.19.2",
     "@tsconfig/docusaurus": "^2.0.3",
-    "typescript": "^5.4.4"
+    "typescript": "^5.4.5"
   },
   "browserslist": {
     "production": [
