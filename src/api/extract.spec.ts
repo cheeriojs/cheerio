@@ -1,5 +1,5 @@
 import * as fixtures from '../__fixtures__/fixtures.js';
-import cheerio from '..';
+import cheerio from '../index.js';
 
 interface RedSelObject {
   red: string | undefined;
