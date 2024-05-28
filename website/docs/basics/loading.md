@@ -45,13 +45,13 @@ Cheerio object that you can use to traverse and manipulate the document.
 Here's an example of how to use the load method:
 
 ```js
-import * as cheerio from 'cheerio';
+import * as cheerio from "cheerio";
 
 const $ = cheerio.load(
-  '<html><head><title>Hello, world!</title></head></html>',
+  "<html><head><title>Cheerio!</title></head><h1>Hello World!</h1></html>"
 );
 
-console.log($('h1').text());
+console.log($("h1").text());
 // Output: Hello, world!
 ```
 
