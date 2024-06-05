@@ -18,7 +18,7 @@
   "dependencies": {
     "@docusaurus/core": "^3.4.0",
     "@docusaurus/module-type-aliases": "^3.3.2",
-    "@docusaurus/plugin-client-redirects": "^3.3.2",
+    "@docusaurus/plugin-client-redirects": "^3.4.0",
     "@docusaurus/preset-classic": "^3.4.0",
     "@docusaurus/remark-plugin-npm2yarn": "^3.4.0",
     "@docusaurus/theme-live-codeblock": "^3.4.0",
