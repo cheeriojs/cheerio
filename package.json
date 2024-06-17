@@ -62,7 +62,7 @@
     "dom-serializer": "^2.0.0",
     "domhandler": "^5.0.3",
     "domutils": "^3.1.0",
-    "encoding-sniffer": "^0.1.0",
+    "encoding-sniffer": "^0.2.0",
     "htmlparser2": "^9.1.0",
     "parse5": "^7.1.2",
     "parse5-htmlparser2-tree-adapter": "^7.0.0",
