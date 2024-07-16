@@ -1,3 +1,13 @@
+import { type CheerioAPI, getLoad } from './load.js';
+import { getParse } from './parse.js';
+import { renderWithParse5, parseWithParse5 } from './parsers/parse5-adapter.js';
+import * as staticMethods from './static.js';
+import type { BasicAcceptedElems } from './types.js';
+import type { CheerioOptions } from './options.js';
+import renderWithHtmlparser2 from 'dom-serializer';
+import { parseDocument as parseWithHtmlparser2 } from 'htmlparser2';
+import type { AnyNode } from 'domhandler';
+
 /**
  * The main types of Cheerio objects.
  *
@@ -22,13 +32,8 @@ export type {
  * @category DOM Node
  */
 export type { Node, AnyNode, ParentNode, Element, Document } from 'domhandler';
-
 export type { CheerioAPI } from './load.js';
-import { getLoad } from './load.js';
-import { getParse } from './parse.js';
-import { renderWithParse5, parseWithParse5 } from './parsers/parse5-adapter.js';
-import renderWithHtmlparser2 from 'dom-serializer';
-import { parseDocument as parseWithHtmlparser2 } from 'htmlparser2';
+export { contains, merge } from './static.js';
 
 const parse = getParse((content, options, isDocument, context) =>
   options._useHtmlParser2
@@ -52,13 +57,17 @@ const parse = getParse((content, options, isDocument, context) =>
  * @returns The loaded document.
  * @see {@link https://cheerio.js.org#loading} for additional usage information.
  */
-export const load = getLoad(parse, (dom, options) =>
+export const load: (
+  content: string | AnyNode | AnyNode[] | Buffer,
+  options?: CheerioOptions | null,
+  isDocument?: boolean,
+) => CheerioAPI = getLoad(parse, (dom, options) =>
   options._useHtmlParser2
     ? renderWithHtmlparser2(dom, options)
     : renderWithParse5(dom),
 );
 
-const defaultInstance = load([]);
+const defaultInstance: CheerioAPI = load([]);
 
 /**
  * The default cheerio instance.
@@ -68,13 +77,6 @@ const defaultInstance = load([]);
  * @category Deprecated
  */
 export default defaultInstance;
-
-import * as staticMethods from './static.js';
-import type { BasicAcceptedElems } from './types.js';
-import type { CheerioOptions } from './options.js';
-import type { AnyNode } from 'domhandler';
-
-export const { contains, merge } = staticMethods;
 
 /**
  * Renders the document.
@@ -132,7 +134,9 @@ export const text: (elements: ArrayLike<AnyNode>) => string =
  * $.parseHTML('<b>markup</b>');
  * ```
  */
-export const parseHTML = staticMethods.parseHTML.bind(defaultInstance);
+export const parseHTML = staticMethods.parseHTML.bind(
+  defaultInstance,
+) as typeof staticMethods.parseHTML;
 
 /**
  * The `.root` method exported by the Cheerio module is deprecated.
@@ -149,4 +153,6 @@ export const parseHTML = staticMethods.parseHTML.bind(defaultInstance);
  * $.root();
  * ```
  */
-export const root = staticMethods.root.bind(defaultInstance);
+export const root = staticMethods.root.bind(
+  defaultInstance,
+) as typeof staticMethods.root;

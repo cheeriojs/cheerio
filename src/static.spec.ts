@@ -142,7 +142,7 @@ describe('cheerio', () => {
       expect($.parseHTML('text')[0].type).toBe('text');
     });
 
-    it('(\\ttext) : preserves leading whitespace', () => {
+    it('(<tab>>text) : preserves leading whitespace', () => {
       expect($.parseHTML('\t<div></div>')[0]).toHaveProperty('data', '\t');
     });
 
