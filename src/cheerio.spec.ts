@@ -259,7 +259,9 @@ describe('cheerio', () => {
 
     // Issue #1092
     it('should handle a character `)` in `:contains` selector', () => {
-      const result = cheerio.load('<p>)aaa</p>')(":contains('\\)aaa')");
+      const result = cheerio.load('<p>)aaa</p>')(
+        String.raw`:contains('\)aaa')`,
+      );
       expect(result).toHaveLength(3);
       expect(result.first().prop('tagName')).toBe('HTML');
       expect(result.eq(1).prop('tagName')).toBe('BODY');
