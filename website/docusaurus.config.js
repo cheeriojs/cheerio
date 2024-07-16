@@ -260,6 +260,7 @@ const config = {
           // Always display the API entry last
           position: Number.MAX_SAFE_INTEGER,
         },
+        outputFileStrategy: 'members',
       },
     ],
   ],
