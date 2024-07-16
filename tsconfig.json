@@ -16,6 +16,7 @@
     "strict": true,
 
     /* Additional Checks */
+    "isolatedDeclarations": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "noFallthroughCasesInSwitch": true,
