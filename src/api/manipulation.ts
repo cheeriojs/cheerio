@@ -267,7 +267,12 @@ export function prependTo<T extends AnyNode>(
  *
  * @see {@link https://api.jquery.com/append/}
  */
-export const append = _insert((dom, children, parent) => {
+export const append: <T extends AnyNode>(
+  this: Cheerio<T>,
+  ...elems:
+    | [(this: AnyNode, i: number, html: string) => BasicAcceptedElems<AnyNode>]
+    | BasicAcceptedElems<AnyNode>[]
+) => Cheerio<T> = _insert((dom, children, parent) => {
   uniqueSplice(children, children.length, 0, dom, parent);
 });
 
@@ -290,7 +295,12 @@ export const append = _insert((dom, children, parent) => {
  *
  * @see {@link https://api.jquery.com/prepend/}
  */
-export const prepend = _insert((dom, children, parent) => {
+export const prepend: <T extends AnyNode>(
+  this: Cheerio<T>,
+  ...elems:
+    | [(this: AnyNode, i: number, html: string) => BasicAcceptedElems<AnyNode>]
+    | BasicAcceptedElems<AnyNode>[]
+) => Cheerio<T> = _insert((dom, children, parent) => {
   uniqueSplice(children, 0, 0, dom, parent);
 });
 
@@ -390,7 +400,10 @@ function _wrap(
  *   selection.
  * @see {@link https://api.jquery.com/wrap/}
  */
-export const wrap = _wrap((el, elInsertLocation, wrapperDom) => {
+export const wrap: <T extends AnyNode>(
+  this: Cheerio<T>,
+  wrapper: AcceptedElems<AnyNode>,
+) => Cheerio<T> = _wrap((el, elInsertLocation, wrapperDom) => {
   const { parent } = el;
 
   if (!parent) return;
@@ -450,7 +463,10 @@ export const wrap = _wrap((el, elInsertLocation, wrapperDom) => {
  * @returns The instance itself, for chaining.
  * @see {@link https://api.jquery.com/wrapInner/}
  */
-export const wrapInner = _wrap((el, elInsertLocation, wrapperDom) => {
+export const wrapInner: <T extends AnyNode>(
+  this: Cheerio<T>,
+  wrapper: AcceptedElems<AnyNode>,
+) => Cheerio<T> = _wrap((el, elInsertLocation, wrapperDom) => {
   if (!hasChildren(el)) return;
   updateDOM(el.children, elInsertLocation);
   updateDOM(wrapperDom, el);
