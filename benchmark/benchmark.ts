@@ -1,6 +1,8 @@
 import Suites from './suite'; // eslint-disable-line n/file-extension-in-import
 import type { Cheerio } from '../src/cheerio.js';
-import type { Element } from 'domhandler';
+import type { CheerioAPI } from '../src/load.js';
+import { JSDOM } from 'jsdom';
+import { load } from '../src/base-exports.js';
 
 const suites = new Suites();
 

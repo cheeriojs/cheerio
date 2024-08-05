@@ -4,6 +4,8 @@ npm-debug.log
 .docusaurus
 .cache-loader
 /coverage
-/lib
+/.tshy
+/.tshy-build
+/dist
 /website/docs/api
 /website/build

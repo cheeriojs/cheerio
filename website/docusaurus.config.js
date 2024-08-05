@@ -230,8 +230,8 @@ const config = {
       'docusaurus-plugin-typedoc',
       {
         // TypeDoc options
-        entryPoints: ['../src/batteries.ts'],
-        tsconfig: '../tsconfig.json',
+        entryPoints: ['../src/index.ts'],
+        tsconfig: '../tsconfig.typedoc.json',
         readme: 'none',
         excludePrivate: true,
 

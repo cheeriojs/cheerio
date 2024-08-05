@@ -13,28 +13,7 @@ import type { AnyNode } from 'domhandler';
  *
  * @category Cheerio
  */
-
-export * from './base-exports.js';
-// TODO: Remove this
-export { default } from './base-exports.js';
-
-/* eslint-disable n/no-unsupported-features/node-builtins */
-
-import type { CheerioAPI, CheerioOptions } from './base-exports.js';
-import { load } from './base-exports.js';
-import { flattenOptions, type InternalOptions } from './options.js';
-import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';
-
-import * as htmlparser2 from 'htmlparser2';
-import { ParserStream as Parse5Stream } from 'parse5-parser-stream';
-import {
-  decodeBuffer,
-  DecodeStream,
-  type SnifferOptions,
-} from 'encoding-sniffer';
-import * as undici from 'undici';
-import MIMEType from 'whatwg-mimetype';
-import { Writable, finished } from 'node:stream';
+export type { Cheerio } from './cheerio.js';
 
 /**
  * Types used in signatures of Cheerio methods.

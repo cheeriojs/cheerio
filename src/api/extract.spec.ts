@@ -1,5 +1,5 @@
 import * as fixtures from '../__fixtures__/fixtures.js';
-import cheerio from '..';
+import { load } from '../base-exports.js';
 
 interface RedSelObject {
   red: string | undefined;
@@ -13,8 +13,8 @@ interface RedSelMultipleObject {
 
 describe('$.extract', () => {
   it('() : should extract values for selectors', () => {
-    const $ = cheerio.load(fixtures.eleven);
-    const $root = cheerio.load(fixtures.eleven).root();
+    const $ = load(fixtures.eleven);
+    const $root = load(fixtures.eleven).root();
     // An empty object should lead to an empty extraction.
 
     // $ExpectType ExtractedMap<{}>
