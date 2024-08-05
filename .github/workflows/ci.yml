@@ -45,11 +45,11 @@ jobs:
         run: npm ci
 
       - name: Run Jest
-        run: npm run test:jest
+        run: npm run test:vi
         if: matrix.node != env.NODE_COV
 
       - name: Run Jest with coverage
-        run: npm run test:jest:cov
+        run: npm run test:vi -- --coverage
         if: matrix.node == env.NODE_COV
 
       - name: Run Coveralls

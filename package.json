@@ -90,8 +90,7 @@
     "prepare": "husky install",
     "prepublishOnly": "npm run build",
     "test": "npm run lint && npm run test:vi",
-    "test:vi": "vitest",
-    "test:vi:cov": "npm run test:vi -- --coverage",
+    "test:vi": "vitest run",
     "update-sponsors": "tsx scripts/fetch-sponsors.mts"
   },
   "lint-staged": {
