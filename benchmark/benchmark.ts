@@ -1,4 +1,7 @@
-import Suites from './suite'; // eslint-disable-line n/file-extension-in-import
+import fs from 'node:fs/promises';
+import { Script } from 'node:vm';
+import { Bench } from 'tinybench';
+import type { Element } from 'domhandler';
 import type { Cheerio } from '../src/cheerio.js';
 import type { CheerioAPI } from '../src/load.js';
 import { JSDOM } from 'jsdom';
