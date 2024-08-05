@@ -21,17 +21,7 @@ export type { Cheerio } from './cheerio.js';
  * @category Cheerio
  */
 export * from './types.js';
-export type {
-  CheerioOptions,
-  HTMLParser2Options,
-  Parse5Options,
-} from './options.js';
-/**
- * Re-exporting all of the node types.
- *
- * @category DOM Node
- */
-export type { Node, AnyNode, ParentNode, Element, Document } from 'domhandler';
+export type { CheerioOptions, HTMLParser2Options } from './options.js';
 export type { CheerioAPI } from './load.js';
 export { contains, merge } from './static.js';
 

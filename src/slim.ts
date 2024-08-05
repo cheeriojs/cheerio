@@ -14,11 +14,6 @@ export type {
   CheerioAPI,
   CheerioOptions,
   HTMLParser2Options,
-  Node,
-  AnyNode,
-  ParentNode,
-  Element,
-  Document,
 } from './index.js';
 
 /**
