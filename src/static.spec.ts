@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach } from 'vitest';
 import * as fixtures from './__fixtures__/fixtures.js';
 import cheerio, { type CheerioAPI } from './index.js';
 

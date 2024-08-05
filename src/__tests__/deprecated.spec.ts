@@ -3,6 +3,7 @@
  * removed in the next major release of Cheerio, but their stability should be
  * maintained until that time.
  */
+import { describe, it, expect, beforeEach } from 'vitest';
 import * as fixtures from '../__fixtures__/fixtures.js';
 import cheerio from '../index.js';
 
