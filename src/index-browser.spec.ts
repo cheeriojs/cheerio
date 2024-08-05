@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import * as cheerio from './index-browser.js';
 import * as statics from './static.js';
 

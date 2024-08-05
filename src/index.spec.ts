@@ -1,10 +1,20 @@
-/* eslint-disable jest/no-done-callback */
+import { describe, it, expect, afterEach } from 'vitest';
 import * as cheerio from './index.js';
 import { Writable } from 'node:stream';
 import { createServer, type Server } from 'node:http';
 
 function noop() {
   // Ignore
+}
+
+// Returns a promise and a resolve function
+function getPromise() {
+  let cb: (error: Error | null | undefined, $: cheerio.CheerioAPI) => void;
+  const promise = new Promise<cheerio.CheerioAPI>((resolve, reject) => {
+    cb = (error, $) => (error ? reject(error) : resolve($));
+  });
+
+  return { promise, cb: cb! };
 }
 
 const TEST_HTML = '<h1>Hello World</h1>';
@@ -35,19 +45,19 @@ describe('loadBuffer', () => {
 });
 
 describe('stringStream', () => {
-  it('should use parse5 by default', (cb) => {
-    const stream = cheerio.stringStream({}, (err, $) => {
-      expect(err).toBeUndefined();
+  it('should use parse5 by default', async () => {
+    const { promise, cb } = getPromise();
+    const stream = cheerio.stringStream({}, cb);
 
-      expect($.html()).toBe(
-        `<html><head></head><body>${TEST_HTML}</body></html>`,
-      );
-
-      cb();
-    });
     expect(stream).toBeInstanceOf(Writable);
 
     stream.end(TEST_HTML);
+
+    const $ = await promise;
+
+    expect($.html()).toBe(
+      `<html><head></head><body>${TEST_HTML}</body></html>`,
+    );
   });
 
   it('should error from parse5 on buffer', () => {
@@ -59,47 +69,47 @@ describe('stringStream', () => {
     );
   });
 
-  it('should use htmlparser2 for XML', (cb) => {
-    const stream = cheerio.stringStream({ xml: true }, (err, $) => {
-      expect(err).toBeNull();
+  it('should use htmlparser2 for XML', async () => {
+    const { promise, cb } = getPromise();
+    const stream = cheerio.stringStream({ xmlMode: true }, cb);
 
-      expect($.html()).toBe(TEST_HTML);
-
-      cb();
-    });
     expect(stream).toBeInstanceOf(Writable);
 
     stream.end(TEST_HTML);
+
+    const $ = await promise;
+
+    expect($.html()).toBe(TEST_HTML);
   });
 });
 
 describe('decodeStream', () => {
-  it('should use parse5 by default', (cb) => {
-    const stream = cheerio.decodeStream({}, (err, $) => {
-      expect(err).toBeUndefined();
+  it('should use parse5 by default', async () => {
+    const { promise, cb } = getPromise();
+    const stream = cheerio.decodeStream({}, cb);
 
-      expect($.html()).toBe(
-        `<html><head></head><body>${TEST_HTML}</body></html>`,
-      );
-
-      cb();
-    });
     expect(stream).toBeInstanceOf(Writable);
 
     stream.end(TEST_HTML_UTF16_BOM);
+
+    const $ = await promise;
+
+    expect($.html()).toBe(
+      `<html><head></head><body>${TEST_HTML}</body></html>`,
+    );
   });
 
-  it('should use htmlparser2 for XML', (cb) => {
-    const stream = cheerio.decodeStream({ xmlMode: true }, (err, $) => {
-      expect(err).toBeNull();
+  it('should use htmlparser2 for XML', async () => {
+    const { promise, cb } = getPromise();
+    const stream = cheerio.decodeStream({ xmlMode: true }, cb);
 
-      expect($.html()).toBe(TEST_HTML);
-
-      cb();
-    });
     expect(stream).toBeInstanceOf(Writable);
 
     stream.end(TEST_HTML_UTF16_BOM);
+
+    const $ = await promise;
+
+    expect($.html()).toBe(TEST_HTML);
   });
 });
 
@@ -128,14 +138,17 @@ describe('fromURL', () => {
     });
   }
 
-  afterEach((cb) => {
-    if (server) {
-      server.close(cb);
-      server = undefined;
-    } else {
-      cb();
-    }
-  });
+  afterEach(
+    async () =>
+      new Promise<void>((resolve, reject) => {
+        if (!server) {
+          resolve();
+        } else {
+          server.close((err) => (err ? reject(err) : resolve()));
+          server = undefined;
+        }
+      }),
+  );
 
   it('should fetch UTF-8 HTML', async () => {
     const port = await createTestServer('text/html', TEST_HTML);

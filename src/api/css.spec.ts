@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach } from 'vitest';
 import cheerio, { load, type Cheerio } from '../index.js';
 import type { Element } from 'domhandler';
 import { mixedText } from '../__fixtures__/fixtures.js';

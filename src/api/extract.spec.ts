@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import * as fixtures from '../__fixtures__/fixtures.js';
 import cheerio from '../index-browser.js';
 

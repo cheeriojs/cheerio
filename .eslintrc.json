@@ -126,7 +126,7 @@
     },
     {
       "files": "*.spec.ts",
-      "extends": "plugin:jest/recommended",
+      "extends": "plugin:vitest/recommended",
       "rules": {
         "@typescript-eslint/no-explicit-any": 0
       }

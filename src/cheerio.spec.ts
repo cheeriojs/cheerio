@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { parseDOM } from 'htmlparser2';
 import cheerio, { type Cheerio } from './index.js';
 import { fruits, food, noscript } from './__fixtures__/fixtures.js';
@@ -404,7 +405,7 @@ describe('cheerio', () => {
 
   describe('parse5 options', () => {
     // Should parse noscript tags only with false option value
-    test('{scriptingEnabled: ???}', () => {
+    it('{scriptingEnabled: ???}', () => {
       // [default] `scriptingEnabled: true` - tag contains one text element
       const withScripts = cheerio.load(noscript)('noscript');
       expect(withScripts).toHaveLength(1);
@@ -432,7 +433,7 @@ describe('cheerio', () => {
     });
 
     // Should contain location data only with truthful option value
-    test('{sourceCodeLocationInfo: ???}', () => {
+    it('{sourceCodeLocationInfo: ???}', () => {
       // Location data should not be present
       for (const val of [undefined, null, 0, false, '']) {
         const options = { sourceCodeLocationInfo: val as never };
