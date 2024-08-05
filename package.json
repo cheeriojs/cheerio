@@ -153,7 +153,7 @@
     "vitest": "^2.0.5"
   },
   "engines": {
-    "node": ">= 6"
+    "node": ">= 16"
   },
   "tshy": {
     "esmDialects": [
