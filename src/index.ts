@@ -3,17 +3,16 @@
  *   convenience methods for loading documents from various sources.
  */
 
-export * from './base-exports.js';
-// TODO: Remove this
-export { default } from './base-exports.js';
+export * from './load-parse.js';
+
+export type { Cheerio } from './cheerio.js';
+export type * from './types.js';
+export type { CheerioOptions, HTMLParser2Options } from './options.js';
+export type { CheerioAPI } from './load.js';
 
 /* eslint-disable n/no-unsupported-features/node-builtins */
 
-import type { CheerioAPI, CheerioOptions } from './base-exports.js';
-import { load } from './base-exports.js';
-import { flattenOptions, type InternalOptions } from './options.js';
 import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';
-
 import * as htmlparser2 from 'htmlparser2';
 import { ParserStream as Parse5Stream } from 'parse5-parser-stream';
 import {
@@ -24,6 +23,13 @@ import {
 import * as undici from 'undici';
 import MIMEType from 'whatwg-mimetype';
 import { Writable, finished } from 'node:stream';
+import type { CheerioAPI } from './load.js';
+import {
+  flattenOptions,
+  type InternalOptions,
+  type CheerioOptions,
+} from './options.js';
+import { load } from './load-parse.js';
 
 /**
  * Sniffs the encoding of a buffer, then creates a querying function bound to a

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import * as fixtures from '../__fixtures__/fixtures.js';
-import { load } from '../base-exports.js';
+import { load } from '../load-parse.js';
 
 interface RedSelObject {
   red: string | undefined;

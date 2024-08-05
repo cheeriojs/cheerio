@@ -1,7 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import cheerio, { load, type CheerioAPI, type Cheerio } from '../index.js';
+import { load, type CheerioAPI, type Cheerio } from '../index.js';
 import type { Element } from 'domhandler';
 import {
+  cheerio,
   script,
   fruits,
   vegetables,
