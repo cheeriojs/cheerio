@@ -13,10 +13,8 @@ const jQuerySrc = await fs.readFile(
   'utf8',
 );
 const jQueryScript = new Script(jQuerySrc);
-const regexIdx = process.argv.indexOf('--regex') + 1;
-const filterRegex: RegExp = regexIdx
-  ? new RegExp(process.argv[regexIdx], 'i')
-  : /./;
+const filterIndex = process.argv.indexOf('--filter') + 1;
+const benchmarkFilter = filterIndex >= 0 ? process.argv[filterIndex] : '';
 
 const cheerioOnly = process.argv.includes('--cheerio-only');
 
@@ -30,7 +28,7 @@ async function benchmark<T>(
   fileName: string,
   options: SuiteOptions<T>,
 ): Promise<void> {
-  if (!filterRegex.test(name)) {
+  if (!name.includes(benchmarkFilter)) {
     return;
   }
   const markup = await fs.readFile(new URL(fileName, documentDir), 'utf8');
