@@ -18,21 +18,9 @@ document.
 
 :::danger Availability of methods
 
-Only the `load` method is available by default. If you are using current NodeJS
-version, other methods will be available if you use an ES Module imports (your
-file has a `.mjs` extension, or you have `type: "module"` in your
-`package.json`). You can also directly import or require
-`cheerio/lib/batteries`.
-
-<details>
-<summary>Why is that the case?</summary>
-
-The methods that are not available by default have dependencies that use the
-[`node:` protocol](https://nodejs.org/api/esm.html#node-imports). This protocol
-is only supported for ES Modules in Node 12. To maintain compatibility with Node
-12, we only provide methods besides `load` when you use an ES Module import.
-
-</details>
+The `loadBuffer`, `stringStream`, `decodeStream`, and `fromURL` methods are not
+available in the browser environment. Instead, use the `load` method to parse
+HTML strings.
 
 :::
 

@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach } from 'vitest';
 import cheerio, { type CheerioAPI } from '../index.js';
 import { Cheerio } from '../cheerio.js';
 import { type AnyNode, type Element, type Text, isText } from 'domhandler';
