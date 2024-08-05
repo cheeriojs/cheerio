@@ -141,11 +141,11 @@ describe('fromURL', () => {
   afterEach(
     async () =>
       new Promise<void>((resolve, reject) => {
-        if (!server) {
-          resolve();
-        } else {
+        if (server) {
           server.close((err) => (err ? reject(err) : resolve()));
           server = undefined;
+        } else {
+          resolve();
         }
       }),
   );

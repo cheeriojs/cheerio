@@ -95,7 +95,7 @@
       ],
       "parserOptions": {
         "sourceType": "module",
-        "project": "./tsconfig.eslint.json"
+        "project": "./tsconfig.json"
       },
       "rules": {
         "dot-notation": 0,
@@ -126,7 +126,7 @@
     },
     {
       "files": "*.spec.ts",
-      "extends": "plugin:vitest/recommended",
+      "extends": "plugin:vitest/legacy-recommended",
       "rules": {
         "@typescript-eslint/no-explicit-any": 0
       }

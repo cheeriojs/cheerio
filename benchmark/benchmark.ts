@@ -59,7 +59,7 @@ async function benchmark<T>(
     bench.add('jsdom', () => test(dom.window['$'], setupData));
   }
 
-  await bench.warmup(); // make results more reliable, ref: https://github.com/tinylibs/tinybench/pull/50
+  await bench.warmup(); // Make results more reliable, ref: https://github.com/tinylibs/tinybench/pull/50
   await bench.run();
 
   console.table(bench.table());
