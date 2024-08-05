@@ -228,7 +228,6 @@ const config = {
     ],
     [
       'docusaurus-plugin-typedoc',
-
       {
         // TypeDoc options
         entryPoints: ['../src/index.ts'],
@@ -259,6 +258,7 @@ const config = {
         sidebar: {
           // Always display the API entry last
           position: Number.MAX_SAFE_INTEGER,
+          pretty: true,
         },
         outputFileStrategy: 'members',
       },
