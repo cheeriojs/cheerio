@@ -5,7 +5,7 @@ import type { Element } from 'domhandler';
 import type { Cheerio } from '../src/cheerio.js';
 import type { CheerioAPI } from '../src/load.js';
 import { JSDOM } from 'jsdom';
-import { load } from '../src/index-browser.js';
+import { load } from '../src/base-exports.js';
 
 const documentDir = new URL('documents/', import.meta.url);
 const jQuerySrc = await fs.readFile(

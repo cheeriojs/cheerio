@@ -3,14 +3,14 @@
  *   convenience methods for loading documents from various sources.
  */
 
-export * from './index-browser.js';
+export * from './base-exports.js';
 // TODO: Remove this
-export { default } from './index-browser.js';
+export { default } from './base-exports.js';
 
 /* eslint-disable n/no-unsupported-features/node-builtins */
 
-import type { CheerioAPI, CheerioOptions } from './index-browser.js';
-import { load } from './index-browser.js';
+import type { CheerioAPI, CheerioOptions } from './base-exports.js';
+import { load } from './base-exports.js';
 import { flattenOptions, type InternalOptions } from './options.js';
 import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';
 

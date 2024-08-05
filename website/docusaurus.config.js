@@ -231,7 +231,7 @@ const config = {
       {
         // TypeDoc options
         entryPoints: ['../src/index.ts'],
-        tsconfig: '../tsconfig.json',
+        tsconfig: '../tsconfig.typedoc.json',
         readme: 'none',
         excludePrivate: true,
 

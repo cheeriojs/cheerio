@@ -5,6 +5,7 @@ npm-debug.log
 .cache-loader
 /coverage
 /.tshy
+/.tshy-build
 /dist
 /website/docs/api
 /website/build
