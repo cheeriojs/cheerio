@@ -21,8 +21,7 @@ document.
 Only the `load` method is available by default. If you are using current NodeJS
 version, other methods will be available if you use an ES Module imports (your
 file has a `.mjs` extension, or you have `type: "module"` in your
-`package.json`). You can also directly import or require
-`cheerio/lib/batteries`.
+`package.json`). You can also directly import or require `cheerio/batteries`.
 
 <details>
 <summary>Why is that the case?</summary>

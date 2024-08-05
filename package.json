@@ -2,12 +2,6 @@
   "name": "cheerio",
   "version": "1.0.0-rc.12",
   "description": "The fast, flexible & elegant library for parsing and manipulating HTML and XML.",
-  "author": "Matt Mueller <mattmuelle@gmail.com>",
-  "maintainers": [
-    "Felix Boehm <me@feedic.com>"
-  ],
-  "funding": "https://github.com/cheeriojs/cheerio?sponsor=1",
-  "license": "MIT",
   "keywords": [
     "htmlparser",
     "jquery",
@@ -18,44 +12,119 @@
     "xml",
     "html"
   ],
+  "homepage": "https://cheerio.js.org/",
+  "bugs": {
+    "url": "https://github.com/cheeriojs/cheerio/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/cheeriojs/cheerio.git"
   },
-  "bugs": {
-    "url": "https://github.com/cheeriojs/cheerio/issues"
-  },
-  "homepage": "https://cheerio.js.org/",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "module": "lib/esm/index.js",
-  "type": "commonjs",
+  "funding": "https://github.com/cheeriojs/cheerio?sponsor=1",
+  "license": "MIT",
+  "author": "Matt Mueller <mattmuelle@gmail.com>",
+  "maintainers": [
+    "Felix Boehm <me@feedic.com>"
+  ],
+  "type": "module",
   "exports": {
     ".": {
-      "require": "./lib/index.js",
+      "browser": {
+        "types": "./dist/browser/index.d.ts",
+        "default": "./dist/browser/index.js"
+      },
       "import": {
-        "node": "./lib/esm/batteries.js",
-        "default": "./lib/esm/index.js"
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/commonjs/index.d.ts",
+        "default": "./dist/commonjs/index.js"
       }
     },
-    "./lib/slim": {
-      "require": "./lib/slim.js",
-      "import": "./lib/esm/slim.js"
+    "./slim": {
+      "browser": {
+        "types": "./dist/browser/slim.d.ts",
+        "default": "./dist/browser/slim.js"
+      },
+      "import": {
+        "types": "./dist/esm/slim.d.ts",
+        "default": "./dist/esm/slim.js"
+      },
+      "require": {
+        "types": "./dist/commonjs/slim.d.ts",
+        "default": "./dist/commonjs/slim.js"
+      }
     },
-    "./lib/utils": {
-      "require": "./lib/utils.js",
-      "import": "./lib/esm/utils.js"
-    },
-    "./lib/batteries": {
-      "require": "./lib/batteries.js",
-      "import": "./lib/esm/batteries.js"
+    "./utils": {
+      "browser": {
+        "types": "./dist/browser/utils.d.ts",
+        "default": "./dist/browser/utils.js"
+      },
+      "import": {
+        "types": "./dist/esm/utils.d.ts",
+        "default": "./dist/esm/utils.js"
+      },
+      "require": {
+        "types": "./dist/commonjs/utils.d.ts",
+        "default": "./dist/commonjs/utils.js"
+      }
     }
   },
+  "main": "./dist/commonjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/commonjs/index.d.ts",
   "files": [
     "lib"
   ],
-  "engines": {
-    "node": ">= 6"
+  "scripts": {
+    "benchmark": "npm run build:cjs && tsx benchmark/benchmark.ts --regex \"^(?!.*highmem)\"",
+    "build": "tshy",
+    "format": "npm run format:es && npm run format:prettier",
+    "format:es": "npm run lint:es -- --fix",
+    "format:prettier": "npm run format:prettier:raw -- --write",
+    "format:prettier:raw": "prettier \"**/*.{{m,c,}{j,t}s{x,},md{x,},json,y{a,}ml}\" --ignore-path .gitignore",
+    "lint": "npm run lint:es && npm run lint:prettier",
+    "lint:es": "eslint --ignore-path .gitignore .",
+    "lint:prettier": "npm run format:prettier:raw -- --check",
+    "prepare": "husky install",
+    "prepublishOnly": "npm run build",
+    "test": "npm run lint && npm run test:jest",
+    "test:jest": "jest",
+    "test:jest:cov": "npm run test:jest -- --coverage",
+    "update-sponsors": "tsx scripts/fetch-sponsors.mts"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "npm run lint:es -- --fix"
+    ],
+    "*.{json,md,ts,yml}": [
+      "prettier --write"
+    ]
+  },
+  "prettier": {
+    "plugins": [
+      "./node_modules/prettier-plugin-jsdoc/dist/index.js"
+    ],
+    "proseWrap": "always",
+    "singleQuote": true,
+    "tabWidth": 2,
+    "tsdoc": true
+  },
+  "jest": {
+    "coverageProvider": "v8",
+    "moduleNameMapper": {
+      "^(.*)\\.js$": [
+        "$1.js",
+        "$1"
+      ]
+    },
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "/__fixtures__/"
+    ]
   },
   "dependencies": {
     "cheerio-select": "^2.1.0",
@@ -96,60 +165,27 @@
     "prettier": "^3.3.3",
     "prettier-plugin-jsdoc": "^1.3.0",
     "ts-jest": "^29.2.4",
+    "tshy": "^3.0.2",
     "tsx": "^4.16.5",
     "typescript": "^5.5.4"
   },
-  "scripts": {
-    "test": "npm run lint && npm run test:jest",
-    "test:jest": "jest",
-    "test:jest:cov": "npm run test:jest -- --coverage",
-    "lint": "npm run lint:es && npm run lint:prettier",
-    "lint:es": "eslint --ignore-path .gitignore .",
-    "lint:prettier": "npm run format:prettier:raw -- --check",
-    "format": "npm run format:es && npm run format:prettier",
-    "format:es": "npm run lint:es -- --fix",
-    "format:prettier": "npm run format:prettier:raw -- --write",
-    "format:prettier:raw": "prettier \"**/*.{{m,c,}{j,t}s{x,},md{x,},json,y{a,}ml}\" --ignore-path .gitignore",
-    "benchmark": "npm run build:cjs && tsx benchmark/benchmark.ts --regex \"^(?!.*highmem)\"",
-    "update-sponsors": "tsx scripts/fetch-sponsors.mts",
-    "build": "npm run build:cjs && npm run build:esm",
-    "make-esm": "sed 's/\"type\": \"commonjs\"/\"type\": \"module\"/g' package.json > tmp.json && mv tmp.json package.json",
-    "make-cjs": "sed 's/\"type\": \"module\"/\"type\": \"commonjs\"/g' package.json > tmp.json && mv tmp.json package.json",
-    "build:cjs": "tsc --sourceRoot https://raw.githubusercontent.com/cheeriojs/cheerio/$(git rev-parse HEAD)/src/",
-    "build:esm": "npm run make-esm && npm run build:cjs -- --target es2019 --outDir lib/esm && echo '{\"type\":\"module\"}' > lib/esm/package.json; npm run make-cjs",
-    "prepublishOnly": "npm run build",
-    "prepare": "husky install"
+  "engines": {
+    "node": ">= 6"
   },
-  "prettier": {
-    "singleQuote": true,
-    "tabWidth": 2,
-    "proseWrap": "always",
-    "plugins": [
-      "./node_modules/prettier-plugin-jsdoc/dist/index.js"
+  "tshy": {
+    "esmDialects": [
+      "browser"
     ],
-    "tsdoc": true
-  },
-  "lint-staged": {
-    "*.js": [
-      "prettier --write",
-      "npm run lint:es -- --fix"
-    ],
-    "*.{json,md,ts,yml}": [
-      "prettier --write"
+    "exports": {
+      ".": "./src/index.ts",
+      "./slim": "./src/slim.ts",
+      "./utils": "./src/utils.ts"
+    },
+    "exclude": [
+      "**/*.spec.ts",
+      "**/__fixtures__/*",
+      "**/__tests__/*",
+      "**/__snapshots__/*"
     ]
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "testPathIgnorePatterns": [
-      "/__fixtures__/"
-    ],
-    "coverageProvider": "v8",
-    "moduleNameMapper": {
-      "^(.*)\\.js$": [
-        "$1.js",
-        "$1"
-      ]
-    }
   }
 }

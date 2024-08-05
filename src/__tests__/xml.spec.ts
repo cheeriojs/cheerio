@@ -1,14 +1,14 @@
-import cheerio from '../index.js';
+import { load } from '../index.js';
 import type { CheerioOptions } from '../options.js';
 
 function xml(str: string, options?: CheerioOptions) {
   options = { xml: true, ...options };
-  const $ = cheerio.load(str, options);
+  const $ = load(str, options);
   return $.xml();
 }
 
 function dom(str: string, options?: CheerioOptions) {
-  const $ = cheerio.load('', options);
+  const $ = load('', options);
   return $(str).html();
 }
 
@@ -33,7 +33,7 @@ describe('render', () => {
     });
 
     it('should render HTML as XML', () => {
-      const $ = cheerio.load('<foo></foo>', null, false);
+      const $ = load('<foo></foo>', null, false);
       expect($.xml()).toBe('<foo/>');
     });
   });
@@ -55,7 +55,7 @@ describe('render', () => {
 
     it('should maintain the parsing options of distinct contexts independently', () => {
       const str = '<g><someElem someAttribute="something">hello</someElem></g>';
-      const $ = cheerio.load('', { xml: false });
+      const $ = load('', { xml: false });
 
       expect($(str).html()).toBe(
         '<someelem someattribute="something">hello</someelem>',

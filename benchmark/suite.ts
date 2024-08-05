@@ -4,7 +4,7 @@ import { Script } from 'node:vm';
 
 import { Suite, type Event } from 'benchmark';
 import { JSDOM } from 'jsdom';
-import cheerio from '../lib/index.js';
+import cheerio from '../dist/commonjs';
 
 const documentDir = path.join(__dirname, 'documents');
 const jQuerySrc = fs.readFileSync(

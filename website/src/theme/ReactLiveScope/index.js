@@ -1,5 +1,5 @@
 import React from 'react';
-import * as cheerio from '../../../../lib/index.js';
+import * as cheerio from '../../../../dist/index.js';
 
 // Add react-live imports you need here
 const ReactLiveScope = {
