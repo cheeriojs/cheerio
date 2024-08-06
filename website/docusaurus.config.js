@@ -251,6 +251,8 @@ const config = {
           pretty: true,
         },
         outputFileStrategy: 'members',
+        membersWithOwnFile: ['Class', 'Enum', 'Interface'],
+        propertyMembersFormat: 'htmlTable',
       },
     ],
   ],

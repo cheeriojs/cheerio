@@ -22,5 +22,6 @@
     "noPropertyAccessFromIndexSignature": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true
-  }
+  },
+  "exclude": ["website/"] /* The website has its own tsconfig. */
 }
