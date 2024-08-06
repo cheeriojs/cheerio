@@ -25,7 +25,6 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - 16
           - 18
           - 20
           - 22
