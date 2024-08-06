@@ -25,7 +25,6 @@ describe('.load', () => {
 
   it('(buffer) : should accept a buffer', () => {
     const html = '<html><head></head><body>foo</body></html>';
-    // eslint-disable-next-line n/no-unsupported-features/node-builtins
     const $html = load(Buffer.from(html));
     expect($html.html()).toBe(html);
   });

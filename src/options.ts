@@ -39,7 +39,7 @@ export interface CheerioOptions
   xmlMode?: boolean;
 
   /** The base URI for the document. Used to resolve the `href` and `src` props. */
-  baseURI?: string | URL; // eslint-disable-line n/no-unsupported-features/node-builtins
+  baseURI?: string | URL;
 
   /**
    * Is the document in quirks mode?
