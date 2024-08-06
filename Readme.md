@@ -22,7 +22,7 @@
 [中文文档 (Chinese Readme)](https://github.com/cheeriojs/cheerio/wiki/Chinese-README)
 
 ```js
-const cheerio = require('cheerio');
+import * as cheerio from 'cheerio';
 const $ = cheerio.load('<h2 class="title">Hello world</h2>');
 
 $('h2.title').text('Hello there!');
@@ -61,7 +61,7 @@ jQuery operates on the one, baked-in DOM. With Cheerio, we need to pass in the
 HTML document.
 
 ```js
-// ES6 or TypeScript:
+// ESM or TypeScript:
 import * as cheerio from 'cheerio';
 
 // In other environments:

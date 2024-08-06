@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { parseDOM } from 'htmlparser2';
-import cheerio, { type Cheerio } from './index.js';
-import { fruits, food, noscript } from './__fixtures__/fixtures.js';
+import { type Cheerio } from './index.js';
+import { cheerio, fruits, food, noscript } from './__fixtures__/fixtures.js';
 import type { Element } from 'domhandler';
 
 declare module './index.js' {

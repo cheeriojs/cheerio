@@ -1,3 +1,9 @@
+import type { CheerioAPI } from '../load.js';
+import { load } from '../load-parse.js';
+
+/** A Cheerio instance with no content. */
+export const cheerio: CheerioAPI = load([]);
+
 export const fruits: string = [
   '<ul id="fruits">',
   '<li class="apple">Apple</li>',
