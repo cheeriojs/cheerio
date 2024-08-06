@@ -3,7 +3,6 @@
 // @ts-ignore
 const { themes } = require('prism-react-renderer');
 
-// eslint-disable-next-line n/no-unpublished-require
 const packageJson = require('../package.json');
 
 /** @type {import('@docusaurus/types').Config} */
@@ -168,29 +167,20 @@ const config = {
         fromExtensions: ['html'],
         redirects: [
           // Classes
-          ...['Cheerio', 'Document', 'Element', 'Node'].map((name) => ({
-            from: `/classes/${name}.html`,
-            to: `/docs/api/classes/${name}`,
-          })),
+          {
+            from: `/classes/Cheerio.html`,
+            to: `/docs/api/classes/Cheerio`,
+          },
 
           // Interfaces
-          ...[
-            'CheerioAPI',
-            'CheerioOptions',
-            'HTMLParser2Options',
-            'Parse5Options',
-          ].map((name) => ({
-            from: `/interfaces/${name}.html`,
-            to: `/docs/api/interfaces/${name}`,
-          })),
+          ...['CheerioAPI', 'CheerioOptions', 'HTMLParser2Options'].map(
+            (name) => ({
+              from: `/interfaces/${name}.html`,
+              to: `/docs/api/interfaces/${name}`,
+            }),
+          ),
 
           // Type aliases and functions
-
-          // `Parse5Options` is now an interface.
-          {
-            from: '/types/Parse5Options.html',
-            to: '/docs/api/interfaces/Parse5Options',
-          },
 
           {
             /*
