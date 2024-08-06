@@ -1,7 +1,9 @@
-import cheerio, { type CheerioAPI } from '../index.js';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { load, type CheerioAPI } from '../index.js';
 import { Cheerio } from '../cheerio.js';
 import { type AnyNode, type Element, type Text, isText } from 'domhandler';
 import {
+  cheerio,
   food,
   fruits,
   eleven,
@@ -22,13 +24,13 @@ describe('$(...)', () => {
   let $: CheerioAPI;
 
   beforeEach(() => {
-    $ = cheerio.load(fruits);
+    $ = load(fruits);
   });
 
   describe('.load', () => {
     it('should throw a TypeError if given invalid input', () => {
       expect(() => {
-        (cheerio.load as any)();
+        (load as any)();
       }).toThrow('cheerio.load() expects a string');
     });
   });
@@ -76,12 +78,12 @@ describe('$(...)', () => {
     });
 
     it('should query immediate descendant only', () => {
-      const q = cheerio.load('<foo><bar><bar></bar><bar></bar></bar></foo>');
+      const q = load('<foo><bar><bar></bar><bar></bar></bar></foo>');
       expect(q('foo').find('> bar')).toHaveLength(1);
     });
 
     it('should find siblings', () => {
-      const q = cheerio.load('<p class=a><p class=b></p>');
+      const q = load('<p class=a><p class=b></p>');
       expect(q('.a').find('+.b')).toHaveLength(1);
       expect(q('.a').find('~.b')).toHaveLength(1);
       expect(q('.a').find('+.a')).toHaveLength(0);
@@ -89,7 +91,7 @@ describe('$(...)', () => {
     });
 
     it('should query case-sensitively when in xml mode', () => {
-      const q = cheerio.load('<caseSenSitive allTheWay>', { xml: true });
+      const q = load('<caseSenSitive allTheWay>', { xml: true });
       expect(q('caseSenSitive')).toHaveLength(1);
       expect(q('[allTheWay]')).toHaveLength(1);
       expect(q('casesensitive')).toHaveLength(0);
@@ -104,7 +106,7 @@ describe('$(...)', () => {
 
     describe('(cheerio object) :', () => {
       it('returns only those nodes contained within the current selection', () => {
-        const q = cheerio.load(food);
+        const q = load(food);
         const $selection = q('#fruits').find(q('li'));
 
         expect($selection).toHaveLength(3);
@@ -113,7 +115,7 @@ describe('$(...)', () => {
         expect($selection[2]).toBe(q('.pear')[0]);
       });
       it('returns only those nodes contained within any element in the current selection', () => {
-        const q = cheerio.load(food);
+        const q = load(food);
         const $selection = q('.apple, #vegetables').find(q('li'));
 
         expect($selection).toHaveLength(2);
@@ -124,21 +126,21 @@ describe('$(...)', () => {
 
     describe('(node) :', () => {
       it('returns node when contained within the current selection', () => {
-        const q = cheerio.load(food);
+        const q = load(food);
         const $selection = q('#fruits').find(q('.apple')[0]);
 
         expect($selection).toHaveLength(1);
         expect($selection[0]).toBe(q('.apple')[0]);
       });
       it('returns node when contained within any element the current selection', () => {
-        const q = cheerio.load(food);
+        const q = load(food);
         const $selection = q('#fruits, #vegetables').find(q('.carrot')[0]);
 
         expect($selection).toHaveLength(1);
         expect($selection[0]).toBe(q('.carrot')[0]);
       });
       it('does not return node that is not contained within the current selection', () => {
-        const q = cheerio.load(food);
+        const q = load(food);
         const $selection = q('#fruits').find(q('.carrot')[0]);
 
         expect($selection).toHaveLength(0);
@@ -175,7 +177,7 @@ describe('$(...)', () => {
 
   describe('.contents', () => {
     beforeEach(() => {
-      $ = cheerio.load(text);
+      $ = load(text);
     });
 
     it('() : should get all contents', () => {
@@ -218,7 +220,7 @@ describe('$(...)', () => {
     });
 
     it('() : should return elements in order', () => {
-      const result = cheerio.load(eleven)('.red').next();
+      const result = load(eleven)('.red').next();
       expect(result).toHaveLength(2);
       expect(result.eq(0).text()).toBe('Six');
       expect(result.eq(1).text()).toBe('Ten');
@@ -383,7 +385,7 @@ describe('$(...)', () => {
     });
 
     it('() : should maintain elements order', () => {
-      const sel = cheerio.load(eleven)('.sel');
+      const sel = load(eleven)('.sel');
       expect(sel).toHaveLength(3);
       expect(sel.eq(0).text()).toBe('Three');
       expect(sel.eq(1).text()).toBe('Nine');
@@ -565,7 +567,7 @@ describe('$(...)', () => {
     });
 
     it('() : when two elements are siblings to each other they have to be included', () => {
-      const result = cheerio.load(eleven)('.sel').siblings();
+      const result = load(eleven)('.sel').siblings();
       expect(result).toHaveLength(7);
       expect(result.eq(0).text()).toBe('One');
       expect(result.eq(1).text()).toBe('Two');
@@ -577,14 +579,14 @@ describe('$(...)', () => {
     });
 
     it('(selector) : when two elements are siblings to each other they have to be included', () => {
-      const result = cheerio.load(eleven)('.sel').siblings('.red');
+      const result = load(eleven)('.sel').siblings('.red');
       expect(result).toHaveLength(2);
       expect(result.eq(0).text()).toBe('Four');
       expect(result.eq(1).text()).toBe('Nine');
     });
 
     it('(cheerio) : test filtering with cheerio object', () => {
-      const doc = cheerio.load(eleven);
+      const doc = load(eleven);
       const result = doc('.sel').siblings(doc(':not([class])'));
       expect(result).toHaveLength(4);
       expect(result.eq(0).text()).toBe('One');
@@ -596,7 +598,7 @@ describe('$(...)', () => {
 
   describe('.parents', () => {
     beforeEach(() => {
-      $ = cheerio.load(food);
+      $ = load(food);
     });
 
     it('() : should get all of the parents in logical order', () => {
@@ -647,7 +649,7 @@ describe('$(...)', () => {
 
   describe('.parentsUntil', () => {
     beforeEach(() => {
-      $ = cheerio.load(food);
+      $ = load(food);
     });
 
     it('() : should get all of the parents in logical order', () => {
@@ -1011,7 +1013,7 @@ describe('$(...)', () => {
 
   describe('.has', () => {
     beforeEach(() => {
-      $ = cheerio.load(food);
+      $ = load(food);
     });
 
     it('(selector) : should reduce the set of matched elements to those with descendants that match the selector', () => {
@@ -1277,7 +1279,7 @@ describe('$(...)', () => {
     let $pear: Cheerio<Element>;
 
     beforeEach(() => {
-      $ = cheerio.load(food);
+      $ = load(food);
       $fruits = $('#fruits');
       $apple = $('.apple');
       $orange = $('.orange');
@@ -1578,7 +1580,7 @@ describe('$(...)', () => {
         expect($selection[1]).toBe($('.apple')[0]);
       });
       it('includes parents and self', () => {
-        const q = cheerio.load(food);
+        const q = load(food);
         const $selection = q('.apple').parents().addBack();
 
         expect($selection).toHaveLength(5);

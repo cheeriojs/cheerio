@@ -22,7 +22,7 @@
 [中文文档 (Chinese Readme)](https://github.com/cheeriojs/cheerio/wiki/Chinese-README)
 
 ```js
-const cheerio = require('cheerio');
+import * as cheerio from 'cheerio';
 const $ = cheerio.load('<h2 class="title">Hello world</h2>');
 
 $('h2.title').text('Hello there!');
@@ -61,7 +61,7 @@ jQuery operates on the one, baked-in DOM. With Cheerio, we need to pass in the
 HTML document.
 
 ```js
-// ES6 or TypeScript:
+// ESM or TypeScript:
 import * as cheerio from 'cheerio';
 
 // In other environments:
@@ -186,9 +186,6 @@ development and support.
 <a href="https://www.airbnb.com/" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fgithub.com%2Fairbnb.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=384cad45e10faea516202ad10801f895" title="AirBnB" alt="AirBnB"></img>
           </a>
-<a href="https://runalloy.com/?utm_source=github&utm_medium=referral&utm_campaign=1224_cheerio" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fgithub.com%2Falloy-automation.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=b4324b43e1dbd4ceb0f354a1274e9a8f" title="Alloy Automation" alt="Alloy Automation"></img>
-          </a>
 
 <!-- END SPONSORS -->
 
@@ -196,14 +193,8 @@ development and support.
 
 <!-- BEGIN SPONSORS: sponsor -->
 
-<a href="https://cryptocasinos.com/" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcryptocasinos%2F99b168e%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=2ef05a88fcef5338757b09e56ca05cbf" title="CryptoCasinos" alt="CryptoCasinos"></img>
-          </a>
 <a href="https://www.casinoonlineaams.com" target="_blank" rel="noopener noreferrer">
             <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasinoonlineaamscom%2Fc59b0fd%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=7b90355c5df11c3ac489869b01279fee" title="Casinoonlineaams.com" alt="Casinoonlineaams.com"></img>
-          </a>
-<a href="https://freebets.ltd.uk/" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Ffreebets%2Fe21c41b%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=af81d017a3336ecb843e6c9b9d8dd96b" title="freebets.ltd.uk" alt="freebets.ltd.uk"></img>
           </a>
 <a href="https://casinoutansvensklicens.co/" target="_blank" rel="noopener noreferrer">
             <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasino-utan-svensk-licens3%2Ff7e9357%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=45ea355f0c3411592219714943df29dd" title="Casino utan svensk licens" alt="Casino utan svensk licens"></img>
@@ -211,11 +202,8 @@ development and support.
 <a href="https://www.zenrows.com" target="_blank" rel="noopener noreferrer">
             <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fzenrows%2F3199d4b%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=8a51972a1004283672506d2e3aedd25b" title="ZenRows" alt="ZenRows"></img>
           </a>
-<a href="https://casinosicuri.info/" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasinosicuri-info%2F5dc691c%2Favatar.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=66bff23a6f3379305e049abd87368780" title="Casinosicuri.info" alt="Casinosicuri.info"></img>
-          </a>
-<a href="https://slotoking.ua/games/" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Figrovye-avtomaty-ua%2F96bfde3%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=07091c88a0b859ecaa81ef10fadf3075" title="Игровые автоматы" alt="Игровые автоматы"></img>
+<a href="https://slotoking.ua/games/all-slots/" target="_blank" rel="noopener noreferrer">
+            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Figrovye-avtomaty-ua%2F96bfde3%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=07091c88a0b859ecaa81ef10fadf3075" title="Ігрові автомати" alt="Ігрові автомати"></img>
           </a>
 <a href="https://onlinecasinosspelen.com" target="_blank" rel="noopener noreferrer">
             <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fonlinecasinosspelen%2F4ce3830%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=60e5dd9f3993a754d0e5d47a43ff7462" title="OnlineCasinosSpelen" alt="OnlineCasinosSpelen"></img>
@@ -228,6 +216,9 @@ development and support.
           </a>
 <a href="https://vedonlyontiyhtiot.com/" target="_blank" rel="noopener noreferrer">
             <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fvedonlyontiyhtiot-com%2Favatar.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=9983cbab4b2e4b4f715c31acaa27bea6" title="Vedonlyontiyhtiot.com" alt="Vedonlyontiyhtiot.com"></img>
+          </a>
+<a href="https://www.nodepositcasinobonus.org/" target="_blank" rel="noopener noreferrer">
+            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fno-deposit-bonus%2F912e261%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=ce708f21996657eef8c5207fb84312b5" title="No Deposit Bonus" alt="No Deposit Bonus"></img>
           </a>
 
 <!-- END SPONSORS -->

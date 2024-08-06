@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import type { Document, Element } from 'domhandler';
 import { getParse } from './parse.js';
 

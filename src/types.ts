@@ -1,3 +1,5 @@
+/** @file Types used in signatures of Cheerio methods. */
+
 type LowercaseLetters =
   | 'a'
   | 'b'

@@ -3,8 +3,8 @@
  * removed in the next major release of Cheerio, but their stability should be
  * maintained until that time.
  */
-import * as fixtures from '../__fixtures__/fixtures.js';
-import cheerio from '../index.js';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { cheerio, food, fruits } from '../__fixtures__/fixtures.js';
 
 describe('deprecated APIs', () => {
   describe('cheerio module', () => {
@@ -94,7 +94,7 @@ describe('deprecated APIs', () => {
       let $: typeof cheerio;
 
       beforeEach(() => {
-        $ = cheerio.load(fixtures.food);
+        $ = cheerio.load(food);
       });
 
       it('(container, contained) : should correctly detect the provided element', () => {
@@ -130,7 +130,7 @@ describe('deprecated APIs', () => {
 
   describe('Cheerio function', () => {
     it('.load', () => {
-      const $1 = cheerio.load(fixtures.fruits);
+      const $1 = cheerio.load(fruits);
       const $2 = $1.load('<div><p>Some <a>text</a>.</p></div>');
 
       expect($2('a')).toHaveLength(1);
@@ -172,7 +172,7 @@ describe('deprecated APIs', () => {
       });
 
       it('(selector) : should return the outerHTML of the selected element', () => {
-        const $ = cheerio.load(fixtures.fruits);
+        const $ = cheerio.load(fruits);
         expect($.html('.pear')).toBe('<li class="pear">Pear</li>');
       });
     });

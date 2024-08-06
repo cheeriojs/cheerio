@@ -13,29 +13,29 @@
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "crowdin:sync": "docusaurus write-translations && crowdin upload && crowdin download",
-    "typecheck": "tsc"
+    "lint:ts": "tsc --noEmit"
   },
   "dependencies": {
-    "@docusaurus/core": "^3.1.1",
-    "@docusaurus/module-type-aliases": "^3.1.1",
-    "@docusaurus/plugin-client-redirects": "^3.1.1",
-    "@docusaurus/preset-classic": "^3.1.1",
-    "@docusaurus/remark-plugin-npm2yarn": "^3.1.1",
-    "@docusaurus/theme-live-codeblock": "^3.1.1",
-    "@mdx-js/react": "^3.0.0",
-    "clsx": "^2.0.0",
-    "docusaurus-plugin-typedoc": "^0.22.0",
+    "@docusaurus/core": "^3.4.0",
+    "@docusaurus/module-type-aliases": "^3.3.2",
+    "@docusaurus/plugin-client-redirects": "^3.4.0",
+    "@docusaurus/preset-classic": "^3.4.0",
+    "@docusaurus/remark-plugin-npm2yarn": "^3.4.0",
+    "@docusaurus/theme-live-codeblock": "^3.4.0",
+    "@mdx-js/react": "^3.0.1",
+    "clsx": "^2.1.1",
+    "docusaurus-plugin-typedoc": "^1.0.4",
     "prism-react-renderer": "^2.2.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "typedoc": "^0.25.7",
-    "typedoc-plugin-markdown": "^3.17.1",
-    "typedoc-plugin-mdn-links": "^3.1.14"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typedoc": "^0.26.5",
+    "typedoc-plugin-markdown": "^4.2.3",
+    "typedoc-plugin-mdn-links": "^3.2.7"
   },
   "devDependencies": {
-    "@crowdin/cli": "^3.17.0",
-    "@tsconfig/docusaurus": "^2.0.2",
-    "typescript": "^5.2.2"
+    "@crowdin/cli": "^4.1.1",
+    "@tsconfig/docusaurus": "^2.0.3",
+    "typescript": "^5.5.4"
   },
   "browserslist": {
     "production": [

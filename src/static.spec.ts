@@ -1,5 +1,6 @@
-import * as fixtures from './__fixtures__/fixtures.js';
-import cheerio, { type CheerioAPI } from './index.js';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { cheerio, food, eleven } from './__fixtures__/fixtures.js';
+import { type CheerioAPI } from './index.js';
 
 describe('cheerio', () => {
   describe('.html', () => {
@@ -142,7 +143,7 @@ describe('cheerio', () => {
       expect($.parseHTML('text')[0].type).toBe('text');
     });
 
-    it('(\\ttext) : preserves leading whitespace', () => {
+    it('(<tab>>text) : preserves leading whitespace', () => {
       expect($.parseHTML('\t<div></div>')[0]).toHaveProperty('data', '\t');
     });
 
@@ -269,7 +270,7 @@ describe('cheerio', () => {
     let $: CheerioAPI;
 
     beforeEach(() => {
-      $ = cheerio.load(fixtures.food);
+      $ = cheerio.load(food);
     });
 
     it('(container, contained) : should correctly detect the provided element', () => {
@@ -306,7 +307,7 @@ describe('cheerio', () => {
 
   describe('.extract', () => {
     it('() : should extract values for selectors', () => {
-      const $ = cheerio.load(fixtures.eleven);
+      const $ = cheerio.load(eleven);
 
       expect(
         $.extract({
