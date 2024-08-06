@@ -72,6 +72,7 @@ if (!CHEERIO_SPONSORS_GITHUB_TOKEN) {
   throw new Error('Missing CHEERIO_SPONSORS_GITHUB_TOKEN.');
 }
 
+// @ts-expect-error - Types don't have a constructor
 const imgix = new ImgixClient({
   domain: 'humble.imgix.net',
   secureURLToken: IMGIX_TOKEN,
@@ -143,7 +144,7 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
     body: JSON.stringify({ query }),
   });
 
-  const payload = await body.json();
+  const payload: any = await body.json();
 
   return payload.data.account.orders.nodes.map((order: any): Sponsor => {
     const donation = order.amount.value * 100;
