@@ -89,7 +89,7 @@
     "lint:es": "eslint --report-unused-disable-directives --ignore-path .gitignore .",
     "lint:prettier": "npm run format:prettier:raw -- --check",
     "lint:ts": "tsc --noEmit",
-    "prepare": "husky install",
+    "prepare": "husky",
     "prepublishOnly": "npm run build",
     "test": "npm run lint && npm run test:vi",
     "test:vi": "vitest run",
