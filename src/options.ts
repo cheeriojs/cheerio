@@ -13,17 +13,14 @@ export interface HTMLParser2Options
   extends DomHandlerOptions,
     HTMLParser2ParserOptions {}
 
-/** Options for parse5, the default parser for HTML. */
-export interface Parse5Options // eslint-disable-line @typescript-eslint/no-empty-interface
-  extends Parse5ParserOptions<Htmlparser2TreeAdapterMap> {}
-
 /**
  * Options accepted by Cheerio.
  *
  * Please note that parser-specific options are _only recognized_ if the
  * relevant parser is used.
  */
-export interface CheerioOptions extends Parse5Options {
+export interface CheerioOptions
+  extends Parse5ParserOptions<Htmlparser2TreeAdapterMap> {
   /**
    * Recommended way of configuring htmlparser2 when wanting to parse XML.
    *
@@ -42,7 +39,7 @@ export interface CheerioOptions extends Parse5Options {
   xmlMode?: boolean;
 
   /** The base URI for the document. Used to resolve the `href` and `src` props. */
-  baseURI?: string | URL; // eslint-disable-line n/no-unsupported-features/node-builtins
+  baseURI?: string | URL;
 
   /**
    * Is the document in quirks mode?

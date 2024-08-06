@@ -18,21 +18,9 @@ document.
 
 :::danger Availability of methods
 
-Only the `load` method is available by default. If you are using current NodeJS
-version, other methods will be available if you use an ES Module imports (your
-file has a `.mjs` extension, or you have `type: "module"` in your
-`package.json`). You can also directly import or require
-`cheerio/lib/batteries`.
-
-<details>
-<summary>Why is that the case?</summary>
-
-The methods that are not available by default have dependencies that use the
-[`node:` protocol](https://nodejs.org/api/esm.html#node-imports). This protocol
-is only supported for ES Modules in Node 12. To maintain compatibility with Node
-12, we only provide methods besides `load` when you use an ES Module import.
-
-</details>
+The `loadBuffer`, `stringStream`, `decodeStream`, and `fromURL` methods are not
+available in the browser environment. Instead, use the `load` method to parse
+HTML strings.
 
 :::
 
@@ -47,9 +35,7 @@ Here's an example of how to use the load method:
 ```js
 import * as cheerio from 'cheerio';
 
-const $ = cheerio.load(
-  '<html><head><title>Hello, world!</title></head></html>',
-);
+const $ = cheerio.load('<h1>Hello, world!</h1>');
 
 console.log($('h1').text());
 // Output: Hello, world!
@@ -70,7 +56,8 @@ $.html();
 
 :::
 
-Learn more about the `load` method in the [API documentation](/docs/api/#load).
+Learn more about the `load` method in the
+[API documentation](/docs/api/functions/load).
 
 ## `loadBuffer`
 
@@ -95,7 +82,7 @@ console.log($('title').text());
 ```
 
 Learn more about the `loadBuffer` method in the
-[API documentation](/docs/api/#loadbuffer).
+[API documentation](/docs/api/functions/loadBuffer).
 
 ## `stringStream`
 
@@ -119,7 +106,7 @@ fs.createReadStream('document.html', { encoding: 'utf8' }).pipe(writeStream);
 ```
 
 Learn more about the `stringStream` method in the
-[API documentation](/docs/api/#stringstream).
+[API documentation](/docs/api/functions/stringStream).
 
 ## `decodeStream`
 
@@ -147,7 +134,7 @@ fs.createReadStream('document.html').pipe(writeStream);
 ```
 
 Learn more about the `decodeStream` method in the
-[API documentation](/docs/api/#decodestream).
+[API documentation](/docs/api/functions/decodeStream).
 
 ## `fromURL`
 
@@ -162,7 +149,7 @@ const $ = await cheerio.fromURL('https://example.com');
 ```
 
 Learn more about the `fromURL` method in the
-[API documentation](/docs/api/#fromurl).
+[API documentation](/docs/api/functions/fromURL).
 
 ## Conclusion
 

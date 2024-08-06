@@ -3,6 +3,8 @@
   "extends": "@tsconfig/docusaurus/tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "resolveJsonModule": true
-  }
+    "resolveJsonModule": true,
+    "checkJs": true
+  },
+  "exclude": [".docusaurus", "build", "node_modules"]
 }

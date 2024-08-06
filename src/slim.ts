@@ -9,24 +9,11 @@ import type { AnyNode } from 'domhandler';
 import render from 'dom-serializer';
 import { parseDocument } from 'htmlparser2';
 
-export type {
-  Cheerio,
-  CheerioAPI,
-  CheerioOptions,
-  HTMLParser2Options,
-  Node,
-  AnyNode,
-  ParentNode,
-  Element,
-  Document,
-} from './index.js';
-
-/**
- * Types used in signatures of Cheerio methods.
- *
- * @category Cheerio
- */
-export * from './types.js';
+export { contains, merge } from './static.js';
+export type * from './types.js';
+export type { Cheerio } from './cheerio.js';
+export type { CheerioOptions, HTMLParser2Options } from './options.js';
+export type { CheerioAPI } from './load.js';
 
 /**
  * Create a querying function, bound to a document created from the provided
