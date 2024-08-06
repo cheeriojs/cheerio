@@ -4,13 +4,14 @@
  */
 
 export * from './load-parse.js';
-
-export type { Cheerio } from './cheerio.js';
+export { contains, merge } from './static.js';
 export type * from './types.js';
-export type { CheerioOptions, HTMLParser2Options } from './options.js';
-export type { CheerioAPI } from './load.js';
-
-/* eslint-disable n/no-unsupported-features/node-builtins */
+export type {
+  Cheerio,
+  CheerioAPI,
+  CheerioOptions,
+  HTMLParser2Options,
+} from './slim.js';
 
 import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';
 import * as htmlparser2 from 'htmlparser2';

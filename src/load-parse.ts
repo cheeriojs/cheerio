@@ -6,8 +6,6 @@ import renderWithHtmlparser2 from 'dom-serializer';
 import { parseDocument as parseWithHtmlparser2 } from 'htmlparser2';
 import type { AnyNode } from 'domhandler';
 
-export { contains, merge } from './static.js';
-
 const parse = getParse((content, options, isDocument, context) =>
   options._useHtmlParser2
     ? parseWithHtmlparser2(content, options)
