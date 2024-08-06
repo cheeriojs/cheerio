@@ -244,6 +244,8 @@ const config = {
           },
         },
 
+        plugin: ['typedoc-plugin-mdn-links'],
+
         // Plugin options
         sidebar: {
           // Always display the API entry last
@@ -251,8 +253,6 @@ const config = {
           pretty: true,
         },
         outputFileStrategy: 'members',
-        membersWithOwnFile: ['Class', 'Enum', 'Interface'],
-        propertyMembersFormat: 'htmlTable',
       },
     ],
   ],

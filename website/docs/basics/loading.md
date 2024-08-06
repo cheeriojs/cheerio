@@ -58,7 +58,8 @@ $.html();
 
 :::
 
-Learn more about the `load` method in the [API documentation](/docs/api/#load).
+Learn more about the `load` method in the
+[API documentation](/docs/api/functions/load).
 
 ## `loadBuffer`
 
@@ -83,7 +84,7 @@ console.log($('title').text());
 ```
 
 Learn more about the `loadBuffer` method in the
-[API documentation](/docs/api/#loadbuffer).
+[API documentation](/docs/api/functions/loadBuffer).
 
 ## `stringStream`
 
@@ -107,7 +108,7 @@ fs.createReadStream('document.html', { encoding: 'utf8' }).pipe(writeStream);
 ```
 
 Learn more about the `stringStream` method in the
-[API documentation](/docs/api/#stringstream).
+[API documentation](/docs/api/functions/stringStream).
 
 ## `decodeStream`
 
@@ -135,7 +136,7 @@ fs.createReadStream('document.html').pipe(writeStream);
 ```
 
 Learn more about the `decodeStream` method in the
-[API documentation](/docs/api/#decodestream).
+[API documentation](/docs/api/functions/decodeStream).
 
 ## `fromURL`
 
@@ -150,7 +151,7 @@ const $ = await cheerio.fromURL('https://example.com');
 ```
 
 Learn more about the `fromURL` method in the
-[API documentation](/docs/api/#fromurl).
+[API documentation](/docs/api/functions/fromURL).
 
 ## Conclusion
 
