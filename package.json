@@ -135,7 +135,7 @@
     "@typescript-eslint/eslint-plugin": "^8.0.1",
     "@typescript-eslint/parser": "^8.0.1",
     "@vitest/coverage-v8": "^2.0.5",
-    "eslint": "^8.57.0",
+    "eslint": "^9.8.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-expect-type": "^0.4.0",
     "eslint-plugin-jsdoc": "^50.0.0",
