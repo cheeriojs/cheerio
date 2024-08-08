@@ -104,6 +104,25 @@ describe('$(...)', () => {
       }).toThrow('Unknown pseudo-class :bah');
     });
 
+    it('should respect the `lowerCaseTags` option (#3495)', () => {
+      const q = load(
+        `<parentTag class="myClass">
+          <firstTag> <child> blah </child> </firstTag>
+          <secondTag> <child> blah </child> </secondTag>
+        </parentTag> `,
+        {
+          xml: {
+            xmlMode: true,
+            decodeEntities: false,
+            lowerCaseTags: true,
+            lowerCaseAttributeNames: false,
+            recognizeSelfClosing: true,
+          },
+        },
+      );
+      expect(q('.myClass').find('firstTag > child')).toHaveLength(1);
+    });
+
     describe('(cheerio object) :', () => {
       it('returns only those nodes contained within the current selection', () => {
         const q = load(food);
