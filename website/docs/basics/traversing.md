@@ -49,7 +49,7 @@ const $ = cheerio.load(
 );
 
 const listItems = $('ul').find('li');
-render(`List item count: ${listItems.length}`);
+render(<>List item count: {listItems.length}</>);
 ```
 
 ### `children`
@@ -70,7 +70,7 @@ const $ = cheerio.load(
 );
 
 const listItems = $('ul').children('li');
-render(`List item count: ${listItems.length}`);
+render(<>List item count: {listItems.length}</>);
 ```
 
 ### `contents`
@@ -90,7 +90,7 @@ const $ = cheerio.load(
 );
 
 const contents = $('div').contents();
-render(`Contents count: ${contents.length}`);
+render(<>Contents count: {contents.length}</>);
 ```
 
 ## Moving Up the DOM Tree
@@ -115,7 +115,7 @@ const $ = cheerio.load(
 );
 
 const list = $('li').parent();
-render(list.prop('tagName'));
+render(<>{list.prop('tagName')}</>);
 ```
 
 ### `parents` and `parentsUntil`
@@ -145,7 +145,12 @@ const ancestors = $('li').parents();
 const ancestorsUntil = $('li').parentsUntil('div');
 
 render(
-  `Ancestor count (also includes <body> and <html>): ${ancestors.length} | Ancestor count (until <div>): ${ancestorsUntil.length}`,
+  <>
+    <p>
+      Ancestor count (also includes "body" and "html" tags): {ancestors.length}
+    </p>
+    <p>Ancestor count (until "div"): {ancestorsUntil.length}</p>
+  </>,
 );
 ```
 
@@ -169,7 +174,7 @@ const $ = cheerio.load(
 );
 
 const list = $('li').closest('ul');
-render(list.prop('tagName'));
+render(<>{list.prop('tagName')}</>);
 ```
 
 ## Moving Sideways Within the DOM Tree
@@ -202,7 +207,12 @@ const $ = cheerio.load(
 const nextItem = $('li:first').next();
 const prevItem = $('li:eq(1)').prev();
 
-render(`Next: ${nextItem.text()} | Prev: ${prevItem.text()}`);
+render(
+  <>
+    <p>Next: {nextItem.text()}</p>
+    <p>Prev: {prevItem.text()}</p>
+  </>,
+);
 ```
 
 ## `nextAll`, `prevAll`, and `siblings`
@@ -237,7 +247,11 @@ const prevAll = $('li:last').prevAll();
 const siblings = $('li:eq(1)').siblings();
 
 render(
-  `Next All: ${nextAll.text()} | Prev All: ${prevAll.text()} | Siblings: ${siblings.text()}`,
+  <>
+    <p>Next All: {nextAll.text()}</p>
+    <p>Prev All: {prevAll.text()}</p>
+    <p>Siblings: {siblings.text()}</p>
+  </>,
 );
 ```
 
@@ -270,7 +284,12 @@ const $ = cheerio.load(
 const nextUntil = $('li:first').nextUntil('li:last-child');
 const prevUntil = $('li:last').prevUntil('li:first-child');
 
-render(`Next: ${nextUntil.text()} | Prev: ${prevUntil.text()}`);
+render(
+  <>
+    <p>Next: {nextUntil.text()}</p>
+    <p>Prev: {prevUntil.text()}</p>
+  </>,
+);
 ```
 
 ## Filtering elements
@@ -303,7 +322,7 @@ const $ = cheerio.load(
 );
 
 const secondItem = $('li').eq(1);
-render(secondItem.text());
+render(<>{secondItem.text()}</>);
 ```
 
 ### `filter` and `not`
@@ -332,7 +351,10 @@ const matchingItems = $('li').filter('.item');
 const nonMatchingItems = $('li').not('.item');
 
 render(
-  `Matching: ${matchingItems.text()} | Non-matching: ${nonMatchingItems.text()}`,
+  <>
+    <p>Matching: {matchingItems.text()}</p>
+    <p>Non-matching: {nonMatchingItems.text()}</p>
+  </>,
 );
 ```
 
@@ -357,7 +379,7 @@ const $ = cheerio.load(
 );
 
 const matchingItems = $('li').has('strong');
-render(matchingItems.length);
+render(<>{matchingItems.length}</>);
 ```
 
 ### `first` and `last`
@@ -384,7 +406,12 @@ const $ = cheerio.load(
 const firstItem = $('li').first();
 const lastItem = $('li').last();
 
-render(`First: ${firstItem.text()} | Last: ${lastItem.text()}`);
+render(
+  <>
+    <p>First: {firstItem.text()}</p>
+    <p>Last: {lastItem.text()}</p>
+  </>,
+);
 ```
 
 ## Conclusion
