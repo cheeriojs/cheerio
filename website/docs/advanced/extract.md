@@ -6,10 +6,10 @@ description: Extract multiple values at once.
 
 # Extracting Data with the `extract` Method
 
-The `extract` method in Cheerio allows you to extract data from an HTML document
-and store it in an object. The method takes a `map` object as a parameter, where
-the keys are the names of the properties to be created on the object, and the
-values are the selectors or descriptors to be used to extract the values.
+The `extract` method allows you to extract data from an HTML document and store
+it in an object. The method takes a `map` object as a parameter, where the keys
+are the names of the properties to be created on the object, and the values are
+the selectors or descriptors to be used to extract the values.
 
 To use the `extract` method, you first need to import the library and load an
 HTML document. For example:
@@ -168,11 +168,11 @@ const data = $.extract({
       selector: 'section',
       // Then, we extract the release date, name, and notes from each section.
       value: {
-        // Selectors are executed whitin the context of the selected element.
+        // Selectors are executed within the context of the selected element.
         name: 'h2',
         date: {
           selector: 'relative-time',
-          // The actual date of the release is stored in the `datetime` attribute.
+          // The actual release date is stored in the `datetime` attribute.
           value: 'datetime',
         },
         notes: {
