@@ -76,7 +76,8 @@
   "module": "./dist/esm/index.js",
   "types": "./dist/commonjs/index.d.ts",
   "files": [
-    "lib"
+    "dist",
+    "src"
   ],
   "scripts": {
     "benchmark": "node --import=tsx benchmark/benchmark.ts",
