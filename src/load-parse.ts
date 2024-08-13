@@ -26,7 +26,7 @@ const parse = getParse((content, options, isDocument, context) =>
  * @param options - Options for the created instance.
  * @param isDocument - Allows parser to be switched to fragment mode.
  * @returns The loaded document.
- * @see {@link https://cheerio.js.org#loading} for additional usage information.
+ * @see {@link https://cheerio.js.org/docs/basics/loading#load} for additional usage information.
  */
 export const load: (
   content: string | AnyNode | AnyNode[] | Buffer,
