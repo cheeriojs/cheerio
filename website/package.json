@@ -17,11 +17,11 @@
   },
   "dependencies": {
     "@docusaurus/core": "^3.5.1",
-    "@docusaurus/module-type-aliases": "^3.5.1",
+    "@docusaurus/module-type-aliases": "^3.5.2",
     "@docusaurus/plugin-client-redirects": "^3.5.1",
-    "@docusaurus/preset-classic": "^3.5.1",
-    "@docusaurus/remark-plugin-npm2yarn": "^3.5.1",
-    "@docusaurus/theme-live-codeblock": "^3.5.1",
+    "@docusaurus/preset-classic": "^3.5.2",
+    "@docusaurus/remark-plugin-npm2yarn": "^3.5.2",
+    "@docusaurus/theme-live-codeblock": "^3.5.2",
     "@mdx-js/react": "^3.0.1",
     "clsx": "^2.1.1",
     "docusaurus-plugin-typedoc": "^1.0.5",
@@ -29,7 +29,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "typedoc": "^0.26.5",
-    "typedoc-plugin-markdown": "^4.2.3",
+    "typedoc-plugin-markdown": "^4.2.4",
     "typedoc-plugin-mdn-links": "^3.2.8"
   },
   "devDependencies": {
