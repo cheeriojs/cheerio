@@ -16,7 +16,7 @@
     "lint:ts": "tsc --noEmit"
   },
   "dependencies": {
-    "@docusaurus/core": "^3.5.1",
+    "@docusaurus/core": "^3.5.2",
     "@docusaurus/module-type-aliases": "^3.5.2",
     "@docusaurus/plugin-client-redirects": "^3.5.1",
     "@docusaurus/preset-classic": "^3.5.2",
