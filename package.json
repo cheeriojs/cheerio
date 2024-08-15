@@ -139,7 +139,7 @@
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-expect-type": "^0.4.0",
-    "eslint-plugin-jsdoc": "^50.2.1",
+    "eslint-plugin-jsdoc": "^50.2.2",
     "eslint-plugin-n": "^16.6.2",
     "eslint-plugin-unicorn": "^55.0.0",
     "eslint-plugin-vitest": "^0.5.4",
