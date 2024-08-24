@@ -1116,7 +1116,7 @@ export function slice<T>(
  * @see {@link https://api.jquery.com/end/}
  */
 export function end<T>(this: Cheerio<T>): Cheerio<AnyNode> {
-  return (this.prevObject as Cheerio<AnyNode>) ?? this._make([]);
+  return (this.prevObject as Cheerio<AnyNode> | null) ?? this._make([]);
 }
 
 /**

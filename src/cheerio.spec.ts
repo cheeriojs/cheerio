@@ -222,11 +222,11 @@ describe('cheerio', () => {
 
   it('(extended Array) should not interfere with prototype methods (issue #119)', () => {
     const extended: AnyNode[] = [];
-    // @ts-expect-error - Ignore
+    // @ts-expect-error - Ignore for testing
     extended.find =
-      // @ts-expect-error - Ignore
+      // @ts-expect-error - Ignore for testing
       extended.children =
-      // @ts-expect-error - Ignore
+      // @ts-expect-error - Ignore for testing
       extended.each =
         function () {
           /* Ignore */
