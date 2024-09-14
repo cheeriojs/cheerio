@@ -1,4 +1,5 @@
 import type { AnyNode, Element } from 'domhandler';
+
 import type { Cheerio } from '../cheerio.js';
 import type { prop } from './attributes.js';
 
@@ -11,15 +12,15 @@ type ExtractDescriptorFn = (
 
 interface ExtractDescriptor {
   selector: string;
-  value?: string | ExtractDescriptorFn | ExtractMap;
+  value?: ExtractDescriptorFn | ExtractMap | string;
 }
 
-type ExtractValue = string | ExtractDescriptor | [string | ExtractDescriptor];
+type ExtractValue = [ExtractDescriptor | string] | ExtractDescriptor | string;
 
 export type ExtractMap = Record<string, ExtractValue>;
 
 type ExtractedValue<V extends ExtractValue, M extends ExtractMap> = V extends [
-  string | ExtractDescriptor,
+  ExtractDescriptor | string,
 ]
   ? NonNullable<ExtractedValue<V[0], M>>[]
   : V extends string
@@ -37,7 +38,7 @@ export type ExtractedMap<M extends ExtractMap> = {
 };
 
 function getExtractDescr(
-  descr: string | ExtractDescriptor,
+  descr: ExtractDescriptor | string,
 ): Required<ExtractDescriptor> {
   if (typeof descr === 'string') {
     return { selector: descr, value: 'textContent' };

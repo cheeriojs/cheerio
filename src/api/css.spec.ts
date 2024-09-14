@@ -1,7 +1,9 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { load, type Cheerio } from '../index.js';
 import type { Element } from 'domhandler';
+
+import { beforeEach, describe, expect, it } from 'vitest';
+
 import { cheerio, mixedText } from '../__fixtures__/fixtures.js';
+import { type Cheerio, load } from '../index.js';
 
 describe('$(...)', () => {
   describe('.css', () => {
@@ -15,8 +17,8 @@ describe('$(...)', () => {
         '<li style="margin: 1px; padding: 2px; color: blue;">',
       );
       expect(el.css(['margin', 'color'])).toStrictEqual({
-        margin: '1px',
         color: 'blue',
+        margin: '1px',
       });
     });
 

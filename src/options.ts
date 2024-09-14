@@ -1,8 +1,8 @@
+import type { Options as SelectOptions } from 'cheerio-select';
 import type { DomHandlerOptions } from 'domhandler';
 import type { ParserOptions as HTMLParser2ParserOptions } from 'htmlparser2';
 import type { ParserOptions as Parse5ParserOptions } from 'parse5';
 import type { Htmlparser2TreeAdapterMap } from 'parse5-htmlparser2-tree-adapter';
-import type { Options as SelectOptions } from 'cheerio-select';
 
 /**
  * Options accepted by htmlparser2, the default parser for XML.
@@ -21,34 +21,9 @@ export interface HTMLParser2Options
  */
 export interface CheerioOptions
   extends Parse5ParserOptions<Htmlparser2TreeAdapterMap> {
-  /**
-   * Recommended way of configuring htmlparser2 when wanting to parse XML.
-   *
-   * This will switch Cheerio to use htmlparser2.
-   *
-   * @default false
-   */
-  xml?: HTMLParser2Options | boolean;
-
-  /**
-   * Enable xml mode, which will switch Cheerio to use htmlparser2.
-   *
-   * @deprecated Please use the `xml` option instead.
-   * @default false
-   */
-  xmlMode?: boolean;
-
   /** The base URI for the document. Used to resolve the `href` and `src` props. */
   baseURI?: string | URL;
 
-  /**
-   * Is the document in quirks mode?
-   *
-   * This will lead to `.className` and `#id` being case-insensitive.
-   *
-   * @default false
-   */
-  quirksMode?: SelectOptions['quirksMode'];
   /**
    * Extension point for pseudo-classes.
    *
@@ -79,6 +54,31 @@ export interface CheerioOptions
    * ```
    */
   pseudos?: SelectOptions['pseudos'];
+
+  /**
+   * Is the document in quirks mode?
+   *
+   * This will lead to `.className` and `#id` being case-insensitive.
+   *
+   * @default false
+   */
+  quirksMode?: SelectOptions['quirksMode'];
+
+  /**
+   * Recommended way of configuring htmlparser2 when wanting to parse XML.
+   *
+   * This will switch Cheerio to use htmlparser2.
+   *
+   * @default false
+   */
+  xml?: boolean | HTMLParser2Options;
+  /**
+   * Enable xml mode, which will switch Cheerio to use htmlparser2.
+   *
+   * @deprecated Please use the `xml` option instead.
+   * @default false
+   */
+  xmlMode?: boolean;
 }
 
 /** Internal options for Cheerio. */

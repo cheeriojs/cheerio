@@ -1,14 +1,17 @@
-import type { BasicAcceptedElems } from './types.js';
-import type { CheerioAPI } from './load.js';
-import type { Cheerio } from './cheerio.js';
 import type { AnyNode, Document } from 'domhandler';
+
 import { textContent } from 'domutils';
+
+import type { ExtractedMap, ExtractMap } from './api/extract.js';
+import type { Cheerio } from './cheerio.js';
+import type { CheerioAPI } from './load.js';
+import type { BasicAcceptedElems } from './types.js';
+
 import {
-  type InternalOptions,
   type CheerioOptions,
   flattenOptions as flattenOptions,
+  type InternalOptions,
 } from './options.js';
-import type { ExtractedMap, ExtractMap } from './api/extract.js';
 
 /**
  * Helper function to render a DOM.
@@ -158,7 +161,7 @@ export function parseHTML(
 export function parseHTML(this: CheerioAPI, data?: '' | null): null;
 export function parseHTML(
   this: CheerioAPI,
-  data?: string | null,
+  data?: null | string,
   context?: unknown,
   keepScripts = typeof context === 'boolean' ? context : false,
 ): AnyNode[] | null {

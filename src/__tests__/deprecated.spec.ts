@@ -3,7 +3,8 @@
  * removed in the next major release of Cheerio, but their stability should be
  * maintained until that time.
  */
-import { describe, it, expect, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
+
 import { cheerio, food, fruits } from '../__fixtures__/fixtures.js';
 
 describe('deprecated APIs', () => {
@@ -41,16 +42,16 @@ describe('deprecated APIs', () => {
 
       it('(arraylike, arraylike) : should handle objects that arent arrays, but are arraylike', () => {
         const arr1: ArrayLike<string> = {
-          length: 3,
           0: 'a',
           1: 'b',
           2: 'c',
+          length: 3,
         };
         const arr2 = {
-          length: 3,
           0: 'd',
           1: 'e',
           2: 'f',
+          length: 3,
         };
 
         cheerio.merge(arr1, arr2);
@@ -67,7 +68,7 @@ describe('deprecated APIs', () => {
         expect(cheerio.merge([], {} as never)).toBeUndefined();
         expect(cheerio.merge({} as never, [])).toBeUndefined();
 
-        const fakeArray = { length: 3, 0: 'a', 1: 'b', 3: 'd' };
+        const fakeArray = { 0: 'a', 1: 'b', 3: 'd', length: 3 };
         expect(cheerio.merge(fakeArray, [])).toBeUndefined();
         expect(cheerio.merge([], fakeArray)).toBeUndefined();
 
@@ -76,7 +77,7 @@ describe('deprecated APIs', () => {
       });
 
       it('(?, ?) : should no-op on invalid inputs', () => {
-        const fakeArray1 = { length: 3, 0: 'a', 1: 'b', 3: 'd' };
+        const fakeArray1 = { 0: 'a', 1: 'b', 3: 'd', length: 3 };
         cheerio.merge(fakeArray1, []);
         expect(fakeArray1).toHaveLength(3);
         expect(fakeArray1[0]).toBe('a');

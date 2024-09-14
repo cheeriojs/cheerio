@@ -1,21 +1,22 @@
 /* eslint-disable @typescript-eslint/no-unsafe-declaration-merging */
-import type { InternalOptions } from './options.js';
 import type { AnyNode, Document, ParentNode } from 'domhandler';
+
+import type { InternalOptions } from './options.js';
 import type { BasicAcceptedElems } from './types.js';
 
 import * as Attributes from './api/attributes.js';
-import * as Traversing from './api/traversing.js';
-import * as Manipulation from './api/manipulation.js';
 import * as Css from './api/css.js';
-import * as Forms from './api/forms.js';
 import * as Extract from './api/extract.js';
+import * as Forms from './api/forms.js';
+import * as Manipulation from './api/manipulation.js';
+import * as Traversing from './api/traversing.js';
 
 type MethodsType = typeof Attributes &
-  typeof Traversing &
-  typeof Manipulation &
   typeof Css &
+  typeof Extract &
   typeof Forms &
-  typeof Extract;
+  typeof Manipulation &
+  typeof Traversing;
 
 /**
  * The cheerio class is the central class of the library. It wraps a set of
@@ -37,10 +38,7 @@ type MethodsType = typeof Attributes &
  * ```
  */
 export abstract class Cheerio<T> implements ArrayLike<T> {
-  length = 0;
   [index: number]: T;
-
-  options: InternalOptions;
   /**
    * The root of the document. Can be set by using the `root` argument of the
    * constructor.
@@ -48,6 +46,11 @@ export abstract class Cheerio<T> implements ArrayLike<T> {
    * @private
    */
   _root: Cheerio<Document> | null;
+
+  length = 0;
+  options: InternalOptions;
+
+  prevObject: Cheerio<any> | undefined;
 
   /**
    * Instance of cheerio. Methods are specified in the modules. Usage of this
@@ -73,8 +76,6 @@ export abstract class Cheerio<T> implements ArrayLike<T> {
       this.length = elements.length;
     }
   }
-
-  prevObject: Cheerio<any> | undefined;
   /**
    * Make a cheerio object.
    *
@@ -84,7 +85,7 @@ export abstract class Cheerio<T> implements ArrayLike<T> {
    * @returns The new cheerio object.
    */
   abstract _make<T>(
-    dom: ArrayLike<T> | T | string,
+    dom: ArrayLike<T> | string | T,
     context?: BasicAcceptedElems<AnyNode>,
   ): Cheerio<T>;
 
@@ -98,10 +99,10 @@ export abstract class Cheerio<T> implements ArrayLike<T> {
    * @returns A document containing the `content`.
    */
   abstract _parse(
-    content: string | Document | AnyNode | AnyNode[] | Buffer,
+    content: AnyNode | AnyNode[] | Buffer | Document | string,
     options: InternalOptions,
     isDocument: boolean,
-    context: ParentNode | null,
+    context: null | ParentNode,
   ): Document;
 
   /**

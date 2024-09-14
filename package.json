@@ -141,6 +141,7 @@
     "eslint-plugin-expect-type": "^0.4.0",
     "eslint-plugin-jsdoc": "^50.2.2",
     "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-perfectionist": "^3.2.0",
     "eslint-plugin-unicorn": "^55.0.0",
     "eslint-plugin-vitest": "^0.5.4",
     "husky": "^9.1.5",

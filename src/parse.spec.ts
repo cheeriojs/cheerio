@@ -1,8 +1,9 @@
-import { describe, it, expect } from 'vitest';
 import type { Document, Element } from 'domhandler';
-import { getParse } from './parse.js';
 
 import { parseDocument as parseWithHtmlparser2 } from 'htmlparser2';
+import { describe, expect, it } from 'vitest';
+
+import { getParse } from './parse.js';
 import { parseWithParse5 } from './parsers/parse5-adapter.js';
 
 const defaultOpts = { _useHtmlParser2: false };

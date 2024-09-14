@@ -1,6 +1,8 @@
-import { describe, it, expect } from 'vitest';
-import { load } from '../index.js';
+import { describe, expect, it } from 'vitest';
+
 import type { CheerioOptions } from '../options.js';
+
+import { load } from '../index.js';
 
 function xml(str: string, options?: CheerioOptions) {
   options = { xml: true, ...options };

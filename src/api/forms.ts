@@ -1,4 +1,5 @@
-import { isTag, type AnyNode } from 'domhandler';
+import { type AnyNode, isTag } from 'domhandler';
+
 import type { Cheerio } from '../cheerio.js';
 
 /*

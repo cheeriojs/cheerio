@@ -1,11 +1,12 @@
 import {
   type AnyNode,
   type Document,
-  type ParentNode,
   isDocument,
+  type ParentNode,
 } from 'domhandler';
 import { parse as parseDocument, parseFragment, serializeOuter } from 'parse5';
 import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';
+
 import type { InternalOptions } from '../options.js';
 
 /**
@@ -21,7 +22,7 @@ export function parseWithParse5(
   content: string,
   options: InternalOptions,
   isDocument: boolean,
-  context: ParentNode | null,
+  context: null | ParentNode,
 ): Document {
   options.treeAdapter ??= htmlparser2Adapter;
 

@@ -1,4 +1,5 @@
 import type { AnyNode } from 'domhandler';
+
 import type { Cheerio } from './cheerio.js';
 
 /**
@@ -61,11 +62,11 @@ export function domEach<
 }
 
 const enum CharacterCode {
+  Exclamation = 33,
   LowerA = 97,
   LowerZ = 122,
   UpperA = 65,
   UpperZ = 90,
-  Exclamation = 33,
 }
 
 /**

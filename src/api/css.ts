@@ -1,6 +1,8 @@
-import { domEach } from '../utils.js';
-import { isTag, type Element, type AnyNode } from 'domhandler';
+import { type AnyNode, type Element, isTag } from 'domhandler';
+
 import type { Cheerio } from '../cheerio.js';
+
+import { domEach } from '../utils.js';
 
 /**
  * Get the value of a style property for the first element in the set of matched
@@ -41,8 +43,8 @@ export function css<T extends AnyNode>(
   this: Cheerio<T>,
   prop: string,
   val:
-    | string
-    | ((this: Element, i: number, style: string) => string | undefined),
+    | ((this: Element, i: number, style: string) => string | undefined)
+    | string,
 ): Cheerio<T>;
 /**
  * Set multiple CSS properties for every matched element.
@@ -67,10 +69,10 @@ export function css<T extends AnyNode>(
  */
 export function css<T extends AnyNode>(
   this: Cheerio<T>,
-  prop?: string | string[] | Record<string, string>,
+  prop?: Record<string, string> | string | string[],
   val?:
-    | string
-    | ((this: Element, i: number, style: string) => string | undefined),
+    | ((this: Element, i: number, style: string) => string | undefined)
+    | string,
 ): Cheerio<T> | Record<string, string> | string | undefined {
   if (
     (prop != null && val != null) ||
@@ -103,10 +105,10 @@ export function css<T extends AnyNode>(
  */
 function setCss(
   el: Element,
-  prop: string | Record<string, string>,
+  prop: Record<string, string> | string,
   value:
-    | string
     | ((this: Element, i: number, style: string) => string | undefined)
+    | string
     | undefined,
   idx: number,
 ) {

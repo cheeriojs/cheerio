@@ -1,6 +1,7 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { type CheerioAPI } from '../index.js';
+import { beforeEach, describe, expect, it } from 'vitest';
+
 import { cheerio, forms } from '../__fixtures__/fixtures.js';
+import { type CheerioAPI } from '../index.js';
 
 describe('$(...)', () => {
   let $: CheerioAPI;

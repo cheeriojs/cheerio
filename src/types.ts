@@ -29,30 +29,31 @@ type LowercaseLetters =
   | 'z';
 
 type AlphaNumeric =
+  | `${number}`
   | LowercaseLetters
-  | Uppercase<LowercaseLetters>
-  | `${number}`;
+  | Uppercase<LowercaseLetters>;
 
-type SelectorSpecial = '.' | '#' | ':' | '|' | '>' | '+' | '~' | '[';
+type SelectorSpecial = '#' | '+' | '.' | ':' | '>' | '[' | '|' | '~';
 /**
  * Type for identifying selectors. Allows us to "upgrade" queries using
  * selectors to return `Element`s.
  */
 export type SelectorType =
-  | `${SelectorSpecial}${AlphaNumeric}${string}`
-  | `${AlphaNumeric}${string}`;
+  | `${AlphaNumeric}${string}`
+  | `${SelectorSpecial}${AlphaNumeric}${string}`;
 
-import type { Cheerio } from './cheerio.js';
 import type { AnyNode } from 'domhandler';
 
+import type { Cheerio } from './cheerio.js';
+
 /** Elements that can be passed to manipulation methods. */
-export type BasicAcceptedElems<T extends AnyNode> = ArrayLike<T> | T | string;
+export type BasicAcceptedElems<T extends AnyNode> = ArrayLike<T> | string | T;
 /** Elements that can be passed to manipulation methods, including functions. */
 export type AcceptedElems<T extends AnyNode> =
-  | BasicAcceptedElems<T>
-  | ((this: T, i: number, el: T) => BasicAcceptedElems<T>);
+  | ((this: T, i: number, el: T) => BasicAcceptedElems<T>)
+  | BasicAcceptedElems<T>;
 
 /** Function signature, for traversal methods. */
 export type FilterFunction<T> = (this: T, i: number, el: T) => boolean;
 /** Supported filter types, for traversal methods. */
-export type AcceptedFilters<T> = string | FilterFunction<T> | T | Cheerio<T>;
+export type AcceptedFilters<T> = Cheerio<T> | FilterFunction<T> | string | T;

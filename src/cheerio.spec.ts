@@ -1,16 +1,18 @@
-import { describe, it, expect } from 'vitest';
-import { parseDOM } from 'htmlparser2';
-import { type Cheerio } from './index.js';
-import { cheerio, fruits, food, noscript } from './__fixtures__/fixtures.js';
 import type { AnyNode, Element } from 'domhandler';
+
+import { parseDOM } from 'htmlparser2';
+import { describe, expect, it } from 'vitest';
+
+import { cheerio, food, fruits, noscript } from './__fixtures__/fixtures.js';
+import { type Cheerio } from './index.js';
 
 declare module './index.js' {
   interface Cheerio<T> {
-    myPlugin(...args: unknown[]): {
-      context: Cheerio<T>;
-      args: unknown[];
-    };
     foo(this: void): void;
+    myPlugin(...args: unknown[]): {
+      args: unknown[];
+      context: Cheerio<T>;
+    };
   }
 }
 
@@ -370,8 +372,8 @@ describe('cheerio', () => {
           ...args: unknown[]
         ) {
           return {
-            context: this,
             args,
+            context: this,
           };
         };
 
@@ -386,8 +388,8 @@ describe('cheerio', () => {
         const $ = cheerio.load('<div>');
         $.fn.myPlugin = function (...args: unknown[]) {
           return {
-            context: this,
             args,
+            context: this,
           };
         };
 

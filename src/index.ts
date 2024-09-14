@@ -4,33 +4,35 @@
  */
 
 export * from './load-parse.js';
-export { contains, merge } from './static.js';
-export type * from './types.js';
 export type {
   Cheerio,
   CheerioAPI,
   CheerioOptions,
   HTMLParser2Options,
 } from './slim.js';
+export { contains, merge } from './static.js';
+export type * from './types.js';
 
-import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';
-import * as htmlparser2 from 'htmlparser2';
-import { ParserStream as Parse5Stream } from 'parse5-parser-stream';
 import {
   decodeBuffer,
   DecodeStream,
   type SnifferOptions,
 } from 'encoding-sniffer';
+import * as htmlparser2 from 'htmlparser2';
+import { finished, Writable } from 'node:stream';
+import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';
+import { ParserStream as Parse5Stream } from 'parse5-parser-stream';
 import * as undici from 'undici';
 import MIMEType from 'whatwg-mimetype';
-import { Writable, finished } from 'node:stream';
+
 import type { CheerioAPI } from './load.js';
+
+import { load } from './load-parse.js';
 import {
+  type CheerioOptions,
   flattenOptions,
   type InternalOptions,
-  type CheerioOptions,
 } from './options.js';
-import { load } from './load-parse.js';
 
 /**
  * Sniffs the encoding of a buffer, then creates a querying function bound to a
@@ -75,16 +77,16 @@ function _stringStream(
 
     return new Writable({
       decodeStrings: false,
+      final(callback) {
+        parser.end();
+        callback();
+      },
       write(chunk, _encoding, callback) {
         if (typeof chunk !== 'string') {
           throw new TypeError('Expected a string');
         }
 
         parser.write(chunk);
-        callback();
-      },
-      final(callback) {
-        parser.end();
         callback();
       },
     });
@@ -183,15 +185,15 @@ export interface CheerioRequestOptions extends DecodeStreamOptions {
 }
 
 const defaultRequestOptions: UndiciStreamOptions = {
-  method: 'GET',
-  // Allow redirects by default
-  maxRedirections: 5,
-  // NOTE: `throwOnError` currently doesn't work https://github.com/nodejs/undici/issues/1753
-  throwOnError: true,
   // Set an Accept header
   headers: {
     accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
   },
+  // Allow redirects by default
+  maxRedirections: 5,
+  method: 'GET',
+  // NOTE: `throwOnError` currently doesn't work https://github.com/nodejs/undici/issues/1753
+  throwOnError: true,
 };
 
 /**
@@ -217,8 +219,8 @@ export async function fromURL(
   options: CheerioRequestOptions = {},
 ): Promise<CheerioAPI> {
   const {
-    requestOptions = defaultRequestOptions,
     encoding = {},
+    requestOptions = defaultRequestOptions,
     ...cheerioOptions
   } = options;
   let undiciStream: Promise<undici.Dispatcher.StreamData> | undefined;
@@ -256,11 +258,11 @@ export async function fromURL(
       )?.history;
 
       const opts = {
+        // Set the `baseURL` to the final URL.
+        baseURL: history ? history[history.length - 1] : url,
         encoding,
         // Set XML mode based on the MIME type.
         xmlMode: mimeType.isXML(),
-        // Set the `baseURL` to the final URL.
-        baseURL: history ? history[history.length - 1] : url,
         ...cheerioOptions,
       };
 

@@ -1,16 +1,18 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { load, type CheerioAPI, type Cheerio } from '../index.js';
 import type { Element } from 'domhandler';
+
+import { beforeEach, describe, expect, it } from 'vitest';
+
 import {
   cheerio,
-  script,
-  fruits,
-  vegetables,
-  food,
   chocolates,
+  food,
+  fruits,
   inputs,
   mixedText,
+  script,
+  vegetables,
 } from '../__fixtures__/fixtures.js';
+import { type Cheerio, type CheerioAPI, load } from '../index.js';
 
 function withClass(attr: string) {
   return cheerio(`<div class="${attr}"></div>`);
@@ -69,9 +71,9 @@ describe('$(...)', () => {
 
     it('(map) : object map should set multiple attributes', () => {
       $('.apple').attr({
+        'data-url': 'http://apple.com',
         id: 'apple',
         style: 'color:red;',
-        'data-url': 'http://apple.com',
       });
       const attrs = $('.apple').attr();
       expect(attrs).toHaveProperty('id', 'apple');
@@ -83,9 +85,9 @@ describe('$(...)', () => {
       expect(() =>
         $('.apple').attr(
           {
+            'data-url': 'http://apple.com',
             id: 'apple',
             style: 'color:red;',
-            'data-url': 'http://apple.com',
           } as never,
           () => '',
         ),
@@ -265,8 +267,8 @@ describe('$(...)', () => {
 
     it('(map) : object map should set multiple props', () => {
       checkbox.prop({
-        id: 'check',
         checked: false,
+        id: 'check',
       });
       expect(checkbox.prop('id')).toBe('check');
       expect(checkbox.prop('checked')).toBe(false);
@@ -276,8 +278,8 @@ describe('$(...)', () => {
       expect(() =>
         $('.apple').prop(
           {
-            id: 'check',
             checked: false,
+            id: 'check',
           } as never,
           () => '',
         ),
@@ -545,8 +547,8 @@ describe('$(...)', () => {
     it('(hyphen key) : data addribute with hyphen should be camelized ;-)', () => {
       const data = $('.frey').data();
       expect(data).toStrictEqual({
-        taste: 'sweet',
         bestCollection: 'Mahony',
+        taste: 'sweet',
       });
     });
 
@@ -575,8 +577,8 @@ describe('$(...)', () => {
 
     it('(map) : object map should set multiple data attributes', () => {
       const { data } = $('.linth').data({
-        id: 'Cailler',
         flop: 'Pippilotti Rist',
+        id: 'Cailler',
         top: 'Frigor',
         url: 'http://www.cailler.ch/',
       })[0] as never;

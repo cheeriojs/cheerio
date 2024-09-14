@@ -1,7 +1,8 @@
-import { describe, it, expect, afterEach } from 'vitest';
-import * as cheerio from './index.js';
-import { Writable } from 'node:stream';
 import { createServer, type Server } from 'node:http';
+import { Writable } from 'node:stream';
+import { afterEach, describe, expect, it } from 'vitest';
+
+import * as cheerio from './index.js';
 
 function noop() {
   // Ignore
@@ -14,7 +15,7 @@ function getPromise() {
     cb = (error, $) => (error ? reject(error) : resolve($));
   });
 
-  return { promise, cb };
+  return { cb, promise };
 }
 
 const TEST_HTML = '<h1>Hello World</h1>';
@@ -46,7 +47,7 @@ describe('loadBuffer', () => {
 
 describe('stringStream', () => {
   it('should use parse5 by default', async () => {
-    const { promise, cb } = getPromise();
+    const { cb, promise } = getPromise();
     const stream = cheerio.stringStream({}, cb);
 
     expect(stream).toBeInstanceOf(Writable);
@@ -70,7 +71,7 @@ describe('stringStream', () => {
   });
 
   it('should use htmlparser2 for XML', async () => {
-    const { promise, cb } = getPromise();
+    const { cb, promise } = getPromise();
     const stream = cheerio.stringStream({ xmlMode: true }, cb);
 
     expect(stream).toBeInstanceOf(Writable);
@@ -85,7 +86,7 @@ describe('stringStream', () => {
 
 describe('decodeStream', () => {
   it('should use parse5 by default', async () => {
-    const { promise, cb } = getPromise();
+    const { cb, promise } = getPromise();
     const stream = cheerio.decodeStream({}, cb);
 
     expect(stream).toBeInstanceOf(Writable);
@@ -100,7 +101,7 @@ describe('decodeStream', () => {
   });
 
   it('should use htmlparser2 for XML', async () => {
-    const { promise, cb } = getPromise();
+    const { cb, promise } = getPromise();
     const stream = cheerio.decodeStream({ xmlMode: true }, cb);
 
     expect(stream).toBeInstanceOf(Writable);
@@ -118,7 +119,7 @@ describe('fromURL', () => {
 
   function createTestServer(
     contentType: string,
-    body: string | Buffer,
+    body: Buffer | string,
   ): Promise<number> {
     return new Promise((resolve, reject) => {
       server = createServer((_req, res) => {

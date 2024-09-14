@@ -5,22 +5,24 @@
  */
 
 import {
-  isTag,
-  Text,
-  hasChildren,
+  type AnyNode,
   cloneNode,
   Document,
-  type ParentNode,
-  type AnyNode,
   type Element,
+  hasChildren,
+  isTag,
+  type ParentNode,
+  Text,
 } from 'domhandler';
+import { removeElement } from 'domutils';
+import { ElementType } from 'htmlparser2';
+
+import type { Cheerio } from '../cheerio.js';
+import type { AcceptedElems, BasicAcceptedElems } from '../types.js';
+
 import { update as updateDOM } from '../parse.js';
 import { text as staticText } from '../static.js';
-import { domEach, isHtml, isCheerio } from '../utils.js';
-import { removeElement } from 'domutils';
-import type { Cheerio } from '../cheerio.js';
-import type { BasicAcceptedElems, AcceptedElems } from '../types.js';
-import { ElementType } from 'htmlparser2';
+import { domEach, isCheerio, isHtml } from '../utils.js';
 
 /**
  * Create an array of nodes, recursing into arrays and parsing strings if
@@ -963,7 +965,7 @@ export function empty<T extends AnyNode>(this: Cheerio<T>): Cheerio<T> {
  * @returns The HTML content string.
  * @see {@link https://api.jquery.com/html/}
  */
-export function html<T extends AnyNode>(this: Cheerio<T>): string | null;
+export function html<T extends AnyNode>(this: Cheerio<T>): null | string;
 /**
  * Replaces each selected element's content with the specified content.
  *
@@ -981,12 +983,12 @@ export function html<T extends AnyNode>(this: Cheerio<T>): string | null;
  */
 export function html<T extends AnyNode>(
   this: Cheerio<T>,
-  str: string | Cheerio<T>,
+  str: Cheerio<T> | string,
 ): Cheerio<T>;
 export function html<T extends AnyNode>(
   this: Cheerio<T>,
-  str?: string | Cheerio<AnyNode>,
-): Cheerio<T> | string | null {
+  str?: Cheerio<AnyNode> | string,
+): Cheerio<T> | null | string {
   if (str === undefined) {
     const el = this[0];
     if (!el || !hasChildren(el)) return null;
@@ -1056,11 +1058,11 @@ export function text<T extends AnyNode>(this: Cheerio<T>): string;
  */
 export function text<T extends AnyNode>(
   this: Cheerio<T>,
-  str: string | ((this: AnyNode, i: number, text: string) => string),
+  str: ((this: AnyNode, i: number, text: string) => string) | string,
 ): Cheerio<T>;
 export function text<T extends AnyNode>(
   this: Cheerio<T>,
-  str?: string | ((this: AnyNode, i: number, text: string) => string),
+  str?: ((this: AnyNode, i: number, text: string) => string) | string,
 ): Cheerio<T> | string {
   // If `str` is undefined, act as a "getter"
   if (str === undefined) {
