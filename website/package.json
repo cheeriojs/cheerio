@@ -30,7 +30,7 @@
     "react-dom": "^18.3.1",
     "typedoc": "^0.26.7",
     "typedoc-plugin-markdown": "^4.2.8",
-    "typedoc-plugin-mdn-links": "^3.3.1"
+    "typedoc-plugin-mdn-links": "^3.3.2"
   },
   "devDependencies": {
     "@crowdin/cli": "^4.2.0",
