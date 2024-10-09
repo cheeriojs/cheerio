@@ -74,6 +74,7 @@
   },
   "main": "./dist/commonjs/index.js",
   "module": "./dist/esm/index.js",
+  "browser": "./dist/browser/index.js",
   "types": "./dist/commonjs/index.d.ts",
   "files": [
     "dist",
