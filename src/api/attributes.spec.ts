@@ -44,6 +44,16 @@ describe('$(...)', () => {
       expect(attr).toBe('autofocus');
     });
 
+    it('(valid key) : valid lowercased attr should get value', () => {
+      const cls = $('.apple').attr('Class');
+      expect(cls).toBe('apple');
+    });
+
+    it('(valid key) : valid lowercased attr should get lowercased name when boolean', () => {
+      const attr = $('<input name=email autofocus>').attr('autoFocus');
+      expect(attr).toBe('autofocus');
+    });
+
     it('(key, value) : should set one attr', () => {
       const $pear = $('.pear').attr('id', 'pear');
       expect($('#pear')).toHaveLength(1);
@@ -486,6 +496,12 @@ describe('$(...)', () => {
 
       expect(highlight).toBe('Lindor');
       expect(origin).toBe('swiss');
+    });
+
+    it('(valid key) : valid lowercased data attribute should get value', () => {
+      const highlight = $('.linth').data('highLight');
+
+      expect(highlight).toBe('Lindor');
     });
 
     it('(key) : should translate camel-cased key values to hyphen-separated versions', () => {

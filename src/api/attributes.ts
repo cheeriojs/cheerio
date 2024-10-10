@@ -61,6 +61,15 @@ function getAttr(
     return !xmlMode && rboolean.test(name) ? name : elem.attribs[name];
   }
 
+  // Try again for lowercase
+  const lowerName = name.toLowerCase();
+  if (hasOwn.call(elem.attribs, lowerName)) {
+    // Get the (decoded) attribute
+    return !xmlMode && rboolean.test(lowerName)
+      ? lowerName
+      : elem.attribs[lowerName];
+  }
+
   // Mimic the DOM and return text content as value for `option's`
   if (elem.name === 'option' && name === 'value') {
     return text(elem.children);
@@ -578,8 +587,15 @@ function readData(el: DataElement, name: string): unknown {
     return data[name];
   }
 
+  // E.g. .data('helloWorld') will lookup cssCased name: attribs['data-hello-world']
   if (hasOwn.call(el.attribs, domName)) {
     return (data[name] = parseDataValue(el.attribs[domName]));
+  }
+
+  /** Try again for lowercase. E.g. .data('aBc') will lookup attribs['data-abc']. */
+  const lowerName = dataAttrPrefix + name.toLowerCase();
+  if (hasOwn.call(el.attribs, lowerName)) {
+    return (data[lowerName] = parseDataValue(el.attribs[lowerName]));
   }
 
   return undefined;
