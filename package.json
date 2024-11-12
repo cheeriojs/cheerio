@@ -133,7 +133,7 @@
     "@types/jsdom": "^21.1.7",
     "@types/node": "^22.9.0",
     "@types/whatwg-mimetype": "^3.0.2",
-    "@typescript-eslint/eslint-plugin": "^8.13.0",
+    "@typescript-eslint/eslint-plugin": "^8.14.0",
     "@typescript-eslint/parser": "^8.14.0",
     "@vitest/coverage-v8": "^2.1.4",
     "eslint": "^8.57.0",
