@@ -140,7 +140,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-expect-type": "^0.4.3",
     "eslint-plugin-jsdoc": "^50.5.0",
-    "eslint-plugin-n": "^17.13.2",
+    "eslint-plugin-n": "^17.14.0",
     "eslint-plugin-unicorn": "^55.0.0",
     "eslint-plugin-vitest": "^0.5.4",
     "husky": "^9.1.7",
