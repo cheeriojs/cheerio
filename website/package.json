@@ -19,7 +19,7 @@
     "@docusaurus/core": "^3.6.0",
     "@docusaurus/module-type-aliases": "^3.6.3",
     "@docusaurus/plugin-client-redirects": "^3.6.2",
-    "@docusaurus/preset-classic": "^3.6.2",
+    "@docusaurus/preset-classic": "^3.6.3",
     "@docusaurus/remark-plugin-npm2yarn": "^3.6.2",
     "@docusaurus/theme-live-codeblock": "^3.6.3",
     "@mdx-js/react": "^3.1.0",
