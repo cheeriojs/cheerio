@@ -43,7 +43,7 @@ import { load } from './load-parse.js';
  * import * as cheerio from 'cheerio';
  *
  * const buffer = fs.readFileSync('index.html');
- * const $ = cheerio.fromBuffer(buffer);
+ * const $ = cheerio.loadBuffer(buffer);
  * ```
  *
  * @param buffer - The buffer to sniff the encoding of.
