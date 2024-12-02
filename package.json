@@ -138,7 +138,7 @@
     "@vitest/coverage-v8": "^2.1.6",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-expect-type": "^0.5.0",
+    "eslint-plugin-expect-type": "^0.6.2",
     "eslint-plugin-jsdoc": "^50.6.0",
     "eslint-plugin-n": "^17.14.0",
     "eslint-plugin-unicorn": "^55.0.0",
