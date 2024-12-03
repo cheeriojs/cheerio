@@ -134,7 +134,7 @@
     "@types/node": "^22.10.1",
     "@types/whatwg-mimetype": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "^8.16.0",
-    "@typescript-eslint/parser": "^8.16.0",
+    "@typescript-eslint/parser": "^8.17.0",
     "@vitest/coverage-v8": "^2.1.6",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
