@@ -29,7 +29,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "typedoc": "^0.27.2",
-    "typedoc-plugin-markdown": "^4.2.10",
+    "typedoc-plugin-markdown": "^4.3.1",
     "typedoc-plugin-mdn-links": "^3.3.8"
   },
   "devDependencies": {
