@@ -1,13 +1,10 @@
-import type { Element } from 'domhandler';
-
-import { JSDOM } from 'jsdom';
 import fs from 'node:fs/promises';
 import { Script } from 'node:vm';
 import { Bench } from 'tinybench';
-
+import type { Element } from 'domhandler';
 import type { Cheerio } from '../src/cheerio.js';
 import type { CheerioAPI } from '../src/load.js';
-
+import { JSDOM } from 'jsdom';
 import { load } from '../src/load-parse.js';
 
 const documentDir = new URL('documents/', import.meta.url);
@@ -23,12 +20,12 @@ const cheerioOnly = process.argv.includes('--cheerio-only');
 
 type SuiteOptions<T> = T extends void
   ? {
-      setup?: (this: void, $: CheerioAPI) => T;
       test(this: void, $: CheerioAPI): void;
+      setup?: (this: void, $: CheerioAPI) => T;
     }
   : {
-      setup(this: void, $: CheerioAPI): T;
       test(this: void, $: CheerioAPI, data: T): void;
+      setup(this: void, $: CheerioAPI): T;
     };
 
 async function benchmark<T = void>(
@@ -44,7 +41,7 @@ async function benchmark<T = void>(
   console.log(`Test: ${name} (file: ${fileName})`);
 
   const bench = new Bench();
-  const { setup, test } = options;
+  const { test, setup } = options;
 
   // Add Cheerio test
   const $ = load(markup);

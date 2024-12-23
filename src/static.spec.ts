@@ -1,6 +1,5 @@
-import { beforeEach, describe, expect, it } from 'vitest';
-
-import { cheerio, eleven, food } from './__fixtures__/fixtures.js';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { cheerio, food, eleven } from './__fixtures__/fixtures.js';
 import { type CheerioAPI } from './index.js';
 
 describe('cheerio', () => {
@@ -220,16 +219,16 @@ describe('cheerio', () => {
 
     it('(arraylike, arraylike) : should handle objects that arent arrays, but are arraylike', () => {
       const arr1: ArrayLike<string> = {
+        length: 3,
         0: 'a',
         1: 'b',
         2: 'c',
-        length: 3,
       };
       const arr2 = {
+        length: 3,
         0: 'd',
         1: 'e',
         2: 'f',
-        length: 3,
       };
 
       $.merge(arr1, arr2);
@@ -245,7 +244,7 @@ describe('cheerio', () => {
       expect($.merge({} as never, {} as never)).toBeFalsy();
       expect($.merge([], {} as never)).toBeFalsy();
       expect($.merge({} as never, [])).toBeFalsy();
-      const fakeArray1 = { 0: 'a', 1: 'b', 3: 'd', length: 3 };
+      const fakeArray1 = { length: 3, 0: 'a', 1: 'b', 3: 'd' };
       expect($.merge(fakeArray1, [])).toBeFalsy();
       expect($.merge([], fakeArray1)).toBeFalsy();
       expect($.merge({ length: '7' } as never, [])).toBeFalsy();
@@ -253,7 +252,7 @@ describe('cheerio', () => {
     });
 
     it('(?, ?) : should no-op on invalid inputs', () => {
-      const fakeArray1 = { 0: 'a', 1: 'b', 3: 'd', length: 3 };
+      const fakeArray1 = { length: 3, 0: 'a', 1: 'b', 3: 'd' };
       $.merge(fakeArray1, []);
       expect(fakeArray1).toHaveLength(3);
       expect(fakeArray1[0]).toBe('a');

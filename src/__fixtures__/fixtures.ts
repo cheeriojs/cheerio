@@ -1,5 +1,4 @@
 import type { CheerioAPI } from '../load.js';
-
 import { load } from '../load-parse.js';
 
 /** A Cheerio instance with no content. */

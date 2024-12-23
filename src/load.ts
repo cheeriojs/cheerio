@@ -1,15 +1,13 @@
-import type { AnyNode, Document, Element, ParentNode } from 'domhandler';
-
-import type { BasicAcceptedElems, SelectorType } from './types.js';
-
-import { Cheerio } from './cheerio.js';
 import {
   type CheerioOptions,
-  flattenOptions,
   type InternalOptions,
+  flattenOptions,
 } from './options.js';
 import * as staticMethods from './static.js';
-import { isCheerio, isHtml } from './utils.js';
+import { Cheerio } from './cheerio.js';
+import { isHtml, isCheerio } from './utils.js';
+import type { AnyNode, Document, Element, ParentNode } from 'domhandler';
+import type { SelectorType, BasicAcceptedElems } from './types.js';
 
 type StaticType = typeof staticMethods;
 
@@ -66,18 +64,11 @@ export interface CheerioAPI extends StaticType {
    * @param root - Optional HTML document string.
    */
   <T extends AnyNode, S extends string>(
-    selector?: BasicAcceptedElems<T> | S,
+    selector?: S | BasicAcceptedElems<T>,
     context?: BasicAcceptedElems<AnyNode> | null,
     root?: BasicAcceptedElems<Document>,
     options?: CheerioOptions,
   ): Cheerio<S extends SelectorType ? Element : T>;
-
-  /**
-   * The options the document was originally loaded with.
-   *
-   * @private
-   */
-  _options: InternalOptions;
 
   /**
    * The root the document was originally loaded with.
@@ -85,6 +76,13 @@ export interface CheerioAPI extends StaticType {
    * @private
    */
   _root: Document;
+
+  /**
+   * The options the document was originally loaded with.
+   *
+   * @private
+   */
+  _options: InternalOptions;
 
   /** Mimic jQuery's prototype alias for plugin authors. */
   fn: typeof Cheerio.prototype;
@@ -127,11 +125,11 @@ export function getLoad(
    * @see {@link https://cheerio.js.org/docs/basics/loading#load} for additional usage information.
    */
   return function load(
-    content: AnyNode | AnyNode[] | Buffer | string,
+    content: string | AnyNode | AnyNode[] | Buffer,
     options?: CheerioOptions | null,
     isDocument = true,
   ): CheerioAPI {
-    if ((content as null | string) == null) {
+    if ((content as string | null) == null) {
       throw new Error('cheerio.load() expects a string');
     }
 
@@ -144,7 +142,7 @@ export function getLoad(
      */
     class LoadedCheerio<T> extends Cheerio<T> {
       _make<T>(
-        selector?: ArrayLike<T> | string | T,
+        selector?: ArrayLike<T> | T | string,
         context?: BasicAcceptedElems<AnyNode> | null,
       ): Cheerio<T> {
         const cheerio = initialize(selector, context);
@@ -154,10 +152,10 @@ export function getLoad(
       }
 
       _parse(
-        content: AnyNode | AnyNode[] | Buffer | Document | string,
+        content: string | Document | AnyNode | AnyNode[] | Buffer,
         options: InternalOptions,
         isDocument: boolean,
-        context: null | ParentNode,
+        context: ParentNode | null,
       ) {
         return parse(content, options, isDocument, context);
       }
@@ -168,7 +166,7 @@ export function getLoad(
     }
 
     function initialize<T = AnyNode, S extends string = string>(
-      selector?: ArrayLike<T> | S | T,
+      selector?: ArrayLike<T> | T | S,
       context?: BasicAcceptedElems<AnyNode> | null,
       root: BasicAcceptedElems<Document> = initialRoot,
       opts?: CheerioOptions,
@@ -255,12 +253,12 @@ export function getLoad(
 
     // Add in static methods & properties
     Object.assign(initialize, staticMethods, {
-      _options: internalOpts,
+      load,
       // `_root` and `_options` are used in static methods.
       _root: initialRoot,
+      _options: internalOpts,
       // Add `fn` for plugins
       fn: LoadedCheerio.prototype,
-      load,
       // Add the prototype here to maintain `instanceof` behavior.
       prototype: LoadedCheerio.prototype,
     });

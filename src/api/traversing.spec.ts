@@ -1,19 +1,18 @@
-import { type AnyNode, type Element, isText, type Text } from 'domhandler';
-import { beforeEach, describe, expect, it } from 'vitest';
-
+import { describe, it, expect, beforeEach } from 'vitest';
+import { load, type CheerioAPI } from '../index.js';
+import { Cheerio } from '../cheerio.js';
+import { type AnyNode, type Element, type Text, isText } from 'domhandler';
 import {
   cheerio,
-  drinks,
-  eleven,
   food,
-  forms,
   fruits,
-  mixedText,
+  eleven,
+  drinks,
   text,
+  forms,
+  mixedText,
   vegetables,
 } from '../__fixtures__/fixtures.js';
-import { Cheerio } from '../cheerio.js';
-import { type CheerioAPI, load } from '../index.js';
 
 function getText(el: Cheerio<Element>) {
   if (el.length === 0) return undefined;
@@ -114,11 +113,11 @@ describe('$(...)', () => {
         </parentTag> `,
         {
           xml: {
-            decodeEntities: false,
-            lowerCaseAttributeNames: false,
-            lowerCaseTags: true,
-            recognizeSelfClosing: true,
             xmlMode: true,
+            decodeEntities: false,
+            lowerCaseTags: true,
+            lowerCaseAttributeNames: false,
+            recognizeSelfClosing: true,
           },
         },
       );

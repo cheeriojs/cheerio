@@ -1,14 +1,12 @@
-import type { AnyNode, Element } from 'domhandler';
-
-import { beforeEach, describe, expect, it } from 'vitest';
-
+import { describe, it, expect, beforeEach } from 'vitest';
+import { load, type CheerioAPI, type Cheerio } from '../index.js';
 import {
-  divcontainers,
   fruits,
+  divcontainers,
   mixedText,
   unwrapspans,
 } from '../__fixtures__/fixtures.js';
-import { type Cheerio, type CheerioAPI, load } from '../index.js';
+import type { AnyNode, Element } from 'domhandler';
 
 describe('$(...)', () => {
   let $: CheerioAPI;

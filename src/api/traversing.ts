@@ -4,15 +4,18 @@
  * @module cheerio/traversing
  */
 
-import * as select from 'cheerio-select';
 import {
+  isTag,
   type AnyNode,
-  type Document,
   type Element,
   hasChildren,
   isDocument,
-  isTag,
+  type Document,
 } from 'domhandler';
+import type { Cheerio } from '../cheerio.js';
+import * as select from 'cheerio-select';
+import { domEach, isCheerio } from '../utils.js';
+import { contains } from '../static.js';
 import {
   getChildren,
   getSiblings,
@@ -20,12 +23,7 @@ import {
   prevElementSibling,
   uniqueSort,
 } from 'domutils';
-
-import type { Cheerio } from '../cheerio.js';
-import type { AcceptedFilters, FilterFunction } from '../types.js';
-
-import { contains } from '../static.js';
-import { domEach, isCheerio } from '../utils.js';
+import type { FilterFunction, AcceptedFilters } from '../types.js';
 const reSiblingSelector = /^\s*[+~]/;
 
 /**
@@ -48,7 +46,7 @@ const reSiblingSelector = /^\s*[+~]/;
  */
 export function find<T extends AnyNode>(
   this: Cheerio<T>,
-  selectorOrHaystack?: Cheerio<Element> | Element | string,
+  selectorOrHaystack?: string | Cheerio<Element> | Element,
 ): Cheerio<Element> {
   if (!selectorOrHaystack) {
     return this._make([]);
@@ -91,14 +89,14 @@ export function _findBySelector<T extends AnyNode>(
 
   const options = {
     context,
-    lowerCaseAttributeNames: this.options.lowerCaseAttributeNames,
-
-    lowerCaseTags: this.options.lowerCaseTags,
-    pseudos: this.options.pseudos,
-    quirksMode: this.options.quirksMode,
     root: this._root?.[0],
+
     // Pass options that are recognized by `cheerio-select`
     xmlMode: this.options.xmlMode,
+    lowerCaseTags: this.options.lowerCaseTags,
+    lowerCaseAttributeNames: this.options.lowerCaseAttributeNames,
+    pseudos: this.options.pseudos,
+    quirksMode: this.options.quirksMode,
   };
 
   return this._make(select.select(selector, elems, options, limit));
@@ -351,8 +349,8 @@ export function closest<T extends AnyNode>(
   }
 
   const selectOpts = {
-    root: this._root?.[0],
     xmlMode: this.options.xmlMode,
+    root: this._root?.[0],
   };
 
   const selectFn =
@@ -641,7 +639,7 @@ export function contents<T extends AnyNode>(
  */
 export function each<T>(
   this: Cheerio<T>,
-  fn: (this: T, i: number, el: T) => boolean | void,
+  fn: (this: T, i: number, el: T) => void | boolean,
 ): Cheerio<T> {
   let i = 0;
   const len = this.length;
@@ -677,7 +675,7 @@ export function each<T>(
  */
 export function map<T, M>(
   this: Cheerio<T>,
-  fn: (this: T, i: number, el: T) => M | M[] | null | undefined,
+  fn: (this: T, i: number, el: T) => M[] | M | null | undefined,
 ): Cheerio<M> {
   let elems: M[] = [];
   for (let i = 0; i < this.length; i++) {
@@ -697,7 +695,7 @@ export function map<T, M>(
  * @returns A function that determines if a filter has been matched.
  */
 function getFilterFn<T>(
-  match: Cheerio<T> | FilterFunction<T> | T,
+  match: FilterFunction<T> | Cheerio<T> | T,
 ): (el: T, i: number) => boolean {
   if (typeof match === 'function') {
     return (el, i) => (match as FilterFunction<T>).call(el, i, el);
@@ -793,7 +791,7 @@ export function filterArray<T>(
   root?: Document,
 ): Element[] | T[] {
   return typeof match === 'string'
-    ? select.filter(match, nodes as unknown as AnyNode[], { root, xmlMode })
+    ? select.filter(match, nodes as unknown as AnyNode[], { xmlMode, root })
     : nodes.filter(getFilterFn<T>(match));
 }
 
@@ -900,7 +898,7 @@ export function not<T extends AnyNode>(
  */
 export function has(
   this: Cheerio<AnyNode | Element>,
-  selectorOrHaystack: Cheerio<Element> | Element | string,
+  selectorOrHaystack: string | Cheerio<Element> | Element,
 ): Cheerio<AnyNode | Element> {
   return this.filter(
     typeof selectorOrHaystack === 'string'
@@ -1050,7 +1048,7 @@ export function toArray<T>(this: Cheerio<T>): T[] {
  */
 export function index<T extends AnyNode>(
   this: Cheerio<T>,
-  selectorOrNeedle?: AnyNode | Cheerio<AnyNode> | string,
+  selectorOrNeedle?: string | Cheerio<AnyNode> | AnyNode,
 ): number {
   let $haystack: Cheerio<AnyNode>;
   let needle: AnyNode;
@@ -1139,7 +1137,7 @@ export function end<T>(this: Cheerio<T>): Cheerio<AnyNode> {
  */
 export function add<S extends AnyNode, T extends AnyNode>(
   this: Cheerio<T>,
-  other: Cheerio<S> | S | S[] | string,
+  other: string | Cheerio<S> | S | S[],
   context?: Cheerio<S> | string,
 ): Cheerio<S | T> {
   const selection = this._make(other, context);

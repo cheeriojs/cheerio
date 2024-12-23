@@ -1,11 +1,10 @@
+import { removeElement } from 'domutils';
 import {
   type AnyNode,
-  isDocument as checkIsDocument,
   Document,
   type ParentNode,
+  isDocument as checkIsDocument,
 } from 'domhandler';
-import { removeElement } from 'domutils';
-
 import type { InternalOptions } from './options.js';
 
 /**
@@ -19,7 +18,7 @@ export function getParse(
     content: string,
     options: InternalOptions,
     isDocument: boolean,
-    context: null | ParentNode,
+    context: ParentNode | null,
   ) => Document,
 ) {
   /**
@@ -32,10 +31,10 @@ export function getParse(
    * @returns The parsed document node.
    */
   return function parse(
-    content: AnyNode | AnyNode[] | Buffer | Document | string,
+    content: string | Document | AnyNode | AnyNode[] | Buffer,
     options: InternalOptions,
     isDocument: boolean,
-    context: null | ParentNode,
+    context: ParentNode | null,
   ): Document {
     if (typeof Buffer !== 'undefined' && Buffer.isBuffer(content)) {
       content = content.toString();
@@ -70,9 +69,9 @@ export function getParse(
  * @returns The parent node.
  */
 export function update(
-  newChilds: AnyNode | AnyNode[],
-  parent: null | ParentNode,
-): null | ParentNode {
+  newChilds: AnyNode[] | AnyNode,
+  parent: ParentNode | null,
+): ParentNode | null {
   // Normalize
   const arr = Array.isArray(newChilds) ? newChilds : [newChilds];
 

@@ -5,7 +5,6 @@
     "plugin:jsdoc/recommended",
     "plugin:n/recommended",
     "plugin:unicorn/recommended",
-    "plugin:perfectionist/recommended-natural-legacy",
     "prettier"
   ],
   "env": { "node": true },
