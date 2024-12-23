@@ -228,10 +228,11 @@ export async function fromURL(
 
   const promise = new Promise<CheerioAPI>((resolve, reject) => {
     undiciStream = undici.stream(url, requestOptions, (res) => {
-      const contentType = res.headers['content-type'] ?? 'text/html';
-      const mimeType = new MIMEType(
-        Array.isArray(contentType) ? contentType[0] : contentType,
-      );
+      const contentTypeHeader = res.headers['content-type'] ?? 'text/html';
+      const contentType = Array.isArray(contentTypeHeader)
+        ? contentTypeHeader[0]
+        : contentTypeHeader;
+      const mimeType = new MIMEType(contentType);
 
       if (!mimeType.isHTML() && !mimeType.isXML()) {
         throw new RangeError(

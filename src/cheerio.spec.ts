@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { parseDOM } from 'htmlparser2';
 import { type Cheerio } from './index.js';
 import { cheerio, fruits, food, noscript } from './__fixtures__/fixtures.js';
-import type { Element } from 'domhandler';
+import type { AnyNode, Element } from 'domhandler';
 
 declare module './index.js' {
   interface Cheerio<T> {
@@ -10,7 +10,7 @@ declare module './index.js' {
       context: Cheerio<T>;
       args: unknown[];
     };
-    foo(): void;
+    foo(this: void): void;
   }
 }
 
@@ -221,17 +221,23 @@ describe('cheerio', () => {
   });
 
   it('(extended Array) should not interfere with prototype methods (issue #119)', () => {
-    const extended: any = [];
+    const extended: AnyNode[] = [];
+    // @ts-expect-error - Ignore for testing
     extended.find =
+      // @ts-expect-error - Ignore for testing
       extended.children =
+      // @ts-expect-error - Ignore for testing
       extended.each =
         function () {
           /* Ignore */
         };
     const $empty = cheerio(extended);
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     expect($empty.find).toBe(cheerio.prototype.find);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     expect($empty.children).toBe(cheerio.prototype.children);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     expect($empty.each).toBe(cheerio.prototype.each);
   });
 
@@ -360,7 +366,9 @@ describe('cheerio', () => {
       it('should honor extensions defined on `prototype` property', () => {
         const $ = cheerio.load('<div>');
 
-        $.prototype.myPlugin = function (...args: unknown[]) {
+        ($.prototype as Cheerio<AnyNode>).myPlugin = function (
+          ...args: unknown[]
+        ) {
           return {
             context: this,
             args,
@@ -394,7 +402,7 @@ describe('cheerio', () => {
         const $a = cheerio.load('<div>');
         const $b = cheerio.load('<div>');
 
-        $a.prototype.foo = function () {
+        ($a.prototype as Cheerio<AnyNode>).foo = function () {
           /* Ignore */
         };
 
