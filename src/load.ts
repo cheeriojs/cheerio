@@ -8,6 +8,7 @@ import { Cheerio } from './cheerio.js';
 import { isHtml, isCheerio } from './utils.js';
 import type { AnyNode, Document, Element, ParentNode } from 'domhandler';
 import type { SelectorType, BasicAcceptedElems } from './types.js';
+import { ElementType } from 'htmlparser2';
 
 type StaticType = typeof staticMethods;
 
@@ -269,9 +270,13 @@ export function getLoad(
 
 function isNode(obj: unknown): obj is AnyNode {
   return (
+    // @ts-expect-error: TS doesn't know about the `name` property.
     !!obj.name ||
-    obj.type === 'root' ||
-    obj.type === 'text' ||
-    obj.type === 'comment'
+    // @ts-expect-error: TS doesn't know about the `type` property.
+    obj.type === ElementType.Root ||
+    // @ts-expect-error: TS doesn't know about the `type` property.
+    obj.type === ElementType.Text ||
+    // @ts-expect-error: TS doesn't know about the `type` property.
+    obj.type === ElementType.Comment
   );
 }
