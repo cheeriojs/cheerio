@@ -165,7 +165,9 @@ function getCss(
   if (Array.isArray(prop)) {
     const newStyles: Record<string, string> = {};
     for (const item of prop) {
-      newStyles[item] = styles[item];
+      if (styles[item] != null) {
+        newStyles[item] = styles[item];
+      }
     }
     return newStyles;
   }
