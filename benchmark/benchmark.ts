@@ -62,7 +62,6 @@ async function benchmark<T = void>(
     bench.add('jsdom', () => test(dom.window['$'] as CheerioAPI, setupData));
   }
 
-  await bench.warmup(); // Make results more reliable, ref: https://github.com/tinylibs/tinybench/pull/50
   await bench.run();
 
   console.table(bench.table());

@@ -1039,7 +1039,7 @@ export function removeClass<T extends AnyNode, R extends ArrayLike<T>>(
       for (let j = 0; j < numClasses; j++) {
         const index = elClasses.indexOf(classes[j]);
 
-        if (index >= 0) {
+        if (index !== -1) {
           elClasses.splice(index, 1);
           changed = true;
 
@@ -1124,9 +1124,9 @@ export function toggleClass<T extends AnyNode, R extends ArrayLike<T>>(
       const index = elementClasses.indexOf(classNames[j]);
 
       // Add if stateValue === true or we are toggling and there is no value
-      if (state >= 0 && index < 0) {
+      if (state >= 0 && index === -1) {
         elementClasses.push(classNames[j]);
-      } else if (state <= 0 && index >= 0) {
+      } else if (state <= 0 && index !== -1) {
         // Otherwise remove but only if the item exists
         elementClasses.splice(index, 1);
       }

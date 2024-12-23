@@ -82,7 +82,7 @@ const enum CharacterCode {
 export function isHtml(str: string): boolean {
   const tagStart = str.indexOf('<');
 
-  if (tagStart < 0 || tagStart > str.length - 3) return false;
+  if (tagStart === -1 || tagStart > str.length - 3) return false;
 
   const tagChar = str.charCodeAt(tagStart + 1) as CharacterCode;
 

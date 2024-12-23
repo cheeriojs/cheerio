@@ -153,7 +153,7 @@ function uniqueSplice(
       const oldSiblings: AnyNode[] = oldParent.children;
       const prevIdx = oldSiblings.indexOf(node);
 
-      if (prevIdx > -1) {
+      if (prevIdx !== -1) {
         oldParent.children.splice(prevIdx, 1);
         if (parent === oldParent && spliceIdx > prevIdx) {
           spliceArgs[0]--;
@@ -655,7 +655,7 @@ export function after<T extends AnyNode>(
 
     // If not found, move on
     /* istanbul ignore next */
-    if (index < 0) return;
+    if (index === -1) return;
 
     const domSrc =
       typeof elems[0] === 'function'
@@ -714,7 +714,7 @@ export function insertAfter<T extends AnyNode>(
 
     // If not found, move on
     /* istanbul ignore next */
-    if (index < 0) continue;
+    if (index === -1) continue;
 
     // Add cloned `this` element(s) after target element
     uniqueSplice(siblings, index + 1, 0, clonedSelf, parent);
@@ -764,7 +764,7 @@ export function before<T extends AnyNode>(
 
     // If not found, move on
     /* istanbul ignore next */
-    if (index < 0) return;
+    if (index === -1) return;
 
     const domSrc =
       typeof elems[0] === 'function'
@@ -821,7 +821,7 @@ export function insertBefore<T extends AnyNode>(
 
     // If not found, move on
     /* istanbul ignore next */
-    if (index < 0) return;
+    if (index === -1) return;
 
     // Add cloned `this` element(s) after target element
     uniqueSplice(siblings, index, 0, clonedSelf, parent);
