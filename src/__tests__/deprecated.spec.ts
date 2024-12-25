@@ -149,7 +149,7 @@ describe('deprecated APIs', () => {
      * const $ = cheerio.load('<h1>Hello, <span>world</span>.</h1>');
      *
      * $('h1').html();
-     * //=> '<h1>Hello, <span>world</span>.'
+     * //=> 'Hello, <span>world</span>.'
      * ```
      *
      * @example <caption>To render the markup of an entire document, invoke the

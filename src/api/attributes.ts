@@ -147,7 +147,7 @@ export function attr<T extends AnyNode>(
  * @example
  *
  * ```js
- * $('.apple').attr('id', 'favorite').html();
+ * $('.apple').attr('id', 'favorite').prop('outerHTML');
  * //=> <li class="apple" id="favorite">Apple</li>
  * ```
  *
@@ -173,7 +173,7 @@ export function attr<T extends AnyNode>(
  * @example
  *
  * ```js
- * $('.apple').attr({ id: 'favorite' }).html();
+ * $('.apple').attr({ id: 'favorite' }).prop('outerHTML');
  * //=> <li class="apple" id="favorite">Apple</li>
  * ```
  *
@@ -765,7 +765,7 @@ export function val<T extends AnyNode>(
  * @example
  *
  * ```js
- * $('input[type="text"]').val('test').html();
+ * $('input[type="text"]').val('test').prop('outerHTML');
  * //=> <input type="text" value="test"/>
  * ```
  *
@@ -853,11 +853,11 @@ function splitNames(names?: string): string[] {
  * @example
  *
  * ```js
- * $('.pear').removeAttr('class').html();
+ * $('.pear').removeAttr('class').prop('outerHTML');
  * //=> <li>Pear</li>
  *
  * $('.apple').attr('id', 'favorite');
- * $('.apple').removeAttr('id class').html();
+ * $('.apple').removeAttr('id class').prop('outerHTML');
  * //=> <li>Apple</li>
  * ```
  *
@@ -933,10 +933,10 @@ export function hasClass<T extends AnyNode>(
  * @example
  *
  * ```js
- * $('.pear').addClass('fruit').html();
+ * $('.pear').addClass('fruit').prop('outerHTML');
  * //=> <li class="pear fruit">Pear</li>
  *
- * $('.apple').addClass('fruit red').html();
+ * $('.apple').addClass('fruit red').prop('outerHTML');
  * //=> <li class="apple fruit red">Apple</li>
  * ```
  *
@@ -1001,10 +1001,10 @@ export function addClass<T extends AnyNode, R extends ArrayLike<T>>(
  * @example
  *
  * ```js
- * $('.pear').removeClass('pear').html();
+ * $('.pear').removeClass('pear').prop('outerHTML');
  * //=> <li class="">Pear</li>
  *
- * $('.apple').addClass('red').removeClass().html();
+ * $('.apple').addClass('red').removeClass().prop('outerHTML');
  * //=> <li class="">Apple</li>
  * ```
  *
@@ -1071,10 +1071,10 @@ export function removeClass<T extends AnyNode, R extends ArrayLike<T>>(
  * @example
  *
  * ```js
- * $('.apple.green').toggleClass('fruit green red').html();
+ * $('.apple.green').toggleClass('fruit green red').prop('outerHTML');
  * //=> <li class="apple fruit red">Apple</li>
  *
- * $('.apple.green').toggleClass('fruit green red', true).html();
+ * $('.apple.green').toggleClass('fruit green red', true).prop('outerHTML');
  * //=> <li class="apple green fruit red">Apple</li>
  * ```
  *
