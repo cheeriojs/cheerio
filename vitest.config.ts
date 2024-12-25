@@ -11,6 +11,10 @@ const config: ViteUserConfig = defineConfig({
         '*.config.ts',
       ],
     },
+    typecheck: {
+      enabled: true,
+      include: ['src/api/extract.spec.ts'],
+    },
   },
 });
 
