@@ -118,4 +118,11 @@ describe('$.extract', () => {
       },
     });
   });
+
+  it('() : should not error on missing href prop (#4239)', () => {
+    const $ = load(fixtures.eleven);
+    expect<{ links: string[] }>(
+      $.extract({ links: [{ selector: 'li', value: 'href' }] }),
+    ).toStrictEqual({ links: [] });
+  });
 });

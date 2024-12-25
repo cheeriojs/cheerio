@@ -321,6 +321,11 @@ describe('$(...)', () => {
       expect($(undefined).prop('href')).toBeUndefined();
     });
 
+    it('("href") : should skip values without an href', () => {
+      const $ = load('<a id="1">example1</a>');
+      expect($('#1').prop('href')).toBeUndefined();
+    });
+
     it('("src") : should resolve links with `baseURI`', () => {
       const $ = load(
         `
@@ -351,6 +356,13 @@ describe('$(...)', () => {
       expect($a.prop('outerHTML')).toBe(outerHtml);
 
       expect($(undefined).prop('outerHTML')).toBeUndefined();
+    });
+
+    it('("outerHTML") : should support root nodes', () => {
+      const $ = load('<div></div>');
+      expect($.root().prop('outerHTML')).toBe(
+        '<html><head></head><body><div></div></body></html>',
+      );
     });
 
     it('("innerHTML") : should render properly', () => {
