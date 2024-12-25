@@ -86,9 +86,7 @@
   "overrides": [
     {
       "files": "*.ts",
-      "plugins": ["expect-type"],
       "extends": [
-        "plugin:expect-type/recommended",
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended-type-checked",
         "plugin:@typescript-eslint/stylistic-type-checked",
