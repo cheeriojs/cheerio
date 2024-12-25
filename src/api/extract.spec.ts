@@ -13,23 +13,30 @@ interface RedSelMultipleObject {
 }
 
 describe('$.extract', () => {
-  it('() : should extract values for selectors', () => {
+  it('should return an empty object when no selectors are provided', () => {
     const $ = load(fixtures.eleven);
     const $root = $.root();
 
-    // An empty object should lead to an empty extraction.
     expectTypeOf($root.extract({})).toEqualTypeOf<Record<never, never>>();
     const emptyExtract = $root.extract({});
     expect(emptyExtract).toStrictEqual({});
+  });
 
-    // Non-existent values should be undefined.
+  it('should return undefined for selectors that do not match any elements', () => {
+    const $ = load(fixtures.eleven);
+    const $root = $.root();
+
     expectTypeOf($root.extract({ foo: 'bar' })).toEqualTypeOf<{
       foo: string | undefined;
     }>();
     const simpleExtract = $root.extract({ foo: 'bar' });
     expect(simpleExtract).toStrictEqual({ foo: undefined });
+  });
 
-    // Existing values should be extracted.
+  it('should extract values for existing selectors', () => {
+    const $ = load(fixtures.eleven);
+    const $root = $.root();
+
     expectTypeOf($root.extract({ red: '.red' })).toEqualTypeOf<{
       red: string | undefined;
     }>();
@@ -42,8 +49,12 @@ describe('$.extract', () => {
       red: 'Four',
       sel: 'Three',
     });
+  });
 
-    // Descriptors for extractions should be supported.
+  it('should extract values using descriptor objects', () => {
+    const $ = load(fixtures.eleven);
+    const $root = $.root();
+
     expectTypeOf(
       $root.extract({
         red: { selector: '.red' },
@@ -56,8 +67,12 @@ describe('$.extract', () => {
         sel: { selector: '.sel' },
       }),
     ).toStrictEqual({ red: 'Four', sel: 'Three' });
+  });
 
-    // Should support extraction of multiple values.
+  it('should extract multiple values for selectors', () => {
+    const $ = load(fixtures.eleven);
+    const $root = $.root();
+
     expectTypeOf(
       $root.extract({
         red: ['.red'],
@@ -73,8 +88,12 @@ describe('$.extract', () => {
       red: ['Four', 'Five', 'Nine'],
       sel: ['Three', 'Nine', 'Eleven'],
     });
+  });
 
-    // Should support custom `prop`s.
+  it('should extract custom properties specified by the user', () => {
+    const $ = load(fixtures.eleven);
+    const $root = $.root();
+
     expectTypeOf(
       $root.extract({
         red: { selector: '.red', value: 'outerHTML' },
@@ -87,8 +106,12 @@ describe('$.extract', () => {
         sel: { selector: '.sel', value: 'tagName' },
       }),
     ).toStrictEqual({ red: '<li class="red">Four</li>', sel: 'LI' });
+  });
 
-    // Should support custom `prop`s for multiple values.
+  it('should extract multiple custom properties for selectors', () => {
+    const $ = load(fixtures.eleven);
+    const $root = $.root();
+
     expectTypeOf(
       $root.extract({
         red: [{ selector: '.red', value: 'outerHTML' }],
@@ -105,8 +128,12 @@ describe('$.extract', () => {
         '<li class="red sel">Nine</li>',
       ],
     });
+  });
 
-    // Should support custom extraction functions.
+  it('should extract values using custom extraction functions', () => {
+    const $ = load(fixtures.eleven);
+    const $root = $.root();
+
     expectTypeOf(
       $root.extract({
         red: {
@@ -123,8 +150,12 @@ describe('$.extract', () => {
         },
       }),
     ).toStrictEqual({ red: 'red=Four' });
+  });
 
-    // Should support custom extraction functions for multiple values.
+  it('should extract multiple values using custom extraction functions', () => {
+    const $ = load(fixtures.eleven);
+    const $root = $.root();
+
     expectTypeOf(
       $root.extract({
         red: [
@@ -145,8 +176,12 @@ describe('$.extract', () => {
         ],
       }),
     ).toStrictEqual({ red: ['red=Four', 'red=Five', 'red=Nine'] });
+  });
 
-    // Should support extraction objects.
+  it('should extract nested objects based on selectors', () => {
+    const $ = load(fixtures.eleven);
+    const $root = $.root();
+
     expectTypeOf(
       $root.extract({
         section: {
@@ -180,7 +215,7 @@ describe('$.extract', () => {
     });
   });
 
-  it('() : should not error on missing href prop (#4239)', () => {
+  it('should handle missing href properties without errors (#4239)', () => {
     const $ = load(fixtures.eleven);
     expect<{ links: string[] }>(
       $.extract({ links: [{ selector: 'li', value: 'href' }] }),
