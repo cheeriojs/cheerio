@@ -9,6 +9,7 @@ import { domEach, camelCase, cssCase } from '../utils.js';
 import { isTag, type AnyNode, type Element } from 'domhandler';
 import type { Cheerio } from '../cheerio.js';
 import { innerText, textContent } from 'domutils';
+import { ElementType } from 'htmlparser2';
 const hasOwn =
   // @ts-expect-error `hasOwn` is a standard object method
   (Object.hasOwn as (object: unknown, prop: string) => boolean) ??
@@ -416,7 +417,7 @@ export function prop<T extends AnyNode>(
   if (typeof name === 'string' && value === undefined) {
     const el = this[0];
 
-    if (!el || !isTag(el)) return undefined;
+    if (!el) return undefined;
 
     switch (name) {
       case 'style': {
@@ -432,11 +433,13 @@ export function prop<T extends AnyNode>(
       }
       case 'tagName':
       case 'nodeName': {
+        if (!isTag(el)) return undefined;
         return el.name.toUpperCase();
       }
 
       case 'href':
       case 'src': {
+        if (!isTag(el)) return undefined;
         const prop = el.attribs?.[name];
 
         if (
@@ -466,6 +469,7 @@ export function prop<T extends AnyNode>(
       }
 
       case 'outerHTML': {
+        if (el.type === ElementType.Root) return this.html();
         return this.clone().wrap('<container />').parent().html();
       }
 
@@ -474,6 +478,7 @@ export function prop<T extends AnyNode>(
       }
 
       default: {
+        if (!isTag(el)) return undefined;
         return getProp(el, name, this.options.xmlMode);
       }
     }
