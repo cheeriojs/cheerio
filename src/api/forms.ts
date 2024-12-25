@@ -82,7 +82,7 @@ export function serializeArray<T extends AnyNode>(
       }
     >((_, elem) => {
       const $elem = this._make(elem);
-      const name = $elem.attr('name') as string; // We have filtered for elements with a name before.
+      const name = $elem.attr('name')!; // We have filtered for elements with a name before.
       // If there is no value set (e.g. `undefined`, `null`), then default value to empty
       const value = $elem.val() ?? '';
 

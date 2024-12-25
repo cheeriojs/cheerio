@@ -9,12 +9,12 @@ function noop() {
 
 // Returns a promise and a resolve function
 function getPromise() {
-  let cb: (error: Error | null | undefined, $: cheerio.CheerioAPI) => void;
+  let cb!: (error: Error | null | undefined, $: cheerio.CheerioAPI) => void;
   const promise = new Promise<cheerio.CheerioAPI>((resolve, reject) => {
     cb = (error, $) => (error ? reject(error) : resolve($));
   });
 
-  return { promise, cb: cb! };
+  return { promise, cb };
 }
 
 const TEST_HTML = '<h1>Hello World</h1>';

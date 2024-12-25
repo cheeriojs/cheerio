@@ -30,7 +30,8 @@ describe('$(...)', () => {
   describe('.load', () => {
     it('should throw a TypeError if given invalid input', () => {
       expect(() => {
-        (load as any)();
+        // @ts-expect-error Testing invalid input
+        load();
       }).toThrow('cheerio.load() expects a string');
     });
   });
@@ -858,7 +859,7 @@ describe('$(...)', () => {
       it('should yield each element', () => {
         // The equivalent of: for (const element of $('li')) ...
         const $li = $('li');
-        const iterator = $li[Symbol.iterator]();
+        const iterator = $li[Symbol.iterator]() as Iterator<Element, Element>;
         expect(iterator.next().value.attribs).toHaveProperty('class', 'apple');
         expect(iterator.next().value.attribs).toHaveProperty('class', 'orange');
         expect(iterator.next().value.attribs).toHaveProperty('class', 'pear');

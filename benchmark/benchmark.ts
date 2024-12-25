@@ -18,12 +18,17 @@ const benchmarkFilter = filterIndex >= 0 ? process.argv[filterIndex] : '';
 
 const cheerioOnly = process.argv.includes('--cheerio-only');
 
-interface SuiteOptions<T> {
-  test($: CheerioAPI, data: T): void;
-  setup($: CheerioAPI): T;
-}
+type SuiteOptions<T> = T extends void
+  ? {
+      test(this: void, $: CheerioAPI): void;
+      setup?: (this: void, $: CheerioAPI) => T;
+    }
+  : {
+      test(this: void, $: CheerioAPI, data: T): void;
+      setup(this: void, $: CheerioAPI): T;
+    };
 
-async function benchmark<T>(
+async function benchmark<T = void>(
   name: string,
   fileName: string,
   options: SuiteOptions<T>,
@@ -40,7 +45,7 @@ async function benchmark<T>(
 
   // Add Cheerio test
   const $ = load(markup);
-  const setupData: T = setup($);
+  const setupData = setup?.($) as T;
 
   bench.add('cheerio', () => {
     test($, setupData);
@@ -52,23 +57,20 @@ async function benchmark<T>(
 
     jQueryScript.runInContext(dom.getInternalVMContext());
 
-    const setupData: T = setup(dom.window['$']);
+    const setupData = setup?.(dom.window['$'] as CheerioAPI) as T;
 
-    bench.add('jsdom', () => test(dom.window['$'], setupData));
+    bench.add('jsdom', () => test(dom.window['$'] as CheerioAPI, setupData));
   }
 
-  await bench.warmup(); // Make results more reliable, ref: https://github.com/tinylibs/tinybench/pull/50
   await bench.run();
 
   console.table(bench.table());
 }
 
-await benchmark<void>('Select all', 'jquery.html', {
-  setup() {},
+await benchmark('Select all', 'jquery.html', {
   test: ($) => $('*').length,
 });
-await benchmark<void>('Select some', 'jquery.html', {
-  setup() {},
+await benchmark('Select some', 'jquery.html', {
   test: ($) => $('li').length,
 });
 
@@ -116,7 +118,7 @@ await benchmark<Cheerio<Element>>('manipulation - remove', 'jquery.html', {
   },
 });
 
-await benchmark<void>('manipulation - replaceWith', 'jquery.html', {
+await benchmark('manipulation - replaceWith', 'jquery.html', {
   setup($) {
     $('body').append('<div id="foo">');
   },
@@ -147,8 +149,7 @@ await benchmark<Cheerio<Element>>('manipulation - html render', 'jquery.html', {
 
 const HTML_INDEPENDENT_MARKUP =
   '<div class="foo"><div id="bar">bat<hr>baz</div> </div>'.repeat(6);
-await benchmark<void>('manipulation - html independent', 'jquery.html', {
-  setup() {},
+await benchmark('manipulation - html independent', 'jquery.html', {
   test: ($) => $(HTML_INDEPENDENT_MARKUP).html(),
 });
 await benchmark<Cheerio<Element>>('manipulation - text', 'jquery.html', {
