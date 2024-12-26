@@ -16,9 +16,7 @@ interface ExtractDescriptor {
 
 type ExtractValue = string | ExtractDescriptor | [string | ExtractDescriptor];
 
-export interface ExtractMap {
-  [key: string]: ExtractValue;
-}
+export type ExtractMap = Record<string, ExtractValue>;
 
 type ExtractedValue<V extends ExtractValue, M extends ExtractMap> = V extends [
   string | ExtractDescriptor,

@@ -8,6 +8,7 @@ import { Cheerio } from './cheerio.js';
 import { isHtml, isCheerio } from './utils.js';
 import type { AnyNode, Document, Element, ParentNode } from 'domhandler';
 import type { SelectorType, BasicAcceptedElems } from './types.js';
+import { ElementType } from 'htmlparser2';
 
 type StaticType = typeof staticMethods;
 
@@ -104,7 +105,7 @@ export interface CheerioAPI extends StaticType {
 }
 
 export function getLoad(
-  parse: typeof Cheerio.prototype._parse,
+  parse: Cheerio<AnyNode>['_parse'],
   render: (
     dom: AnyNode | ArrayLike<AnyNode>,
     options: InternalOptions,
@@ -209,7 +210,7 @@ export function getLoad(
       const instance = new LoadedCheerio(elements, rootInstance, options);
 
       if (elements) {
-        return instance as any;
+        return instance as Cheerio<Result>;
       }
 
       if (typeof selector !== 'string') {
@@ -243,7 +244,7 @@ export function getLoad(
         : rootInstance;
 
       // If we still don't have a context, return
-      if (!searchContext) return instance as any;
+      if (!searchContext) return instance as Cheerio<Result>;
 
       /*
        * #id, .class, tag
@@ -267,11 +268,15 @@ export function getLoad(
   };
 }
 
-function isNode(obj: any): obj is AnyNode {
+function isNode(obj: unknown): obj is AnyNode {
   return (
+    // @ts-expect-error: TS doesn't know about the `name` property.
     !!obj.name ||
-    obj.type === 'root' ||
-    obj.type === 'text' ||
-    obj.type === 'comment'
+    // @ts-expect-error: TS doesn't know about the `type` property.
+    obj.type === ElementType.Root ||
+    // @ts-expect-error: TS doesn't know about the `type` property.
+    obj.type === ElementType.Text ||
+    // @ts-expect-error: TS doesn't know about the `type` property.
+    obj.type === ElementType.Comment
   );
 }

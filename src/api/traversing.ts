@@ -1025,7 +1025,7 @@ export function get<T>(this: Cheerio<T>, i?: number): T | T[] {
  * @returns The contained items.
  */
 export function toArray<T>(this: Cheerio<T>): T[] {
-  return Array.prototype.slice.call(this);
+  return (Array.prototype as T[]).slice.call(this);
 }
 
 /**
@@ -1097,7 +1097,7 @@ export function slice<T>(
   start?: number,
   end?: number,
 ): Cheerio<T> {
-  return this._make(Array.prototype.slice.call(this, start, end));
+  return this._make<T>(Array.prototype.slice.call(this, start, end));
 }
 
 /**
@@ -1116,7 +1116,7 @@ export function slice<T>(
  * @see {@link https://api.jquery.com/end/}
  */
 export function end<T>(this: Cheerio<T>): Cheerio<AnyNode> {
-  return this.prevObject ?? this._make([]);
+  return (this.prevObject as Cheerio<AnyNode> | null) ?? this._make([]);
 }
 
 /**
@@ -1166,6 +1166,8 @@ export function addBack<T extends AnyNode>(
   selector?: string,
 ): Cheerio<AnyNode> {
   return this.prevObject
-    ? this.add(selector ? this.prevObject.filter(selector) : this.prevObject)
+    ? this.add<AnyNode, T>(
+        selector ? this.prevObject.filter(selector) : this.prevObject,
+      )
     : this;
 }
