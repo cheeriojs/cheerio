@@ -264,7 +264,7 @@ describe('parse', () => {
       expect(childNodes[0].previousSibling).toBe(null);
       expect(childNodes[0].nextSibling).toBe(childNodes[1]);
       expect(childNodes[0].parentNode).toBe(root);
-      expect((childNodes[0] as Element).childNodes).toHaveLength(0);
+      expect(childNodes[0].childNodes).toHaveLength(0);
       expect(childNodes[0].firstChild).toBe(null);
       expect(childNodes[0].lastChild).toBe(null);
 
@@ -335,23 +335,17 @@ describe('parse', () => {
         false,
         null,
       );
-      const childNodes = root.childNodes as Element[];
 
-      expect(childNodes[0].tagName).toBe('table');
-      expect(childNodes[0].childNodes.length).toBe(1);
-      expect(childNodes[0].childNodes[0]).toHaveProperty('tagName', 'tbody');
-      expect((childNodes[0] as any).childNodes[0].childNodes[0]).toHaveProperty(
-        'tagName',
-        'tr',
-      );
-      expect(
-        (childNodes[0] as any).childNodes[0].childNodes[0].childNodes[0]
-          .tagName,
-      ).toBe('td');
-      expect(
-        (childNodes[0] as any).childNodes[0].childNodes[0].childNodes[0]
-          .childNodes[0].data,
-      ).toBe('bar');
+      const table = root.childNodes[0] as Element;
+      expect(table.tagName).toBe('table');
+      expect(table.childNodes.length).toBe(1);
+      const tbody = table.childNodes[0] as Element;
+      expect(table.childNodes[0]).toHaveProperty('tagName', 'tbody');
+      const tr = tbody.childNodes[0] as Element;
+      expect(tr).toHaveProperty('tagName', 'tr');
+      const td = tr.childNodes[0] as Element;
+      expect(td).toHaveProperty('tagName', 'td');
+      expect(td.childNodes[0]).toHaveProperty('data', 'bar');
     });
 
     it('Should parse custom tag <line>', () => {

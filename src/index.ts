@@ -43,7 +43,7 @@ import { load } from './load-parse.js';
  * import * as cheerio from 'cheerio';
  *
  * const buffer = fs.readFileSync('index.html');
- * const $ = cheerio.fromBuffer(buffer);
+ * const $ = cheerio.loadBuffer(buffer);
  * ```
  *
  * @param buffer - The buffer to sniff the encoding of.
@@ -186,8 +186,6 @@ const defaultRequestOptions: UndiciStreamOptions = {
   method: 'GET',
   // Allow redirects by default
   maxRedirections: 5,
-  // NOTE: `throwOnError` currently doesn't work https://github.com/nodejs/undici/issues/1753
-  throwOnError: true,
   // Set an Accept header
   headers: {
     accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -217,25 +215,32 @@ export async function fromURL(
   options: CheerioRequestOptions = {},
 ): Promise<CheerioAPI> {
   const {
-    requestOptions = defaultRequestOptions,
+    requestOptions = {
+      ...defaultRequestOptions,
+      dispatcher: undici
+        .getGlobalDispatcher()
+        .compose(undici.interceptors.responseError()),
+    },
     encoding = {},
     ...cheerioOptions
   } = options;
-  let undiciStream: Promise<undici.Dispatcher.StreamData> | undefined;
+  let undiciStream: Promise<undici.Dispatcher.StreamData<unknown>> | undefined;
 
   // Add headers if none were supplied.
   requestOptions.headers ??= defaultRequestOptions.headers;
 
   const promise = new Promise<CheerioAPI>((resolve, reject) => {
     undiciStream = undici.stream(url, requestOptions, (res) => {
-      const contentType = res.headers['content-type'] ?? 'text/html';
+      const contentTypeHeader = res.headers['content-type'] ?? 'text/html';
       const mimeType = new MIMEType(
-        Array.isArray(contentType) ? contentType[0] : contentType,
+        Array.isArray(contentTypeHeader)
+          ? contentTypeHeader[0]
+          : contentTypeHeader,
       );
 
       if (!mimeType.isHTML() && !mimeType.isXML()) {
         throw new RangeError(
-          `The content-type "${contentType}" is neither HTML nor XML.`,
+          `The content-type "${mimeType.essence}" is neither HTML nor XML.`,
         );
       }
 

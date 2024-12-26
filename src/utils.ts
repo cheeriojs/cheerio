@@ -8,8 +8,10 @@ import type { Cheerio } from './cheerio.js';
  * @param maybeCheerio - The object to check.
  * @returns Whether the object is a Cheerio instance.
  */
-export function isCheerio<T>(maybeCheerio: any): maybeCheerio is Cheerio<T> {
-  return maybeCheerio.cheerio != null;
+export function isCheerio<T>(
+  maybeCheerio: unknown,
+): maybeCheerio is Cheerio<T> {
+  return (maybeCheerio as Cheerio<T>).cheerio != null;
 }
 
 /**
@@ -21,7 +23,7 @@ export function isCheerio<T>(maybeCheerio: any): maybeCheerio is Cheerio<T> {
  * @returns String in camel case notation.
  */
 export function camelCase(str: string): string {
-  return str.replace(/[._-](\w|$)/g, (_, x) => x.toUpperCase());
+  return str.replace(/[._-](\w|$)/g, (_, x) => (x as string).toUpperCase());
 }
 
 /**
@@ -58,7 +60,7 @@ export function domEach<
   return array;
 }
 
-const enum CharacterCodes {
+const enum CharacterCode {
   LowerA = 97,
   LowerZ = 122,
   UpperA = 65,
@@ -80,14 +82,14 @@ const enum CharacterCodes {
 export function isHtml(str: string): boolean {
   const tagStart = str.indexOf('<');
 
-  if (tagStart < 0 || tagStart > str.length - 3) return false;
+  if (tagStart === -1 || tagStart > str.length - 3) return false;
 
-  const tagChar = str.charCodeAt(tagStart + 1);
+  const tagChar = str.charCodeAt(tagStart + 1) as CharacterCode;
 
   return (
-    ((tagChar >= CharacterCodes.LowerA && tagChar <= CharacterCodes.LowerZ) ||
-      (tagChar >= CharacterCodes.UpperA && tagChar <= CharacterCodes.UpperZ) ||
-      tagChar === CharacterCodes.Exclamation) &&
+    ((tagChar >= CharacterCode.LowerA && tagChar <= CharacterCode.LowerZ) ||
+      (tagChar >= CharacterCode.UpperA && tagChar <= CharacterCode.UpperZ) ||
+      tagChar === CharacterCode.Exclamation) &&
     str.includes('>', tagStart + 2)
   );
 }

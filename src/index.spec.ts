@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import * as cheerio from './index.js';
 import { Writable } from 'node:stream';
-import { createServer, type Server } from 'node:http';
+import { createServer, type Server, type RequestListener } from 'node:http';
 
 function noop() {
   // Ignore
@@ -9,12 +9,12 @@ function noop() {
 
 // Returns a promise and a resolve function
 function getPromise() {
-  let cb: (error: Error | null | undefined, $: cheerio.CheerioAPI) => void;
+  let cb!: (error: Error | null | undefined, $: cheerio.CheerioAPI) => void;
   const promise = new Promise<cheerio.CheerioAPI>((resolve, reject) => {
     cb = (error, $) => (error ? reject(error) : resolve($));
   });
 
-  return { promise, cb: cb! };
+  return { promise, cb };
 }
 
 const TEST_HTML = '<h1>Hello World</h1>';
@@ -119,12 +119,13 @@ describe('fromURL', () => {
   function createTestServer(
     contentType: string,
     body: string | Buffer,
+    handler: RequestListener = (_req, res) => {
+      res.writeHead(200, { 'Content-Type': contentType });
+      res.end(body);
+    },
   ): Promise<number> {
     return new Promise((resolve, reject) => {
-      server = createServer((_req, res) => {
-        res.writeHead(200, { 'Content-Type': contentType });
-        res.end(body);
-      });
+      server = createServer(handler);
 
       server.listen(0, () => {
         const address = server?.address();
@@ -176,5 +177,23 @@ describe('fromURL', () => {
     const $ = await cheerio.fromURL(`http://localhost:${port}`);
 
     expect($.html()).toBe(TEST_HTML);
+  });
+
+  it('should throw on non-HTML/XML Content-Type', async () => {
+    const port = await createTestServer('text/plain', TEST_HTML);
+    await expect(cheerio.fromURL(`http://localhost:${port}`)).rejects.toThrow(
+      'The content-type "text/plain" is neither HTML nor XML.',
+    );
+  });
+
+  it('should throw on non-2xx responses', async () => {
+    const port = await createTestServer('text/html', TEST_HTML, (_, res) => {
+      res.writeHead(500);
+      res.end();
+    });
+
+    await expect(cheerio.fromURL(`http://localhost:${port}`)).rejects.toThrow(
+      'Response Error',
+    );
   });
 });

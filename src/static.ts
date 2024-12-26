@@ -152,14 +152,14 @@ export function text(
 export function parseHTML(
   this: CheerioAPI,
   data: string,
-  context?: unknown | boolean,
+  context?: unknown,
   keepScripts?: boolean,
 ): AnyNode[];
 export function parseHTML(this: CheerioAPI, data?: '' | null): null;
 export function parseHTML(
   this: CheerioAPI,
   data?: string | null,
-  context?: unknown | boolean,
+  context?: unknown,
   keepScripts = typeof context === 'boolean' ? context : false,
 ): AnyNode[] | null {
   if (!data || typeof data !== 'string') {
