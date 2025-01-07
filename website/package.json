@@ -26,8 +26,8 @@
     "clsx": "^2.1.1",
     "docusaurus-plugin-typedoc": "^1.2.0",
     "prism-react-renderer": "^2.4.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "typedoc": "^0.27.6",
     "typedoc-plugin-markdown": "^4.4.1",
     "typedoc-plugin-mdn-links": "^4.0.7"
