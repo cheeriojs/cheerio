@@ -119,7 +119,7 @@
     "cheerio-select": "^2.1.0",
     "dom-serializer": "^2.0.0",
     "domhandler": "^5.0.3",
-    "domutils": "^3.2.1",
+    "domutils": "^3.2.2",
     "encoding-sniffer": "^0.2.0",
     "htmlparser2": "^10.0.0",
     "parse5": "^7.2.1",
