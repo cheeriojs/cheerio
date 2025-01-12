@@ -7,10 +7,14 @@ export * from './load-parse.js';
 export { contains, merge } from './static.js';
 export type * from './types.js';
 export type {
+  AnyNode,
   Cheerio,
   CheerioAPI,
   CheerioOptions,
+  Document,
+  Element,
   HTMLParser2Options,
+  ParentNode,
 } from './slim.js';
 
 import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';

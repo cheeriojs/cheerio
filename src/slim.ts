@@ -13,7 +13,13 @@ export { contains, merge } from './static.js';
 export type * from './types.js';
 export type { Cheerio } from './cheerio.js';
 export type { CheerioOptions, HTMLParser2Options } from './options.js';
-export type { CheerioAPI } from './load.js';
+export type {
+  AnyNode,
+  CheerioAPI,
+  Document,
+  Element,
+  ParentNode,
+} from './load.js';
 
 /**
  * Create a querying function, bound to a document created from the provided
