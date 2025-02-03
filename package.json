@@ -130,7 +130,7 @@
   },
   "devDependencies": {
     "@imgix/js-core": "^3.8.0",
-    "@octokit/graphql": "^8.1.2",
+    "@octokit/graphql": "^8.2.0",
     "@types/jsdom": "^21.1.7",
     "@types/node": "^22.12.0",
     "@types/whatwg-mimetype": "^3.0.2",
