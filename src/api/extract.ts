@@ -25,12 +25,14 @@ type ExtractedValue<V extends ExtractValue, M extends ExtractMap> = V extends [
   : V extends string
     ? string | undefined
     : V extends ExtractDescriptor
-      ? V['value'] extends ExtractMap
-        ? ExtractedMap<V['value']> | undefined
-        : V['value'] extends ExtractDescriptorFn
-          ? ReturnType<V['value']> | undefined
+    ? V['value'] extends infer U
+      ? U extends ExtractMap
+        ? ExtractedMap<U> | undefined
+        : U extends ExtractDescriptorFn
+          ? ReturnType<U> | undefined
           : ReturnType<typeof prop> | undefined
-      : never;
+      : never
+    : never;
 
 export type ExtractedMap<M extends ExtractMap> = {
   [key in keyof M]: ExtractedValue<M[key], M>;
