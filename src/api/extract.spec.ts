@@ -152,6 +152,28 @@ describe('$.extract', () => {
     ).toStrictEqual({ red: 'red=Four' });
   });
 
+  it('should correctly type check custom extraction functions returning non-string values', () => {
+    const $ = load(fixtures.eleven);
+    const $root = $.root();
+
+    expectTypeOf(
+      $root.extract({
+        red: {
+          selector: '.red',
+          value: (el) => $(el).text().length,
+        },
+      }),
+    ).toEqualTypeOf<{ red: number | undefined }>();
+    expect(
+      $root.extract({
+        red: {
+          selector: '.red',
+          value: (el) => $(el).text().length,
+        },
+      }),
+    ).toStrictEqual({ red: 4 });
+  });
+
   it('should extract multiple values using custom extraction functions', () => {
     const $ = load(fixtures.eleven);
     const $root = $.root();
@@ -211,6 +233,44 @@ describe('$.extract', () => {
       section: {
         red: 'Five',
         sel: 'Seven',
+      },
+    });
+  });
+
+  it('should correctly type check nested objects returning non-string values', () => {
+    const $ = load(fixtures.eleven);
+    const $root = $.root();
+
+    expectTypeOf(
+      $root.extract({
+        section: {
+          selector: 'ul:nth(1)',
+          value: {
+            red: {
+              selector: '.red',
+              value: (el) => $(el).text().length,
+            },
+          },
+        },
+      }),
+    ).toEqualTypeOf<{
+      section: { red: number | undefined } | undefined;
+    }>();
+    expect(
+      $root.extract({
+        section: {
+          selector: 'ul:nth(1)',
+          value: {
+            red: {
+              selector: '.red',
+              value: (el) => $(el).text().length,
+            },
+          },
+        },
+      }),
+    ).toStrictEqual({
+      section: {
+        red: 4,
       },
     });
   });
