@@ -34,7 +34,13 @@ $.html();
 
 ## Installation
 
-`npm install cheerio`
+Install Cheerio using a package manager like npm, yarn, or bun.
+
+```bash
+npm install cheerio
+# or
+bun add cheerio
+```
 
 ## Features
 
