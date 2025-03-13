@@ -139,8 +139,8 @@ export function attr<T extends AnyNode>(
   this: Cheerio<T>,
 ): Record<string, string> | undefined;
 /**
- * Method for setting attributes. Sets the attribute value for only the first
- * element in the matched set. If you set an attribute's value to `null`, you
+ * Method for setting attributes. Sets the attribute value for all elements
+ * in the matched set. If you set an attribute's value to `null`, you
  * remove that attribute. You may also pass a `map` and `function`.
  *
  * @category Attributes
@@ -165,9 +165,9 @@ export function attr<T extends AnyNode>(
     | ((this: Element, i: number, attrib: string) => string | null),
 ): Cheerio<T>;
 /**
- * Method for setting multiple attributes at once. Sets the attribute value for
- * only the first element in the matched set. If you set an attribute's value to
- * `null`, you remove that attribute.
+ * Method for setting multiple attributes at once. Sets the attribute
+ * value for all elements in the matched set. If you set an attribute's 
+ * value to `null`, you remove that attribute.
  *
  * @category Attributes
  * @example
