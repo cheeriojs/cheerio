@@ -32,7 +32,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Node
-        uses: actions/setup-node@v4.2.0
+        uses: actions/setup-node@v4.3.0
         with:
           # Use current Node LTS version
           node-version: lts/*
