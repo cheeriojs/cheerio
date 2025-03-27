@@ -132,7 +132,7 @@
     "@imgix/js-core": "^3.8.0",
     "@octokit/graphql": "^8.2.1",
     "@types/jsdom": "^21.1.7",
-    "@types/node": "^22.13.13",
+    "@types/node": "^22.13.14",
     "@types/whatwg-mimetype": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "^8.28.0",
     "@typescript-eslint/parser": "^8.28.0",
