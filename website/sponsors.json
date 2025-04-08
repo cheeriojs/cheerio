@@ -78,28 +78,6 @@
       "totalDonations": 0,
       "source": "opencollective",
       "tier": "sponsor"
-    },
-    {
-      "createdAt": "2024-01-12T15:41:17.058Z",
-      "name": "Vedonlyontiyhtiot.com",
-      "url": "https://vedonlyontiyhtiot.com/",
-      "image": "https://images.opencollective.com/vedonlyontiyhtiot-com/avatar.png",
-      "type": "INDIVIDUAL",
-      "monthlyDonation": 0,
-      "totalDonations": 0,
-      "source": "opencollective",
-      "tier": "sponsor"
-    },
-    {
-      "createdAt": "2024-02-28T19:26:31.395Z",
-      "name": "Puter.com",
-      "url": "https://puter.com/",
-      "image": "https://images.opencollective.com/puter/f8643c4/avatar.png",
-      "type": "INDIVIDUAL",
-      "monthlyDonation": 0,
-      "totalDonations": 0,
-      "source": "opencollective",
-      "tier": "sponsor"
     }
   ],
   "professional": [
