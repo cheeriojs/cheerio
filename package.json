@@ -141,7 +141,7 @@
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-jsdoc": "^50.6.9",
     "eslint-plugin-n": "^17.17.0",
-    "eslint-plugin-unicorn": "^56.0.1",
+    "eslint-plugin-unicorn": "^58.0.0",
     "eslint-plugin-vitest": "^0.5.4",
     "husky": "^9.1.7",
     "jquery": "^3.7.1",
