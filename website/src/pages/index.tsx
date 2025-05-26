@@ -3,9 +3,12 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 
-import { HomepageFeatures } from '../components/homepage-features.js';
-import { HomepageTweets } from '../components/homepage-tweets.js';
-import { HeadlineSponsors } from '../components/homepage-sponsors.js';
+// eslint-disable-next-line n/file-extension-in-import
+import { HomepageFeatures } from '../components/homepage-features';
+// eslint-disable-next-line n/file-extension-in-import
+import { HomepageTweets } from '../components/homepage-tweets';
+// eslint-disable-next-line n/file-extension-in-import
+import { HeadlineSponsors } from '../components/homepage-sponsors';
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();

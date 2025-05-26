@@ -30,6 +30,10 @@ const config = {
     locales: ['en'],
   },
 
+  future: {
+    experimental_faster: true,
+  },
+
   presets: [
     [
       'classic',
@@ -59,11 +63,6 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      announcementBar: {
-        id: 'announcementBar-1.0-1', // Increment on change
-        content:
-          "Cheerio 1.0 is out! <a href='/blog/cheerio-1.0'>Learn more about what's new</a>",
-      },
       navbar: {
         title: 'Cheerio',
         logo: {
