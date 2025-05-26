@@ -43,10 +43,6 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
-      - name: Install website npm dependencies
-        run: npm ci
-        working-directory: website
-
       - name: Run tests
         run: npm run test:vi
         if: matrix.node != env.NODE_COV
