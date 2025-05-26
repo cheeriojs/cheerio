@@ -1,9 +1,10 @@
 // @ts-check
 
-/* eslint-disable @typescript-eslint/no-require-imports */
 
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { themes } = require('prism-react-renderer');
-
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const packageJson = require('../package.json');
 
 /** @type {import('@docusaurus/types').Config} */
