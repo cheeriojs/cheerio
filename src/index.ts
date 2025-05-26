@@ -215,12 +215,7 @@ export async function fromURL(
   options: CheerioRequestOptions = {},
 ): Promise<CheerioAPI> {
   const {
-    requestOptions = {
-      ...defaultRequestOptions,
-      dispatcher: undici
-        .getGlobalDispatcher()
-        .compose(undici.interceptors.responseError()),
-    },
+    requestOptions = defaultRequestOptions,
     encoding = {},
     ...cheerioOptions
   } = options;
@@ -231,6 +226,16 @@ export async function fromURL(
 
   const promise = new Promise<CheerioAPI>((resolve, reject) => {
     undiciStream = undici.stream(url, requestOptions, (res) => {
+      if (res.statusCode < 200 || res.statusCode >= 300) {
+        throw new undici.errors.ResponseError(
+          'Response Error',
+          res.statusCode,
+          {
+            headers: res.headers,
+          },
+        );
+      }
+
       const contentTypeHeader = res.headers['content-type'] ?? 'text/html';
       const mimeType = new MIMEType(
         Array.isArray(contentTypeHeader)
