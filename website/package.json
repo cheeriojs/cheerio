@@ -24,18 +24,18 @@
     "@docusaurus/theme-live-codeblock": "^3.7.0",
     "@mdx-js/react": "^3.1.0",
     "clsx": "^2.1.1",
-    "docusaurus-plugin-typedoc": "^1.2.3",
+    "docusaurus-plugin-typedoc": "^1.4.0",
     "prism-react-renderer": "^2.4.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "typedoc": "^0.27.9",
-    "typedoc-plugin-markdown": "^4.4.2",
-    "typedoc-plugin-mdn-links": "^4.0.14"
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "typedoc": "^0.28.4",
+    "typedoc-plugin-markdown": "^4.6.3",
+    "typedoc-plugin-mdn-links": "^5.0.2"
   },
   "devDependencies": {
-    "@crowdin/cli": "^4.6.1",
+    "@crowdin/cli": "^4.7.0",
     "@tsconfig/docusaurus": "^2.0.3",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.3"
   },
   "browserslist": {
     "production": [
