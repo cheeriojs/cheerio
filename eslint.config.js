@@ -15,7 +15,7 @@ const gitignorePath = fileURLToPath(new URL('.gitignore', import.meta.url));
 export default defineConfig(
   includeIgnoreFile(gitignorePath), // Handle .gitignore patterns
 
-  // 0. Global ignores and linter options (ignores here are additional to .gitignore)
+  // 0. Global linter options
   {
     linterOptions: {
       reportUnusedDisableDirectives: true, // Enable reporting of unused disable directives

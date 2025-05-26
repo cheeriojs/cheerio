@@ -1,7 +1,5 @@
 // @ts-check
 
-
-
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { themes } = require('prism-react-renderer');
 // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -40,6 +38,7 @@ const config = {
         docs: {
           editUrl: 'https://github.com/cheeriojs/cheerio/tree/main/website/',
           remarkPlugins: [
+            // eslint-disable-next-line @typescript-eslint/no-require-imports
             [require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }],
           ],
         },
