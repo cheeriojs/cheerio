@@ -1,6 +1,6 @@
 import React from 'react';
 import HeartSvg from '@site/static/img/1F496.svg';
-import styles from './HomepageSponsors.module.css';
+import styles from './homepage-sponsors.module.css';
 
 import Sponsors from '../../sponsors.json';
 

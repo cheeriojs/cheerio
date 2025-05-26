@@ -1,4 +1,7 @@
 import React from 'react';
+import Heart from '@site/static/img/1F496.svg';
+import Lightning from '@site/static/img/26A1.svg';
+import PersonRunning from '@site/static/img/1F57A.svg';
 
 interface FeatureItem {
   title: string;
@@ -9,7 +12,7 @@ interface FeatureItem {
 const FeatureList: FeatureItem[] = [
   {
     title: 'Proven syntax',
-    Svg: require('@site/static/img/1F496.svg').default,
+    Svg: Heart,
     description: (
       <>
         Cheerio implements a subset of core jQuery. Cheerio removes all the DOM
@@ -20,7 +23,7 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: 'Blazingly fast',
-    Svg: require('@site/static/img/26A1.svg').default,
+    Svg: Lightning,
     description: (
       <>
         Cheerio works with a very simple, consistent DOM model. As a result
@@ -30,7 +33,7 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: 'Incredibly flexible',
-    Svg: require('@site/static/img/1F57A.svg').default,
+    Svg: PersonRunning,
     description: (
       <>
         Cheerio can parse nearly any HTML or XML document. Cheerio works in both

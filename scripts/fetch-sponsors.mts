@@ -4,7 +4,14 @@
  *   Adapted from
  *   https://github.com/eslint/website/blob/230e73457dcdc2353ad7934e876a5a222a17b1d7/_tools/fetch-sponsors.js.
  */
-
+/* eslint-disable @typescript-eslint/no-unsafe-assignment,
+                  @typescript-eslint/no-explicit-any,
+                  @typescript-eslint/no-unsafe-return,
+                  @typescript-eslint/no-non-null-assertion,
+                  @typescript-eslint/no-unsafe-call,
+                  @typescript-eslint/no-unsafe-argument,
+                  @typescript-eslint/no-unsafe-member-access,
+                  @typescript-eslint/prefer-nullish-coalescing */
 import * as fs from 'node:fs/promises';
 import { request } from 'undici';
 import { graphql as githubGraphQL } from '@octokit/graphql';
