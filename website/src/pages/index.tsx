@@ -3,9 +3,9 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 
-import { HomepageFeatures } from '../components/HomepageFeatures';
-import { HomepageTweets } from '../components/HomepageTweets';
-import { HeadlineSponsors } from '../components/HomepageSponsors';
+import { HomepageFeatures } from '../components/homepage-features.js';
+import { HomepageTweets } from '../components/homepage-tweets.js';
+import { HeadlineSponsors } from '../components/homepage-sponsors.js';
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();

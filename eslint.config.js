@@ -28,6 +28,7 @@ export default defineConfig(
   {
     // JSDoc configuration
     plugins: { jsdoc: eslintPluginJsdoc },
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     rules: {
       ...eslintPluginJsdoc.configs.recommended.rules,
       'jsdoc/require-jsdoc': 0,
@@ -81,8 +82,10 @@ export default defineConfig(
     languageOptions: {
       globals: globals.node,
       parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
+        projectService: {
+          allowDefaultProject: ['*.js'],
+        },
+        tsconfigRootDir: import.meta.dirname, // eslint-disable-line n/no-unsupported-features/node-builtins
       },
     },
     rules: {
@@ -120,12 +123,6 @@ export default defineConfig(
   {
     // Custom overrides and settings for TypeScript files
     files: ['**/*.ts', '**/*.mts', '**/*.cts'], // Ensure this block specifically targets TS files
-    languageOptions: {
-      parserOptions: {
-        project: true, // Auto-detects tsconfig.json
-        tsconfigRootDir: import.meta.dirname, // Root directory for tsconfig.json resolution
-      },
-    },
     rules: {
       // Override base ESLint rules for TS
       'dot-notation': 0,

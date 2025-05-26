@@ -1,6 +1,7 @@
 // @ts-check
 
-// @ts-ignore
+/* eslint-disable @typescript-eslint/no-require-imports */
+
 const { themes } = require('prism-react-renderer');
 
 const packageJson = require('../package.json');
