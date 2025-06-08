@@ -16,24 +16,24 @@
     "lint:ts": "tsc --noEmit"
   },
   "dependencies": {
-    "@docusaurus/core": "^3.6.3",
-    "@docusaurus/module-type-aliases": "^3.7.0",
-    "@docusaurus/plugin-client-redirects": "^3.7.0",
-    "@docusaurus/preset-classic": "^3.7.0",
-    "@docusaurus/remark-plugin-npm2yarn": "^3.7.0",
-    "@docusaurus/theme-live-codeblock": "^3.7.0",
+    "@docusaurus/core": "^3.8.0",
+    "@docusaurus/module-type-aliases": "^3.8.0",
+    "@docusaurus/plugin-client-redirects": "^3.8.0",
+    "@docusaurus/preset-classic": "^3.8.0",
+    "@docusaurus/remark-plugin-npm2yarn": "^3.8.0",
+    "@docusaurus/theme-live-codeblock": "^3.8.0",
     "@mdx-js/react": "^3.1.0",
     "clsx": "^2.1.1",
     "docusaurus-plugin-typedoc": "^1.4.0",
     "prism-react-renderer": "^2.4.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "typedoc": "^0.28.4",
-    "typedoc-plugin-markdown": "^4.6.3",
+    "typedoc": "^0.28.5",
+    "typedoc-plugin-markdown": "^4.6.4",
     "typedoc-plugin-mdn-links": "^5.0.2"
   },
   "devDependencies": {
-    "@crowdin/cli": "^4.7.0",
+    "@crowdin/cli": "^4.7.1",
     "@docusaurus/faster": "^3.7.0",
     "@tsconfig/docusaurus": "^2.0.3",
     "typescript": "^5.8.3"
