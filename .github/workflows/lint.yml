@@ -33,5 +33,8 @@ jobs:
         run: npm ci
         working-directory: website
 
+      - name: Build Cheerio
+        run: npm run build
+
       - name: Run lint
         run: npm run lint
