@@ -4,7 +4,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "resolveJsonModule": true,
-    "checkJs": true
+    "checkJs": true,
+    "strict": true
   },
   "exclude": [".docusaurus", "build", "node_modules"]
 }

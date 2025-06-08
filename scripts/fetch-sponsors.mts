@@ -4,7 +4,14 @@
  *   Adapted from
  *   https://github.com/eslint/website/blob/230e73457dcdc2353ad7934e876a5a222a17b1d7/_tools/fetch-sponsors.js.
  */
-
+/* eslint-disable @typescript-eslint/no-unsafe-assignment,
+                  @typescript-eslint/no-explicit-any,
+                  @typescript-eslint/no-unsafe-return,
+                  @typescript-eslint/no-non-null-assertion,
+                  @typescript-eslint/no-unsafe-call,
+                  @typescript-eslint/no-unsafe-argument,
+                  @typescript-eslint/no-unsafe-member-access,
+                  @typescript-eslint/prefer-nullish-coalescing */
 import * as fs from 'node:fs/promises';
 import { request } from 'undici';
 import { graphql as githubGraphQL } from '@octokit/graphql';
@@ -278,11 +285,12 @@ sponsors.sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt));
 // Process into a useful format
 for (const sponsor of sponsors) {
   if (
-    sponsor.tier !== 'sponsor' &&
-    (!sponsor.tier ||
-      sponsor.type === 'ORGANIZATION' ||
-      MISLABELED_ORGS.test(sponsor.name) ||
-      MISLABELED_ORGS.test(sponsor.url))
+    !sponsor.tier || // Always skip if sponsor has no tier (e.g., donation < $5)
+    // OR if it's a 'professional' or 'backer' tier AND meets specific filtering criteria
+    ((sponsor.tier === 'professional' || sponsor.tier === 'backer') &&
+      (sponsor.type === 'ORGANIZATION' ||
+        MISLABELED_ORGS.test(sponsor.name) ||
+        MISLABELED_ORGS.test(sponsor.url)))
   ) {
     continue;
   }

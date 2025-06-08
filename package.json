@@ -84,11 +84,11 @@
     "benchmark": "node --import=tsx benchmark/benchmark.ts",
     "build": "tshy",
     "format": "npm run format:es && npm run format:prettier",
-    "format:es": "npm run lint:es -- --fix",
+    "format:es": "eslint . --fix",
     "format:prettier": "npm run format:prettier:raw -- --write",
     "format:prettier:raw": "prettier \"**/*.{{m,c,}{j,t}s{x,},md{x,},json,y{a,}ml}\" --ignore-path .gitignore",
     "lint": "npm run lint:es && npm run lint:prettier && npm run lint:ts",
-    "lint:es": "eslint --report-unused-disable-directives --ignore-path .gitignore .",
+    "lint:es": "eslint .",
     "lint:prettier": "npm run format:prettier:raw -- --check",
     "lint:ts": "tsc --noEmit",
     "prepare": "husky",
@@ -100,7 +100,7 @@
   "lint-staged": {
     "*.js": [
       "prettier --write",
-      "npm run lint:es -- --fix"
+      "eslint --fix"
     ],
     "*.{json,md,ts,yml}": [
       "prettier --write"
@@ -129,30 +129,32 @@
     "whatwg-mimetype": "^4.0.0"
   },
   "devDependencies": {
+    "@eslint/compat": "^1.2.9",
+    "@eslint/js": "^9.28.0",
     "@imgix/js-core": "^3.8.0",
-    "@octokit/graphql": "^8.2.2",
+    "@octokit/graphql": "^9.0.1",
     "@types/jsdom": "^21.1.7",
     "@types/node": "^22.15.30",
     "@types/whatwg-mimetype": "^3.0.2",
-    "@typescript-eslint/eslint-plugin": "^8.33.1",
-    "@typescript-eslint/parser": "^8.33.1",
     "@vitest/coverage-v8": "^3.2.2",
-    "eslint": "^8.57.0",
+    "@vitest/eslint-plugin": "^1.2.1",
+    "eslint": "^9.28.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-jsdoc": "^50.7.1",
     "eslint-plugin-n": "^17.19.0",
-    "eslint-plugin-unicorn": "^56.0.1",
-    "eslint-plugin-vitest": "^0.5.4",
+    "eslint-plugin-unicorn": "^59.0.1",
+    "globals": "^16.2.0",
     "husky": "^9.1.7",
     "jquery": "^3.7.1",
     "jsdom": "^26.1.0",
-    "lint-staged": "^15.5.1",
+    "lint-staged": "^16.1.0",
     "prettier": "^3.5.3",
     "prettier-plugin-jsdoc": "^1.3.2",
     "tinybench": "^4.0.1",
     "tshy": "^3.0.2",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3",
+    "typescript-eslint": "^8.33.1",
     "vitest": "^3.1.4"
   },
   "engines": {
