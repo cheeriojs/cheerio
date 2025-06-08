@@ -285,11 +285,12 @@ sponsors.sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt));
 // Process into a useful format
 for (const sponsor of sponsors) {
   if (
-    sponsor.tier !== 'sponsor' &&
-    (!sponsor.tier ||
-      sponsor.type === 'ORGANIZATION' ||
-      MISLABELED_ORGS.test(sponsor.name) ||
-      MISLABELED_ORGS.test(sponsor.url))
+    !sponsor.tier || // Always skip if sponsor has no tier (e.g., donation < $5)
+    // OR if it's a 'professional' or 'backer' tier AND meets specific filtering criteria
+    ((sponsor.tier === 'professional' || sponsor.tier === 'backer') &&
+      (sponsor.type === 'ORGANIZATION' ||
+        MISLABELED_ORGS.test(sponsor.name) ||
+        MISLABELED_ORGS.test(sponsor.url)))
   ) {
     continue;
   }
