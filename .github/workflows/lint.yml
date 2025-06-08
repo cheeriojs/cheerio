@@ -29,5 +29,12 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
+      - name: Install website npm dependencies
+        run: npm ci
+        working-directory: website
+
+      - name: Build Cheerio
+        run: npm run build
+
       - name: Run lint
         run: npm run lint
