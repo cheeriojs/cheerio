@@ -5,10 +5,11 @@ import {
 } from './options.js';
 import * as staticMethods from './static.js';
 import { Cheerio } from './cheerio.js';
-import { isHtml, isCheerio } from './utils.js';
+import { isHtml, isCheerio, decode } from './utils.js';
 import type { AnyNode, Document, Element, ParentNode } from 'domhandler';
 import type { SelectorType, BasicAcceptedElems } from './types.js';
 import { ElementType } from 'htmlparser2';
+import type { html as htmlApi } from './api/manipulation.js';
 
 type StaticType = typeof staticMethods;
 
@@ -208,6 +209,15 @@ export function getLoad(
               : undefined;
 
       const instance = new LoadedCheerio(elements, rootInstance, options);
+      const originalHtml = instance.html;
+
+      if (options._useHtmlParser2 && options.xmlMode) {
+        instance.html = ((...args: Parameters<typeof htmlApi>) => {
+          const result = originalHtml.apply(instance, args);
+
+          return typeof result === 'string' ? decode(result) : result;
+        }) as typeof htmlApi;
+      }
 
       if (elements) {
         return instance as Cheerio<Result>;

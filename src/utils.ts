@@ -93,3 +93,14 @@ export function isHtml(str: string): boolean {
     str.includes('>', tagStart + 2)
   );
 }
+
+export function decode(string: string): string {
+  return string.replace(/&#x([0-9a-f]{1,6});/gi, (entity, code: string) => {
+    const codeInt = Number.parseInt(code, 16);
+
+    // Don't unescape ASCII characters, assuming they're encoded for a good reason
+    if (codeInt < 0x80) return entity;
+
+    return String.fromCodePoint(codeInt);
+  });
+}

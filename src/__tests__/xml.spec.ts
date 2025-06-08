@@ -37,6 +37,20 @@ describe('render', () => {
       const $ = load('<foo></foo>', null, false);
       expect($.xml()).toBe('<foo/>');
     });
+
+    describe('with non-latin characters', () => {
+      const text = 'абв';
+
+      it('should not be encoded in text content', () => {
+        const $ = load(`<foo>${text}</foo>`, { xml: true });
+        expect($('foo').text()).toBe(text);
+      });
+
+      it('should not be encoded in html content', () => {
+        const $ = load(`<foo>${text}</foo>`, { xml: true });
+        expect($('foo').html()).toBe(text);
+      });
+    });
   });
 
   describe('(dom)', () => {
