@@ -39,6 +39,9 @@ jobs:
           CHEERIO_SPONSORS_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           IMGIX_TOKEN: ${{ secrets.IMGIX_TOKEN }}
 
+      - name: Format
+        run: npm run format
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         continue-on-error: true
