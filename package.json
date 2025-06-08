@@ -1,6 +1,6 @@
 {
   "name": "cheerio",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "The fast, flexible & elegant library for parsing and manipulating HTML and XML.",
   "keywords": [
     "htmlparser",
