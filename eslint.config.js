@@ -137,7 +137,7 @@ export default defineConfig(
       '@typescript-eslint/member-ordering': 0,
       '@typescript-eslint/explicit-function-return-type': 0,
       '@typescript-eslint/no-unused-vars': [
-        'warn',
+        'error',
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
       '@typescript-eslint/no-use-before-define': [
