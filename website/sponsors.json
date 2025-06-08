@@ -32,6 +32,17 @@
       "totalDonations": 0,
       "source": "manual",
       "tier": "headliner"
+    },
+    {
+      "createdAt": "2018-05-02",
+      "name": "brand.dev",
+      "image": "https://github.com/brand-dot-dev.png",
+      "url": "https://brand.dev/",
+      "type": "ORGANIZATION",
+      "monthlyDonation": 0,
+      "totalDonations": 0,
+      "source": "manual",
+      "tier": "headliner"
     }
   ],
   "sponsor": [
