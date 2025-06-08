@@ -3,6 +3,7 @@ import type { ParserOptions as HTMLParser2ParserOptions } from 'htmlparser2';
 import type { ParserOptions as Parse5ParserOptions } from 'parse5';
 import type { Htmlparser2TreeAdapterMap } from 'parse5-htmlparser2-tree-adapter';
 import type { Options as SelectOptions } from 'cheerio-select';
+import type { DomSerializerOptions } from 'dom-serializer';
 
 /**
  * Options accepted by htmlparser2, the default parser for XML.
@@ -11,7 +12,11 @@ import type { Options as SelectOptions } from 'cheerio-select';
  */
 export interface HTMLParser2Options
   extends DomHandlerOptions,
-    HTMLParser2ParserOptions {}
+    DomSerializerOptions,
+    HTMLParser2ParserOptions {
+  /** Treat the input as an XML document. */
+  xmlMode?: boolean;
+}
 
 /**
  * Options accepted by Cheerio.
