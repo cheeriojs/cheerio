@@ -140,7 +140,7 @@
     "@vitest/eslint-plugin": "^1.2.2",
     "eslint": "^9.28.0",
     "eslint-config-prettier": "^10.1.5",
-    "eslint-plugin-jsdoc": "^50.7.1",
+    "eslint-plugin-jsdoc": "^50.8.0",
     "eslint-plugin-n": "^17.19.0",
     "eslint-plugin-unicorn": "^59.0.1",
     "globals": "^16.2.0",
