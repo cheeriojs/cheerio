@@ -196,4 +196,24 @@ describe('fromURL', () => {
       'Response Error',
     );
   });
+
+  it('should follow redirects', async () => {
+    let redirected = false;
+    const port = await createTestServer('text/html', TEST_HTML, (req, res) => {
+      if (redirected) {
+        expect(req.url).toBe('/final');
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.end(TEST_HTML);
+      } else {
+        redirected = true;
+        res.writeHead(302, { Location: `http://localhost:${port}/final` });
+        res.end();
+      }
+    });
+
+    const $ = await cheerio.fromURL(`http://localhost:${port}`);
+    expect($.html()).toBe(
+      `<html><head></head><body>${TEST_HTML}</body></html>`,
+    );
+  });
 });
