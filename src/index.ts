@@ -69,7 +69,7 @@ function _stringStream(
 ): Writable {
   if (options?._useHtmlParser2) {
     const parser = htmlparser2.createDocumentStream(
-      (err, document) => cb(err, load(document)),
+      (err, document) => cb(err, load(document, options)),
       options,
     );
 
@@ -99,7 +99,7 @@ function _stringStream(
 
   const stream = new Parse5Stream(options);
 
-  finished(stream, (err) => cb(err, load(stream.document)));
+  finished(stream, (err) => cb(err, load(stream.document, options)));
 
   return stream;
 }
@@ -231,7 +231,7 @@ export async function fromURL(
   };
 
   const promise = new Promise<CheerioAPI>((resolve, reject) => {
-    undiciStream = new undici.Client(url)
+    undiciStream = new undici.Client(urlObject.origin)
       .compose(undici.interceptors.redirect({ maxRedirections: 5 }))
       .stream(streamOptions, (res) => {
         if (res.statusCode < 200 || res.statusCode >= 300) {
@@ -272,13 +272,14 @@ export async function fromURL(
               }
             | undefined
         )?.history;
+        // Set the `baseURI` to the final URL.
+        const baseURI = history ? history[history.length - 1] : urlObject;
 
-        const opts = {
+        const opts: DecodeStreamOptions = {
           encoding,
           // Set XML mode based on the MIME type.
           xmlMode: mimeType.isXML(),
-          // Set the `baseURL` to the final URL.
-          baseURL: history ? history[history.length - 1] : url,
+          baseURI,
           ...cheerioOptions,
         };
 

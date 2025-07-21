@@ -17,7 +17,7 @@ function getPromise() {
   return { promise, cb };
 }
 
-const TEST_HTML = '<h1>Hello World</h1>';
+const TEST_HTML = '<h1>Hello World</h1><a href="link">Example</a>';
 const TEST_HTML_UTF16 = Buffer.from(TEST_HTML, 'utf16le');
 const TEST_HTML_UTF16_BOM = Buffer.from([
   // UTF16-LE BOM
@@ -97,6 +97,7 @@ describe('decodeStream', () => {
     expect($.html()).toBe(
       `<html><head></head><body>${TEST_HTML}</body></html>`,
     );
+    expect($('a').prop('href')).toBe('link');
   });
 
   it('should use htmlparser2 for XML', async () => {
@@ -201,19 +202,21 @@ describe('fromURL', () => {
     let redirected = false;
     const port = await createTestServer('text/html', TEST_HTML, (req, res) => {
       if (redirected) {
-        expect(req.url).toBe('/final');
+        expect(req.url).toBe('/final/path');
         res.writeHead(200, { 'Content-Type': 'text/html' });
         res.end(TEST_HTML);
       } else {
+        expect(req.url).toBe('/first');
         redirected = true;
-        res.writeHead(302, { Location: `http://localhost:${port}/final` });
+        res.writeHead(302, { Location: `http://localhost:${port}/final/path` });
         res.end();
       }
     });
 
-    const $ = await cheerio.fromURL(`http://localhost:${port}`);
+    const $ = await cheerio.fromURL(`http://localhost:${port}/first`);
     expect($.html()).toBe(
       `<html><head></head><body>${TEST_HTML}</body></html>`,
     );
+    expect($('a').prop('href')).toBe(`http://localhost:${port}/final/link`);
   });
 });
