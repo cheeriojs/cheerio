@@ -81,7 +81,7 @@ element.
 As an attribute with special logic inside the `prop` method, `href`s will be
 resolved relative to the document's URL. The document's URL will be set
 automatically when using `fromURL` to load the document. Otherwise, use the
-`baseURL` option to specify the documents URL.
+`baseURI` option to specify the documents URL.
 
 There are many props available here; have a look at the
 [`prop` method](/docs/api/classes/Cheerio#prop) for details. For example, to
