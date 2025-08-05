@@ -153,7 +153,7 @@
     "tinybench": "^4.0.1",
     "tshy": "^3.0.2",
     "tsx": "^4.20.3",
-    "typescript": "^5.8.3",
+    "typescript": "^5.9.2",
     "typescript-eslint": "^8.39.0",
     "vitest": "^3.1.4"
   },
