@@ -143,7 +143,7 @@
     "eslint-plugin-jsdoc": "^54.5.0",
     "eslint-plugin-n": "^17.21.3",
     "eslint-plugin-unicorn": "^59.0.1",
-    "globals": "^16.3.0",
+    "globals": "^16.4.0",
     "husky": "^9.1.7",
     "jquery": "^3.7.1",
     "jsdom": "^26.1.0",
