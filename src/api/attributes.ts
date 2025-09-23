@@ -811,6 +811,7 @@ export function val<T extends AnyNode>(
         ? option.toArray().map((el) => text(el.children))
         : option.attr('value');
     }
+    case 'button':
     case 'input':
     case 'option': {
       return querying
