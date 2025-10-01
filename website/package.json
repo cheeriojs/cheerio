@@ -36,7 +36,7 @@
     "@crowdin/cli": "^4.11.0",
     "@docusaurus/faster": "^3.9.1",
     "@tsconfig/docusaurus": "^2.0.3",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   },
   "browserslist": {
     "production": [
