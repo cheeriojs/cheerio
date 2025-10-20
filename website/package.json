@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@crowdin/cli": "^4.11.0",
-    "@docusaurus/faster": "^3.9.1",
+    "@docusaurus/faster": "^3.9.2",
     "@tsconfig/docusaurus": "^2.0.4",
     "typescript": "^5.9.3"
   },
