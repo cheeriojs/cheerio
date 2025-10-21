@@ -21,7 +21,7 @@
     "@docusaurus/plugin-client-redirects": "^3.9.1",
     "@docusaurus/preset-classic": "^3.9.2",
     "@docusaurus/remark-plugin-npm2yarn": "^3.9.1",
-    "@docusaurus/theme-live-codeblock": "^3.9.1",
+    "@docusaurus/theme-live-codeblock": "^3.9.2",
     "@mdx-js/react": "^3.1.1",
     "clsx": "^2.1.1",
     "docusaurus-plugin-typedoc": "^1.4.2",
