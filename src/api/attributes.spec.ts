@@ -39,6 +39,15 @@ describe('$(...)', () => {
       expect(cls).toBe('apple');
     });
 
+    it('(key) : should treat attribute names case-insensitively in html mode', () => {
+      expect($('#fruits').attr('ID')).toBe('fruits');
+
+      const $apple = $('.apple');
+      $apple.attr('DATA-Test', 'value');
+      expect($apple.attr('data-test')).toBe('value');
+      expect($apple.attr('DATA-TEST')).toBe('value');
+    });
+
     it('(valid key) : valid attr should get name when boolean', () => {
       const attr = $('<input name=email autofocus>').attr('autofocus');
       expect(attr).toBe('autofocus');
@@ -157,6 +166,12 @@ describe('$(...)', () => {
       expect($pear.attr('autofocus')).toBeUndefined();
     });
 
+    it('(key) : removeAttr should ignore case in html mode', () => {
+      const $apple = $('.apple').attr('data-temp', 'hot');
+      $apple.removeAttr('DATA-TEMP');
+      expect($apple.attr('data-temp')).toBeUndefined();
+    });
+
     it('(map) : should remove attributes with null values', () => {
       const $pear = $('.pear').attr({
         autofocus: 'autofocus',
@@ -193,6 +208,16 @@ describe('$(...)', () => {
 
       expect($xml.attr('checked')).toBe('checked');
       expect($xml.attr('disabled')).toBe('yes');
+    });
+
+    it('(key) : should remain case-sensitive in XML mode', () => {
+      const $xml = $.load('<Node Attr="Value" attr="lower" />', {
+        xml: true,
+      })('Node');
+
+      expect($xml.attr('Attr')).toBe('Value');
+      expect($xml.attr('attr')).toBe('lower');
+      expect($xml.attr('ATTR')).toBeUndefined();
     });
   });
 

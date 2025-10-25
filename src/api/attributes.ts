@@ -18,6 +18,21 @@ const hasOwn =
 const rspace = /\s+/;
 const dataAttrPrefix = 'data-';
 
+/**
+ * Normalize attribute names based on the current parsing mode.
+ *
+ * In HTML mode attribute names are case-insensitive, so we lowercase them to
+ * ensure consistent lookups and storage. In XML mode attribute names remain
+ * case-sensitive.
+ *
+ * @param name - Attribute name to normalize.
+ * @param xmlMode - Whether the current document is parsed in XML mode.
+ * @returns Normalized attribute name.
+ */
+function normalizeAttrName(name: string, xmlMode?: boolean): string {
+  return xmlMode ? name : name.toLowerCase();
+}
+
 // Attributes that are booleans
 const rboolean =
   /^(?:autofocus|autoplay|async|checked|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped|selected)$/i;
@@ -61,13 +76,17 @@ function getAttr(
     return elem.attribs;
   }
 
-  if (hasOwn(elem.attribs, name)) {
+  const normalizedName = normalizeAttrName(name, xmlMode);
+
+  if (hasOwn(elem.attribs, normalizedName)) {
     // Get the (decoded) attribute
-    return !xmlMode && rboolean.test(name) ? name : elem.attribs[name];
+    return !xmlMode && rboolean.test(normalizedName)
+      ? normalizedName
+      : elem.attribs[normalizedName];
   }
 
   // Mimic the DOM and return text content as value for `option's`
-  if (elem.name === 'option' && name === 'value') {
+  if (elem.name === 'option' && normalizedName === 'value') {
     return text(elem.children);
   }
 
@@ -75,7 +94,7 @@ function getAttr(
   if (
     elem.name === 'input' &&
     (elem.attribs['type'] === 'radio' || elem.attribs['type'] === 'checkbox') &&
-    name === 'value'
+    normalizedName === 'value'
   ) {
     return 'on';
   }
@@ -92,11 +111,19 @@ function getAttr(
  * @param name - The attribute's name.
  * @param value - The attribute's value.
  */
-function setAttr(el: Element, name: string, value: string | null) {
+function setAttr(
+  el: Element,
+  name: string,
+  value: string | null,
+  xmlMode?: boolean,
+) {
+  const normalizedName = normalizeAttrName(name, xmlMode);
+
   if (value === null) {
-    removeAttribute(el, name);
+    removeAttribute(el, normalizedName, xmlMode);
   } else {
-    el.attribs[name] = `${value}`;
+    el.attribs ??= {};
+    el.attribs[normalizedName] = `${value}`;
   }
 }
 
@@ -201,20 +228,28 @@ export function attr<T extends AnyNode>(
           throw new Error('Bad combination of arguments.');
         }
       }
+      const xmlMode = this.options.xmlMode;
+      const currentName = normalizeAttrName(name, xmlMode);
       return domEach(this, (el, i) => {
-        if (isTag(el)) setAttr(el, name, value.call(el, i, el.attribs[name]));
+        if (!isTag(el)) return;
+        const currentValue =
+          el.attribs && hasOwn(el.attribs, currentName)
+            ? el.attribs[currentName]
+            : undefined;
+        setAttr(el, name, value.call(el, i, currentValue as string), xmlMode);
       });
     }
+    const xmlMode = this.options.xmlMode;
     return domEach(this, (el) => {
       if (!isTag(el)) return;
 
       if (typeof name === 'object') {
         for (const objName of Object.keys(name)) {
           const objValue = name[objName];
-          setAttr(el, objName, objValue);
+          setAttr(el, objName, objValue, xmlMode);
         }
       } else {
-        setAttr(el, name!, value!);
+        setAttr(el, name!, value!, xmlMode);
       }
     });
   }
@@ -269,6 +304,7 @@ function setProp(el: Element, name: string, value: unknown, xmlMode?: boolean) {
           ? ''
           : null
         : `${value as string}`,
+      xmlMode,
     );
   }
 }
@@ -829,10 +865,14 @@ export function val<T extends AnyNode>(
  * @param elem - Node to remove attribute from.
  * @param name - Name of the attribute to remove.
  */
-function removeAttribute(elem: Element, name: string) {
-  if (!elem.attribs || !hasOwn(elem.attribs, name)) return;
+function removeAttribute(elem: Element, name: string, xmlMode?: boolean) {
+  if (!elem.attribs) return;
 
-  delete elem.attribs[name];
+  const normalizedName = normalizeAttrName(name, xmlMode);
+
+  if (!hasOwn(elem.attribs, normalizedName)) return;
+
+  delete elem.attribs[normalizedName];
 }
 
 /**
@@ -869,15 +909,18 @@ export function removeAttr<T extends AnyNode>(
   this: Cheerio<T>,
   name: string,
 ): Cheerio<T> {
-  const attrNames = splitNames(name);
+  const xmlMode = this.options.xmlMode;
+  const attrNames = splitNames(name).map((attrName) =>
+    normalizeAttrName(attrName, xmlMode),
+  );
 
-  for (const attrName of attrNames) {
-    domEach(this, (elem) => {
-      if (isTag(elem)) removeAttribute(elem, attrName);
-    });
-  }
+  return domEach(this, (elem) => {
+    if (!isTag(elem)) return;
 
-  return this;
+    for (const attrName of attrNames) {
+      removeAttribute(elem, attrName, xmlMode);
+    }
+  });
 }
 
 /**
@@ -983,9 +1026,9 @@ export function addClass<T extends AnyNode, R extends ArrayLike<T>>(
         if (!setClass.includes(` ${appendClass}`)) setClass += appendClass;
       }
 
-      setAttr(el, 'class', setClass.trim());
+      setAttr(el, 'class', setClass.trim(), false);
     } else {
-      setAttr(el, 'class', classNames.join(' ').trim());
+      setAttr(el, 'class', classNames.join(' ').trim(), false);
     }
   }
 
