@@ -150,7 +150,7 @@
     "lint-staged": "^16.2.6",
     "prettier": "^3.6.2",
     "prettier-plugin-jsdoc": "^1.5.0",
-    "tinybench": "^4.1.0",
+    "tinybench": "^5.1.0",
     "tshy": "^3.0.3",
     "tsx": "^4.20.6",
     "typescript": "^5.9.2",
