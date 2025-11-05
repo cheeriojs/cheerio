@@ -134,7 +134,7 @@
     "@imgix/js-core": "^3.8.0",
     "@octokit/graphql": "^9.0.3",
     "@types/jsdom": "^27.0.0",
-    "@types/node": "^24.9.2",
+    "@types/node": "^24.10.0",
     "@types/whatwg-mimetype": "^3.0.2",
     "@vitest/coverage-v8": "^3.2.4",
     "@vitest/eslint-plugin": "^1.4.0",
