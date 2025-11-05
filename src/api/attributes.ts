@@ -812,7 +812,8 @@ export function val<T extends AnyNode>(
         : option.attr('value');
     }
     case 'input':
-    case 'option': {
+    case 'option':
+    case 'button': {
       return querying
         ? this.attr('value')
         : this.attr('value', value as string);
