@@ -741,23 +741,21 @@ describe('$(...)', () => {
       expect(element.val()).toHaveLength(3);
     });
     it('(): on button should get value', () => {
-      const $ = load('<button value="something">Click</button>');
-      expect($('button').val()).toBe('something');
+      const val = $('#btn-value').val();
+      expect(val).toBe('button');
     });
-    it('(): on button with no value should return undefined', () => {
-      const $ = load('<button>Click</button>');
-      expect($('button').val()).toBeUndefined();
+    it('(): on button with no value should get undefined', () => {
+      const val = $('#btn-valueless').val();
+      expect(val).toBeUndefined();
     });
     it('(value): on button should set value', () => {
-      const $ = load('<button>Click</button>');
-      const element = $('button').val('newValue');
+      const element = $('#btn-valueless').val('newValue');
       expect(element.attr('value')).toBe('newValue');
       expect(element.val()).toBe('newValue');
     });
     it('(value): on button with existing value should update it', () => {
-      const $ = load('<button value="old">Click</button>');
-      $('button').val('updated');
-      expect($('button').attr('value')).toBe('updated');
+      const element = $('#btn-value').val('updated');
+      expect(element.attr('value')).toBe('updated');
     });
   });
 
@@ -1044,7 +1042,7 @@ describe('$(...)', () => {
     it('(fn) : should no op elements without attributes', () => {
       const $inputs = $(inputs);
       const val = $inputs.removeClass(() => 'tasty');
-      expect(val).toHaveLength(15);
+      expect(val).toHaveLength(17);
     });
 
     it('(fn) : should skip text nodes', () => {
