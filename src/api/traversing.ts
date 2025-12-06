@@ -24,7 +24,7 @@ import {
   uniqueSort,
 } from 'domutils';
 import type { FilterFunction, AcceptedFilters } from '../types.js';
-const reSiblingSelector = /^\s*[+~]/;
+const reSiblingSelector = /^\s*[+~:]/;
 
 /**
  * Get the descendants of each element in the current set of matched elements,
