@@ -1136,7 +1136,6 @@ describe('$(...)', () => {
     it('(fn) : should work with no initial class attribute', () => {
       const $inputs = load(inputs);
       $inputs('input, select').toggleClass(function () {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- `get` should never return undefined here.
         return $inputs(this).get(0)!.tagName === 'select'
           ? 'selectable'
           : 'inputable';
