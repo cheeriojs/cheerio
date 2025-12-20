@@ -740,6 +740,23 @@ describe('$(...)', () => {
       const element = $('select#multi').val(['1', '3', '4']);
       expect(element.val()).toHaveLength(3);
     });
+    it('(): on button should get value', () => {
+      const val = $('#btn-value').val();
+      expect(val).toBe('button');
+    });
+    it('(): on button with no value should get undefined', () => {
+      const val = $('#btn-valueless').val();
+      expect(val).toBeUndefined();
+    });
+    it('(value): on button should set value', () => {
+      const element = $('#btn-valueless').val('newValue');
+      expect(element.attr('value')).toBe('newValue');
+      expect(element.val()).toBe('newValue');
+    });
+    it('(value): on button with existing value should update it', () => {
+      const element = $('#btn-value').val('updated');
+      expect(element.attr('value')).toBe('updated');
+    });
   });
 
   describe('.removeAttr', () => {
@@ -1025,7 +1042,7 @@ describe('$(...)', () => {
     it('(fn) : should no op elements without attributes', () => {
       const $inputs = $(inputs);
       const val = $inputs.removeClass(() => 'tasty');
-      expect(val).toHaveLength(15);
+      expect(val).toHaveLength(17);
     });
 
     it('(fn) : should skip text nodes', () => {
