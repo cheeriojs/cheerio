@@ -137,7 +137,7 @@
     "@types/node": "^25.0.3",
     "@types/whatwg-mimetype": "^3.0.2",
     "@vitest/coverage-v8": "^4.0.16",
-    "@vitest/eslint-plugin": "^1.5.4",
+    "@vitest/eslint-plugin": "^1.6.1",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jsdoc": "^61.5.0",
