@@ -122,9 +122,9 @@
     "domutils": "^3.2.2",
     "encoding-sniffer": "^0.2.1",
     "htmlparser2": "^10.0.0",
-    "parse5": "^7.3.0",
-    "parse5-htmlparser2-tree-adapter": "^7.1.0",
-    "parse5-parser-stream": "^7.1.2",
+    "parse5": "^8.0.0",
+    "parse5-htmlparser2-tree-adapter": "^8.0.0",
+    "parse5-parser-stream": "^8.0.0",
     "undici": "^7.16.0",
     "whatwg-mimetype": "^4.0.0"
   },
