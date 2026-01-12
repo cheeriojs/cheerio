@@ -37,7 +37,6 @@
     "lodash.foreach": "^4.3.0",
     "lodash.map": "^4.4.0",
     "lodash.merge": "^4.4.0",
-    "lodash.pick": "^4.2.1",
     "lodash.reduce": "^4.4.0",
     "lodash.reject": "^4.4.0",
     "lodash.some": "^4.4.0"
