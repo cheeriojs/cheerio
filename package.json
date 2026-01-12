@@ -129,7 +129,7 @@
     "whatwg-mimetype": "^4.0.0"
   },
   "devDependencies": {
-    "@eslint/compat": "^2.0.0",
+    "@eslint/compat": "^2.0.1",
     "@eslint/js": "^9.38.0",
     "@imgix/js-core": "^3.8.0",
     "@octokit/graphql": "^9.0.3",
