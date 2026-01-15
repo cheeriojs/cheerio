@@ -148,7 +148,7 @@
     "jquery": "^3.7.1",
     "jsdom": "^27.4.0",
     "lint-staged": "^16.2.7",
-    "prettier": "^3.7.4",
+    "prettier": "^3.8.0",
     "prettier-plugin-jsdoc": "^1.8.0",
     "tinybench": "^6.0.0",
     "tshy": "^3.1.0",
