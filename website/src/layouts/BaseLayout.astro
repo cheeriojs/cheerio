@@ -1,5 +1,6 @@
 ---
 import '@/styles/global.css';
+import { ViewTransitions } from 'astro:transitions';
 import Navbar from '@/components/Navbar.astro';
 import Footer from '@/components/Footer.astro';
 
@@ -26,6 +27,7 @@ const {
     />
     <link rel="icon" type="image/x-icon" href="/img/favicon.ico" />
     <title>{title} | Cheerio</title>
+    <ViewTransitions />
   </head>
   <body
     class="flex min-h-screen flex-col bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100"

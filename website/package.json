@@ -13,12 +13,15 @@
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",
     "@astrojs/react": "^4.3.0",
+    "@astrojs/sitemap": "^3.7.0",
     "@codesandbox/sandpack-react": "^2.19.0",
+    "@docsearch/css": "^4.4.0",
+    "@docsearch/js": "^4.4.0",
     "@tailwindcss/vite": "^4.1.8",
     "astro": "^5.9.0",
     "hastscript": "^9.0.1",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0",
+    "react-dom": "^19.2.3",
     "remark-directive": "^4.0.0",
     "tailwindcss": "^4.1.8",
     "unist-util-visit": "^5.0.0"

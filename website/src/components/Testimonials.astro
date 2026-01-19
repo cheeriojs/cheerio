@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+
 interface Tweet {
   id: string;
   name: string;
@@ -98,9 +100,11 @@ function formatDate(dateString: string): string {
         tweets.map((tweet) => (
           <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
             <div class="mb-4 flex items-center gap-3">
-              <img
+              <Image
                 src={`https://unavatar.io/${tweet.user}`}
                 alt={`${tweet.name}'s avatar`}
+                width={40}
+                height={40}
                 class="h-10 w-10 rounded-full"
                 loading="lazy"
               />
