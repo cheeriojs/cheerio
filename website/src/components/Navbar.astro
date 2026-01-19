@@ -1,0 +1,37 @@
+---
+const navItems = [
+  { label: 'Tutorial', href: '/docs/intro' },
+  { label: 'API', href: '/docs/api' },
+  { label: 'Blog', href: '/blog' },
+];
+---
+
+<nav class="border-b border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900">
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
+    <a href="/" class="flex items-center gap-2">
+      <img src="/img/orange-c.svg" alt="Cheerio Logo" class="h-8 w-8" />
+      <span class="text-xl font-semibold">Cheerio</span>
+    </a>
+
+    <div class="flex items-center gap-6">
+      {
+        navItems.map((item) => (
+          <a
+            href={item.href}
+            class="text-slate-600 transition-colors hover:text-primary dark:text-slate-300 dark:hover:text-primary-light"
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <a
+        href="https://github.com/cheeriojs/cheerio"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-slate-600 transition-colors hover:text-primary dark:text-slate-300"
+      >
+        GitHub
+      </a>
+    </div>
+  </div>
+</nav>

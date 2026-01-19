@@ -1,11 +1,15 @@
 {
-  // This file is not used in compilation. It is here just for a nice editor experience.
-  "extends": "@tsconfig/docusaurus/tsconfig.json",
+  "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
     "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
     "resolveJsonModule": true,
-    "checkJs": true,
-    "strict": true
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
-  "exclude": [".docusaurus", "build", "node_modules"]
+  "include": ["src", "*.json"]
 }

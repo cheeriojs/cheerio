@@ -1,0 +1,64 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+
+// Sort posts by date (newest first)
+const sortedPosts = posts.sort((a, b) => {
+  const dateA = new Date(a.id.split('-').slice(0, 3).join('-'));
+  const dateB = new Date(b.id.split('-').slice(0, 3).join('-'));
+  return dateB.getTime() - dateA.getTime();
+});
+
+function getPostDate(id: string): string {
+  const datePart = id.split('-').slice(0, 3).join('-');
+  return new Date(datePart).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+function getPostSlug(id: string): string {
+  return id.replace('.md', '').replace('.mdx', '');
+}
+---
+
+<BaseLayout title="Blog">
+  <div class="mx-auto max-w-4xl px-4 py-12">
+    <h1 class="mb-8 text-4xl font-bold">Blog</h1>
+    <p class="mb-8 text-lg text-slate-600 dark:text-slate-400">
+      Updates and announcements from the Cheerio team.
+    </p>
+
+    <div class="space-y-8">
+      {
+        sortedPosts.map((post) => (
+          <article class="rounded-lg border border-slate-200 p-6 transition-shadow hover:shadow-lg dark:border-slate-700">
+            <h2 class="mb-2 text-2xl font-semibold">
+              <a
+                href={`/blog/${getPostSlug(post.id)}`}
+                class="text-slate-900 transition-colors hover:text-primary dark:text-white"
+              >
+                {post.data.title}
+              </a>
+            </h2>
+            <div class="mb-4 flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+              <time>{getPostDate(post.id)}</time>
+              {post.data.tags && (
+                <div class="flex gap-2">
+                  {post.data.tags.map((tag: string) => (
+                    <span class="rounded-full bg-slate-100 px-2 py-1 text-xs dark:bg-slate-800">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,22 @@
+---
+import { getCollection, render } from 'astro:content';
+import DocsLayout from '@/layouts/DocsLayout.astro';
+
+export async function getStaticPaths() {
+  const docs = await getCollection('docs');
+  return docs
+    .filter((doc) => doc.id.startsWith('basics/'))
+    .map((doc) => ({
+      params: { slug: doc.id.replace('basics/', '').replace('.md', '').replace('.mdx', '') },
+      props: { doc },
+    }));
+}
+
+const { doc } = Astro.props;
+const { Content } = await render(doc);
+const title = doc.data.title || doc.data.sidebar_label || doc.id;
+---
+
+<DocsLayout title={title} description={doc.data.description}>
+  <Content />
+</DocsLayout>

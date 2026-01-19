@@ -1,0 +1,193 @@
+@import 'tailwindcss';
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  src: url('/fonts/inter.woff') format('woff');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF,
+    U+FFFD;
+}
+
+@font-face {
+  font-family: 'Rubik';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/rubik.woff') format('woff');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF,
+    U+FFFD;
+}
+
+@theme {
+  --color-primary: #e88c1f;
+  --color-primary-dark: #d77e16;
+  --color-primary-light: #ea9837;
+  --color-primary-lightest: #efb167;
+
+  --font-sans:
+    'Rubik', system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, Cantarell,
+    'Noto Sans', sans-serif;
+  --font-heading: 'Inter', var(--font-sans);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+}
+
+/* Prose styles for documentation */
+.prose {
+  max-width: 65ch;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose h1 {
+  font-size: 2.25rem;
+}
+
+.prose h2 {
+  font-size: 1.75rem;
+}
+
+.prose h3 {
+  font-size: 1.375rem;
+}
+
+.prose p {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.prose a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.prose a:hover {
+  color: var(--color-primary-dark);
+}
+
+.prose code {
+  background-color: #f1f5f9;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+}
+
+.prose pre {
+  background-color: #1e293b;
+  color: #e2e8f0;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.prose pre code {
+  background-color: transparent;
+  padding: 0;
+  font-size: 0.875rem;
+}
+
+.prose ul,
+.prose ol {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  padding-left: 1.5em;
+}
+
+.prose li {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+.prose blockquote {
+  border-left: 4px solid var(--color-primary);
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: #64748b;
+  font-style: italic;
+}
+
+/* Admonition styles */
+.admonition {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+
+.admonition-note {
+  background-color: #eff6ff;
+  border-left: 4px solid #3b82f6;
+}
+
+.admonition-tip {
+  background-color: #f0fdf4;
+  border-left: 4px solid #22c55e;
+}
+
+.admonition-warning {
+  background-color: #fefce8;
+  border-left: 4px solid #eab308;
+}
+
+.admonition-danger {
+  background-color: #fef2f2;
+  border-left: 4px solid #ef4444;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #f4a02f;
+    --color-primary-dark: #f39313;
+    --color-primary-light: #f5ad4b;
+  }
+
+  .prose code {
+    background-color: #334155;
+    color: #e2e8f0;
+  }
+
+  .admonition-note {
+    background-color: #1e3a5f;
+  }
+
+  .admonition-tip {
+    background-color: #14532d;
+  }
+
+  .admonition-warning {
+    background-color: #422006;
+  }
+
+  .admonition-danger {
+    background-color: #450a0a;
+  }
+}
