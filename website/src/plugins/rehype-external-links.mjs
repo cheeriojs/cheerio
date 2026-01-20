@@ -12,7 +12,7 @@ export function rehypeExternalLinks() {
         node.properties?.href &&
         typeof node.properties.href === 'string'
       ) {
-        const href = node.properties.href;
+        const { href } = node.properties;
         // Check if it's an external link (starts with http:// or https://)
         if (href.startsWith('http://') || href.startsWith('https://')) {
           node.properties.target = '_blank';

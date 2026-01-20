@@ -9,9 +9,12 @@ Cheerio has a new website, and it's looking pretty good! This has been in the
 works for a while, and we're excited to finally share it with you. Let's walk
 through all that's new.
 
-:::note Cheerio's website is still a work-in-progress, and covers Cheerio's next
-release that isn't available yet.
+:::note
+
+Cheerio's website is still a work-in-progress, and covers Cheerio's next release
+that isn't available yet.
 [We would love your help in making this website better!](https://github.com/cheeriojs/cheerio/discussions/3002)
+
 :::
 
 <!--truncate-->

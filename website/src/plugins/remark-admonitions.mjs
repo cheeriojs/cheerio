@@ -16,8 +16,10 @@ export function remarkAdmonitions() {
 
         const data = node.data || (node.data = {});
 
-        // Get title from the directive label or use default
-        // e.g., :::tip Title Here or just :::tip
+        /*
+         * Get title from the directive label or use default
+         * e.g., :::tip Title Here or just :::tip
+         */
         let title = node.name.charAt(0).toUpperCase() + node.name.slice(1);
 
         // Check if there's a custom title in the first text

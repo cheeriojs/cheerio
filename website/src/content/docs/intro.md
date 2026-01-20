@@ -62,16 +62,20 @@ can then use this object to traverse the DOM and manipulate the data.
 
 Learn more about [loading documents](/docs/basics/loading).
 
-:::note **Cheerio is not a web browser.** Cheerio parses markup and provides an
-API for traversing/manipulating the resulting data structure. It does not
-interpret the result as a web browser does. Specifically, it does _not_ produce
-a visual rendering, apply CSS, load external resources, or execute JavaScript
-which is common for a SPA (single page application). This makes Cheerio **much,
-much faster than other solutions**. If your use case requires any of this
+:::note
+
+**Cheerio is not a web browser.** Cheerio parses markup and provides an API for
+traversing/manipulating the resulting data structure. It does not interpret the
+result as a web browser does. Specifically, it does _not_ produce a visual
+rendering, apply CSS, load external resources, or execute JavaScript which is
+common for a SPA (single page application). This makes Cheerio **much, much
+faster than other solutions**. If your use case requires any of this
 functionality, you should consider browser automation software like
 [Puppeteer](https://github.com/puppeteer/puppeteer) and
 [Playwright](https://github.com/microsoft/playwright) or DOM emulation projects
-like [JSDom](https://github.com/jsdom/jsdom). :::
+like [JSDom](https://github.com/jsdom/jsdom).
+
+:::
 
 ### Selecting Elements
 

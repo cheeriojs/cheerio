@@ -15,11 +15,14 @@ export function remarkLiveCode() {
   return (tree) => {
     visit(tree, 'code', (node, index, parent) => {
       // Check if the code block has 'live' in its meta
-      if (node.meta && node.meta.includes('live')) {
+      if (node.meta?.includes('live')) {
         // Transform the code node into an MDX JSX element
         const code = node.value;
 
-        // Create an mdxJsxFlowElement node for the LiveCode component
+        /*
+         * Create an mdxJsxFlowElement node for the LiveCode component
+         * with client:visible for lazy hydration
+         */
         const jsxNode = {
           type: 'mdxJsxFlowElement',
           name: 'LiveCode',
@@ -28,6 +31,11 @@ export function remarkLiveCode() {
               type: 'mdxJsxAttribute',
               name: 'code',
               value: code,
+            },
+            {
+              type: 'mdxJsxAttribute',
+              name: 'client:visible',
+              value: null,
             },
           ],
           children: [],

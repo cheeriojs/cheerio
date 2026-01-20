@@ -138,9 +138,10 @@ the resulting output will be HTML, not XML, and not respect any of the supplied
 options. Disabling `xmlMode`, as shown above, is therefore the recommended
 approach.
 
-:::tip You can also use Cheerio's _slim_ export, which always uses
-`htmlparser2`. This avoids loading `parse5`, which saves some bytes eg. in
-browser environments:
+:::tip
+
+You can also use Cheerio's _slim_ export, which always uses `htmlparser2`. This
+avoids loading `parse5`, which saves some bytes eg. in browser environments:
 
 ```js
 import * as cheerio from 'cheerio/slim';
