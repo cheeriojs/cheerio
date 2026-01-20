@@ -104,13 +104,9 @@ $('h1').text('Hello, World!');
 const text = $('p').text();
 ```
 
-:::tip Note
-
-`text()` returns the `textContent` of all passed elements. The result will
-include the contents of `<script>` and `<style>` elements. To avoid this, use
-`.prop('innerText')` instead.
-
-:::
+:::tip[Note] `text()` returns the `textContent` of all passed elements. The
+result will include the contents of `<script>` and `<style>` elements. To avoid
+this, use `.prop('innerText')` instead. :::
 
 ## Modifying the HTML Content of an Element
 

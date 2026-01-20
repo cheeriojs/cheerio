@@ -7,25 +7,26 @@ import {
 
 interface LiveCodeProps {
   code: string;
-  noInline?: boolean;
 }
 
-export function LiveCode({ code, noInline = false }: LiveCodeProps) {
-  // Wrap the code to work with Cheerio in the browser
-  const wrappedCode = noInline
-    ? code
-    : `
-import * as cheerio from 'cheerio';
+export function LiveCode({ code }: LiveCodeProps) {
+  // Create a wrapper that runs the cheerio code and displays results
+  const wrappedCode = `import * as cheerio from 'cheerio';
 
 function App() {
-  ${code}
+  // User code starts here
+${code
+  .split('\n')
+  .map((line) => '  ' + line)
+  .join('\n')}
+  // User code ends here
 }
 
 export default App;
 `;
 
   return (
-    <div className="my-4 overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700">
+    <div className="my-4 overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700 not-prose">
       <SandpackProvider
         template="react"
         theme="auto"
@@ -37,15 +38,10 @@ export default App;
             cheerio: 'latest',
           },
         }}
-        options={{
-          showNavigator: false,
-          showTabs: false,
-          editorHeight: 300,
-        }}
       >
         <SandpackLayout>
-          <SandpackCodeEditor showLineNumbers />
-          <SandpackPreview />
+          <SandpackCodeEditor showLineNumbers style={{ height: '300px' }} />
+          <SandpackPreview style={{ height: '300px' }} />
         </SandpackLayout>
       </SandpackProvider>
     </div>

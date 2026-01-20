@@ -34,13 +34,9 @@ Here are some examples of how to use the `$` function to select elements:
 const $p = $('p');
 ```
 
-:::tip
-
-The convention in Cheerio is to prefix the variable name with a $ to indicate
-that it contains a Cheerio object. This is not required, but it is a good
-practice to follow.
-
-:::
+:::tip The convention in Cheerio is to prefix the variable name with a $ to
+indicate that it contains a Cheerio object. This is not required, but it is a
+good practice to follow. :::
 
 - To select elements with a specific class name:
 
@@ -54,9 +50,7 @@ const $selected = $('.selected');
 const $selected = $('[data-selected=true]');
 ```
 
-:::tip XML Namespaces
-
-You can select with XML Namespaces but
+:::tip[XML Namespaces] You can select with XML Namespaces but
 [due to the CSS specification](https://www.w3.org/TR/2011/REC-css3-selectors-20110929/#attribute-selectors),
 the colon (`:`) needs to be escaped for the selector to be valid.
 

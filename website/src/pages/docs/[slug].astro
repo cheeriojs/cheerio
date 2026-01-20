@@ -7,16 +7,16 @@ export async function getStaticPaths() {
   return docs
     .filter((doc) => !doc.id.includes('/'))
     .map((doc) => ({
-      params: { slug: doc.id.replace('.md', '').replace('.mdx', '') },
+      params: { slug: doc.id.replace(/\.mdx?$/, '') },
       props: { doc },
     }));
 }
 
 const { doc } = Astro.props;
-const { Content } = await render(doc);
+const { Content, headings } = await render(doc);
 const title = doc.data.title || doc.data.sidebar_label || doc.id;
 ---
 
-<DocsLayout title={title} description={doc.data.description}>
+<DocsLayout title={title} description={doc.data.description} headings={headings}>
   <Content />
 </DocsLayout>

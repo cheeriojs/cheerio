@@ -5,6 +5,9 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import remarkDirective from 'remark-directive';
 import { remarkAdmonitions } from './src/plugins/remark-admonitions.mjs';
+import { remarkFixTypedocLinks } from './src/plugins/remark-fix-typedoc-links.mjs';
+import { remarkLiveCode } from './src/plugins/remark-live-code.mjs';
+import { rehypeExternalLinks } from './src/plugins/rehype-external-links.mjs';
 
 export default defineConfig({
   site: 'https://cheerio.js.org',
@@ -21,6 +24,12 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
   markdown: {
-    remarkPlugins: [remarkDirective, remarkAdmonitions],
+    remarkPlugins: [
+      remarkDirective,
+      remarkAdmonitions,
+      remarkFixTypedocLinks,
+      remarkLiveCode,
+    ],
+    rehypePlugins: [rehypeExternalLinks],
   },
 });

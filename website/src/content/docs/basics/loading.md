@@ -8,21 +8,13 @@ description: A walkthrough of different loading methods.
 In this guide, we'll take a look at how to load documents with Cheerio and when
 to use the different loading methods.
 
-:::tip
-
-If you're familiar with jQuery, then this step will be new to you. jQuery
+:::tip If you're familiar with jQuery, then this step will be new to you. jQuery
 operates on the one, baked-in DOM. With Cheerio, we need to pass in the HTML
-document.
+document. :::
 
-:::
-
-:::danger Availability of methods
-
-The `loadBuffer`, `stringStream`, `decodeStream`, and `fromURL` methods are not
-available in the browser environment. Instead, use the `load` method to parse
-HTML strings.
-
-:::
+:::danger[Availability of methods] The `loadBuffer`, `stringStream`,
+`decodeStream`, and `fromURL` methods are not available in the browser
+environment. Instead, use the `load` method to parse HTML strings. :::
 
 ## `load`
 
@@ -41,11 +33,9 @@ console.log($('h1').text());
 // Output: Hello, world!
 ```
 
-:::tip
-
-Similar to web browser contexts, `load` will introduce `<html>`, `<head>`, and
-`<body>` elements if they are not already present. You can set `load`'s third
-argument to `false` to disable this.
+:::tip Similar to web browser contexts, `load` will introduce `<html>`,
+`<head>`, and `<body>` elements if they are not already present. You can set
+`load`'s third argument to `false` to disable this.
 
 ```js
 const $ = cheerio.load('<ul id="fruits">...</ul>', null, false);

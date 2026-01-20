@@ -4,15 +4,22 @@ import { ViewTransitions } from 'astro:transitions';
 import Navbar from '@/components/Navbar.astro';
 import Footer from '@/components/Footer.astro';
 import Sidebar from '@/components/Sidebar.astro';
+import TableOfContents from '@/components/TableOfContents.astro';
 
 interface Props {
   title: string;
   description?: string;
+  headings?: Array<{
+    depth: number;
+    slug: string;
+    text: string;
+  }>;
 }
 
 const {
   title,
   description = 'The fast, flexible & elegant library for parsing and manipulating HTML and XML.',
+  headings = [],
 } = Astro.props;
 
 const currentPath = Astro.url.pathname;
@@ -36,13 +43,14 @@ const currentPath = Astro.url.pathname;
     class="flex min-h-screen flex-col bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100"
   >
     <Navbar />
-    <div class="mx-auto flex w-full max-w-7xl flex-1">
+    <div class="mx-auto flex w-full max-w-8xl flex-1">
       <Sidebar currentPath={currentPath} />
-      <main class="flex-1 px-8 py-8">
+      <main class="flex-1 min-w-0 px-8 py-8">
         <article class="prose max-w-none">
           <slot />
         </article>
       </main>
+      <TableOfContents headings={headings} />
     </div>
     <Footer />
   </body>

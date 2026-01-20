@@ -5,6 +5,9 @@ node_modules/
 dist/
 .astro/
 
+# Generated API docs (from typedoc)
+src/content/docs/api/
+
 # Environment variables
 .env
 .env.*

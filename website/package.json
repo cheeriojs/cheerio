@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
+    "build": "npm run build:api && astro build",
+    "build:api": "typedoc",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -29,6 +30,9 @@
   "devDependencies": {
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
+    "typedoc": "^0.28.5",
+    "typedoc-plugin-markdown": "^4.6.3",
+    "typedoc-plugin-mdn-links": "^5.0.1",
     "typescript": "^5.9.3"
   },
   "engines": {

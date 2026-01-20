@@ -1,0 +1,30 @@
+---
+import { getCollection, render } from 'astro:content';
+import DocsLayout from '@/layouts/DocsLayout.astro';
+
+export async function getStaticPaths() {
+  const docs = await getCollection('docs');
+  return docs
+    .filter((doc) => doc.id.startsWith('api/'))
+    .map((doc) => {
+      // Remove 'api/' prefix and file extension
+      let slug = doc.id.replace('api/', '').replace(/\.mdx?$/, '');
+      // Handle index page - should have undefined slug for [...slug] catch-all
+      if (slug === 'index') {
+        slug = undefined;
+      }
+      return {
+        params: { slug },
+        props: { doc },
+      };
+    });
+}
+
+const { doc } = Astro.props;
+const { Content, headings } = await render(doc);
+const title = doc.data.title || doc.data.sidebar_label || 'API Documentation';
+---
+
+<DocsLayout title={title} description={doc.data.description} headings={headings}>
+  <Content />
+</DocsLayout>
