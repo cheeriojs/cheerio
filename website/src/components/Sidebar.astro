@@ -47,11 +47,11 @@ const sidebar: SidebarSection[] = [
 <aside
   class="hidden w-64 shrink-0 border-r border-slate-200 dark:border-slate-700 lg:block"
 >
-  <nav class="sticky top-0 h-screen overflow-y-auto px-4 py-6">
+  <nav class="sticky top-0 h-screen overflow-y-auto px-6 py-8">
     {
-      sidebar.map((section) => (
-        <div class="mb-6">
-          <h3 class="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+      sidebar.map((section, index) => (
+        <div class={index === 0 ? 'mb-8' : 'mb-8'}>
+          <h3 class="mb-3 text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
             {section.title}
           </h3>
           <ul class="space-y-1">
@@ -60,10 +60,10 @@ const sidebar: SidebarSection[] = [
                 <a
                   href={item.href}
                   class:list={[
-                    'block rounded-md px-3 py-2 text-sm transition-colors',
+                    'block rounded-lg px-3 py-2 text-sm transition-all duration-150',
                     currentPath === item.href
-                      ? 'bg-primary/10 font-medium text-primary'
-                      : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800',
+                      ? 'bg-primary/10 font-semibold text-primary border-l-2 border-primary'
+                      : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100',
                   ]}
                 >
                   {item.label}
