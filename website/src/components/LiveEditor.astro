@@ -1,0 +1,11 @@
+---
+/**
+ * Astro component that wraps LiveCode for use in markdown.
+ * Usage in markdown: <LiveEditor>...</LiveEditor>
+ */
+import { LiveCode } from './live-code';
+---
+
+<div class="live-editor-wrapper">
+  <LiveCode client:load code={await Astro.slots.render('default')} />
+</div>
