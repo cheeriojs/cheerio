@@ -36,5 +36,9 @@ jobs:
       - name: Build Cheerio
         run: npm run build
 
+      - name: Build website
+        run: npm run build
+        working-directory: website
+
       - name: Run lint
         run: npm run lint
