@@ -84,6 +84,7 @@ export default defineConfig(
       parserOptions: {
         projectService: {
           allowDefaultProject: ['*.js'],
+          defaultProject: 'tsconfig.json',
         },
         tsconfigRootDir: import.meta.dirname, // eslint-disable-line n/no-unsupported-features/node-builtins
       },

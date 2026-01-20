@@ -14,6 +14,8 @@ If you're familiar with jQuery, then this step will be new to you. jQuery
 operates on the one, baked-in DOM. With Cheerio, we need to pass in the HTML
 document.
 
+:::
+
 :::danger[Availability of methods]
 
 The `loadBuffer`, `stringStream`, `decodeStream`, and `fromURL` methods are not
@@ -55,7 +57,7 @@ $.html();
 :::
 
 Learn more about the `load` method in the
-[API documentation](/docs/api/functions/load).
+[API documentation](/docs/api/variables/load).
 
 ## `loadBuffer`
 

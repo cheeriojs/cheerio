@@ -11,5 +11,5 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
   },
-  "include": ["src", "*.json"]
+  "include": ["src", ".astro", "*.json", "*.mjs"]
 }

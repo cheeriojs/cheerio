@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import {
   SandpackProvider,
-  SandpackLayout,
   SandpackCodeEditor,
   SandpackConsole,
   useSandpack,
@@ -46,7 +45,7 @@ function RunButton() {
   );
 }
 
-function Toolbar({ originalCode }: { originalCode: string }) {
+function Toolbar() {
   return (
     <div className="flex items-center justify-between px-3 py-2 bg-slate-100 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
       <span className="text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">
@@ -54,7 +53,7 @@ function Toolbar({ originalCode }: { originalCode: string }) {
       </span>
       <div className="flex items-center gap-2">
         <RunButton />
-        <ResetButton originalCode={originalCode} />
+        <ResetButton />
       </div>
     </div>
   );
@@ -81,16 +80,14 @@ ${code}
           },
         }}
       >
-        <Toolbar originalCode={wrappedCode} />
-        <SandpackLayout>
-          <SandpackCodeEditor showLineNumbers style={{ height: '300px' }} />
-          <SandpackConsole
-            style={{ height: '300px' }}
-            standalone
-            showHeader
-            showResetConsoleButton
-          />
-        </SandpackLayout>
+        <Toolbar />
+        <SandpackCodeEditor showLineNumbers style={{ height: '200px' }} />
+        <SandpackConsole
+          style={{ height: '150px' }}
+          standalone
+          showHeader
+          showResetConsoleButton
+        />
       </SandpackProvider>
     </div>
   );

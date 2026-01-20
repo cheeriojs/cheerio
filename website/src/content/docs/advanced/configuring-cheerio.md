@@ -27,7 +27,7 @@ For example, if you want the contents of `<noscript>` tags to be parsed as HTML,
 you can set the `scriptingEnabled` option to false.
 
 For a full list of options and their effects, have a look at
-[the API documentation](/docs/api/interfaces/Parse5Options).
+[the API documentation](/docs/api/interfaces/CheerioOptions).
 
 ### Fragment Mode
 

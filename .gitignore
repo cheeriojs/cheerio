@@ -8,3 +8,7 @@ npm-debug.log
 /.tshy-build
 /dist
 
+# Website build artifacts
+website/.astro/
+website/dist/
+website/src/content/docs/api
