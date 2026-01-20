@@ -7,5 +7,4 @@ npm-debug.log
 /.tshy
 /.tshy-build
 /dist
-/website/docs/api
-/website/build
+
