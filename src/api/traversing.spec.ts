@@ -91,6 +91,11 @@ describe('$(...)', () => {
       expect(q('.a').find('~.a')).toHaveLength(0);
     });
 
+    it('should find self', () => {
+      const q = load('<p class=a></p>');
+      expect(q('.a').find(':scope')).toHaveLength(1);
+    });
+
     it('should query case-sensitively when in xml mode', () => {
       const q = load('<caseSenSitive allTheWay>', { xml: true });
       expect(q('caseSenSitive')).toHaveLength(1);
