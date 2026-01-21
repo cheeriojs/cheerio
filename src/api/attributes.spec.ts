@@ -321,6 +321,11 @@ describe('$(...)', () => {
       expect($(undefined).prop('href')).toBeUndefined();
     });
 
+    it('("href") : should skip values without an href', () => {
+      const $ = load('<a id="1">example1</a>');
+      expect($('#1').prop('href')).toBeUndefined();
+    });
+
     it('("src") : should resolve links with `baseURI`', () => {
       const $ = load(
         `
@@ -351,6 +356,13 @@ describe('$(...)', () => {
       expect($a.prop('outerHTML')).toBe(outerHtml);
 
       expect($(undefined).prop('outerHTML')).toBeUndefined();
+    });
+
+    it('("outerHTML") : should support root nodes', () => {
+      const $ = load('<div></div>');
+      expect($.root().prop('outerHTML')).toBe(
+        '<html><head></head><body><div></div></body></html>',
+      );
     });
 
     it('("innerHTML") : should render properly', () => {
@@ -1132,7 +1144,6 @@ describe('$(...)', () => {
     it('(fn) : should work with no initial class attribute', () => {
       const $inputs = load(inputs);
       $inputs('input, select').toggleClass(function () {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- `get` should never return undefined here.
         return $inputs(this).get(0)!.tagName === 'select'
           ? 'selectable'
           : 'inputable';

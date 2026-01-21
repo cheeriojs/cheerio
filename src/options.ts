@@ -3,6 +3,7 @@ import type { ParserOptions as HTMLParser2ParserOptions } from 'htmlparser2';
 import type { ParserOptions as Parse5ParserOptions } from 'parse5';
 import type { Htmlparser2TreeAdapterMap } from 'parse5-htmlparser2-tree-adapter';
 import type { Options as SelectOptions } from 'cheerio-select';
+import type { DomSerializerOptions } from 'dom-serializer';
 
 /**
  * Options accepted by htmlparser2, the default parser for XML.
@@ -10,8 +11,10 @@ import type { Options as SelectOptions } from 'cheerio-select';
  * @see https://github.com/fb55/htmlparser2/wiki/Parser-options
  */
 export interface HTMLParser2Options
-  extends DomHandlerOptions,
-    HTMLParser2ParserOptions {}
+  extends DomHandlerOptions, DomSerializerOptions, HTMLParser2ParserOptions {
+  /** Treat the input as an XML document. */
+  xmlMode?: boolean;
+}
 
 /**
  * Options accepted by Cheerio.
@@ -19,8 +22,7 @@ export interface HTMLParser2Options
  * Please note that parser-specific options are _only recognized_ if the
  * relevant parser is used.
  */
-export interface CheerioOptions
-  extends Parse5ParserOptions<Htmlparser2TreeAdapterMap> {
+export interface CheerioOptions extends Parse5ParserOptions<Htmlparser2TreeAdapterMap> {
   /**
    * Recommended way of configuring htmlparser2 when wanting to parse XML.
    *
@@ -83,8 +85,7 @@ export interface CheerioOptions
 
 /** Internal options for Cheerio. */
 export interface InternalOptions
-  extends HTMLParser2Options,
-    Omit<CheerioOptions, 'xml'> {
+  extends HTMLParser2Options, Omit<CheerioOptions, 'xml'> {
   /**
    * Whether to use htmlparser2.
    *

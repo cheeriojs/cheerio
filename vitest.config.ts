@@ -1,6 +1,6 @@
-import { defineConfig } from 'vitest/config';
+import { defineConfig, type ViteUserConfig } from 'vitest/config';
 
-export default defineConfig({
+const config: ViteUserConfig = defineConfig({
   test: {
     coverage: {
       exclude: [
@@ -11,5 +11,11 @@ export default defineConfig({
         '*.config.ts',
       ],
     },
+    typecheck: {
+      enabled: true,
+      include: ['src/api/extract.spec.ts'],
+    },
   },
 });
+
+export default config;

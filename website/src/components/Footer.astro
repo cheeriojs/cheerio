@@ -1,0 +1,56 @@
+---
+const footerLinks = {
+  Docs: [
+    { label: 'Tutorial', href: '/docs/intro' },
+    { label: 'API', href: '/docs/api' },
+  ],
+  Community: [
+    {
+      label: 'Stack Overflow',
+      href: 'https://stackoverflow.com/questions/tagged/cheerio',
+    },
+    { label: 'GitHub', href: 'https://github.com/cheeriojs/cheerio' },
+  ],
+  More: [
+    { label: 'Blog', href: '/blog' },
+    { label: 'Attribution', href: '/attribution' },
+  ],
+};
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-slate-900 py-12 text-slate-300">
+  <div class="mx-auto max-w-7xl px-4">
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+      {
+        Object.entries(footerLinks).map(([title, links]) => (
+          <div>
+            <h3 class="mb-4 font-semibold text-white">{title}</h3>
+            <ul class="space-y-2">
+              {links.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    class="transition-colors hover:text-primary-light"
+                    target={link.href.startsWith('http') ? '_blank' : undefined}
+                    rel={
+                      link.href.startsWith('http')
+                        ? 'noopener noreferrer'
+                        : undefined
+                    }
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+    <div class="mt-8 border-t border-slate-700 pt-8 text-center text-sm">
+      Copyright &copy; {currentYear} The Cheerio contributors
+    </div>
+  </div>
+</footer>

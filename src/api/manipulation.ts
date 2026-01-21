@@ -20,6 +20,7 @@ import { domEach, isHtml, isCheerio } from '../utils.js';
 import { removeElement } from 'domutils';
 import type { Cheerio } from '../cheerio.js';
 import type { BasicAcceptedElems, AcceptedElems } from '../types.js';
+import { ElementType } from 'htmlparser2';
 
 /**
  * Create an array of nodes, recursing into arrays and parsing strings if
@@ -129,7 +130,7 @@ function uniqueSplice(
   newElems: AnyNode[],
   parent: ParentNode,
 ): AnyNode[] {
-  const spliceArgs: Parameters<typeof Array.prototype.splice> = [
+  const spliceArgs: Parameters<AnyNode[]['splice']> = [
     spliceIdx,
     spliceCount,
     ...newElems,
@@ -152,7 +153,7 @@ function uniqueSplice(
       const oldSiblings: AnyNode[] = oldParent.children;
       const prevIdx = oldSiblings.indexOf(node);
 
-      if (prevIdx > -1) {
+      if (prevIdx !== -1) {
         oldParent.children.splice(prevIdx, 1);
         if (parent === oldParent && spliceIdx > prevIdx) {
           spliceArgs[0]--;
@@ -588,7 +589,9 @@ export function wrapAll<T extends AnyNode>(
     let elInsertLocation: Element | undefined;
 
     for (let i = 0; i < wrap.length; i++) {
-      if (wrap[i].type === 'tag') elInsertLocation = wrap[i] as Element;
+      if (wrap[i].type === ElementType.Tag) {
+        elInsertLocation = wrap[i] as Element;
+      }
     }
 
     let j = 0;
@@ -599,8 +602,8 @@ export function wrapAll<T extends AnyNode>(
      */
     while (elInsertLocation && j < elInsertLocation.children.length) {
       const child = elInsertLocation.children[j];
-      if (child.type === 'tag') {
-        elInsertLocation = child as Element;
+      if (child.type === ElementType.Tag) {
+        elInsertLocation = child;
         j = 0;
       } else {
         j++;
@@ -652,7 +655,7 @@ export function after<T extends AnyNode>(
 
     // If not found, move on
     /* istanbul ignore next */
-    if (index < 0) return;
+    if (index === -1) return;
 
     const domSrc =
       typeof elems[0] === 'function'
@@ -711,7 +714,7 @@ export function insertAfter<T extends AnyNode>(
 
     // If not found, move on
     /* istanbul ignore next */
-    if (index < 0) continue;
+    if (index === -1) continue;
 
     // Add cloned `this` element(s) after target element
     uniqueSplice(siblings, index + 1, 0, clonedSelf, parent);
@@ -761,7 +764,7 @@ export function before<T extends AnyNode>(
 
     // If not found, move on
     /* istanbul ignore next */
-    if (index < 0) return;
+    if (index === -1) return;
 
     const domSrc =
       typeof elems[0] === 'function'
@@ -818,7 +821,7 @@ export function insertBefore<T extends AnyNode>(
 
     // If not found, move on
     /* istanbul ignore next */
-    if (index < 0) return;
+    if (index === -1) return;
 
     // Add cloned `this` element(s) after target element
     uniqueSplice(siblings, index, 0, clonedSelf, parent);
@@ -1097,8 +1100,9 @@ export function text<T extends AnyNode>(
  * @see {@link https://api.jquery.com/clone/}
  */
 export function clone<T extends AnyNode>(this: Cheerio<T>): Cheerio<T> {
-  const clone = Array.prototype.map.call(this.get(), (el) =>
-    cloneNode(el, true),
+  const clone = Array.prototype.map.call(
+    this.get(),
+    (el) => cloneNode(el, true) as T,
   ) as T[];
 
   // Add a root node around the cloned nodes

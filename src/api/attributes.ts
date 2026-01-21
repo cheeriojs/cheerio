@@ -9,7 +9,12 @@ import { domEach, camelCase, cssCase } from '../utils.js';
 import { isTag, type AnyNode, type Element } from 'domhandler';
 import type { Cheerio } from '../cheerio.js';
 import { innerText, textContent } from 'domutils';
-const hasOwn = Object.prototype.hasOwnProperty;
+import { ElementType } from 'htmlparser2';
+const hasOwn =
+  // @ts-expect-error `hasOwn` is a standard object method
+  (Object.hasOwn as (object: unknown, prop: string) => boolean) ??
+  ((object: unknown, prop: string) =>
+    Object.prototype.hasOwnProperty.call(object, prop));
 const rspace = /\s+/;
 const dataAttrPrefix = 'data-';
 
@@ -56,7 +61,7 @@ function getAttr(
     return elem.attribs;
   }
 
-  if (hasOwn.call(elem.attribs, name)) {
+  if (hasOwn(elem.attribs, name)) {
     // Get the (decoded) attribute
     return !xmlMode && rboolean.test(name) ? name : elem.attribs[name];
   }
@@ -134,15 +139,15 @@ export function attr<T extends AnyNode>(
   this: Cheerio<T>,
 ): Record<string, string> | undefined;
 /**
- * Method for setting attributes. Sets the attribute value for only the first
- * element in the matched set. If you set an attribute's value to `null`, you
- * remove that attribute. You may also pass a `map` and `function`.
+ * Method for setting attributes. Sets the attribute value for all elements in
+ * the matched set. If you set an attribute's value to `null`, you remove that
+ * attribute. You may also pass a `map` and `function`.
  *
  * @category Attributes
  * @example
  *
  * ```js
- * $('.apple').attr('id', 'favorite').html();
+ * $('.apple').attr('id', 'favorite').prop('outerHTML');
  * //=> <li class="apple" id="favorite">Apple</li>
  * ```
  *
@@ -161,14 +166,14 @@ export function attr<T extends AnyNode>(
 ): Cheerio<T>;
 /**
  * Method for setting multiple attributes at once. Sets the attribute value for
- * only the first element in the matched set. If you set an attribute's value to
- * `null`, you remove that attribute.
+ * all elements in the matched set. If you set an attribute's value to `null`,
+ * you remove that attribute.
  *
  * @category Attributes
  * @example
  *
  * ```js
- * $('.apple').attr({ id: 'favorite' }).html();
+ * $('.apple').attr({ id: 'favorite' }).prop('outerHTML');
  * //=> <li class="apple" id="favorite">Apple</li>
  * ```
  *
@@ -209,14 +214,14 @@ export function attr<T extends AnyNode>(
           setAttr(el, objName, objValue);
         }
       } else {
-        setAttr(el, name as string, value as string);
+        setAttr(el, name!, value!);
       }
     });
   }
 
   return arguments.length > 1
     ? this
-    : getAttr(this[0], name as string, this.options.xmlMode);
+    : getAttr(this[0], name!, this.options.xmlMode);
 }
 
 /**
@@ -233,10 +238,10 @@ function getProp(
   el: Element,
   name: string,
   xmlMode?: boolean,
-): string | undefined | Element[keyof Element] {
+): string | undefined | boolean | Element[keyof Element] {
   return name in el
     ? // @ts-expect-error TS doesn't like us accessing the value directly here.
-      el[name]
+      (el[name] as string | undefined)
     : !xmlMode && rboolean.test(name)
       ? getAttr(el, name, false) !== undefined
       : getAttr(el, name, xmlMode);
@@ -259,7 +264,11 @@ function setProp(el: Element, name: string, value: unknown, xmlMode?: boolean) {
     setAttr(
       el,
       name,
-      !xmlMode && rboolean.test(name) ? (value ? '' : null) : `${value}`,
+      !xmlMode && rboolean.test(name)
+        ? value
+          ? ''
+          : null
+        : `${value as string}`,
     );
   }
 }
@@ -396,18 +405,19 @@ export function prop<T extends AnyNode>(this: Cheerio<T>, name: string): string;
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: string | Record<string, string | Element[keyof Element] | boolean>,
-  value?:
-    | ((
-        this: Element,
-        i: number,
-        prop: string | undefined,
-      ) => string | Element[keyof Element] | boolean)
-    | unknown,
-): Cheerio<T> | string | undefined | null | Element[keyof Element] | StyleProp {
+  value?: unknown,
+):
+  | Cheerio<T>
+  | string
+  | boolean
+  | undefined
+  | null
+  | Element[keyof Element]
+  | StyleProp {
   if (typeof name === 'string' && value === undefined) {
     const el = this[0];
 
-    if (!el || !isTag(el)) return undefined;
+    if (!el) return undefined;
 
     switch (name) {
       case 'style': {
@@ -423,11 +433,13 @@ export function prop<T extends AnyNode>(
       }
       case 'tagName':
       case 'nodeName': {
+        if (!isTag(el)) return undefined;
         return el.name.toUpperCase();
       }
 
       case 'href':
       case 'src': {
+        if (!isTag(el)) return undefined;
         const prop = el.attribs?.[name];
 
         if (
@@ -457,6 +469,7 @@ export function prop<T extends AnyNode>(
       }
 
       case 'outerHTML': {
+        if (el.type === ElementType.Root) return this.html();
         return this.clone().wrap('<container />').parent().html();
       }
 
@@ -465,6 +478,7 @@ export function prop<T extends AnyNode>(
       }
 
       default: {
+        if (!isTag(el)) return undefined;
         return getProp(el, name, this.options.xmlMode);
       }
     }
@@ -552,7 +566,7 @@ function readAllData(el: DataElement): unknown {
 
     const jsName = camelCase(domName.slice(dataAttrPrefix.length));
 
-    if (!hasOwn.call(el.data, jsName)) {
+    if (!hasOwn(el.data, jsName)) {
       el.data![jsName] = parseDataValue(el.attribs[domName]);
     }
   }
@@ -574,11 +588,11 @@ function readData(el: DataElement, name: string): unknown {
   const domName = dataAttrPrefix + cssCase(name);
   const data = el.data!;
 
-  if (hasOwn.call(data, name)) {
+  if (hasOwn(data, name)) {
     return data[name];
   }
 
-  if (hasOwn.call(el.attribs, domName)) {
+  if (hasOwn(el.attribs, domName)) {
     return (data[name] = parseDataValue(el.attribs[domName]));
   }
 
@@ -629,7 +643,7 @@ function parseDataValue(value: string): unknown {
 export function data<T extends AnyNode>(
   this: Cheerio<T>,
   name: string,
-): unknown | undefined;
+): unknown;
 /**
  * Method for getting all of an element's data attributes, for only the first
  * element in the matched set.
@@ -698,7 +712,7 @@ export function data<T extends AnyNode>(
   this: Cheerio<T>,
   name?: string | Record<string, unknown>,
   value?: unknown,
-): unknown | Cheerio<T> | undefined | Record<string, unknown> {
+): unknown {
   const elem = this[0];
 
   if (!elem || !isTag(elem)) return;
@@ -716,7 +730,7 @@ export function data<T extends AnyNode>(
     domEach(this, (el) => {
       if (isTag(el)) {
         if (typeof name === 'object') setData(el, name);
-        else setData(el, name, value as unknown);
+        else setData(el, name, value);
       }
     });
     return this;
@@ -751,7 +765,7 @@ export function val<T extends AnyNode>(
  * @example
  *
  * ```js
- * $('input[type="text"]').val('test').html();
+ * $('input[type="text"]').val('test').prop('outerHTML');
  * //=> <input type="text" value="test"/>
  * ```
  *
@@ -817,7 +831,7 @@ export function val<T extends AnyNode>(
  * @param name - Name of the attribute to remove.
  */
 function removeAttribute(elem: Element, name: string) {
-  if (!elem.attribs || !hasOwn.call(elem.attribs, name)) return;
+  if (!elem.attribs || !hasOwn(elem.attribs, name)) return;
 
   delete elem.attribs[name];
 }
@@ -840,11 +854,11 @@ function splitNames(names?: string): string[] {
  * @example
  *
  * ```js
- * $('.pear').removeAttr('class').html();
+ * $('.pear').removeAttr('class').prop('outerHTML');
  * //=> <li>Pear</li>
  *
  * $('.apple').attr('id', 'favorite');
- * $('.apple').removeAttr('id class').html();
+ * $('.apple').removeAttr('id class').prop('outerHTML');
  * //=> <li>Apple</li>
  * ```
  *
@@ -920,10 +934,10 @@ export function hasClass<T extends AnyNode>(
  * @example
  *
  * ```js
- * $('.pear').addClass('fruit').html();
+ * $('.pear').addClass('fruit').prop('outerHTML');
  * //=> <li class="pear fruit">Pear</li>
  *
- * $('.apple').addClass('fruit red').html();
+ * $('.apple').addClass('fruit red').prop('outerHTML');
  * //=> <li class="apple fruit red">Apple</li>
  * ```
  *
@@ -988,10 +1002,10 @@ export function addClass<T extends AnyNode, R extends ArrayLike<T>>(
  * @example
  *
  * ```js
- * $('.pear').removeClass('pear').html();
+ * $('.pear').removeClass('pear').prop('outerHTML');
  * //=> <li class="">Pear</li>
  *
- * $('.apple').addClass('red').removeClass().html();
+ * $('.apple').addClass('red').removeClass().prop('outerHTML');
  * //=> <li class="">Apple</li>
  * ```
  *
@@ -1031,7 +1045,7 @@ export function removeClass<T extends AnyNode, R extends ArrayLike<T>>(
       for (let j = 0; j < numClasses; j++) {
         const index = elClasses.indexOf(classes[j]);
 
-        if (index >= 0) {
+        if (index !== -1) {
           elClasses.splice(index, 1);
           changed = true;
 
@@ -1058,10 +1072,10 @@ export function removeClass<T extends AnyNode, R extends ArrayLike<T>>(
  * @example
  *
  * ```js
- * $('.apple.green').toggleClass('fruit green red').html();
+ * $('.apple.green').toggleClass('fruit green red').prop('outerHTML');
  * //=> <li class="apple fruit red">Apple</li>
  *
- * $('.apple.green').toggleClass('fruit green red', true).html();
+ * $('.apple.green').toggleClass('fruit green red', true).prop('outerHTML');
  * //=> <li class="apple green fruit red">Apple</li>
  * ```
  *
@@ -1116,9 +1130,9 @@ export function toggleClass<T extends AnyNode, R extends ArrayLike<T>>(
       const index = elementClasses.indexOf(classNames[j]);
 
       // Add if stateValue === true or we are toggling and there is no value
-      if (state >= 0 && index < 0) {
+      if (state >= 0 && index === -1) {
         elementClasses.push(classNames[j]);
-      } else if (state <= 0 && index >= 0) {
+      } else if (state <= 0 && index !== -1) {
         // Otherwise remove but only if the item exists
         elementClasses.splice(index, 1);
       }

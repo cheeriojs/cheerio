@@ -1,6 +1,6 @@
 {
   "name": "cheerio",
-  "version": "1.0.0",
+  "version": "1.1.2",
   "description": "The fast, flexible & elegant library for parsing and manipulating HTML and XML.",
   "keywords": [
     "htmlparser",
@@ -74,6 +74,7 @@
   },
   "main": "./dist/commonjs/index.js",
   "module": "./dist/esm/index.js",
+  "browser": "./dist/browser/index.js",
   "types": "./dist/commonjs/index.d.ts",
   "files": [
     "dist",
@@ -83,11 +84,11 @@
     "benchmark": "node --import=tsx benchmark/benchmark.ts",
     "build": "tshy",
     "format": "npm run format:es && npm run format:prettier",
-    "format:es": "npm run lint:es -- --fix",
+    "format:es": "eslint . --fix",
     "format:prettier": "npm run format:prettier:raw -- --write",
     "format:prettier:raw": "prettier \"**/*.{{m,c,}{j,t}s{x,},md{x,},json,y{a,}ml}\" --ignore-path .gitignore",
     "lint": "npm run lint:es && npm run lint:prettier && npm run lint:ts",
-    "lint:es": "eslint --report-unused-disable-directives --ignore-path .gitignore .",
+    "lint:es": "eslint .",
     "lint:prettier": "npm run format:prettier:raw -- --check",
     "lint:ts": "tsc --noEmit",
     "prepare": "husky",
@@ -99,7 +100,7 @@
   "lint-staged": {
     "*.js": [
       "prettier --write",
-      "npm run lint:es -- --fix"
+      "eslint --fix"
     ],
     "*.{json,md,ts,yml}": [
       "prettier --write"
@@ -118,45 +119,46 @@
     "cheerio-select": "^2.1.0",
     "dom-serializer": "^2.0.0",
     "domhandler": "^5.0.3",
-    "domutils": "^3.1.0",
-    "encoding-sniffer": "^0.2.0",
-    "htmlparser2": "^9.1.0",
-    "parse5": "^7.2.0",
+    "domutils": "^3.2.2",
+    "encoding-sniffer": "^0.2.1",
+    "htmlparser2": "^10.0.0",
+    "parse5": "^7.3.0",
     "parse5-htmlparser2-tree-adapter": "^7.1.0",
     "parse5-parser-stream": "^7.1.2",
-    "undici": "^6.20.1",
+    "undici": "^7.18.2",
     "whatwg-mimetype": "^4.0.0"
   },
   "devDependencies": {
+    "@eslint/compat": "^2.0.1",
+    "@eslint/js": "^9.38.0",
     "@imgix/js-core": "^3.8.0",
-    "@octokit/graphql": "^8.1.1",
-    "@types/jsdom": "^21.1.7",
-    "@types/node": "^22.8.1",
+    "@octokit/graphql": "^9.0.3",
+    "@types/jsdom": "^27.0.0",
+    "@types/node": "^25.0.9",
     "@types/whatwg-mimetype": "^3.0.2",
-    "@typescript-eslint/eslint-plugin": "^8.11.0",
-    "@typescript-eslint/parser": "^8.11.0",
-    "@vitest/coverage-v8": "^2.1.3",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-expect-type": "^0.4.3",
-    "eslint-plugin-jsdoc": "^50.4.3",
-    "eslint-plugin-n": "^16.6.2",
-    "eslint-plugin-unicorn": "^55.0.0",
-    "eslint-plugin-vitest": "^0.5.4",
-    "husky": "^9.1.6",
-    "jquery": "^3.7.1",
-    "jsdom": "^24.1.1",
-    "lint-staged": "^15.2.10",
-    "prettier": "^3.3.3",
-    "prettier-plugin-jsdoc": "^1.3.0",
-    "tinybench": "^2.9.0",
-    "tshy": "^3.0.2",
-    "tsx": "^4.19.2",
-    "typescript": "^5.5.4",
-    "vitest": "^2.0.5"
+    "@vitest/coverage-v8": "^4.0.17",
+    "@vitest/eslint-plugin": "^1.6.6",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jsdoc": "^62.3.0",
+    "eslint-plugin-n": "^17.23.2",
+    "eslint-plugin-unicorn": "^62.0.0",
+    "globals": "^17.0.0",
+    "husky": "^9.1.7",
+    "jquery": "^4.0.0",
+    "jsdom": "^27.4.0",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.8.0",
+    "prettier-plugin-jsdoc": "^1.8.0",
+    "tinybench": "^6.0.0",
+    "tshy": "^3.1.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.53.1",
+    "vitest": "^4.0.16"
   },
   "engines": {
-    "node": ">=18.17"
+    "node": ">=20.18.1"
   },
   "tshy": {
     "esmDialects": [

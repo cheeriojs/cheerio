@@ -30,7 +30,8 @@ describe('$(...)', () => {
   describe('.load', () => {
     it('should throw a TypeError if given invalid input', () => {
       expect(() => {
-        (load as any)();
+        // @ts-expect-error Testing invalid input
+        load();
       }).toThrow('cheerio.load() expects a string');
     });
   });
@@ -249,7 +250,7 @@ describe('$(...)', () => {
       expect($('.apple').next('.non-existent')).toHaveLength(0);
     });
 
-    it('should accept elements that satisify the filter', () => {
+    it('should accept elements that satisfy the filter', () => {
       expect($('.apple').next('.orange')).toHaveLength(1);
     });
 
@@ -258,7 +259,7 @@ describe('$(...)', () => {
         expect($('.apple').next('.non-existent')).toHaveLength(0);
       });
 
-      it('should accept elements that satisify the filter', () => {
+      it('should accept elements that satisfy the filter', () => {
         expect($('.apple').next('.orange')).toHaveLength(1);
       });
     });
@@ -427,7 +428,7 @@ describe('$(...)', () => {
         expect($('.orange').prev('.non-existent')).toHaveLength(0);
       });
 
-      it('should accept elements that satisify the filter', () => {
+      it('should accept elements that satisfy the filter', () => {
         expect($('.orange').prev('.apple')).toHaveLength(1);
       });
 
@@ -435,7 +436,7 @@ describe('$(...)', () => {
         expect($('.orange').prev('.non-existent')).toHaveLength(0);
       });
 
-      it('(selector) : should accept elements that satisify the filter', () => {
+      it('(selector) : should accept elements that satisfy the filter', () => {
         expect($('.orange').prev('.apple')).toHaveLength(1);
       });
     });
@@ -654,7 +655,7 @@ describe('$(...)', () => {
       expect(result).toHaveLength(0);
     });
 
-    it('() : should return the parents of every element in the *reveresed* collection, omitting duplicates', () => {
+    it('() : should return the parents of every element in the *reversed* collection, omitting duplicates', () => {
       const $parents = $('li').parents();
 
       expect($parents).toHaveLength(5);
@@ -858,7 +859,7 @@ describe('$(...)', () => {
       it('should yield each element', () => {
         // The equivalent of: for (const element of $('li')) ...
         const $li = $('li');
-        const iterator = $li[Symbol.iterator]();
+        const iterator = $li[Symbol.iterator]() as Iterator<Element, Element>;
         expect(iterator.next().value.attribs).toHaveProperty('class', 'apple');
         expect(iterator.next().value.attribs).toHaveProperty('class', 'orange');
         expect(iterator.next().value.attribs).toHaveProperty('class', 'pear');
@@ -907,7 +908,7 @@ describe('$(...)', () => {
       expect($mapped[0]).toBe($fruits[1]);
     });
 
-    it('(fn) : should preform a shallow merge on arrays returned by iterator', () => {
+    it('(fn) : should perform a shallow merge on arrays returned by iterator', () => {
       const $fruits = $('li');
 
       const $mapped = $fruits.map(() => [1, [3, 4]]);
@@ -992,7 +993,7 @@ describe('$(...)', () => {
       expect(lis).toHaveLength(1);
     });
 
-    it('(selection) : should reduce the set of matched elements to those that are mot contained in the provided selection', () => {
+    it('(selection) : should reduce the set of matched elements to those that are not contained in the provided selection', () => {
       const $fruits = $('li');
       const $orange = $('.orange');
 

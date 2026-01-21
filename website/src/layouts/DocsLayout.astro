@@ -1,0 +1,57 @@
+---
+import '@/styles/global.css';
+import { ViewTransitions } from 'astro:transitions';
+import Navbar from '@/components/Navbar.astro';
+import Footer from '@/components/Footer.astro';
+import Sidebar from '@/components/Sidebar.astro';
+import TableOfContents from '@/components/TableOfContents.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  headings?: Array<{
+    depth: number;
+    slug: string;
+    text: string;
+  }>;
+}
+
+const {
+  title,
+  description = 'The fast, flexible & elegant library for parsing and manipulating HTML and XML.',
+  headings = [],
+} = Astro.props;
+
+const currentPath = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta
+      name="keywords"
+      content="htmlparser, jquery, selector, scraper, parser, dom, xml, html, nodejs"
+    />
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico" />
+    <title>{title} | Cheerio</title>
+    <ViewTransitions />
+  </head>
+  <body
+    class="flex min-h-screen flex-col bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100"
+  >
+    <Navbar />
+    <div class="mx-auto flex w-full max-w-8xl flex-1">
+      <Sidebar currentPath={currentPath} />
+      <main class="flex-1 min-w-0 px-10 py-10">
+        <article class="prose max-w-none">
+          <slot />
+        </article>
+      </main>
+      <TableOfContents headings={headings} />
+    </div>
+    <Footer />
+  </body>
+</html>

@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import * as cheerio from './index.js';
 import { Writable } from 'node:stream';
-import { createServer, type Server } from 'node:http';
+import { createServer, type Server, type RequestListener } from 'node:http';
 
 function noop() {
   // Ignore
@@ -9,15 +9,15 @@ function noop() {
 
 // Returns a promise and a resolve function
 function getPromise() {
-  let cb: (error: Error | null | undefined, $: cheerio.CheerioAPI) => void;
+  let cb!: (error: Error | null | undefined, $: cheerio.CheerioAPI) => void;
   const promise = new Promise<cheerio.CheerioAPI>((resolve, reject) => {
     cb = (error, $) => (error ? reject(error) : resolve($));
   });
 
-  return { promise, cb: cb! };
+  return { promise, cb };
 }
 
-const TEST_HTML = '<h1>Hello World</h1>';
+const TEST_HTML = '<h1>Hello World</h1><a href="link">Example</a>';
 const TEST_HTML_UTF16 = Buffer.from(TEST_HTML, 'utf16le');
 const TEST_HTML_UTF16_BOM = Buffer.from([
   // UTF16-LE BOM
@@ -97,6 +97,7 @@ describe('decodeStream', () => {
     expect($.html()).toBe(
       `<html><head></head><body>${TEST_HTML}</body></html>`,
     );
+    expect($('a').prop('href')).toBe('link');
   });
 
   it('should use htmlparser2 for XML', async () => {
@@ -119,12 +120,13 @@ describe('fromURL', () => {
   function createTestServer(
     contentType: string,
     body: string | Buffer,
+    handler: RequestListener = (_req, res) => {
+      res.writeHead(200, { 'Content-Type': contentType });
+      res.end(body);
+    },
   ): Promise<number> {
     return new Promise((resolve, reject) => {
-      server = createServer((_req, res) => {
-        res.writeHead(200, { 'Content-Type': contentType });
-        res.end(body);
-      });
+      server = createServer(handler);
 
       server.listen(0, () => {
         const address = server?.address();
@@ -176,5 +178,47 @@ describe('fromURL', () => {
     const $ = await cheerio.fromURL(`http://localhost:${port}`);
 
     expect($.html()).toBe(TEST_HTML);
+  });
+
+  it('should throw on non-HTML/XML Content-Type', async () => {
+    const port = await createTestServer('text/plain', TEST_HTML);
+    await expect(cheerio.fromURL(`http://localhost:${port}`)).rejects.toThrow(
+      'The content-type "text/plain" is neither HTML nor XML.',
+    );
+  });
+
+  it('should throw on non-2xx responses', async () => {
+    const port = await createTestServer('text/html', TEST_HTML, (_, res) => {
+      res.writeHead(500);
+      res.end();
+    });
+
+    await expect(cheerio.fromURL(`http://localhost:${port}`)).rejects.toThrow(
+      'Response Error',
+    );
+  });
+
+  it('should follow redirects', async () => {
+    let firstRequestUrl: string | undefined;
+    let secondRequestUrl: string | undefined;
+    const port = await createTestServer('text/html', TEST_HTML, (req, res) => {
+      if (firstRequestUrl === undefined) {
+        firstRequestUrl = req.url;
+        res.writeHead(302, { Location: `http://localhost:${port}/final/path` });
+        res.end();
+      } else {
+        secondRequestUrl = req.url;
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.end(TEST_HTML);
+      }
+    });
+
+    const $ = await cheerio.fromURL(`http://localhost:${port}/first`);
+    expect(firstRequestUrl).toBe('/first');
+    expect(secondRequestUrl).toBe('/final/path');
+    expect($.html()).toBe(
+      `<html><head></head><body>${TEST_HTML}</body></html>`,
+    );
+    expect($('a').prop('href')).toBe(`http://localhost:${port}/final/link`);
   });
 });

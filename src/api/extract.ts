@@ -16,26 +16,26 @@ interface ExtractDescriptor {
 
 type ExtractValue = string | ExtractDescriptor | [string | ExtractDescriptor];
 
-export interface ExtractMap {
-  [key: string]: ExtractValue;
-}
+export type ExtractMap = Record<string, ExtractValue>;
 
-type ExtractedValue<V extends ExtractValue, M extends ExtractMap> = V extends [
+type ExtractedValue<V extends ExtractValue> = V extends [
   string | ExtractDescriptor,
 ]
-  ? NonNullable<ExtractedValue<V[0], M>>[]
+  ? NonNullable<ExtractedValue<V[0]>>[]
   : V extends string
     ? string | undefined
     : V extends ExtractDescriptor
-      ? V['value'] extends ExtractMap
-        ? ExtractedMap<V['value']> | undefined
-        : V['value'] extends ExtractDescriptorFn
-          ? ReturnType<V['value']> | undefined
-          : ReturnType<typeof prop> | undefined
+      ? V['value'] extends infer U
+        ? U extends ExtractMap
+          ? ExtractedMap<U> | undefined
+          : U extends ExtractDescriptorFn
+            ? ReturnType<U> | undefined
+            : ReturnType<typeof prop> | undefined
+        : never
       : never;
 
 export type ExtractedMap<M extends ExtractMap> = {
-  [key in keyof M]: ExtractedValue<M[key], M>;
+  [key in keyof M]: ExtractedValue<M[key]>;
 };
 
 function getExtractDescr(
