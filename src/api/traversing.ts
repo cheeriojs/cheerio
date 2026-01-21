@@ -24,7 +24,7 @@ import {
   uniqueSort,
 } from 'domutils';
 import type { FilterFunction, AcceptedFilters } from '../types.js';
-const reSiblingSelector = /^\s*[+~:]/;
+const reContextSelector = /^\s*(?:[+~]|:scope\b)/;
 
 /**
  * Get the descendants of each element in the current set of matched elements,
@@ -83,7 +83,7 @@ export function _findBySelector<T extends AnyNode>(
 ): Cheerio<Element> {
   const context = this.toArray();
 
-  const elems = reSiblingSelector.test(selector)
+  const elems = reContextSelector.test(selector)
     ? context
     : this.children().toArray();
 
