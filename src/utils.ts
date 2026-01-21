@@ -80,6 +80,10 @@ const enum CharacterCode {
  * @returns Indicates if `str` is HTML.
  */
 export function isHtml(str: string): boolean {
+  if (typeof str !== 'string') {
+    return false;
+  }
+
   const tagStart = str.indexOf('<');
 
   if (tagStart === -1 || tagStart > str.length - 3) return false;
