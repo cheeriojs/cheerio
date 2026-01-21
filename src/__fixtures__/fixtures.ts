@@ -1,4 +1,10 @@
-export const fruits = [
+import type { CheerioAPI } from '../load.js';
+import { load } from '../load-parse.js';
+
+/** A Cheerio instance with no content. */
+export const cheerio: CheerioAPI = load([]);
+
+export const fruits: string = [
   '<ul id="fruits">',
   '<li class="apple">Apple</li>',
   '<li class="orange">Orange</li>',
@@ -6,14 +12,14 @@ export const fruits = [
   '</ul>',
 ].join('');
 
-export const vegetables = [
+export const vegetables: string = [
   '<ul id="vegetables">',
   '<li class="carrot">Carrot</li>',
   '<li class="sweetcorn">Sweetcorn</li>',
   '</ul>',
 ].join('');
 
-export const divcontainers = [
+export const divcontainers: string = [
   '<div class="container">',
   '<div class="inner">First</div>',
   '<div class="inner">Second</div>',
@@ -27,7 +33,7 @@ export const divcontainers = [
   '</div>',
 ].join('');
 
-export const chocolates = [
+export const chocolates: string = [
   '<ul id="chocolates">',
   '<li class="linth" data-highlight="Lindor" data-origin="swiss">Linth</li>',
   '<li class="frey" data-taste="sweet" data-best-collection="Mahony">Frey</li>',
@@ -35,7 +41,7 @@ export const chocolates = [
   '</ul>',
 ].join('');
 
-export const drinks = [
+export const drinks: string = [
   '<ul id="drinks">',
   '<li class="beer">Beer</li>',
   '<li class="juice">Juice</li>',
@@ -45,7 +51,12 @@ export const drinks = [
   '</ul>',
 ].join('');
 
-export const food = ['<ul id="food">', fruits, vegetables, '</ul>'].join('');
+export const food: string = [
+  '<ul id="food">',
+  fruits,
+  vegetables,
+  '</ul>',
+].join('');
 
 export const eleven = `
 <html>
@@ -73,7 +84,7 @@ export const eleven = `
 </html>
 `;
 
-export const unwrapspans = [
+export const unwrapspans: string = [
   '<div id=unwrap style="display: none;">',
   '<div id=unwrap1><span class=unwrap>a</span><span class=unwrap>b</span></div>',
   '<div id=unwrap2><span class=unwrap>c</span><span class=unwrap>d</span></div>',
@@ -81,7 +92,9 @@ export const unwrapspans = [
   '</div>',
 ].join('');
 
-export const inputs = [
+export const inputs: string = [
+  '<button id="btn-value" value="button">Button</button>',
+  '<button id="btn-valueless">Button</button>',
   '<select id="one"><option value="option_not_selected">Option not selected</option><option value="option_selected" selected>Option selected</option></select>',
   '<select id="one-valueless"><option>Option not selected</option><option selected>Option selected</option></select>',
   '<select id="one-html-entity"><option>Option not selected</option><option selected>Option &lt;selected&gt;</option></select>',
@@ -96,12 +109,12 @@ export const inputs = [
   '<select id="multi-valueless" multiple><option>1</option><option selected>2</option><option selected>3</option><option>4</option></select>',
 ].join('');
 
-export const text = [
+export const text: string = [
   '<p>Apples, <b>oranges</b> and pears.</p>',
   '<p>Carrots and <!-- sweetcorn --></p>',
 ].join('');
 
-export const forms = [
+export const forms: string = [
   '<form id="simple"><input type="text" name="fruit" value="Apple" /></form>',
   '<form id="nested"><div><input type="text" name="fruit" value="Apple" /></div><input type="text" name="vegetable" value="Carrot" /></form>',
   '<form id="disabled"><input type="text" name="fruit" value="Apple" disabled /></form>',
@@ -113,7 +126,7 @@ export const forms = [
   '<form id="spaces"><input type="text" name="fruit" value="Blood orange" /></form>',
 ].join('');
 
-export const noscript = [
+export const noscript: string = [
   '</body>',
   '<noscript>',
   '<!-- anchor linking to external file -->',
@@ -123,7 +136,7 @@ export const noscript = [
   '</body>',
 ].join('');
 
-export const script = [
+export const script: string = [
   '<div>',
   '<a>A</a>',
   '<script>',

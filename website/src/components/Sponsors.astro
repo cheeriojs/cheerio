@@ -1,0 +1,47 @@
+---
+import sponsorsData from '../../sponsors.json';
+
+interface Sponsor {
+  name: string;
+  image: string;
+  url: string;
+}
+
+const headliners = sponsorsData.headliner as Sponsor[];
+---
+
+<section class="bg-slate-50 py-12 dark:bg-slate-800">
+  <div class="mx-auto max-w-7xl px-4">
+    <h2 class="mb-8 text-center text-2xl font-semibold">
+      Supported and Backed by
+    </h2>
+    <div class="flex flex-wrap items-center justify-center gap-8">
+      {
+        headliners.map((sponsor) => (
+          <a
+            href={sponsor.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center gap-3 rounded-lg p-3 transition-colors hover:bg-slate-100 dark:hover:bg-slate-700"
+          >
+            <img
+              src={sponsor.image}
+              alt={`${sponsor.name} logo`}
+              class="h-12 w-12 rounded-lg"
+            />
+            <span class="font-medium">{sponsor.name}</span>
+          </a>
+        ))
+      }
+      <a
+        href="https://github.com/sponsors/cheeriojs"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center gap-3 rounded-lg border border-slate-300 p-3 transition-all hover:border-primary hover:shadow-md dark:border-slate-600 dark:hover:border-primary-light"
+      >
+        <img src="/img/1F496.svg" alt="" class="h-12 w-12" aria-hidden="true" />
+        <span class="font-medium">...and you?</span>
+      </a>
+    </div>
+  </div>
+</section>

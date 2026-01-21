@@ -242,7 +242,10 @@ function _removeDuplicates<T extends AnyNode>(elems: T[]): T[] {
  * @returns The parents.
  * @see {@link https://api.jquery.com/parent/}
  */
-export const parent = _singleMatcher(
+export const parent: <T extends AnyNode>(
+  this: Cheerio<T>,
+  selector?: AcceptedFilters<Element>,
+) => Cheerio<Element> = _singleMatcher(
   ({ parent }) => (parent && !isDocument(parent) ? (parent as Element) : null),
   _removeDuplicates,
 );
@@ -265,9 +268,12 @@ export const parent = _singleMatcher(
  * @returns The parents.
  * @see {@link https://api.jquery.com/parents/}
  */
-export const parents = _matcher(
+export const parents: <T extends AnyNode>(
+  this: Cheerio<T>,
+  selector?: AcceptedFilters<Element>,
+) => Cheerio<Element> = _matcher(
   (elem) => {
-    const matched = [];
+    const matched: Element[] = [];
     while (elem.parent && !isDocument(elem.parent)) {
       matched.push(elem.parent as Element);
       elem = elem.parent;
@@ -275,6 +281,7 @@ export const parents = _matcher(
     return matched;
   },
   uniqueSort,
+  // eslint-disable-next-line unicorn/no-array-reverse
   (elems) => elems.reverse(),
 );
 
@@ -296,9 +303,14 @@ export const parents = _matcher(
  * @returns The parents.
  * @see {@link https://api.jquery.com/parentsUntil/}
  */
-export const parentsUntil = _matchUntil(
+export const parentsUntil: <T extends AnyNode>(
+  this: Cheerio<T>,
+  selector?: AcceptedFilters<Element> | null,
+  filterSelector?: AcceptedFilters<Element>,
+) => Cheerio<Element> = _matchUntil(
   ({ parent }) => (parent && !isDocument(parent) ? (parent as Element) : null),
   uniqueSort,
+  // eslint-disable-next-line unicorn/no-array-reverse
   (elems) => elems.reverse(),
 );
 
@@ -383,7 +395,10 @@ export function closest<T extends AnyNode>(
  * @returns The next nodes.
  * @see {@link https://api.jquery.com/next/}
  */
-export const next = _singleMatcher((elem) => nextElementSibling(elem));
+export const next: <T extends AnyNode>(
+  this: Cheerio<T>,
+  selector?: AcceptedFilters<Element>,
+) => Cheerio<Element> = _singleMatcher((elem) => nextElementSibling(elem));
 
 /**
  * Gets all the following siblings of the each selected element, optionally
@@ -403,7 +418,10 @@ export const next = _singleMatcher((elem) => nextElementSibling(elem));
  * @returns The next nodes.
  * @see {@link https://api.jquery.com/nextAll/}
  */
-export const nextAll = _matcher((elem) => {
+export const nextAll: <T extends AnyNode>(
+  this: Cheerio<T>,
+  selector?: AcceptedFilters<Element>,
+) => Cheerio<Element> = _matcher((elem) => {
   const matched = [];
   while (elem.next) {
     elem = elem.next;
@@ -429,7 +447,11 @@ export const nextAll = _matcher((elem) => {
  * @returns The next nodes.
  * @see {@link https://api.jquery.com/nextUntil/}
  */
-export const nextUntil = _matchUntil(
+export const nextUntil: <T extends AnyNode>(
+  this: Cheerio<T>,
+  selector?: AcceptedFilters<Element> | null,
+  filterSelector?: AcceptedFilters<Element>,
+) => Cheerio<Element> = _matchUntil(
   (el) => nextElementSibling(el),
   _removeDuplicates,
 );
@@ -450,7 +472,10 @@ export const nextUntil = _matchUntil(
  * @returns The previous nodes.
  * @see {@link https://api.jquery.com/prev/}
  */
-export const prev = _singleMatcher((elem) => prevElementSibling(elem));
+export const prev: <T extends AnyNode>(
+  this: Cheerio<T>,
+  selector?: AcceptedFilters<Element>,
+) => Cheerio<Element> = _singleMatcher((elem) => prevElementSibling(elem));
 
 /**
  * Gets all the preceding siblings of each selected element, optionally filtered
@@ -471,7 +496,10 @@ export const prev = _singleMatcher((elem) => prevElementSibling(elem));
  * @returns The previous nodes.
  * @see {@link https://api.jquery.com/prevAll/}
  */
-export const prevAll = _matcher((elem) => {
+export const prevAll: <T extends AnyNode>(
+  this: Cheerio<T>,
+  selector?: AcceptedFilters<Element>,
+) => Cheerio<Element> = _matcher((elem) => {
   const matched = [];
   while (elem.prev) {
     elem = elem.prev;
@@ -497,7 +525,11 @@ export const prevAll = _matcher((elem) => {
  * @returns The previous nodes.
  * @see {@link https://api.jquery.com/prevUntil/}
  */
-export const prevUntil = _matchUntil(
+export const prevUntil: <T extends AnyNode>(
+  this: Cheerio<T>,
+  selector?: AcceptedFilters<Element> | null,
+  filterSelector?: AcceptedFilters<Element>,
+) => Cheerio<Element> = _matchUntil(
   (el) => prevElementSibling(el),
   _removeDuplicates,
 );
@@ -521,7 +553,10 @@ export const prevUntil = _matchUntil(
  * @returns The siblings.
  * @see {@link https://api.jquery.com/siblings/}
  */
-export const siblings = _matcher(
+export const siblings: <T extends AnyNode>(
+  this: Cheerio<T>,
+  selector?: AcceptedFilters<Element>,
+) => Cheerio<Element> = _matcher(
   (elem) =>
     getSiblings(elem).filter((el): el is Element => isTag(el) && el !== elem),
   uniqueSort,
@@ -545,7 +580,10 @@ export const siblings = _matcher(
  * @returns The children.
  * @see {@link https://api.jquery.com/children/}
  */
-export const children = _matcher(
+export const children: <T extends AnyNode>(
+  this: Cheerio<T>,
+  selector?: AcceptedFilters<Element>,
+) => Cheerio<Element> = _matcher(
   (elem) => getChildren(elem).filter(isTag),
   _removeDuplicates,
 );
@@ -989,7 +1027,7 @@ export function get<T>(this: Cheerio<T>, i?: number): T | T[] {
  * @returns The contained items.
  */
 export function toArray<T>(this: Cheerio<T>): T[] {
-  return Array.prototype.slice.call(this);
+  return (Array.prototype as T[]).slice.call(this);
 }
 
 /**
@@ -1061,7 +1099,7 @@ export function slice<T>(
   start?: number,
   end?: number,
 ): Cheerio<T> {
-  return this._make(Array.prototype.slice.call(this, start, end));
+  return this._make<T>(Array.prototype.slice.call(this, start, end));
 }
 
 /**
@@ -1080,7 +1118,7 @@ export function slice<T>(
  * @see {@link https://api.jquery.com/end/}
  */
 export function end<T>(this: Cheerio<T>): Cheerio<AnyNode> {
-  return this.prevObject ?? this._make([]);
+  return (this.prevObject as Cheerio<AnyNode> | null) ?? this._make([]);
 }
 
 /**
@@ -1130,6 +1168,8 @@ export function addBack<T extends AnyNode>(
   selector?: string,
 ): Cheerio<AnyNode> {
   return this.prevObject
-    ? this.add(selector ? this.prevObject.filter(selector) : this.prevObject)
+    ? this.add<AnyNode, T>(
+        selector ? this.prevObject.filter(selector) : this.prevObject,
+      )
     : this;
 }

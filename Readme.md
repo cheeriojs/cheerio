@@ -22,7 +22,7 @@
 [中文文档 (Chinese Readme)](https://github.com/cheeriojs/cheerio/wiki/Chinese-README)
 
 ```js
-const cheerio = require('cheerio');
+import * as cheerio from 'cheerio';
 const $ = cheerio.load('<h2 class="title">Hello world</h2>');
 
 $('h2.title').text('Hello there!');
@@ -34,7 +34,13 @@ $.html();
 
 ## Installation
 
-`npm install cheerio`
+Install Cheerio using a package manager like npm, yarn, or bun.
+
+```bash
+npm install cheerio
+# or
+bun add cheerio
+```
 
 ## Features
 
@@ -61,7 +67,7 @@ jQuery operates on the one, baked-in DOM. With Cheerio, we need to pass in the
 HTML document.
 
 ```js
-// ES6 or TypeScript:
+// ESM or TypeScript:
 import * as cheerio from 'cheerio';
 
 // In other environments:
@@ -193,41 +199,11 @@ development and support.
 
 <!-- BEGIN SPONSORS: sponsor -->
 
-<a href="https://cryptocasinos.com/" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcryptocasinos%2F99b168e%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=2ef05a88fcef5338757b09e56ca05cbf" title="CryptoCasinos" alt="CryptoCasinos"></img>
-          </a>
-<a href="https://www.casinoonlineaams.com" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasinoonlineaamscom%2Fc59b0fd%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=7b90355c5df11c3ac489869b01279fee" title="Casinoonlineaams.com" alt="Casinoonlineaams.com"></img>
-          </a>
-<a href="https://casinoutansvensklicens.co/" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasino-utan-svensk-licens3%2Ff7e9357%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=45ea355f0c3411592219714943df29dd" title="Casino utan svensk licens" alt="Casino utan svensk licens"></img>
-          </a>
-<a href="https://www.zenrows.com" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fzenrows%2F3199d4b%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=8a51972a1004283672506d2e3aedd25b" title="ZenRows" alt="ZenRows"></img>
-          </a>
-<a href="https://casinosicuri.info/" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fcasinosicuri-info%2F5dc691c%2Favatar.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=66bff23a6f3379305e049abd87368780" title="Casinosicuri.info" alt="Casinosicuri.info"></img>
-          </a>
-<a href="https://slotoking.ua/games/" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Figrovye-avtomaty-ua%2F96bfde3%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=07091c88a0b859ecaa81ef10fadf3075" title="Игровые автоматы" alt="Игровые автоматы"></img>
-          </a>
 <a href="https://onlinecasinosspelen.com" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fonlinecasinosspelen%2F4ce3830%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=60e5dd9f3993a754d0e5d47a43ff7462" title="OnlineCasinosSpelen" alt="OnlineCasinosSpelen"></img>
-          </a>
-<a href="https://casinoZonderregistratie.net/" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fczrnet%2F24e6252%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=d9b81b3c39bca4d3a8f279e79c5eec8d" title="CasinoZonderRegistratie.net" alt="CasinoZonderRegistratie.net"></img>
+            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fonlinecasinosspelen%2F99ac6a2%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=8ec1ec058845b823858f22205485be02" title="OnlineCasinosSpelen" alt="OnlineCasinosSpelen"></img>
           </a>
 <a href="https://Nieuwe-Casinos.net" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fnieuwecasinos%2Fee150d6%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=c2663f8b5dcfc983ef5641028d7b430b" title="Nieuwe-Casinos.net" alt="Nieuwe-Casinos.net"></img>
-          </a>
-<a href="https://vedonlyontiyhtiot.com/" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fvedonlyontiyhtiot-com%2Favatar.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=9983cbab4b2e4b4f715c31acaa27bea6" title="Vedonlyontiyhtiot.com" alt="Vedonlyontiyhtiot.com"></img>
-          </a>
-<a href="https://puter.com/" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fputer%2Ff8643c4%2Favatar.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=533e28124d885c9d8b261e464db029c5" title="Puter.com" alt="Puter.com"></img>
-          </a>
-<a href="https://www.nodepositcasinobonus.org/" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fno-deposit-bonus%2F912e261%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=ce708f21996657eef8c5207fb84312b5" title="No Deposit Bonus" alt="No Deposit Bonus"></img>
+            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fnieuwecasinos%2Fc67d423%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=ed55d86b80b1aa8cf89b033020521945" title="Nieuwe-Casinos.net" alt="Nieuwe-Casinos.net"></img>
           </a>
 
 <!-- END SPONSORS -->
@@ -242,32 +218,8 @@ support for Cheerio and help us maintain and improve this open source project.
 <a href="https://kafidoff.com" target="_blank" rel="noopener noreferrer">
             <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fkafidoff-vasy%2Fd7ff85c%2Favatar.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=a41c66c2f9b1d3a7a241e425e7aa2d09" title="Vasy Kafidoff" alt="Vasy Kafidoff"></img>
           </a>
-<a href="https://medium.com/norch" target="_blank" rel="noopener noreferrer">
-            <img height="48px" width="48px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fespenklem%2F7e8cd40%2Favatar.png?ixlib=js-3.8.0&w=48&h=48&fit=fillmax&fill=solid&s=f727bc0f59d1738188ec8e4499123149" title="Espen Klem" alt="Espen Klem"></img>
-          </a>
 
 <!-- END SPONSORS -->
-
-## Special Thanks
-
-This library stands on the shoulders of some incredible developers. A special
-thanks to:
-
-**&#8226; @fb55 for htmlparser2 & css-select:** Felix has a knack for writing
-speedy parsing engines. He completely re-wrote both @tautologistic's
-`node-htmlparser` and @harry's `node-soupselect` from the ground up, making both
-of them much faster and more flexible. Cheerio would not be possible without his
-foundational work
-
-**&#8226; @jQuery team for jQuery:** The core API is the best of its class and
-despite dealing with all the browser inconsistencies the code base is extremely
-clean and easy to follow. Much of cheerio's implementation and documentation is
-from jQuery. Thanks guys.
-
-**&#8226; @tj:** The style, the structure, the open-source"-ness" of this
-library comes from studying TJ's style and using many of his libraries. This
-dude consistently pumps out high-quality libraries and has always been more than
-willing to help or answer questions. You rock TJ.
 
 ## License
 

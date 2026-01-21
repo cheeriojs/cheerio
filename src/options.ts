@@ -3,6 +3,7 @@ import type { ParserOptions as HTMLParser2ParserOptions } from 'htmlparser2';
 import type { ParserOptions as Parse5ParserOptions } from 'parse5';
 import type { Htmlparser2TreeAdapterMap } from 'parse5-htmlparser2-tree-adapter';
 import type { Options as SelectOptions } from 'cheerio-select';
+import type { DomSerializerOptions } from 'dom-serializer';
 
 /**
  * Options accepted by htmlparser2, the default parser for XML.
@@ -10,12 +11,10 @@ import type { Options as SelectOptions } from 'cheerio-select';
  * @see https://github.com/fb55/htmlparser2/wiki/Parser-options
  */
 export interface HTMLParser2Options
-  extends DomHandlerOptions,
-    HTMLParser2ParserOptions {}
-
-/** Options for parse5, the default parser for HTML. */
-export interface Parse5Options // eslint-disable-line @typescript-eslint/no-empty-interface
-  extends Parse5ParserOptions<Htmlparser2TreeAdapterMap> {}
+  extends DomHandlerOptions, DomSerializerOptions, HTMLParser2ParserOptions {
+  /** Treat the input as an XML document. */
+  xmlMode?: boolean;
+}
 
 /**
  * Options accepted by Cheerio.
@@ -23,7 +22,7 @@ export interface Parse5Options // eslint-disable-line @typescript-eslint/no-empt
  * Please note that parser-specific options are _only recognized_ if the
  * relevant parser is used.
  */
-export interface CheerioOptions extends Parse5Options {
+export interface CheerioOptions extends Parse5ParserOptions<Htmlparser2TreeAdapterMap> {
   /**
    * Recommended way of configuring htmlparser2 when wanting to parse XML.
    *
@@ -42,7 +41,7 @@ export interface CheerioOptions extends Parse5Options {
   xmlMode?: boolean;
 
   /** The base URI for the document. Used to resolve the `href` and `src` props. */
-  baseURI?: string | URL; // eslint-disable-line n/no-unsupported-features/node-builtins
+  baseURI?: string | URL;
 
   /**
    * Is the document in quirks mode?
@@ -86,8 +85,7 @@ export interface CheerioOptions extends Parse5Options {
 
 /** Internal options for Cheerio. */
 export interface InternalOptions
-  extends HTMLParser2Options,
-    Omit<CheerioOptions, 'xml'> {
+  extends HTMLParser2Options, Omit<CheerioOptions, 'xml'> {
   /**
    * Whether to use htmlparser2.
    *

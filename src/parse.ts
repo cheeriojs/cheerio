@@ -51,7 +51,7 @@ export function getParse(
       return doc;
     }
 
-    // Add conent to new root element
+    // Add content to new root element
     const root = new Document([]);
 
     // Update the DOM using the root

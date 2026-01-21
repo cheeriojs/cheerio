@@ -4,7 +4,14 @@
  *   Adapted from
  *   https://github.com/eslint/website/blob/230e73457dcdc2353ad7934e876a5a222a17b1d7/_tools/fetch-sponsors.js.
  */
-
+/* eslint-disable @typescript-eslint/no-unsafe-assignment,
+                  @typescript-eslint/no-explicit-any,
+                  @typescript-eslint/no-unsafe-return,
+                  @typescript-eslint/no-non-null-assertion,
+                  @typescript-eslint/no-unsafe-call,
+                  @typescript-eslint/no-unsafe-argument,
+                  @typescript-eslint/no-unsafe-member-access,
+                  @typescript-eslint/prefer-nullish-coalescing */
 import * as fs from 'node:fs/promises';
 import { request } from 'undici';
 import { graphql as githubGraphQL } from '@octokit/graphql';
@@ -60,6 +67,17 @@ const tierSponsors: Record<Tier, Sponsor[]> = {
       source: 'manual',
       tier: 'headliner',
     },
+    {
+      createdAt: '2026-01-21',
+      name: 'HasData',
+      image: 'https://hasdata.com/favicon.svg',
+      url: 'https://hasdata.com',
+      type: 'ORGANIZATION',
+      monthlyDonation: 0,
+      totalDonations: 0,
+      source: 'manual',
+      tier: 'headliner',
+    },
   ],
   sponsor: [],
   professional: [],
@@ -72,6 +90,7 @@ if (!CHEERIO_SPONSORS_GITHUB_TOKEN) {
   throw new Error('Missing CHEERIO_SPONSORS_GITHUB_TOKEN.');
 }
 
+// @ts-expect-error - Types don't have a constructor
 const imgix = new ImgixClient({
   domain: 'humble.imgix.net',
   secureURLToken: IMGIX_TOKEN,
@@ -143,7 +162,7 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
     body: JSON.stringify({ query }),
   });
 
-  const payload = await body.json();
+  const payload: any = await body.json();
 
   return payload.data.account.orders.nodes.map((order: any): Sponsor => {
     const donation = order.amount.value * 100;
@@ -236,10 +255,10 @@ async function fetchGitHubSponsors(): Promise<Sponsor[]> {
 }
 
 async function fetchSponsors(): Promise<Sponsor[]> {
-  const openCollectiveSponsors = fetchOpenCollectiveSponsors();
-  const githubSponsors = fetchGitHubSponsors();
-
-  return [...(await openCollectiveSponsors), ...(await githubSponsors)];
+  return Promise.all([
+    fetchOpenCollectiveSponsors(),
+    fetchGitHubSponsors(),
+  ]).then((results) => results.flat());
 }
 
 /*
@@ -262,6 +281,8 @@ const professionalToBackerOverrides = new Map([
 
 const sponsors = await fetchSponsors();
 
+console.log('Received sponsors:', sponsors);
+
 // Remove sponsors that are already in the pre-populated headliners
 for (let i = 0; i < sponsors.length; i++) {
   if (
@@ -277,11 +298,12 @@ sponsors.sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt));
 // Process into a useful format
 for (const sponsor of sponsors) {
   if (
-    sponsor.tier !== 'sponsor' &&
-    (!sponsor.tier ||
-      sponsor.type === 'ORGANIZATION' ||
-      MISLABELED_ORGS.test(sponsor.name) ||
-      MISLABELED_ORGS.test(sponsor.url))
+    !sponsor.tier || // Always skip if sponsor has no tier (e.g., donation < $5)
+    // OR if it's a 'professional' or 'backer' tier AND meets specific filtering criteria
+    ((sponsor.tier === 'professional' || sponsor.tier === 'backer') &&
+      (sponsor.type === 'ORGANIZATION' ||
+        MISLABELED_ORGS.test(sponsor.name) ||
+        MISLABELED_ORGS.test(sponsor.url)))
   ) {
     continue;
   }
@@ -300,7 +322,7 @@ for (const tier of Object.values(tierSponsors)) {
   // Sort order based on total donations
   tier.sort((a: Sponsor, b: Sponsor) => b.totalDonations - a.totalDonations);
 
-  // Set all montly donations to 0
+  // Set all donations to 0 before writing to JSON
   for (const sponsor of tier) {
     sponsor.monthlyDonation = 0;
     sponsor.totalDonations = 0;

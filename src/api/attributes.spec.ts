@@ -1,6 +1,8 @@
-import cheerio, { load, type CheerioAPI, type Cheerio } from '../index.js';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { load, type CheerioAPI, type Cheerio } from '../index.js';
 import type { Element } from 'domhandler';
 import {
+  cheerio,
   script,
   fruits,
   vegetables,
@@ -319,6 +321,11 @@ describe('$(...)', () => {
       expect($(undefined).prop('href')).toBeUndefined();
     });
 
+    it('("href") : should skip values without an href', () => {
+      const $ = load('<a id="1">example1</a>');
+      expect($('#1').prop('href')).toBeUndefined();
+    });
+
     it('("src") : should resolve links with `baseURI`', () => {
       const $ = load(
         `
@@ -349,6 +356,13 @@ describe('$(...)', () => {
       expect($a.prop('outerHTML')).toBe(outerHtml);
 
       expect($(undefined).prop('outerHTML')).toBeUndefined();
+    });
+
+    it('("outerHTML") : should support root nodes', () => {
+      const $ = load('<div></div>');
+      expect($.root().prop('outerHTML')).toBe(
+        '<html><head></head><body><div></div></body></html>',
+      );
     });
 
     it('("innerHTML") : should render properly', () => {
@@ -638,6 +652,14 @@ describe('$(...)', () => {
       expect($('<div>').val()).toBeUndefined();
     });
 
+    it('(): on button should get value', () => {
+      const val = $('#btn-value').val();
+      expect(val).toBe('button');
+    });
+    it('(): on button with no value should get undefined', () => {
+      const val = $('#btn-valueless').val();
+      expect(val).toBeUndefined();
+    });
     it('(): on select should get value', () => {
       const val = $('select#one').val();
       expect(val).toBe('option_selected');
@@ -1011,7 +1033,7 @@ describe('$(...)', () => {
     it('(fn) : should no op elements without attributes', () => {
       const $inputs = $(inputs);
       const val = $inputs.removeClass(() => 'tasty');
-      expect(val).toHaveLength(15);
+      expect(val).toHaveLength(17);
     });
 
     it('(fn) : should skip text nodes', () => {
@@ -1122,7 +1144,6 @@ describe('$(...)', () => {
     it('(fn) : should work with no initial class attribute', () => {
       const $inputs = load(inputs);
       $inputs('input, select').toggleClass(function () {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- `get` should never return undefined here.
         return $inputs(this).get(0)!.tagName === 'select'
           ? 'selectable'
           : 'inputable';

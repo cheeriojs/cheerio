@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach } from 'vitest';
 import { load, type CheerioAPI, type Cheerio } from '../index.js';
 import {
   fruits,
@@ -161,7 +162,7 @@ describe('$(...)', () => {
       expect($fruits.find('.pear').parent()[0]).toBe($fruits.find('div')[0]);
     });
 
-    it('($(...)) : for each element it should add a wrapper elment and add the selected element as its child', () => {
+    it('($(...)) : for each element it should add a wrapper element and add the selected element as its child', () => {
       const $fruitDecorator = $('<div class="fruit-decorator"></div>');
       $('li').wrap($fruitDecorator);
       expect($fruits.children().eq(0).hasClass('fruit-decorator')).toBe(true);
@@ -300,7 +301,7 @@ describe('$(...)', () => {
       expect($fruits.find('.pear')).toHaveLength(1);
     });
 
-    it('($(...)) : for each element it should add a wrapper elment and add the selected element as its child', () => {
+    it('($(...)) : for each element it should add a wrapper element and add the selected element as its child', () => {
       const $fruitDecorator = $('<div class="fruit-decorator"></div>');
       const $children = $fruits.children();
       $('li').wrapInner($fruitDecorator);

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["../src/index.ts"],
+  "tsconfig": "../tsconfig.typedoc.json",
+  "readme": "none",
+  "excludePrivate": true,
+  "plugin": ["typedoc-plugin-markdown", "typedoc-plugin-mdn-links"],
+  "out": "src/content/docs/api",
+  "entryFileName": "index",
+  "router": "kind",
+  "publicPath": "/docs/api/",
+  "fileExtension": ".md",
+  "hidePageHeader": true,
+  "hideBreadcrumbs": true,
+  "useCodeBlocks": true,
+  "expandObjects": true,
+  "parametersFormat": "table",
+  "enumMembersFormat": "table",
+  "typeDeclarationFormat": "table",
+  "indexFormat": "table",
+  "sanitizeComments": true,
+  "externalSymbolLinkMappings": {
+    "domhandler": {
+      "Document": "https://domhandler.js.org/classes/Document.html",
+      "Element": "https://domhandler.js.org/classes/Element.html",
+      "Node": "https://domhandler.js.org/classes/Node.html",
+      "ChildNode": "https://domhandler.js.org/types/ChildNode.html",
+      "ParentNode": "https://domhandler.js.org/types/ParentNode.html",
+      "AnyNode": "https://domhandler.js.org/types/AnyNode.html"
+    },
+    "parse5": {
+      "TreeAdapterTypeMap": "https://parse5.js.org/interfaces/parse5.TreeAdapterTypeMap.html",
+      "TreeAdapter": "https://parse5.js.org/interfaces/parse5.TreeAdapter.html"
+    }
+  }
+}

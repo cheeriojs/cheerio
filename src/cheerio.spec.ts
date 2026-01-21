@@ -1,7 +1,8 @@
+import { describe, it, expect } from 'vitest';
 import { parseDOM } from 'htmlparser2';
-import cheerio, { type Cheerio } from './index.js';
-import { fruits, food, noscript } from './__fixtures__/fixtures.js';
-import type { Element } from 'domhandler';
+import { type Cheerio } from './index.js';
+import { cheerio, fruits, food, noscript } from './__fixtures__/fixtures.js';
+import type { AnyNode, Element } from 'domhandler';
 
 declare module './index.js' {
   interface Cheerio<T> {
@@ -9,7 +10,7 @@ declare module './index.js' {
       context: Cheerio<T>;
       args: unknown[];
     };
-    foo(): void;
+    foo(this: void): void;
   }
 }
 
@@ -66,19 +67,19 @@ describe('cheerio', () => {
     expect($script[0].childNodes).toHaveLength(0);
   });
 
-  // eslint-disable-next-line jest/expect-expect
+  // eslint-disable-next-line vitest/expect-expect
   it('should be able to select .apple with only a context', () => {
     const $apple = cheerio('.apple', fruits);
     testAppleSelect($apple);
   });
 
-  // eslint-disable-next-line jest/expect-expect
+  // eslint-disable-next-line vitest/expect-expect
   it('should be able to select .apple with a node as context', () => {
     const $apple = cheerio('.apple', cheerio(fruits)[0]);
     testAppleSelect($apple);
   });
 
-  // eslint-disable-next-line jest/expect-expect
+  // eslint-disable-next-line vitest/expect-expect
   it('should be able to select .apple with only a root', () => {
     const $apple = cheerio('.apple', null, fruits);
     testAppleSelect($apple);
@@ -123,19 +124,19 @@ describe('cheerio', () => {
     });
   });
 
-  // eslint-disable-next-line jest/expect-expect
+  // eslint-disable-next-line vitest/expect-expect
   it('should be able to do: cheerio("#fruits .apple")', () => {
     const $apple = cheerio('#fruits .apple', fruits);
     testAppleSelect($apple);
   });
 
-  // eslint-disable-next-line jest/expect-expect
+  // eslint-disable-next-line vitest/expect-expect
   it('should be able to do: cheerio("li.apple")', () => {
     const $apple = cheerio('li.apple', fruits);
     testAppleSelect($apple);
   });
 
-  // eslint-disable-next-line jest/expect-expect
+  // eslint-disable-next-line vitest/expect-expect
   it('should be able to select by attributes', () => {
     const $apple = cheerio('li[class=apple]', fruits);
     testAppleSelect($apple);
@@ -220,17 +221,23 @@ describe('cheerio', () => {
   });
 
   it('(extended Array) should not interfere with prototype methods (issue #119)', () => {
-    const extended: any = [];
+    const extended: AnyNode[] = [];
+    // @ts-expect-error - Ignore for testing
     extended.find =
+      // @ts-expect-error - Ignore for testing
       extended.children =
+      // @ts-expect-error - Ignore for testing
       extended.each =
         function () {
           /* Ignore */
         };
     const $empty = cheerio(extended);
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     expect($empty.find).toBe(cheerio.prototype.find);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     expect($empty.children).toBe(cheerio.prototype.children);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     expect($empty.each).toBe(cheerio.prototype.each);
   });
 
@@ -259,7 +266,9 @@ describe('cheerio', () => {
 
     // Issue #1092
     it('should handle a character `)` in `:contains` selector', () => {
-      const result = cheerio.load('<p>)aaa</p>')(":contains('\\)aaa')");
+      const result = cheerio.load('<p>)aaa</p>')(
+        String.raw`:contains('\)aaa')`,
+      );
       expect(result).toHaveLength(3);
       expect(result.first().prop('tagName')).toBe('HTML');
       expect(result.eq(1).prop('tagName')).toBe('BODY');
@@ -357,7 +366,9 @@ describe('cheerio', () => {
       it('should honor extensions defined on `prototype` property', () => {
         const $ = cheerio.load('<div>');
 
-        $.prototype.myPlugin = function (...args: unknown[]) {
+        ($.prototype as Cheerio<AnyNode>).myPlugin = function (
+          ...args: unknown[]
+        ) {
           return {
             context: this,
             args,
@@ -391,7 +402,7 @@ describe('cheerio', () => {
         const $a = cheerio.load('<div>');
         const $b = cheerio.load('<div>');
 
-        $a.prototype.foo = function () {
+        ($a.prototype as Cheerio<AnyNode>).foo = function () {
           /* Ignore */
         };
 
@@ -402,7 +413,7 @@ describe('cheerio', () => {
 
   describe('parse5 options', () => {
     // Should parse noscript tags only with false option value
-    test('{scriptingEnabled: ???}', () => {
+    it('{scriptingEnabled: ???}', () => {
       // [default] `scriptingEnabled: true` - tag contains one text element
       const withScripts = cheerio.load(noscript)('noscript');
       expect(withScripts).toHaveLength(1);
@@ -430,7 +441,7 @@ describe('cheerio', () => {
     });
 
     // Should contain location data only with truthful option value
-    test('{sourceCodeLocationInfo: ???}', () => {
+    it('{sourceCodeLocationInfo: ???}', () => {
       // Location data should not be present
       for (const val of [undefined, null, 0, false, '']) {
         const options = { sourceCodeLocationInfo: val as never };
