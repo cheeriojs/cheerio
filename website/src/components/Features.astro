@@ -1,0 +1,47 @@
+---
+const features = [
+  {
+    title: 'Proven syntax',
+    icon: '/img/1F496.svg',
+    description:
+      "Cheerio implements a subset of core jQuery. Cheerio removes all the DOM inconsistencies and browser cruft from the jQuery library, revealing its truly gorgeous API.",
+  },
+  {
+    title: 'Blazingly fast',
+    icon: '/img/26A1.svg',
+    description:
+      'Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient.',
+  },
+  {
+    title: 'Incredibly flexible',
+    icon: '/img/1F57A.svg',
+    description:
+      'Cheerio can parse nearly any HTML or XML document. Cheerio works in both browser and server environments.',
+  },
+];
+---
+
+<section class="bg-white py-16 dark:bg-slate-900">
+  <div class="mx-auto max-w-7xl px-4">
+    <div class="grid grid-cols-1 gap-12 md:grid-cols-3">
+      {
+        features.map((feature) => (
+          <div class="text-center">
+            <div class="mb-4 flex justify-center">
+              <img
+                src={feature.icon}
+                alt=""
+                class="h-32 w-32"
+                aria-hidden="true"
+              />
+            </div>
+            <h3 class="mb-2 text-xl font-semibold">{feature.title}</h3>
+            <p class="text-slate-600 dark:text-slate-400">
+              {feature.description}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

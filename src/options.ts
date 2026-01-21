@@ -11,9 +11,7 @@ import type { DomSerializerOptions } from 'dom-serializer';
  * @see https://github.com/fb55/htmlparser2/wiki/Parser-options
  */
 export interface HTMLParser2Options
-  extends DomHandlerOptions,
-    DomSerializerOptions,
-    HTMLParser2ParserOptions {
+  extends DomHandlerOptions, DomSerializerOptions, HTMLParser2ParserOptions {
   /** Treat the input as an XML document. */
   xmlMode?: boolean;
 }
@@ -24,8 +22,7 @@ export interface HTMLParser2Options
  * Please note that parser-specific options are _only recognized_ if the
  * relevant parser is used.
  */
-export interface CheerioOptions
-  extends Parse5ParserOptions<Htmlparser2TreeAdapterMap> {
+export interface CheerioOptions extends Parse5ParserOptions<Htmlparser2TreeAdapterMap> {
   /**
    * Recommended way of configuring htmlparser2 when wanting to parse XML.
    *
@@ -88,8 +85,7 @@ export interface CheerioOptions
 
 /** Internal options for Cheerio. */
 export interface InternalOptions
-  extends HTMLParser2Options,
-    Omit<CheerioOptions, 'xml'> {
+  extends HTMLParser2Options, Omit<CheerioOptions, 'xml'> {
   /**
    * Whether to use htmlparser2.
    *

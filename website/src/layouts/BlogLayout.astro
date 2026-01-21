@@ -1,0 +1,62 @@
+---
+import '@/styles/global.css';
+import Navbar from '@/components/Navbar.astro';
+import Footer from '@/components/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  date?: Date;
+  author?: string;
+}
+
+const {
+  title,
+  description = 'The fast, flexible & elegant library for parsing and manipulating HTML and XML.',
+  date,
+  author,
+} = Astro.props;
+
+const formattedDate = date
+  ? date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  : null;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico" />
+    <title>{title} | Cheerio Blog</title>
+  </head>
+  <body
+    class="flex min-h-screen flex-col bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100"
+  >
+    <Navbar />
+    <main class="flex-1">
+      <article class="mx-auto max-w-3xl px-4 py-12">
+        <header class="mb-8">
+          <h1 class="mb-4 text-4xl font-bold">{title}</h1>
+          {
+            (formattedDate || author) && (
+              <div class="flex items-center gap-4 text-slate-500 dark:text-slate-400">
+                {formattedDate && <time>{formattedDate}</time>}
+                {author && <span>by {author}</span>}
+              </div>
+            )
+          }
+        </header>
+        <div class="prose max-w-none">
+          <slot />
+        </div>
+      </article>
+    </main>
+    <Footer />
+  </body>
+</html>

@@ -199,21 +199,23 @@ describe('fromURL', () => {
   });
 
   it('should follow redirects', async () => {
-    let redirected = false;
+    let firstRequestUrl: string | undefined;
+    let secondRequestUrl: string | undefined;
     const port = await createTestServer('text/html', TEST_HTML, (req, res) => {
-      if (redirected) {
-        expect(req.url).toBe('/final/path');
-        res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.end(TEST_HTML);
-      } else {
-        expect(req.url).toBe('/first');
-        redirected = true;
+      if (firstRequestUrl === undefined) {
+        firstRequestUrl = req.url;
         res.writeHead(302, { Location: `http://localhost:${port}/final/path` });
         res.end();
+      } else {
+        secondRequestUrl = req.url;
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.end(TEST_HTML);
       }
     });
 
     const $ = await cheerio.fromURL(`http://localhost:${port}/first`);
+    expect(firstRequestUrl).toBe('/first');
+    expect(secondRequestUrl).toBe('/final/path');
     expect($.html()).toBe(
       `<html><head></head><body>${TEST_HTML}</body></html>`,
     );

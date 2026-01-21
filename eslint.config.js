@@ -15,14 +15,14 @@ const gitignorePath = fileURLToPath(new URL('.gitignore', import.meta.url));
 export default defineConfig(
   includeIgnoreFile(gitignorePath), // Handle .gitignore patterns
 
-  // 0. Global linter options
+  // Global linter options
   {
     linterOptions: {
       reportUnusedDisableDirectives: true, // Enable reporting of unused disable directives
     },
   },
 
-  // 1. Base configurations for all relevant files
+  // Base configurations for all relevant files
   eslintJs.configs.recommended, // Basic ESLint recommended rules
 
   {
@@ -77,13 +77,14 @@ export default defineConfig(
     },
   },
 
-  // 2. Global custom rules and language options
+  // Global custom rules and language options
   {
     languageOptions: {
       globals: globals.node,
       parserOptions: {
         projectService: {
           allowDefaultProject: ['*.js'],
+          defaultProject: 'tsconfig.json',
         },
         tsconfigRootDir: import.meta.dirname, // eslint-disable-line n/no-unsupported-features/node-builtins
       },
@@ -117,7 +118,7 @@ export default defineConfig(
     },
   },
 
-  // 3. TypeScript specific configurations
+  // TypeScript specific configurations
   tseslint.configs.recommendedTypeChecked,
   tseslint.configs.stylisticTypeChecked,
   {
@@ -164,7 +165,7 @@ export default defineConfig(
     },
   },
 
-  // 4. Vitest specific configuration (for *.spec.ts files)
+  // Vitest specific configuration (for *.spec.ts files)
   {
     files: ['**/*.spec.ts'],
     plugins: { vitest: eslintPluginVitest },
@@ -182,6 +183,19 @@ export default defineConfig(
     },
   },
 
-  // 5. Prettier - must be the last configuration to override styling rules
+  // Website specific configuration
+  {
+    files: ['website/**/*.ts', 'website/**/*.tsx', 'website/**/*.mts'],
+    languageOptions: {
+      parserOptions: {
+        projectService: {
+          allowDefaultProject: ['*.mjs'],
+        },
+        tsconfigRootDir: `${import.meta.dirname}/website`, // eslint-disable-line n/no-unsupported-features/node-builtins
+      },
+    },
+  },
+
+  // Prettier - must be the last configuration to override styling rules
   eslintConfigPrettier,
 );

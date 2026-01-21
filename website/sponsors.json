@@ -32,36 +32,25 @@
       "totalDonations": 0,
       "source": "manual",
       "tier": "headliner"
+    },
+    {
+      "createdAt": "2026-01-21",
+      "name": "HasData",
+      "image": "https://hasdata.com/favicon.svg",
+      "url": "https://hasdata.com",
+      "type": "ORGANIZATION",
+      "monthlyDonation": 0,
+      "totalDonations": 0,
+      "source": "manual",
+      "tier": "headliner"
     }
   ],
   "sponsor": [
     {
-      "createdAt": "2023-06-15T13:34:53.677Z",
-      "name": "Ігрові автомати",
-      "url": "https://betking.com.ua/games/all-slots/",
-      "image": "https://images.opencollective.com/igrovye-avtomaty-ua/96bfde3/logo.png",
-      "type": "ORGANIZATION",
-      "monthlyDonation": 0,
-      "totalDonations": 0,
-      "source": "opencollective",
-      "tier": "sponsor"
-    },
-    {
       "createdAt": "2023-12-05T16:44:08.370Z",
       "name": "OnlineCasinosSpelen",
       "url": "https://onlinecasinosspelen.com",
-      "image": "https://images.opencollective.com/onlinecasinosspelen/4ce3830/logo.png",
-      "type": "ORGANIZATION",
-      "monthlyDonation": 0,
-      "totalDonations": 0,
-      "source": "opencollective",
-      "tier": "sponsor"
-    },
-    {
-      "createdAt": "2023-12-07T14:06:03.013Z",
-      "name": "CasinoZonderRegistratie.net",
-      "url": "https://casinoZonderregistratie.net/",
-      "image": "https://images.opencollective.com/czrnet/24e6252/logo.png",
+      "image": "https://images.opencollective.com/onlinecasinosspelen/99ac6a2/logo.png",
       "type": "ORGANIZATION",
       "monthlyDonation": 0,
       "totalDonations": 0,
@@ -72,7 +61,7 @@
       "createdAt": "2023-12-07T14:07:39.203Z",
       "name": "Nieuwe-Casinos.net",
       "url": "https://Nieuwe-Casinos.net",
-      "image": "https://images.opencollective.com/nieuwecasinos/ee150d6/logo.png",
+      "image": "https://images.opencollective.com/nieuwecasinos/c67d423/logo.png",
       "type": "ORGANIZATION",
       "monthlyDonation": 0,
       "totalDonations": 0,

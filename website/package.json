@@ -1,56 +1,43 @@
 {
   "name": "@cheerio/website",
+  "type": "module",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "docusaurus": "docusaurus",
-    "start": "docusaurus start",
-    "build": "docusaurus build",
-    "swizzle": "docusaurus swizzle",
-    "deploy": "docusaurus deploy",
-    "clear": "docusaurus clear",
-    "serve": "docusaurus serve",
-    "write-translations": "docusaurus write-translations",
-    "write-heading-ids": "docusaurus write-heading-ids",
-    "crowdin:sync": "docusaurus write-translations && crowdin upload && crowdin download",
-    "lint:ts": "tsc --noEmit"
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "npm run build:api && astro build",
+    "build:api": "typedoc",
+    "preview": "astro preview",
+    "astro": "astro"
   },
   "dependencies": {
-    "@docusaurus/core": "^3.9.2",
-    "@docusaurus/module-type-aliases": "^3.9.2",
-    "@docusaurus/plugin-client-redirects": "^3.9.2",
-    "@docusaurus/preset-classic": "^3.9.2",
-    "@docusaurus/remark-plugin-npm2yarn": "^3.9.1",
-    "@docusaurus/theme-live-codeblock": "^3.9.2",
-    "@mdx-js/react": "^3.1.1",
-    "clsx": "^2.1.1",
-    "docusaurus-plugin-typedoc": "^1.4.2",
-    "prism-react-renderer": "^2.4.1",
+    "@astrojs/mdx": "^4.3.0",
+    "@astrojs/react": "^4.3.0",
+    "@astrojs/rss": "^4.0.15",
+    "@astrojs/sitemap": "^3.7.0",
+    "@codesandbox/sandpack-react": "^2.19.0",
+    "@docsearch/css": "^4.5.0",
+    "@docsearch/js": "^4.5.0",
+    "@tailwindcss/vite": "^4.1.8",
+    "astro": "^5.9.0",
+    "hastscript": "^9.0.1",
+    "marked": "^17.0.1",
     "react": "^19.1.0",
-    "react-dom": "^19.2.0",
-    "typedoc": "^0.28.14",
-    "typedoc-plugin-markdown": "^4.9.0",
-    "typedoc-plugin-mdn-links": "^5.0.10"
+    "react-dom": "^19.2.3",
+    "remark-directive": "^4.0.0",
+    "tailwindcss": "^4.1.8",
+    "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
-    "@crowdin/cli": "^4.11.0",
-    "@docusaurus/faster": "^3.9.2",
-    "@tsconfig/docusaurus": "^2.0.4",
+    "@types/react": "^19.2.9",
+    "@types/react-dom": "^19.1.0",
+    "typedoc": "^0.28.5",
+    "typedoc-plugin-markdown": "^4.6.3",
+    "typedoc-plugin-mdn-links": "^5.0.1",
     "typescript": "^5.9.3"
   },
-  "browserslist": {
-    "production": [
-      ">0.5%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
   "engines": {
-    "node": ">=16.14"
+    "node": ">=20.18.1"
   }
 }

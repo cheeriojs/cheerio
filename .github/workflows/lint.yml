@@ -18,10 +18,10 @@ jobs:
 
     steps:
       - name: Clone repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Node.js
-        uses: actions/setup-node@v6.1.0
+        uses: actions/setup-node@v6.2.0
         with:
           node-version: lts/*
           cache: 'npm'
@@ -35,6 +35,10 @@ jobs:
 
       - name: Build Cheerio
         run: npm run build
+
+      - name: Build website
+        run: npm run build
+        working-directory: website
 
       - name: Run lint
         run: npm run lint
