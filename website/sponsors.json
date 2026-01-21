@@ -32,6 +32,17 @@
       "totalDonations": 0,
       "source": "manual",
       "tier": "headliner"
+    },
+    {
+      "createdAt": "2026-01-21",
+      "name": "HasData",
+      "image": "https://hasdata.com/favicon.svg",
+      "url": "https://hasdata.com",
+      "type": "ORGANIZATION",
+      "monthlyDonation": 0,
+      "totalDonations": 0,
+      "source": "manual",
+      "tier": "headliner"
     }
   ],
   "sponsor": [
