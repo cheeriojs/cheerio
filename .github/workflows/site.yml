@@ -30,9 +30,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup Node
-        uses: actions/setup-node@v4.3.0
+        uses: actions/setup-node@v6.2.0
         with:
           # Use current Node LTS version
           node-version: lts/*
@@ -47,19 +47,13 @@ jobs:
       - name: Install website dependencies
         working-directory: website
         run: npm ci
-      - name: Sync Crowdin
-        working-directory: website
-        run: npm run crowdin:sync
-        continue-on-error: true
-        env:
-          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
       - name: Build docs
         working-directory: website
         run: npm run build
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
-          path: ./website/build
+          path: ./website/dist
 
   # Deployment job
   deploy:

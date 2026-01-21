@@ -93,6 +93,8 @@ export const unwrapspans: string = [
 ].join('');
 
 export const inputs: string = [
+  '<button id="btn-value" value="button">Button</button>',
+  '<button id="btn-valueless">Button</button>',
   '<select id="one"><option value="option_not_selected">Option not selected</option><option value="option_selected" selected>Option selected</option></select>',
   '<select id="one-valueless"><option>Option not selected</option><option selected>Option selected</option></select>',
   '<select id="one-html-entity"><option>Option not selected</option><option selected>Option &lt;selected&gt;</option></select>',

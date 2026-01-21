@@ -1,0 +1,118 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+const posts = await getCollection('blog');
+
+// Sort posts by date (newest first)
+const sortedPosts = posts.sort((a, b) => {
+  const dateA = new Date(a.id.split('-').slice(0, 3).join('-'));
+  const dateB = new Date(b.id.split('-').slice(0, 3).join('-'));
+  return dateB.getTime() - dateA.getTime();
+});
+
+function getPostDate(id: string): string {
+  const datePart = id.split('-').slice(0, 3).join('-');
+  return new Date(datePart).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+function getPostSlug(id: string): string {
+  return id.replace('.md', '').replace('.mdx', '');
+}
+
+// Extract excerpt from raw markdown content (content before <!--truncate-->)
+function getExcerpt(rawContent: string): string | null {
+  const truncateIndex = rawContent.indexOf('<!--truncate-->');
+  if (truncateIndex === -1) return null;
+
+  let excerpt = rawContent.slice(0, truncateIndex).trim();
+
+  // Remove frontmatter
+  const frontmatterEnd = excerpt.indexOf('---', 3);
+  if (excerpt.startsWith('---') && frontmatterEnd !== -1) {
+    excerpt = excerpt.slice(frontmatterEnd + 3).trim();
+  }
+
+  // Remove the first heading (usually the title, which duplicates frontmatter title)
+  excerpt = excerpt.replace(/^#\s+.+\n+/, '').trim();
+
+  // Remove admonition blocks (:::note, :::tip, etc.)
+  excerpt = excerpt.replace(/^:::\w+(\[.*?\])?\n[\s\S]*?^:::\n*/gm, '').trim();
+
+  return excerpt || null;
+}
+
+// Pre-render excerpts for each post
+const postsWithExcerpts = sortedPosts.map((post) => {
+  const excerpt = getExcerpt(post.body || '');
+  return { post, excerpt };
+});
+---
+
+<BaseLayout title="Blog">
+  <div class="mx-auto max-w-4xl px-4 py-12">
+    <div class="mb-8 flex items-center justify-between">
+      <div>
+        <h1 class="text-4xl font-bold">Blog</h1>
+        <p class="mt-2 text-lg text-slate-600 dark:text-slate-400">
+          Updates and announcements from the Cheerio team.
+        </p>
+      </div>
+      <a
+        href="/blog/rss.xml"
+        class="flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-600 transition-colors hover:bg-slate-100 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
+        title="RSS Feed"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
+          <path d="M3.75 3a.75.75 0 0 0-.75.75v.5c0 .414.336.75.75.75H4c6.075 0 11 4.925 11 11v.25c0 .414.336.75.75.75h.5a.75.75 0 0 0 .75-.75V16C17 8.82 11.18 3 4 3h-.25Z" />
+          <path d="M3 8.75A.75.75 0 0 1 3.75 8H4a8 8 0 0 1 8 8v.25a.75.75 0 0 1-.75.75h-.5a.75.75 0 0 1-.75-.75V16a6 6 0 0 0-6-6h-.25A.75.75 0 0 1 3 9.25v-.5ZM7 15a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" />
+        </svg>
+        RSS
+      </a>
+    </div>
+
+    <div class="space-y-8">
+      {
+        postsWithExcerpts.map(({ post, excerpt }) => (
+          <article class="rounded-lg border border-slate-200 p-6 transition-shadow hover:shadow-lg dark:border-slate-700">
+            <h2 class="mb-2 text-2xl font-semibold">
+              <a
+                href={`/blog/${getPostSlug(post.id)}`}
+                class="text-slate-900 transition-colors hover:text-primary dark:text-white"
+              >
+                {post.data.title}
+              </a>
+            </h2>
+            <div class="mb-4 flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+              <time>{getPostDate(post.id)}</time>
+              {post.data.tags && (
+                <div class="flex gap-2">
+                  {post.data.tags.map((tag: string) => (
+                    <span class="rounded-full bg-slate-100 px-2 py-1 text-xs dark:bg-slate-800">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+            {excerpt && (
+              <div class="prose prose-slate dark:prose-invert prose-sm max-w-none mb-4">
+                <p class="text-slate-600 dark:text-slate-400">{excerpt}</p>
+              </div>
+            )}
+            <a
+              href={`/blog/${getPostSlug(post.id)}`}
+              class="text-primary hover:underline font-medium"
+            >
+              Read more &rarr;
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>
