@@ -80,8 +80,7 @@ const enum CharacterCode {
  * @returns Indicates if `str` is HTML.
  */
 export function isHtml(str: string): boolean {
-
-  if(typeof str !== 'string') {
+  if (typeof str !== 'string') {
     return false;
   }
 
