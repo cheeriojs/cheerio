@@ -121,7 +121,7 @@
     "domhandler": "^5.0.3",
     "domutils": "^3.2.2",
     "encoding-sniffer": "^0.2.1",
-    "htmlparser2": "^10.0.0",
+    "htmlparser2": "^10.1.0",
     "parse5": "^7.3.0",
     "parse5-htmlparser2-tree-adapter": "^7.1.0",
     "parse5-parser-stream": "^7.1.2",
