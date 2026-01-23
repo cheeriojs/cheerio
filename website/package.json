@@ -27,7 +27,7 @@
     "react-dom": "^19.2.3",
     "remark-directive": "^4.0.0",
     "tailwindcss": "^4.1.8",
-    "unist-util-visit": "^5.0.0"
+    "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
     "@types/react": "^19.2.9",
