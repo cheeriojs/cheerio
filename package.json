@@ -78,7 +78,10 @@
   "types": "./dist/commonjs/index.d.ts",
   "files": [
     "dist",
-    "src"
+    "src",
+    "!**/*.spec.{t,j}s",
+    "!**/__tests__/*",
+    "!**/__fixtures__/*"
   ],
   "scripts": {
     "benchmark": "node --import=tsx benchmark/benchmark.ts",
@@ -173,8 +176,7 @@
     "exclude": [
       "**/*.spec.ts",
       "**/__fixtures__/*",
-      "**/__tests__/*",
-      "**/__snapshots__/*"
+      "**/__tests__/*"
     ]
   }
 }
