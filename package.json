@@ -136,7 +136,7 @@
     "@types/jsdom": "^27.0.0",
     "@types/node": "^25.0.10",
     "@types/whatwg-mimetype": "^3.0.2",
-    "@vitest/coverage-v8": "^4.0.17",
+    "@vitest/coverage-v8": "^4.0.18",
     "@vitest/eslint-plugin": "^1.6.6",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
