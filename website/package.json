@@ -24,7 +24,7 @@
     "hastscript": "^9.0.1",
     "marked": "^17.0.1",
     "react": "^19.1.0",
-    "react-dom": "^19.2.3",
+    "react-dom": "^19.2.4",
     "remark-directive": "^4.0.0",
     "tailwindcss": "^4.1.8",
     "unist-util-visit": "^5.1.0"
