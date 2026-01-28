@@ -30,7 +30,7 @@
     "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
-    "@types/react": "^19.2.9",
+    "@types/react": "^19.2.10",
     "@types/react-dom": "^19.1.0",
     "typedoc": "^0.28.5",
     "typedoc-plugin-markdown": "^4.6.3",
