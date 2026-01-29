@@ -183,9 +183,6 @@ development and support.
 
 <!-- BEGIN SPONSORS: headliner -->
 
-<a href="https://tidelift.com/subscription/pkg/npm-cheerio" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fgithub.com%2Ftidelift.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=0713e6ee5c7ab01e7559df695c1e8cd9" title="Tidelift" alt="Tidelift"></img>
-          </a>
 <a href="https://github.com/" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fgithub.com%2Fgithub.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=a1e87ca289de84eb32ea85432cf8ad11" title="Github" alt="Github"></img>
           </a>
@@ -194,6 +191,9 @@ development and support.
           </a>
 <a href="https://hasdata.com" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fhasdata.com%2Ffavicon.svg?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=21933842d61dec74a961fc57754e58cb" title="HasData" alt="HasData"></img>
+          </a>
+<a href="https://brand.dev/" target="_blank" rel="noopener noreferrer">
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fgithub.com%2Fbrand-dot-dev.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=b870a71fedf0e9b2af5534a8aaf22abb" title="brand.dev" alt="brand.dev"></img>
           </a>
 
 <!-- END SPONSORS -->
