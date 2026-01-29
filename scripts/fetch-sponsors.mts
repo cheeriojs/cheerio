@@ -35,17 +35,6 @@ const tierSponsors: Record<Tier, Sponsor[]> = {
   headliner: [
     // Some sponsors are manually added here.
     {
-      createdAt: '2023-03-03',
-      name: 'Tidelift',
-      image: 'https://github.com/tidelift.png',
-      url: 'https://tidelift.com/subscription/pkg/npm-cheerio',
-      type: 'FUND',
-      monthlyDonation: 0,
-      totalDonations: 0,
-      source: 'manual',
-      tier: 'headliner',
-    },
-    {
       createdAt: '2022-06-24',
       name: 'Github',
       image: 'https://github.com/github.png',
@@ -72,6 +61,17 @@ const tierSponsors: Record<Tier, Sponsor[]> = {
       name: 'HasData',
       image: 'https://hasdata.com/favicon.svg',
       url: 'https://hasdata.com',
+      type: 'ORGANIZATION',
+      monthlyDonation: 0,
+      totalDonations: 0,
+      source: 'manual',
+      tier: 'headliner',
+    },
+    {
+      createdAt: '2026-01-28',
+      name: 'brand.dev',
+      image: 'https://github.com/brand-dot-dev.png',
+      url: 'https://brand.dev/',
       type: 'ORGANIZATION',
       monthlyDonation: 0,
       totalDonations: 0,
