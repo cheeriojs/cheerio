@@ -1,28 +1,33 @@
 ---
+import { CodeXml, Zap, Globe } from '@lucide/astro';
+
 const features = [
   {
     title: 'Proven syntax',
-    icon: '/img/1F496.svg',
     description:
       "Cheerio implements a subset of core jQuery. Cheerio removes all the DOM inconsistencies and browser cruft from the jQuery library, revealing its truly gorgeous API.",
     accent: 'from-rose-500/10 to-pink-500/10',
     border: 'hover:border-rose-500/30',
+    iconColor: 'text-rose-500',
+    Icon: CodeXml,
   },
   {
     title: 'Blazingly fast',
-    icon: '/img/26A1.svg',
     description:
       'Cheerio works with a very simple, consistent DOM model. As a result parsing, manipulating, and rendering are incredibly efficient.',
     accent: 'from-amber-500/10 to-yellow-500/10',
     border: 'hover:border-amber-500/30',
+    iconColor: 'text-amber-500',
+    Icon: Zap,
   },
   {
     title: 'Incredibly flexible',
-    icon: '/img/1F57A.svg',
     description:
       'Cheerio can parse nearly any HTML or XML document. Cheerio works in both browser and server environments.',
     accent: 'from-blue-500/10 to-cyan-500/10',
     border: 'hover:border-blue-500/30',
+    iconColor: 'text-blue-500',
+    Icon: Globe,
   },
 ];
 ---
@@ -50,14 +55,8 @@ const features = [
               `animation-delay-${(i + 1) * 200}`,
             ]}
           >
-            <div class="mb-6 inline-flex rounded-xl bg-white p-3 shadow-sm dark:bg-slate-800">
-              <img
-                src={feature.icon}
-                alt=""
-                class="h-10 w-10"
-                aria-hidden="true"
-                loading="lazy"
-              />
+            <div class:list={['mb-6 inline-flex rounded-xl bg-white p-3 shadow-sm dark:bg-slate-800', feature.iconColor]}>
+              <feature.Icon class="h-8 w-8" stroke-width={1.5} />
             </div>
             <h3 class="mb-3 text-xl font-semibold text-slate-900 dark:text-white">
               {feature.title}

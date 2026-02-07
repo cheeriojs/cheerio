@@ -1,5 +1,6 @@
 ---
 import sponsorsData from '../../sponsors.json';
+import { Heart } from '@lucide/astro';
 
 interface Sponsor {
   name: string;
@@ -52,7 +53,7 @@ const headliners = sponsorsData.headliner as Sponsor[];
         rel="noopener noreferrer"
         class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-6 py-2.5 text-sm font-medium text-primary transition-all duration-300 hover:bg-primary/10 hover:border-primary/50 dark:text-primary-light"
       >
-        <img src="/img/1F496.svg" alt="" class="h-5 w-5" aria-hidden="true" loading="lazy" />
+        <Heart class="h-5 w-5" fill="currentColor" stroke-width={0} />
         Become a sponsor
       </a>
     </div>
