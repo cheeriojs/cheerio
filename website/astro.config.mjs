@@ -12,14 +12,7 @@ import { rehypeExternalLinks } from './src/plugins/rehype-external-links.ts';
 export default defineConfig({
   site: 'https://cheerio.js.org',
   integrations: [mdx(), react(), sitemap()],
-  image: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'unavatar.io',
-      },
-    ],
-  },
+  image: {},
   vite: {
     plugins: [tailwindcss()],
   },

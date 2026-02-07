@@ -1,5 +1,6 @@
 ---
 import '@/styles/global.css';
+import { ViewTransitions } from 'astro:transitions';
 import Navbar from '@/components/Navbar.astro';
 import Footer from '@/components/Footer.astro';
 
@@ -33,7 +34,11 @@ const formattedDate = date
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <link rel="icon" type="image/x-icon" href="/img/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <title>{title} | Cheerio Blog</title>
+    <ViewTransitions />
   </head>
   <body
     class="flex min-h-screen flex-col bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100"

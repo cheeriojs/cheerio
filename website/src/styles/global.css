@@ -24,14 +24,21 @@
 
 @theme {
   --color-primary: #e88c1f;
-  --color-primary-dark: #d77e16;
-  --color-primary-light: #ea9837;
-  --color-primary-lightest: #efb167;
+  --color-primary-dark: #d07418;
+  --color-primary-light: #f0a040;
+  --color-primary-lightest: #f5c376;
+  --color-amber-50: #fffbeb;
+  --color-amber-100: #fef3c7;
+  --color-amber-900: #78350f;
+  --color-amber-950: #451a03;
 
   --font-sans:
     'Rubik', system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, Cantarell,
     'Noto Sans', sans-serif;
   --font-heading: 'Inter', var(--font-sans);
+  --font-display: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+  --font-mono:
+    'JetBrains Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
 }
 
 html {
@@ -52,7 +59,137 @@ h6 {
   font-weight: 600;
 }
 
-/* Prose styles for documentation */
+/* ─── Landing page animations ─── */
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(232, 140, 31, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(232, 140, 31, 0.3);
+  }
+}
+
+@keyframes grain {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-5%, -10%);
+  }
+  30% {
+    transform: translate(3%, -15%);
+  }
+  50% {
+    transform: translate(12%, 9%);
+  }
+  70% {
+    transform: translate(9%, 4%);
+  }
+  90% {
+    transform: translate(-1%, 7%);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease both;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animation-delay-100 {
+  animation-delay: 100ms;
+}
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+.animation-delay-400 {
+  animation-delay: 400ms;
+}
+.animation-delay-500 {
+  animation-delay: 500ms;
+}
+.animation-delay-600 {
+  animation-delay: 600ms;
+}
+.animation-delay-700 {
+  animation-delay: 700ms;
+}
+.animation-delay-800 {
+  animation-delay: 800ms;
+}
+
+/* Grain texture overlay */
+.grain::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 128px 128px;
+  pointer-events: none;
+  animation: grain 8s steps(10) infinite;
+  z-index: 1;
+}
+
+/* ─── Prose styles for documentation ─── */
 .prose {
   max-width: 65ch;
 }

@@ -8,13 +8,10 @@ export async function getStaticPaths() {
     .filter((doc) => doc.id.startsWith('api/'))
     .map((doc) => {
       // Remove 'api/' prefix and file extension
-      let slug = doc.id.replace('api/', '').replace(/\.mdx?$/, '');
-      // Handle index page - should have undefined slug for [...slug] catch-all
-      if (slug === 'index') {
-        slug = undefined;
-      }
+      const rawSlug = doc.id.replace('api/', '').replace(/\.mdx?$/, '');
       return {
-        params: { slug },
+        // Use undefined slug for index page (catch-all [...slug] root)
+        params: { slug: rawSlug === 'index' ? undefined : rawSlug },
         props: { doc },
       };
     });
