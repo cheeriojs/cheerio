@@ -194,6 +194,11 @@ h6 {
   max-width: 65ch;
 }
 
+/* Hide the first h1 in docs content since the editorial header already shows it */
+.docs-content > h1:first-child {
+  display: none;
+}
+
 .prose h1,
 .prose h2,
 .prose h3,
