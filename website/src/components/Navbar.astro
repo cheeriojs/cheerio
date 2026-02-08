@@ -91,22 +91,33 @@ const currentPath = Astro.url.pathname;
 </nav>
 
 <script>
-  // Mobile menu toggle — re-bind after each View Transition navigation
+  // Mobile menu toggle — re-bind after each View Transition navigation.
+  // Use a global guard to ensure the swap listener is registered only once,
+  // avoiding duplicate handlers when the script re-executes on navigations.
   function initMobileMenu() {
     const menuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
 
-    menuButton?.addEventListener('click', () => {
-      mobileMenu?.classList.toggle('hidden');
-    });
+    if (menuButton && mobileMenu) {
+      // Clone and replace to remove any previously attached listeners
+      const freshButton = menuButton.cloneNode(true) as HTMLElement;
+      menuButton.replaceWith(freshButton);
+      freshButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
   }
 
   initMobileMenu();
-  document.addEventListener('astro:after-swap', initMobileMenu);
+  if (!(window as any).__cheerio_mobile_menu_swap) {
+    (window as any).__cheerio_mobile_menu_swap = true;
+    document.addEventListener('astro:after-swap', initMobileMenu);
+  }
 </script>
 
 <script>
-  // Initialize DocSearch — re-run after each View Transition navigation
+  // Initialize DocSearch — re-run after each View Transition navigation.
+  // Use a global guard to ensure the swap listener is registered only once.
   import docsearch from '@docsearch/js';
   import '@docsearch/css';
 
@@ -125,5 +136,8 @@ const currentPath = Astro.url.pathname;
   }
 
   initDocSearch();
-  document.addEventListener('astro:after-swap', initDocSearch);
+  if (!(window as any).__cheerio_docsearch_swap) {
+    (window as any).__cheerio_docsearch_swap = true;
+    document.addEventListener('astro:after-swap', initDocSearch);
+  }
 </script>

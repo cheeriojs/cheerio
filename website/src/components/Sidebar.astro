@@ -281,6 +281,9 @@ export type { SidebarItem, SidebarSection };
 </aside>
 
 <script>
+  // Sidebar drawer — re-bind after each View Transition navigation.
+  // Use a global guard to ensure the swap listener is registered only once,
+  // and clone-replace buttons to avoid accumulating duplicate click handlers.
   function initSidebarDrawer() {
     const overlay = document.getElementById('sidebar-overlay');
     const drawer = document.getElementById('sidebar-drawer');
@@ -310,11 +313,27 @@ export type { SidebarItem, SidebarSection };
       }, 300);
     }
 
-    openBtn?.addEventListener('click', openDrawer);
-    closeBtn?.addEventListener('click', closeDrawer);
-    overlay?.addEventListener('click', closeDrawer);
+    // Clone and replace elements to remove any previously attached listeners
+    if (openBtn) {
+      const freshOpen = openBtn.cloneNode(true) as HTMLElement;
+      openBtn.replaceWith(freshOpen);
+      freshOpen.addEventListener('click', openDrawer);
+    }
+    if (closeBtn) {
+      const freshClose = closeBtn.cloneNode(true) as HTMLElement;
+      closeBtn.replaceWith(freshClose);
+      freshClose.addEventListener('click', closeDrawer);
+    }
+    if (overlay) {
+      const freshOverlay = overlay.cloneNode(true) as HTMLElement;
+      overlay.replaceWith(freshOverlay);
+      freshOverlay.addEventListener('click', closeDrawer);
+    }
   }
 
   initSidebarDrawer();
-  document.addEventListener('astro:after-swap', initSidebarDrawer);
+  if (!(window as any).__cheerio_sidebar_swap) {
+    (window as any).__cheerio_sidebar_swap = true;
+    document.addEventListener('astro:after-swap', initSidebarDrawer);
+  }
 </script>
