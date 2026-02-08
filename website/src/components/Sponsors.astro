@@ -1,5 +1,6 @@
 ---
 import sponsorsData from '../../sponsors.json';
+import { Image } from 'astro:assets';
 import { Heart } from '@lucide/astro';
 
 interface Sponsor {
@@ -32,12 +33,23 @@ const headliners = sponsorsData.headliner as Sponsor[];
             rel="noopener noreferrer"
             class="group flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-6 py-4 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-primary/40"
           >
-            <img
-              src={sponsor.image}
-              alt={`${sponsor.name} logo`}
-              class="h-10 w-10 rounded-lg"
-              loading="lazy"
-            />
+            {sponsor.image.endsWith('.svg') ? (
+              <img
+                src={sponsor.image}
+                alt={`${sponsor.name} logo`}
+                class="h-10 w-10 rounded-lg"
+                loading="lazy"
+              />
+            ) : (
+              <Image
+                src={sponsor.image}
+                alt={`${sponsor.name} logo`}
+                width={40}
+                height={40}
+                class="h-10 w-10 rounded-lg"
+                loading="lazy"
+              />
+            )}
             <span class="font-medium text-slate-700 transition-colors group-hover:text-slate-900 dark:text-slate-300 dark:group-hover:text-white">
               {sponsor.name}
             </span>

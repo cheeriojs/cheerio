@@ -23,6 +23,6 @@ const h1 = headings.find((h) => h.depth === 1);
 const title = doc.data.title || h1?.text || doc.data.sidebar_label || 'API Documentation';
 ---
 
-<DocsLayout title={title} description={doc.data.description} headings={headings} sourceFile={doc.id}>
+<DocsLayout title={title} description={doc.data.description} headings={headings} sourceFile={doc.id} wide>
   <Content />
 </DocsLayout>

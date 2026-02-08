@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import logo from '../../public/img/orange-c.svg';
+
 const footerLinks = {
   Docs: [
     { label: 'Learn', href: '/docs/intro' },
@@ -26,7 +29,7 @@ const currentYear = new Date().getFullYear();
       <!-- Brand column -->
       <div class="col-span-2 mb-4 md:col-span-1 md:mb-0">
         <a href="/" class="mb-4 flex items-center gap-2.5">
-          <img src="/img/orange-c.svg" alt="Cheerio" class="h-7 w-7" />
+          <Image src={logo} alt="Cheerio" class="h-7 w-7" loading="lazy" />
           <span class="text-lg font-semibold text-white">Cheerio</span>
         </a>
         <p class="mt-3 max-w-xs text-sm leading-relaxed text-slate-500">

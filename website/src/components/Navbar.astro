@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import logo from '../../public/img/orange-c.svg';
+
 const navItems = [
   { label: 'Learn', href: '/docs/intro', match: (p: string) => p.startsWith('/docs/') && !p.startsWith('/docs/api') },
   { label: 'API', href: '/docs/api', match: (p: string) => p.startsWith('/docs/api') },
@@ -12,7 +15,7 @@ const currentPath = Astro.url.pathname;
   <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-3.5">
     <div class="flex items-center gap-10">
       <a href="/" class="group flex items-center gap-2.5">
-        <img src="/img/orange-c.svg" alt="Cheerio Logo" class="h-8 w-8 transition-transform duration-300 group-hover:rotate-[-8deg]" />
+        <Image src={logo} alt="Cheerio Logo" class="h-8 w-8 transition-transform duration-300 group-hover:rotate-[-8deg]" />
         <span class="text-lg font-semibold tracking-tight text-slate-900 dark:text-white">Cheerio</span>
       </a>
 

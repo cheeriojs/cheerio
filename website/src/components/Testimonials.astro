@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+
 interface Tweet {
   id: string;
   name: string;
@@ -101,11 +103,11 @@ tweets.forEach((tweet, i) => {
                 ]}
               >
                 <div class="mb-4 flex items-start gap-3">
-                  <img
+                  <Image
                     src={`https://github.com/${tweet.github}.png?s=88`}
                     alt={`${tweet.name}'s avatar`}
-                    width="44"
-                    height="44"
+                    width={44}
+                    height={44}
                     class="mt-0.5 h-11 w-11 shrink-0 rounded-full ring-2 ring-slate-100 dark:ring-slate-700"
                     loading="lazy"
                   />
@@ -117,10 +119,6 @@ tweets.forEach((tweet, i) => {
                       {tweet.tagline}
                     </div>
                   </div>
-                  {/* Twitter/X icon */}
-                  <svg class="mt-1 h-5 w-5 shrink-0 text-slate-300 transition-colors group-hover:text-primary dark:text-slate-600" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                  </svg>
                 </div>
                 <p class="leading-relaxed text-slate-700 dark:text-slate-300">
                   {tweet.tweet}
@@ -146,11 +144,11 @@ tweets.forEach((tweet, i) => {
             ]}
           >
             <div class="mb-4 flex items-start gap-3">
-              <img
+              <Image
                 src={`https://github.com/${tweet.github}.png?s=88`}
                 alt={`${tweet.name}'s avatar`}
-                width="44"
-                height="44"
+                width={44}
+                height={44}
                 class="mt-0.5 h-11 w-11 shrink-0 rounded-full ring-2 ring-slate-100 dark:ring-slate-700"
                 loading="lazy"
               />
@@ -162,9 +160,6 @@ tweets.forEach((tweet, i) => {
                   {tweet.tagline}
                 </div>
               </div>
-              <svg class="mt-1 h-5 w-5 shrink-0 text-slate-300 transition-colors group-hover:text-primary dark:text-slate-600" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-              </svg>
             </div>
             <p class="leading-relaxed text-slate-700 dark:text-slate-300">
               {tweet.tweet}

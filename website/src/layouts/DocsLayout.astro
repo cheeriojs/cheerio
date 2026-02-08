@@ -10,6 +10,7 @@ interface Props {
   title: string;
   description?: string;
   sourceFile?: string;
+  wide?: boolean;
   headings?: Array<{
     depth: number;
     slug: string;
@@ -21,6 +22,7 @@ const {
   title,
   description = 'The fast, flexible & elegant library for parsing and manipulating HTML and XML.',
   sourceFile,
+  wide = false,
   headings = [],
 } = Astro.props;
 
@@ -90,7 +92,7 @@ const nextPage = currentIndex >= 0 && currentIndex < allPages.length - 1 ? allPa
           <h1 class="font-display text-3xl text-slate-900 lg:text-4xl dark:text-white">{title}</h1>
         </header>
 
-        <article class="prose docs-content">
+        <article class:list={['prose docs-content', { 'prose-wide': wide }]}>
           <slot />
         </article>
 
