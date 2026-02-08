@@ -14,7 +14,8 @@ export default defineConfig({
   integrations: [mdx(), react(), sitemap()],
   image: {
     remotePatterns: [
-      { protocol: 'https', hostname: '**.github.com' },
+      { protocol: 'https', hostname: 'github.com' },
+      { protocol: 'https', hostname: '*.github.com' },
       { protocol: 'https', hostname: 'images.opencollective.com' },
       { protocol: 'https', hostname: 'hasdata.com' },
     ],
