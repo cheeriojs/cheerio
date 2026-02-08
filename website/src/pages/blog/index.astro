@@ -45,8 +45,8 @@ function getExcerpt(rawContent: string): string | null {
 
   // Strip markdown formatting to plain text
   excerpt = excerpt
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')   // [text](url) → text
     .replace(/!\[([^\]]*)\]\([^)]+\)/g, '')      // ![alt](url) → remove
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')     // [text](url) → text
     .replace(/(\*\*|__)(.*?)\1/g, '$2')          // **bold** → bold
     .replace(/(\*|_)(.*?)\1/g, '$2')             // *italic* → italic
     .replace(/`([^`]+)`/g, '$1')                 // `code` → code
