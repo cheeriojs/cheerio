@@ -168,14 +168,21 @@ try {
 </header>
 
 <script>
-  const copyButton = document.getElementById('copy-install');
-  copyButton?.addEventListener('click', () => {
-    navigator.clipboard.writeText('npm install cheerio');
-    const svg = copyButton.querySelector('svg');
-    if (svg) {
-      const originalPath = svg.innerHTML;
-      svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />';
-      setTimeout(() => { svg.innerHTML = originalPath; }, 2000);
-    }
-  });
+  function initCopyInstall() {
+    const copyButton = document.getElementById('copy-install');
+    if (!copyButton) return;
+
+    copyButton.onclick = () => {
+      navigator.clipboard.writeText('npm install cheerio');
+      const svg = copyButton.querySelector('svg');
+      if (svg) {
+        const originalPath = svg.innerHTML;
+        svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />';
+        setTimeout(() => { svg.innerHTML = originalPath; }, 2000);
+      }
+    };
+  }
+
+  initCopyInstall();
+  document.addEventListener('astro:after-swap', initCopyInstall);
 </script>

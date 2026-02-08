@@ -282,8 +282,8 @@ export type { SidebarItem, SidebarSection };
 
 <script>
   // Sidebar drawer — re-bind after each View Transition navigation.
-  // Use a global guard to ensure the swap listener is registered only once,
-  // and clone-replace buttons to avoid accumulating duplicate click handlers.
+  // Use a global guard to ensure the swap listener is registered only once.
+  // Use .onclick assignment instead of addEventListener to de-dupe handlers.
   function initSidebarDrawer() {
     const overlay = document.getElementById('sidebar-overlay');
     const drawer = document.getElementById('sidebar-drawer');
@@ -313,22 +313,10 @@ export type { SidebarItem, SidebarSection };
       }, 300);
     }
 
-    // Clone and replace elements to remove any previously attached listeners
-    if (openBtn) {
-      const freshOpen = openBtn.cloneNode(true) as HTMLElement;
-      openBtn.replaceWith(freshOpen);
-      freshOpen.addEventListener('click', openDrawer);
-    }
-    if (closeBtn) {
-      const freshClose = closeBtn.cloneNode(true) as HTMLElement;
-      closeBtn.replaceWith(freshClose);
-      freshClose.addEventListener('click', closeDrawer);
-    }
-    if (overlay) {
-      const freshOverlay = overlay.cloneNode(true) as HTMLElement;
-      overlay.replaceWith(freshOverlay);
-      freshOverlay.addEventListener('click', closeDrawer);
-    }
+    // Use .onclick to replace (not accumulate) handlers on each init
+    if (openBtn) openBtn.onclick = openDrawer;
+    if (closeBtn) closeBtn.onclick = closeDrawer;
+    if (overlay) overlay.onclick = closeDrawer;
   }
 
   initSidebarDrawer();

@@ -97,10 +97,8 @@ tweets.forEach((tweet, i) => {
                 href={tweet.url ?? `https://twitter.com/${tweet.user}/status/${tweet.id}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                class:list={[
-                  'animate-fade-up group block rounded-2xl border border-slate-200 bg-slate-50/50 p-6 transition-all duration-300 hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5 dark:border-slate-800 dark:bg-slate-800/50 dark:hover:border-primary/30',
-                  `animation-delay-${(colIndex * 100) + (i * 200)}`,
-                ]}
+                class="animate-fade-up group block rounded-2xl border border-slate-200 bg-slate-50/50 p-6 transition-all duration-300 hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5 dark:border-slate-800 dark:bg-slate-800/50 dark:hover:border-primary/30"
+                style={`animation-delay: ${(colIndex * 100) + (i * 200)}ms`}
               >
                 <div class="mb-4 flex items-start gap-3">
                   <Image
@@ -138,10 +136,8 @@ tweets.forEach((tweet, i) => {
             href={tweet.url ?? `https://twitter.com/${tweet.user}/status/${tweet.id}`}
             target="_blank"
             rel="noopener noreferrer"
-            class:list={[
-              'animate-fade-up group block rounded-2xl border border-slate-200 bg-slate-50/50 p-6 transition-all duration-300 hover:border-primary/20 hover:shadow-lg dark:border-slate-800 dark:bg-slate-800/50',
-              `animation-delay-${i * 100}`,
-            ]}
+            class="animate-fade-up group block rounded-2xl border border-slate-200 bg-slate-50/50 p-6 transition-all duration-300 hover:border-primary/20 hover:shadow-lg dark:border-slate-800 dark:bg-slate-800/50"
+            style={`animation-delay: ${i * 100}ms`}
           >
             <div class="mb-4 flex items-start gap-3">
               <Image
