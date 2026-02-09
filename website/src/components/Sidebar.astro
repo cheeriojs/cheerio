@@ -1,10 +1,17 @@
 ---
+import { getCollection } from 'astro:content';
+
 interface SidebarItem {
   label: string;
   href: string;
 }
 
 interface SidebarSection {
+  title: string;
+  items: SidebarItem[];
+}
+
+interface ApiGroup {
   title: string;
   items: SidebarItem[];
 }
@@ -37,20 +44,65 @@ const sidebar: SidebarSection[] = [
       { label: 'Extracting Data', href: '/docs/advanced/extract' },
     ],
   },
-  {
-    title: 'Reference',
-    items: [{ label: 'API Documentation', href: '/docs/api' }],
-  },
 ];
+
+// Dynamically build API sub-pages from the content collection
+const allDocs = await getCollection('docs');
+const apiDocs = allDocs.filter((doc) => doc.id.startsWith('api/') && doc.id !== 'api/index.md' && doc.id !== 'api/index');
+
+// Group by kind (directory name)
+const kindLabels: Record<string, string> = {
+  classes: 'Classes',
+  interfaces: 'Interfaces',
+  functions: 'Functions',
+  types: 'Types',
+  variables: 'Variables',
+};
+const kindOrder = ['classes', 'variables', 'functions', 'interfaces', 'types'];
+
+const apiGroups: ApiGroup[] = [];
+const groupedByKind = new Map<string, SidebarItem[]>();
+
+for (const doc of apiDocs) {
+  // id looks like "api/classes/Cheerio.md" or "api/functions/contains"
+  const parts = doc.id.replace(/^api\//, '').replace(/\.mdx?$/, '').split('/');
+  if (parts.length !== 2) continue;
+  const [kind, name] = parts;
+  if (!groupedByKind.has(kind)) groupedByKind.set(kind, []);
+  groupedByKind.get(kind)!.push({
+    label: name,
+    href: `/docs/api/${kind}/${name}`,
+  });
+}
+
+// Sort items within each group alphabetically
+for (const items of groupedByKind.values()) {
+  items.sort((a, b) => a.label.localeCompare(b.label));
+}
+
+// Build ordered groups
+for (const kind of kindOrder) {
+  const items = groupedByKind.get(kind);
+  if (items && items.length > 0) {
+    apiGroups.push({ title: kindLabels[kind] || kind, items });
+  }
+}
+
+const isApiPage = currentPath.startsWith('/docs/api');
+const normalizedPath = currentPath.replace(/\/$/, '');
+
+export { sidebar };
+export type { SidebarItem, SidebarSection };
 ---
 
+{/* ── Desktop sidebar ── */}
 <aside
   class="hidden w-64 shrink-0 border-r border-slate-200 dark:border-slate-700 lg:block"
 >
-  <nav class="sticky top-0 h-screen overflow-y-auto px-6 py-8">
+  <nav class="sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto px-6 py-8">
     {
-      sidebar.map((section, index) => (
-        <div class={index === 0 ? 'mb-8' : 'mb-8'}>
+      sidebar.map((section) => (
+        <div class="mb-8">
           <h3 class="mb-3 text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
             {section.title}
           </h3>
@@ -61,7 +113,7 @@ const sidebar: SidebarSection[] = [
                   href={item.href}
                   class:list={[
                     'block rounded-lg px-3 py-2 text-sm transition-all duration-150',
-                    currentPath === item.href
+                    normalizedPath === item.href
                       ? 'bg-primary/10 font-semibold text-primary border-l-2 border-primary'
                       : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100',
                   ]}
@@ -74,5 +126,202 @@ const sidebar: SidebarSection[] = [
         </div>
       ))
     }
+
+    {/* Reference / API section */}
+    <div class="mb-8">
+      <h3 class="mb-3 text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+        Reference
+      </h3>
+      <ul class="space-y-1">
+        <li>
+          <a
+            href="/docs/api"
+            class:list={[
+              'block rounded-lg px-3 py-2 text-sm transition-all duration-150',
+              normalizedPath === '/docs/api'
+                ? 'bg-primary/10 font-semibold text-primary border-l-2 border-primary'
+                : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100',
+            ]}
+          >
+            API Documentation
+          </a>
+        </li>
+      </ul>
+      {apiGroups.map((group) => (
+        <details class="group/api mt-2" open={isApiPage}>
+          <summary class="flex cursor-pointer items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300">
+            <svg class="h-3 w-3 shrink-0 transition-transform group-open/api:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
+            {group.title}
+          </summary>
+          <ul class="mt-1 space-y-0.5 pl-2">
+            {group.items.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class:list={[
+                    'block rounded-lg px-3 py-1.5 text-sm transition-all duration-150',
+                    normalizedPath === item.href
+                      ? 'bg-primary/10 font-semibold text-primary border-l-2 border-primary'
+                      : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100',
+                  ]}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </details>
+      ))}
+    </div>
   </nav>
 </aside>
+
+{/* ── Mobile sidebar drawer ── */}
+<div
+  id="sidebar-overlay"
+  class="fixed inset-0 z-40 hidden bg-black/50 backdrop-blur-sm lg:hidden"
+>
+</div>
+<aside
+  id="sidebar-drawer"
+  class="fixed left-0 top-0 z-50 hidden h-full w-72 -translate-x-full transform bg-white shadow-2xl transition-transform duration-300 ease-in-out lg:hidden dark:bg-slate-900"
+>
+  <div class="flex items-center justify-between border-b border-slate-200 px-6 py-4 dark:border-slate-700">
+    <span class="text-sm font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">Documentation</span>
+    <button
+      type="button"
+      id="sidebar-close"
+      class="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300"
+      aria-label="Close sidebar"
+    >
+      <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+  <nav class="overflow-y-auto px-6 py-6" style="max-height: calc(100% - 57px);">
+    {
+      sidebar.map((section) => (
+        <div class="mb-8">
+          <h3 class="mb-3 text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+            {section.title}
+          </h3>
+          <ul class="space-y-1">
+            {section.items.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class:list={[
+                    'block rounded-lg px-3 py-2 text-sm transition-all duration-150',
+                    normalizedPath === item.href
+                      ? 'bg-primary/10 font-semibold text-primary border-l-2 border-primary'
+                      : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100',
+                  ]}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+
+    {/* Reference / API section */}
+    <div class="mb-8">
+      <h3 class="mb-3 text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+        Reference
+      </h3>
+      <ul class="space-y-1">
+        <li>
+          <a
+            href="/docs/api"
+            class:list={[
+              'block rounded-lg px-3 py-2 text-sm transition-all duration-150',
+              normalizedPath === '/docs/api'
+                ? 'bg-primary/10 font-semibold text-primary border-l-2 border-primary'
+                : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100',
+            ]}
+          >
+            API Documentation
+          </a>
+        </li>
+      </ul>
+      {apiGroups.map((group) => (
+        <details class="group/api mt-2" open={isApiPage}>
+          <summary class="flex cursor-pointer items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300">
+            <svg class="h-3 w-3 shrink-0 transition-transform group-open/api:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
+            {group.title}
+          </summary>
+          <ul class="mt-1 space-y-0.5 pl-2">
+            {group.items.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class:list={[
+                    'block rounded-lg px-3 py-1.5 text-sm transition-all duration-150',
+                    normalizedPath === item.href
+                      ? 'bg-primary/10 font-semibold text-primary border-l-2 border-primary'
+                      : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100',
+                  ]}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </details>
+      ))}
+    </div>
+  </nav>
+</aside>
+
+<script>
+  // Sidebar drawer — re-bind after each View Transition navigation.
+  // Use a global guard to ensure the swap listener is registered only once.
+  // Use .onclick assignment instead of addEventListener to de-dupe handlers.
+  function initSidebarDrawer() {
+    const overlay = document.getElementById('sidebar-overlay');
+    const drawer = document.getElementById('sidebar-drawer');
+    const closeBtn = document.getElementById('sidebar-close');
+    const openBtn = document.getElementById('sidebar-open');
+
+    function openDrawer() {
+      if (!overlay || !drawer) return;
+      overlay.classList.remove('hidden');
+      drawer.classList.remove('hidden');
+      // Force reflow before adding transform
+      drawer.offsetHeight;
+      drawer.classList.remove('-translate-x-full');
+      drawer.classList.add('translate-x-0');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      if (!overlay || !drawer) return;
+      drawer.classList.remove('translate-x-0');
+      drawer.classList.add('-translate-x-full');
+      document.body.style.overflow = '';
+      // Wait for transition to finish before hiding
+      setTimeout(() => {
+        overlay.classList.add('hidden');
+        drawer.classList.add('hidden');
+      }, 300);
+    }
+
+    // Use .onclick to replace (not accumulate) handlers on each init
+    if (openBtn) openBtn.onclick = openDrawer;
+    if (closeBtn) closeBtn.onclick = closeDrawer;
+    if (overlay) overlay.onclick = closeDrawer;
+  }
+
+  initSidebarDrawer();
+  if (!(window as any).__cheerio_sidebar_swap) {
+    (window as any).__cheerio_sidebar_swap = true;
+    document.addEventListener('astro:after-swap', initSidebarDrawer);
+  }
+</script>

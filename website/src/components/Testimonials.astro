@@ -5,8 +5,10 @@ interface Tweet {
   id: string;
   name: string;
   user: string;
-  date: string;
+  github: string;
   tweet: string;
+  tagline: string;
+  url?: string;
 }
 
 const tweets: Tweet[] = [
@@ -14,117 +16,151 @@ const tweets: Tweet[] = [
     id: '628016191928446977',
     name: 'Axel Rauschmayer',
     user: 'rauschma',
-    date: '2015-08-03T02:35:00.000Z',
+    github: 'rauschma',
     tweet:
       "For transforming HTML via Node.js scripts, @mattmueller's cheerio works really well.",
+    tagline: "Author of 'Exploring JavaScript', educator at 2ality.com",
   },
   {
     id: '1616150822932385792',
     name: 'Valeri Karpov',
     user: 'code_barbarian',
-    date: '2023-01-19T19:09:00.000Z',
+    github: 'vkarpov15',
     tweet:
       "Cheerio is a weird npm module: most devs have never heard of it, but I rarely build an app without it. So much utility for quick and easy HTML transformations.",
-  },
-  {
-    id: '1545481085865320449',
-    name: 'Thomas Boutell',
-    user: 'boutell',
-    date: '2021-07-08T19:52:00.000Z',
-    tweet:
-      "You probably shouldn't use jQuery, but if you're great at jQuery, you're going to be really popular on server-side projects that need web scraping or HTML transformation. \"npm install cheerio\" ahoy!",
-  },
-  {
-    id: '552311181760008192',
-    name: 'Alistair G MacDonald',
-    user: 'html5js',
-    date: '2015-01-06T03:50:00.000Z',
-    tweet:
-      'Looking for a faster, cleaner alternative to basic JSDOM? Try Cheerio! #npm #javascript #nodejs',
-  },
-  {
-    id: '1466753169900273667',
-    name: 'Yogini Bende',
-    user: 'hey_yogini',
-    date: '2021-12-03T12:56:00.000Z',
-    tweet: 'Cheerio is fire',
-  },
-  {
-    id: '936243649234591744',
-    name: 'Jonny Frodsham',
-    user: 'jonnyfrodsham',
-    date: '2017-11-30T14:40:00.000Z',
-    tweet:
-      "Needed to do a quick web scrape in Node for a demo. Seems like I'm back using jQuery in the super timesaving cheerio npm package",
-  },
-  {
-    id: '264033999272439809',
-    name: 'Thomas Steiner',
-    user: 'tomayac',
-    date: '2012-11-01T15:59:00.000Z',
-    tweet:
-      "npm install cheerio. That's the #jQuery DOM API for #nodeJS essentially. Thanks, @MattMueller",
-  },
-  {
-    id: '1403139379757977602',
-    name: 'Mike Pennisi',
-    user: 'JugglinMike',
-    date: '2021-06-11T04:57:00.000Z',
-    tweet:
-      "Thank you @fb55 for tirelessly pushing Cheerio to version 1.0. That library helps so many developers expand their horizons beyond the browser, and you've been making it possible for a decade!",
+    tagline: 'Creator of Mongoose ODM',
   },
   {
     id: '1186972238190403587',
     name: 'Matthew Phillips',
     user: 'matthewcp',
-    date: '2019-10-23T12:46:00.000Z',
+    github: 'matthewp',
     tweet:
       'Cheerio is (still) such a useful tool for manipulating HTML. Shout to @MattMueller for saving me an untold amount of time over the years.',
+    tagline: 'Co-Creator of Astro',
+  },
+  {
+    id: '1403139379757977602',
+    name: 'Mike Pennisi',
+    user: 'JugglinMike',
+    github: 'jugglinmike',
+    tweet:
+      "Thank you @fb55 for tirelessly pushing Cheerio to version 1.0. That library helps so many developers expand their horizons beyond the browser, and you've been making it possible for a decade!",
+    tagline: 'Open source developer at Bocoup',
+  },
+  {
+    id: '264033999272439809',
+    name: 'Thomas Steiner',
+    user: 'tomayac',
+    github: 'tomayac',
+    tweet:
+      "npm install cheerio. That's the #jQuery DOM API for #nodeJS essentially. Thanks, @MattMueller",
+    tagline: 'Developer Relations Engineer at Google Chrome',
+    url: 'https://tomayac.com/tweets/264033999272439809/',
+  },
+  {
+    id: '1545481085865320449',
+    name: 'Thomas Boutell',
+    user: 'boutell',
+    github: 'boutell',
+    tweet:
+      "If you're great at jQuery, you're going to be really popular on server-side projects that need web scraping or HTML transformation. \"npm install cheerio\" ahoy!",
+    tagline: 'Co-creator of the PNG format, CEO of ApostropheCMS',
   },
 ];
 
-function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-}
+// Split tweets into 3 columns for masonry-like layout
+const columns: Tweet[][] = [[], [], []];
+tweets.forEach((tweet, i) => {
+  columns[i % 3].push(tweet);
+});
 ---
 
-<section class="py-16">
-  <div class="mx-auto max-w-7xl px-4">
-    <h2 class="mb-8 text-center text-2xl font-semibold">What Our Users Say</h2>
-    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+<section class="relative bg-white py-24 dark:bg-slate-900">
+  <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent dark:via-slate-800"></div>
+
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="animate-fade-up mb-16 text-center">
+      <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Community</p>
+      <h2 class="font-display text-4xl text-slate-900 md:text-5xl dark:text-white">
+        What developers are saying
+      </h2>
+    </div>
+
+    <!-- Masonry-like 3-column layout -->
+    <div class="hidden gap-6 md:grid md:grid-cols-3">
       {
-        tweets.map((tweet) => (
-          <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
-            <div class="mb-4 flex items-center gap-3">
+        columns.map((column, colIndex) => (
+          <div class="flex flex-col gap-6">
+            {column.map((tweet, i) => (
+              <a
+                href={tweet.url ?? `https://twitter.com/${tweet.user}/status/${tweet.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="animate-fade-up group block rounded-2xl border border-slate-200 bg-slate-50/50 p-6 transition-all duration-300 hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5 dark:border-slate-800 dark:bg-slate-800/50 dark:hover:border-primary/30"
+                style={`animation-delay: ${(colIndex * 100) + (i * 200)}ms`}
+              >
+                <div class="mb-4 flex items-start gap-3">
+                  <Image
+                    src={`https://github.com/${tweet.github}.png?s=88`}
+                    alt={`${tweet.name}'s avatar`}
+                    width={44}
+                    height={44}
+                    class="mt-0.5 h-11 w-11 shrink-0 rounded-full ring-2 ring-slate-100 dark:ring-slate-700"
+                    loading="lazy"
+                  />
+                  <div class="min-w-0 flex-1">
+                    <div class="font-semibold text-slate-900 dark:text-white">
+                      {tweet.name}
+                    </div>
+                    <div class="text-sm text-slate-500 dark:text-slate-400">
+                      {tweet.tagline}
+                    </div>
+                  </div>
+                </div>
+                <p class="leading-relaxed text-slate-700 dark:text-slate-300">
+                  {tweet.tweet}
+                </p>
+              </a>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Mobile: single column -->
+    <div class="flex flex-col gap-6 md:hidden">
+      {
+        tweets.map((tweet, i) => (
+          <a
+            href={tweet.url ?? `https://twitter.com/${tweet.user}/status/${tweet.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="animate-fade-up group block rounded-2xl border border-slate-200 bg-slate-50/50 p-6 transition-all duration-300 hover:border-primary/20 hover:shadow-lg dark:border-slate-800 dark:bg-slate-800/50"
+            style={`animation-delay: ${i * 100}ms`}
+          >
+            <div class="mb-4 flex items-start gap-3">
               <Image
-                src={`https://unavatar.io/${tweet.user}`}
+                src={`https://github.com/${tweet.github}.png?s=88`}
                 alt={`${tweet.name}'s avatar`}
-                width={40}
-                height={40}
-                class="h-10 w-10 rounded-full"
+                width={44}
+                height={44}
+                class="mt-0.5 h-11 w-11 shrink-0 rounded-full ring-2 ring-slate-100 dark:ring-slate-700"
                 loading="lazy"
               />
-              <div>
-                <div class="font-medium">{tweet.name}</div>
+              <div class="min-w-0 flex-1">
+                <div class="font-semibold text-slate-900 dark:text-white">
+                  {tweet.name}
+                </div>
                 <div class="text-sm text-slate-500 dark:text-slate-400">
-                  @{tweet.user}
+                  {tweet.tagline}
                 </div>
               </div>
             </div>
-            <p class="mb-4 text-slate-700 dark:text-slate-300">{tweet.tweet}</p>
-            <a
-              href={`https://twitter.com/${tweet.user}/status/${tweet.id}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-sm text-slate-500 transition-colors hover:text-primary dark:text-slate-400"
-            >
-              {formatDate(tweet.date)}
-            </a>
-          </div>
+            <p class="leading-relaxed text-slate-700 dark:text-slate-300">
+              {tweet.tweet}
+            </p>
+          </a>
         ))
       }
     </div>

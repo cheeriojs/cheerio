@@ -1,18 +1,191 @@
 ---
+
 const title = 'cheerio';
 const tagline =
   'The fast, flexible & elegant library for parsing and manipulating HTML and XML.';
+
+// Fetch GitHub stars and npm downloads at build time
+function formatCount(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, '')}M`;
+  if (n >= 1_000) return `${(n / 1_000).toFixed(1).replace(/\.0$/, '')}k`;
+  return n.toString();
+}
+
+let stars = '';
+let downloads = '';
+
+try {
+  const [ghRes, npmRes] = await Promise.all([
+    fetch('https://api.github.com/repos/cheeriojs/cheerio', {
+      headers: {
+        'Accept': 'application/vnd.github.v3+json',
+        'User-Agent': 'cheerio-website',
+      },
+    }),
+    fetch('https://api.npmjs.org/downloads/point/last-month/cheerio'),
+  ]);
+
+  if (ghRes.ok) {
+    const gh = await ghRes.json();
+    stars = formatCount(gh.stargazers_count);
+  }
+  if (npmRes.ok) {
+    const npm = await npmRes.json();
+    downloads = formatCount(npm.downloads);
+  }
+} catch {
+  // Silently fail — badges just won't render
+}
 ---
 
-<header class="bg-primary py-16 text-center text-white">
-  <div class="mx-auto max-w-4xl px-4">
-    <h1 class="mb-4 text-5xl font-bold">{title}</h1>
-    <p class="mb-8 text-xl opacity-90">{tagline}</p>
-    <a
-      href="/docs/intro"
-      class="inline-block rounded-lg bg-white px-8 py-3 font-semibold text-primary transition-colors hover:bg-slate-100"
-    >
-      Get Started!
-    </a>
+<header class="relative overflow-hidden bg-slate-950 py-24 md:py-32 lg:py-40">
+  <!-- Background gradient layers -->
+  <div class="absolute inset-0 bg-gradient-to-br from-amber-950/40 via-slate-950 to-slate-900"></div>
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,rgba(232,140,31,0.2),transparent)]"></div>
+  <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent"></div>
+
+  <!-- Grain overlay -->
+  <div class="grain absolute inset-0 overflow-hidden opacity-50"></div>
+
+  <!-- Floating decorative elements -->
+  <div class="absolute left-[10%] top-[15%] h-64 w-64 rounded-full bg-primary/5 blur-3xl animate-float"></div>
+  <div class="absolute right-[15%] bottom-[20%] h-48 w-48 rounded-full bg-primary/8 blur-3xl animate-float animation-delay-300"></div>
+
+  <div class="relative z-10 mx-auto max-w-7xl px-6">
+    <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+      <!-- Left column: Text content -->
+      <div class="text-center lg:text-left">
+        <div class="animate-fade-up mb-6 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+          {stars && (
+            <a
+              href="https://github.com/cheeriojs/cheerio/stargazers"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1.5 rounded-full border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-sm text-slate-300 transition-colors hover:border-slate-600 hover:text-white"
+            >
+              <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              </svg>
+              <span class="font-medium text-primary-light">{stars} stars</span>
+            </a>
+          )}
+          {downloads && (
+            <a
+              href="https://www.npmjs.com/package/cheerio"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1.5 rounded-full border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-sm text-slate-300 transition-colors hover:border-slate-600 hover:text-white"
+            >
+              <svg viewBox="0 0 256 256" class="h-4 w-4" fill="currentColor">
+                <path d="M0 256V0h256v256z"/>
+                <path d="M48 48h160v160h-32V80h-32v128H48z" fill="var(--color-slate-800, #1e293b)"/>
+              </svg>
+              <span class="font-medium text-primary-light">{downloads} downloads/month</span>
+            </a>
+          )}
+        </div>
+
+        <h1 class="animate-fade-up animation-delay-100 mb-6 font-display text-6xl tracking-tight text-white md:text-7xl lg:text-8xl">
+          {title}
+        </h1>
+
+        <p class="animate-fade-up animation-delay-200 mb-10 max-w-xl text-lg leading-relaxed text-slate-400 md:text-xl lg:mx-0 mx-auto">
+          {tagline}
+        </p>
+
+        <div class="animate-fade-up animation-delay-300 flex flex-col items-center gap-4 sm:flex-row lg:justify-start justify-center">
+          <a
+            href="/docs/intro"
+            class="group relative inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-3.5 font-semibold text-white transition-all duration-300 hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25"
+          >
+            Get Started
+            <svg class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </a>
+          <a
+            href="https://github.com/cheeriojs/cheerio"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 rounded-xl border border-slate-700 px-8 py-3.5 font-semibold text-slate-300 transition-all duration-300 hover:border-slate-500 hover:text-white hover:bg-slate-800/50"
+          >
+            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+            View on GitHub
+          </a>
+        </div>
+
+        <!-- Install snippet -->
+        <div class="animate-fade-up animation-delay-400 mt-8 flex items-center justify-center lg:justify-start">
+          <code class="flex items-center gap-3 rounded-lg border border-slate-800 bg-slate-900/80 px-5 py-2.5 font-mono text-sm text-slate-400">
+            <span class="select-none text-primary/60">$</span>
+            <span>npm install cheerio</span>
+            <button
+              id="copy-install"
+              class="ml-2 text-slate-600 transition-colors hover:text-slate-300"
+              aria-label="Copy to clipboard"
+            >
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" />
+              </svg>
+            </button>
+          </code>
+        </div>
+      </div>
+
+      <!-- Right column: Code preview -->
+      <div class="animate-slide-in-right animation-delay-400 hidden lg:block">
+        <div class="relative">
+          <!-- Glow behind the code block -->
+          <div class="absolute -inset-4 rounded-2xl bg-gradient-to-br from-primary/10 via-transparent to-primary/5 blur-xl"></div>
+
+          <div class="relative rounded-2xl border border-slate-800 bg-slate-900/90 shadow-2xl shadow-black/40 backdrop-blur-sm">
+            <!-- Window chrome -->
+            <div class="flex items-center gap-2 border-b border-slate-800 px-4 py-3">
+              <div class="h-3 w-3 rounded-full bg-slate-700"></div>
+              <div class="h-3 w-3 rounded-full bg-slate-700"></div>
+              <div class="h-3 w-3 rounded-full bg-slate-700"></div>
+              <span class="ml-3 text-xs text-slate-600 font-mono">example.js</span>
+            </div>
+            <!-- Code content -->
+            <pre class="overflow-x-auto p-6 text-sm leading-relaxed"><code class="font-mono"><span class="text-purple-400">import</span> <span class="text-slate-300">*</span> <span class="text-purple-400">as</span> <span class="text-amber-300">cheerio</span> <span class="text-purple-400">from</span> <span class="text-green-400">'cheerio'</span><span class="text-slate-500">;</span>
+
+<span class="text-purple-400">const</span> <span class="text-amber-300">$</span> <span class="text-slate-500">=</span> <span class="text-slate-300">cheerio.</span><span class="text-blue-400">load</span><span class="text-slate-500">(</span><span class="text-green-400">'&lt;h2 class="title"&gt;Hello world&lt;/h2&gt;'</span><span class="text-slate-500">);</span>
+
+<span class="text-amber-300">$</span><span class="text-slate-500">(</span><span class="text-green-400">'h2.title'</span><span class="text-slate-500">).</span><span class="text-blue-400">text</span><span class="text-slate-500">(</span><span class="text-green-400">'Hello there!'</span><span class="text-slate-500">);</span>
+<span class="text-amber-300">$</span><span class="text-slate-500">(</span><span class="text-green-400">'h2'</span><span class="text-slate-500">).</span><span class="text-blue-400">addClass</span><span class="text-slate-500">(</span><span class="text-green-400">'welcome'</span><span class="text-slate-500">);</span>
+
+<span class="text-amber-300">$</span><span class="text-slate-500">.</span><span class="text-blue-400">html</span><span class="text-slate-500">();</span>
+<span class="text-slate-600">{"//=> <html><head></head><body>"}</span>
+<span class="text-slate-600">{"//=>   <h2 class=\"title welcome\">Hello there!</h2>"}</span>
+<span class="text-slate-600">{"//=> </body></html>"}</span></code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </header>
+
+<script>
+  function initCopyInstall() {
+    const copyButton = document.getElementById('copy-install');
+    if (!copyButton) return;
+
+    copyButton.onclick = () => {
+      navigator.clipboard.writeText('npm install cheerio');
+      const svg = copyButton.querySelector('svg');
+      if (svg) {
+        const originalPath = svg.innerHTML;
+        svg.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />';
+        setTimeout(() => { svg.innerHTML = originalPath; }, 2000);
+      }
+    };
+  }
+
+  initCopyInstall();
+  if (!(window as any).__cheerio_copy_install_swap) {
+    (window as any).__cheerio_copy_install_swap = true;
+    document.addEventListener('astro:after-swap', initCopyInstall);
+  }
+</script>

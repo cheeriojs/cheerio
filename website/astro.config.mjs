@@ -14,10 +14,10 @@ export default defineConfig({
   integrations: [mdx(), react(), sitemap()],
   image: {
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'unavatar.io',
-      },
+      { protocol: 'https', hostname: 'github.com' },
+      { protocol: 'https', hostname: '*.github.com' },
+      { protocol: 'https', hostname: 'images.opencollective.com' },
+      { protocol: 'https', hostname: 'hasdata.com' },
     ],
   },
   vite: {

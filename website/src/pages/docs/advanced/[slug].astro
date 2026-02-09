@@ -14,9 +14,10 @@ export async function getStaticPaths() {
 
 const { doc } = Astro.props;
 const { Content, headings } = await render(doc);
-const title = doc.data.title || doc.data.sidebar_label || doc.id;
+const h1 = headings.find((h) => h.depth === 1);
+const title = doc.data.title || h1?.text || doc.data.sidebar_label || doc.id;
 ---
 
-<DocsLayout title={title} description={doc.data.description} headings={headings}>
+<DocsLayout title={title} description={doc.data.description} headings={headings} sourceFile={doc.id}>
   <Content />
 </DocsLayout>

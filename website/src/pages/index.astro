@@ -12,12 +12,38 @@ import Testimonials from '@/components/Testimonials.astro';
   <Sponsors />
   <Testimonials />
 
-  <div class="mx-auto max-w-7xl px-4 py-8">
-    <a
-      href="/docs/intro"
-      class="block rounded-lg bg-primary py-4 text-center text-lg font-semibold text-white transition-colors hover:bg-primary-dark"
-    >
-      Learn more about Cheerio &rsaquo;
-    </a>
-  </div>
+  <!-- Final CTA Section -->
+  <section class="relative overflow-hidden bg-slate-950 py-24">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(232,140,31,0.12),transparent_70%)]"></div>
+    <div class="grain absolute inset-0 overflow-hidden opacity-40"></div>
+    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
+
+    <div class="relative z-10 mx-auto max-w-3xl px-6 text-center">
+      <h2 class="animate-fade-up font-display text-4xl text-white md:text-5xl">
+        Ready to get started?
+      </h2>
+      <p class="animate-fade-up animation-delay-100 mt-6 text-lg leading-relaxed text-slate-400">
+        Join thousands of developers who use Cheerio to parse, manipulate, and render HTML with ease.
+      </p>
+      <div class="animate-fade-up animation-delay-200 mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a
+          href="/docs/intro"
+          class="group inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-3.5 font-semibold text-white transition-all duration-300 hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25"
+        >
+          Read the docs
+          <svg class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+        <a
+          href="https://github.com/cheeriojs/cheerio"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 rounded-xl border border-slate-700 px-8 py-3.5 font-semibold text-slate-300 transition-all duration-300 hover:border-slate-500 hover:text-white hover:bg-slate-800/50"
+        >
+          Star on GitHub
+        </a>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
