@@ -184,5 +184,8 @@ try {
   }
 
   initCopyInstall();
-  document.addEventListener('astro:after-swap', initCopyInstall);
+  if (!(window as any).__cheerio_copy_install_swap) {
+    (window as any).__cheerio_copy_install_swap = true;
+    document.addEventListener('astro:after-swap', initCopyInstall);
+  }
 </script>
