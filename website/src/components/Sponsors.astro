@@ -1,0 +1,73 @@
+---
+import sponsorsData from '../../sponsors.json';
+import { Image } from 'astro:assets';
+import { Heart } from '@lucide/astro';
+
+interface Sponsor {
+  name: string;
+  image: string;
+  url: string;
+}
+
+const headliners = sponsorsData.headliner as Sponsor[];
+---
+
+<section class="relative overflow-hidden bg-slate-50 py-20 dark:bg-slate-800/50">
+  <!-- Decorative background -->
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(232,140,31,0.05),transparent_70%)]"></div>
+
+  <div class="relative mx-auto max-w-5xl px-6">
+    <div class="animate-fade-up mb-12 text-center">
+      <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Trusted by the best</p>
+      <h2 class="font-display text-4xl text-slate-900 dark:text-white">
+        Supported and Backed by
+      </h2>
+    </div>
+
+    <div class="animate-fade-up animation-delay-200 flex flex-wrap items-center justify-center gap-6">
+      {
+        headliners.map((sponsor) => (
+          <a
+            href={sponsor.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-6 py-4 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-primary/40"
+          >
+            {sponsor.image.endsWith('.svg') ? (
+              <img
+                src={sponsor.image}
+                alt={`${sponsor.name} logo`}
+                class="h-10 w-10 rounded-lg"
+                loading="lazy"
+              />
+            ) : (
+              <Image
+                src={sponsor.image}
+                alt={`${sponsor.name} logo`}
+                width={40}
+                height={40}
+                class="h-10 w-10 rounded-lg"
+                loading="lazy"
+              />
+            )}
+            <span class="font-medium text-slate-700 transition-colors group-hover:text-slate-900 dark:text-slate-300 dark:group-hover:text-white">
+              {sponsor.name}
+            </span>
+          </a>
+        ))
+      }
+    </div>
+
+    <div class="animate-fade-up animation-delay-400 mt-10 text-center">
+      <a
+        href="https://github.com/sponsors/cheeriojs"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-6 py-2.5 text-sm font-medium text-primary transition-all duration-300 hover:bg-primary/10 hover:border-primary/50 dark:text-primary-light"
+      >
+        <Heart class="h-5 w-5" fill="currentColor" stroke-width={0} />
+        Become a sponsor
+      </a>
+    </div>
+  </div>
+</section>

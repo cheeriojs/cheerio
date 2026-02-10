@@ -24,7 +24,7 @@ import {
   uniqueSort,
 } from 'domutils';
 import type { FilterFunction, AcceptedFilters } from '../types.js';
-const reSiblingSelector = /^\s*[+~]/;
+const reContextSelector = /^\s*(?:[+~]|:scope\b)/;
 
 /**
  * Get the descendants of each element in the current set of matched elements,
@@ -83,7 +83,7 @@ export function _findBySelector<T extends AnyNode>(
 ): Cheerio<Element> {
   const context = this.toArray();
 
-  const elems = reSiblingSelector.test(selector)
+  const elems = reContextSelector.test(selector)
     ? context
     : this.children().toArray();
 
@@ -273,7 +273,7 @@ export const parents: <T extends AnyNode>(
   selector?: AcceptedFilters<Element>,
 ) => Cheerio<Element> = _matcher(
   (elem) => {
-    const matched = [];
+    const matched: Element[] = [];
     while (elem.parent && !isDocument(elem.parent)) {
       matched.push(elem.parent as Element);
       elem = elem.parent;
@@ -281,6 +281,7 @@ export const parents: <T extends AnyNode>(
     return matched;
   },
   uniqueSort,
+  // eslint-disable-next-line unicorn/no-array-reverse
   (elems) => elems.reverse(),
 );
 
@@ -309,6 +310,7 @@ export const parentsUntil: <T extends AnyNode>(
 ) => Cheerio<Element> = _matchUntil(
   ({ parent }) => (parent && !isDocument(parent) ? (parent as Element) : null),
   uniqueSort,
+  // eslint-disable-next-line unicorn/no-array-reverse
   (elems) => elems.reverse(),
 );
 

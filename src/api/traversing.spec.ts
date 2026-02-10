@@ -91,6 +91,11 @@ describe('$(...)', () => {
       expect(q('.a').find('~.a')).toHaveLength(0);
     });
 
+    it('should find self', () => {
+      const q = load('<p class=a></p>');
+      expect(q('.a').find(':scope')).toHaveLength(1);
+    });
+
     it('should query case-sensitively when in xml mode', () => {
       const q = load('<caseSenSitive allTheWay>', { xml: true });
       expect(q('caseSenSitive')).toHaveLength(1);
@@ -250,7 +255,7 @@ describe('$(...)', () => {
       expect($('.apple').next('.non-existent')).toHaveLength(0);
     });
 
-    it('should accept elements that satisify the filter', () => {
+    it('should accept elements that satisfy the filter', () => {
       expect($('.apple').next('.orange')).toHaveLength(1);
     });
 
@@ -259,7 +264,7 @@ describe('$(...)', () => {
         expect($('.apple').next('.non-existent')).toHaveLength(0);
       });
 
-      it('should accept elements that satisify the filter', () => {
+      it('should accept elements that satisfy the filter', () => {
         expect($('.apple').next('.orange')).toHaveLength(1);
       });
     });
@@ -428,7 +433,7 @@ describe('$(...)', () => {
         expect($('.orange').prev('.non-existent')).toHaveLength(0);
       });
 
-      it('should accept elements that satisify the filter', () => {
+      it('should accept elements that satisfy the filter', () => {
         expect($('.orange').prev('.apple')).toHaveLength(1);
       });
 
@@ -436,7 +441,7 @@ describe('$(...)', () => {
         expect($('.orange').prev('.non-existent')).toHaveLength(0);
       });
 
-      it('(selector) : should accept elements that satisify the filter', () => {
+      it('(selector) : should accept elements that satisfy the filter', () => {
         expect($('.orange').prev('.apple')).toHaveLength(1);
       });
     });
@@ -655,7 +660,7 @@ describe('$(...)', () => {
       expect(result).toHaveLength(0);
     });
 
-    it('() : should return the parents of every element in the *reveresed* collection, omitting duplicates', () => {
+    it('() : should return the parents of every element in the *reversed* collection, omitting duplicates', () => {
       const $parents = $('li').parents();
 
       expect($parents).toHaveLength(5);
@@ -908,7 +913,7 @@ describe('$(...)', () => {
       expect($mapped[0]).toBe($fruits[1]);
     });
 
-    it('(fn) : should preform a shallow merge on arrays returned by iterator', () => {
+    it('(fn) : should perform a shallow merge on arrays returned by iterator', () => {
       const $fruits = $('li');
 
       const $mapped = $fruits.map(() => [1, [3, 4]]);
@@ -993,7 +998,7 @@ describe('$(...)', () => {
       expect(lis).toHaveLength(1);
     });
 
-    it('(selection) : should reduce the set of matched elements to those that are mot contained in the provided selection', () => {
+    it('(selection) : should reduce the set of matched elements to those that are not contained in the provided selection', () => {
       const $fruits = $('li');
       const $orange = $('.orange');
 

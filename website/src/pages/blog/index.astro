@@ -1,0 +1,134 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+
+// Sort posts by date (newest first)
+const sortedPosts = posts.sort((a, b) => {
+  const dateA = new Date(a.id.split('-').slice(0, 3).join('-'));
+  const dateB = new Date(b.id.split('-').slice(0, 3).join('-'));
+  return dateB.getTime() - dateA.getTime();
+});
+
+function getPostDate(id: string): string {
+  const datePart = id.split('-').slice(0, 3).join('-');
+  return new Date(datePart).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+function getPostSlug(id: string): string {
+  return id.replace('.md', '').replace('.mdx', '');
+}
+
+// Extract excerpt from raw markdown content (content before <!--truncate-->)
+function getExcerpt(rawContent: string): string | null {
+  const truncateIndex = rawContent.indexOf('<!--truncate-->');
+  if (truncateIndex === -1) return null;
+
+  let excerpt = rawContent.slice(0, truncateIndex).trim();
+
+  // Remove frontmatter
+  const frontmatterEnd = excerpt.indexOf('---', 3);
+  if (excerpt.startsWith('---') && frontmatterEnd !== -1) {
+    excerpt = excerpt.slice(frontmatterEnd + 3).trim();
+  }
+
+  // Remove the first heading (usually the title, which duplicates frontmatter title)
+  excerpt = excerpt.replace(/^#\s+.+\n+/, '').trim();
+
+  // Remove admonition blocks (:::note, :::tip, etc.)
+  excerpt = excerpt.replace(/^:::\w+(\[.*?\])?\n[\s\S]*?^:::\n*/gm, '').trim();
+
+  // Strip markdown formatting to plain text
+  excerpt = excerpt
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, '')      // ![alt](url) → remove
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')     // [text](url) → text
+    .replace(/(\*\*|__)(.*?)\1/g, '$2')          // **bold** → bold
+    .replace(/(\*|_)(.*?)\1/g, '$2')             // *italic* → italic
+    .replace(/`([^`]+)`/g, '$1')                 // `code` → code
+    .replace(/^#{1,6}\s+/gm, '')                 // headings → text
+    .replace(/^[-*+]\s+/gm, '')                  // list items
+    .replace(/^\d+\.\s+/gm, '')                  // ordered list items
+    .replace(/\n{2,}/g, ' ')                     // collapse newlines
+    .replace(/\n/g, ' ')                         // remaining newlines
+    .trim();
+
+  return excerpt || null;
+}
+
+// Pre-render excerpts for each post
+const postsWithExcerpts = sortedPosts.map((post) => {
+  const excerpt = getExcerpt(post.body || '');
+  return { post, excerpt };
+});
+---
+
+<BaseLayout title="Blog">
+  {/* Hero header */}
+  <section class="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-amber-50/60 to-white dark:border-slate-800 dark:from-slate-900 dark:to-slate-900">
+    <div class="mx-auto max-w-4xl px-6 py-16 text-center">
+      <h1 class="font-display text-4xl text-slate-900 lg:text-5xl dark:text-white">Blog</h1>
+      <p class="mt-4 text-lg text-slate-500 dark:text-slate-400">
+        Updates and announcements from the Cheerio team.
+      </p>
+      <a
+        href="/blog/rss.xml"
+        class="mt-6 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 shadow-sm transition-all hover:border-primary/40 hover:text-primary dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:hover:border-primary/40 dark:hover:text-primary"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
+          <path d="M3.75 3a.75.75 0 0 0-.75.75v.5c0 .414.336.75.75.75H4c6.075 0 11 4.925 11 11v.25c0 .414.336.75.75.75h.5a.75.75 0 0 0 .75-.75V16C17 8.82 11.18 3 4 3h-.25Z" />
+          <path d="M3 8.75A.75.75 0 0 1 3.75 8H4a8 8 0 0 1 8 8v.25a.75.75 0 0 1-.75.75h-.5a.75.75 0 0 1-.75-.75V16a6 6 0 0 0-6-6h-.25A.75.75 0 0 1 3 9.25v-.5ZM7 15a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" />
+        </svg>
+        Subscribe via RSS
+      </a>
+    </div>
+  </section>
+
+  {/* Posts grid */}
+  <div class="mx-auto max-w-4xl px-6 py-12">
+    <div class="space-y-8">
+      {
+        postsWithExcerpts.map(({ post, excerpt }) => (
+          <article class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-200 hover:border-primary/30 hover:shadow-lg dark:border-slate-700/80 dark:bg-slate-800/50 dark:hover:border-primary/30">
+            <div class="mb-3 flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
+              <time class="font-medium">{getPostDate(post.id)}</time>
+              {post.data.tags && (
+                <div class="flex gap-2">
+                  {post.data.tags.map((tag: string) => (
+                    <span class="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+            <h2 class="mb-2 font-heading text-xl font-semibold lg:text-2xl">
+              <a
+                href={`/blog/${getPostSlug(post.id)}`}
+                class="text-slate-900 transition-colors hover:text-primary dark:text-white dark:hover:text-primary"
+              >
+                {post.data.title}
+              </a>
+            </h2>
+            {excerpt && (
+              <p class="mb-4 line-clamp-3 text-slate-600 dark:text-slate-400">{excerpt}</p>
+            )}
+            <a
+              href={`/blog/${getPostSlug(post.id)}`}
+              class="inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors hover:text-primary-dark"
+            >
+              Read more
+              <svg class="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

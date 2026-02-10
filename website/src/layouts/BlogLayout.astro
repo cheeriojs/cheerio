@@ -1,0 +1,59 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  date?: Date;
+  author?: string;
+}
+
+const {
+  title,
+  description = 'The fast, flexible & elegant library for parsing and manipulating HTML and XML.',
+  date,
+  author,
+} = Astro.props;
+
+const formattedDate = date
+  ? date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  : null;
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="mx-auto max-w-3xl px-6 py-12">
+    {/* Editorial header */}
+    <header class="mb-10 border-b border-slate-200 pb-8 dark:border-slate-700/50">
+      <a
+        href="/blog"
+        class="mb-4 inline-flex items-center gap-1.5 text-sm font-medium text-slate-400 transition-colors hover:text-primary dark:text-slate-500 dark:hover:text-primary"
+      >
+        <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+        </svg>
+        Back to Blog
+      </a>
+      <h1 class="font-display text-3xl text-slate-900 lg:text-4xl dark:text-white">{title}</h1>
+      {
+        (formattedDate || author) && (
+          <div class="mt-4 flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
+            {formattedDate && (
+              <time class="font-medium">{formattedDate}</time>
+            )}
+            {formattedDate && author && (
+              <span class="text-slate-300 dark:text-slate-600">&middot;</span>
+            )}
+            {author && <span>by {author}</span>}
+          </div>
+        )
+      }
+    </header>
+    <div class="prose">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>

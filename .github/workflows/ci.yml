@@ -25,17 +25,17 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - 18
           - 20
           - 22
+          - 24
           - lts/*
 
     steps:
       - name: Clone repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4.4.0
+        uses: actions/setup-node@v6.2.0
         with:
           node-version: '${{ matrix.node }}'
           cache: 'npm'
@@ -52,7 +52,7 @@ jobs:
         if: matrix.node == env.NODE_COV
 
       - name: Run Coveralls
-        uses: coverallsapp/github-action@v2.3.6
+        uses: coverallsapp/github-action@v2.3.7
         if: matrix.node == env.NODE_COV
         continue-on-error: true
         with:

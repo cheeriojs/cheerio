@@ -652,6 +652,14 @@ describe('$(...)', () => {
       expect($('<div>').val()).toBeUndefined();
     });
 
+    it('(): on button should get value', () => {
+      const val = $('#btn-value').val();
+      expect(val).toBe('button');
+    });
+    it('(): on button with no value should get undefined', () => {
+      const val = $('#btn-valueless').val();
+      expect(val).toBeUndefined();
+    });
     it('(): on select should get value', () => {
       const val = $('select#one').val();
       expect(val).toBe('option_selected');
@@ -1025,7 +1033,7 @@ describe('$(...)', () => {
     it('(fn) : should no op elements without attributes', () => {
       const $inputs = $(inputs);
       const val = $inputs.removeClass(() => 'tasty');
-      expect(val).toHaveLength(15);
+      expect(val).toHaveLength(17);
     });
 
     it('(fn) : should skip text nodes', () => {
@@ -1136,7 +1144,6 @@ describe('$(...)', () => {
     it('(fn) : should work with no initial class attribute', () => {
       const $inputs = load(inputs);
       $inputs('input, select').toggleClass(function () {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- `get` should never return undefined here.
         return $inputs(this).get(0)!.tagName === 'select'
           ? 'selectable'
           : 'inputable';

@@ -73,7 +73,7 @@ function _stringStream(
 ): Writable {
   if (options?._useHtmlParser2) {
     const parser = htmlparser2.createDocumentStream(
-      (err, document) => cb(err, load(document)),
+      (err, document) => cb(err, load(document, options)),
       options,
     );
 
@@ -103,7 +103,7 @@ function _stringStream(
 
   const stream = new Parse5Stream(options);
 
-  finished(stream, (err) => cb(err, load(stream.document)));
+  finished(stream, (err) => cb(err, load(stream.document, options)));
 
   return stream;
 }
@@ -179,7 +179,10 @@ export function decodeStream(
   return decodeStream;
 }
 
-type UndiciStreamOptions = Parameters<typeof undici.stream>[1];
+type UndiciStreamOptions = Omit<
+  undici.Dispatcher.RequestOptions<unknown>,
+  'path'
+>;
 
 export interface CheerioRequestOptions extends DecodeStreamOptions {
   /** The options passed to `undici`'s `stream` method. */
@@ -188,8 +191,6 @@ export interface CheerioRequestOptions extends DecodeStreamOptions {
 
 const defaultRequestOptions: UndiciStreamOptions = {
   method: 'GET',
-  // Allow redirects by default
-  maxRedirections: 5,
   // Set an Accept header
   headers: {
     accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -226,59 +227,68 @@ export async function fromURL(
   let undiciStream: Promise<undici.Dispatcher.StreamData<unknown>> | undefined;
 
   // Add headers if none were supplied.
-  requestOptions.headers ??= defaultRequestOptions.headers;
+  const urlObject = typeof url === 'string' ? new URL(url) : url;
+  const streamOptions = {
+    headers: defaultRequestOptions.headers,
+    path: urlObject.pathname + urlObject.search,
+    ...requestOptions,
+  };
 
   const promise = new Promise<CheerioAPI>((resolve, reject) => {
-    undiciStream = undici.stream(url, requestOptions, (res) => {
-      if (res.statusCode < 200 || res.statusCode >= 300) {
-        throw new undici.errors.ResponseError(
-          'Response Error',
-          res.statusCode,
-          {
-            headers: res.headers,
-          },
+    undiciStream = new undici.Client(urlObject.origin)
+      .compose(undici.interceptors.redirect({ maxRedirections: 5 }))
+      .stream(streamOptions, (res) => {
+        if (res.statusCode < 200 || res.statusCode >= 300) {
+          throw new undici.errors.ResponseError(
+            'Response Error',
+            res.statusCode,
+            {
+              headers: res.headers,
+            },
+          );
+        }
+
+        const contentTypeHeader = res.headers['content-type'] ?? 'text/html';
+        const mimeType = new MIMEType(
+          Array.isArray(contentTypeHeader)
+            ? contentTypeHeader[0]
+            : contentTypeHeader,
         );
-      }
 
-      const contentTypeHeader = res.headers['content-type'] ?? 'text/html';
-      const mimeType = new MIMEType(
-        Array.isArray(contentTypeHeader)
-          ? contentTypeHeader[0]
-          : contentTypeHeader,
-      );
+        if (!mimeType.isHTML() && !mimeType.isXML()) {
+          throw new RangeError(
+            `The content-type "${mimeType.essence}" is neither HTML nor XML.`,
+          );
+        }
 
-      if (!mimeType.isHTML() && !mimeType.isXML()) {
-        throw new RangeError(
-          `The content-type "${mimeType.essence}" is neither HTML nor XML.`,
-        );
-      }
+        // Forward the charset from the header to the decodeStream.
+        encoding.transportLayerEncodingLabel =
+          mimeType.parameters.get('charset');
 
-      // Forward the charset from the header to the decodeStream.
-      encoding.transportLayerEncodingLabel = mimeType.parameters.get('charset');
+        /*
+         * If we allow redirects, we will have entries in the history.
+         * The last entry will be the final URL.
+         */
+        const history = (
+          res.context as
+            | {
+                history?: URL[];
+              }
+            | undefined
+        )?.history;
+        // Set the `baseURI` to the final URL.
+        const baseURI = history ? history[history.length - 1] : urlObject;
 
-      /*
-       * If we allow redirects, we will have entries in the history.
-       * The last entry will be the final URL.
-       */
-      const history = (
-        res.context as
-          | {
-              history?: URL[];
-            }
-          | undefined
-      )?.history;
+        const opts: DecodeStreamOptions = {
+          encoding,
+          // Set XML mode based on the MIME type.
+          xmlMode: mimeType.isXML(),
+          baseURI,
+          ...cheerioOptions,
+        };
 
-      const opts = {
-        encoding,
-        // Set XML mode based on the MIME type.
-        xmlMode: mimeType.isXML(),
-        // Set the `baseURL` to the final URL.
-        baseURL: history ? history[history.length - 1] : url,
-        ...cheerioOptions,
-      };
-
-      return decodeStream(opts, (err, $) => (err ? reject(err) : resolve($)));
-    });
+        return decodeStream(opts, (err, $) => (err ? reject(err) : resolve($)));
+      });
   });
 
   // Let's make sure the request is completed before returning the promise.
