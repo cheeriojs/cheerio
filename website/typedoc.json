@@ -4,6 +4,7 @@
   "tsconfig": "../tsconfig.typedoc.json",
   "readme": "none",
   "excludePrivate": true,
+  "excludeExternals": true,
   "plugin": ["typedoc-plugin-markdown", "typedoc-plugin-mdn-links"],
   "out": "src/content/docs/api",
   "entryFileName": "index",
