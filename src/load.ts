@@ -10,6 +10,8 @@ import type { AnyNode, Document, Element, ParentNode } from 'domhandler';
 import type { SelectorType, BasicAcceptedElems } from './types.js';
 import { ElementType } from 'htmlparser2';
 
+export type { AnyNode, Document, Element, ParentNode } from 'domhandler';
+
 type StaticType = typeof staticMethods;
 
 /**
