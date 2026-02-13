@@ -85,15 +85,15 @@ function getAttr(
 
 /**
  * Sets the value of an attribute. The attribute will be deleted if the value is
- * `null`.
+ * `null` or `undefined`.
  *
  * @private
  * @param el - The element to set the attribute on.
  * @param name - The attribute's name.
  * @param value - The attribute's value.
  */
-function setAttr(el: Element, name: string, value: string | null) {
-  if (value === null) {
+function setAttr(el: Element, name: string, value: string | null | undefined) {
+  if (value === null || value === undefined) {
     removeAttribute(el, name);
   } else {
     el.attribs[name] = `${value}`;
@@ -140,8 +140,8 @@ export function attr<T extends AnyNode>(
 ): Record<string, string> | undefined;
 /**
  * Method for setting attributes. Sets the attribute value for all elements in
- * the matched set. If you set an attribute's value to `null`, you remove that
- * attribute. You may also pass a `map` and `function`.
+ * the matched set. If you set an attribute's value to `null` or `undefined`,
+ * you remove that attribute. You may also pass a `map` and `function`.
  *
  * @category Attributes
  * @example
@@ -162,7 +162,8 @@ export function attr<T extends AnyNode>(
   value?:
     | string
     | null
-    | ((this: Element, i: number, attrib: string) => string | null),
+    | undefined
+    | ((this: Element, i: number, attrib: string) => string | null | undefined),
 ): Cheerio<T>;
 /**
  * Method for setting multiple attributes at once. Sets the attribute value for
@@ -183,18 +184,19 @@ export function attr<T extends AnyNode>(
  */
 export function attr<T extends AnyNode>(
   this: Cheerio<T>,
-  values: Record<string, string | null>,
+  values: Record<string, string | null | undefined>,
 ): Cheerio<T>;
 export function attr<T extends AnyNode>(
   this: Cheerio<T>,
-  name?: string | Record<string, string | null>,
+  name?: string | Record<string, string | null | undefined>,
   value?:
     | string
     | null
-    | ((this: Element, i: number, attrib: string) => string | null),
+    | undefined
+    | ((this: Element, i: number, attrib: string) => string | null | undefined),
 ): string | Cheerio<T> | undefined | Record<string, string> {
   // Set the value (with attr map support)
-  if (typeof name === 'object' || value !== undefined) {
+  if (typeof name === 'object' || arguments.length > 1) {
     if (typeof value === 'function') {
       if (typeof name !== 'string') {
         {
@@ -726,7 +728,7 @@ export function data<T extends AnyNode>(
   }
 
   // Set the value (with attr map support)
-  if (typeof name === 'object' || value !== undefined) {
+  if (typeof name === 'object' || arguments.length > 1) {
     domEach(this, (el) => {
       if (isTag(el)) {
         if (typeof name === 'object') setData(el, name);
