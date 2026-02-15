@@ -20,7 +20,7 @@ const dataAttrPrefix = 'data-';
 
 // Attributes that are booleans
 const rboolean =
-  /^(?:autofocus|autoplay|async|checked|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped|selected)$/i;
+  /^(?:autofocus|autoplay|async|checked|controls|defer|disabled|loop|multiple|open|readonly|required|scoped|selected)$/i;
 // Matches strings that look like JSON objects or arrays
 const rbrace = /^{[^]*}$|^\[[^]*]$/;
 

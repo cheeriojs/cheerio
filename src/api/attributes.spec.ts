@@ -44,6 +44,11 @@ describe('$(...)', () => {
       expect(attr).toBe('autofocus');
     });
 
+    it('(valid key) : should preserve non-boolean hidden attribute values', () => {
+      const attr = $('<div hidden="until-found">').attr('hidden');
+      expect(attr).toBe('until-found');
+    });
+
     it('(key, value) : should set one attr', () => {
       const $pear = $('.pear').attr('id', 'pear');
       expect($('#pear')).toHaveLength(1);
