@@ -149,7 +149,7 @@
     "globals": "^17.3.0",
     "husky": "^9.1.7",
     "jquery": "^4.0.0",
-    "jsdom": "^28.0.0",
+    "jsdom": "^28.1.0",
     "lint-staged": "^16.2.7",
     "prettier": "^3.8.1",
     "prettier-plugin-jsdoc": "^1.8.0",
