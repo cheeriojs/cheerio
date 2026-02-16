@@ -144,7 +144,7 @@
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jsdoc": "^62.5.4",
-    "eslint-plugin-n": "^17.23.2",
+    "eslint-plugin-n": "^17.24.0",
     "eslint-plugin-unicorn": "^63.0.0",
     "globals": "^17.3.0",
     "husky": "^9.1.7",
