@@ -141,7 +141,7 @@
     "@types/whatwg-mimetype": "^3.0.2",
     "@vitest/coverage-v8": "^4.0.18",
     "@vitest/eslint-plugin": "^1.6.9",
-    "eslint": "^9.39.2",
+    "eslint": "^10.0.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jsdoc": "^62.6.1",
     "eslint-plugin-n": "^17.24.0",
