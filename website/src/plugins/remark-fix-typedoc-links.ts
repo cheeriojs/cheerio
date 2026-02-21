@@ -1,5 +1,5 @@
+import type { Link, Root } from 'mdast';
 import { visit } from 'unist-util-visit';
-import type { Root, Link } from 'mdast';
 
 function visitTypedocLink(node: Link): void {
   if (typeof node.url === 'string' && node.url.startsWith('/docs/api/')) {

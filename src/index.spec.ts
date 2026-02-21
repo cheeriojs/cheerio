@@ -1,7 +1,7 @@
-import { describe, it, expect, afterEach } from 'vitest';
-import * as cheerio from './index.js';
+import { createServer, type RequestListener, type Server } from 'node:http';
 import { Writable } from 'node:stream';
-import { createServer, type Server, type RequestListener } from 'node:http';
+import { afterEach, describe, expect, it } from 'vitest';
+import * as cheerio from './index.js';
 
 function noop() {
   // Ignore

@@ -1,18 +1,18 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { load, type CheerioAPI } from '../index.js';
-import { Cheerio } from '../cheerio.js';
-import { type AnyNode, type Element, type Text, isText } from 'domhandler';
+import { type AnyNode, type Element, isText, type Text } from 'domhandler';
+import { beforeEach, describe, expect, it } from 'vitest';
 import {
   cheerio,
-  food,
-  fruits,
-  eleven,
   drinks,
-  text,
+  eleven,
+  food,
   forms,
+  fruits,
   mixedText,
+  text,
   vegetables,
 } from '../__fixtures__/fixtures.js';
+import { Cheerio } from '../cheerio.js';
+import { type CheerioAPI, load } from '../index.js';
 
 function getText(el: Cheerio<Element>) {
   if (el.length === 0) return undefined;

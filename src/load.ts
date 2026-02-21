@@ -1,14 +1,14 @@
+import type { AnyNode, Document, Element, ParentNode } from 'domhandler';
+import { ElementType } from 'htmlparser2';
+import { Cheerio } from './cheerio.js';
 import {
   type CheerioOptions,
-  type InternalOptions,
   flattenOptions,
+  type InternalOptions,
 } from './options.js';
 import * as staticMethods from './static.js';
-import { Cheerio } from './cheerio.js';
-import { isHtml, isCheerio } from './utils.js';
-import type { AnyNode, Document, Element, ParentNode } from 'domhandler';
-import type { SelectorType, BasicAcceptedElems } from './types.js';
-import { ElementType } from 'htmlparser2';
+import type { BasicAcceptedElems, SelectorType } from './types.js';
+import { isCheerio, isHtml } from './utils.js';
 
 export type { AnyNode, Document, Element, ParentNode } from 'domhandler';
 

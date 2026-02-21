@@ -4,17 +4,13 @@
  * @module cheerio/attributes
  */
 
-import { text } from '../static.js';
-import { domEach, camelCase, cssCase } from '../utils.js';
-import { isTag, type AnyNode, type Element } from 'domhandler';
-import type { Cheerio } from '../cheerio.js';
+import { type AnyNode, type Element, isTag } from 'domhandler';
 import { innerText, textContent } from 'domutils';
 import { ElementType } from 'htmlparser2';
-const hasOwn =
-  // @ts-expect-error `hasOwn` is a standard object method
-  (Object.hasOwn as (object: unknown, prop: string) => boolean) ??
-  ((object: unknown, prop: string) =>
-    Object.prototype.hasOwnProperty.call(object, prop));
+import type { Cheerio } from '../cheerio.js';
+import { text } from '../static.js';
+import { camelCase, cssCase, domEach } from '../utils.js';
+
 const rspace = /\s+/;
 const dataAttrPrefix = 'data-';
 
@@ -22,7 +18,7 @@ const dataAttrPrefix = 'data-';
 const rboolean =
   /^(?:autofocus|autoplay|async|checked|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped|selected)$/i;
 // Matches strings that look like JSON objects or arrays
-const rbrace = /^{[^]*}$|^\[[^]*]$/;
+const rbrace = /^\{.*}$|^\[.*]$/;
 
 /**
  * Gets a node's attribute. For boolean attributes, it will return the value's
@@ -61,7 +57,7 @@ function getAttr(
     return elem.attribs;
   }
 
-  if (hasOwn(elem.attribs, name)) {
+  if (Object.prototype.hasOwnProperty.call(elem.attribs, name)) {
     // Get the (decoded) attribute
     return !xmlMode && rboolean.test(name) ? name : elem.attribs[name];
   }
@@ -197,9 +193,7 @@ export function attr<T extends AnyNode>(
   if (typeof name === 'object' || value !== undefined) {
     if (typeof value === 'function') {
       if (typeof name !== 'string') {
-        {
-          throw new Error('Bad combination of arguments.');
-        }
+        throw new TypeError('Bad combination of arguments.');
       }
       return domEach(this, (el, i) => {
         if (isTag(el)) setAttr(el, name, value.call(el, i, el.attribs[name]));
@@ -566,7 +560,7 @@ function readAllData(el: DataElement): unknown {
 
     const jsName = camelCase(domName.slice(dataAttrPrefix.length));
 
-    if (!hasOwn(el.data, jsName)) {
+    if (!Object.prototype.hasOwnProperty.call(el.data, jsName)) {
       el.data![jsName] = parseDataValue(el.attribs[domName]);
     }
   }
@@ -588,12 +582,13 @@ function readData(el: DataElement, name: string): unknown {
   const domName = dataAttrPrefix + cssCase(name);
   const data = el.data!;
 
-  if (hasOwn(data, name)) {
+  if (Object.prototype.hasOwnProperty.call(data, name)) {
     return data[name];
   }
 
-  if (hasOwn(el.attribs, domName)) {
-    return (data[name] = parseDataValue(el.attribs[domName]));
+  if (Object.prototype.hasOwnProperty.call(el.attribs, domName)) {
+    data[name] = parseDataValue(el.attribs[domName]);
+    return data[name];
   }
 
   return undefined;
@@ -831,7 +826,7 @@ export function val<T extends AnyNode>(
  * @param name - Name of the attribute to remove.
  */
 function removeAttribute(elem: Element, name: string) {
-  if (!elem.attribs || !hasOwn(elem.attribs, name)) return;
+  if (!elem.attribs || !Object.prototype.hasOwnProperty.call(elem.attribs, name)) return;
 
   delete elem.attribs[name];
 }
@@ -908,10 +903,13 @@ export function hasClass<T extends AnyNode>(
 ): boolean {
   return this.toArray().some((elem) => {
     const clazz = isTag(elem) && elem.attribs['class'];
-    let idx = -1;
 
     if (clazz && className.length > 0) {
-      while ((idx = clazz.indexOf(className, idx + 1)) > -1) {
+      for (
+        let idx = clazz.indexOf(className);
+        idx > -1;
+        idx = clazz.indexOf(className, idx + 1)
+      ) {
         const end = idx + className.length;
 
         if (

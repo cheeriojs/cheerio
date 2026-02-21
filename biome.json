@@ -1,0 +1,92 @@
+{
+    "$schema": "https://biomejs.dev/schemas/2.4.4/schema.json",
+    "vcs": {
+        "enabled": true,
+        "clientKind": "git",
+        "useIgnoreFile": true
+    },
+    "files": {
+        "ignoreUnknown": true,
+        "includes": [
+            "**/*.{c,m,}js",
+            "**/*.jsx",
+            "**/*.{c,m,}ts",
+            "**/*.tsx",
+            "**/*.{md,mdx,json,yml,yaml}",
+            "!**/.*"
+        ]
+    },
+    "formatter": {
+        "enabled": true,
+        "indentStyle": "space",
+        "indentWidth": 2
+    },
+    "javascript": {
+        "formatter": {
+            "quoteStyle": "single"
+        }
+    },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "recommended": true,
+            "complexity": {
+                "useLiteralKeys": "off",
+                "noArguments": "off",
+                "noCommaOperator": "off"
+            },
+            "style": {
+                "noNonNullAssertion": "off"
+            },
+            "suspicious": {
+                "noExplicitAny": "off",
+                "noAssignInExpressions": "off",
+                "noImplicitAnyLet": "off",
+                "noUnsafeDeclarationMerging": "off",
+                "noShadowRestrictedNames": "off"
+            }
+        }
+    },
+    "assist": {
+        "enabled": true,
+        "actions": {
+            "source": {
+                "organizeImports": "on"
+            }
+        }
+    },
+    "overrides": [
+        {
+            "includes": [
+                "**/*.{test,spec}.ts",
+                "test/**/*.ts"
+            ],
+            "javascript": {
+                "globals": [
+                    "jest",
+                    "describe",
+                    "it",
+                    "beforeEach",
+                    "afterEach",
+                    "expect",
+                    "vi"
+                ]
+            }
+        },
+        {
+            "includes": [
+                "**/*.ts",
+                "**/*.cts",
+                "**/*.mts",
+                "**/*.tsx"
+            ],
+            "linter": {
+                "rules": {
+                    "complexity": {
+                        "useLiteralKeys": "off"
+                    }
+                }
+            }
+        }
+    ]
+}

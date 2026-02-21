@@ -1,5 +1,5 @@
+import type { Code, Parent, Root } from 'mdast';
 import { visit } from 'unist-util-visit';
-import type { Root, Code, Parent } from 'mdast';
 
 interface MdxJsxAttribute {
   type: 'mdxJsxAttribute';

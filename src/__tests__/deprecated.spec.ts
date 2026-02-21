@@ -3,7 +3,7 @@
  * removed in the next major release of Cheerio, but their stability should be
  * maintained until that time.
  */
-import { describe, it, expect, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { cheerio, food, fruits } from '../__fixtures__/fixtures.js';
 
 describe('deprecated APIs', () => {
