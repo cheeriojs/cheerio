@@ -62,6 +62,12 @@ function getAttr(
   }
 
   if (hasOwn(elem.attribs, name)) {
+    if (!xmlMode && name === 'hidden') {
+      const value = elem.attribs[name];
+
+      return value === 'until-found' ? 'until-found' : 'hidden';
+    }
+
     // Get the (decoded) attribute
     return !xmlMode && rboolean.test(name) ? name : elem.attribs[name];
   }
@@ -239,12 +245,22 @@ function getProp(
   name: string,
   xmlMode?: boolean,
 ): string | undefined | boolean | Element[keyof Element] {
-  return name in el
-    ? // @ts-expect-error TS doesn't like us accessing the value directly here.
-      (el[name] as string | undefined)
-    : !xmlMode && rboolean.test(name)
-      ? getAttr(el, name, false) !== undefined
-      : getAttr(el, name, xmlMode);
+  if (name in el) {
+    // @ts-expect-error TS doesn't like us accessing the value directly here.
+    return el[name] as string | undefined;
+  }
+
+  if (!xmlMode && name === 'hidden') {
+    const value = getAttr(el, name, false);
+
+    return value === 'until-found' ? 'until-found' : value !== undefined;
+  }
+
+  if (!xmlMode && rboolean.test(name)) {
+    return getAttr(el, name, false) !== undefined;
+  }
+
+  return getAttr(el, name, xmlMode);
 }
 
 /**
@@ -260,17 +276,24 @@ function setProp(el: Element, name: string, value: unknown, xmlMode?: boolean) {
   if (name in el) {
     // @ts-expect-error Overriding value
     el[name] = value;
-  } else {
+    return;
+  }
+
+  if (!xmlMode && name === 'hidden') {
     setAttr(
       el,
       name,
-      !xmlMode && rboolean.test(name)
-        ? value
-          ? ''
-          : null
-        : `${value as string}`,
+      value === 'until-found' ? 'until-found' : value ? '' : null,
     );
+    return;
   }
+
+  if (!xmlMode && rboolean.test(name)) {
+    setAttr(el, name, value ? '' : null);
+    return;
+  }
+
+  setAttr(el, name, `${value as string}`);
 }
 
 interface StyleProp {
