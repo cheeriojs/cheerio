@@ -18,7 +18,7 @@ const dataAttrPrefix = 'data-';
 const rboolean =
   /^(?:autofocus|autoplay|async|checked|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped|selected)$/i;
 // Matches strings that look like JSON objects or arrays
-const rbrace = /^\{.*}$|^\[.*]$/;
+const rbrace = /^{[^]*}$|^\[[^]*]$/;
 
 /**
  * Gets a node's attribute. For boolean attributes, it will return the value's
