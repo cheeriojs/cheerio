@@ -114,6 +114,7 @@ export abstract class Cheerio<T> implements ArrayLike<T> {
   abstract _render(dom: AnyNode | ArrayLike<AnyNode>): string;
 }
 
+/** Public Cheerio collection interface exposed by the module. */
 export interface Cheerio<T> extends MethodsType, Iterable<T> {
   cheerio: '[cheerio object]';
 

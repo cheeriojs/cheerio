@@ -125,7 +125,7 @@
   "devDependencies": {
     "@biomejs/biome": "^2.4.4",
     "@eslint/compat": "^2.0.2",
-    "@feedic/eslint-config": "^0.1.0",
+    "@feedic/eslint-config": "^0.2.2",
     "@imgix/js-core": "^3.8.0",
     "@octokit/graphql": "^9.0.3",
     "@types/jsdom": "^27.0.0",
@@ -135,7 +135,6 @@
     "@vitest/eslint-plugin": "^1.6.9",
     "eslint": "^10.0.1",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-jsdoc": "^62.7.0",
     "globals": "^17.3.0",
     "husky": "^9.1.7",
     "jquery": "^4.0.0",

@@ -5,7 +5,6 @@ import { commonTypeScriptRules } from '@feedic/eslint-config/typescript';
 import eslintPluginVitest from '@vitest/eslint-plugin';
 import { defineConfig } from 'eslint/config';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import eslintPluginJsdoc from 'eslint-plugin-jsdoc';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -25,22 +24,12 @@ export default defineConfig(
   ...feedicFlatConfig,
 
   {
-    // JSDoc configuration
-    plugins: { jsdoc: eslintPluginJsdoc },
     rules: {
-      ...eslintPluginJsdoc.configs.recommended.rules,
-      'jsdoc/require-jsdoc': 0,
       'jsdoc/tag-lines': [2, 'any', { startLines: 1 }],
       'jsdoc/require-param-type': 0,
       'jsdoc/require-returns-type': 0,
       'jsdoc/no-types': 2,
-      'jsdoc/require-returns-check': 0, // Was in TS override, better here
-    },
-    settings: {
-      jsdoc: {
-        mode: 'typescript',
-        tagNamePreference: { category: 'category' },
-      },
+      'jsdoc/require-returns-check': 0,
     },
   },
 

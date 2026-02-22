@@ -106,6 +106,12 @@ export interface CheerioAPI extends StaticType {
   load: ReturnType<typeof getLoad>;
 }
 
+/**
+ * Create a loader factory from parser and renderer implementations.
+ *
+ * @param parse - Parser used to convert input into a document.
+ * @param render - Renderer used to serialize nodes back to markup.
+ */
 export function getLoad(
   parse: Cheerio<AnyNode>['_parse'],
   render: (

@@ -146,6 +146,7 @@ export function stringStream(
   return _stringStream(flattenOptions(options), cb);
 }
 
+/** Options used by {@link decodeStream} for decoding incoming buffers. */
 export interface DecodeStreamOptions extends CheerioOptions {
   encoding?: SnifferOptions;
 }
@@ -184,6 +185,7 @@ type UndiciStreamOptions = Omit<
   'path'
 >;
 
+/** Options accepted by {@link fromURL}. */
 export interface CheerioRequestOptions extends DecodeStreamOptions {
   /** The options passed to `undici`'s `stream` method. */
   requestOptions?: UndiciStreamOptions;

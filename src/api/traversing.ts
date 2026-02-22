@@ -784,6 +784,14 @@ export function filter<T>(
   );
 }
 
+/**
+ * Filter an array of nodes with either a selector or predicate.
+ *
+ * @param nodes - The nodes to filter.
+ * @param match - Selector or predicate used to keep nodes.
+ * @param xmlMode - Whether selector matching should use XML mode.
+ * @param root - Optional document root used for selector matching.
+ */
 export function filterArray<T>(
   nodes: T[],
   match: AcceptedFilters<T>,
