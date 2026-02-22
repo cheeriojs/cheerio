@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { load, type Cheerio } from '../index.js';
 import type { Element } from 'domhandler';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { cheerio, mixedText } from '../__fixtures__/fixtures.js';
+import { type Cheerio, load } from '../index.js';
 
 describe('$(...)', () => {
   describe('.css', () => {

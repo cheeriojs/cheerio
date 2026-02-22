@@ -4,8 +4,6 @@
  */
 
 export * from './load-parse.js';
-export { contains, merge } from './static.js';
-export type * from './types.js';
 export type {
   AnyNode,
   Cheerio,
@@ -16,25 +14,27 @@ export type {
   HTMLParser2Options,
   ParentNode,
 } from './slim.js';
+export { contains, merge } from './static.js';
+export type * from './types.js';
 
-import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';
-import * as htmlparser2 from 'htmlparser2';
-import { ParserStream as Parse5Stream } from 'parse5-parser-stream';
+import { finished, Writable } from 'node:stream';
 import {
-  decodeBuffer,
   DecodeStream,
+  decodeBuffer,
   type SnifferOptions,
 } from 'encoding-sniffer';
+import * as htmlparser2 from 'htmlparser2';
+import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';
+import { ParserStream as Parse5Stream } from 'parse5-parser-stream';
 import * as undici from 'undici';
 import MIMEType from 'whatwg-mimetype';
-import { Writable, finished } from 'node:stream';
 import type { CheerioAPI } from './load.js';
+import { load } from './load-parse.js';
 import {
+  type CheerioOptions,
   flattenOptions,
   type InternalOptions,
-  type CheerioOptions,
 } from './options.js';
-import { load } from './load-parse.js';
 
 /**
  * Sniffs the encoding of a buffer, then creates a querying function bound to a
@@ -146,6 +146,7 @@ export function stringStream(
   return _stringStream(flattenOptions(options), cb);
 }
 
+/** Options used by {@link decodeStream} for decoding incoming buffers. */
 export interface DecodeStreamOptions extends CheerioOptions {
   encoding?: SnifferOptions;
 }
@@ -184,6 +185,7 @@ type UndiciStreamOptions = Omit<
   'path'
 >;
 
+/** Options accepted by {@link fromURL}. */
 export interface CheerioRequestOptions extends DecodeStreamOptions {
   /** The options passed to `undici`'s `stream` method. */
   requestOptions?: UndiciStreamOptions;

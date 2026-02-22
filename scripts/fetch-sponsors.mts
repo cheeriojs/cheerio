@@ -13,9 +13,9 @@
                   @typescript-eslint/no-unsafe-member-access,
                   @typescript-eslint/prefer-nullish-coalescing */
 import * as fs from 'node:fs/promises';
-import { request } from 'undici';
-import { graphql as githubGraphQL } from '@octokit/graphql';
 import ImgixClient from '@imgix/js-core';
+import { graphql as githubGraphQL } from '@octokit/graphql';
+import { request } from 'undici';
 
 type Tier = 'headliner' | 'sponsor' | 'professional' | 'backer';
 

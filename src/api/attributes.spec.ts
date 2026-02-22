@@ -1,16 +1,16 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { load, type CheerioAPI, type Cheerio } from '../index.js';
 import type { Element } from 'domhandler';
+import { beforeEach, describe, expect, it } from 'vitest';
 import {
   cheerio,
-  script,
-  fruits,
-  vegetables,
-  food,
   chocolates,
+  food,
+  fruits,
   inputs,
   mixedText,
+  script,
+  vegetables,
 } from '../__fixtures__/fixtures.js';
+import { type Cheerio, type CheerioAPI, load } from '../index.js';
 
 function withClass(attr: string) {
   return cheerio(`<div class="${attr}"></div>`);

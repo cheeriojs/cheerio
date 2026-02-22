@@ -4,18 +4,15 @@
  * @module cheerio/traversing
  */
 
+import * as select from 'cheerio-select';
 import {
-  isTag,
   type AnyNode,
+  type Document,
   type Element,
   hasChildren,
   isDocument,
-  type Document,
+  isTag,
 } from 'domhandler';
-import type { Cheerio } from '../cheerio.js';
-import * as select from 'cheerio-select';
-import { domEach, isCheerio } from '../utils.js';
-import { contains } from '../static.js';
 import {
   getChildren,
   getSiblings,
@@ -23,7 +20,11 @@ import {
   prevElementSibling,
   uniqueSort,
 } from 'domutils';
-import type { FilterFunction, AcceptedFilters } from '../types.js';
+import type { Cheerio } from '../cheerio.js';
+import { contains } from '../static.js';
+import type { AcceptedFilters, FilterFunction } from '../types.js';
+import { domEach, isCheerio } from '../utils.js';
+
 const reContextSelector = /^\s*(?:[+~]|:scope\b)/;
 
 /**
@@ -114,11 +115,11 @@ export function _findBySelector<T extends AnyNode>(
 function _getMatcher<P>(
   matchMap: (fn: (elem: AnyNode) => P, elems: Cheerio<AnyNode>) => Element[],
 ) {
-  return function (
+  return (
     fn: (elem: AnyNode) => P,
     ...postFns: ((elems: Element[]) => Element[])[]
-  ) {
-    return function <T extends AnyNode>(
+  ) =>
+    function <T extends AnyNode>(
       this: Cheerio<T>,
       selector?: AcceptedFilters<Element>,
     ): Cheerio<Element> {
@@ -140,7 +141,6 @@ function _getMatcher<P>(
           : matched,
       );
     };
-  };
 }
 
 /** Matcher that adds multiple elements for each entry in the input. */
@@ -705,9 +705,7 @@ function getFilterFn<T>(
   if (isCheerio<T>(match)) {
     return (el) => Array.prototype.includes.call(match, el);
   }
-  return function (el) {
-    return match === el;
-  };
+  return (el) => match === el;
 }
 
 /**
@@ -786,6 +784,14 @@ export function filter<T>(
   );
 }
 
+/**
+ * Filter an array of nodes with either a selector or predicate.
+ *
+ * @param nodes - The nodes to filter.
+ * @param match - Selector or predicate used to keep nodes.
+ * @param xmlMode - Whether selector matching should use XML mode.
+ * @param root - Optional document root used for selector matching.
+ */
 export function filterArray<T>(
   nodes: T[],
   match: AcceptedFilters<T>,

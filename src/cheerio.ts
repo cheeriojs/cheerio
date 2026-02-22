@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-declaration-merging */
-import type { InternalOptions } from './options.js';
-import type { AnyNode, Document, ParentNode } from 'domhandler';
-import type { BasicAcceptedElems } from './types.js';
 
+import type { AnyNode, Document, ParentNode } from 'domhandler';
 import * as Attributes from './api/attributes.js';
-import * as Traversing from './api/traversing.js';
-import * as Manipulation from './api/manipulation.js';
 import * as Css from './api/css.js';
-import * as Forms from './api/forms.js';
 import * as Extract from './api/extract.js';
+import * as Forms from './api/forms.js';
+import * as Manipulation from './api/manipulation.js';
+import * as Traversing from './api/traversing.js';
+import type { InternalOptions } from './options.js';
+import type { BasicAcceptedElems } from './types.js';
 
 type MethodsType = typeof Attributes &
   typeof Traversing &
@@ -114,6 +114,7 @@ export abstract class Cheerio<T> implements ArrayLike<T> {
   abstract _render(dom: AnyNode | ArrayLike<AnyNode>): string;
 }
 
+/** Public Cheerio collection interface exposed by the module. */
 export interface Cheerio<T> extends MethodsType, Iterable<T> {
   cheerio: '[cheerio object]';
 

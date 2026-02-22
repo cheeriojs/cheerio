@@ -1,10 +1,10 @@
-import { useCallback } from 'react';
 import {
-  SandpackProvider,
   SandpackCodeEditor,
   SandpackConsole,
+  SandpackProvider,
   useSandpack,
 } from '@codesandbox/sandpack-react';
+import { useCallback } from 'react';
 
 interface LiveCodeProps {
   code: string;
@@ -17,6 +17,7 @@ function ResetButton() {
 
   return (
     <button
+      type="button"
       onClick={handleReset}
       className="px-2 py-1 text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors"
       title="Reset code and re-run"
@@ -36,6 +37,7 @@ function RunButton() {
 
   return (
     <button
+      type="button"
       onClick={handleRun}
       className="px-2 py-1 text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors"
       title="Run code"
