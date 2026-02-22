@@ -39,6 +39,7 @@
         "noNonNullAssertion": "off"
       },
       "suspicious": {
+        "noConstEnum": "off",
         "noExplicitAny": "off",
         "noAssignInExpressions": "off",
         "noImplicitAnyLet": "off",

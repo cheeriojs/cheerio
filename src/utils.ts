@@ -60,7 +60,7 @@ export function domEach<
   return array;
 }
 
-enum CharacterCode {
+const enum CharacterCode {
   LowerA = 97,
   LowerZ = 122,
   UpperA = 65,
