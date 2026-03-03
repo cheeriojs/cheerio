@@ -133,7 +133,13 @@ export function getLoad(
     isDocument = true,
   ): CheerioAPI {
     if ((content as string | null) == null) {
-      throw new Error('cheerio.load() expects a string');
+      const actualType = content === null ? 'null' : typeof content;
+      throw new Error(
+        `cheerio.load() expects a string, Buffer, or DOM node as content. ` +
+        `Received: ${actualType}. ` +
+        `Hint: If you're passing a variable, make sure it's not undefined or null. ` +
+        `Example: cheerio.load('<html>...</html>')`
+      );
     }
 
     const internalOpts = flattenOptions(options);
@@ -216,7 +222,12 @@ export function getLoad(
       }
 
       if (typeof selector !== 'string') {
-        throw new TypeError('Unexpected type of selector');
+        throw new TypeError(
+          `Unexpected selector type: ${typeof selector}. ` +
+          `Cheerio accepts strings (CSS selectors or HTML), DOM nodes, arrays of DOM nodes, or Cheerio objects. ` +
+          `Received type: ${typeof selector}. ` +
+          `Example: $('div.class'), $('<html>'), or $(domNode)`
+        );
       }
 
       // We know that our selector is a string now.
