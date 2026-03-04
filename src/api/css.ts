@@ -40,9 +40,7 @@ export function css<T extends AnyNode>(
 export function css<T extends AnyNode>(
   this: Cheerio<T>,
   prop: string,
-  val:
-    | string
-    | ((this: Element, i: number, style: string) => string | undefined),
+  val: string | ((this: Element, i: number, style: string) => string | void),
 ): Cheerio<T>;
 /**
  * Set multiple CSS properties for every matched element.
@@ -68,9 +66,7 @@ export function css<T extends AnyNode>(
 export function css<T extends AnyNode>(
   this: Cheerio<T>,
   prop?: string | string[] | Record<string, string>,
-  val?:
-    | string
-    | ((this: Element, i: number, style: string) => string | undefined),
+  val?: string | ((this: Element, i: number, style: string) => string | void),
 ): Cheerio<T> | Record<string, string> | string | undefined {
   if (
     (prop != null && val != null) ||
@@ -106,7 +102,7 @@ function setCss(
   prop: string | Record<string, string>,
   value:
     | string
-    | ((this: Element, i: number, style: string) => string | undefined)
+    | ((this: Element, i: number, style: string) => string | void)
     | undefined,
   idx: number,
 ) {

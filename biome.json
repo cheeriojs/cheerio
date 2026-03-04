@@ -64,12 +64,13 @@
         "useUnifiedTypeSignatures": "error"
       },
       "suspicious": {
+        "noAssignInExpressions": "off",
+        "noConfusingVoidType": "off",
         "noConstEnum": "off",
         "noExplicitAny": "off",
-        "noAssignInExpressions": "off",
         "noImplicitAnyLet": "off",
-        "noUnsafeDeclarationMerging": "off",
         "noShadowRestrictedNames": "off",
+        "noUnsafeDeclarationMerging": "off",
         "noConstantBinaryExpressions": "error",
         "useAwait": "error"
       },

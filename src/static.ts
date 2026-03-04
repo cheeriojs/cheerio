@@ -122,7 +122,7 @@ export function xml(
  * @returns The rendered document.
  */
 export function text(
-  this: CheerioAPI | undefined,
+  this: CheerioAPI | void,
   elements?: ArrayLike<AnyNode>,
 ): string {
   const elems = elements ?? (this ? this.root() : []);

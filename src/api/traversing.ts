@@ -632,7 +632,7 @@ export function contents<T extends AnyNode>(
  */
 export function each<T>(
   this: Cheerio<T>,
-  fn: (this: T, i: number, el: T) => undefined | boolean,
+  fn: (this: T, i: number, el: T) => void | boolean,
 ): Cheerio<T> {
   let i = 0;
   const len = this.length;

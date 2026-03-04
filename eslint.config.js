@@ -30,6 +30,12 @@ export default defineConfig(
       'jsdoc/require-returns-type': 0,
       'jsdoc/no-types': 2,
       'jsdoc/require-returns-check': 0,
+      'jsdoc/check-tag-names': [
+        2,
+        {
+          definedTags: ['private'],
+        },
+      ],
     },
   },
 
