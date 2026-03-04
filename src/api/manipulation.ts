@@ -42,7 +42,7 @@ export function _makeDomArray<T extends AnyNode>(
   }
 
   if (typeof elem === 'string') {
-    return this._parse(elem, this.options, false, null).children.slice(0);
+    return [...this._parse(elem, this.options, false, null).children];
   }
 
   if ('length' in elem) {
@@ -331,7 +331,7 @@ function _wrap(
 
       const [wrapperDom] = this._makeDomArray(wrap, i < lastIdx);
 
-      if (!wrapperDom || !hasChildren(wrapperDom)) continue;
+      if (!(wrapperDom && hasChildren(wrapperDom))) continue;
 
       let elInsertLocation = wrapperDom;
 
@@ -646,7 +646,7 @@ export function after<T extends AnyNode>(
   const lastIdx = this.length - 1;
 
   return domEach(this, (el, i) => {
-    if (!hasChildren(el) || !el.parent) {
+    if (!(hasChildren(el) && el.parent)) {
       return;
     }
 
@@ -755,7 +755,7 @@ export function before<T extends AnyNode>(
   const lastIdx = this.length - 1;
 
   return domEach(this, (el, i) => {
-    if (!hasChildren(el) || !el.parent) {
+    if (!(hasChildren(el) && el.parent)) {
       return;
     }
 
@@ -989,7 +989,7 @@ export function html<T extends AnyNode>(
 ): Cheerio<T> | string | null {
   if (str === undefined) {
     const el = this[0];
-    if (!el || !hasChildren(el)) return null;
+    if (!(el && hasChildren(el))) return null;
     return this._render(el.children);
   }
 

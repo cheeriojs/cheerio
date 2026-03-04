@@ -122,7 +122,7 @@ export function xml(
  * @returns The rendered document.
  */
 export function text(
-  this: CheerioAPI | void,
+  this: CheerioAPI | undefined,
   elements?: ArrayLike<AnyNode>,
 ): string {
   const elems = elements ?? (this ? this.root() : []);
@@ -268,7 +268,7 @@ export function merge<T>(
   arr1: Writable<ArrayLike<T>>,
   arr2: ArrayLike<T>,
 ): ArrayLike<T> | undefined {
-  if (!isArrayLike(arr1) || !isArrayLike(arr2)) {
+  if (!(isArrayLike(arr1) && isArrayLike(arr2))) {
     return;
   }
   let newLength = arr1.length;

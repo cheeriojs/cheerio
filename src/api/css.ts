@@ -86,7 +86,7 @@ export function css<T extends AnyNode>(
   }
 
   if (this.length === 0) {
-    return undefined;
+    return;
   }
 
   return getCss(this[0], prop as string);
@@ -156,7 +156,7 @@ function getCss(
   el: AnyNode,
   prop?: string | string[],
 ): Record<string, string> | string | undefined {
-  if (!el || !isTag(el)) return;
+  if (!(el && isTag(el))) return;
 
   const styles = parse(el.attribs['style']);
   if (typeof prop === 'string') {

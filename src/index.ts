@@ -257,7 +257,7 @@ export async function fromURL(
             : contentTypeHeader,
         );
 
-        if (!mimeType.isHTML() && !mimeType.isXML()) {
+        if (!(mimeType.isHTML() || mimeType.isXML())) {
           throw new RangeError(
             `The content-type "${mimeType.essence}" is neither HTML nor XML.`,
           );

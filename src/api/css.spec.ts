@@ -95,7 +95,7 @@ describe('$(...)', () => {
           expect(value).toBe(`${count}px`);
           expect(this).toBe($el[count]);
           count++;
-          return undefined;
+          return;
         });
         expect(count).toBe(3);
       });

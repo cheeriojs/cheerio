@@ -144,16 +144,9 @@ function _getMatcher<P>(
 }
 
 /** Matcher that adds multiple elements for each entry in the input. */
-const _matcher = _getMatcher((fn: (elem: AnyNode) => Element[], elems) => {
-  let ret: Element[] = [];
-
-  for (let i = 0; i < elems.length; i++) {
-    const value = fn(elems[i]);
-    if (value.length > 0) ret = ret.concat(value);
-  }
-
-  return ret;
-});
+const _matcher = _getMatcher((fn: (elem: AnyNode) => Element[], elems) =>
+  elems.toArray().flatMap((elem) => fn(elem)),
+);
 
 /** Matcher that adds at most one element for each entry in the input. */
 const _singleMatcher = _getMatcher(
@@ -223,7 +216,7 @@ function _matchUntil(
 }
 
 function _removeDuplicates<T extends AnyNode>(elems: T[]): T[] {
-  return elems.length > 1 ? Array.from(new Set<T>(elems)) : elems;
+  return elems.length > 1 ? [...new Set<T>(elems)] : elems;
 }
 
 /**
@@ -606,10 +599,8 @@ export const children: <T extends AnyNode>(
 export function contents<T extends AnyNode>(
   this: Cheerio<T>,
 ): Cheerio<AnyNode> {
-  const elems = this.toArray().reduce<AnyNode[]>(
-    (newElems, elem) =>
-      hasChildren(elem) ? newElems.concat(elem.children) : newElems,
-    [],
+  const elems = this.toArray().flatMap((elem) =>
+    hasChildren(elem) ? elem.children : [],
   );
   return this._make(elems);
 }
@@ -641,7 +632,7 @@ export function contents<T extends AnyNode>(
  */
 export function each<T>(
   this: Cheerio<T>,
-  fn: (this: T, i: number, el: T) => void | boolean,
+  fn: (this: T, i: number, el: T) => undefined | boolean,
 ): Cheerio<T> {
   let i = 0;
   const len = this.length;
@@ -679,12 +670,13 @@ export function map<T, M>(
   this: Cheerio<T>,
   fn: (this: T, i: number, el: T) => M[] | M | null | undefined,
 ): Cheerio<M> {
-  let elems: M[] = [];
+  const elems: M[] = [];
   for (let i = 0; i < this.length; i++) {
     const el = this[i];
     const val = fn.call(el, i, el);
     if (val != null) {
-      elems = elems.concat(val);
+      if (Array.isArray(val)) elems.push(...val);
+      else elems.push(val);
     }
   }
   return this._make(elems);
@@ -1068,7 +1060,7 @@ export function index<T extends AnyNode>(
     $haystack = this._make<AnyNode>(selectorOrNeedle);
     needle = this[0];
   } else {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias, unicorn/no-this-assignment
+    // eslint-disable-next-line unicorn/no-this-assignment
     $haystack = this;
     needle = isCheerio(selectorOrNeedle)
       ? selectorOrNeedle[0]

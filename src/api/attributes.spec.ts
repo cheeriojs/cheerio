@@ -187,7 +187,7 @@ describe('$(...)', () => {
     });
 
     it("(bool) shouldn't treat boolean attributes differently in XML mode", () => {
-      const $xml = $.load(`<input checked=checked disabled=yes />`, {
+      const $xml = $.load('<input checked=checked disabled=yes />', {
         xml: true,
       })('input');
 
@@ -434,7 +434,7 @@ describe('$(...)', () => {
     });
 
     it("(bool) shouldn't treat boolean attributes differently in XML mode", () => {
-      const $xml = $.load(`<input checked=checked disabled=yes />`, {
+      const $xml = $.load('<input checked=checked disabled=yes />', {
         xml: true,
       })('input');
 

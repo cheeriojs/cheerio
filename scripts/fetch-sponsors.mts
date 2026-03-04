@@ -5,9 +5,7 @@
  *   https://github.com/eslint/website/blob/230e73457dcdc2353ad7934e876a5a222a17b1d7/_tools/fetch-sponsors.js.
  */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment,
-                  @typescript-eslint/no-explicit-any,
                   @typescript-eslint/no-unsafe-return,
-                  @typescript-eslint/no-non-null-assertion,
                   @typescript-eslint/no-unsafe-call,
                   @typescript-eslint/no-unsafe-argument,
                   @typescript-eslint/no-unsafe-member-access,
@@ -255,10 +253,12 @@ async function fetchGitHubSponsors(): Promise<Sponsor[]> {
 }
 
 async function fetchSponsors(): Promise<Sponsor[]> {
-  return Promise.all([
+  const results = await Promise.all([
     fetchOpenCollectiveSponsors(),
     fetchGitHubSponsors(),
-  ]).then((results) => results.flat());
+  ]);
+
+  return results.flat();
 }
 
 /*

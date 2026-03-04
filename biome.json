@@ -8,9 +8,9 @@
   "files": {
     "ignoreUnknown": true,
     "includes": [
-      "**/*.{c,m,}js",
+      "**/*.{js,cjs,mjs}",
       "**/*.jsx",
-      "**/*.{c,m,}ts",
+      "**/*.{ts,cts,mts}",
       "**/*.tsx",
       "**/*.{md,mdx,json,yml,yaml}",
       "!**/.*"
@@ -33,10 +33,35 @@
       "complexity": {
         "useLiteralKeys": "off",
         "noArguments": "off",
-        "noCommaOperator": "off"
+        "noCommaOperator": "off",
+        "noUselessStringConcat": "error",
+        "noUselessUndefined": "error",
+        "useSimplifiedLogicExpression": "error",
+        "useWhile": "error"
       },
       "style": {
-        "noNonNullAssertion": "off"
+        "noNonNullAssertion": "off",
+        "noInferrableTypes": "error",
+        "noNegationElse": "error",
+        "noUnusedTemplateLiteral": "error",
+        "noUselessElse": "error",
+        "noYodaExpression": "error",
+        "useAsConstAssertion": "error",
+        "useCollapsedElseIf": "error",
+        "useCollapsedIf": "error",
+        "useConsistentArrayType": "error",
+        "useConsistentArrowReturn": "error",
+        "useConsistentMemberAccessibility": "error",
+        "useConsistentObjectDefinitions": "error",
+        "useConsistentTypeDefinitions": "error",
+        "useDefaultParameterLast": "error",
+        "useExplicitLengthCheck": "error",
+        "useFilenamingConvention": "error",
+        "useNumberNamespace": "error",
+        "useNumericSeparators": "error",
+        "useObjectSpread": "error",
+        "useShorthandAssign": "error",
+        "useUnifiedTypeSignatures": "error"
       },
       "suspicious": {
         "noConstEnum": "off",
@@ -44,7 +69,12 @@
         "noAssignInExpressions": "off",
         "noImplicitAnyLet": "off",
         "noUnsafeDeclarationMerging": "off",
-        "noShadowRestrictedNames": "off"
+        "noShadowRestrictedNames": "off",
+        "noConstantBinaryExpressions": "error",
+        "useAwait": "error"
+      },
+      "performance": {
+        "useTopLevelRegex": "error"
       }
     }
   },

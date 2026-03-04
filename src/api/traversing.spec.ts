@@ -15,7 +15,7 @@ import { Cheerio } from '../cheerio.js';
 import { type CheerioAPI, load } from '../index.js';
 
 function getText(el: Cheerio<Element>) {
-  if (el.length === 0) return undefined;
+  if (el.length === 0) return;
   const [firstChild] = el[0].childNodes;
   return isText(firstChild) ? firstChild.data : undefined;
 }
@@ -882,7 +882,7 @@ describe('$(...)', () => {
       $fruits.map(function (...myArgs) {
         args.push(myArgs);
         thisVals.push(this);
-        return undefined;
+        return null;
       });
 
       expect(args).toStrictEqual([

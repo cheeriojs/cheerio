@@ -23,7 +23,7 @@ const TEST_HTML_UTF16_BOM = Buffer.from([
   // UTF16-LE BOM
   0xff,
   0xfe,
-  ...Array.from(TEST_HTML_UTF16),
+  ...TEST_HTML_UTF16,
 ]);
 
 describe('loadBuffer', () => {
