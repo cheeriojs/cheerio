@@ -20,15 +20,15 @@
     "@codesandbox/sandpack-react": "^2.19.0",
     "@docsearch/css": "^4.6.0",
     "@docsearch/js": "^4.6.0",
-    "@lucide/astro": "^0.575.0",
-    "@tailwindcss/vite": "^4.2.0",
+    "@lucide/astro": "^0.576.0",
+    "@tailwindcss/vite": "^4.2.1",
     "astro": "^5.17.2",
     "hastscript": "^9.0.1",
     "marked": "^17.0.3",
     "react": "^19.1.0",
     "react-dom": "^19.2.4",
     "remark-directive": "^4.0.0",
-    "tailwindcss": "^4.2.0",
+    "tailwindcss": "^4.2.1",
     "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
