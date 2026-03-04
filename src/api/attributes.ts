@@ -279,6 +279,11 @@ interface StyleProp {
   [key: string]: string | number;
   [index: number]: string;
 }
+/**
+ * Get a string representation of the element.
+ *
+ * @param name Name of the property.
+ */
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: 'innerHTML' | 'outerHTML' | 'innerText' | 'textContent',
