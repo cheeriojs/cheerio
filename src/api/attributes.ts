@@ -320,6 +320,11 @@ export function prop<T extends AnyNode>(
  *   value.
  * @see {@link https://api.jquery.com/prop/}
  */
+// biome-ignore lint/style/useUnifiedTypeSignatures: Separate overloads needed for accurate docs
+export function prop<T extends AnyNode>(
+  this: Cheerio<T>,
+  name: 'tagName' | 'nodeName',
+): string | undefined;
 /**
  * Resolve `href` or `src` of supported elements. Requires the `baseURI` option
  * to be set, and a global `URL` object to be part of the environment.
@@ -336,7 +341,7 @@ export function prop<T extends AnyNode>(
  */
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
-  name: ('href' | 'src') | ('tagName' | 'nodeName'),
+  name: 'href' | 'src',
 ): string | undefined;
 /**
  * Get a property of an element.
