@@ -279,7 +279,7 @@ export async function fromURL(
             | undefined
         )?.history;
         // Set the `baseURI` to the final URL.
-        const baseURI = history ? history[history.length - 1] : urlObject;
+        const baseURI = history?.at(-1) ?? urlObject;
 
         const opts: DecodeStreamOptions = {
           encoding,
