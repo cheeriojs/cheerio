@@ -14,7 +14,7 @@ const jQuerySrc = await fs.readFile(
 );
 const jQueryScript = new Script(jQuerySrc);
 const filterIndex = process.argv.indexOf('--filter') + 1;
-const benchmarkFilter = filterIndex >= 0 ? process.argv[filterIndex] : '';
+const benchmarkFilter = filterIndex > 0 ? process.argv[filterIndex] : '';
 
 const cheerioOnly = process.argv.includes('--cheerio-only');
 
