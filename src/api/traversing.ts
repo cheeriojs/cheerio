@@ -670,13 +670,13 @@ export function map<T, M>(
   this: Cheerio<T>,
   fn: (this: T, i: number, el: T) => M[] | M | null | undefined,
 ): Cheerio<M> {
-  const elems: M[] = [];
+  let elems: M[] = [];
   for (let i = 0; i < this.length; i++) {
     const el = this[i];
     const val = fn.call(el, i, el);
     if (val != null) {
-      if (Array.isArray(val)) elems.push(...val);
-      else elems.push(val);
+      // eslint-disable-next-line unicorn/prefer-spread
+      elems = elems.concat(val);
     }
   }
   return this._make(elems);

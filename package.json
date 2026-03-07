@@ -43,6 +43,7 @@
         "default": "./dist/commonjs/index.js"
       }
     },
+    "./package.json": "./package.json",
     "./slim": {
       "browser": {
         "types": "./dist/browser/slim.d.ts",
@@ -70,8 +71,7 @@
         "types": "./dist/commonjs/utils.d.ts",
         "default": "./dist/commonjs/utils.js"
       }
-    },
-    "./package.json": "./package.json"
+    }
   },
   "main": "./dist/commonjs/index.js",
   "module": "./dist/esm/index.js",
