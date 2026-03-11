@@ -44,6 +44,26 @@ describe('$(...)', () => {
       expect(attr).toBe('autofocus');
     });
 
+    it('(valid key) : should get "hidden" when attribute has no value', () => {
+      const attr = $('<div hidden></div>').attr('hidden');
+      expect(attr).toBe('hidden');
+    });
+
+    it('(valid key) : should get "hidden" when attribute is set to "hidden"', () => {
+      const attr = $('<div hidden="hidden"></div>').attr('hidden');
+      expect(attr).toBe('hidden');
+    });
+
+    it('(valid key) : should get "hidden" for other boolean hidden values', () => {
+      const attr = $('<div hidden="bananas"></div>').attr('hidden');
+      expect(attr).toBe('hidden');
+    });
+
+    it('(valid key) : should preserve non-boolean hidden attribute values', () => {
+      const attr = $('<div hidden="until-found"></div>').attr('hidden');
+      expect(attr).toBe('until-found');
+    });
+
     it('(key, value) : should set one attr', () => {
       const $pear = $('.pear').attr('id', 'pear');
       expect($('#pear')).toHaveLength(1);
@@ -347,6 +367,51 @@ describe('$(...)', () => {
       );
 
       expect($(undefined).prop('src')).toBeUndefined();
+    });
+
+    it('("hidden") : should support new "until-found" value while maintaining boolean values', () => {
+      const $ = load(
+        `
+          <div id="1" hidden></div>
+          <div id="2" hidden=""></div>
+          <div id="3" hidden="hidden"></div>
+          <div id="4" hidden="bananas"></div>
+          <div id="5" hidden="until-found"></div>
+          <div id="6"></div>
+        `,
+      );
+
+      expect($('#1').prop('hidden')).toBe(true);
+      expect($('#2').prop('hidden')).toBe(true);
+      expect($('#3').prop('hidden')).toBe(true);
+      expect($('#4').prop('hidden')).toBe(true);
+      expect($('#5').prop('hidden')).toBe('until-found');
+      expect($('#6').prop('hidden')).toBe(false);
+
+      expect($(undefined).prop('hidden')).toBeUndefined();
+    });
+
+    it('("hidden") : should sync hidden property and attribute when setting values', () => {
+      const $ = load('<div id="1"></div>');
+      const div = $('#1');
+
+      expect(div.prop('hidden')).toBe(false);
+      expect(div.attr('hidden')).toBe(undefined);
+      div.prop('hidden', true);
+      expect(div.prop('hidden')).toBe(true);
+      expect(div.attr('hidden')).toBe('hidden');
+      div.prop('hidden', 'hidden');
+      expect(div.prop('hidden')).toBe(true);
+      expect(div.attr('hidden')).toBe('hidden');
+      div.prop('hidden', 'bananas');
+      expect(div.prop('hidden')).toBe(true);
+      expect(div.attr('hidden')).toBe('hidden');
+      div.prop('hidden', 'until-found');
+      expect(div.prop('hidden')).toBe('until-found');
+      expect(div.attr('hidden')).toBe('until-found');
+      div.prop('hidden', false);
+      expect(div.prop('hidden')).toBe(false);
+      expect(div.attr('hidden')).toBe(undefined);
     });
 
     it('("outerHTML") : should render properly', () => {
