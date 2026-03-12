@@ -120,7 +120,7 @@
     "parse5-htmlparser2-tree-adapter": "^7.1.0",
     "parse5-parser-stream": "^7.1.2",
     "undici": "^7.22.0",
-    "whatwg-mimetype": "^4.0.0"
+    "whatwg-mimetype": "^5.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.4",
