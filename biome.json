@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.4.5/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.6/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -71,6 +71,11 @@
       }
     }
   },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
   "assist": {
     "enabled": true,
     "actions": {
@@ -95,11 +100,18 @@
       }
     },
     {
-      "includes": ["**/*.ts", "**/*.cts", "**/*.mts", "**/*.tsx"],
+      "includes": ["**/*.astro"],
       "linter": {
         "rules": {
-          "complexity": {
-            "useLiteralKeys": "off"
+          "correctness": {
+            "noUnusedImports": "off",
+            "noUnusedVariables": "off"
+          },
+          "style": {
+            "useFilenamingConvention": "off"
+          },
+          "performance": {
+            "useTopLevelRegex": "off"
           }
         }
       }
