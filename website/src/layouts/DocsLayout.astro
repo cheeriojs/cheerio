@@ -1,8 +1,8 @@
 ---
 import '@/styles/global.css';
 import { ViewTransitions } from 'astro:transitions';
-import Navbar from '@/components/Navbar.astro';
 import Footer from '@/components/Footer.astro';
+import Navbar from '@/components/Navbar.astro';
 import Sidebar from '@/components/Sidebar.astro';
 import TableOfContents from '@/components/TableOfContents.astro';
 
@@ -45,9 +45,14 @@ const allPages = [
   { label: 'API Documentation', href: '/docs/api' },
 ];
 
-const currentIndex = allPages.findIndex((p) => p.href === currentPath.replace(/\/$/, ''));
+const currentIndex = allPages.findIndex(
+  (p) => p.href === currentPath.replace(/\/$/, ''),
+);
 const prevPage = currentIndex > 0 ? allPages[currentIndex - 1] : null;
-const nextPage = currentIndex >= 0 && currentIndex < allPages.length - 1 ? allPages[currentIndex + 1] : null;
+const nextPage =
+  currentIndex >= 0 && currentIndex < allPages.length - 1
+    ? allPages[currentIndex + 1]
+    : null;
 ---
 
 <!doctype html>

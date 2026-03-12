@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest';
-import { parseDOM } from 'htmlparser2';
-import { type Cheerio } from './index.js';
-import { cheerio, fruits, food, noscript } from './__fixtures__/fixtures.js';
 import type { AnyNode, Element } from 'domhandler';
+import { parseDOM } from 'htmlparser2';
+import { describe, expect, it } from 'vitest';
+import { cheerio, food, fruits, noscript } from './__fixtures__/fixtures.js';
+import type { Cheerio } from './index.js';
 
 declare module './index.js' {
   interface Cheerio<T> {
@@ -228,7 +228,7 @@ describe('cheerio', () => {
       extended.children =
       // @ts-expect-error - Ignore for testing
       extended.each =
-        function () {
+        () => {
           /* Ignore */
         };
     const $empty = cheerio(extended);
@@ -266,9 +266,8 @@ describe('cheerio', () => {
 
     // Issue #1092
     it('should handle a character `)` in `:contains` selector', () => {
-      const result = cheerio.load('<p>)aaa</p>')(
-        String.raw`:contains('\)aaa')`,
-      );
+      const result =
+        cheerio.load('<p>)aaa</p>')(String.raw`:contains('\)aaa')`);
       expect(result).toHaveLength(3);
       expect(result.first().prop('tagName')).toBe('HTML');
       expect(result.eq(1).prop('tagName')).toBe('BODY');
@@ -402,7 +401,7 @@ describe('cheerio', () => {
         const $a = cheerio.load('<div>');
         const $b = cheerio.load('<div>');
 
-        ($a.prototype as Cheerio<AnyNode>).foo = function () {
+        ($a.prototype as Cheerio<AnyNode>).foo = () => {
           /* Ignore */
         };
 

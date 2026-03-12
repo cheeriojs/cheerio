@@ -1,0 +1,120 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.4.6/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignoreUnknown": true
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single"
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "complexity": {
+        "useLiteralKeys": "off",
+        "noArguments": "off",
+        "noCommaOperator": "off",
+        "noUselessStringConcat": "error",
+        "noUselessUndefined": "error",
+        "useSimplifiedLogicExpression": "error",
+        "useWhile": "error"
+      },
+      "style": {
+        "noNonNullAssertion": "off",
+        "noInferrableTypes": "error",
+        "noNegationElse": "error",
+        "noUnusedTemplateLiteral": "error",
+        "noUselessElse": "error",
+        "noYodaExpression": "error",
+        "useAsConstAssertion": "error",
+        "useCollapsedElseIf": "error",
+        "useCollapsedIf": "error",
+        "useConsistentArrayType": "error",
+        "useConsistentArrowReturn": "error",
+        "useConsistentMemberAccessibility": "error",
+        "useConsistentObjectDefinitions": "error",
+        "useConsistentTypeDefinitions": "error",
+        "useDefaultParameterLast": "error",
+        "useExplicitLengthCheck": "error",
+        "useFilenamingConvention": "error",
+        "useNumberNamespace": "error",
+        "useNumericSeparators": "error",
+        "useObjectSpread": "error",
+        "useShorthandAssign": "error",
+        "useUnifiedTypeSignatures": "error"
+      },
+      "suspicious": {
+        "noAssignInExpressions": "off",
+        "noConfusingVoidType": "off",
+        "noConstEnum": "off",
+        "noExplicitAny": "off",
+        "noImplicitAnyLet": "off",
+        "noShadowRestrictedNames": "off",
+        "noUnsafeDeclarationMerging": "off",
+        "noConstantBinaryExpressions": "error",
+        "useAwait": "error"
+      },
+      "performance": {
+        "useTopLevelRegex": "error"
+      }
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.{test,spec}.ts", "test/**/*.ts"],
+      "javascript": {
+        "globals": [
+          "jest",
+          "describe",
+          "it",
+          "beforeEach",
+          "afterEach",
+          "expect",
+          "vi"
+        ]
+      }
+    },
+    {
+      "includes": ["**/*.astro"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedImports": "off",
+            "noUnusedVariables": "off"
+          },
+          "style": {
+            "useFilenamingConvention": "off"
+          },
+          "performance": {
+            "useTopLevelRegex": "off"
+          }
+        }
+      }
+    }
+  ]
+}

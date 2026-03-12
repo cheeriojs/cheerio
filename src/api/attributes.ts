@@ -4,17 +4,13 @@
  * @module cheerio/attributes
  */
 
-import { text } from '../static.js';
-import { domEach, camelCase, cssCase } from '../utils.js';
-import { isTag, type AnyNode, type Element } from 'domhandler';
-import type { Cheerio } from '../cheerio.js';
+import { type AnyNode, type Element, isTag } from 'domhandler';
 import { innerText, textContent } from 'domutils';
 import { ElementType } from 'htmlparser2';
-const hasOwn =
-  // @ts-expect-error `hasOwn` is a standard object method
-  (Object.hasOwn as (object: unknown, prop: string) => boolean) ??
-  ((object: unknown, prop: string) =>
-    Object.prototype.hasOwnProperty.call(object, prop));
+import type { Cheerio } from '../cheerio.js';
+import { text } from '../static.js';
+import { camelCase, cssCase, domEach } from '../utils.js';
+
 const rspace = /\s+/;
 const dataAttrPrefix = 'data-';
 
@@ -22,7 +18,7 @@ const dataAttrPrefix = 'data-';
 const rboolean =
   /^(?:autofocus|autoplay|async|checked|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped|selected)$/i;
 // Matches strings that look like JSON objects or arrays
-const rbrace = /^{[^]*}$|^\[[^]*]$/;
+const rbrace = /^{[\s\S]*}$|^\[[\s\S]*]$/;
 
 /**
  * Gets a node's attribute. For boolean attributes, it will return the value's
@@ -30,7 +26,6 @@ const rbrace = /^{[^]*}$|^\[[^]*]$/;
  *
  * Also supports getting the `value` of several form elements.
  *
- * @private
  * @category Attributes
  * @param elem - Element to get the attribute of.
  * @param name - Name of the attribute.
@@ -51,8 +46,13 @@ function getAttr(
   elem: AnyNode,
   name: string | undefined,
   xmlMode?: boolean,
+): Record<string, string> | string | undefined;
+function getAttr(
+  elem: AnyNode,
+  name: string | undefined,
+  xmlMode?: boolean,
 ): Record<string, string> | string | undefined {
-  if (!elem || !isTag(elem)) return undefined;
+  if (!(elem && isTag(elem))) return;
 
   elem.attribs ??= {};
 
@@ -61,7 +61,7 @@ function getAttr(
     return elem.attribs;
   }
 
-  if (hasOwn(elem.attribs, name)) {
+  if (Object.hasOwn(elem.attribs, name)) {
     // Get the (decoded) attribute
     return !xmlMode && rboolean.test(name) ? name : elem.attribs[name];
   }
@@ -80,7 +80,7 @@ function getAttr(
     return 'on';
   }
 
-  return undefined;
+  return;
 }
 
 /**
@@ -197,9 +197,7 @@ export function attr<T extends AnyNode>(
   if (typeof name === 'object' || value !== undefined) {
     if (typeof value === 'function') {
       if (typeof name !== 'string') {
-        {
-          throw new Error('Bad combination of arguments.');
-        }
+        throw new TypeError('Bad combination of arguments.');
       }
       return domEach(this, (el, i) => {
         if (isTag(el)) setAttr(el, name, value.call(el, i, el.attribs[name]));
@@ -214,14 +212,17 @@ export function attr<T extends AnyNode>(
           setAttr(el, objName, objValue);
         }
       } else {
-        setAttr(el, name!, value!);
+        if (typeof name !== 'string') {
+          throw new TypeError('Bad combination of arguments.');
+        }
+        setAttr(el, name, value ?? null);
       }
     });
   }
 
   return arguments.length > 1
     ? this
-    : getAttr(this[0], name!, this.options.xmlMode);
+    : getAttr(this[0], name, this.options.xmlMode);
 }
 
 /**
@@ -278,6 +279,26 @@ interface StyleProp {
   [key: string]: string | number;
   [index: number]: string;
 }
+/**
+ * Get a string representation of the element.
+ *
+ * @param name Name of the property.
+ */
+export function prop<T extends AnyNode>(
+  this: Cheerio<T>,
+  name: 'innerHTML' | 'outerHTML' | 'innerText' | 'textContent',
+): string | null;
+/**
+ * Get a parsed CSS style object.
+ *
+ * @param name - Name of the property.
+ * @returns The style object, or `undefined` if the element has no `style`
+ *   attribute.
+ */
+export function prop<T extends AnyNode>(
+  this: Cheerio<T>,
+  name: 'style',
+): StyleProp | undefined;
 
 /**
  * Method for getting and setting properties. Gets the property value for only
@@ -299,25 +320,11 @@ interface StyleProp {
  *   value.
  * @see {@link https://api.jquery.com/prop/}
  */
+// biome-ignore lint/style/useUnifiedTypeSignatures: Separate overloads needed for accurate docs
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: 'tagName' | 'nodeName',
 ): string | undefined;
-export function prop<T extends AnyNode>(
-  this: Cheerio<T>,
-  name: 'innerHTML' | 'outerHTML' | 'innerText' | 'textContent',
-): string | null;
-/**
- * Get a parsed CSS style object.
- *
- * @param name - Name of the property.
- * @returns The style object, or `undefined` if the element has no `style`
- *   attribute.
- */
-export function prop<T extends AnyNode>(
-  this: Cheerio<T>,
-  name: 'style',
-): StyleProp | undefined;
 /**
  * Resolve `href` or `src` of supported elements. Requires the `baseURI` option
  * to be set, and a global `URL` object to be part of the environment.
@@ -417,7 +424,7 @@ export function prop<T extends AnyNode>(
   if (typeof name === 'string' && value === undefined) {
     const el = this[0];
 
-    if (!el) return undefined;
+    if (!el) return;
 
     switch (name) {
       case 'style': {
@@ -433,13 +440,13 @@ export function prop<T extends AnyNode>(
       }
       case 'tagName':
       case 'nodeName': {
-        if (!isTag(el)) return undefined;
+        if (!isTag(el)) return;
         return el.name.toUpperCase();
       }
 
       case 'href':
       case 'src': {
-        if (!isTag(el)) return undefined;
+        if (!isTag(el)) return;
         const prop = el.attribs?.[name];
 
         if (
@@ -478,7 +485,7 @@ export function prop<T extends AnyNode>(
       }
 
       default: {
-        if (!isTag(el)) return undefined;
+        if (!isTag(el)) return;
         return getProp(el, name, this.options.xmlMode);
       }
     }
@@ -515,7 +522,7 @@ export function prop<T extends AnyNode>(
     });
   }
 
-  return undefined;
+  return;
 }
 
 /**
@@ -559,6 +566,8 @@ function setData(
  * @returns A map with all of the data attributes.
  */
 function readAllData(el: DataElement): unknown {
+  const data = (el.data ??= {});
+
   for (const domName of Object.keys(el.attribs)) {
     if (!domName.startsWith(dataAttrPrefix)) {
       continue;
@@ -566,19 +575,18 @@ function readAllData(el: DataElement): unknown {
 
     const jsName = camelCase(domName.slice(dataAttrPrefix.length));
 
-    if (!hasOwn(el.data, jsName)) {
-      el.data![jsName] = parseDataValue(el.attribs[domName]);
+    if (!Object.hasOwn(data, jsName)) {
+      data[jsName] = parseDataValue(el.attribs[domName]);
     }
   }
 
-  return el.data;
+  return data;
 }
 
 /**
  * Read the specified attribute from the equivalent HTML5 `data-*` attribute,
  * and (if present) cache the value in the node's internal data store.
  *
- * @private
  * @category Attributes
  * @param el - Element to get the data attribute of.
  * @param name - Name of the data attribute.
@@ -586,23 +594,23 @@ function readAllData(el: DataElement): unknown {
  */
 function readData(el: DataElement, name: string): unknown {
   const domName = dataAttrPrefix + cssCase(name);
-  const data = el.data!;
+  const data = (el.data ??= {});
 
-  if (hasOwn(data, name)) {
+  if (Object.hasOwn(data, name)) {
     return data[name];
   }
 
-  if (hasOwn(el.attribs, domName)) {
-    return (data[name] = parseDataValue(el.attribs[domName]));
+  if (Object.hasOwn(el.attribs, domName)) {
+    data[name] = parseDataValue(el.attribs[domName]);
+    return data[name];
   }
 
-  return undefined;
+  return;
 }
 
 /**
  * Coerce string data-* attributes to their corresponding JavaScript primitives.
  *
- * @private
  * @category Attributes
  * @param value - The value to parse.
  * @returns The parsed value.
@@ -715,7 +723,7 @@ export function data<T extends AnyNode>(
 ): unknown {
   const elem = this[0];
 
-  if (!elem || !isTag(elem)) return;
+  if (!(elem && isTag(elem))) return;
 
   const dataEl: DataElement = elem;
   dataEl.data ??= {};
@@ -784,7 +792,7 @@ export function val<T extends AnyNode>(
   const querying = arguments.length === 0;
   const element = this[0];
 
-  if (!element || !isTag(element)) return querying ? undefined : this;
+  if (!(element && isTag(element))) return querying ? undefined : this;
 
   switch (element.name) {
     case 'textarea': {
@@ -820,18 +828,17 @@ export function val<T extends AnyNode>(
     }
   }
 
-  return undefined;
+  return;
 }
 
 /**
  * Remove an attribute.
  *
- * @private
  * @param elem - Node to remove attribute from.
  * @param name - Name of the attribute to remove.
  */
 function removeAttribute(elem: Element, name: string) {
-  if (!elem.attribs || !hasOwn(elem.attribs, name)) return;
+  if (!(elem.attribs && Object.hasOwn(elem.attribs, name))) return;
 
   delete elem.attribs[name];
 }
@@ -908,10 +915,13 @@ export function hasClass<T extends AnyNode>(
 ): boolean {
   return this.toArray().some((elem) => {
     const clazz = isTag(elem) && elem.attribs['class'];
-    let idx = -1;
 
     if (clazz && className.length > 0) {
-      while ((idx = clazz.indexOf(className, idx + 1)) > -1) {
+      for (
+        let idx = clazz.indexOf(className);
+        idx > -1;
+        idx = clazz.indexOf(className, idx + 1)
+      ) {
         const end = idx + className.length;
 
         if (

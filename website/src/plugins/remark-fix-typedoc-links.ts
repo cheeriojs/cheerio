@@ -1,10 +1,12 @@
+import type { Link, Root } from 'mdast';
 import { visit } from 'unist-util-visit';
-import type { Root, Link } from 'mdast';
+
+const markdownExtensionRe = /\.md$/;
 
 function visitTypedocLink(node: Link): void {
   if (typeof node.url === 'string' && node.url.startsWith('/docs/api/')) {
     // Remove .md extension from API doc links
-    node.url = node.url.replace(/\.md$/, '');
+    node.url = node.url.replace(markdownExtensionRe, '');
   }
 }
 

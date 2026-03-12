@@ -36,6 +36,9 @@ jobs:
       - name: Build Cheerio
         run: npm run build
 
+      - name: Undo changes to package.json
+        run: git restore package.json
+
       - name: Build website
         run: npm run build
         working-directory: website

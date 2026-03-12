@@ -3,8 +3,16 @@ import { Image } from 'astro:assets';
 import logo from '@/assets/orange-c.svg';
 
 const navItems = [
-  { label: 'Learn', href: '/docs/intro', match: (p: string) => p.startsWith('/docs/') && !p.startsWith('/docs/api') },
-  { label: 'API', href: '/docs/api', match: (p: string) => p.startsWith('/docs/api') },
+  {
+    label: 'Learn',
+    href: '/docs/intro',
+    match: (p: string) => p.startsWith('/docs/') && !p.startsWith('/docs/api'),
+  },
+  {
+    label: 'API',
+    href: '/docs/api',
+    match: (p: string) => p.startsWith('/docs/api'),
+  },
   { label: 'Blog', href: '/blog', match: (p: string) => p.startsWith('/blog') },
 ];
 

@@ -21,10 +21,10 @@ const date = new Date(dateParts.join('-'));
 const authorMap: Record<string, string> = {
   fb55: 'Felix Boehm',
 };
-const authorName = post.data.authors 
-  ? (Array.isArray(post.data.authors) 
-      ? post.data.authors.map((a: string) => authorMap[a] || a).join(', ')
-      : authorMap[post.data.authors] || post.data.authors)
+const authorName = post.data.authors
+  ? Array.isArray(post.data.authors)
+    ? post.data.authors.map((a: string) => authorMap[a] || a).join(', ')
+    : authorMap[post.data.authors] || post.data.authors
   : undefined;
 ---
 

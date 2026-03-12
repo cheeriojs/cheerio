@@ -1,14 +1,14 @@
+import type { AnyNode, Document, Element, ParentNode } from 'domhandler';
+import { ElementType } from 'htmlparser2';
+import { Cheerio } from './cheerio.js';
 import {
   type CheerioOptions,
-  type InternalOptions,
   flattenOptions,
+  type InternalOptions,
 } from './options.js';
 import * as staticMethods from './static.js';
-import { Cheerio } from './cheerio.js';
-import { isHtml, isCheerio } from './utils.js';
-import type { AnyNode, Document, Element, ParentNode } from 'domhandler';
-import type { SelectorType, BasicAcceptedElems } from './types.js';
-import { ElementType } from 'htmlparser2';
+import type { BasicAcceptedElems, SelectorType } from './types.js';
+import { isCheerio, isHtml } from './utils.js';
 
 export type { AnyNode, Document, Element, ParentNode } from 'domhandler';
 
@@ -106,6 +106,12 @@ export interface CheerioAPI extends StaticType {
   load: ReturnType<typeof getLoad>;
 }
 
+/**
+ * Create a loader factory from parser and renderer implementations.
+ *
+ * @param parse - Parser used to convert input into a document.
+ * @param render - Renderer used to serialize nodes back to markup.
+ */
 export function getLoad(
   parse: Cheerio<AnyNode>['_parse'],
   render: (

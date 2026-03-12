@@ -1,15 +1,16 @@
 {
   "name": "@cheerio/website",
+  "description": "Documentation website for cheerio",
   "type": "module",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
+    "astro": "astro",
     "build": "npm run build:api && astro build",
     "build:api": "typedoc",
+    "dev": "astro dev",
     "preview": "astro preview",
-    "astro": "astro"
+    "start": "astro dev"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",

@@ -1,4 +1,4 @@
-import { isTag, type AnyNode } from 'domhandler';
+import { type AnyNode, isTag } from 'domhandler';
 import type { Cheerio } from '../cheerio.js';
 
 /*
@@ -82,7 +82,8 @@ export function serializeArray<T extends AnyNode>(
       }
     >((_, elem) => {
       const $elem = this._make(elem);
-      const name = $elem.attr('name')!; // We have filtered for elements with a name before.
+      const name = $elem.attr('name');
+      if (!name) return [];
       // If there is no value set (e.g. `undefined`, `null`), then default value to empty
       const value = $elem.val() ?? '';
 

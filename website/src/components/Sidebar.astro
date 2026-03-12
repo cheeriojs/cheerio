@@ -39,7 +39,10 @@ const sidebar: SidebarSection[] = [
   {
     title: 'Advanced',
     items: [
-      { label: 'Configuring Cheerio', href: '/docs/advanced/configuring-cheerio' },
+      {
+        label: 'Configuring Cheerio',
+        href: '/docs/advanced/configuring-cheerio',
+      },
       { label: 'Extending Cheerio', href: '/docs/advanced/extending-cheerio' },
       { label: 'Extracting Data', href: '/docs/advanced/extract' },
     ],
@@ -48,7 +51,12 @@ const sidebar: SidebarSection[] = [
 
 // Dynamically build API sub-pages from the content collection
 const allDocs = await getCollection('docs');
-const apiDocs = allDocs.filter((doc) => doc.id.startsWith('api/') && doc.id !== 'api/index.md' && doc.id !== 'api/index');
+const apiDocs = allDocs.filter(
+  (doc) =>
+    doc.id.startsWith('api/') &&
+    doc.id !== 'api/index.md' &&
+    doc.id !== 'api/index',
+);
 
 // Group by kind (directory name)
 const kindLabels: Record<string, string> = {
@@ -65,7 +73,10 @@ const groupedByKind = new Map<string, SidebarItem[]>();
 
 for (const doc of apiDocs) {
   // id looks like "api/classes/Cheerio.md" or "api/functions/contains"
-  const parts = doc.id.replace(/^api\//, '').replace(/\.mdx?$/, '').split('/');
+  const parts = doc.id
+    .replace(/^api\//, '')
+    .replace(/\.mdx?$/, '')
+    .split('/');
   if (parts.length !== 2) continue;
   const [kind, name] = parts;
   if (!groupedByKind.has(kind)) groupedByKind.set(kind, []);

@@ -4,18 +4,15 @@
  * @module cheerio/traversing
  */
 
+import * as select from 'cheerio-select';
 import {
-  isTag,
   type AnyNode,
+  type Document,
   type Element,
   hasChildren,
   isDocument,
-  type Document,
+  isTag,
 } from 'domhandler';
-import type { Cheerio } from '../cheerio.js';
-import * as select from 'cheerio-select';
-import { domEach, isCheerio } from '../utils.js';
-import { contains } from '../static.js';
 import {
   getChildren,
   getSiblings,
@@ -23,7 +20,11 @@ import {
   prevElementSibling,
   uniqueSort,
 } from 'domutils';
-import type { FilterFunction, AcceptedFilters } from '../types.js';
+import type { Cheerio } from '../cheerio.js';
+import { contains } from '../static.js';
+import type { AcceptedFilters, FilterFunction } from '../types.js';
+import { domEach, isCheerio } from '../utils.js';
+
 const reContextSelector = /^\s*(?:[+~]|:scope\b)/;
 
 /**
@@ -114,11 +115,11 @@ export function _findBySelector<T extends AnyNode>(
 function _getMatcher<P>(
   matchMap: (fn: (elem: AnyNode) => P, elems: Cheerio<AnyNode>) => Element[],
 ) {
-  return function (
+  return (
     fn: (elem: AnyNode) => P,
     ...postFns: ((elems: Element[]) => Element[])[]
-  ) {
-    return function <T extends AnyNode>(
+  ) =>
+    function <T extends AnyNode>(
       this: Cheerio<T>,
       selector?: AcceptedFilters<Element>,
     ): Cheerio<Element> {
@@ -140,20 +141,12 @@ function _getMatcher<P>(
           : matched,
       );
     };
-  };
 }
 
 /** Matcher that adds multiple elements for each entry in the input. */
-const _matcher = _getMatcher((fn: (elem: AnyNode) => Element[], elems) => {
-  let ret: Element[] = [];
-
-  for (let i = 0; i < elems.length; i++) {
-    const value = fn(elems[i]);
-    if (value.length > 0) ret = ret.concat(value);
-  }
-
-  return ret;
-});
+const _matcher = _getMatcher((fn: (elem: AnyNode) => Element[], elems) =>
+  elems.toArray().flatMap((elem) => fn(elem)),
+);
 
 /** Matcher that adds at most one element for each entry in the input. */
 const _singleMatcher = _getMatcher(
@@ -223,7 +216,7 @@ function _matchUntil(
 }
 
 function _removeDuplicates<T extends AnyNode>(elems: T[]): T[] {
-  return elems.length > 1 ? Array.from(new Set<T>(elems)) : elems;
+  return elems.length > 1 ? [...new Set<T>(elems)] : elems;
 }
 
 /**
@@ -606,10 +599,8 @@ export const children: <T extends AnyNode>(
 export function contents<T extends AnyNode>(
   this: Cheerio<T>,
 ): Cheerio<AnyNode> {
-  const elems = this.toArray().reduce<AnyNode[]>(
-    (newElems, elem) =>
-      hasChildren(elem) ? newElems.concat(elem.children) : newElems,
-    [],
+  const elems = this.toArray().flatMap((elem) =>
+    hasChildren(elem) ? elem.children : [],
   );
   return this._make(elems);
 }
@@ -684,6 +675,7 @@ export function map<T, M>(
     const el = this[i];
     const val = fn.call(el, i, el);
     if (val != null) {
+      // eslint-disable-next-line unicorn/prefer-spread
       elems = elems.concat(val);
     }
   }
@@ -705,9 +697,7 @@ function getFilterFn<T>(
   if (isCheerio<T>(match)) {
     return (el) => Array.prototype.includes.call(match, el);
   }
-  return function (el) {
-    return match === el;
-  };
+  return (el) => match === el;
 }
 
 /**
@@ -786,6 +776,14 @@ export function filter<T>(
   );
 }
 
+/**
+ * Filter an array of nodes with either a selector or predicate.
+ *
+ * @param nodes - The nodes to filter.
+ * @param match - Selector or predicate used to keep nodes.
+ * @param xmlMode - Whether selector matching should use XML mode.
+ * @param root - Optional document root used for selector matching.
+ */
 export function filterArray<T>(
   nodes: T[],
   match: AcceptedFilters<T>,
@@ -1062,7 +1060,7 @@ export function index<T extends AnyNode>(
     $haystack = this._make<AnyNode>(selectorOrNeedle);
     needle = this[0];
   } else {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias, unicorn/no-this-assignment
+    // eslint-disable-next-line unicorn/no-this-assignment
     $haystack = this;
     needle = isCheerio(selectorOrNeedle)
       ? selectorOrNeedle[0]

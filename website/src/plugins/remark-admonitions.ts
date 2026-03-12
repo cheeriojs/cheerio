@@ -1,5 +1,5 @@
-import { visit } from 'unist-util-visit';
 import type { Root } from 'mdast';
+import { visit } from 'unist-util-visit';
 
 interface DirectiveData {
   hName?: string;
@@ -34,7 +34,8 @@ function visitAdmonition(node: unknown): void {
       return;
     }
 
-    const data: DirectiveData = (directive.data ??= {});
+    directive.data ??= {};
+    const { data } = directive;
 
     /*
      * Get title from the directive label or use default
