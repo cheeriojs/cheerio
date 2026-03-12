@@ -360,6 +360,7 @@ h6 {
 
 .admonition-title {
   font-weight: 600;
+  /* biome-ignore lint/complexity/noImportantStyles: Override Starlight defaults */
   margin: 0 0 0.5rem 0 !important;
   text-transform: uppercase;
   font-size: 0.75rem;
