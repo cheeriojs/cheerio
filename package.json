@@ -34,6 +34,10 @@
         "types": "./dist/browser/index.d.ts",
         "default": "./dist/browser/index.js"
       },
+      "react-native": {
+        "types": "./dist/browser/index.d.ts",
+        "default": "./dist/browser/index.js"
+      },
       "import": {
         "types": "./dist/esm/index.d.ts",
         "default": "./dist/esm/index.js"
@@ -49,6 +53,10 @@
         "types": "./dist/browser/slim.d.ts",
         "default": "./dist/browser/slim.js"
       },
+      "react-native": {
+        "types": "./dist/browser/slim.d.ts",
+        "default": "./dist/browser/slim.js"
+      },
       "import": {
         "types": "./dist/esm/slim.d.ts",
         "default": "./dist/esm/slim.js"
@@ -60,6 +68,10 @@
     },
     "./utils": {
       "browser": {
+        "types": "./dist/browser/utils.d.ts",
+        "default": "./dist/browser/utils.js"
+      },
+      "react-native": {
         "types": "./dist/browser/utils.d.ts",
         "default": "./dist/browser/utils.js"
       },
