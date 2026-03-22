@@ -192,8 +192,8 @@ development and support.
 <a href="https://hasdata.com" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fhasdata.com%2Ffavicon.svg?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=21933842d61dec74a961fc57754e58cb" title="HasData" alt="HasData"></img>
           </a>
-<a href="https://brand.dev/" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fgithub.com%2Fbrand-dot-dev.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=b870a71fedf0e9b2af5534a8aaf22abb" title="brand.dev" alt="brand.dev"></img>
+<a href="https://context.dev/" target="_blank" rel="noopener noreferrer">
           </a>
 
 <!-- END SPONSORS -->

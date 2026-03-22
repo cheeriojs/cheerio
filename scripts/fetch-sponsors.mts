@@ -67,9 +67,9 @@ const tierSponsors: Record<Tier, Sponsor[]> = {
     },
     {
       createdAt: '2026-01-28',
-      name: 'brand.dev',
-      image: 'https://github.com/brand-dot-dev.png',
-      url: 'https://brand.dev/',
+      name: 'context.dev',
+      image: 'https://github.com/context-dot-dev.png',
+      url: 'https://context.dev/',
       type: 'ORGANIZATION',
       monthlyDonation: 0,
       totalDonations: 0,
