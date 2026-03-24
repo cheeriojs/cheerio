@@ -34,7 +34,7 @@
   "devDependencies": {
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.1.0",
-    "typedoc": "^0.28.17",
+    "typedoc": "^0.28.18",
     "typedoc-plugin-markdown": "^4.11.0",
     "typedoc-plugin-mdn-links": "^5.1.1",
     "typescript": "^5.9.3"
