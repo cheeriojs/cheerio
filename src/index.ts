@@ -27,7 +27,7 @@ import * as htmlparser2 from 'htmlparser2';
 import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';
 import { ParserStream as Parse5Stream } from 'parse5-parser-stream';
 import * as undici from 'undici';
-import MIMEType from 'whatwg-mimetype';
+import { MIMEType } from 'whatwg-mimetype';
 import type { CheerioAPI } from './load.js';
 import { load } from './load-parse.js';
 import {

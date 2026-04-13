@@ -8,7 +8,7 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "outDir": "lib",
+    "outDir": "dist",
 
     /* Strict Type-Checking Options */
     "strict": true,
@@ -24,5 +24,5 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
-  "exclude": ["website/"] /* The website has its own tsconfig. */
+  "exclude": ["dist/", "website/"] /* The website has its own tsconfig. */
 }
