@@ -75,7 +75,7 @@
   },
   "main": "./dist/commonjs/index.js",
   "module": "./dist/esm/index.js",
-  "browser": "./dist/browser/index.js",
+  "browser": "./dist/esm/browser/index.js",
   "types": "./dist/commonjs/index.d.ts",
   "files": [
     "dist",
@@ -149,7 +149,7 @@
     "vitest": "^4.1.4"
   },
   "engines": {
-    "node": ">=20.18.1"
+    "node": ">=22.19.0"
   },
   "tshy": {
     "esmDialects": [
