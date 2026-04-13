@@ -15,6 +15,9 @@
   <a href="#sponsors">
     <img src="https://img.shields.io/opencollective/sponsors/cheerio" alt="OpenCollective sponsors">
   </a>
+  <a href="https://scorecard.dev/viewer/?uri=github.com/cheeriojs/cheerio">
+    <img src="https://api.scorecard.dev/projects/github.com/cheeriojs/cheerio/badge" alt="OpenSSF Scorecard">
+  </a>
 </div>
 
 <br>
