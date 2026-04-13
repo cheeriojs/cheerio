@@ -18,7 +18,7 @@
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
     "@codesandbox/sandpack-react": "^2.19.0",
-    "@docsearch/css": "^4.6.0",
+    "@docsearch/css": "^4.6.2",
     "@docsearch/js": "^4.6.2",
     "@lucide/astro": "^1.6.0",
     "@tailwindcss/vite": "^4.2.2",
