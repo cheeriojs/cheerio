@@ -42,25 +42,23 @@ This plan covers:
   - Consider deprecating affected npm versions.
   - Rotate any compromised secrets or tokens immediately.
   - If CI/CD is compromised, disable affected workflows.
-  - Notifying downstream frameworks/libraries that depend on cheerio.
+  - Notifying known & trusted downstream consumers of cheerio.
   - Posting a brief advisory on the cheerio website.
 
 ### 4. Remediation
 
 - Develop and test a fix in the private advisory fork.
 - Ensure the fix includes a regression test.
-- Have at least one other maintainer review the fix.
 
 ### 5. Release & Disclosure
 
 - Merge the fix and publish a patched version to npm.
-- Publish the GitHub Security Advisory (this auto-creates a CVE via GitHub's
-  CNA status).
+- Publish the GitHub Security Advisory (this auto-creates a CVE).
 - Credit the reporter in the advisory (unless they prefer anonymity).
 - Notify users via:
-  - GitHub Advisory database (automatic via Dependabot alerts)
+  - GitHub Advisory database (which will trigger Dependabot alerts)
   - A note in the release notes
-  - The cheerio website / blog
+  - For substantial issues, the cheerio website / blog
 
 ### 6. Post-Incident Review
 
