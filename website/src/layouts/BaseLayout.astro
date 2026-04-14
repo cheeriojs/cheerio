@@ -1,6 +1,6 @@
 ---
 import '@/styles/global.css';
-import { ViewTransitions } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 import Footer from '@/components/Footer.astro';
 import Navbar from '@/components/Navbar.astro';
 
@@ -30,7 +30,7 @@ const {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <title>{title} | Cheerio</title>
-    <ViewTransitions />
+    <ClientRouter />
     <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-PZHRH775FB"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];

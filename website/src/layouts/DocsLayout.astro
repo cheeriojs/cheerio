@@ -1,6 +1,6 @@
 ---
 import '@/styles/global.css';
-import { ViewTransitions } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 import Footer from '@/components/Footer.astro';
 import Navbar from '@/components/Navbar.astro';
 import Sidebar from '@/components/Sidebar.astro';
@@ -70,7 +70,7 @@ const nextPage =
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <title>{title} | Cheerio</title>
-    <ViewTransitions />
+    <ClientRouter />
   </head>
   <body
     class="flex min-h-screen flex-col bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100"

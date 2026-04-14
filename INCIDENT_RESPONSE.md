@@ -1,6 +1,6 @@
 # Incident Response Plan
 
-This document describes how the cheerio maintainers handle security incidents; the same plan applies to other packages maintained as cheerio's ecosystem (htmlparser2, css-select et al).
+This document describes how the cheerio maintainers handle security incidents; the same plan applies to other packages maintained as part of cheerio's ecosystem (htmlparser2, css-select et al).
 These are good-faith response targets for a volunteer-maintained open source project — they are **not** SLAs.
 
 ## Scope
@@ -42,8 +42,8 @@ This plan covers:
   - Consider deprecating affected npm versions.
   - Rotate any compromised secrets or tokens immediately.
   - If CI/CD is compromised, disable affected workflows.
-  - Notifying known & trusted downstream consumers of cheerio.
-  - Posting a brief advisory on the cheerio website.
+  - Notify known & trusted downstream consumers of cheerio.
+  - Post a brief advisory on the cheerio website.
 
 ### 4. Remediation
 

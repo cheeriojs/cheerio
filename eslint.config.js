@@ -48,7 +48,7 @@ export default defineConfig(
           allowDefaultProject: ['*.js'],
           defaultProject: 'tsconfig.json',
         },
-        tsconfigRootDir: import.meta.dirname, // eslint-disable-line n/no-unsupported-features/node-builtins
+        tsconfigRootDir: import.meta.dirname,
       },
     },
     rules: {
@@ -109,7 +109,7 @@ export default defineConfig(
         projectService: {
           allowDefaultProject: ['*.mjs'],
         },
-        tsconfigRootDir: `${import.meta.dirname}/website`, // eslint-disable-line n/no-unsupported-features/node-builtins
+        tsconfigRootDir: `${import.meta.dirname}/website`,
       },
     },
   },

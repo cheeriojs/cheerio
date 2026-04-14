@@ -30,11 +30,11 @@
   "type": "module",
   "exports": {
     ".": {
-      "browser": {
-        "types": "./dist/browser/index.d.ts",
-        "default": "./dist/browser/index.js"
-      },
       "import": {
+        "browser": {
+          "types": "./dist/esm/browser/index.d.ts",
+          "default": "./dist/esm/browser/index.js"
+        },
         "types": "./dist/esm/index.d.ts",
         "default": "./dist/esm/index.js"
       },
@@ -45,11 +45,11 @@
     },
     "./package.json": "./package.json",
     "./slim": {
-      "browser": {
-        "types": "./dist/browser/slim.d.ts",
-        "default": "./dist/browser/slim.js"
-      },
       "import": {
+        "browser": {
+          "types": "./dist/esm/browser/slim.d.ts",
+          "default": "./dist/esm/browser/slim.js"
+        },
         "types": "./dist/esm/slim.d.ts",
         "default": "./dist/esm/slim.js"
       },
@@ -59,11 +59,11 @@
       }
     },
     "./utils": {
-      "browser": {
-        "types": "./dist/browser/utils.d.ts",
-        "default": "./dist/browser/utils.js"
-      },
       "import": {
+        "browser": {
+          "types": "./dist/esm/browser/utils.d.ts",
+          "default": "./dist/esm/browser/utils.js"
+        },
         "types": "./dist/esm/utils.d.ts",
         "default": "./dist/esm/utils.js"
       },
@@ -75,7 +75,7 @@
   },
   "main": "./dist/commonjs/index.js",
   "module": "./dist/esm/index.js",
-  "browser": "./dist/browser/index.js",
+  "browser": "./dist/esm/browser/index.js",
   "types": "./dist/commonjs/index.d.ts",
   "files": [
     "dist",
@@ -119,37 +119,37 @@
     "parse5": "^7.3.0",
     "parse5-htmlparser2-tree-adapter": "^7.1.0",
     "parse5-parser-stream": "^7.1.2",
-    "undici": "^7.24.4",
-    "whatwg-mimetype": "^4.0.0"
+    "undici": "^8.0.3",
+    "whatwg-mimetype": "^5.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.4",
+    "@biomejs/biome": "^2.4.11",
     "@eslint/compat": "^2.0.5",
     "@feedic/eslint-config": "^0.3.1",
     "@imgix/js-core": "^3.8.0",
     "@octokit/graphql": "^9.0.3",
-    "@types/jsdom": "^28.0.0",
-    "@types/node": "^25.5.0",
-    "@types/whatwg-mimetype": "^3.0.2",
+    "@types/jsdom": "^28.0.1",
+    "@types/node": "^25.6.0",
+    "@types/whatwg-mimetype": "^5.0.0",
     "@vitest/coverage-v8": "^4.1.4",
     "@vitest/eslint-plugin": "^1.6.15",
     "eslint": "^10.2.0",
     "eslint-config-biome": "^2.1.3",
-    "globals": "^17.4.0",
+    "globals": "^17.5.0",
     "husky": "^9.1.7",
     "jquery": "^4.0.0",
-    "jsdom": "^29.0.0",
+    "jsdom": "^29.0.2",
     "lint-staged": "^16.4.0",
     "prettier-plugin-jsdoc": "^1.8.0",
     "tinybench": "^6.0.0",
-    "tshy": "^3.3.2",
+    "tshy": "^4.1.1",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.2",
     "typescript-eslint": "^8.58.1",
-    "vitest": "^4.0.18"
+    "vitest": "^4.1.4"
   },
   "engines": {
-    "node": ">=20.18.1"
+    "node": ">=22.19.0"
   },
   "tshy": {
     "esmDialects": [

@@ -52,10 +52,7 @@ const sidebar: SidebarSection[] = [
 // Dynamically build API sub-pages from the content collection
 const allDocs = await getCollection('docs');
 const apiDocs = allDocs.filter(
-  (doc) =>
-    doc.id.startsWith('api/') &&
-    doc.id !== 'api/index.md' &&
-    doc.id !== 'api/index',
+  (doc) => doc.id.startsWith('api/') && doc.id !== 'api/index',
 );
 
 // Group by kind (directory name)
@@ -72,11 +69,8 @@ const apiGroups: ApiGroup[] = [];
 const groupedByKind = new Map<string, SidebarItem[]>();
 
 for (const doc of apiDocs) {
-  // id looks like "api/classes/Cheerio.md" or "api/functions/contains"
-  const parts = doc.id
-    .replace(/^api\//, '')
-    .replace(/\.mdx?$/, '')
-    .split('/');
+  // id looks like "api/classes/Cheerio" or "api/functions/contains"
+  const parts = doc.id.replace(/^api\//, '').split('/');
   if (parts.length !== 2) continue;
   const [kind, name] = parts;
   if (!groupedByKind.has(kind)) groupedByKind.set(kind, []);
@@ -102,8 +96,8 @@ for (const kind of kindOrder) {
 const isApiPage = currentPath.startsWith('/docs/api');
 const normalizedPath = currentPath.replace(/\/$/, '');
 
-export { sidebar };
 export type { SidebarItem, SidebarSection };
+export { sidebar };
 ---
 
 {/* ── Desktop sidebar ── */}

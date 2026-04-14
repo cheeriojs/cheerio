@@ -3,15 +3,26 @@ import rss from '@astrojs/rss';
 import type { APIContext } from 'astro';
 import { marked } from 'marked';
 
+/**
+ * Extract the date from a blog post's file path (e.g.
+ * "src/content/blog/2024-08-07-version-1.md").
+ *
+ * @param filePath - The file path of the blog post.
+ */
+function getPostDate(filePath: string): Date {
+  const filename = filePath.split('/').pop()!;
+  const datePart = filename.split('-').slice(0, 3).join('-');
+  return new Date(datePart);
+}
+
 export async function GET(context: APIContext) {
   const posts = await getCollection('blog');
 
   // Sort posts by date (newest first)
-  const sortedPosts = posts.toSorted((a, b) => {
-    const dateA = new Date(a.id.split('-').slice(0, 3).join('-'));
-    const dateB = new Date(b.id.split('-').slice(0, 3).join('-'));
-    return dateB.getTime() - dateA.getTime();
-  });
+  const sortedPosts = posts.toSorted(
+    (a, b) =>
+      getPostDate(b.filePath).getTime() - getPostDate(a.filePath).getTime(),
+  );
 
   if (!context.site) {
     throw new Error('Site URL is required for RSS feed generation');
@@ -22,17 +33,16 @@ export async function GET(context: APIContext) {
     description: 'Updates and announcements from the Cheerio team.',
     site: context.site,
     items: sortedPosts.map((post) => {
-      const datePart = post.id.split('-').slice(0, 3).join('-');
-      const slug = post.id.replace('.md', '').replace('.mdx', '');
-
       // Render markdown body to HTML
-      const content = post.body ? marked.parse(post.body) : '';
+      const content = post.body
+        ? (marked.parse(post.body) as string)
+        : undefined;
 
       return {
         title: post.data.title,
-        pubDate: new Date(datePart),
-        link: `/blog/${slug}/`,
-        content: content as string,
+        pubDate: getPostDate(post.filePath),
+        link: `/blog/${post.id}/`,
+        ...(content ? { content } : {}),
       };
     }),
   });

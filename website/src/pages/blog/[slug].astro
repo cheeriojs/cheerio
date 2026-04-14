@@ -5,7 +5,7 @@ import BlogLayout from '@/layouts/BlogLayout.astro';
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
   return posts.map((post) => ({
-    params: { slug: post.id.replace('.md', '').replace('.mdx', '') },
+    params: { slug: post.id },
     props: { post },
   }));
 }
@@ -13,9 +13,9 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 
-// Extract date from filename (e.g., "2024-08-07-version-1.md")
-const dateParts = post.id.split('-').slice(0, 3);
-const date = new Date(dateParts.join('-'));
+// Extract date from filename (e.g., "src/content/blog/2024-08-07-version-1.md")
+const filename = post.filePath.split('/').pop()!;
+const date = new Date(filename.split('-').slice(0, 3).join('-'));
 
 // Get author name (simplified - in a real app you'd look this up)
 const authorMap: Record<string, string> = {
