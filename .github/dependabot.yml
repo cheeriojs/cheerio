@@ -7,7 +7,7 @@ updates:
     open-pull-requests-limit: 10
     versioning-strategy: increase
     cooldown:
-      default-days: 1
+      default-days: 7
   - package-ecosystem: npm
     directory: '/website'
     schedule:
@@ -15,10 +15,10 @@ updates:
     open-pull-requests-limit: 4
     versioning-strategy: increase
     cooldown:
-      default-days: 1
+      default-days: 7
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
       interval: daily
     cooldown:
-      default-days: 1
+      default-days: 7
