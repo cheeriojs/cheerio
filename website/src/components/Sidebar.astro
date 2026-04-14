@@ -69,14 +69,18 @@ const apiGroups: ApiGroup[] = [];
 const groupedByKind = new Map<string, SidebarItem[]>();
 
 for (const doc of apiDocs) {
-  // id looks like "api/classes/Cheerio" or "api/functions/contains"
+  // id is lowercase (e.g. "api/functions/fromurl"); use filePath for proper casing
   const parts = doc.id.replace(/^api\//, '').split('/');
   if (parts.length !== 2) continue;
-  const [kind, name] = parts;
+  const [kind] = parts;
+  const name = doc.filePath
+    .split('/')
+    .pop()!
+    .replace(/\.mdx?$/, '');
   if (!groupedByKind.has(kind)) groupedByKind.set(kind, []);
   groupedByKind.get(kind)!.push({
     label: name,
-    href: `/docs/api/${kind}/${name}`,
+    href: `/docs/api/${kind}/${name.toLowerCase()}`,
   });
 }
 

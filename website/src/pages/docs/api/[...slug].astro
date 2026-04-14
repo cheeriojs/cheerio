@@ -24,6 +24,6 @@ const title =
   doc.data.title || h1?.text || doc.data.sidebar_label || 'API Documentation';
 ---
 
-<DocsLayout title={title} description={doc.data.description} headings={headings} sourceFile={doc.id} wide>
+<DocsLayout title={title} description={doc.data.description} headings={headings} sourceFile={doc.filePath} wide>
   <Content />
 </DocsLayout>
