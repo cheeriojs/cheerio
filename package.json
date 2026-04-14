@@ -111,7 +111,7 @@
   },
   "dependencies": {
     "cheerio-select": "^2.1.0",
-    "dom-serializer": "^2.0.0",
+    "dom-serializer": "^3.0.0",
     "domhandler": "^5.0.3",
     "domutils": "^4.0.2",
     "encoding-sniffer": "^0.2.1",
