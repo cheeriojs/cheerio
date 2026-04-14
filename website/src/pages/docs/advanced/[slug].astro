@@ -7,7 +7,7 @@ export async function getStaticPaths() {
   return docs
     .filter((doc) => doc.id.startsWith('advanced/'))
     .map((doc) => ({
-      params: { slug: doc.id.replace('advanced/', '').replace(/\.mdx?$/, '') },
+      params: { slug: doc.id.replace('advanced/', '') },
       props: { doc },
     }));
 }

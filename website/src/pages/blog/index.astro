@@ -4,24 +4,25 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 
 const posts = await getCollection('blog');
 
-// Sort posts by date (newest first)
-const sortedPosts = posts.sort((a, b) => {
-  const dateA = new Date(a.id.split('-').slice(0, 3).join('-'));
-  const dateB = new Date(b.id.split('-').slice(0, 3).join('-'));
-  return dateB.getTime() - dateA.getTime();
-});
+/** Extract date from a blog post's file path. */
+function getDateFromPath(filePath: string): Date {
+  const filename = filePath.split('/').pop()!;
+  return new Date(filename.split('-').slice(0, 3).join('-'));
+}
 
-function getPostDate(id: string): string {
-  const datePart = id.split('-').slice(0, 3).join('-');
-  return new Date(datePart).toLocaleDateString('en-US', {
+// Sort posts by date (newest first)
+const sortedPosts = posts.sort(
+  (a, b) =>
+    getDateFromPath(b.filePath).getTime() -
+    getDateFromPath(a.filePath).getTime(),
+);
+
+function getPostDate(filePath: string): string {
+  return getDateFromPath(filePath).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
-}
-
-function getPostSlug(id: string): string {
-  return id.replace('.md', '').replace('.mdx', '');
 }
 
 // Extract excerpt from raw markdown content (content before <!--truncate-->)
@@ -95,7 +96,7 @@ const postsWithExcerpts = sortedPosts.map((post) => {
         postsWithExcerpts.map(({ post, excerpt }) => (
           <article class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-200 hover:border-primary/30 hover:shadow-lg dark:border-slate-700/80 dark:bg-slate-800/50 dark:hover:border-primary/30">
             <div class="mb-3 flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
-              <time class="font-medium">{getPostDate(post.id)}</time>
+              <time class="font-medium">{getPostDate(post.filePath)}</time>
               {post.data.tags && (
                 <div class="flex gap-2">
                   {post.data.tags.map((tag: string) => (
@@ -108,7 +109,7 @@ const postsWithExcerpts = sortedPosts.map((post) => {
             </div>
             <h2 class="mb-2 font-heading text-xl font-semibold lg:text-2xl">
               <a
-                href={`/blog/${getPostSlug(post.id)}`}
+                href={`/blog/${post.id}`}
                 class="text-slate-900 transition-colors hover:text-primary dark:text-white dark:hover:text-primary"
               >
                 {post.data.title}
@@ -118,7 +119,7 @@ const postsWithExcerpts = sortedPosts.map((post) => {
               <p class="mb-4 line-clamp-3 text-slate-600 dark:text-slate-400">{excerpt}</p>
             )}
             <a
-              href={`/blog/${getPostSlug(post.id)}`}
+              href={`/blog/${post.id}`}
               class="inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors hover:text-primary-dark"
             >
               Read more
