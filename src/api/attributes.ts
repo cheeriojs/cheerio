@@ -61,9 +61,14 @@ function getAttr(
     return elem.attribs;
   }
 
-  if (Object.hasOwn(elem.attribs, name)) {
+  // HTML attribute names are case-insensitive (but XML is case-sensitive)
+  const lookupName = xmlMode ? name : name.toLowerCase();
+
+  if (Object.hasOwn(elem.attribs, lookupName)) {
     // Get the (decoded) attribute
-    return !xmlMode && rboolean.test(name) ? name : elem.attribs[name];
+    return !xmlMode && rboolean.test(lookupName)
+      ? lookupName
+      : elem.attribs[lookupName];
   }
 
   // Mimic the DOM and return text content as value for `option's`
