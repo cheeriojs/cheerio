@@ -57,4 +57,5 @@ Cheerio is an HTML/XML parsing and manipulation library for Node.js. Security is
 
 ## Related Documents
 
+- [Threat Model](./THREAT_MODEL.md)
 - [Incident Response Plan](./INCIDENT_RESPONSE.md)
