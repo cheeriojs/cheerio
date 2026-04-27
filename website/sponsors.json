@@ -3,7 +3,7 @@
     {
       "createdAt": "2022-06-24",
       "name": "Github",
-      "image": "https://avatars.githubusercontent.com/github",
+      "image": "https://github.com/github.png",
       "url": "https://github.com/",
       "type": "ORGANIZATION",
       "monthlyDonation": 0,
@@ -14,7 +14,7 @@
     {
       "createdAt": "2018-05-02",
       "name": "AirBnB",
-      "image": "https://avatars.githubusercontent.com/airbnb",
+      "image": "https://github.com/airbnb.png",
       "url": "https://www.airbnb.com/",
       "type": "ORGANIZATION",
       "monthlyDonation": 0,
@@ -36,7 +36,7 @@
     {
       "createdAt": "2026-01-28",
       "name": "context.dev",
-      "image": "https://avatars.githubusercontent.com/context-dot-dev",
+      "image": "https://github.com/context-dot-dev.png",
       "url": "https://context.dev/",
       "type": "ORGANIZATION",
       "monthlyDonation": 0,
