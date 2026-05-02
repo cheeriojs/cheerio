@@ -187,16 +187,16 @@ development and support.
 <!-- BEGIN SPONSORS: headliner -->
 
 <a href="https://github.com/" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fgithub.com%2Fgithub.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=a1e87ca289de84eb32ea85432cf8ad11" title="Github" alt="Github"></img>
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Favatars.githubusercontent.com%2Fgithub?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=65172918690f124c0adebece30c66471" title="Github" alt="Github"></img>
           </a>
 <a href="https://www.airbnb.com/" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fgithub.com%2Fairbnb.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=384cad45e10faea516202ad10801f895" title="AirBnB" alt="AirBnB"></img>
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Favatars.githubusercontent.com%2Fairbnb?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=e679125f79ca84598b8f8420b581dea5" title="AirBnB" alt="AirBnB"></img>
           </a>
 <a href="https://hasdata.com" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fhasdata.com%2Ffavicon.svg?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=21933842d61dec74a961fc57754e58cb" title="HasData" alt="HasData"></img>
           </a>
 <a href="https://context.dev/" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fgithub.com%2Fcontext-dot-dev.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=938601d3e2c0435ccb6ca004c19111d4" title="context.dev" alt="context.dev"></img>
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Favatars.githubusercontent.com%2Fcontext-dot-dev?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=34b5fb47ac08ea46e3f4e1e191e5dc40" title="context.dev" alt="context.dev"></img>
           </a>
 
 <!-- END SPONSORS -->
