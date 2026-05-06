@@ -22,7 +22,7 @@
     "@docsearch/js": "^4.6.3",
     "@lucide/astro": "^1.11.0",
     "@tailwindcss/vite": "^4.2.4",
-    "astro": "^6.1.9",
+    "astro": "^6.1.10",
     "hastscript": "^9.0.1",
     "marked": "^18.0.2",
     "react": "^19.2.5",
