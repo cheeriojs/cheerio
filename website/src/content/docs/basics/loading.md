@@ -149,7 +149,7 @@ const $ = await cheerio.fromURL('https://example.com');
 ```
 
 Learn more about the `fromURL` method in the
-[API documentation](/docs/api/functions/fromURL).
+[API documentation](/docs/api/functions/fromurl).
 
 ## Conclusion
 
