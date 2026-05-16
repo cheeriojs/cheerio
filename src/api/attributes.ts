@@ -61,13 +61,16 @@ function getAttr(
     return elem.attribs;
   }
 
-  if (Object.hasOwn(elem.attribs, name)) {
+  const lowerName = name.toLowerCase();
+  if (Object.hasOwn(elem.attribs, lowerName)) {
     // Get the (decoded) attribute
-    return !xmlMode && rboolean.test(name) ? name : elem.attribs[name];
+    return !xmlMode && rboolean.test(lowerName)
+      ? lowerName
+      : elem.attribs[lowerName];
   }
 
   // Mimic the DOM and return text content as value for `option's`
-  if (elem.name === 'option' && name === 'value') {
+  if (elem.name === 'option' && lowerName === 'value') {
     return text(elem.children);
   }
 
@@ -75,7 +78,7 @@ function getAttr(
   if (
     elem.name === 'input' &&
     (elem.attribs['type'] === 'radio' || elem.attribs['type'] === 'checkbox') &&
-    name === 'value'
+    lowerName === 'value'
   ) {
     return 'on';
   }
@@ -93,10 +96,11 @@ function getAttr(
  * @param value - The attribute's value.
  */
 function setAttr(el: Element, name: string, value: string | null) {
+  const lowerName = name.toLowerCase();
   if (value === null) {
-    removeAttribute(el, name);
+    removeAttribute(el, lowerName);
   } else {
-    el.attribs[name] = `${value}`;
+    el.attribs[lowerName] = `${value}`;
   }
 }
 
@@ -839,7 +843,6 @@ export function val<T extends AnyNode>(
  */
 function removeAttribute(elem: Element, name: string) {
   if (!(elem.attribs && Object.hasOwn(elem.attribs, name))) return;
-
   delete elem.attribs[name];
 }
 
