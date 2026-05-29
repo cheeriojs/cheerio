@@ -94,7 +94,7 @@ function getAttr(
  */
 function setAttr(el: Element, name: string, value: string | null) {
   if (value === null) {
-    removeAttribute(el, name);
+    removeAttribute(el, name, false);
   } else {
     el.attribs[name] = `${value}`;
   }
@@ -837,8 +837,18 @@ export function val<T extends AnyNode>(
  * @param elem - Node to remove attribute from.
  * @param name - Name of the attribute to remove.
  */
-function removeAttribute(elem: Element, name: string) {
-  if (!(elem.attribs && Object.hasOwn(elem.attribs, name))) return;
+function removeAttribute(
+  elem: Element,
+  name: string,
+  xmlMode?: boolean,
+) {
+  if (!(elem.attribs)) return;
+
+  if (!xmlMode) {
+    name = name.toLowerCase();
+  }
+
+  if (!Object.hasOwn(elem.attribs, name)) return;
 
   delete elem.attribs[name];
 }
@@ -881,7 +891,7 @@ export function removeAttr<T extends AnyNode>(
 
   for (const attrName of attrNames) {
     domEach(this, (elem) => {
-      if (isTag(elem)) removeAttribute(elem, attrName);
+      if (isTag(elem)) removeAttribute(elem, attrName, this.options.xmlMode);
     });
   }
 
