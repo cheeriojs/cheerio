@@ -44,6 +44,15 @@ describe('$(...)', () => {
       expect(attr).toBe('autofocus');
     });
 
+    it('(key) : should be case-insensitive for HTML', () => {
+      const cls = $('.apple').attr('CLASS');
+      expect(cls).toBe('apple');
+      const cls2 = $('.apple').attr('Class');
+      expect(cls2).toBe('apple');
+      const id = $('ul').attr('ID');
+      expect(id).toBe('fruits');
+    });
+
     it('(key, value) : should set one attr', () => {
       const $pear = $('.pear').attr('id', 'pear');
       expect($('#pear')).toHaveLength(1);

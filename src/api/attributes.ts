@@ -61,6 +61,13 @@ function getAttr(
     return elem.attribs;
   }
 
+  // HTML attribute names are case-insensitive. Browsers normalize them to
+  // lowercase, so we should do the same when looking up.
+  // https://html.spec.whatwg.org/multipage/syntax.html#attributes-2
+  if (!xmlMode) {
+    name = name.toLowerCase();
+  }
+
   if (Object.hasOwn(elem.attribs, name)) {
     // Get the (decoded) attribute
     return !xmlMode && rboolean.test(name) ? name : elem.attribs[name];
