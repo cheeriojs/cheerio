@@ -63,7 +63,18 @@ function getAttr(
 
   if (Object.hasOwn(elem.attribs, name)) {
     // Get the (decoded) attribute
-    return !xmlMode && rboolean.test(name) ? name : elem.attribs[name];
+    // For boolean attributes, return the attribute name if the value is empty
+    // or equals the attribute name (standard boolean normalization).
+    // If the attribute has a non-standard value (e.g., hidden="until-found"),
+    // return the actual value.
+    if (!xmlMode && rboolean.test(name)) {
+      const value = elem.attribs[name];
+      if (value === '' || value === name) {
+        return name;
+      }
+      return value;
+    }
+    return elem.attribs[name];
   }
 
   // Mimic the DOM and return text content as value for `option's`
