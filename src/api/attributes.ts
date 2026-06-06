@@ -880,8 +880,10 @@ export function removeAttr<T extends AnyNode>(
   const attrNames = splitNames(name);
 
   for (const attrName of attrNames) {
+    // HTML attribute names are case-insensitive; XML mode preserves case.
+    const lookup = this.options.xmlMode ? attrName : attrName.toLowerCase();
     domEach(this, (elem) => {
-      if (isTag(elem)) removeAttribute(elem, attrName);
+      if (isTag(elem)) removeAttribute(elem, lookup);
     });
   }
 
