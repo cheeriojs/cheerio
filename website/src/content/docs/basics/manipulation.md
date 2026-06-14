@@ -21,8 +21,8 @@ manipulate elements within a document using Cheerio.
 ## Modifying Element Attributes and Properties
 
 To modify the attributes and properties of a single element, you can use the
-[`attr()`](/docs/api/classes/Cheerio#attr) and
-[`prop()`](/docs/api/classes/Cheerio#prop) methods, respectively. Both methods
+[`attr()`](/docs/api/classes/cheerio#attr) and
+[`prop()`](/docs/api/classes/cheerio#prop) methods, respectively. Both methods
 take a key and a value as arguments, and allow you to get and set the attribute
 or property. When setting, they apply to all elements in the selection; when
 getting, they return a single value corresponding to the first element in the
@@ -65,9 +65,9 @@ const innerText = $('div').prop('innerText');
 ## Adding and Removing Classes
 
 To add or remove classes from an element, you can use the
-[`addClass()`](/docs/api/classes/Cheerio#addclass),
-[`removeClass()`](/docs/api/classes/Cheerio#removeclass), and
-[`toggleClass()`](/docs/api/classes/Cheerio#toggleclass) methods. All three
+[`addClass()`](/docs/api/classes/cheerio#addclass),
+[`removeClass()`](/docs/api/classes/cheerio#removeclass), and
+[`toggleClass()`](/docs/api/classes/cheerio#toggleclass) methods. All three
 methods take a class name or a space-separated list of class names as an
 argument. They modify all elements in the selection.
 
@@ -91,7 +91,7 @@ $('div').toggleClass('active');
 ## Modifying the Text Content of an Element
 
 To query or modify the text content of an element, you can use the
-[`text()`](/docs/api/classes/Cheerio#text) method. Given a string as an
+[`text()`](/docs/api/classes/cheerio#text) method. Given a string as an
 argument, it sets the text content of every element in the selection to the
 given string. Without arguments, it returns the text content of every element
 (including its descendants) in the selection, concatenated together.
@@ -115,7 +115,7 @@ include the contents of `<script>` and `<style>` elements. To avoid this, use
 ## Modifying the HTML Content of an Element
 
 To query or modify the HTML content of an element, you can use the
-[`html()`](/docs/api/classes/Cheerio#html) method. Given an HTML string as an
+[`html()`](/docs/api/classes/cheerio#html) method. Given an HTML string as an
 argument, it sets the inner HTML of every element in the selection to the given
 string. Without arguments, it returns the inner HTML of the _first_ element in
 the selection.
@@ -131,10 +131,10 @@ const html = $('div').html();
 ## Inserting New Elements
 
 To insert new elements into a document, you can use the
-[`append()`](/docs/api/classes/Cheerio#append),
-[`prepend()`](/docs/api/classes/Cheerio#prepend),
-[`before()`](/docs/api/classes/Cheerio#before), and
-[`after()`](/docs/api/classes/Cheerio#after) methods. These modify every element
+[`append()`](/docs/api/classes/cheerio#append),
+[`prepend()`](/docs/api/classes/cheerio#prepend),
+[`before()`](/docs/api/classes/cheerio#before), and
+[`after()`](/docs/api/classes/cheerio#after) methods. These modify every element
 in the selection.
 
 ```js
@@ -151,8 +151,8 @@ $('li').before('<li>Item</li>');
 $('li').after('<li>Item</li>');
 ```
 
-The [`insertAfter()`](/docs/api/classes/Cheerio#insertafter) and
-[`insertBefore()`](/docs/api/classes/Cheerio#insertbefore) methods allow you to
+The [`insertAfter()`](/docs/api/classes/cheerio#insertafter) and
+[`insertBefore()`](/docs/api/classes/cheerio#insertbefore) methods allow you to
 insert an element before or after a target element, respectively. Both methods
 take a string or a Cheerio object as an argument and insert the given element
 before or after the target element.
@@ -167,8 +167,8 @@ $('<p>Inserted element</p>').insertAfter('h1');
 $('<p>Inserted element</p>').insertBefore('h1');
 ```
 
-The [`prependTo()`](/docs/api/classes/Cheerio#prependto) and
-[`appendTo()`](/docs/api/classes/Cheerio#appendto) methods allow you to prepend
+The [`prependTo()`](/docs/api/classes/cheerio#prependto) and
+[`appendTo()`](/docs/api/classes/cheerio#appendto) methods allow you to prepend
 or append an element to a parent element, respectively. Both methods take a
 string or a Cheerio object as an argument and insert the element at the
 beginning or end of the given parent element.
@@ -189,7 +189,7 @@ Sometimes you may want to wrap an element in another element, or remove the
 element's parent element while keeping its children. To do this, you can use the
 `wrap()`, `wrapInner()`, and `unwrap()` methods.
 
-The [`wrap()`](/docs/api/classes/Cheerio#wrap) method takes a string or a
+The [`wrap()`](/docs/api/classes/cheerio#wrap) method takes a string or a
 Cheerio object as an argument and wraps the element in the given element.
 
 ```js
@@ -197,7 +197,7 @@ Cheerio object as an argument and wraps the element in the given element.
 $('p').wrap('<div></div>');
 ```
 
-The [`wrapInner()`](/docs/api/classes/Cheerio#wrapinner) method works similar to
+The [`wrapInner()`](/docs/api/classes/cheerio#wrapinner) method works similar to
 wrap(), but instead of wrapping the element itself, it wraps the element's inner
 HTML in the given element.
 
@@ -206,7 +206,7 @@ HTML in the given element.
 $('div').wrapInner('<div></div>');
 ```
 
-The [`unwrap()`](/docs/api/classes/Cheerio#unwrap) method removes the element's
+The [`unwrap()`](/docs/api/classes/cheerio#unwrap) method removes the element's
 parent element, while keeping the element and its children.
 
 ```js
@@ -217,7 +217,7 @@ $('p').unwrap();
 ## Replacing Elements
 
 To replace an element with another element, you can use the
-[`replaceWith()`](/docs/api/classes/Cheerio#replacewith) method. It takes a
+[`replaceWith()`](/docs/api/classes/cheerio#replacewith) method. It takes a
 string or a Cheerio object as an argument and replaces each element in the
 selection with the given element.
 
@@ -234,7 +234,7 @@ instead.
 ## Removing Elements
 
 To remove an element from a document, you can use the
-[`remove()`](/docs/api/classes/Cheerio#remove) method. It removes each element
+[`remove()`](/docs/api/classes/cheerio#remove) method. It removes each element
 in the selection, and all of their children, from the document.
 
 ```js
@@ -244,7 +244,7 @@ $('li').remove();
 
 Alternatively, you can remove the children of an element from the document,
 without removing the element itself, using the
-[`empty()`](/docs/api/classes/Cheerio#empty) method. It removes the children
+[`empty()`](/docs/api/classes/cheerio#empty) method. It removes the children
 (but not text nodes or comments) of each element in the selection from the
 document.
 

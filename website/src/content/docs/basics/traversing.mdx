@@ -23,7 +23,7 @@ Cheerio.
 
 This guide is intended to give you an overview of the various methods available
 in Cheerio for traversing and filtering elements. For a more detailed reference
-of these methods, see the [API documentation](/docs/api/classes/Cheerio).
+of these methods, see the [API documentation](/docs/api/classes/cheerio).
 
 :::
 
@@ -34,7 +34,7 @@ elements that are children or descendants of the current selection.
 
 ### `find`
 
-The [`find` method](/docs/api/classes/Cheerio#find) allows you to locate
+The [`find` method](/docs/api/classes/cheerio#find) allows you to locate
 specific elements within a selection. It takes a CSS selector as an argument and
 returns a new selection containing all elements that match the selector within
 the current selection.
@@ -56,7 +56,7 @@ console.log(`List item count: ${listItems.length}`);
 
 ### `children`
 
-The [`children` method](/docs/api/classes/Cheerio#children) allows you to select
+The [`children` method](/docs/api/classes/cheerio#children) allows you to select
 the direct children of an element. It returns a new selection containing all
 direct children of the current selection.
 
@@ -77,7 +77,7 @@ console.log(`List item count: ${listItems.length}`);
 
 ### `contents`
 
-The [`contents` method](/docs/api/classes/Cheerio#contents) allows you to select
+The [`contents` method](/docs/api/classes/cheerio#contents) allows you to select
 all children of an element, including text and comment nodes. It returns a new
 selection containing all children of the current selection.
 
@@ -102,7 +102,7 @@ elements that are ancestors of the current selection.
 
 ### `parent`
 
-The [`parent` method](/docs/api/classes/Cheerio#parent) allows you to select the
+The [`parent` method](/docs/api/classes/cheerio#parent) allows you to select the
 parent element of a selection. It returns a new selection containing the parent
 element of each element in the current selection.
 
@@ -122,11 +122,11 @@ console.log(list.prop('tagName'));
 
 ### `parents` and `parentsUntil`
 
-The [`parents` method](/docs/api/classes/Cheerio#parents) allows you to select
+The [`parents` method](/docs/api/classes/cheerio#parents) allows you to select
 all ancestor elements of a selection, up to the root element. It returns a new
 selection containing all ancestor elements of the current selection.
 
-The [`parentsUntil` method](/docs/api/classes/Cheerio#parentsuntil) is similar
+The [`parentsUntil` method](/docs/api/classes/cheerio#parentsuntil) is similar
 to `parents`, but allows you to specify an ancestor element as a stop point. It
 returns a new selection containing all ancestor elements of the current
 selection up to (but not including) the specified ancestor.
@@ -152,7 +152,7 @@ console.log(`Ancestor count (until div): ${ancestorsUntil.length}`);
 
 ### `closest`
 
-The [`closest` method](/docs/api/classes/Cheerio#closest) allows you to select
+The [`closest` method](/docs/api/classes/cheerio#closest) allows you to select
 the closest ancestor matching a given selector. It returns a new selection
 containing the closest ancestor element that matches the selector. If no
 matching ancestor is found, the method returns an empty selection.
@@ -180,12 +180,12 @@ selecting elements that are siblings of the current selection.
 
 ### `next` and `prev`
 
-The [`next` method](/docs/api/classes/Cheerio#next) allows you to select the
+The [`next` method](/docs/api/classes/cheerio#next) allows you to select the
 next sibling element of a selection. It returns a new selection containing the
 next sibling element (if there is one). If the given selection contains multiple
 elements, `next` includes the next sibling for each one.
 
-The [`prev` method](/docs/api/classes/Cheerio#prev) is similar to `next`, but
+The [`prev` method](/docs/api/classes/cheerio#prev) is similar to `next`, but
 allows you to select the previous sibling element. It returns a new selection
 containing the previous sibling element for each element in the given selection.
 
@@ -209,16 +209,16 @@ console.log(`Prev: ${prevItem.text()}`);
 
 ## `nextAll`, `prevAll`, and `siblings`
 
-The [`nextAll` method](/docs/api/classes/Cheerio#nextall) allows you to select
+The [`nextAll` method](/docs/api/classes/cheerio#nextall) allows you to select
 all siblings after the current element. It returns a new selection containing
 all sibling elements after each element in the current selection.
 
-The [`prevAll` method](/docs/api/classes/Cheerio#prevall) is similar to nextAll,
+The [`prevAll` method](/docs/api/classes/cheerio#prevall) is similar to nextAll,
 but allows you to select all siblings before the current element. It returns a
 new selection containing all sibling elements before each element in the current
 selection.
 
-The [`siblings` method](/docs/api/classes/Cheerio#siblings) allows you to select
+The [`siblings` method](/docs/api/classes/cheerio#siblings) allows you to select
 all siblings of a selection. It returns a new selection containing all sibling
 elements of each element in the current selection.
 
@@ -245,13 +245,13 @@ console.log(`Siblings: ${siblings.text()}`);
 
 ### `nextUntil` and `prevUntil`
 
-The [`nextUntil` method](/docs/api/classes/Cheerio#nextuntil) allows you to
+The [`nextUntil` method](/docs/api/classes/cheerio#nextuntil) allows you to
 select all siblings after the current element up to a specified sibling. It
 takes a selector or a sibling element as an argument and returns a new selection
 containing all sibling elements after the current element up to (but not
 including) the specified element.
 
-The [`prevUntil` method](/docs/api/classes/Cheerio#prevuntil) is similar to
+The [`prevUntil` method](/docs/api/classes/cheerio#prevuntil) is similar to
 `nextUntil`, but allows you to select all siblings before the current element up
 to a specified sibling. It takes a selector or a sibling element as an argument
 and returns a new selection containing all sibling elements before the current
@@ -290,7 +290,7 @@ syntax when possible, as it is more performant.
 
 ### `eq`
 
-The [`eq` method](/docs/api/classes/Cheerio#eq) allows you to select an element
+The [`eq` method](/docs/api/classes/cheerio#eq) allows you to select an element
 at a specified index within a selection. It takes an index as an argument and
 returns a new selection containing the element at the specified index.
 
@@ -311,11 +311,11 @@ console.log(secondItem.text());
 
 ### `filter` and `not`
 
-The [`filter` method](/docs/api/classes/Cheerio#filter) allows you to select
+The [`filter` method](/docs/api/classes/cheerio#filter) allows you to select
 elements that match a given selector. It takes a selector as an argument and
 returns a new selection containing only those elements that match the selector.
 
-The [`not` method](/docs/api/classes/Cheerio#not) is similar to `filter`, but
+The [`not` method](/docs/api/classes/cheerio#not) is similar to `filter`, but
 allows you to select elements that do not match a given selector. It takes a
 selector as an argument and returns a new selection containing only those
 elements that do not match the selector.
@@ -340,7 +340,7 @@ console.log(`Non-matching: ${nonMatchingItems.text()}`);
 
 ### `has`
 
-The [`has` method](/docs/api/classes/Cheerio#has) allows you to select elements
+The [`has` method](/docs/api/classes/cheerio#has) allows you to select elements
 that contain an element matching a given selector. It takes a selector as an
 argument and returns a new selection containing only those elements that contain
 an element matching the selector.
@@ -364,11 +364,11 @@ console.log(matchingItems.length);
 
 ### `first` and `last`
 
-The [`first` method](/docs/api/classes/Cheerio#first) allows you to select the
+The [`first` method](/docs/api/classes/cheerio#first) allows you to select the
 first element in a selection. It returns a new selection containing the first
 element.
 
-The [`last` method](/docs/api/classes/Cheerio#last) is similar to `first`, but
+The [`last` method](/docs/api/classes/cheerio#last) is similar to `first`, but
 allows you to select the last element in a selection. It returns a new selection
 containing the last element.
 
