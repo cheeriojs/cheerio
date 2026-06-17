@@ -797,6 +797,23 @@ describe('$(...)', () => {
 
       expect($text('body').html()).toBe(mixedText);
     });
+
+    it('(uppercase key) : should be case-insensitive in HTML mode', () => {
+      const $apple = $('.apple');
+      expect($apple.attr('class')).toBe('apple');
+      $apple.removeAttr('CLASS');
+      expect($apple.attr('class')).toBeUndefined();
+    });
+
+    it('(uppercase key) : should be case-sensitive in XML mode', () => {
+      const $xml = load('<root><item ID="1" id="2"/></root>', {
+        xmlMode: true,
+      });
+      expect($xml('item').attr('ID')).toBe('1');
+      $xml('item').removeAttr('ID');
+      expect($xml('item').attr('ID')).toBeUndefined();
+      expect($xml('item').attr('id')).toBe('2');
+    });
   });
 
   describe('.hasClass', () => {

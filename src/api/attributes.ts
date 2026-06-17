@@ -881,7 +881,12 @@ export function removeAttr<T extends AnyNode>(
 
   for (const attrName of attrNames) {
     domEach(this, (elem) => {
-      if (isTag(elem)) removeAttribute(elem, attrName);
+      if (!isTag(elem)) return;
+      if (this.options.xmlMode) {
+        removeAttribute(elem, attrName);
+      } else {
+        removeAttribute(elem, attrName.toLowerCase());
+      }
     });
   }
 
