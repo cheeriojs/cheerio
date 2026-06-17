@@ -816,6 +816,44 @@ describe('$(...)', () => {
     });
   });
 
+  describe('.attr() boolean attributes with values', () => {
+    it('hidden="until-found" should return "until-found"', () => {
+      const $ = load('<div hidden="until-found"></div>');
+      expect($('div').attr('hidden')).toBe('until-found');
+    });
+
+    it('hidden (boolean) should return "hidden"', () => {
+      const $ = load('<div hidden></div>');
+      expect($('div').attr('hidden')).toBe('hidden');
+    });
+
+    it('hidden="true" should return "true"', () => {
+      const $ = load('<div hidden="true"></div>');
+      expect($('div').attr('hidden')).toBe('true');
+    });
+
+    it('hidden="false" should return "false"', () => {
+      const $ = load('<div hidden="false"></div>');
+      expect($('div').attr('hidden')).toBe('false');
+    });
+
+    it('hidden="" (empty string) should return "hidden"', () => {
+      const $ = load('<div hidden=""></div>');
+      expect($('div').attr('hidden')).toBe('hidden');
+    });
+
+    it('other boolean attrs with values work correctly', () => {
+      const $ = load('<input disabled="until-found" readonly="custom" />');
+      expect($('input').attr('disabled')).toBe('until-found');
+      expect($('input').attr('readonly')).toBe('custom');
+    });
+
+    it('should work in XML mode (case sensitive)', () => {
+      const $ = load('<root hidden="until-found"></root>', { xmlMode: true });
+      expect($('root').attr('hidden')).toBe('until-found');
+    });
+  });
+
   describe('.hasClass', () => {
     let $: CheerioAPI;
 
