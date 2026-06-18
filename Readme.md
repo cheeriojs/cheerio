@@ -37,12 +37,14 @@ $.html();
 
 ## Installation
 
-Install Cheerio using a package manager like npm, yarn, or bun.
+Install Cheerio using a package manager like npm, yarn, bun, or Deno.
 
 ```bash
 npm install cheerio
 # or
 bun add cheerio
+# or
+deno install cheerio
 ```
 
 ## Features
