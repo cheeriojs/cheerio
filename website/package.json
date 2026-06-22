@@ -28,7 +28,7 @@
     "react": "^19.2.5",
     "react-dom": "^19.2.7",
     "remark-directive": "^4.0.0",
-    "tailwindcss": "^4.3.0",
+    "tailwindcss": "^4.3.1",
     "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
