@@ -39,6 +39,11 @@ describe('$(...)', () => {
       expect(cls).toBe('apple');
     });
 
+    it('(valid key) : valid attr should be case-insensitive for HTML documents', () => {
+      const cls = $('.apple').attr('CLASS');
+      expect(cls).toBe('apple');
+    });
+
     it('(valid key) : valid attr should get name when boolean', () => {
       const attr = $('<input name=email autofocus>').attr('autofocus');
       expect(attr).toBe('autofocus');
