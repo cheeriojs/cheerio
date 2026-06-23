@@ -797,6 +797,61 @@ describe('$(...)', () => {
 
       expect($text('body').html()).toBe(mixedText);
     });
+
+    it('(uppercase key) : should be case-insensitive in HTML mode', () => {
+      const $apple = $('.apple');
+      expect($apple.attr('class')).toBe('apple');
+      $apple.removeAttr('CLASS');
+      expect($apple.attr('class')).toBeUndefined();
+    });
+
+    it('(uppercase key) : should be case-sensitive in XML mode', () => {
+      const $xml = load('<root><item ID="1" id="2"/></root>', {
+        xmlMode: true,
+      });
+      expect($xml('item').attr('ID')).toBe('1');
+      $xml('item').removeAttr('ID');
+      expect($xml('item').attr('ID')).toBeUndefined();
+      expect($xml('item').attr('id')).toBe('2');
+    });
+  });
+
+  describe('.attr() boolean attributes with values', () => {
+    it('hidden="until-found" should return "until-found"', () => {
+      const $ = load('<div hidden="until-found"></div>');
+      expect($('div').attr('hidden')).toBe('until-found');
+    });
+
+    it('hidden (boolean) should return "hidden"', () => {
+      const $ = load('<div hidden></div>');
+      expect($('div').attr('hidden')).toBe('hidden');
+    });
+
+    it('hidden="true" should return "true"', () => {
+      const $ = load('<div hidden="true"></div>');
+      expect($('div').attr('hidden')).toBe('true');
+    });
+
+    it('hidden="false" should return "false"', () => {
+      const $ = load('<div hidden="false"></div>');
+      expect($('div').attr('hidden')).toBe('false');
+    });
+
+    it('hidden="" (empty string) should return "hidden"', () => {
+      const $ = load('<div hidden=""></div>');
+      expect($('div').attr('hidden')).toBe('hidden');
+    });
+
+    it('other boolean attrs with values work correctly', () => {
+      const $ = load('<input disabled="until-found" readonly="custom" />');
+      expect($('input').attr('disabled')).toBe('until-found');
+      expect($('input').attr('readonly')).toBe('custom');
+    });
+
+    it('should work in XML mode (case sensitive)', () => {
+      const $ = load('<root hidden="until-found"></root>', { xmlMode: true });
+      expect($('root').attr('hidden')).toBe('until-found');
+    });
   });
 
   describe('.hasClass', () => {
