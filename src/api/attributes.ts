@@ -62,8 +62,15 @@ function getAttr(
   }
 
   if (Object.hasOwn(elem.attribs, name)) {
-    // Get the (decoded) attribute
-    return !xmlMode && rboolean.test(name) ? name : elem.attribs[name];
+    // Get the (decoded) attribute.
+    // For boolean attributes with an empty value (e.g. <input disabled>),
+    // return the attribute name. For attributes with a value (e.g.
+    // <div hidden="until-found">), return the actual value.
+    const value = elem.attribs[name];
+    if (!xmlMode && rboolean.test(name) && value === '') {
+      return name;
+    }
+    return value;
   }
 
   // Mimic the DOM and return text content as value for `option's`
@@ -881,7 +888,12 @@ export function removeAttr<T extends AnyNode>(
 
   for (const attrName of attrNames) {
     domEach(this, (elem) => {
-      if (isTag(elem)) removeAttribute(elem, attrName);
+      if (!isTag(elem)) return;
+      if (this.options.xmlMode) {
+        removeAttribute(elem, attrName);
+      } else {
+        removeAttribute(elem, attrName.toLowerCase());
+      }
     });
   }
 
