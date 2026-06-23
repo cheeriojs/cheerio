@@ -66,11 +66,6 @@ function getAttr(
     return !xmlMode && rboolean.test(name) ? name : elem.attribs[name];
   }
 
-  // Mimic the DOM and return text content as value for `option's`
-  if (elem.name === 'option' && name === 'value') {
-    return text(elem.children);
-  }
-
   // Mimic DOM with default value for radios/checkboxes
   if (
     elem.name === 'input' &&
@@ -817,13 +812,17 @@ export function val<T extends AnyNode>(
 
       return this.attr('multiple')
         ? option.toArray().map((el) => text(el.children))
-        : option.attr('value');
+        : (option.val() as string | undefined);
     }
     case 'button':
-    case 'input':
-    case 'option': {
+    case 'input': {
       return querying
         ? this.attr('value')
+        : this.attr('value', value as string);
+    }
+    case 'option': {
+      return querying
+        ? (this.attr('value') ?? text(element.children))
         : this.attr('value', value as string);
     }
   }
