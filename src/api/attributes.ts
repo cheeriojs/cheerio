@@ -61,6 +61,11 @@ function getAttr(
     return elem.attribs;
   }
 
+  // HTML attribute names are case-insensitive
+  if (!xmlMode) {
+    name = name.toLowerCase();
+  }
+
   if (Object.hasOwn(elem.attribs, name)) {
     // Get the (decoded) attribute
     return !xmlMode && rboolean.test(name) ? name : elem.attribs[name];
@@ -92,7 +97,15 @@ function getAttr(
  * @param name - The attribute's name.
  * @param value - The attribute's value.
  */
-function setAttr(el: Element, name: string, value: string | null) {
+function setAttr(
+  el: Element,
+  name: string,
+  value: string | null,
+  xmlMode?: boolean,
+) {
+  if (!xmlMode) {
+    name = name.toLowerCase();
+  }
   if (value === null) {
     removeAttribute(el, name);
   } else {
@@ -200,22 +213,33 @@ export function attr<T extends AnyNode>(
         throw new TypeError('Bad combination of arguments.');
       }
       return domEach(this, (el, i) => {
-        if (isTag(el)) setAttr(el, name, value.call(el, i, el.attribs[name]));
+        if (isTag(el))
+          setAttr(
+            el,
+            name,
+            value.call(
+              el,
+              i,
+              (getAttr(el, name, this.options.xmlMode) ?? '') as string,
+            ),
+            this.options.xmlMode,
+          );
       });
     }
     return domEach(this, (el) => {
       if (!isTag(el)) return;
 
       if (typeof name === 'object') {
+        const xmlMode = this.options.xmlMode;
         for (const objName of Object.keys(name)) {
           const objValue = name[objName];
-          setAttr(el, objName, objValue);
+          setAttr(el, objName, objValue, xmlMode);
         }
       } else {
         if (typeof name !== 'string') {
           throw new TypeError('Bad combination of arguments.');
         }
-        setAttr(el, name, value ?? null);
+        setAttr(el, name, value ?? null, this.options.xmlMode);
       }
     });
   }
@@ -270,6 +294,7 @@ function setProp(el: Element, name: string, value: unknown, xmlMode?: boolean) {
           ? ''
           : null
         : `${value as string}`,
+      xmlMode,
     );
   }
 }
@@ -880,8 +905,11 @@ export function removeAttr<T extends AnyNode>(
   const attrNames = splitNames(name);
 
   for (const attrName of attrNames) {
+    const resolvedName = this.options.xmlMode
+      ? attrName
+      : attrName.toLowerCase();
     domEach(this, (elem) => {
-      if (isTag(elem)) removeAttribute(elem, attrName);
+      if (isTag(elem)) removeAttribute(elem, resolvedName);
     });
   }
 
