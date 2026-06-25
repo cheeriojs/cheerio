@@ -736,6 +736,27 @@ describe('$(...)', () => {
       const element = $('select#one option').eq(0).val('option_changed');
       expect(element.val()).toBe('option_changed');
     });
+    it('(value): on select should select option with a double quote in its value', () => {
+      const $select = load(
+        '<select><option value="a">a</option><option value="a&quot;b">quote</option></select>',
+      )('select');
+      expect(() => $select.val('a"b')).not.toThrow();
+      expect($select.val()).toBe('a"b');
+    });
+    it('(value): on select should select option with a backslash in its value', () => {
+      const $select = load(
+        String.raw`<select><option value="a">a</option><option value="a\b">backslash</option></select>`,
+      )('select');
+      $select.val(String.raw`a\b`);
+      expect($select.val()).toBe(String.raw`a\b`);
+    });
+    it('(value): on select should select a valueless option by its text', () => {
+      const $select = load(
+        '<select><option>first</option><option>second</option></select>',
+      )('select');
+      $select.val('second');
+      expect($select.val()).toBe('second');
+    });
     it('(value): on radio should set value', () => {
       const element = $('input[name="radio"]').val('off');
       expect(element.val()).toBe('off');
