@@ -838,9 +838,12 @@ export function val<T extends AnyNode>(
  * @param name - Name of the attribute to remove.
  */
 function removeAttribute(elem: Element, name: string) {
-  if (!(elem.attribs && Object.hasOwn(elem.attribs, name))) return;
+  // Normalize attribute name to lowercase; htmlparser2 stores HTML attribute
+  // names in lowercase per the HTML spec (case-insensitive attributes).
+  const normalizedName = name.toLowerCase();
+  if (!(elem.attribs && Object.hasOwn(elem.attribs, normalizedName))) return;
 
-  delete elem.attribs[name];
+  delete elem.attribs[normalizedName];
 }
 
 /**
