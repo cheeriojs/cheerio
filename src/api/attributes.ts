@@ -805,11 +805,21 @@ export function val<T extends AnyNode>(
           return this;
         }
 
-        this.find('option').removeAttr('selected');
+        const options = this.find('option');
+        options.removeAttr('selected');
 
         const values = typeof value === 'object' ? value : [value];
-        for (const val of values) {
-          this.find(`option[value="${val}"]`).attr('selected', '');
+        for (const el of options) {
+          /*
+           * Resolve an option's value the same way the getter does: the
+           * `value` attribute, falling back to its text content. Compare
+           * directly instead of building a selector, so values containing
+           * characters such as `"` or `\` are matched literally.
+           */
+          const optionValue = el.attribs['value'] ?? text(el.children);
+          if (values.includes(optionValue)) {
+            el.attribs['selected'] = '';
+          }
         }
 
         return this;
