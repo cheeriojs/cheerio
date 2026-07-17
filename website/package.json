@@ -13,7 +13,7 @@
     "start": "astro dev"
   },
   "dependencies": {
-    "@astrojs/mdx": "^6.0.3",
+    "@astrojs/mdx": "^7.0.3",
     "@astrojs/react": "^6.0.1",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
@@ -22,7 +22,7 @@
     "@docsearch/js": "^4.6.3",
     "@lucide/astro": "^1.23.0",
     "@tailwindcss/vite": "^4.3.2",
-    "astro": "^6.4.8",
+    "astro": "^7.1.0",
     "hastscript": "^9.0.1",
     "marked": "^18.0.5",
     "react": "^19.2.5",
