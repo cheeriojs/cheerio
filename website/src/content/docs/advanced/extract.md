@@ -73,7 +73,7 @@ const data = $.extract({
 The `value` property can be used to specify the name of the property to extract
 from the selected elements. In this case, we are extracting the `href` attribute
 from the `<a>` elements. This uses Cheerio's
-[`prop` method](/docs/api/classes/Cheerio#prop) under the hood.
+[`prop` method](/docs/api/classes/cheerio#prop) under the hood.
 
 `value` defaults to `textContent`, which extracts the text content of the
 element.
@@ -84,7 +84,7 @@ automatically when using `fromURL` to load the document. Otherwise, use the
 `baseURI` option to specify the documents URL.
 
 There are many props available here; have a look at the
-[`prop` method](/docs/api/classes/Cheerio#prop) for details. For example, to
+[`prop` method](/docs/api/classes/cheerio#prop) for details. For example, to
 extract the `outerHTML` of all `.red` elements:
 
 ```js
