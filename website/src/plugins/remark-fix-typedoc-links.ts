@@ -1,12 +1,13 @@
 import type { Link, Root } from 'mdast';
 import { visit } from 'unist-util-visit';
-
-const markdownExtensionRe = /\.md$/;
+import { normalizeApiDocLink } from './normalize-api-doc-link.ts';
 
 function visitTypedocLink(node: Link): void {
-  if (typeof node.url === 'string' && node.url.startsWith('/docs/api/')) {
-    // Remove .md extension from API doc links
-    node.url = node.url.replace(markdownExtensionRe, '');
+  if (typeof node.url === 'string') {
+    const normalized = normalizeApiDocLink(node.url);
+    if (normalized) {
+      node.url = normalized;
+    }
   }
 }
 
@@ -15,8 +16,8 @@ function transformer(tree: Root): void {
 }
 
 /**
- * Remark plugin to fix typedoc-generated links. Removes .md extension from
- * internal API doc links.
+ * Remark plugin to fix typedoc-generated links. Removes .md extension and
+ * lowercases paths in internal API doc links.
  *
  * @returns A transformer function.
  */
