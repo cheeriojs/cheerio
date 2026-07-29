@@ -169,7 +169,19 @@ export default defineConfig(
     },
     rules: {
       ...commonTypeScriptRules,
-      // Enabling this in cheerio currently triggers broad churn across src + website.
+      /*
+       * Reports ~20 conditions in `src` alone, and nearly all of them are
+       * checks we want to keep:
+       *
+       * - `noUncheckedIndexedAccess` is off, so indexing a `Record` or a
+       *   `Cheerio` yields a non-nullable type even where the runtime value is
+       *   `undefined` (`this[0]` on an empty selection, a missing attribute).
+       * - Cheerio is called from plain JavaScript, so arguments the types
+       *   describe as non-nullish still arrive as `null` at runtime.
+       *
+       * Acting on the reports would delete working guards. Revisit if
+       * `noUncheckedIndexedAccess` is ever enabled.
+       */
       '@typescript-eslint/no-unnecessary-condition': 0,
     },
   },
