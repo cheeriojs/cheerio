@@ -833,6 +833,43 @@ describe('$(...)', () => {
       const result = textNode.closest('#food') as Cheerio<Element>;
       expect(result[0].attribs).toHaveProperty('id', 'food');
     });
+
+    it('(fn) : should dedupe in linear time (no O(n^2) membership scan)', () => {
+      /*
+       * N distinct matches: pre-fix `set.includes` scans a growing array,
+       * giving sum(0..N-1) = O(N^2) comparisons. The fix upgrades to a Set.
+       */
+      const N = 2000;
+      const $big = load(
+        `<div>${'<div class="t"><span></span></div>'.repeat(N)}</div>`,
+      );
+      const spans = $big('span');
+      expect(spans).toHaveLength(N);
+
+      const origIncludes = Array.prototype.includes;
+      let includesWork = 0;
+      Array.prototype.includes = function (this: unknown[], ...args) {
+        includesWork += this.length;
+        return origIncludes.apply(this, args as [unknown]);
+      };
+      let result: Cheerio<AnyNode>;
+      try {
+        /*
+         * A predicate selector avoids css-select internals, so the only
+         * Array#includes in play is the dedup scan under test.
+         */
+        result = spans.closest((_i, el) => el.name === 'div');
+      } finally {
+        Array.prototype.includes = origIncludes;
+      }
+
+      expect(result).toHaveLength(N);
+      /*
+       * Fixed: 5050, the scans that happen before the Set upgrade at 100
+       * entries. Pre-fix: N*(N-1)/2, about 2M for N=2000.
+       */
+      expect(includesWork).toBeLessThan(N * 10);
+    });
   });
 
   describe('.each', () => {
@@ -934,6 +971,34 @@ describe('$(...)', () => {
         null,
         undefined,
       ]);
+    });
+
+    it('(fn) : should accumulate in linear time (no O(n^2) concat copies)', () => {
+      /*
+       * Pre-fix `elems = elems.concat(val)` copies the whole accumulator each
+       * iteration, giving sum(0..N-1) = O(N^2) work. The fix uses `push`.
+       */
+      const N = 4000;
+      const $big = load('<div></div>'.repeat(N));
+      const sel = $big('div');
+      expect(sel).toHaveLength(N);
+
+      const origConcat = Array.prototype.concat;
+      let concatWork = 0;
+      Array.prototype.concat = function (this: unknown[], ...args) {
+        concatWork += this.length;
+        return origConcat.apply(this, args) as unknown[];
+      };
+      let mapped: Cheerio<Element>;
+      try {
+        mapped = sel.map((_i, el) => el);
+      } finally {
+        Array.prototype.concat = origConcat;
+      }
+
+      expect(mapped).toHaveLength(N);
+      // Fixed: 0, as `push` replaces `concat`. Pre-fix: about 8M for N=4000.
+      expect(concatWork).toBeLessThan(N * 10);
     });
   });
 
