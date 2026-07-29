@@ -353,6 +353,15 @@ export function closest<T extends AnyNode>(
       ? (elem: Element) => select.is(elem, selector, selectOpts)
       : getFilterFn(selector);
 
+  /*
+   * Dedup: a linear scan is cheapest for the small result sets `closest`
+   * usually produces. Once the set grows past `dedupThreshold` we switch to a
+   * Set, so a pathological input with many distinct matches stays O(n) instead
+   * of O(n^2). `set` always preserves document order.
+   */
+  const dedupThreshold = 100;
+  let seen: Set<AnyNode> | undefined;
+
   domEach(this, (elem: AnyNode | null) => {
     if (elem && !isDocument(elem) && !isTag(elem)) {
       elem = elem.parent;
@@ -360,8 +369,13 @@ export function closest<T extends AnyNode>(
     while (elem && isTag(elem)) {
       if (selectFn(elem, 0)) {
         // Do not add duplicate elements to the set
-        if (!set.includes(elem)) {
+        if (seen ? !seen.has(elem) : !set.includes(elem)) {
           set.push(elem);
+          if (seen) {
+            seen.add(elem);
+          } else if (set.length > dedupThreshold) {
+            seen = new Set(set);
+          }
         }
         break;
       }
@@ -670,13 +684,20 @@ export function map<T, M>(
   this: Cheerio<T>,
   fn: (this: T, i: number, el: T) => M[] | M | null | undefined,
 ): Cheerio<M> {
-  let elems: M[] = [];
+  const elems: M[] = [];
   for (let i = 0; i < this.length; i++) {
     const el = this[i];
     const val = fn.call(el, i, el);
     if (val != null) {
-      // eslint-disable-next-line unicorn/prefer-spread
-      elems = elems.concat(val);
+      /*
+       * Accumulate in place; `concat` would copy the whole array each
+       * iteration, making this O(n^2) in the size of the collection.
+       */
+      if (Array.isArray(val)) {
+        for (let j = 0; j < val.length; j++) elems.push(val[j]);
+      } else {
+        elems.push(val);
+      }
     }
   }
   return this._make(elems);
