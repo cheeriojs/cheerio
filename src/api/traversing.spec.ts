@@ -1045,6 +1045,12 @@ describe('$(...)', () => {
 
       expect(text[0].data).toBe('b');
     });
+
+    it('(null) : should return an empty selection rather than throwing', () => {
+      // Matches jQuery, which winnows a nullish filter down to no matches.
+      expect($('li').filter(null as never)).toHaveLength(0);
+      expect($('li').filter(undefined as never)).toHaveLength(0);
+    });
   });
 
   describe('.not', () => {

@@ -9,6 +9,14 @@ describe('util functions', () => {
     expect(utils.camelCase('_one-two.three')).toBe('OneTwoThree');
   });
 
+  it('isCheerio function test', () => {
+    expect(utils.isCheerio(null)).toBe(false);
+    expect(utils.isCheerio(undefined)).toBe(false);
+    expect(utils.isCheerio('a string')).toBe(false);
+    expect(utils.isCheerio({})).toBe(false);
+    expect(utils.isCheerio({ cheerio: '[cheerio object]' })).toBe(true);
+  });
+
   it('cssCase function test', () => {
     expect(utils.cssCase('camelCase')).toBe('camel-case');
     expect(utils.cssCase('jQuery')).toBe('j-query');
