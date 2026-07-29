@@ -40,6 +40,17 @@ describe('cheerio', () => {
       expect(cheerio.html($collection)).toBe(expected);
     });
 
+    it('(<opts>) : keeps using the instance parser when serializing', () => {
+      // An htmlparser2-backed instance, rendered as HTML rather than XML.
+      const $ = cheerio.load('<style>a < b && c > d</style><p>x<br>y</p>', {
+        xmlMode: true,
+      });
+
+      expect($.html(undefined as never, { xmlMode: false })).toBe(
+        '<style>a < b && c > d</style><p>x<br>y</p>',
+      );
+    });
+
     it('() : does not crash with `null` as `this` value', () => {
       const { html } = cheerio;
       expect(html.call(null as never)).toBe('');
