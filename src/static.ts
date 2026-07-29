@@ -86,10 +86,7 @@ export function html(
    * Sometimes `$.html()` is used without preloading html,
    * so fallback non-existing options to the default ones.
    */
-  const opts = {
-    ...this?._options,
-    ...flattenOptions(options),
-  };
+  const opts = flattenOptions(options, this?._options);
 
   return render(this, toRender, opts);
 }
