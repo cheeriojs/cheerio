@@ -46,7 +46,7 @@ describe('cheerio', () => {
         xmlMode: true,
       });
 
-      expect($.html(undefined as never, { xmlMode: false })).toBe(
+      expect($.html(undefined, { xmlMode: false })).toBe(
         '<style>a < b && c > d</style><p>x<br>y</p>',
       );
     });
