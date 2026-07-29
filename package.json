@@ -125,7 +125,7 @@
   "devDependencies": {
     "@biomejs/biome": "^2.4.12",
     "@eslint/compat": "^2.0.5",
-    "@feedic/eslint-config": "^0.3.1",
+    "@feedic/eslint-config": "^0.5.0",
     "@imgix/js-core": "^3.8.0",
     "@octokit/graphql": "^9.0.3",
     "@types/jsdom": "^28.0.1",
@@ -133,7 +133,7 @@
     "@types/whatwg-mimetype": "^5.0.0",
     "@vitest/coverage-v8": "^4.1.4",
     "@vitest/eslint-plugin": "^1.6.16",
-    "eslint": "^10.2.0",
+    "eslint": "^10.8.0",
     "eslint-config-biome": "^2.1.3",
     "globals": "^17.5.0",
     "husky": "^9.1.7",
