@@ -985,6 +985,11 @@ export function last<T>(this: Cheerio<T>): Cheerio<T> {
  * @see {@link https://api.jquery.com/eq/}
  */
 export function eq<T>(this: Cheerio<T>, i: number): Cheerio<T> {
+  /*
+   * Not redundant: JavaScript callers pass string indices, and `eq('-1')`
+   * would otherwise reach `this.length + i` as string concatenation.
+   */
+  // eslint-disable-next-line unicorn/no-useless-coercion
   i = +i;
 
   // Use the first identity optimization if possible

@@ -275,11 +275,13 @@ console.log('Received sponsors:', sponsors);
 // Remove sponsors that are already in the pre-populated headliners
 for (let i = 0; i < sponsors.length; i++) {
   if (
-    tierSponsors.headliner.some((sponsor) => sponsor.url === sponsors[i].url)
+    tierSponsors.headliner.every((sponsor) => sponsor.url !== sponsors[i].url)
   ) {
-    sponsors.splice(i, 1);
-    i--;
+    continue;
   }
+
+  sponsors.splice(i, 1);
+  i--;
 }
 
 sponsors.sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt));

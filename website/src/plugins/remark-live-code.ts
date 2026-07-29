@@ -20,35 +20,37 @@ function visitLiveCode(
   parent: Parent | undefined,
 ): void {
   // Check if the code block has 'live' in its meta
-  if (node.meta?.includes('live') && index !== undefined && parent) {
-    // Transform the code node into an MDX JSX element
-    const code = node.value;
-
-    /*
-     * Create an mdxJsxFlowElement node for the LiveCode component
-     * with client:visible for lazy hydration
-     */
-    const jsxNode: MdxJsxFlowElement = {
-      type: 'mdxJsxFlowElement',
-      name: 'LiveCode',
-      attributes: [
-        {
-          type: 'mdxJsxAttribute',
-          name: 'code',
-          value: code,
-        },
-        {
-          type: 'mdxJsxAttribute',
-          name: 'client:visible',
-          value: null,
-        },
-      ],
-      children: [],
-    };
-
-    // Replace the code node with the JSX node
-    parent.children.splice(index, 1, jsxNode as unknown as Code);
+  if (!(node.meta?.includes('live') && index !== undefined && parent)) {
+    return;
   }
+
+  // Transform the code node into an MDX JSX element
+  const code = node.value;
+
+  /*
+   * Create an mdxJsxFlowElement node for the LiveCode component
+   * with client:visible for lazy hydration
+   */
+  const jsxNode: MdxJsxFlowElement = {
+    type: 'mdxJsxFlowElement',
+    name: 'LiveCode',
+    attributes: [
+      {
+        type: 'mdxJsxAttribute',
+        name: 'code',
+        value: code,
+      },
+      {
+        type: 'mdxJsxAttribute',
+        name: 'client:visible',
+        value: null,
+      },
+    ],
+    children: [],
+  };
+
+  // Replace the code node with the JSX node
+  parent.children[index] = jsxNode as unknown as Code;
 }
 
 function transformer(tree: Root): void {
