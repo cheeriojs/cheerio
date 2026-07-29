@@ -63,7 +63,13 @@ function getAttr(
 
   if (Object.hasOwn(elem.attribs, name)) {
     // Get the (decoded) attribute
-    return !xmlMode && rboolean.test(name) ? name : elem.attribs[name];
+    const value = elem.attribs[name];
+
+    // Boolean attributes normally return the attribute name, but `hidden`
+    // accepts the special value `until-found` per HTML spec.
+    return !xmlMode && rboolean.test(name) && value !== 'until-found'
+      ? name
+      : value;
   }
 
   // Mimic the DOM and return text content as value for `option's`
@@ -838,9 +844,14 @@ export function val<T extends AnyNode>(
  * @param name - Name of the attribute to remove.
  */
 function removeAttribute(elem: Element, name: string) {
-  if (!(elem.attribs && Object.hasOwn(elem.attribs, name))) return;
+  if (!elem.attribs) return;
 
-  delete elem.attribs[name];
+  // Attribute names are lowercased by htmlparser2 for HTML documents.
+  const lowerName = name.toLowerCase();
+
+  if (!Object.hasOwn(elem.attribs, lowerName)) return;
+
+  delete elem.attribs[lowerName];
 }
 
 /**

@@ -44,6 +44,11 @@ describe('$(...)', () => {
       expect(attr).toBe('autofocus');
     });
 
+    it('(valid key) : should preserve hidden="until-found"', () => {
+      const $el = cheerio('<div hidden="until-found">');
+      expect($el.attr('hidden')).toBe('until-found');
+    });
+
     it('(key, value) : should set one attr', () => {
       const $pear = $('.pear').attr('id', 'pear');
       expect($('#pear')).toHaveLength(1);
@@ -796,6 +801,12 @@ describe('$(...)', () => {
       $body.removeAttr('class');
 
       expect($text('body').html()).toBe(mixedText);
+    });
+
+    it('(key) : should be case-insensitive for HTML', () => {
+      const $apple = $('.apple');
+      $apple.removeAttr('CLASS');
+      expect($apple.attr('class')).toBeUndefined();
     });
   });
 
