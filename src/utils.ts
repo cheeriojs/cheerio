@@ -60,13 +60,13 @@ export function domEach<
   return array;
 }
 
-const enum CharacterCode {
-  LowerA = 97,
-  LowerZ = 122,
-  UpperA = 65,
-  UpperZ = 90,
-  Exclamation = 33,
-}
+const CharacterCode = {
+  LowerA: 97,
+  LowerZ: 122,
+  UpperA: 65,
+  UpperZ: 90,
+  Exclamation: 33,
+} as const;
 
 /**
  * Check if string is HTML.
@@ -88,7 +88,7 @@ export function isHtml(str: string): boolean {
 
   if (tagStart === -1 || tagStart > str.length - 3) return false;
 
-  const tagChar = str.charCodeAt(tagStart + 1) as CharacterCode;
+  const tagChar = str.charCodeAt(tagStart + 1);
 
   return (
     ((tagChar >= CharacterCode.LowerA && tagChar <= CharacterCode.LowerZ) ||
