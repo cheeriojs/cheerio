@@ -431,6 +431,31 @@ describe('$(...)', () => {
       );
     });
 
+    it('("href") : should skip a `<base>` without an href', () => {
+      const $ = load(
+        '<head><base><base href="/assets/"></head><a href="p.html">l</a>',
+        { baseURI: 'http://example.com/page/1' },
+      );
+
+      expect($('a').prop('href')).toBe('http://example.com/assets/p.html');
+    });
+
+    it('("href") : should ignore `data:` and `javascript:` base URLs', () => {
+      const data = load(
+        '<head><base href="data:text/html,x"></head><a href="p.html">l</a>',
+        { baseURI: 'http://example.com/page/1' },
+      );
+      expect(data('a').prop('href')).toBe('http://example.com/page/p.html');
+
+      const javascript = load(
+        '<head><base href="javascript:0"></head><a href="p.html">l</a>',
+        { baseURI: 'http://example.com/page/1' },
+      );
+      expect(javascript('a').prop('href')).toBe(
+        'http://example.com/page/p.html',
+      );
+    });
+
     it('("href") : should use the first `<base href>` in the document', () => {
       const $ = load(
         '<head><base href="/first/"><base href="/second/"></head><a href="p.html">l</a>',

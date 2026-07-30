@@ -58,17 +58,31 @@ function documentBaseURI(elem: Element, fallback: string | URL): string | URL {
   while (root.parent) root = root.parent;
 
   const head = findChildElement(findChildElement(root, 'html') ?? root, 'head');
-  const base = head && findChildElement(head, 'base');
-  const href = base?.attribs?.['href'];
+  if (!head) return fallback;
 
-  if (href === undefined) return fallback;
+  for (const child of head.children) {
+    // The base URL comes from the first base element that has an href.
+    if (!isTag(child) || child.tagName !== 'base') continue;
+    const href = child.attribs?.['href'];
+    if (href === undefined) continue;
 
-  try {
-    // The base element's own href resolves against the document URL.
-    return new URL(href, fallback).href;
-  } catch {
-    return fallback;
+    try {
+      // The base element's own href resolves against the document URL.
+      const base = new URL(href, fallback);
+
+      /*
+       * `data:` and `javascript:` base URLs are not allowed, and resolving
+       * against them would throw.
+       */
+      return base.protocol === 'data:' || base.protocol === 'javascript:'
+        ? fallback
+        : base.href;
+    } catch {
+      return fallback;
+    }
   }
+
+  return fallback;
 }
 
 /**
