@@ -104,6 +104,10 @@ other loaders, pass the
 [`baseURI` option](/docs/api/interfaces/CheerioOptions#baseuri) to get absolute
 URLs back.
 
+If the document contains a `<base href>` element, that base URL takes precedence
+over the document's URL when resolving `href` and `src` props, the same way a
+browser resolves them.
+
 :::
 
 Descriptor objects can be wrapped in an array just like plain selectors:
