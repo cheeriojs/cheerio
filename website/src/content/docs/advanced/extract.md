@@ -83,6 +83,10 @@ resolved relative to the document's URL. The document's URL will be set
 automatically when using `fromURL` to load the document. Otherwise, use the
 `baseURI` option to specify the documents URL.
 
+If the document contains a `<base href>` element, that base URL takes precedence
+over the document's URL when resolving `href` and `src` props, the same way a
+browser resolves them.
+
 There are many props available here; have a look at the
 [`prop` method](/docs/api/classes/Cheerio#prop) for details. For example, to
 extract the `outerHTML` of all `.red` elements:

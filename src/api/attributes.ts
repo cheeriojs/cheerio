@@ -21,6 +21,77 @@ const rboolean =
 const rbrace = /^{[\s\S]*}$|^\[[\s\S]*]$/;
 
 /**
+ * Elements whose `href` and `src` attributes are reflected as resolved URLs in
+ * the DOM.
+ *
+ * @see https://html.spec.whatwg.org/multipage/urls-and-fetching.html#reflecting-url-attributes
+ */
+const urlAttributeElements: Record<'href' | 'src', Set<string>> = {
+  href: new Set(['a', 'area', 'base', 'link']),
+  src: new Set([
+    'audio',
+    'embed',
+    'iframe',
+    'img',
+    'input',
+    'script',
+    'source',
+    'track',
+    'video',
+  ]),
+};
+
+/**
+ * Resolves the document base URL for an element, honoring an in-document
+ * `<base href>` element the way the HTML spec does.
+ *
+ * The base element lives in `<head>`, so only that element's children are
+ * inspected. This keeps the lookup cheap for documents without a `<base>`.
+ *
+ * @see https://html.spec.whatwg.org/multipage/urls-and-fetching.html#document-base-url
+ * @param elem - Element whose document should be inspected.
+ * @param fallback - The document URL, used when there is no usable `<base>`.
+ * @returns The document base URL.
+ */
+function documentBaseURI(elem: Element, fallback: string | URL): string | URL {
+  let root: AnyNode = elem;
+  while (root.parent) root = root.parent;
+
+  const head = findChildElement(findChildElement(root, 'html') ?? root, 'head');
+  const base = head && findChildElement(head, 'base');
+  const href = base?.attribs?.['href'];
+
+  if (href === undefined) return fallback;
+
+  try {
+    // The base element's own href resolves against the document URL.
+    return new URL(href, fallback).href;
+  } catch {
+    return fallback;
+  }
+}
+
+/**
+ * Finds the first child element with the given tag name.
+ *
+ * @param node - Node whose children should be searched.
+ * @param name - Lower-cased tag name to look for.
+ * @returns The matching element, if any.
+ */
+function findChildElement(
+  node: AnyNode | undefined,
+  name: string,
+): Element | undefined {
+  if (!(node && 'children' in node)) return;
+
+  for (const child of node.children) {
+    if (isTag(child) && child.tagName === name) return child;
+  }
+
+  return;
+}
+
+/**
  * Gets a node's attribute. For boolean attributes, it will return the value's
  * name should it be set.
  *
@@ -329,6 +400,11 @@ export function prop<T extends AnyNode>(
  * Resolve `href` or `src` of supported elements. Requires the `baseURI` option
  * to be set, and a global `URL` object to be part of the environment.
  *
+ * `href` is resolved for `a`, `area`, `base` and `link` elements, `src` for
+ * `audio`, `embed`, `iframe`, `img`, `input`, `script`, `source`, `track` and
+ * `video` elements. In HTML mode, an in-document `<base href>` takes precedence
+ * over the `baseURI` option, matching the HTML specification.
+ *
  * @example With `baseURI` set to `'https://example.com'`:
  *
  * ```js
@@ -451,17 +527,20 @@ export function prop<T extends AnyNode>(
 
         if (
           typeof URL !== 'undefined' &&
-          ((name === 'href' && (el.tagName === 'a' || el.tagName === 'link')) ||
-            (name === 'src' &&
-              (el.tagName === 'img' ||
-                el.tagName === 'iframe' ||
-                el.tagName === 'audio' ||
-                el.tagName === 'video' ||
-                el.tagName === 'source'))) &&
+          urlAttributeElements[name].has(el.tagName) &&
           prop !== undefined &&
           this.options.baseURI
         ) {
-          return new URL(prop, this.options.baseURI).href;
+          /*
+           * A `<base>` element's own `href` resolves against the document URL,
+           * not against itself.
+           */
+          const base =
+            this.options.xmlMode || el.tagName === 'base'
+              ? this.options.baseURI
+              : documentBaseURI(el, this.options.baseURI);
+
+          return new URL(prop, base).href;
         }
 
         return prop;
