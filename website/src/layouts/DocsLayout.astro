@@ -34,20 +34,21 @@ const currentPath = Astro.url.pathname;
 
 // Flat ordered list of all doc pages for prev/next navigation
 const allPages = [
-  { label: 'Introduction', href: '/docs/intro' },
-  { label: 'Loading Documents', href: '/docs/basics/loading' },
-  { label: 'Selecting Elements', href: '/docs/basics/selecting' },
-  { label: 'Traversing the DOM', href: '/docs/basics/traversing' },
-  { label: 'Manipulating Elements', href: '/docs/basics/manipulation' },
-  { label: 'Configuring Cheerio', href: '/docs/advanced/configuring-cheerio' },
-  { label: 'Extending Cheerio', href: '/docs/advanced/extending-cheerio' },
-  { label: 'Extracting Data', href: '/docs/advanced/extract' },
-  { label: 'API Documentation', href: '/docs/api' },
+  { label: 'Introduction', href: '/docs/intro/' },
+  { label: 'Loading Documents', href: '/docs/basics/loading/' },
+  { label: 'Selecting Elements', href: '/docs/basics/selecting/' },
+  { label: 'Traversing the DOM', href: '/docs/basics/traversing/' },
+  { label: 'Manipulating Elements', href: '/docs/basics/manipulation/' },
+  { label: 'Configuring Cheerio', href: '/docs/advanced/configuring-cheerio/' },
+  { label: 'Extending Cheerio', href: '/docs/advanced/extending-cheerio/' },
+  { label: 'Extracting Data', href: '/docs/advanced/extract/' },
+  { label: 'API Documentation', href: '/docs/api/' },
 ];
 
-const currentIndex = allPages.findIndex(
-  (p) => p.href === currentPath.replace(/\/$/, ''),
-);
+const normalizedPath = currentPath.endsWith('/')
+  ? currentPath
+  : `${currentPath}/`;
+const currentIndex = allPages.findIndex((p) => p.href === normalizedPath);
 const prevPage = currentIndex > 0 ? allPages[currentIndex - 1] : null;
 const nextPage =
   currentIndex >= 0 && currentIndex < allPages.length - 1

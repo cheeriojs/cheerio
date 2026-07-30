@@ -10,7 +10,9 @@
     "build:api": "typedoc",
     "dev": "astro dev",
     "preview": "astro preview",
-    "start": "astro dev"
+    "start": "astro dev",
+    "sync:crawler": "node scripts/sync-algolia-crawler.mjs",
+    "check": "astro check"
   },
   "dependencies": {
     "@astrojs/mdx": "^6.0.3",
@@ -32,6 +34,8 @@
     "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/markdown-remark": "^7.2.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "typedoc": "^0.28.20",

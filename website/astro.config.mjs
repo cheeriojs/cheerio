@@ -1,3 +1,4 @@
+import { unified } from '@astrojs/markdown-remark';
 import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
@@ -6,8 +7,9 @@ import { defineConfig } from 'astro/config';
 import remarkDirective from 'remark-directive';
 import { rehypeExternalLinks } from './src/plugins/rehype-external-links.ts';
 import { remarkAdmonitions } from './src/plugins/remark-admonitions.ts';
-import { remarkFixTypedocLinks } from './src/plugins/remark-fix-typedoc-links.ts';
+import { remarkInternalLinks } from './src/plugins/remark-internal-links.ts';
 import { remarkLiveCode } from './src/plugins/remark-live-code.ts';
+import { remarkPageTitle } from './src/plugins/remark-page-title.ts';
 
 export default defineConfig({
   site: 'https://cheerio.js.org',
@@ -24,12 +26,16 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
   markdown: {
-    remarkPlugins: [
-      remarkDirective,
-      remarkAdmonitions,
-      remarkFixTypedocLinks,
-      remarkLiveCode,
-    ],
-    rehypePlugins: [rehypeExternalLinks],
+    processor: unified({
+      remarkPlugins: [
+        // Runs first, so it sees the document before anything rewrites it.
+        remarkPageTitle,
+        remarkDirective,
+        remarkAdmonitions,
+        remarkInternalLinks,
+        remarkLiveCode,
+      ],
+      rehypePlugins: [rehypeExternalLinks],
+    }),
   },
 });

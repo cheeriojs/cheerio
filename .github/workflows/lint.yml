@@ -45,5 +45,11 @@ jobs:
         run: npm run build
         working-directory: website
 
+      # Type-checks .astro templates and content collections, which the
+      # repo-level lint cannot see.
+      - name: Check website types
+        run: npm run check
+        working-directory: website
+
       - name: Run lint
         run: npm run lint
