@@ -46,6 +46,8 @@ export abstract class Cheerio<T> implements ArrayLike<T> {
    * @private
    */
   _root: Cheerio<Document> | null;
+  /** The selection this one was derived from, as set by `end()`. */
+  prevObject: Cheerio<any> | undefined;
 
   /**
    * Instance of cheerio. Methods are specified in the modules. Usage of this
@@ -72,7 +74,6 @@ export abstract class Cheerio<T> implements ArrayLike<T> {
     }
   }
 
-  prevObject: Cheerio<any> | undefined;
   /**
    * Make a cheerio object.
    *

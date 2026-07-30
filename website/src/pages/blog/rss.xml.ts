@@ -18,15 +18,15 @@ function getPostDate(filePath: string): Date {
 export async function GET(context: APIContext) {
   const posts = await getCollection('blog');
 
+  if (!context.site) {
+    throw new Error('Site URL is required for RSS feed generation');
+  }
+
   // Sort posts by date (newest first)
   const sortedPosts = posts.toSorted(
     (a, b) =>
       getPostDate(b.filePath).getTime() - getPostDate(a.filePath).getTime(),
   );
-
-  if (!context.site) {
-    throw new Error('Site URL is required for RSS feed generation');
-  }
 
   return rss({
     title: 'Cheerio Blog',
@@ -42,7 +42,7 @@ export async function GET(context: APIContext) {
         title: post.data.title,
         pubDate: getPostDate(post.filePath),
         link: `/blog/${post.id}/`,
-        ...(content ? { content } : {}),
+        ...(content && { content }),
       };
     }),
   });

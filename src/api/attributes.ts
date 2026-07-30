@@ -20,6 +20,10 @@ const rboolean =
 // Matches strings that look like JSON objects or arrays
 const rbrace = /^{[\s\S]*}$|^\[[\s\S]*]$/;
 
+// Tags whose `href`/`src` is resolved against `baseURI`
+const hrefTags = new Set(['a', 'link']);
+const srcTags = new Set(['img', 'iframe', 'audio', 'video', 'source']);
+
 /**
  * Gets a node's attribute. For boolean attributes, it will return the value's
  * name should it be set.
@@ -207,8 +211,7 @@ export function attr<T extends AnyNode>(
       if (!isTag(el)) return;
 
       if (typeof name === 'object') {
-        for (const objName of Object.keys(name)) {
-          const objValue = name[objName];
+        for (const [objName, objValue] of Object.entries(name)) {
           setAttr(el, objName, objValue);
         }
       } else {
@@ -451,13 +454,7 @@ export function prop<T extends AnyNode>(
 
         if (
           typeof URL !== 'undefined' &&
-          ((name === 'href' && (el.tagName === 'a' || el.tagName === 'link')) ||
-            (name === 'src' &&
-              (el.tagName === 'img' ||
-                el.tagName === 'iframe' ||
-                el.tagName === 'audio' ||
-                el.tagName === 'video' ||
-                el.tagName === 'source'))) &&
+          (name === 'href' ? hrefTags : srcTags).has(el.tagName) &&
           prop !== undefined &&
           this.options.baseURI
         ) {
@@ -512,8 +509,7 @@ export function prop<T extends AnyNode>(
       if (!isTag(el)) return;
 
       if (typeof name === 'object') {
-        for (const key of Object.keys(name)) {
-          const val = name[key];
+        for (const [key, val] of Object.entries(name)) {
           setProp(el, key, val, this.options.xmlMode);
         }
       } else {
@@ -568,7 +564,7 @@ function setData(
 function readAllData(el: DataElement): unknown {
   const data = (el.data ??= {});
 
-  for (const domName of Object.keys(el.attribs)) {
+  for (const [domName, domValue] of Object.entries(el.attribs)) {
     if (!domName.startsWith(dataAttrPrefix)) {
       continue;
     }
@@ -576,7 +572,7 @@ function readAllData(el: DataElement): unknown {
     const jsName = camelCase(domName.slice(dataAttrPrefix.length));
 
     if (!Object.hasOwn(data, jsName)) {
-      data[jsName] = parseDataValue(el.attribs[domName]);
+      data[jsName] = parseDataValue(domValue);
     }
   }
 
@@ -799,7 +795,6 @@ export function val<T extends AnyNode>(
       return this.text(value as string);
     }
     case 'select': {
-      const option = this.find('option:selected');
       if (!querying) {
         if (this.attr('multiple') == null && typeof value === 'object') {
           return this;
@@ -814,6 +809,8 @@ export function val<T extends AnyNode>(
 
         return this;
       }
+
+      const option = this.find('option:selected');
 
       return this.attr('multiple')
         ? option.toArray().map((el) => text(el.children))
@@ -964,10 +961,12 @@ export function addClass<T extends AnyNode, R extends ArrayLike<T>>(
   // Support functions
   if (typeof value === 'function') {
     return domEach(this, (el, i) => {
-      if (isTag(el)) {
-        const className = el.attribs['class'] || '';
-        addClass.call([el], value.call(el, i, className));
+      if (!isTag(el)) {
+        return;
       }
+
+      const className = el.attribs['class'] || '';
+      addClass.call([el], value.call(el, i, className));
     });
   }
 
