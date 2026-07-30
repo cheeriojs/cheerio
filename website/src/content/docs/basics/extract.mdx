@@ -104,9 +104,8 @@ other loaders, pass the
 [`baseURI` option](/docs/api/interfaces/CheerioOptions#baseuri) to get absolute
 URLs back.
 
-If the document contains a `<base href>` element, that base URL takes precedence
-over the document's URL when resolving `href` and `src` props, the same way a
-browser resolves them.
+In HTML mode, a document `<base href>` takes precedence over the document URL
+when resolving `href` and `src` props. XML mode ignores `<base>` elements.
 
 :::
 
