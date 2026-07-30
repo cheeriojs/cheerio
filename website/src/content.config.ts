@@ -12,13 +12,16 @@ const docs = defineCollection({
   }),
 });
 
+const string = z.string();
+const stringOrStrings = z.union([string, z.array(string)]);
+
 const blog = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/blog' }),
   schema: z.object({
-    title: z.string(),
-    slug: z.string().optional(),
-    authors: z.union([z.string(), z.array(z.string())]).optional(),
-    tags: z.array(z.string()).optional(),
+    title: string,
+    slug: string.optional(),
+    authors: stringOrStrings.optional(),
+    tags: z.array(string).optional(),
     date: z.date().optional(),
   }),
 });
