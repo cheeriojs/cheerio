@@ -9,6 +9,8 @@ const suffixRe = /[?#]/;
 
 function visitInternalLink(node: Link): void {
   if (typeof node.url !== 'string' || !node.url.startsWith('/')) return;
+  // `//example.com/x` is external despite the leading slash.
+  if (node.url.startsWith('//')) return;
 
   // Split the query and hash off first, so only the pathname is rewritten.
   const suffixIndex = node.url.search(suffixRe);

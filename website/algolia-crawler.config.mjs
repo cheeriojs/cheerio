@@ -14,6 +14,14 @@
 
 export const crawlerId = 'e44e1737-35b7-4dbc-8d59-873d3fdc729c';
 
+/*
+ * GitHub Pages 301s extension-less URLs (/docs/intro -> /docs/intro/) via a
+ * plain-http hop, so http:// must be in scope or those redirects are dropped
+ * and the crawl finds nothing beyond the homepage. Discovery and extraction
+ * have to cover the same URLs, so both read from this one list.
+ */
+const crawlScope = ['https://cheerio.js.org/**', 'http://cheerio.js.org/**'];
+
 export const config = {
   appId: 'NRR2XU4QSP',
   indexPrefix: 'crawler_',
@@ -26,16 +34,11 @@ export const config = {
   sitemaps: ['https://cheerio.js.org/sitemap-index.xml'],
   renderJavaScript: false,
   ignoreCanonicalTo: true,
-  /*
-   * GitHub Pages 301s extension-less URLs (/docs/intro -> /docs/intro/) via a
-   * plain-http hop, so http:// must be in scope or those redirects are dropped
-   * and the crawl finds nothing beyond the homepage.
-   */
-  discoveryPatterns: ['https://cheerio.js.org/**', 'http://cheerio.js.org/**'],
+  discoveryPatterns: crawlScope,
   actions: [
     {
       indexName: 'cheerio',
-      pathsToMatch: ['https://cheerio.js.org/**', 'http://cheerio.js.org/**'],
+      pathsToMatch: crawlScope,
       recordExtractor: ({ $, helpers, url }) => {
         /*
          * The lvl0 facet is the sidebar group owning the current page
