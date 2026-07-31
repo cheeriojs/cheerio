@@ -98,4 +98,5 @@ jobs:
         env:
           CRAWLER_USER_ID: ${{ secrets.CRAWLER_USER_ID }}
           CRAWLER_API_KEY: ${{ secrets.CRAWLER_API_KEY }}
-          CRAWLER_REINDEX: ${{ inputs.reindex }}
+          # `inputs` is empty on push; spell out the default rather than rely on that.
+          CRAWLER_REINDEX: ${{ inputs.reindex || false }}
