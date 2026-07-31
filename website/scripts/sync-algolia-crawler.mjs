@@ -32,6 +32,19 @@ const body = JSON.stringify(
 );
 
 /**
+ * Order keys by code unit rather than locale, so the canonical form does not
+ * shift with the machine's locale.
+ *
+ * @param a - The first key.
+ * @param b - The second key.
+ * @returns A negative number if `a` sorts first.
+ */
+function compareKeys(a, b) {
+  if (a === b) return 0;
+  return a < b ? -1 : 1;
+}
+
+/**
  * Serialise with object keys sorted, so a response that merely orders its keys
  * differently from this file does not read as drift.
  *
@@ -44,7 +57,7 @@ function stableStringify(value) {
   }
   if (value && typeof value === 'object') {
     return `{${Object.keys(value)
-      .toSorted()
+      .toSorted(compareKeys)
       .map((key) => `${JSON.stringify(key)}:${stableStringify(value[key])}`)
       .join(',')}}`;
   }
@@ -62,7 +75,8 @@ async function sync() {
     );
   }
 
-  const authorization = `Basic ${Buffer.from(`${userId}:${apiKey}`).toString('base64')}`;
+  const credentials = new TextEncoder().encode(`${userId}:${apiKey}`);
+  const authorization = `Basic ${credentials.toBase64()}`;
 
   async function send(path, method, payload) {
     const response = await fetch(`${endpoint}${path}`, {

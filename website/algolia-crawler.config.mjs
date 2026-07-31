@@ -20,7 +20,11 @@ export const crawlerId = 'e44e1737-35b7-4dbc-8d59-873d3fdc729c';
  * and the crawl finds nothing beyond the homepage. Discovery and extraction
  * have to cover the same URLs, so both read from this one list.
  */
-const crawlScope = ['https://cheerio.js.org/**', 'http://cheerio.js.org/**'];
+const crawlScope = [
+  'https://cheerio.js.org/**',
+  // eslint-disable-next-line unicorn/prefer-https -- the http:// hop is the point
+  'http://cheerio.js.org/**',
+];
 
 export const config = {
   appId: 'NRR2XU4QSP',
