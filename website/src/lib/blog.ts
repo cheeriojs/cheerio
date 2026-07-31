@@ -36,15 +36,30 @@ export function byNewest(a: Post, b: Post): number {
 }
 
 /**
+ * Format a date for display.
+ *
+ * @param date - The date to format.
+ * @returns The date as a long-form string, e.g. "August 7, 2024".
+ */
+export function formatDate(date: Date): string {
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    /*
+     * Filenames are parsed as UTC midnight, so formatting in the build
+     * machine's zone renders the previous day anywhere west of UTC.
+     */
+    timeZone: 'UTC',
+  });
+}
+
+/**
  * Format a post's date for display.
  *
  * @param post - The blog post.
  * @returns The date as a long-form string, e.g. "August 7, 2024".
  */
 export function formatPostDate(post: Post): string {
-  return getPostDate(post).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  return formatDate(getPostDate(post));
 }
