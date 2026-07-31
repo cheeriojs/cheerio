@@ -15,14 +15,20 @@
 export const crawlerId = 'e44e1737-35b7-4dbc-8d59-873d3fdc729c';
 
 /*
- * GitHub Pages 301s extension-less URLs (/docs/intro -> /docs/intro/) via a
- * plain-http hop, so http:// must be in scope or those redirects are dropped
- * and the crawl finds nothing beyond the homepage. Discovery and extraction
- * have to cover the same URLs, so both read from this one list.
+ * Discovery and extraction have to cover the same URLs, so both read from this
+ * one list.
+ *
+ * GitHub Pages 301s extension-less URLs (/docs/intro -> /docs/intro/) through a
+ * plain-http hop, and a redirect leaving the configured scope is dropped rather
+ * than followed. Every link and sitemap entry now carries its trailing slash,
+ * so a clean crawl never hits that path — the http:// entry is insurance for
+ * the cases the build cannot enforce: URLs the crawler still remembers from
+ * older crawls, and slashless links written straight into .astro templates,
+ * which remark-internal-links does not see.
  */
 const crawlScope = [
   'https://cheerio.js.org/**',
-  // eslint-disable-next-line unicorn/prefer-https -- the http:// hop is the point
+  // eslint-disable-next-line unicorn/prefer-https -- deliberate: see above
   'http://cheerio.js.org/**',
 ];
 
