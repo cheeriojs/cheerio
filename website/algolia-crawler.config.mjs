@@ -26,18 +26,22 @@ export const config = {
   sitemaps: ['https://cheerio.js.org/sitemap-index.xml'],
   renderJavaScript: false,
   ignoreCanonicalTo: true,
-  // GitHub Pages 301s extension-less URLs (/docs/intro -> /docs/intro/) via a
-  // plain-http hop, so http:// must be in scope or those redirects are dropped
-  // and the crawl finds nothing beyond the homepage.
+  /*
+   * GitHub Pages 301s extension-less URLs (/docs/intro -> /docs/intro/) via a
+   * plain-http hop, so http:// must be in scope or those redirects are dropped
+   * and the crawl finds nothing beyond the homepage.
+   */
   discoveryPatterns: ['https://cheerio.js.org/**', 'http://cheerio.js.org/**'],
   actions: [
     {
       indexName: 'cheerio',
       pathsToMatch: ['https://cheerio.js.org/**', 'http://cheerio.js.org/**'],
       recordExtractor: ({ $, helpers, url }) => {
-        // lvl0 is the sidebar group owning the current page ("Basics",
-        // "Classes", ...). The sidebar is rendered twice (desktop + mobile
-        // drawer), so only the first match counts.
+        /*
+         * The lvl0 facet is the sidebar group owning the current page
+         * ("Basics", "Classes", ...). The sidebar is rendered twice (desktop +
+         * mobile drawer), so only the first match counts.
+         */
         const active = $('aside nav a[aria-current="page"]').first();
         const lvl0 =
           active.closest('details').children('summary').first().text().trim() ||
@@ -46,22 +50,26 @@ export const config = {
 
         const recordProps = {
           lvl0: { selectors: '', defaultValue: lvl0 },
-          // Must stay a single selector: docsearch matches every entry in an
-          // array, not the first that hits, so a fallback list yields one
-          // duplicate record per selector (`head > title` also drags in a
-          // " | Cheerio" suffix). Every page has exactly one `main header h1`.
+          /*
+           * Must stay a single selector: docsearch matches every entry in an
+           * array, not the first that hits, so a fallback list yields one
+           * duplicate record per selector (`head > title` also drags in a
+           * " | Cheerio" suffix). Every page has exactly one `main header h1`.
+           */
           lvl1: 'main header h1',
           lvl2: 'article h2',
           lvl3: 'article h3',
           content: 'article p, article li',
         };
 
-        // Typedoc nests four heading levels deep and repeats generic
-        // "Parameters"/"Returns" headings once per member — the Cheerio class
-        // page alone has 795 of them, which exceeds the per-page record limit
-        // and fails extraction for the most important page in the docs.
-        // Stopping at h3 keeps one record per member; their prose still
-        // aggregates into it.
+        /*
+         * Typedoc nests four heading levels deep and repeats generic
+         * "Parameters"/"Returns" headings once per member — the Cheerio class
+         * page alone has 795 of them, which exceeds the per-page record limit
+         * and fails extraction for the most important page in the docs.
+         * Stopping at h3 keeps one record per member; their prose still
+         * aggregates into it.
+         */
         if (!url.pathname.startsWith('/docs/api/')) {
           recordProps.lvl4 = 'article h4';
           recordProps.lvl5 = 'article h5, article td:first-child';

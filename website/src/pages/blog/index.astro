@@ -90,7 +90,7 @@ const postsWithExcerpts = sortedPosts.map((post) => {
             </div>
             <h2 class="mb-2 font-heading text-xl font-semibold lg:text-2xl">
               <a
-                href={`/blog//`}
+                href={`/blog/${post.id}/`}
                 class="text-slate-900 transition-colors hover:text-primary dark:text-white dark:hover:text-primary"
               >
                 {post.data.title}
@@ -100,7 +100,7 @@ const postsWithExcerpts = sortedPosts.map((post) => {
               <p class="mb-4 line-clamp-3 text-slate-600 dark:text-slate-400">{excerpt}</p>
             )}
             <a
-              href={`/blog//`}
+              href={`/blog/${post.id}/`}
               class="inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors hover:text-primary-dark"
             >
               Read more

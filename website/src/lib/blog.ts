@@ -11,8 +11,10 @@ type Post = CollectionEntry<'blog'>;
  * @returns The post's publication date.
  */
 export function getPostDate(post: Post): Date {
-  // Collection entries only have a `filePath` when their loader is file-backed.
-  // The blog always is, so an absent path means something is badly wrong.
+  /*
+   * Collection entries only have a `filePath` when their loader is file-backed.
+   * The blog always is, so an absent path means something is badly wrong.
+   */
   const filename = post.filePath?.split('/').pop();
   if (!filename) {
     throw new Error(

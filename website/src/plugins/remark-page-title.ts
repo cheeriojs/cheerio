@@ -13,10 +13,12 @@ function transformer(tree: Root, file: { data: AstroVFileData }): void {
   const first = tree.children[index];
   if (first?.type !== 'heading' || first.depth !== 1) return;
 
-  // Both layouts render the page title in their own <h1>, so a leading body
-  // <h1> is always a duplicate. Lift it into frontmatter and drop the node,
-  // rather than leaving it in the DOM for CSS to hide: a hidden heading still
-  // reaches screen readers, search crawlers, and the heading outline.
+  /*
+   * Both layouts render the page title in their own <h1>, so a leading body
+   * <h1> is always a duplicate. Lift it into frontmatter and drop the node,
+   * rather than leaving it in the DOM for CSS to hide: a hidden heading still
+   * reaches screen readers, search crawlers, and the heading outline.
+   */
   tree.children.splice(index, 1);
 
   const frontmatter = file.data.astro?.frontmatter;
