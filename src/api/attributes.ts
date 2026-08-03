@@ -67,7 +67,9 @@ function getAttr(
 
     // Boolean attributes normally return the attribute name, but `hidden`
     // accepts the special value `until-found` per HTML spec.
-    return !xmlMode && rboolean.test(name) && value !== 'until-found'
+    return !xmlMode &&
+      rboolean.test(name) &&
+      value.toLowerCase() !== 'until-found'
       ? name
       : value;
   }
@@ -843,11 +845,11 @@ export function val<T extends AnyNode>(
  * @param elem - Node to remove attribute from.
  * @param name - Name of the attribute to remove.
  */
-function removeAttribute(elem: Element, name: string) {
+function removeAttribute(elem: Element, name: string, xmlMode?: boolean) {
   if (!elem.attribs) return;
 
   // Attribute names are lowercased by htmlparser2 for HTML documents.
-  const lowerName = name.toLowerCase();
+  const lowerName = xmlMode ? name : name.toLowerCase();
 
   if (!Object.hasOwn(elem.attribs, lowerName)) return;
 
@@ -889,10 +891,11 @@ export function removeAttr<T extends AnyNode>(
   name: string,
 ): Cheerio<T> {
   const attrNames = splitNames(name);
+  const { xmlMode } = this.options;
 
   for (const attrName of attrNames) {
     domEach(this, (elem) => {
-      if (isTag(elem)) removeAttribute(elem, attrName);
+      if (isTag(elem)) removeAttribute(elem, attrName, xmlMode);
     });
   }
 

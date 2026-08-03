@@ -49,6 +49,11 @@ describe('$(...)', () => {
       expect($el.attr('hidden')).toBe('until-found');
     });
 
+    it('(valid key) : should preserve hidden="Until-Found" mixed case', () => {
+      const $el = cheerio('<div hidden="Until-Found">');
+      expect($el.attr('hidden')).toBe('Until-Found');
+    });
+
     it('(key, value) : should set one attr', () => {
       const $pear = $('.pear').attr('id', 'pear');
       expect($('#pear')).toHaveLength(1);
@@ -807,6 +812,14 @@ describe('$(...)', () => {
       const $apple = $('.apple');
       $apple.removeAttr('CLASS');
       expect($apple.attr('class')).toBeUndefined();
+    });
+
+    it('(key) : should be case-sensitive for XML', () => {
+      const $xml = cheerio.load('<foo BAR="baz" bar="qux" />', {
+        xmlMode: true,
+      });
+      $xml('foo').removeAttr('BAR');
+      expect($xml('foo').attr('bar')).toBe('qux');
     });
   });
 
