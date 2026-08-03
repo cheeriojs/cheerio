@@ -12,3 +12,6 @@ npm-debug.log
 website/.astro/
 website/dist/
 website/src/content/docs/api
+
+# Agent worktrees — nested checkouts of this repo, not part of it
+.claude/worktrees/

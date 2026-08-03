@@ -8,9 +8,11 @@
     "astro": "astro",
     "build": "npm run build:api && astro build",
     "build:api": "typedoc",
+    "check": "astro check",
     "dev": "astro dev",
     "preview": "astro preview",
-    "start": "astro dev"
+    "start": "astro dev",
+    "sync:crawler": "node scripts/sync-algolia-crawler.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^6.0.3",
@@ -32,8 +34,11 @@
     "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/markdown-remark": "^7.2.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
+    "mdast-util-to-string": "^4.0.0",
     "typedoc": "^0.28.20",
     "typedoc-plugin-markdown": "^4.12.0",
     "typedoc-plugin-mdn-links": "^5.1.1",
