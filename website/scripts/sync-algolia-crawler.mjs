@@ -75,8 +75,13 @@ async function sync() {
     );
   }
 
-  const credentials = new TextEncoder().encode(`${userId}:${apiKey}`);
-  const authorization = `Basic ${credentials.toBase64()}`;
+  /*
+   * `Uint8Array#toBase64()` is not in Node 24, which is what `lts/*` resolves
+   * to on the runner — it threw "toBase64 is not a function" there. Buffer
+   * works on every version this repo runs on.
+   */
+  // eslint-disable-next-line unicorn/prefer-uint8array-base64
+  const authorization = `Basic ${Buffer.from(`${userId}:${apiKey}`).toString('base64')}`;
 
   async function send(path, method, payload) {
     const response = await fetch(`${endpoint}${path}`, {
