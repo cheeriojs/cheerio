@@ -133,13 +133,31 @@ async function sync() {
    * what was sent — most importantly, an extractor kept as a string literal
    * instead of a function never runs, and the only symptom is an empty index.
    */
-  const readBack = await fetch(`${endpoint}/config`, {
+  // There is no GET on /config; the configuration comes back with the crawler.
+  const readBack = await fetch(`${endpoint}?withConfig=true`, {
     headers: { authorization, accept: 'application/json' },
     signal: AbortSignal.timeout(timeoutMs),
   });
 
+  /*
+   * A 404 means this URL is wrong rather than the service being unwell, and a
+   * verification step that quietly does nothing is worse than none — that is
+   * exactly how the previous endpoint went unnoticed.
+   */
+  if (readBack.status === 404) {
+    throw new Error(
+      `Read-back returned 404 for ${endpoint}?withConfig=true — the endpoint is wrong.`,
+    );
+  }
+
   if (readBack.ok) {
-    const stored = await readBack.json();
+    const payload = await readBack.json();
+    // The crawler may arrive wrapped, and its config as a JSON string.
+    const crawler = payload.data ?? payload;
+    const stored =
+      typeof crawler.config === 'string'
+        ? JSON.parse(crawler.config)
+        : (crawler.config ?? crawler);
     const sent = JSON.parse(body);
     const drifted = Object.keys(sent).filter(
       (key) =>
