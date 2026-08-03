@@ -24,12 +24,38 @@ const reindex =
 // Fail fast rather than letting an unresponsive endpoint hang the CI job.
 const timeoutMs = 30_000;
 
-// The API takes extractors as source strings rather than as JSON objects.
+/*
+ * The API rejects a bare source string with "recordExtractor must be a valid
+ * object", so functions travel in the envelope the platform stores them in.
+ */
 const body = JSON.stringify(
   config,
-  (_key, value) => (typeof value === 'function' ? value.toString() : value),
+  (_key, value) =>
+    typeof value === 'function'
+      ? { __type: 'function', source: value.toString() }
+      : value,
   2,
 );
+
+/**
+ * Unwrap function envelopes so a config compares equal whether the API echoes
+ * an extractor back wrapped or as a bare source string.
+ *
+ * @param value - The value to normalise.
+ * @returns The value with every function envelope replaced by its source.
+ */
+function unwrapFunctions(value) {
+  if (Array.isArray(value)) return value.map((item) => unwrapFunctions(item));
+  if (value && typeof value === 'object') {
+    if (value.__type === 'function' && typeof value.source === 'string') {
+      return value.source;
+    }
+    return Object.fromEntries(
+      Object.entries(value).map(([key, item]) => [key, unwrapFunctions(item)]),
+    );
+  }
+  return value;
+}
 
 /**
  * Order keys by code unit rather than locale, so the canonical form does not
@@ -116,7 +142,9 @@ async function sync() {
     const stored = await readBack.json();
     const sent = JSON.parse(body);
     const drifted = Object.keys(sent).filter(
-      (key) => stableStringify(stored[key]) !== stableStringify(sent[key]),
+      (key) =>
+        stableStringify(unwrapFunctions(stored[key])) !==
+        stableStringify(unwrapFunctions(sent[key])),
     );
 
     if (drifted.length > 0) {
