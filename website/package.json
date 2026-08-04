@@ -26,7 +26,7 @@
     "@tailwindcss/vite": "^4.3.2",
     "astro": "^7.1.6",
     "hastscript": "^9.0.1",
-    "marked": "^18.0.5",
+    "marked": "^18.0.7",
     "react": "^19.2.5",
     "react-dom": "^19.2.7",
     "remark-directive": "^4.0.0",
