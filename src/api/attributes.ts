@@ -69,7 +69,7 @@ function getAttr(
     // accepts the special value `until-found` per HTML spec.
     return !xmlMode &&
       rboolean.test(name) &&
-      value.toLowerCase() !== 'until-found'
+      !(name === 'hidden' && value.toLowerCase() === 'until-found')
       ? name
       : value;
   }

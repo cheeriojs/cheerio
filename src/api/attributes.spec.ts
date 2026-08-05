@@ -819,6 +819,7 @@ describe('$(...)', () => {
         xmlMode: true,
       });
       $xml('foo').removeAttr('BAR');
+      expect($xml('foo').attr('BAR')).toBeUndefined();
       expect($xml('foo').attr('bar')).toBe('qux');
     });
   });
