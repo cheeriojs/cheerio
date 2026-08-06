@@ -134,30 +134,55 @@ async function sync() {
    * instead of a function never runs, and the only symptom is an empty index.
    */
   // There is no GET on /config; the configuration comes back with the crawler.
-  const readBack = await fetch(`${endpoint}?withConfig=true`, {
-    headers: { authorization, accept: 'application/json' },
-    signal: AbortSignal.timeout(timeoutMs),
-  });
+  const readBackUrl = `${endpoint}?withConfig=true`;
+  let readBack;
+  try {
+    readBack = await fetch(readBackUrl, {
+      headers: { authorization, accept: 'application/json' },
+      signal: AbortSignal.timeout(timeoutMs),
+    });
+  } catch (error) {
+    /*
+     * Failing to reach the API says nothing about the config it already
+     * accepted, so do not fail the deploy over it.
+     */
+    console.warn(`Could not reach ${readBackUrl} (${error.message}).`);
+    console.warn('Skipping verification; the configuration was still pushed.');
+  }
 
   /*
-   * A 404 means this URL is wrong rather than the service being unwell, and a
-   * verification step that quietly does nothing is worse than none — that is
-   * exactly how the previous endpoint went unnoticed.
+   * A 4xx means this request is wrong — bad URL, or credentials that PATCH but
+   * cannot read — rather than the service being unwell. Warning through it is
+   * how the previous endpoint stayed broken for three runs, so fail instead.
+   * 429 is the exception: that one is worth retrying, not diagnosing.
    */
-  if (readBack.status === 404) {
+  if (
+    readBack &&
+    readBack.status >= 400 &&
+    readBack.status < 500 &&
+    readBack.status !== 429
+  ) {
     throw new Error(
-      `Read-back returned 404 for ${endpoint}?withConfig=true — the endpoint is wrong.`,
+      `Read-back failed (${readBack.status}) for ${readBackUrl}; verification cannot run.`,
     );
   }
 
-  if (readBack.ok) {
+  if (readBack?.ok) {
     const payload = await readBack.json();
     // The crawler may arrive wrapped, and its config as a JSON string.
     const crawler = payload.data ?? payload;
-    const stored =
-      typeof crawler.config === 'string'
-        ? JSON.parse(crawler.config)
-        : (crawler.config ?? crawler);
+    let stored;
+    try {
+      stored =
+        typeof crawler.config === 'string'
+          ? JSON.parse(crawler.config)
+          : (crawler.config ?? crawler);
+    } catch (error) {
+      throw new Error(
+        `Could not parse the configuration read back from ${readBackUrl}.`,
+        { cause: error },
+      );
+    }
     const sent = JSON.parse(body);
     const drifted = Object.keys(sent).filter(
       (key) =>
@@ -172,7 +197,8 @@ async function sync() {
       );
     }
     console.log('Verified: the stored configuration matches this repo.');
-  } else {
+  } else if (readBack) {
+    // 5xx or 429: the service is unwell, which is not this config's problem.
     console.warn(
       `Could not read the config back (${readBack.status}); skipping verification.`,
     );
