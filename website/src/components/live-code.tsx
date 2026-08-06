@@ -33,11 +33,11 @@ class EditorBoundary extends Component<
   { children: ReactNode; onError: () => void },
   { failed: boolean }
 > {
-  state = { failed: false };
-
   static getDerivedStateFromError() {
     return { failed: true };
   }
+
+  state = { failed: false };
 
   componentDidCatch() {
     this.props.onError();
