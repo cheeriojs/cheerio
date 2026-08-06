@@ -168,11 +168,11 @@ async function sync() {
   }
 
   if (readBack?.ok) {
-    const payload = await readBack.json();
-    // The crawler may arrive wrapped, and its config as a JSON string.
-    const crawler = payload.data ?? payload;
     let stored;
     try {
+      const payload = await readBack.json();
+      // The crawler may arrive wrapped, and its config as a JSON string.
+      const crawler = payload.data ?? payload;
       stored =
         typeof crawler.config === 'string'
           ? JSON.parse(crawler.config)
