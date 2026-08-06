@@ -5,6 +5,7 @@ import Footer from '@/components/Footer.astro';
 import Navbar from '@/components/Navbar.astro';
 import Sidebar from '@/components/Sidebar.astro';
 import TableOfContents from '@/components/TableOfContents.astro';
+import { allPages } from '@/lib/docs-nav';
 
 interface Props {
   title: string;
@@ -31,19 +32,6 @@ const editUrl = sourceFile
   : null;
 
 const currentPath = Astro.url.pathname;
-
-// Flat ordered list of all doc pages for prev/next navigation
-const allPages = [
-  { label: 'Introduction', href: '/docs/intro/' },
-  { label: 'Loading Documents', href: '/docs/basics/loading/' },
-  { label: 'Selecting Elements', href: '/docs/basics/selecting/' },
-  { label: 'Traversing the DOM', href: '/docs/basics/traversing/' },
-  { label: 'Manipulating Elements', href: '/docs/basics/manipulation/' },
-  { label: 'Configuring Cheerio', href: '/docs/advanced/configuring-cheerio/' },
-  { label: 'Extending Cheerio', href: '/docs/advanced/extending-cheerio/' },
-  { label: 'Extracting Data', href: '/docs/advanced/extract/' },
-  { label: 'API Documentation', href: '/docs/api/' },
-];
 
 const normalizedPath = currentPath.endsWith('/')
   ? currentPath

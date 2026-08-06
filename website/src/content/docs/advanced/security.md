@@ -29,8 +29,13 @@ $.html(); // The onerror attribute is still there.
 If you are going to render scraped markup in a browser, run it through a
 dedicated sanitizer such as
 [sanitize-html](https://www.npmjs.com/package/sanitize-html) or
-[DOMPurify](https://github.com/cure53/DOMPurify) first. Extracting `text()`
-rather than `html()` is also safe, since it carries no markup.
+[DOMPurify](https://github.com/cure53/DOMPurify) first.
+
+Reaching for `text()` instead of `html()` narrows the problem but does not
+remove it: `text()` strips the markup *structure*, yet the string it returns can
+still contain `<`, `>`, and `"`. Dropping that into an HTML sink builds markup
+right back up. Assign it somewhere that treats it as text — `textContent` in a
+browser, `.text()` in Cheerio — or escape it for whatever context it lands in.
 
 ## Manipulation methods take raw HTML
 
@@ -51,14 +56,26 @@ content you construct or have sanitized.
 
 ## Selectors built from user input
 
-Cheerio's selector engine can be made to do a lot of work by a sufficiently
-awkward selector, so treat selectors from untrusted sources the way you would
-treat a regular expression from an untrusted source: don't. If you need to look
-something up by a user-supplied value, put the value inside a quoted attribute
-selector rather than concatenating it into selector syntax:
+Treat a selector from an untrusted source the way you would treat a regular
+expression from an untrusted source: don't. A crafted selector can make the
+engine do a lot of work, and it can match things you didn't intend.
+
+Quoting the value is **not** enough. A `"` in the value closes the attribute
+selector, and everything after it is parsed as more selector syntax:
 
 ```js
-$(`[data-id="${id}"]`); // The value is data, not syntax.
+const id = 'x"], [data-id="secret';
+
+// Becomes: [data-id="x"], [data-id="secret"] — two selectors, not one.
+$(`[data-id="${id}"]`); // Matches the element the caller was never meant to see.
+```
+
+Cheerio has no `CSS.escape`, so the reliable fix is to keep the value out of
+the selector entirely: match on a fixed selector, then compare the attribute as
+data.
+
+```js
+const matches = $('[data-id]').filter((_, el) => $(el).attr('data-id') === id);
 ```
 
 ## Bound the input you accept

@@ -51,7 +51,8 @@ current selection, not the document.
 
 `text()` returns the raw `textContent`, which includes the source of any
 `<script>` and `<style>` elements inside the selection. Use
-`.prop('innerText')` for the text a reader would actually see:
+`.prop('innerText')`, which skips both. It works from the tree alone, though —
+Cheerio applies no CSS, so `display: none` content still comes through:
 
 ```js live
 const $ = cheerio.load(`
@@ -123,29 +124,52 @@ changes.
 ## Selectors that work in the browser fail here
 
 Cheerio supports jQuery's positional extensions (`:first`, `:last`, `:eq(n)`),
-which are *not* valid CSS — and the reverse also holds: a few browser-only
-pseudo-classes that depend on rendering or user state (`:hover`, `:visited`,
-`:focus`) have no meaning in a document that is never rendered. See
-[Selecting Elements](/docs/basics/selecting#beyond-standard-css).
+which are *not* valid CSS. The reverse also holds: pseudo-classes that depend on
+rendering or user state mean nothing in a document that is never rendered — but
+they don't all fail the same way, which matters when you're debugging.
 
-## Escaping a selector built from data
-
-If a class name, id, or attribute value comes from data rather than being
-hard-coded, it may contain characters the selector parser treats specially. Use
-an attribute selector with a quoted value instead of interpolating into a class
-or id selector:
+Some are recognised and simply match nothing:
 
 ```js
-// Fragile — breaks if `id` contains a `.`, `:`, or a space
-$(`#${id}`);
-
-// Robust — the value is quoted, so only `"` needs escaping
-$(`[id="${id}"]`);
+$('a:hover').length; // 0
+$('a:visited').length; // 0
+$('a:active').length; // 0
 ```
 
-Note that building selectors from untrusted input has
-[security implications](/docs/advanced/security#selectors-built-from-user-input)
-too.
+Others aren't implemented at all and **throw**:
+
+```js
+$('a:focus'); // Error: Unknown pseudo-class :focus
+$('a:target'); // Error: Unknown pseudo-class :target
+$('a:lang(en)'); // Error: Unknown pseudo-class :lang
+```
+
+So an `Unknown pseudo-class` error means the selector isn't supported, whereas an
+empty result from `:hover` means it is supported and genuinely matched nothing.
+See [Selecting Elements](/docs/basics/selecting#beyond-standard-css).
+
+## Looking something up by a value from data
+
+If a class name, id, or attribute value comes from data rather than being
+hard-coded, it may contain characters the selector parser treats specially — a
+`.`, `:`, or space breaks an id selector, and a `"` breaks even a quoted
+attribute selector. Rather than trying to escape it, match on a fixed selector
+and compare the value as data:
+
+```js
+// Fragile — `.`, `:`, or a space in `id` changes what this selects
+$(`#${id}`);
+
+// Still fragile — a `"` in `id` closes the attribute and injects new syntax
+$(`[id="${id}"]`);
+
+// Robust — the value is never part of the selector
+$('[id]').filter((_, el) => $(el).attr('id') === id);
+```
+
+If the value comes from an untrusted source this is a
+[security issue](/docs/advanced/security#selectors-built-from-user-input), not
+just a correctness one.
 
 ## Still stuck?
 

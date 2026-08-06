@@ -119,8 +119,8 @@ console.log('h2 ~ p:', $('h2 ~ p').length);
 
 Cheerio's selector engine,
 [`css-select`](https://github.com/fb55/css-select/blob/master/README.md#supported-selectors),
-supports the full range of standard pseudo-classes, plus `:contains()`, which
-matches on text. On top of that,
+supports most standard pseudo-classes — see its README for the exact list —
+plus `:contains()`, which matches on text. On top of that,
 [`cheerio-select`](https://github.com/cheeriojs/cheerio-select/blob/master/README.md)
 adds jQuery's positional extensions — `:first`, `:last`, and `:eq(n)`. These
 are not valid CSS and won't work in a browser, but they're handy when scraping.

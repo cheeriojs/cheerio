@@ -1,6 +1,8 @@
 import type { Code, Parent, Root } from 'mdast';
 import { visit } from 'unist-util-visit';
 
+const whitespaceRe = /\s+/;
+
 interface MdxJsxAttribute {
   type: 'mdxJsxAttribute';
   name: string;
@@ -19,20 +21,27 @@ function visitLiveCode(
   index: number | undefined,
   parent: Parent | undefined,
 ): void {
-  // Check if the code block has 'live' in its meta
-  if (!(node.meta?.includes('live') && index !== undefined && parent)) {
-    return;
-  }
+  if (index === undefined || !parent) return;
+
+  /*
+   * Meta is treated as space-separated tokens, so `live` matches as a whole
+   * word and a meta like `livewire` is left alone. A quoted value containing
+   * spaces would tokenize oddly, but nothing here uses one.
+   */
+  const meta = node.meta?.split(whitespaceRe).filter(Boolean) ?? [];
+  if (!meta.includes('live')) return;
 
   const code = node.value;
 
   /*
-   * Drop the `live` marker so the block is highlighted like any other, then
-   * keep it as the child of `LiveCode`. The highlighted block is what readers
-   * see until they ask for an editor — no Sandpack, no third-party bundler,
-   * and it still renders without JavaScript.
+   * Drop only the `live` marker, leaving any other meta (highlight ranges, a
+   * title, …) for the highlighter. The block then stays a normal code block and
+   * becomes the child of `LiveCode`, so it is what readers see until they ask
+   * for an editor — no Sandpack, no third-party bundler, and it still renders
+   * without JavaScript.
    */
-  node.meta = null;
+  const rest = meta.filter((token) => token !== 'live').join(' ');
+  node.meta = rest || null;
 
   const jsxNode: MdxJsxFlowElement = {
     type: 'mdxJsxFlowElement',

@@ -78,7 +78,14 @@ moving around the document. For example, `find` searches within the current
 selection:
 
 ```js
-$('h2.title').find('.subtitle').text();
+const $ = cheerio.load(`
+  <div class="post">
+    <h2 class="title">Hello world</h2>
+    <p class="subtitle">Nice to meet you</p>
+  </div>
+`);
+
+$('.post').find('.subtitle').text(); // "Nice to meet you"
 ```
 
 There are methods for moving up, down, and sideways through the tree, plus a

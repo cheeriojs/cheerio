@@ -97,10 +97,10 @@ name. It defaults to `textContent`, which is why a bare selector gives you text.
 
 :::tip[Relative URLs]
 
-`href` and `src` are resolved against the document's URL, so the example above
-returns `/docs` — the document has no URL.
-[`fromURL`](/docs/api/functions/fromURL) sets one automatically; with the other
-loaders, pass the
+`href` and `src` are resolved against the document's URL. This document doesn't
+have one, which is why the example above returns the raw `/docs`.
+[`fromURL`](/docs/api/functions/fromURL) sets a URL automatically; with the
+other loaders, pass the
 [`baseURI` option](/docs/api/interfaces/CheerioOptions#baseuri) to get absolute
 URLs back.
 

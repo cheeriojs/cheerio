@@ -188,11 +188,15 @@ const $ = await cheerio.fromURL('https://example.com', {
 });
 ```
 
-:::warning[`requestOptions` replaces the defaults, it doesn't merge with them]
+:::warning[`requestOptions` overrides, it doesn't merge]
 
-Supplying `requestOptions` discards the defaults entirely, so you must include
-`method` yourself — omitting it fails with `method must be a string`. Custom
-`headers` likewise replace the default `Accept` header rather than adding to it.
+Two things to watch for:
+
+- **`method` is not defaulted.** Supplying `requestOptions` without it fails
+  with `method must be a string`, so always include it.
+- **`headers` is all-or-nothing.** Omit it and you keep Cheerio's default
+  `Accept` header; supply it and yours replaces that default outright, rather
+  than being added to it.
 
 :::
 

@@ -136,7 +136,10 @@ its first argument:
 ```js
 import * as htmlparser2 from 'htmlparser2';
 
-const dom = htmlparser2.parseDocument(document, options);
+const dom = htmlparser2.parseDocument('<ul id="fruits">...</ul>', {
+  xmlMode: true,
+});
+
 const $ = cheerio.load(dom);
 ```
 

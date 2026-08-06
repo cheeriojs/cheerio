@@ -103,8 +103,10 @@ const text = $('p').text();
 :::warning[`text()` includes script and style content]
 
 `text()` returns the raw `textContent`, which means the source of any
-`<script>` and `<style>` elements in the selection ends up in the result. Use
-`.prop('innerText')` when you want only the text a reader would see.
+`<script>` and `<style>` elements in the selection ends up in the result.
+`.prop('innerText')` skips those two, which is usually what you want — but note
+that it works from the tree alone. Cheerio applies no CSS, so content hidden by
+`display: none` or a `hidden` attribute is still included.
 
 :::
 
