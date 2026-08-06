@@ -20,7 +20,7 @@
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
     "@codesandbox/sandpack-react": "^2.20.0",
-    "@docsearch/css": "^4.6.3",
+    "@docsearch/css": "^4.7.0",
     "@docsearch/js": "^4.7.0",
     "@lucide/astro": "^1.27.0",
     "@tailwindcss/vite": "^4.3.3",
