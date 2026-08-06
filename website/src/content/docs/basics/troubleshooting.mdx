@@ -1,0 +1,153 @@
+---
+sidebar_position: 7
+description: Why a selection is empty, and other common surprises.
+---
+
+import { LiveCode } from '@/components/live-code';
+
+# Troubleshooting
+
+Most Cheerio surprises come from one of a handful of causes. This page collects
+them, roughly in the order people hit them.
+
+## My selection is empty
+
+`$('…')` never throws when nothing matches — it returns an empty selection, and
+every method you chain onto it quietly returns an empty result. `text()` gives
+you `''`, `attr()` gives you `undefined`. So the first thing to check is
+`length`:
+
+```js live
+const $ = cheerio.load('<div class="post"><h1>Title</h1></div>');
+
+console.log($('h1').length); // 1 — found it
+console.log($('h2').length); // 0 — no match
+console.log($('h2').text()); // '' — not an error
+```
+
+Once you know the selection is empty, the usual causes are:
+
+**The content is rendered by JavaScript.** Cheerio does not run scripts. If the
+markup you're looking for is built client-side by React, Vue, or similar, it
+isn't in the HTML Cheerio received. Check what you actually got:
+
+```js
+console.log($.html().slice(0, 500));
+```
+
+If you see an empty `<div id="root">` and a bundle `<script>`, you need
+[Puppeteer](https://github.com/puppeteer/puppeteer) or
+[Playwright](https://github.com/microsoft/playwright) rather than Cheerio.
+
+**The class or id is dynamic.** Build-tool-generated names like
+`css-1x2y3z` change on every deploy. Prefer stable anchors: `data-` attributes,
+element structure, or text with `:contains()`.
+
+**You're scoping to the wrong element.** Inside `find()` and inside an
+[`extract`](/docs/basics/extract) nested `value`, selectors run relative to the
+current selection, not the document.
+
+## `text()` gives me JavaScript or CSS
+
+`text()` returns the raw `textContent`, which includes the source of any
+`<script>` and `<style>` elements inside the selection. Use
+`.prop('innerText')` for the text a reader would actually see:
+
+```js live
+const $ = cheerio.load(`
+  <div>
+    Hello
+    <style>p { color: red }</style>
+    <script>var x = 1;</script>
+  </div>
+`);
+
+console.log(JSON.stringify($('div').text()));
+console.log(JSON.stringify($('div').prop('innerText')));
+```
+
+## `text()` is full of whitespace
+
+Cheerio preserves the document's whitespace exactly, including the newlines and
+indentation between tags. Browsers collapse that when rendering; Cheerio does
+not. Trim it yourself:
+
+```js live
+const $ = cheerio.load(`
+  <li>
+    Apple
+  </li>
+`);
+
+console.log(JSON.stringify($('li').text()));
+console.log(JSON.stringify($('li').text().trim()));
+```
+
+Note that `.prop('innerText')` does *not* help here — it skips `<script>` and
+`<style>` content, but it preserves whitespace just like `text()` does.
+
+## `text()` on many elements runs them together
+
+Reading `text()` from a selection concatenates every match with no separator, so
+`$('li').text()` on three list items gives you one run-on string. Map over the
+selection when you want them separately:
+
+```js live
+const $ = cheerio.load('<ul><li>One</li><li>Two</li><li>Three</li></ul>');
+
+console.log($('li').text()); // 'OneTwoThree'
+console.log($('li').map((i, el) => $(el).text()).get());
+```
+
+## `$.html()` gives me `<html><head></head><body>…`
+
+`load` treats its input as a complete document and adds the missing structure,
+just like a browser. Pass `false` as the third argument to parse a fragment
+instead — see [fragment mode](/docs/advanced/configuring-cheerio#fragment-mode).
+
+## `attr('href')` returns a relative path
+
+`attr()` returns the literal attribute value. Use `prop('href')` to get it
+resolved against the document's URL — and make sure the document has one, either
+by loading it with [`fromURL`](/docs/basics/loading#fromurl) or by passing the
+[`baseURI` option](/docs/api/interfaces/CheerioOptions#baseuri).
+
+## My changes don't show up
+
+Cheerio methods that return a new selection — `find`, `filter`, `parent`, and
+the rest of the [traversal methods](/docs/basics/traversing) — never modify the
+original. Manipulation methods do modify in place, but they modify the tree, not
+any string you extracted earlier. Re-serialize with `$.html()` after making
+changes.
+
+## Selectors that work in the browser fail here
+
+Cheerio supports jQuery's positional extensions (`:first`, `:last`, `:eq(n)`),
+which are *not* valid CSS — and the reverse also holds: a few browser-only
+pseudo-classes that depend on rendering or user state (`:hover`, `:visited`,
+`:focus`) have no meaning in a document that is never rendered. See
+[Selecting Elements](/docs/basics/selecting#beyond-standard-css).
+
+## Escaping a selector built from data
+
+If a class name, id, or attribute value comes from data rather than being
+hard-coded, it may contain characters the selector parser treats specially. Use
+an attribute selector with a quoted value instead of interpolating into a class
+or id selector:
+
+```js
+// Fragile — breaks if `id` contains a `.`, `:`, or a space
+$(`#${id}`);
+
+// Robust — the value is quoted, so only `"` needs escaping
+$(`[id="${id}"]`);
+```
+
+Note that building selectors from untrusted input has
+[security implications](/docs/advanced/security#selectors-built-from-user-input)
+too.
+
+## Still stuck?
+
+Search the [issue tracker](https://github.com/cheeriojs/cheerio/issues), and
+include a minimal document plus the selector you tried when opening a new one.

@@ -24,17 +24,21 @@ function visitLiveCode(
     return;
   }
 
-  // Transform the code node into an MDX JSX element
   const code = node.value;
 
   /*
-   * Create an mdxJsxFlowElement node for the LiveCode component
-   * with client:visible for lazy hydration
+   * Drop the `live` marker so the block is highlighted like any other, then
+   * keep it as the child of `LiveCode`. The highlighted block is what readers
+   * see until they ask for an editor — no Sandpack, no third-party bundler,
+   * and it still renders without JavaScript.
    */
+  node.meta = null;
+
   const jsxNode: MdxJsxFlowElement = {
     type: 'mdxJsxFlowElement',
     name: 'LiveCode',
     attributes: [
+      // The raw source, handed to the editor once the reader opens one.
       {
         type: 'mdxJsxAttribute',
         name: 'code',
@@ -46,10 +50,9 @@ function visitLiveCode(
         value: null,
       },
     ],
-    children: [],
+    children: [node],
   };
 
-  // Replace the code node with the JSX node
   parent.children[index] = jsxNode as unknown as Code;
 }
 
@@ -58,14 +61,17 @@ function transformer(tree: Root): void {
 }
 
 /**
- * Remark plugin to transform code blocks with 'live' meta into LiveCode
- * components.
+ * Remark plugin to wrap code blocks with 'live' meta in a LiveCode component.
+ *
+ * The original code block is preserved as a child, so it is syntax-highlighted
+ * and readable on its own; the component only layers an "Edit & run" affordance
+ * on top of it.
  *
  * Usage in markdown:
  *
- * ```js
+ * ```js live
  * const $ = cheerio.load('<h1>Hello</h1>');
- * return <>{$('h1').text()}</>;
+ * console.log($('h1').text());
  * ```
  *
  * @returns A transformer function.

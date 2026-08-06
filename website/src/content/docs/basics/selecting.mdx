@@ -1,0 +1,155 @@
+---
+sidebar_position: 3
+description: An introduction to CSS selectors.
+---
+
+import { LiveCode } from '@/components/live-code';
+
+# Selecting Elements
+
+Cheerio finds elements using
+[CSS selectors](https://developer.mozilla.org/en-US/docs/Glossary/CSS_Selector),
+the same syntax you would use in a stylesheet or in `document.querySelectorAll`.
+This guide covers the selectors you'll reach for most often, and where to look
+for the rest.
+
+Start by [loading a document](/docs/basics/loading). The `load` call returns the
+`$` function, which is what you pass selectors to:
+
+```js
+import * as cheerio from 'cheerio';
+
+const $ = cheerio.load('<html>...</html>');
+```
+
+:::tip
+
+By convention, variables holding a Cheerio object are prefixed with `$`. It's
+not required, but it makes code much easier to scan.
+
+:::
+
+## Basic selectors
+
+| Selector                    | Matches                                       |
+| --------------------------- | --------------------------------------------- |
+| `$('p')`                    | All `<p>` elements.                           |
+| `$('.selected')`            | All elements with the class `selected`.       |
+| `$('#main')`                | The element with the id `main`.               |
+| `$('[data-selected=true]')` | All elements whose `data-selected` is `true`. |
+| `$('*')`                    | Every element in the document.                |
+
+The examples on this page are live — edit them and press Run.
+
+```js live
+const $ = cheerio.load(`
+  <article id="post">
+    <h1>Cheerio</h1>
+    <p class="intro">Fast, flexible, and lean.</p>
+    <p data-kind="note">Not a web browser.</p>
+    <p>Hello from the last paragraph.</p>
+  </article>
+`);
+
+console.log('By tag:', $('p').length);
+console.log('By class:', $('.intro').text());
+console.log('By id:', $('#post h1').text());
+console.log('By attribute:', $('[data-kind=note]').text());
+```
+
+:::tip[XML namespaces]
+
+Namespaced attributes can be selected, but
+[the CSS specification](https://www.w3.org/TR/2011/REC-css3-selectors-20110929/#attribute-selectors)
+requires the colon (`:`) to be escaped:
+
+```js
+$('[xml\\:id="main"]');
+```
+
+:::
+
+## Combining selectors
+
+Write selectors next to each other to require that an element match all of them:
+
+```js
+// <p> elements that also have the class `selected`
+const $selected = $('p.selected');
+```
+
+Separate selectors with a comma to match any of them:
+
+```js
+// All <h1> and <h2> elements
+const $headings = $('h1, h2');
+```
+
+## Selecting by relationship
+
+Combinators describe where an element sits relative to another:
+
+| Selector       | Matches                                                       |
+| -------------- | ------------------------------------------------------------- |
+| `$('div p')`   | `<p>` elements anywhere inside a `<div>`.                     |
+| `$('div > p')` | `<p>` elements that are direct children of a `<div>`.         |
+| `$('h2 + p')`  | The `<p>` immediately following an `<h2>`.                    |
+| `$('h2 ~ p')`  | All `<p>` elements following an `<h2>` under the same parent. |
+
+Note the difference between the first two: `div p` reaches the `<p>` nested
+inside the `<ul>`, while `div > p` stops at the direct children.
+
+```js live
+const $ = cheerio.load(`
+  <div>
+    <h2>Fruit</h2>
+    <p>Apple</p>
+    <p>Banana</p>
+    <ul><li><p>Cherry</p></li></ul>
+  </div>
+`);
+
+console.log('div p:', $('div p').length); // 3 — includes the nested one
+console.log('div > p:', $('div > p').length); // 2 — direct children only
+console.log('h2 + p:', $('h2 + p').text());
+console.log('h2 ~ p:', $('h2 ~ p').length);
+```
+
+## Beyond standard CSS
+
+Cheerio's selector engine,
+[`css-select`](https://github.com/fb55/css-select/blob/master/README.md#supported-selectors),
+supports the full range of standard pseudo-classes, plus `:contains()`, which
+matches on text. On top of that,
+[`cheerio-select`](https://github.com/cheeriojs/cheerio-select/blob/master/README.md)
+adds jQuery's positional extensions — `:first`, `:last`, and `:eq(n)`. These
+are not valid CSS and won't work in a browser, but they're handy when scraping.
+
+```js live
+const $ = cheerio.load(`
+  <ul>
+    <li>Apple</li>
+    <li>Banana</li>
+    <li>Cherry</li>
+  </ul>
+`);
+
+console.log(':contains:', $('li:contains("an")').text());
+console.log(':first:', $('li:first').text());
+console.log(':last:', $('li:last').text());
+console.log(':eq(1):', $('li:eq(1)').text()); // zero-based
+```
+
+You can also define your own pseudo-classes — see
+[Extending Cheerio](/docs/advanced/extending-cheerio#adding-custom-css-pseudo-classes).
+
+## Where to go next
+
+Once you have a selection, use the
+[traversal methods](/docs/basics/traversing) to move around it, or the
+[manipulation methods](/docs/basics/manipulation) to change it.
+
+For more on selectors themselves, see
+[MDN](https://developer.mozilla.org/en-US/docs/Glossary/CSS_Selector) and
+jQuery's guide to
+[selecting elements](https://learn.jquery.com/using-jquery-core/selecting-elements/).
