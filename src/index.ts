@@ -26,7 +26,11 @@ import {
 import * as htmlparser2 from 'htmlparser2';
 import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';
 import { ParserStream as Parse5Stream } from 'parse5-parser-stream';
-import * as undici from 'undici';
+/*
+ * `undici` is only needed by `fromURL`, and importing it costs around 60ms and
+ * 8MB of heap. It is therefore loaded lazily, the same way `node:http` does it.
+ */
+import type * as undici from 'undici';
 import { MIMEType } from 'whatwg-mimetype';
 import type { CheerioAPI } from './load.js';
 import { load } from './load-parse.js';
@@ -228,6 +232,8 @@ export async function fromURL(
   } = options;
   let undiciStream: Promise<undici.Dispatcher.StreamData<unknown>> | undefined;
 
+  const { Client, errors, interceptors } = await import('undici');
+
   // Add headers if none were supplied.
   const urlObject = typeof url === 'string' ? new URL(url) : url;
   const streamOptions = {
@@ -237,17 +243,13 @@ export async function fromURL(
   };
 
   const promise = new Promise<CheerioAPI>((resolve, reject) => {
-    undiciStream = new undici.Client(urlObject.origin)
-      .compose(undici.interceptors.redirect({ maxRedirections: 5 }))
+    undiciStream = new Client(urlObject.origin)
+      .compose(interceptors.redirect({ maxRedirections: 5 }))
       .stream(streamOptions, (res) => {
         if (res.statusCode < 200 || res.statusCode >= 300) {
-          throw new undici.errors.ResponseError(
-            'Response Error',
-            res.statusCode,
-            {
-              headers: res.headers,
-            },
-          );
+          throw new errors.ResponseError('Response Error', res.statusCode, {
+            headers: res.headers,
+          });
         }
 
         const contentTypeHeader = res.headers['content-type'] ?? 'text/html';
