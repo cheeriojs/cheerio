@@ -54,17 +54,6 @@ const tierSponsors: Record<Tier, Sponsor[]> = {
       source: 'manual',
       tier: 'headliner',
     },
-    {
-      createdAt: '2026-01-21',
-      name: 'HasData',
-      image: 'https://hasdata.com/favicon.svg',
-      url: 'https://hasdata.com',
-      type: 'ORGANIZATION',
-      monthlyDonation: 0,
-      totalDonations: 0,
-      source: 'manual',
-      tier: 'headliner',
-    },
   ],
   sponsor: [],
   professional: [],
@@ -264,8 +253,29 @@ const SECTION_START_BEGINNING = '<!-- BEGIN SPONSORS:';
 const SECTION_START_END = '-->';
 const SECTION_END = '<!-- END SPONSORS -->';
 
-const professionalToBackerOverrides = new Map([
-  ['Vasy Kafidoff', 'https://kafidoff.com'],
+/*
+ * Sponsors whose profile is missing a link or logo, or points somewhere other
+ * than what they asked to have listed.
+ */
+/*
+ * Extra imgix parameters, for logos that need cropping before they fit the
+ * square slot the README gives them.
+ */
+const imgixOverrides = new Map([
+  // Crop the wordmark down to just the mark on its left.
+  ['Rapidproxy', { rect: '0,0,92,92' }],
+]);
+
+const sponsorOverrides = new Map<string, Partial<Sponsor>>([
+  ['Vasy Kafidoff', { url: 'https://kafidoff.com' }],
+  [
+    'Rapidproxy',
+    {
+      url: 'https://www.rapidproxy.io/?ref=cheerio',
+      image:
+        'https://www.rapidproxy.io/static/rapidproxy/images/hd_ft_public/rapidproxy_logo.webp',
+    },
+  ],
 ]);
 
 const sponsors = await fetchSponsors();
@@ -299,12 +309,7 @@ for (const sponsor of sponsors) {
     continue;
   }
 
-  if (
-    (sponsor.tier === 'professional' || sponsor.tier === 'backer') &&
-    professionalToBackerOverrides.has(sponsor.name)
-  ) {
-    sponsor.url = professionalToBackerOverrides.get(sponsor.name)!;
-  }
+  Object.assign(sponsor, sponsorOverrides.get(sponsor.name));
 
   tierSponsors[sponsor.tier].push(sponsor);
 }
@@ -371,6 +376,7 @@ for (let sectionStartIndex = 0; ; ) {
                 h: size,
                 fit: 'fillmax',
                 fill: 'solid',
+                ...imgixOverrides.get(s.name),
               },
             )}" title="${s.name}" alt="${s.name}"></img>
           </a>`;
