@@ -7,25 +7,21 @@ import { LiveCode } from '@/components/live-code';
 
 # Traversing the DOM
 
-Traversing a document with Cheerio allows you to select and manipulate specific
-elements within the document. Whether you want to move up and down the DOM tree,
-move sideways within the tree, or filter elements based on certain criteria,
-Cheerio provides a range of methods to help you do so.
+A selector gets you a starting point; traversal methods get you from there to
+whatever you actually want. Every method below returns a **new** selection —
+the original is left untouched — so calls can be chained freely.
 
-In this guide, we will go through the various methods available in Cheerio for
-traversing and filtering elements. We will cover methods for moving down the DOM
-tree, moving up the DOM tree, moving sideways within the tree, and filtering
-elements. By the end of this guide, you will have a good understanding of how to
-use these methods to select and manipulate elements within a document using
-Cheerio.
+The examples on this page are live: edit them and hit Run to see the result.
 
-:::tip
+| Goal                                                | Methods                                                                   |
+| --------------------------------------------------- | ------------------------------------------------------------------------- |
+| [Move down](#moving-down-the-dom-tree)              | `find`, `children`, `contents`                                            |
+| [Move up](#moving-up-the-dom-tree)                  | `parent`, `parents`, `parentsUntil`, `closest`                            |
+| [Move sideways](#moving-sideways-within-the-dom-tree) | `next`, `prev`, `nextAll`, `prevAll`, `siblings`, `nextUntil`, `prevUntil` |
+| [Narrow the current set](#filtering-elements)       | `eq`, `filter`, `not`, `has`, `first`, `last`                             |
 
-This guide is intended to give you an overview of the various methods available
-in Cheerio for traversing and filtering elements. For a more detailed reference
-of these methods, see the [API documentation](/docs/api/classes/Cheerio).
-
-:::
+For the full signatures and edge cases, see the
+[`Cheerio` API reference](/docs/api/classes/Cheerio).
 
 ## Moving Down the DOM Tree
 
@@ -207,7 +203,7 @@ console.log(`Next: ${nextItem.text()}`);
 console.log(`Prev: ${prevItem.text()}`);
 ```
 
-## `nextAll`, `prevAll`, and `siblings`
+### `nextAll`, `prevAll`, and `siblings`
 
 The [`nextAll` method](/docs/api/classes/Cheerio#nextall) allows you to select
 all siblings after the current element. It returns a new selection containing
@@ -390,10 +386,9 @@ console.log(`First: ${firstItem.text()}`);
 console.log(`Last: ${lastItem.text()}`);
 ```
 
-## Conclusion
+## Where to go next
 
-Cheerio provides a range of methods for traversing and filtering elements within
-a document. These methods allow you to move up and down the DOM tree, move
-sideways within the tree, and filter elements based on various criteria. By
-using these methods, you can easily select and manipulate elements within a
-document using Cheerio.
+With a selection in hand, head to
+[manipulating the DOM](/docs/basics/manipulation) to change it, or
+[the `extract` method](/docs/basics/extract) to pull structured data out of it
+in one go.
