@@ -10,6 +10,7 @@
  * Usage:
  *   node scripts/sync-algolia-crawler.mjs [--dry-run] [--reindex]
  */
+import { setTimeout as sleep } from 'node:timers/promises';
 import { config, crawlerId } from '../algolia-crawler.config.mjs';
 
 const endpoint = `https://crawler.algolia.com/api/1/crawlers/${crawlerId}`;
@@ -37,25 +38,15 @@ const body = JSON.stringify(
   2,
 );
 
-/**
- * Unwrap function envelopes so a config compares equal whether the API echoes
- * an extractor back wrapped or as a bare source string.
- *
- * @param value - The value to normalise.
- * @returns The value with every function envelope replaced by its source.
+/*
+ * Algolia owns these; everything else must match this repo exactly. `apiKey` is
+ * the crawler's write key, deliberately absent here and preserved by the
+ * partial update.
  */
-function unwrapFunctions(value) {
-  if (Array.isArray(value)) return value.map((item) => unwrapFunctions(item));
-  if (value && typeof value === 'object') {
-    if (value.__type === 'function' && typeof value.source === 'string') {
-      return value.source;
-    }
-    return Object.fromEntries(
-      Object.entries(value).map(([key, item]) => [key, unwrapFunctions(item)]),
-    );
-  }
-  return value;
-}
+const serverOwnedKeys = new Set(['apiKey']);
+
+// Two quick attempts before giving up, so a blip does not need a human.
+const retryDelaysMs = [1000, 4000];
 
 /**
  * Order keys by code unit rather than locale, so the canonical form does not
@@ -88,6 +79,53 @@ function stableStringify(value) {
       .join(',')}}`;
   }
   return JSON.stringify(value);
+}
+
+/**
+ * Fetch the crawler, retrying only what is plausibly transient.
+ *
+ * Nothing here warns and carries on: a permanent mistake — a wrong host, a key
+ * that can write but not read — would otherwise look exactly like a blip and
+ * leave the job green with no verification, which is how the previous endpoint
+ * stayed broken for three runs.
+ *
+ * @param url - The crawler URL to read.
+ * @param authorization - The Basic auth header value.
+ * @returns The successful response.
+ */
+async function readWithRetries(url, authorization) {
+  for (let attempt = 0; ; attempt++) {
+    const retriable = attempt < retryDelaysMs.length;
+    let response;
+
+    try {
+      response = await fetch(url, {
+        headers: { authorization, accept: 'application/json' },
+        signal: AbortSignal.timeout(timeoutMs),
+      });
+    } catch (error) {
+      if (!retriable) {
+        throw new Error(
+          `Could not reach ${url} after ${attempt + 1} attempts.`,
+          { cause: error },
+        );
+      }
+
+      await sleep(retryDelaysMs[attempt]);
+      continue;
+    }
+
+    if (response.ok) return response;
+
+    // 429 and 5xx may pass; anything else is this request being wrong.
+    if (!(retriable && (response.status === 429 || response.status >= 500))) {
+      throw new Error(
+        `Read-back failed (${response.status}) for ${url}; verification cannot run.`,
+      );
+    }
+
+    await sleep(retryDelaysMs[attempt]);
+  }
 }
 
 async function sync() {
@@ -133,32 +171,49 @@ async function sync() {
    * what was sent — most importantly, an extractor kept as a string literal
    * instead of a function never runs, and the only symptom is an empty index.
    */
-  const readBack = await fetch(`${endpoint}/config`, {
-    headers: { authorization, accept: 'application/json' },
-    signal: AbortSignal.timeout(timeoutMs),
-  });
+  // There is no GET on /config; the configuration comes back with the crawler.
+  const readBackUrl = `${endpoint}?withConfig=true`;
+  const readBack = await readWithRetries(readBackUrl, authorization);
 
-  if (readBack.ok) {
-    const stored = await readBack.json();
-    const sent = JSON.parse(body);
-    const drifted = Object.keys(sent).filter(
-      (key) =>
-        stableStringify(unwrapFunctions(stored[key])) !==
-        stableStringify(unwrapFunctions(sent[key])),
-    );
-
-    if (drifted.length > 0) {
+  let stored;
+  try {
+    const payload = await readBack.json();
+    // Tolerate either envelope, but never silently diff against the wrong thing.
+    const raw = payload.config ?? payload.data?.config;
+    if (raw === undefined) {
       throw new Error(
-        `Algolia stored something different from what was sent: ${drifted.join(', ')}.\n` +
-          'Compare against `npm run sync:crawler -- --dry-run`.',
+        `no "config" in the response (keys: ${Object.keys(payload).join(', ')})`,
       );
     }
-    console.log('Verified: the stored configuration matches this repo.');
-  } else {
-    console.warn(
-      `Could not read the config back (${readBack.status}); skipping verification.`,
+    stored = typeof raw === 'string' ? JSON.parse(raw) : raw;
+  } catch (error) {
+    throw new Error(
+      `Could not read the configuration back from ${readBackUrl}.`,
+      { cause: error },
     );
   }
+
+  /*
+   * Diff over the union of keys. Checking only what was sent would miss both a
+   * stale setting left behind in the dashboard and a key deleted from this
+   * file, which a partial update leaves in place — either would make the
+   * "source of truth" claim in algolia-crawler.config.mjs untrue.
+   */
+  const sent = JSON.parse(body);
+  const drifted = [...new Set([...Object.keys(sent), ...Object.keys(stored)])]
+    .filter((key) => !serverOwnedKeys.has(key))
+    .filter(
+      (key) => stableStringify(stored[key]) !== stableStringify(sent[key]),
+    )
+    .toSorted(compareKeys);
+
+  if (drifted.length > 0) {
+    throw new Error(
+      `Algolia stored something different from what was sent: ${drifted.join(', ')}.\n` +
+        'Compare against `npm run sync:crawler -- --dry-run`.',
+    );
+  }
+  console.log('Verified: the stored configuration matches this repo.');
 
   if (reindex) {
     await send('/reindex', 'POST');
@@ -172,7 +227,11 @@ if (dryRun) {
   try {
     await sync();
   } catch (error) {
-    console.error(error.message);
+    /*
+     * Print the whole error: the `cause` carries the reason, and no error in
+     * this script ever holds credentials.
+     */
+    console.error(error);
     process.exitCode = 1;
   }
 }
