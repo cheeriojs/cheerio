@@ -254,12 +254,19 @@ const SECTION_START_END = '-->';
 const SECTION_END = '<!-- END SPONSORS -->';
 
 /*
- * Links for sponsors whose profile has no website set, or points somewhere
- * other than the site they want listed.
+ * Sponsors whose profile is missing a link or logo, or points somewhere other
+ * than what they asked to have listed.
  */
-const urlOverrides = new Map([
-  ['Vasy Kafidoff', 'https://kafidoff.com'],
-  ['Rapidproxy', 'https://www.rapidproxy.io/?ref=cheerio'],
+const sponsorOverrides = new Map<string, Partial<Sponsor>>([
+  ['Vasy Kafidoff', { url: 'https://kafidoff.com' }],
+  [
+    'Rapidproxy',
+    {
+      url: 'https://www.rapidproxy.io/?ref=cheerio',
+      image:
+        'https://www.rapidproxy.io/static/rapidproxy/images/hd_ft_public/rapidproxy_logo.webp',
+    },
+  ],
 ]);
 
 const sponsors = await fetchSponsors();
@@ -293,9 +300,7 @@ for (const sponsor of sponsors) {
     continue;
   }
 
-  if (urlOverrides.has(sponsor.name)) {
-    sponsor.url = urlOverrides.get(sponsor.name)!;
-  }
+  Object.assign(sponsor, sponsorOverrides.get(sponsor.name));
 
   tierSponsors[sponsor.tier].push(sponsor);
 }
