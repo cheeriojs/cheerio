@@ -144,7 +144,7 @@
     "tinybench": "^6.1.2",
     "tshy": "^4.1.3",
     "tsx": "^4.23.11",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "typescript-eslint": "^8.66.0",
     "vitest": "^4.1.10"
   },
