@@ -54,17 +54,6 @@ const tierSponsors: Record<Tier, Sponsor[]> = {
       source: 'manual',
       tier: 'headliner',
     },
-    {
-      createdAt: '2026-01-21',
-      name: 'HasData',
-      image: 'https://hasdata.com/favicon.svg',
-      url: 'https://hasdata.com',
-      type: 'ORGANIZATION',
-      monthlyDonation: 0,
-      totalDonations: 0,
-      source: 'manual',
-      tier: 'headliner',
-    },
   ],
   sponsor: [],
   professional: [],
@@ -264,8 +253,13 @@ const SECTION_START_BEGINNING = '<!-- BEGIN SPONSORS:';
 const SECTION_START_END = '-->';
 const SECTION_END = '<!-- END SPONSORS -->';
 
-const professionalToBackerOverrides = new Map([
+/*
+ * Links for sponsors whose profile has no website set, or points somewhere
+ * other than the site they want listed.
+ */
+const urlOverrides = new Map([
   ['Vasy Kafidoff', 'https://kafidoff.com'],
+  ['Rapidproxy', 'https://www.rapidproxy.io/?ref=cheerio'],
 ]);
 
 const sponsors = await fetchSponsors();
@@ -299,11 +293,8 @@ for (const sponsor of sponsors) {
     continue;
   }
 
-  if (
-    (sponsor.tier === 'professional' || sponsor.tier === 'backer') &&
-    professionalToBackerOverrides.has(sponsor.name)
-  ) {
-    sponsor.url = professionalToBackerOverrides.get(sponsor.name)!;
+  if (urlOverrides.has(sponsor.name)) {
+    sponsor.url = urlOverrides.get(sponsor.name)!;
   }
 
   tierSponsors[sponsor.tier].push(sponsor);

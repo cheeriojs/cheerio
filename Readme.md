@@ -197,9 +197,6 @@ development and support.
 <a href="https://www.airbnb.com/" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Favatars.githubusercontent.com%2Fairbnb?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=e679125f79ca84598b8f8420b581dea5" title="AirBnB" alt="AirBnB"></img>
           </a>
-<a href="https://hasdata.com" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fhasdata.com%2Ffavicon.svg?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=21933842d61dec74a961fc57754e58cb" title="HasData" alt="HasData"></img>
-          </a>
 
 <!-- END SPONSORS -->
 
@@ -213,7 +210,7 @@ development and support.
 <a href="https://Nieuwe-Casinos.net" target="_blank" rel="noopener noreferrer">
             <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fnieuwecasinos%2Fc67d423%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=ed55d86b80b1aa8cf89b033020521945" title="Nieuwe-Casinos.net" alt="Nieuwe-Casinos.net"></img>
           </a>
-<a href="null" target="_blank" rel="noopener noreferrer">
+<a href="https://www.rapidproxy.io/?ref=cheerio" target="_blank" rel="noopener noreferrer">
             <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Frapidproxy%2Favatar.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=6585ea297ce2f4c2a57223be1d5ab869" title="Rapidproxy" alt="Rapidproxy"></img>
           </a>
 
