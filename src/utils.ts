@@ -11,7 +11,10 @@ import type { Cheerio } from './cheerio.js';
 export function isCheerio<T>(
   maybeCheerio: unknown,
 ): maybeCheerio is Cheerio<T> {
-  return (maybeCheerio as Cheerio<T> | null | undefined)?.cheerio != null;
+  return (
+    (maybeCheerio as Cheerio<T> | null | undefined)?.cheerio ===
+    '[cheerio object]'
+  );
 }
 
 /**
