@@ -211,7 +211,7 @@ development and support.
             <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fnieuwecasinos%2Fc67d423%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=ed55d86b80b1aa8cf89b033020521945" title="Nieuwe-Casinos.net" alt="Nieuwe-Casinos.net"></img>
           </a>
 <a href="https://www.rapidproxy.io/?ref=cheerio" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fwww.rapidproxy.io%2Fstatic%2Frapidproxy%2Fimages%2Fhd_ft_public%2Frapidproxy_logo.webp?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=44598a8aec993232cb42790606cba6d0" title="Rapidproxy" alt="Rapidproxy"></img>
+            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fwww.rapidproxy.io%2Fstatic%2Frapidproxy%2Fimages%2Fhd_ft_public%2Frapidproxy_logo.webp?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&rect=0%2C0%2C92%2C92&s=7317259362cd11f1050c21616be6d02f" title="Rapidproxy" alt="Rapidproxy"></img>
           </a>
 
 <!-- END SPONSORS -->

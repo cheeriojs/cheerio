@@ -257,6 +257,15 @@ const SECTION_END = '<!-- END SPONSORS -->';
  * Sponsors whose profile is missing a link or logo, or points somewhere other
  * than what they asked to have listed.
  */
+/*
+ * Extra imgix parameters, for logos that need cropping before they fit the
+ * square slot the README gives them.
+ */
+const imgixOverrides = new Map([
+  // Crop the wordmark down to just the mark on its left.
+  ['Rapidproxy', { rect: '0,0,92,92' }],
+]);
+
 const sponsorOverrides = new Map<string, Partial<Sponsor>>([
   ['Vasy Kafidoff', { url: 'https://kafidoff.com' }],
   [
@@ -367,6 +376,7 @@ for (let sectionStartIndex = 0; ; ) {
                 h: size,
                 fit: 'fillmax',
                 fill: 'solid',
+                ...imgixOverrides.get(s.name),
               },
             )}" title="${s.name}" alt="${s.name}"></img>
           </a>`;
