@@ -1,6 +1,17 @@
 {
   "headliner": [
     {
+      "createdAt": "2026-08-06T10:56:58.926Z",
+      "name": "ScrapingBee",
+      "url": "https://www.scrapingbee.com/",
+      "image": "https://images.opencollective.com/scrapingbee/6d5dc95/logo.png",
+      "type": "ORGANIZATION",
+      "monthlyDonation": 0,
+      "totalDonations": 0,
+      "source": "opencollective",
+      "tier": "headliner"
+    },
+    {
       "createdAt": "2022-06-24",
       "name": "Github",
       "image": "https://avatars.githubusercontent.com/github",
@@ -16,17 +27,6 @@
       "name": "AirBnB",
       "image": "https://avatars.githubusercontent.com/airbnb",
       "url": "https://www.airbnb.com/",
-      "type": "ORGANIZATION",
-      "monthlyDonation": 0,
-      "totalDonations": 0,
-      "source": "manual",
-      "tier": "headliner"
-    },
-    {
-      "createdAt": "2026-01-21",
-      "name": "HasData",
-      "image": "https://hasdata.com/favicon.svg",
-      "url": "https://hasdata.com",
       "type": "ORGANIZATION",
       "monthlyDonation": 0,
       "totalDonations": 0,
@@ -52,6 +52,17 @@
       "url": "https://Nieuwe-Casinos.net",
       "image": "https://images.opencollective.com/nieuwecasinos/c67d423/logo.png",
       "type": "ORGANIZATION",
+      "monthlyDonation": 0,
+      "totalDonations": 0,
+      "source": "opencollective",
+      "tier": "sponsor"
+    },
+    {
+      "createdAt": "2026-08-07T08:06:17.232Z",
+      "name": "Rapidproxy",
+      "url": "https://www.rapidproxy.io/?ref=cheerio",
+      "image": "https://www.rapidproxy.io/static/rapidproxy/images/hd_ft_public/rapidproxy_logo.webp",
+      "type": "INDIVIDUAL",
       "monthlyDonation": 0,
       "totalDonations": 0,
       "source": "opencollective",

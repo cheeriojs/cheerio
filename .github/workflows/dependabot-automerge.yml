@@ -3,11 +3,13 @@ name: Dependabot auto-merge
 on: pull_request_target # zizmor: ignore[dangerous-triggers] required for Dependabot auto-merge; workflow does not checkout untrusted code
 
 permissions:
-  pull-requests: write
-  contents: write
+  contents: read
 
 jobs:
   dependabot:
+    permissions:
+      contents: write # to enable auto-merge on the pull request
+      pull-requests: write # to read Dependabot metadata and merge the PR
     runs-on: ubuntu-latest
     if: ${{ github.event.pull_request.user.login == 'dependabot[bot]' }}
     steps:

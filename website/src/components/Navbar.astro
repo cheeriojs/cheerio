@@ -5,15 +5,19 @@ import logo from '@/assets/orange-c.svg';
 const navItems = [
   {
     label: 'Learn',
-    href: '/docs/intro',
+    href: '/docs/intro/',
     match: (p: string) => p.startsWith('/docs/') && !p.startsWith('/docs/api'),
   },
   {
     label: 'API',
-    href: '/docs/api',
+    href: '/docs/api/',
     match: (p: string) => p.startsWith('/docs/api'),
   },
-  { label: 'Blog', href: '/blog', match: (p: string) => p.startsWith('/blog') },
+  {
+    label: 'Blog',
+    href: '/blog/',
+    match: (p: string) => p.startsWith('/blog'),
+  },
 ];
 
 const currentPath = Astro.url.pathname;
