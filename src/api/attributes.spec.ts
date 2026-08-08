@@ -813,6 +813,18 @@ describe('$(...)', () => {
       $xml('Foo').removeAttr('Bar');
       expect($xml('Foo').attr('Bar')).toBeUndefined();
     });
+
+    it('(KEY) : should keep the case of adjusted SVG attributes', () => {
+      // The HTML parser preserves the camel case of `viewBox` and friends.
+      const $svg = load(
+        '<svg viewBox="0 0 10 10" gradientTransform="a"></svg>',
+      );
+      $svg('svg').removeAttr('viewBox');
+      expect($svg('svg').attr('viewBox')).toBeUndefined();
+      // A folded name must not match the adjusted attribute either.
+      $svg('svg').removeAttr('gradienttransform');
+      expect($svg('svg').attr('gradientTransform')).toBe('a');
+    });
   });
 
   describe('.hasClass', () => {

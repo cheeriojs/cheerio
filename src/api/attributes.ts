@@ -829,6 +829,30 @@ export function val<T extends AnyNode>(
 }
 
 /**
+ * Resolve the key an attribute is stored under.
+ *
+ * HTML attribute names are case-insensitive, and the HTML parser lower-cases
+ * them — except for the foreign-content attributes it adjusts, which keep their
+ * camel case (`viewBox`, `gradientTransform`, …). An exact match therefore wins
+ * before the name is folded, so `removeAttr('viewBox')` still finds the
+ * attribute on an `<svg>`. XML is case-sensitive throughout.
+ *
+ * @param elem - Node the attribute is looked up on.
+ * @param name - Name of the attribute, as given by the caller.
+ * @param xmlMode - Whether the document is XML.
+ * @returns The key to use against `elem.attribs`.
+ */
+function resolveAttrName(
+  elem: Element,
+  name: string,
+  xmlMode?: boolean,
+): string {
+  return xmlMode || (elem.attribs && Object.hasOwn(elem.attribs, name))
+    ? name
+    : name.toLowerCase();
+}
+
+/**
  * Remove an attribute.
  *
  * @param elem - Node to remove attribute from.
@@ -876,11 +900,12 @@ export function removeAttr<T extends AnyNode>(
 ): Cheerio<T> {
   const attrNames = splitNames(name);
 
+  const { xmlMode } = this.options;
+
   for (const attrName of attrNames) {
-    // HTML attribute names are case-insensitive; XML mode preserves case.
-    const lookup = this.options.xmlMode ? attrName : attrName.toLowerCase();
     domEach(this, (elem) => {
-      if (isTag(elem)) removeAttribute(elem, lookup);
+      if (isTag(elem))
+        removeAttribute(elem, resolveAttrName(elem, attrName, xmlMode));
     });
   }
 
