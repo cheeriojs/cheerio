@@ -182,9 +182,10 @@ function _matchUntil(
       const matched: Element[] = [];
 
       domEach(elems, (elem) => {
-        for (let next; (next = nextElem(elem)); elem = next) {
-          // FIXME: `matched` might contain duplicates here and the index is too large.
-          if (matches?.(next, matched.length)) break;
+        let i = 0;
+        for (let next; (next = nextElem(elem)); elem = next, i++) {
+          // FIXME: `matched` might still contain duplicates across starting elements.
+          if (matches?.(next, i)) break;
           matched.push(next);
         }
       });
@@ -985,6 +986,11 @@ export function last<T>(this: Cheerio<T>): Cheerio<T> {
  * @see {@link https://api.jquery.com/eq/}
  */
 export function eq<T>(this: Cheerio<T>, i: number): Cheerio<T> {
+  /*
+   * Not redundant: JavaScript callers pass string indices, and `eq('-1')`
+   * would otherwise reach `this.length + i` as string concatenation.
+   */
+  // eslint-disable-next-line unicorn/no-useless-coercion
   i = +i;
 
   // Use the first identity optimization if possible

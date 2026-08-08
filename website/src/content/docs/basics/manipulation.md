@@ -5,28 +5,24 @@ description: Methods to manipulate elements within a document.
 
 # Manipulating the DOM
 
-Now that you have learned the basics of using Cheerio and have gained some
-experience with loading and traversing documents, it's time to dive deeper into
-manipulating elements. Whether you want to modify element attributes and
-properties, add and remove classes, modify text and HTML content, or insert and
-remove elements, Cheerio provides a range of methods to help you do so.
+Once you've [selected](/docs/basics/selecting) some elements, Cheerio lets you
+change them: attributes, classes, text, HTML, and the structure of the tree
+itself.
 
-In this guide, we will focus specifically on manipulating elements within a
-document using Cheerio. We will cover methods for modifying element attributes
-and properties, adding and removing classes, modifying text and HTML content,
-inserting and removing elements, and handling errors and debugging. By the end
-of this guide, you will have a good understanding of how to use these methods to
-manipulate elements within a document using Cheerio.
+Most methods here do double duty: called **without** an argument they read,
+called **with** an argument they write. Writes always apply to every element in
+the selection and return the selection, so they chain. Reads usually look at
+only the first element — the exceptions are called out below.
+
+When you're done, `$.html()` serializes the document back to a string.
 
 ## Modifying Element Attributes and Properties
 
-To modify the attributes and properties of a single element, you can use the
-[`attr()`](/docs/api/classes/Cheerio#attr) and
-[`prop()`](/docs/api/classes/Cheerio#prop) methods, respectively. Both methods
-take a key and a value as arguments, and allow you to get and set the attribute
-or property. When setting, they apply to all elements in the selection; when
-getting, they return a single value corresponding to the first element in the
-selection.
+[`attr()`](/docs/api/classes/Cheerio#attr) reads and writes HTML attributes —
+the values literally present in the markup.
+[`prop()`](/docs/api/classes/Cheerio#prop) reads and writes properties, the
+values a browser would compute from those attributes. Both take a key, plus a
+value when setting.
 
 ```js
 // Set the 'src' attribute of an image element
@@ -42,11 +38,11 @@ const href = $('a').attr('href');
 const isDisabled = $('button').prop('disabled');
 ```
 
-`prop()` is not limited to simple values like strings and booleans. You can also
-use it to get complex properties like the `style` object, or to resolve `href`
-or `src` URLs of supported elements. You can also use it to get the `tagName`,
-`innerHTML`, `outerHTML`, `textContent`, and `innerText` properties of a single
-element.
+That distinction matters most for URLs and booleans: `attr('href')` gives you
+the raw string from the markup, while `prop('href')` resolves it against the
+document's URL. `prop()` also exposes computed values that don't exist as
+attributes at all — `style`, `tagName`, `innerHTML`, `outerHTML`,
+`textContent`, and `innerText`.
 
 ```js
 // Get the `style` object of an element
@@ -104,11 +100,13 @@ $('h1').text('Hello, World!');
 const text = $('p').text();
 ```
 
-:::tip[Note]
+:::warning[`text()` includes script and style content]
 
-`text()` returns the `textContent` of all passed elements. The result will
-include the contents of `<script>` and `<style>` elements. To avoid this, use
-`.prop('innerText')` instead.
+`text()` returns the raw `textContent`, which means the source of any
+`<script>` and `<style>` elements in the selection ends up in the result.
+`.prop('innerText')` skips those two, which is usually what you want — but note
+that it works from the tree alone. Cheerio applies no CSS, so content hidden by
+`display: none` or a `hidden` attribute is still included.
 
 :::
 
@@ -151,36 +149,22 @@ $('li').before('<li>Item</li>');
 $('li').after('<li>Item</li>');
 ```
 
-The [`insertAfter()`](/docs/api/classes/Cheerio#insertafter) and
-[`insertBefore()`](/docs/api/classes/Cheerio#insertbefore) methods allow you to
-insert an element before or after a target element, respectively. Both methods
-take a string or a Cheerio object as an argument and insert the given element
-before or after the target element.
+Each of these has a mirrored counterpart —
+[`appendTo()`](/docs/api/classes/Cheerio#appendto),
+[`prependTo()`](/docs/api/classes/Cheerio#prependto),
+[`insertBefore()`](/docs/api/classes/Cheerio#insertbefore), and
+[`insertAfter()`](/docs/api/classes/Cheerio#insertafter) — which swap the roles
+of the two sides: the selection is the content being inserted, and the argument
+is the target. Use whichever reads better at the call site.
 
 ```js
-const $ = require('cheerio');
+// These two lines do the same thing
+$('ul').append('<li>Item</li>');
+$('<li>Item</li>').appendTo('ul');
 
-// Insert an element after a target element
+// …as do these
+$('h1').after('<p>Inserted element</p>');
 $('<p>Inserted element</p>').insertAfter('h1');
-
-// Insert an element before a target element
-$('<p>Inserted element</p>').insertBefore('h1');
-```
-
-The [`prependTo()`](/docs/api/classes/Cheerio#prependto) and
-[`appendTo()`](/docs/api/classes/Cheerio#appendto) methods allow you to prepend
-or append an element to a parent element, respectively. Both methods take a
-string or a Cheerio object as an argument and insert the element at the
-beginning or end of the given parent element.
-
-```js
-const $ = require('cheerio');
-
-// Prepend an element to a parent element
-$('<p>Inserted element</p>').prependTo('div');
-
-// Append an element to a parent element
-$('<p>Inserted element</p>').appendTo('div');
 ```
 
 ## Wrapping and Unwrapping Elements
@@ -197,13 +181,12 @@ Cheerio object as an argument and wraps the element in the given element.
 $('p').wrap('<div></div>');
 ```
 
-The [`wrapInner()`](/docs/api/classes/Cheerio#wrapinner) method works similar to
-wrap(), but instead of wrapping the element itself, it wraps the element's inner
-HTML in the given element.
+The [`wrapInner()`](/docs/api/classes/Cheerio#wrapinner) method works like
+`wrap()`, but wraps the element's _contents_ rather than the element itself.
 
 ```js
-// Wrap the inner HTML of an element in a div
-$('div').wrapInner('<div></div>');
+// <div>text</div> becomes <div><span>text</span></div>
+$('div').wrapInner('<span></span>');
 ```
 
 The [`unwrap()`](/docs/api/classes/Cheerio#unwrap) method removes the element's
@@ -242,20 +225,19 @@ in the selection, and all of their children, from the document.
 $('li').remove();
 ```
 
-Alternatively, you can remove the children of an element from the document,
-without removing the element itself, using the
-[`empty()`](/docs/api/classes/Cheerio#empty) method. It removes the children
-(but not text nodes or comments) of each element in the selection from the
-document.
+To clear an element without removing it, use
+[`empty()`](/docs/api/classes/Cheerio#empty). It removes everything inside each
+element in the selection — child elements, text, and comments alike — leaving
+the element itself in place.
 
 ```js
-// Remove an element's children from the document
+// <li><b>a</b> text</li> becomes <li></li>
 $('li').empty();
 ```
 
-## Conclusion
+## Where to go next
 
-We learned how to manipulate elements within a document using Cheerio. We can
-modify element attributes and properties, add and remove classes, modify text
-and HTML content, insert and remove elements, and handle errors and debug our
-code. With these tools, you can easily manipulate a document to suit your needs.
+To pull many values out of a document at once rather than method by method, see
+[the `extract` method](/docs/basics/extract). To add your own methods to the
+`Cheerio` prototype, see
+[Extending Cheerio](/docs/advanced/extending-cheerio#writing-plugins-for-cheerio).

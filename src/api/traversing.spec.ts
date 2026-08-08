@@ -385,6 +385,13 @@ describe('$(...)', () => {
       const elems = $drinks.eq(0).nextUntil($until);
       expect(elems).toHaveLength(2);
     });
+
+    it('(function) : should reset the index for each starting element', () => {
+      const elems = $('.apple, .carrot', food).nextUntil((i) => i === 1);
+      expect(elems).toHaveLength(2);
+      expect(elems[0].attribs).toHaveProperty('class', 'orange');
+      expect(elems[1].attribs).toHaveProperty('class', 'sweetcorn');
+    });
   });
 
   describe('.prev', () => {
@@ -566,6 +573,13 @@ describe('$(...)', () => {
       const $until = $([$drinks[0], $drinks[1]]);
       const elems = $drinks.eq(4).prevUntil($until);
       expect(elems).toHaveLength(2);
+    });
+
+    it('(function) : should reset the index for each starting element', () => {
+      const elems = $('.pear, .sweetcorn', food).prevUntil((i) => i === 1);
+      expect(elems).toHaveLength(2);
+      expect(elems[0].attribs).toHaveProperty('class', 'orange');
+      expect(elems[1].attribs).toHaveProperty('class', 'carrot');
     });
   });
 
@@ -758,6 +772,13 @@ describe('$(...)', () => {
       const result = $('.carrot').parentsUntil(body);
       expect(result).toHaveLength(2);
       expect(result.eq(0).is('ul#vegetables')).toBe(true);
+    });
+
+    it('(function) : should reset the index for each starting element', () => {
+      const result = $('.apple, .carrot').parentsUntil((i) => i === 1);
+      expect(result).toHaveLength(2);
+      expect(result[0].attribs).toHaveProperty('id', 'vegetables');
+      expect(result[1].attribs).toHaveProperty('id', 'fruits');
     });
   });
 
@@ -1044,6 +1065,12 @@ describe('$(...)', () => {
       );
 
       expect(text[0].data).toBe('b');
+    });
+
+    it('(null) : should return an empty selection rather than throwing', () => {
+      // Matches jQuery, which winnows a nullish filter down to no matches.
+      expect($('li').filter(null as never)).toHaveLength(0);
+      expect($('li').filter(undefined as never)).toHaveLength(0);
     });
   });
 

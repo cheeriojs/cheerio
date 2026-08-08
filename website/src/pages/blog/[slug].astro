@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BlogLayout from '@/layouts/BlogLayout.astro';
+import { getPostDate } from '@/lib/blog';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -13,9 +14,7 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 
-// Extract date from filename (e.g., "src/content/blog/2024-08-07-version-1.md")
-const filename = post.filePath.split('/').pop()!;
-const date = new Date(filename.split('-').slice(0, 3).join('-'));
+const date = getPostDate(post);
 
 // Get author name (simplified - in a real app you'd look this up)
 const authorMap: Record<string, string> = {

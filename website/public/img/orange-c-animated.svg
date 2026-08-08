@@ -1,4 +1,5 @@
-<svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="cheerio-logo-animated-title">
+<title id="cheerio-logo-animated-title">Cheerio logo</title>
 <style>
 #c {
     animation: grow 1s;
