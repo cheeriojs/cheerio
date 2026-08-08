@@ -1,15 +1,13 @@
 ---
 import { Image } from 'astro:assets';
 import { Heart } from '@lucide/astro';
+import { SPONSOR_REL, type Sponsor, sponsorHref } from '@/lib/sponsors';
 import sponsorsData from '../../sponsors.json';
 
-interface Sponsor {
-  name: string;
-  image: string;
-  url: string;
-}
-
-const headliners = sponsorsData.headliner as Sponsor[];
+const headliners = (sponsorsData.headliner as Sponsor[]).map((sponsor) => ({
+  ...sponsor,
+  href: sponsorHref(sponsor.url),
+}));
 ---
 
 <section class="relative overflow-hidden bg-slate-50 py-20 dark:bg-slate-800/50">
@@ -28,9 +26,9 @@ const headliners = sponsorsData.headliner as Sponsor[];
       {
         headliners.map((sponsor) => (
           <a
-            href={sponsor.url}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={sponsor.href}
+            target={sponsor.href ? '_blank' : undefined}
+            rel={sponsor.href ? SPONSOR_REL : undefined}
             class="group flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-6 py-4 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-primary/40"
           >
             {sponsor.image.endsWith('.svg') ? (

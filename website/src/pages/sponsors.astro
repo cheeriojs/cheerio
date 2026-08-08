@@ -1,14 +1,8 @@
 ---
 import { Heart } from '@lucide/astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SPONSOR_REL, type Sponsor, sponsorHref } from '@/lib/sponsors';
 import sponsorsData from '../../sponsors.json';
-
-interface Sponsor {
-  name: string;
-  image: string;
-  /** Sponsors that never set a website on their profile have no URL. */
-  url: string | null;
-}
 
 /*
  * Logos come from whatever URL a sponsor has on their profile, so they are
@@ -18,9 +12,6 @@ interface Sponsor {
  * Sizes constrain the height and let the width follow, so that wordmarks stay
  * legible instead of being squeezed into a square alongside the round avatars.
  */
-/** `sponsored` marks these as paid links, per Google's guidance on link schemes. */
-const SPONSOR_REL = 'sponsored noopener noreferrer';
-
 const tiers = (
   [
     { key: 'headliner', title: 'Headlining Sponsors', size: 'h-14 max-w-48' },
@@ -29,7 +20,13 @@ const tiers = (
     { key: 'backer', title: 'Backers', size: 'h-9 max-w-36' },
   ] as const
 )
-  .map((tier) => ({ ...tier, sponsors: sponsorsData[tier.key] as Sponsor[] }))
+  .map((tier) => ({
+    ...tier,
+    sponsors: (sponsorsData[tier.key] as Sponsor[]).map((sponsor) => ({
+      ...sponsor,
+      href: sponsorHref(sponsor.url),
+    })),
+  }))
   .filter((tier) => tier.sponsors.length > 0);
 ---
 
@@ -61,9 +58,9 @@ const tiers = (
             <div class="flex flex-wrap items-center justify-center gap-6">
               {tier.sponsors.map((sponsor) => (
                 <a
-                  href={sponsor.url ?? undefined}
-                  target={sponsor.url ? '_blank' : undefined}
-                  rel={sponsor.url ? SPONSOR_REL : undefined}
+                  href={sponsor.href}
+                  target={sponsor.href ? '_blank' : undefined}
+                  rel={sponsor.href ? SPONSOR_REL : undefined}
                   class="group flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-6 py-4 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-primary/40"
                 >
                   <img
