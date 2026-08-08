@@ -185,8 +185,16 @@ function stringify(obj: Record<string, string>): string {
   );
 }
 
-// Matches styles that could nest a `;` or `:` inside one of their values
-const nestableValue = /["'()]/;
+// Matches styles that could nest a `;` or `:` inside a value or a comment
+const nestableValue = /["'()[\]{}]|\/\*/;
+
+// The closing character of each block a value may open
+const blockEnd = new Map([
+  ['(', ')'],
+  ['[', ']'],
+  ['{', '}'],
+]);
+const blockEnds = new Set(blockEnd.values());
 
 /**
  * Add the declaration `str` to `obj`.
@@ -220,9 +228,9 @@ function addDeclaration(
 }
 
 /**
- * Parse the declarations of `styles`, skipping over strings and parentheses, so
- * that a `;` or `:` inside a value such as `url(data:image/png;base64,…)` does
- * not separate declarations.
+ * Parse the declarations of `styles`, skipping over strings, blocks and
+ * comments, so that a `;` or `:` inside a value such as
+ * `url(data:image/png;base64,…)` does not separate declarations.
  *
  * @private
  * @category CSS
@@ -230,10 +238,10 @@ function addDeclaration(
  * @param styles - Styles to be parsed.
  */
 function parseNested(obj: Record<string, string>, styles: string): void {
+  const blocks: string[] = [];
   let key: string | undefined;
   let start = 0;
   let colon = -1;
-  let depth = 0;
   let quote = '';
 
   for (let i = 0; i < styles.length; i++) {
@@ -246,22 +254,36 @@ function parseNested(obj: Record<string, string>, styles: string): void {
       continue;
     }
 
+    // A comment may hold anything, including an unbalanced quote or bracket
+    if (char === '/' && styles[i + 1] === '*') {
+      const end = styles.indexOf('*/', i + 2);
+      i = end === -1 ? styles.length : end + 1;
+      continue;
+    }
+
     if (char === '"' || char === "'") {
       quote = char;
       continue;
     }
 
-    if (char === '(') {
-      depth += 1;
+    const end = blockEnd.get(char);
+    if (end !== undefined) {
+      blocks.push(end);
       continue;
     }
 
-    if (char === ')') {
-      if (depth > 0) depth -= 1;
+    if (blockEnds.has(char)) {
+      /*
+       * Close the innermost block this ends, so an unbalanced `[` in `url(a[b)`
+       * does not swallow the rest. A character that ends nothing is part of the
+       * value, as in `a: b)`.
+       */
+      const open = blocks.lastIndexOf(char);
+      if (open !== -1) blocks.length = open;
       continue;
     }
 
-    if (depth > 0) continue;
+    if (blocks.length > 0) continue;
 
     if (char === ':') {
       if (colon < 0) colon = i;

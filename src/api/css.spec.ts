@@ -180,6 +180,53 @@ describe('$(...)', () => {
           color: 'blue',
         });
       });
+
+      it('should not treat separators inside brackets and braces as separators', () => {
+        const el = cheerio(
+          '<li style="--theme: { fg: red; bg: blue }; grid-template-columns: [a;b] 1fr; color: black;">',
+        );
+        expect(el.css()).toStrictEqual({
+          '--theme': '{ fg: red; bg: blue }',
+          'grid-template-columns': '[a;b] 1fr',
+          color: 'black',
+        });
+      });
+
+      it('should not read a comment as part of a value', () => {
+        const el = cheerio(
+          `<li style="color: red /* &quot; ( don't ; */; background: blue;">`,
+        );
+        expect(el.css()).toStrictEqual({
+          color: `red /* " ( don't ; */`,
+          background: 'blue',
+        });
+      });
+
+      it('should not lose declarations after an unbalanced bracket', () => {
+        const el = cheerio('<li style="background: url(a[b); color: blue;">');
+        expect(el.css()).toStrictEqual({
+          background: 'url(a[b)',
+          color: 'blue',
+        });
+      });
+
+      it('should not lose declarations after an unterminated comment', () => {
+        const el = cheerio('<li style="color: red; background: blue /* x">');
+        expect(el.css()).toStrictEqual({
+          color: 'red',
+          background: 'blue /* x',
+        });
+      });
+
+      it('(prop, val): should leave a comment untouched', () => {
+        const el = cheerio(
+          `<li style="color: red /* &quot; */; background: blue;">`,
+        );
+        el.css('margin', '0');
+        expect(el.attr('style')).toBe(
+          `color: red /* " */; background: blue; margin: 0;`,
+        );
+      });
     });
   });
 });
