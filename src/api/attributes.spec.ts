@@ -64,6 +64,16 @@ describe('$(...)', () => {
       expect(attr).toBe('until-found');
     });
 
+    it('(valid key) : should match the hidden keyword case-insensitively', () => {
+      // Enumerated attribute keywords are matched ASCII case-insensitively.
+      expect($('<div hidden="Until-Found"></div>').attr('hidden')).toBe(
+        'until-found',
+      );
+      expect($('<div hidden="UNTIL-FOUND"></div>').attr('hidden')).toBe(
+        'until-found',
+      );
+    });
+
     it('(key, value) : should set one attr', () => {
       const $pear = $('.pear').attr('id', 'pear');
       expect($('#pear')).toHaveLength(1);
@@ -412,6 +422,10 @@ describe('$(...)', () => {
       div.prop('hidden', false);
       expect(div.prop('hidden')).toBe(false);
       expect(div.attr('hidden')).toBe(undefined);
+      // The keyword is matched case-insensitively when setting, too.
+      div.prop('hidden', 'Until-Found');
+      expect(div.prop('hidden')).toBe('until-found');
+      expect(div.attr('hidden')).toBe('until-found');
     });
 
     it('("outerHTML") : should render properly', () => {

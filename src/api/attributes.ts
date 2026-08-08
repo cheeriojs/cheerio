@@ -20,6 +20,20 @@ const rboolean =
 // Matches strings that look like JSON objects or arrays
 const rbrace = /^{[\s\S]*}$|^\[[\s\S]*]$/;
 
+/**
+ * Whether a value puts `hidden` in the `until-found` state.
+ *
+ * `hidden` is an enumerated attribute, so its keywords are matched ASCII
+ * case-insensitively — `hidden="UNTIL-FOUND"` is the same state as
+ * `hidden="until-found"`. Every other value maps to the hidden state.
+ *
+ * @param value - The attribute or prop value to test.
+ * @returns Whether the value is the `until-found` keyword.
+ */
+function isUntilFound(value: unknown): boolean {
+  return typeof value === 'string' && value.toLowerCase() === 'until-found';
+}
+
 // Tags whose `href`/`src` is resolved against `baseURI`
 const hrefTags = new Set(['a', 'link']);
 const srcTags = new Set(['img', 'iframe', 'audio', 'video', 'source']);
@@ -67,9 +81,11 @@ function getAttr(
 
   if (Object.hasOwn(elem.attribs, name)) {
     if (!xmlMode && name === 'hidden') {
-      const value = elem.attribs[name];
-
-      return value === 'until-found' ? 'until-found' : 'hidden';
+      /*
+       * `hidden` is an enumerated rather than a boolean attribute, and
+       * enumerated keywords are matched ASCII case-insensitively.
+       */
+      return isUntilFound(elem.attribs[name]) ? 'until-found' : 'hidden';
     }
 
     // Get the (decoded) attribute
@@ -284,11 +300,7 @@ function setProp(el: Element, name: string, value: unknown, xmlMode?: boolean) {
   }
 
   if (!xmlMode && name === 'hidden') {
-    setAttr(
-      el,
-      name,
-      value === 'until-found' ? 'until-found' : value ? '' : null,
-    );
+    setAttr(el, name, isUntilFound(value) ? 'until-found' : value ? '' : null);
     return;
   }
 
