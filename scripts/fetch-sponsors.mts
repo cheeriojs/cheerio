@@ -5,17 +5,15 @@
  *   https://github.com/eslint/website/blob/230e73457dcdc2353ad7934e876a5a222a17b1d7/_tools/fetch-sponsors.js.
  */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment,
-                  @typescript-eslint/no-explicit-any,
                   @typescript-eslint/no-unsafe-return,
-                  @typescript-eslint/no-non-null-assertion,
                   @typescript-eslint/no-unsafe-call,
                   @typescript-eslint/no-unsafe-argument,
                   @typescript-eslint/no-unsafe-member-access,
                   @typescript-eslint/prefer-nullish-coalescing */
 import * as fs from 'node:fs/promises';
-import { request } from 'undici';
-import { graphql as githubGraphQL } from '@octokit/graphql';
 import ImgixClient from '@imgix/js-core';
+import { graphql as githubGraphQL } from '@octokit/graphql';
+import { request } from 'undici';
 
 type Tier = 'headliner' | 'sponsor' | 'professional' | 'backer';
 
@@ -37,7 +35,7 @@ const tierSponsors: Record<Tier, Sponsor[]> = {
     {
       createdAt: '2022-06-24',
       name: 'Github',
-      image: 'https://github.com/github.png',
+      image: 'https://avatars.githubusercontent.com/github',
       url: 'https://github.com/',
       type: 'ORGANIZATION',
       monthlyDonation: 0,
@@ -48,30 +46,8 @@ const tierSponsors: Record<Tier, Sponsor[]> = {
     {
       createdAt: '2018-05-02',
       name: 'AirBnB',
-      image: 'https://github.com/airbnb.png',
+      image: 'https://avatars.githubusercontent.com/airbnb',
       url: 'https://www.airbnb.com/',
-      type: 'ORGANIZATION',
-      monthlyDonation: 0,
-      totalDonations: 0,
-      source: 'manual',
-      tier: 'headliner',
-    },
-    {
-      createdAt: '2026-01-21',
-      name: 'HasData',
-      image: 'https://hasdata.com/favicon.svg',
-      url: 'https://hasdata.com',
-      type: 'ORGANIZATION',
-      monthlyDonation: 0,
-      totalDonations: 0,
-      source: 'manual',
-      tier: 'headliner',
-    },
-    {
-      createdAt: '2026-01-28',
-      name: 'brand.dev',
-      image: 'https://github.com/brand-dot-dev.png',
-      url: 'https://brand.dev/',
       type: 'ORGANIZATION',
       monthlyDonation: 0,
       totalDonations: 0,
@@ -255,10 +231,12 @@ async function fetchGitHubSponsors(): Promise<Sponsor[]> {
 }
 
 async function fetchSponsors(): Promise<Sponsor[]> {
-  return Promise.all([
+  const results = await Promise.all([
     fetchOpenCollectiveSponsors(),
     fetchGitHubSponsors(),
-  ]).then((results) => results.flat());
+  ]);
+
+  return results.flat();
 }
 
 /*
@@ -275,8 +253,29 @@ const SECTION_START_BEGINNING = '<!-- BEGIN SPONSORS:';
 const SECTION_START_END = '-->';
 const SECTION_END = '<!-- END SPONSORS -->';
 
-const professionalToBackerOverrides = new Map([
-  ['Vasy Kafidoff', 'https://kafidoff.com'],
+/*
+ * Sponsors whose profile is missing a link or logo, or points somewhere other
+ * than what they asked to have listed.
+ */
+/*
+ * Extra imgix parameters, for logos that need cropping before they fit the
+ * square slot the README gives them.
+ */
+const imgixOverrides = new Map([
+  // Crop the wordmark down to just the mark on its left.
+  ['Rapidproxy', { rect: '0,0,92,92' }],
+]);
+
+const sponsorOverrides = new Map<string, Partial<Sponsor>>([
+  ['Vasy Kafidoff', { url: 'https://kafidoff.com' }],
+  [
+    'Rapidproxy',
+    {
+      url: 'https://www.rapidproxy.io/?ref=cheerio',
+      image:
+        'https://www.rapidproxy.io/static/rapidproxy/images/hd_ft_public/rapidproxy_logo.webp',
+    },
+  ],
 ]);
 
 const sponsors = await fetchSponsors();
@@ -286,11 +285,13 @@ console.log('Received sponsors:', sponsors);
 // Remove sponsors that are already in the pre-populated headliners
 for (let i = 0; i < sponsors.length; i++) {
   if (
-    tierSponsors.headliner.some((sponsor) => sponsor.url === sponsors[i].url)
+    tierSponsors.headliner.every((sponsor) => sponsor.url !== sponsors[i].url)
   ) {
-    sponsors.splice(i, 1);
-    i--;
+    continue;
   }
+
+  sponsors.splice(i, 1);
+  i--;
 }
 
 sponsors.sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt));
@@ -308,12 +309,7 @@ for (const sponsor of sponsors) {
     continue;
   }
 
-  if (
-    (sponsor.tier === 'professional' || sponsor.tier === 'backer') &&
-    professionalToBackerOverrides.has(sponsor.name)
-  ) {
-    sponsor.url = professionalToBackerOverrides.get(sponsor.name)!;
-  }
+  Object.assign(sponsor, sponsorOverrides.get(sponsor.name));
 
   tierSponsors[sponsor.tier].push(sponsor);
 }
@@ -380,6 +376,7 @@ for (let sectionStartIndex = 0; ; ) {
                 h: size,
                 fit: 'fillmax',
                 fill: 'solid',
+                ...imgixOverrides.get(s.name),
               },
             )}" title="${s.name}" alt="${s.name}"></img>
           </a>`;

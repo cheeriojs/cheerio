@@ -1,8 +1,8 @@
 import {
   type AnyNode,
   type Document,
-  type ParentNode,
   isDocument,
+  type ParentNode,
 } from 'domhandler';
 import { parse as parseDocument, parseFragment, serializeOuter } from 'parse5';
 import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';

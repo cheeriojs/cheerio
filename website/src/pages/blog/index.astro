@@ -1,28 +1,10 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { byNewest, formatPostDate } from '@/lib/blog';
 
 const posts = await getCollection('blog');
-
-// Sort posts by date (newest first)
-const sortedPosts = posts.sort((a, b) => {
-  const dateA = new Date(a.id.split('-').slice(0, 3).join('-'));
-  const dateB = new Date(b.id.split('-').slice(0, 3).join('-'));
-  return dateB.getTime() - dateA.getTime();
-});
-
-function getPostDate(id: string): string {
-  const datePart = id.split('-').slice(0, 3).join('-');
-  return new Date(datePart).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-}
-
-function getPostSlug(id: string): string {
-  return id.replace('.md', '').replace('.mdx', '');
-}
+const sortedPosts = posts.toSorted(byNewest);
 
 // Extract excerpt from raw markdown content (content before <!--truncate-->)
 function getExcerpt(rawContent: string): string | null {
@@ -45,16 +27,16 @@ function getExcerpt(rawContent: string): string | null {
 
   // Strip markdown formatting to plain text
   excerpt = excerpt
-    .replace(/!\[([^\]]*)\]\([^)]+\)/g, '')      // ![alt](url) → remove
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')     // [text](url) → text
-    .replace(/(\*\*|__)(.*?)\1/g, '$2')          // **bold** → bold
-    .replace(/(\*|_)(.*?)\1/g, '$2')             // *italic* → italic
-    .replace(/`([^`]+)`/g, '$1')                 // `code` → code
-    .replace(/^#{1,6}\s+/gm, '')                 // headings → text
-    .replace(/^[-*+]\s+/gm, '')                  // list items
-    .replace(/^\d+\.\s+/gm, '')                  // ordered list items
-    .replace(/\n{2,}/g, ' ')                     // collapse newlines
-    .replace(/\n/g, ' ')                         // remaining newlines
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, '') // ![alt](url) → remove
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // [text](url) → text
+    .replace(/(\*\*|__)(.*?)\1/g, '$2') // **bold** → bold
+    .replace(/(\*|_)(.*?)\1/g, '$2') // *italic* → italic
+    .replace(/`([^`]+)`/g, '$1') // `code` → code
+    .replace(/^#{1,6}\s+/gm, '') // headings → text
+    .replace(/^[-*+]\s+/gm, '') // list items
+    .replace(/^\d+\.\s+/gm, '') // ordered list items
+    .replace(/\n{2,}/g, ' ') // collapse newlines
+    .replace(/\n/g, ' ') // remaining newlines
     .trim();
 
   return excerpt || null;
@@ -70,7 +52,7 @@ const postsWithExcerpts = sortedPosts.map((post) => {
 <BaseLayout title="Blog">
   {/* Hero header */}
   <section class="relative overflow-hidden border-b border-slate-200 bg-gradient-to-b from-amber-50/60 to-white dark:border-slate-800 dark:from-slate-900 dark:to-slate-900">
-    <div class="mx-auto max-w-4xl px-6 py-16 text-center">
+    <header class="mx-auto max-w-4xl px-6 py-16 text-center">
       <h1 class="font-display text-4xl text-slate-900 lg:text-5xl dark:text-white">Blog</h1>
       <p class="mt-4 text-lg text-slate-500 dark:text-slate-400">
         Updates and announcements from the Cheerio team.
@@ -85,7 +67,7 @@ const postsWithExcerpts = sortedPosts.map((post) => {
         </svg>
         Subscribe via RSS
       </a>
-    </div>
+    </header>
   </section>
 
   {/* Posts grid */}
@@ -95,7 +77,7 @@ const postsWithExcerpts = sortedPosts.map((post) => {
         postsWithExcerpts.map(({ post, excerpt }) => (
           <article class="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-200 hover:border-primary/30 hover:shadow-lg dark:border-slate-700/80 dark:bg-slate-800/50 dark:hover:border-primary/30">
             <div class="mb-3 flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
-              <time class="font-medium">{getPostDate(post.id)}</time>
+              <time class="font-medium">{formatPostDate(post)}</time>
               {post.data.tags && (
                 <div class="flex gap-2">
                   {post.data.tags.map((tag: string) => (
@@ -108,7 +90,7 @@ const postsWithExcerpts = sortedPosts.map((post) => {
             </div>
             <h2 class="mb-2 font-heading text-xl font-semibold lg:text-2xl">
               <a
-                href={`/blog/${getPostSlug(post.id)}`}
+                href={`/blog/${post.id}/`}
                 class="text-slate-900 transition-colors hover:text-primary dark:text-white dark:hover:text-primary"
               >
                 {post.data.title}
@@ -118,7 +100,7 @@ const postsWithExcerpts = sortedPosts.map((post) => {
               <p class="mb-4 line-clamp-3 text-slate-600 dark:text-slate-400">{excerpt}</p>
             )}
             <a
-              href={`/blog/${getPostSlug(post.id)}`}
+              href={`/blog/${post.id}/`}
               class="inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors hover:text-primary-dark"
             >
               Read more

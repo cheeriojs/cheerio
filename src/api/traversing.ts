@@ -4,18 +4,15 @@
  * @module cheerio/traversing
  */
 
+import * as select from 'cheerio-select';
 import {
-  isTag,
   type AnyNode,
+  type Document,
   type Element,
   hasChildren,
   isDocument,
-  type Document,
+  isTag,
 } from 'domhandler';
-import type { Cheerio } from '../cheerio.js';
-import * as select from 'cheerio-select';
-import { domEach, isCheerio } from '../utils.js';
-import { contains } from '../static.js';
 import {
   getChildren,
   getSiblings,
@@ -23,7 +20,11 @@ import {
   prevElementSibling,
   uniqueSort,
 } from 'domutils';
-import type { FilterFunction, AcceptedFilters } from '../types.js';
+import type { Cheerio } from '../cheerio.js';
+import { contains } from '../static.js';
+import type { AcceptedFilters, FilterFunction } from '../types.js';
+import { domEach, isCheerio } from '../utils.js';
+
 const reContextSelector = /^\s*(?:[+~]|:scope\b)/;
 
 /**
@@ -114,11 +115,11 @@ export function _findBySelector<T extends AnyNode>(
 function _getMatcher<P>(
   matchMap: (fn: (elem: AnyNode) => P, elems: Cheerio<AnyNode>) => Element[],
 ) {
-  return function (
+  return (
     fn: (elem: AnyNode) => P,
     ...postFns: ((elems: Element[]) => Element[])[]
-  ) {
-    return function <T extends AnyNode>(
+  ) =>
+    function <T extends AnyNode>(
       this: Cheerio<T>,
       selector?: AcceptedFilters<Element>,
     ): Cheerio<Element> {
@@ -140,20 +141,12 @@ function _getMatcher<P>(
           : matched,
       );
     };
-  };
 }
 
 /** Matcher that adds multiple elements for each entry in the input. */
-const _matcher = _getMatcher((fn: (elem: AnyNode) => Element[], elems) => {
-  let ret: Element[] = [];
-
-  for (let i = 0; i < elems.length; i++) {
-    const value = fn(elems[i]);
-    if (value.length > 0) ret = ret.concat(value);
-  }
-
-  return ret;
-});
+const _matcher = _getMatcher((fn: (elem: AnyNode) => Element[], elems) =>
+  elems.toArray().flatMap((elem) => fn(elem)),
+);
 
 /** Matcher that adds at most one element for each entry in the input. */
 const _singleMatcher = _getMatcher(
@@ -189,9 +182,10 @@ function _matchUntil(
       const matched: Element[] = [];
 
       domEach(elems, (elem) => {
-        for (let next; (next = nextElem(elem)); elem = next) {
-          // FIXME: `matched` might contain duplicates here and the index is too large.
-          if (matches?.(next, matched.length)) break;
+        let i = 0;
+        for (let next; (next = nextElem(elem)); elem = next, i++) {
+          // FIXME: `matched` might still contain duplicates across starting elements.
+          if (matches?.(next, i)) break;
           matched.push(next);
         }
       });
@@ -223,7 +217,7 @@ function _matchUntil(
 }
 
 function _removeDuplicates<T extends AnyNode>(elems: T[]): T[] {
-  return elems.length > 1 ? Array.from(new Set<T>(elems)) : elems;
+  return elems.length > 1 ? [...new Set<T>(elems)] : elems;
 }
 
 /**
@@ -360,6 +354,15 @@ export function closest<T extends AnyNode>(
       ? (elem: Element) => select.is(elem, selector, selectOpts)
       : getFilterFn(selector);
 
+  /*
+   * Dedup: a linear scan is cheapest for the small result sets `closest`
+   * usually produces. Once the set grows past `dedupThreshold` we switch to a
+   * Set, so a pathological input with many distinct matches stays O(n) instead
+   * of O(n^2). `set` always preserves document order.
+   */
+  const dedupThreshold = 100;
+  let seen: Set<AnyNode> | undefined;
+
   domEach(this, (elem: AnyNode | null) => {
     if (elem && !isDocument(elem) && !isTag(elem)) {
       elem = elem.parent;
@@ -367,8 +370,13 @@ export function closest<T extends AnyNode>(
     while (elem && isTag(elem)) {
       if (selectFn(elem, 0)) {
         // Do not add duplicate elements to the set
-        if (!set.includes(elem)) {
+        if (seen ? !seen.has(elem) : !set.includes(elem)) {
           set.push(elem);
+          if (seen) {
+            seen.add(elem);
+          } else if (set.length > dedupThreshold) {
+            seen = new Set(set);
+          }
         }
         break;
       }
@@ -606,10 +614,8 @@ export const children: <T extends AnyNode>(
 export function contents<T extends AnyNode>(
   this: Cheerio<T>,
 ): Cheerio<AnyNode> {
-  const elems = this.toArray().reduce<AnyNode[]>(
-    (newElems, elem) =>
-      hasChildren(elem) ? newElems.concat(elem.children) : newElems,
-    [],
+  const elems = this.toArray().flatMap((elem) =>
+    hasChildren(elem) ? elem.children : [],
   );
   return this._make(elems);
 }
@@ -679,12 +685,20 @@ export function map<T, M>(
   this: Cheerio<T>,
   fn: (this: T, i: number, el: T) => M[] | M | null | undefined,
 ): Cheerio<M> {
-  let elems: M[] = [];
+  const elems: M[] = [];
   for (let i = 0; i < this.length; i++) {
     const el = this[i];
     const val = fn.call(el, i, el);
     if (val != null) {
-      elems = elems.concat(val);
+      /*
+       * Accumulate in place; `concat` would copy the whole array each
+       * iteration, making this O(n^2) in the size of the collection.
+       */
+      if (Array.isArray(val)) {
+        for (let j = 0; j < val.length; j++) elems.push(val[j]);
+      } else {
+        elems.push(val);
+      }
     }
   }
   return this._make(elems);
@@ -705,9 +719,7 @@ function getFilterFn<T>(
   if (isCheerio<T>(match)) {
     return (el) => Array.prototype.includes.call(match, el);
   }
-  return function (el) {
-    return match === el;
-  };
+  return (el) => match === el;
 }
 
 /**
@@ -786,6 +798,14 @@ export function filter<T>(
   );
 }
 
+/**
+ * Filter an array of nodes with either a selector or predicate.
+ *
+ * @param nodes - The nodes to filter.
+ * @param match - Selector or predicate used to keep nodes.
+ * @param xmlMode - Whether selector matching should use XML mode.
+ * @param root - Optional document root used for selector matching.
+ */
 export function filterArray<T>(
   nodes: T[],
   match: AcceptedFilters<T>,
@@ -966,6 +986,11 @@ export function last<T>(this: Cheerio<T>): Cheerio<T> {
  * @see {@link https://api.jquery.com/eq/}
  */
 export function eq<T>(this: Cheerio<T>, i: number): Cheerio<T> {
+  /*
+   * Not redundant: JavaScript callers pass string indices, and `eq('-1')`
+   * would otherwise reach `this.length + i` as string concatenation.
+   */
+  // eslint-disable-next-line unicorn/no-useless-coercion
   i = +i;
 
   // Use the first identity optimization if possible
@@ -1062,7 +1087,7 @@ export function index<T extends AnyNode>(
     $haystack = this._make<AnyNode>(selectorOrNeedle);
     needle = this[0];
   } else {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias, unicorn/no-this-assignment
+    // eslint-disable-next-line unicorn/no-this-assignment
     $haystack = this;
     needle = isCheerio(selectorOrNeedle)
       ? selectorOrNeedle[0]

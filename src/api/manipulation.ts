@@ -5,22 +5,22 @@
  */
 
 import {
-  isTag,
-  Text,
-  hasChildren,
+  type AnyNode,
   cloneNode,
   Document,
-  type ParentNode,
-  type AnyNode,
   type Element,
+  hasChildren,
+  isTag,
+  type ParentNode,
+  Text,
 } from 'domhandler';
+import { removeElement } from 'domutils';
+import { ElementType } from 'htmlparser2';
+import type { Cheerio } from '../cheerio.js';
 import { update as updateDOM } from '../parse.js';
 import { text as staticText } from '../static.js';
-import { domEach, isHtml, isCheerio } from '../utils.js';
-import { removeElement } from 'domutils';
-import type { Cheerio } from '../cheerio.js';
-import type { BasicAcceptedElems, AcceptedElems } from '../types.js';
-import { ElementType } from 'htmlparser2';
+import type { AcceptedElems, BasicAcceptedElems } from '../types.js';
+import { domEach, isCheerio, isHtml } from '../utils.js';
 
 /**
  * Create an array of nodes, recursing into arrays and parsing strings if
@@ -42,7 +42,7 @@ export function _makeDomArray<T extends AnyNode>(
   }
 
   if (typeof elem === 'string') {
-    return this._parse(elem, this.options, false, null).children.slice(0);
+    return [...this._parse(elem, this.options, false, null).children];
   }
 
   if ('length' in elem) {
@@ -331,7 +331,7 @@ function _wrap(
 
       const [wrapperDom] = this._makeDomArray(wrap, i < lastIdx);
 
-      if (!wrapperDom || !hasChildren(wrapperDom)) continue;
+      if (!(wrapperDom && hasChildren(wrapperDom))) continue;
 
       let elInsertLocation = wrapperDom;
 
@@ -646,7 +646,7 @@ export function after<T extends AnyNode>(
   const lastIdx = this.length - 1;
 
   return domEach(this, (el, i) => {
-    if (!hasChildren(el) || !el.parent) {
+    if (!(hasChildren(el) && el.parent)) {
       return;
     }
 
@@ -755,7 +755,7 @@ export function before<T extends AnyNode>(
   const lastIdx = this.length - 1;
 
   return domEach(this, (el, i) => {
-    if (!hasChildren(el) || !el.parent) {
+    if (!(hasChildren(el) && el.parent)) {
       return;
     }
 
@@ -920,8 +920,8 @@ export function replaceWith<T extends AnyNode>(
 }
 
 /**
- * Removes all children from each item in the selection. Text nodes and comment
- * nodes are left as is.
+ * Removes all children from each item in the selection. Items that cannot have
+ * children, such as text and comment nodes, are left as is.
  *
  * @category Manipulation
  * @example
@@ -989,7 +989,7 @@ export function html<T extends AnyNode>(
 ): Cheerio<T> | string | null {
   if (str === undefined) {
     const el = this[0];
-    if (!el || !hasChildren(el)) return null;
+    if (!(el && hasChildren(el))) return null;
     return this._render(el.children);
   }
 

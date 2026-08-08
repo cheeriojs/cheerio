@@ -1,19 +1,21 @@
 # Based on https://docs.github.com/en/code-security/supply-chain-security/keeping-your-dependencies-updated-automatically/automating-dependabot-with-github-actions#enable-auto-merge-on-a-pull-request
 name: Dependabot auto-merge
-on: pull_request_target
+on: pull_request_target # zizmor: ignore[dangerous-triggers] required for Dependabot auto-merge; workflow does not checkout untrusted code
 
 permissions:
-  pull-requests: write
-  contents: write
+  contents: read
 
 jobs:
   dependabot:
+    permissions:
+      contents: write # to enable auto-merge on the pull request
+      pull-requests: write # to read Dependabot metadata and merge the PR
     runs-on: ubuntu-latest
-    if: ${{ github.actor == 'dependabot[bot]' }}
+    if: ${{ github.event.pull_request.user.login == 'dependabot[bot]' }}
     steps:
       - name: Dependabot metadata
         id: metadata
-        uses: dependabot/fetch-metadata@v2.5.0
+        uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
         with:
           github-token: '${{ secrets.GITHUB_TOKEN }}'
       - name: Enable auto-merge for Dependabot PRs

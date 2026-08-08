@@ -42,8 +42,8 @@ export type SelectorType =
   | `${SelectorSpecial}${AlphaNumeric}${string}`
   | `${AlphaNumeric}${string}`;
 
-import type { Cheerio } from './cheerio.js';
 import type { AnyNode } from 'domhandler';
+import type { Cheerio } from './cheerio.js';
 
 /** Elements that can be passed to manipulation methods. */
 export type BasicAcceptedElems<T extends AnyNode> = ArrayLike<T> | T | string;

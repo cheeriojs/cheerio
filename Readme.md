@@ -15,6 +15,9 @@
   <a href="#sponsors">
     <img src="https://img.shields.io/opencollective/sponsors/cheerio" alt="OpenCollective sponsors">
   </a>
+  <a href="https://scorecard.dev/viewer/?uri=github.com/cheeriojs/cheerio">
+    <img src="https://api.scorecard.dev/projects/github.com/cheeriojs/cheerio/badge" alt="OpenSSF Scorecard">
+  </a>
 </div>
 
 <br>
@@ -34,12 +37,14 @@ $.html();
 
 ## Installation
 
-Install Cheerio using a package manager like npm, yarn, or bun.
+Install Cheerio using a package manager like npm, yarn, bun, or Deno.
 
 ```bash
 npm install cheerio
 # or
 bun add cheerio
+# or
+deno install cheerio
 ```
 
 ## Features
@@ -183,17 +188,14 @@ development and support.
 
 <!-- BEGIN SPONSORS: headliner -->
 
+<a href="https://www.scrapingbee.com/" target="_blank" rel="noopener noreferrer">
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fscrapingbee%2F6d5dc95%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=c21a60153bbb00aade922fe9254436e6" title="ScrapingBee" alt="ScrapingBee"></img>
+          </a>
 <a href="https://github.com/" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fgithub.com%2Fgithub.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=a1e87ca289de84eb32ea85432cf8ad11" title="Github" alt="Github"></img>
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Favatars.githubusercontent.com%2Fgithub?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=65172918690f124c0adebece30c66471" title="Github" alt="Github"></img>
           </a>
 <a href="https://www.airbnb.com/" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fgithub.com%2Fairbnb.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=384cad45e10faea516202ad10801f895" title="AirBnB" alt="AirBnB"></img>
-          </a>
-<a href="https://hasdata.com" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fhasdata.com%2Ffavicon.svg?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=21933842d61dec74a961fc57754e58cb" title="HasData" alt="HasData"></img>
-          </a>
-<a href="https://brand.dev/" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fgithub.com%2Fbrand-dot-dev.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=b870a71fedf0e9b2af5534a8aaf22abb" title="brand.dev" alt="brand.dev"></img>
+            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Favatars.githubusercontent.com%2Fairbnb?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=e679125f79ca84598b8f8420b581dea5" title="AirBnB" alt="AirBnB"></img>
           </a>
 
 <!-- END SPONSORS -->
@@ -207,6 +209,9 @@ development and support.
           </a>
 <a href="https://Nieuwe-Casinos.net" target="_blank" rel="noopener noreferrer">
             <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fnieuwecasinos%2Fc67d423%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=ed55d86b80b1aa8cf89b033020521945" title="Nieuwe-Casinos.net" alt="Nieuwe-Casinos.net"></img>
+          </a>
+<a href="https://www.rapidproxy.io/?ref=cheerio" target="_blank" rel="noopener noreferrer">
+            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fwww.rapidproxy.io%2Fstatic%2Frapidproxy%2Fimages%2Fhd_ft_public%2Frapidproxy_logo.webp?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&rect=0%2C0%2C92%2C92&s=7317259362cd11f1050c21616be6d02f" title="Rapidproxy" alt="Rapidproxy"></img>
           </a>
 
 <!-- END SPONSORS -->

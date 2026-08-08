@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { cheerio, food, eleven } from './__fixtures__/fixtures.js';
-import { type CheerioAPI } from './index.js';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { cheerio, eleven, food } from './__fixtures__/fixtures.js';
+import type { CheerioAPI } from './index.js';
 
 describe('cheerio', () => {
   describe('.html', () => {
@@ -38,6 +38,17 @@ describe('cheerio', () => {
       const expected =
         '<html><head></head><body><div>a div</div><span>a span</span></body></html><div>a div</div><span>a span</span>';
       expect(cheerio.html($collection)).toBe(expected);
+    });
+
+    it('(<opts>) : keeps using the instance parser when serializing', () => {
+      // An htmlparser2-backed instance, rendered as HTML rather than XML.
+      const $ = cheerio.load('<style>a < b && c > d</style><p>x<br>y</p>', {
+        xmlMode: true,
+      });
+
+      expect($.html(undefined, { xmlMode: false })).toBe(
+        '<style>a < b && c > d</style><p>x<br>y</p>',
+      );
     });
 
     it('() : does not crash with `null` as `this` value', () => {

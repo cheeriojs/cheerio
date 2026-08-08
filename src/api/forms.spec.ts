@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { type CheerioAPI } from '../index.js';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { cheerio, forms } from '../__fixtures__/fixtures.js';
+import type { CheerioAPI } from '../index.js';
 
 describe('$(...)', () => {
   let $: CheerioAPI;
@@ -22,7 +22,7 @@ describe('$(...)', () => {
     it('() : should get nested form controls', () => {
       expect($('form#nested').serializeArray()).toHaveLength(2);
       const data = $('form#nested').serializeArray();
-      data.sort((a, b) => (a.value > b.value ? 1 : -1));
+      data.sort((a, b) => a.value.localeCompare(b.value));
       expect(data).toStrictEqual([
         {
           name: 'fruit',
@@ -69,7 +69,7 @@ describe('$(...)', () => {
     it('() : should get multiple selected options', () => {
       expect($('form#multiple').serializeArray()).toHaveLength(2);
       const data = $('form#multiple').serializeArray();
-      data.sort((a, b) => (a.value > b.value ? 1 : -1));
+      data.sort((a, b) => a.value.localeCompare(b.value));
       expect(data).toStrictEqual([
         {
           name: 'fruit',
@@ -84,7 +84,7 @@ describe('$(...)', () => {
 
     it('() : should get individually selected elements', () => {
       const data = $('form#nested input').serializeArray();
-      data.sort((a, b) => (a.value > b.value ? 1 : -1));
+      data.sort((a, b) => a.value.localeCompare(b.value));
       expect(data).toStrictEqual([
         {
           name: 'fruit',

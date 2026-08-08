@@ -1,10 +1,11 @@
 ---
 import '@/styles/global.css';
-import { ViewTransitions } from 'astro:transitions';
-import Navbar from '@/components/Navbar.astro';
+import { ClientRouter } from 'astro:transitions';
 import Footer from '@/components/Footer.astro';
+import Navbar from '@/components/Navbar.astro';
 import Sidebar from '@/components/Sidebar.astro';
 import TableOfContents from '@/components/TableOfContents.astro';
+import { allPages } from '@/lib/docs-nav';
 
 interface Props {
   title: string;
@@ -27,27 +28,20 @@ const {
 } = Astro.props;
 
 const editUrl = sourceFile
-  ? `https://github.com/cheeriojs/cheerio/edit/main/website/src/content/docs/${sourceFile}`
+  ? `https://github.com/cheeriojs/cheerio/edit/main/website/${sourceFile}`
   : null;
 
 const currentPath = Astro.url.pathname;
 
-// Flat ordered list of all doc pages for prev/next navigation
-const allPages = [
-  { label: 'Introduction', href: '/docs/intro' },
-  { label: 'Loading Documents', href: '/docs/basics/loading' },
-  { label: 'Selecting Elements', href: '/docs/basics/selecting' },
-  { label: 'Traversing the DOM', href: '/docs/basics/traversing' },
-  { label: 'Manipulating Elements', href: '/docs/basics/manipulation' },
-  { label: 'Configuring Cheerio', href: '/docs/advanced/configuring-cheerio' },
-  { label: 'Extending Cheerio', href: '/docs/advanced/extending-cheerio' },
-  { label: 'Extracting Data', href: '/docs/advanced/extract' },
-  { label: 'API Documentation', href: '/docs/api' },
-];
-
-const currentIndex = allPages.findIndex((p) => p.href === currentPath.replace(/\/$/, ''));
+const normalizedPath = currentPath.endsWith('/')
+  ? currentPath
+  : `${currentPath}/`;
+const currentIndex = allPages.findIndex((p) => p.href === normalizedPath);
 const prevPage = currentIndex > 0 ? allPages[currentIndex - 1] : null;
-const nextPage = currentIndex >= 0 && currentIndex < allPages.length - 1 ? allPages[currentIndex + 1] : null;
+const nextPage =
+  currentIndex >= 0 && currentIndex < allPages.length - 1
+    ? allPages[currentIndex + 1]
+    : null;
 ---
 
 <!doctype html>
@@ -65,7 +59,7 @@ const nextPage = currentIndex >= 0 && currentIndex < allPages.length - 1 ? allPa
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <title>{title} | Cheerio</title>
-    <ViewTransitions />
+    <ClientRouter />
   </head>
   <body
     class="flex min-h-screen flex-col bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-100"

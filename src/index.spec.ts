@@ -1,7 +1,7 @@
-import { describe, it, expect, afterEach } from 'vitest';
-import * as cheerio from './index.js';
+import { createServer, type RequestListener, type Server } from 'node:http';
 import { Writable } from 'node:stream';
-import { createServer, type Server, type RequestListener } from 'node:http';
+import { afterEach, describe, expect, it } from 'vitest';
+import * as cheerio from './index.js';
 
 function noop() {
   // Ignore
@@ -23,7 +23,7 @@ const TEST_HTML_UTF16_BOM = Buffer.from([
   // UTF16-LE BOM
   0xff,
   0xfe,
-  ...Array.from(TEST_HTML_UTF16),
+  ...TEST_HTML_UTF16,
 ]);
 
 describe('loadBuffer', () => {
@@ -220,5 +220,19 @@ describe('fromURL', () => {
       `<html><head></head><body>${TEST_HTML}</body></html>`,
     );
     expect($('a').prop('href')).toBe(`http://localhost:${port}/final/link`);
+  });
+
+  it('should set `baseURI` to the requested URL when there is no redirect', async () => {
+    const port = await createTestServer(
+      'text/html',
+      '<a id="relative" href="link">relative</a><a id="rooted" href="/link">rooted</a>',
+    );
+
+    const $ = await cheerio.fromURL(`http://localhost:${port}/dir/page`);
+
+    expect($('#relative').prop('href')).toBe(
+      `http://localhost:${port}/dir/link`,
+    );
+    expect($('#rooted').prop('href')).toBe(`http://localhost:${port}/link`);
   });
 });

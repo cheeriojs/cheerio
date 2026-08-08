@@ -6,8 +6,9 @@ const tagline =
 
 // Fetch GitHub stars and npm downloads at build time
 function formatCount(n: number): string {
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, '')}M`;
-  if (n >= 1_000) return `${(n / 1_000).toFixed(1).replace(/\.0$/, '')}k`;
+  if (n >= 1_000_000)
+    return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, '')}M`;
+  if (n >= 1000) return `${(n / 1000).toFixed(1).replace(/\.0$/, '')}k`;
   return n.toString();
 }
 
@@ -18,7 +19,7 @@ try {
   const [ghRes, npmRes] = await Promise.all([
     fetch('https://api.github.com/repos/cheeriojs/cheerio', {
       headers: {
-        'Accept': 'application/vnd.github.v3+json',
+        Accept: 'application/vnd.github.v3+json',
         'User-Agent': 'cheerio-website',
       },
     }),
@@ -58,7 +59,7 @@ try {
         <div class="animate-fade-up mb-6 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
           {stars && (
             <a
-              href="https://github.com/cheeriojs/cheerio/stargazers"
+              href="https://github.com/cheeriojs/cheerio"
               target="_blank"
               rel="noopener noreferrer"
               class="inline-flex items-center gap-1.5 rounded-full border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-sm text-slate-300 transition-colors hover:border-slate-600 hover:text-white"
@@ -95,7 +96,7 @@ try {
 
         <div class="animate-fade-up animation-delay-300 flex flex-col items-center gap-4 sm:flex-row lg:justify-start justify-center">
           <a
-            href="/docs/intro"
+            href="/docs/intro/"
             class="group relative inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-3.5 font-semibold text-white transition-all duration-300 hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25"
           >
             Get Started

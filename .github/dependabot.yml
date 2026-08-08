@@ -6,13 +6,28 @@ updates:
       interval: daily
     open-pull-requests-limit: 10
     versioning-strategy: increase
+    cooldown:
+      default-days: 7
   - package-ecosystem: npm
     directory: '/website'
     schedule:
       interval: daily
     open-pull-requests-limit: 4
     versioning-strategy: increase
+    cooldown:
+      default-days: 7
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
       interval: daily
+    cooldown:
+      default-days: 7
+    groups:
+      # `init`, `analyze` and `upload-sarif` are separate dependencies to
+      # Dependabot, so ungrouped they land in separate PRs and merge at
+      # different times. `analyze` then fails the whole workflow with
+      # "Loaded a configuration file for version X, but running version Y"
+      # until the laggard catches up. Keep them in one PR.
+      codeql-action:
+        patterns:
+          - 'github/codeql-action*'

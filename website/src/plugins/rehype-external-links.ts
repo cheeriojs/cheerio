@@ -1,18 +1,22 @@
+import type { Element, Root } from 'hast';
 import { visit } from 'unist-util-visit';
-import type { Root, Element } from 'hast';
 
 function visitExternalLink(node: Element): void {
   if (
-    node.tagName === 'a' &&
-    node.properties?.href &&
-    typeof node.properties.href === 'string'
+    !(
+      node.tagName === 'a' &&
+      node.properties?.href &&
+      typeof node.properties.href === 'string'
+    )
   ) {
-    const { href } = node.properties;
-    // Check if it's an external link (starts with http:// or https://)
-    if (href.startsWith('http://') || href.startsWith('https://')) {
-      node.properties.target = '_blank';
-      node.properties.rel = 'noopener noreferrer';
-    }
+    return;
+  }
+
+  const { href } = node.properties;
+  // Check if it's an external link (starts with http:// or https://)
+  if (href.startsWith('http://') || href.startsWith('https://')) {
+    node.properties.target = '_blank';
+    node.properties.rel = 'noopener noreferrer';
   }
 }
 

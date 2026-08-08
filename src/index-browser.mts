@@ -1,4 +1,4 @@
-export type * from './types.js';
+export * from './load-parse.js';
 export type {
   AnyNode,
   Cheerio,
@@ -10,5 +10,4 @@ export type {
   ParentNode,
 } from './slim.js';
 export { contains, merge } from './static.js';
-
-export * from './load-parse.js';
+export type * from './types.js';

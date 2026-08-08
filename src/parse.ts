@@ -1,10 +1,10 @@
-import { removeElement } from 'domutils';
 import {
   type AnyNode,
+  isDocument as checkIsDocument,
   Document,
   type ParentNode,
-  isDocument as checkIsDocument,
 } from 'domhandler';
+import { removeElement } from 'domutils';
 import type { InternalOptions } from './options.js';
 
 /**

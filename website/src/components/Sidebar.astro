@@ -1,15 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-
-interface SidebarItem {
-  label: string;
-  href: string;
-}
-
-interface SidebarSection {
-  title: string;
-  items: SidebarItem[];
-}
+import { type SidebarItem, sidebar } from '@/lib/docs-nav';
 
 interface ApiGroup {
   title: string;
@@ -22,33 +13,11 @@ interface Props {
 
 const { currentPath } = Astro.props;
 
-const sidebar: SidebarSection[] = [
-  {
-    title: 'Getting Started',
-    items: [{ label: 'Introduction', href: '/docs/intro' }],
-  },
-  {
-    title: 'Basics',
-    items: [
-      { label: 'Loading Documents', href: '/docs/basics/loading' },
-      { label: 'Selecting Elements', href: '/docs/basics/selecting' },
-      { label: 'Traversing the DOM', href: '/docs/basics/traversing' },
-      { label: 'Manipulating Elements', href: '/docs/basics/manipulation' },
-    ],
-  },
-  {
-    title: 'Advanced',
-    items: [
-      { label: 'Configuring Cheerio', href: '/docs/advanced/configuring-cheerio' },
-      { label: 'Extending Cheerio', href: '/docs/advanced/extending-cheerio' },
-      { label: 'Extracting Data', href: '/docs/advanced/extract' },
-    ],
-  },
-];
-
 // Dynamically build API sub-pages from the content collection
 const allDocs = await getCollection('docs');
-const apiDocs = allDocs.filter((doc) => doc.id.startsWith('api/') && doc.id !== 'api/index.md' && doc.id !== 'api/index');
+const apiDocs = allDocs.filter(
+  (doc) => doc.id.startsWith('api/') && doc.id !== 'api/index',
+);
 
 // Group by kind (directory name)
 const kindLabels: Record<string, string> = {
@@ -64,14 +33,20 @@ const apiGroups: ApiGroup[] = [];
 const groupedByKind = new Map<string, SidebarItem[]>();
 
 for (const doc of apiDocs) {
-  // id looks like "api/classes/Cheerio.md" or "api/functions/contains"
-  const parts = doc.id.replace(/^api\//, '').replace(/\.mdx?$/, '').split('/');
+  // id is lowercase (e.g. "api/functions/fromurl"); use filePath for proper casing
+  const parts = doc.id.replace(/^api\//, '').split('/');
   if (parts.length !== 2) continue;
-  const [kind, name] = parts;
+  const [kind] = parts;
+  // `filePath` keeps the declaration's casing, which `id` lowercases away.
+  const name = (doc.filePath ?? doc.id)
+    .split('/')
+    .pop()
+    ?.replace(/\.mdx?$/, '');
+  if (!name) continue;
   if (!groupedByKind.has(kind)) groupedByKind.set(kind, []);
   groupedByKind.get(kind)!.push({
     label: name,
-    href: `/docs/api/${kind}/${name}`,
+    href: `/docs/api/${kind}/${name.toLowerCase()}/`,
   });
 }
 
@@ -89,10 +64,11 @@ for (const kind of kindOrder) {
 }
 
 const isApiPage = currentPath.startsWith('/docs/api');
-const normalizedPath = currentPath.replace(/\/$/, '');
-
-export { sidebar };
-export type { SidebarItem, SidebarSection };
+// Links carry a trailing slash so they resolve without a redirect; compare
+// against the same shape.
+const normalizedPath = currentPath.endsWith('/')
+  ? currentPath
+  : `${currentPath}/`;
 ---
 
 {/* ── Desktop sidebar ── */}
@@ -111,6 +87,7 @@ export type { SidebarItem, SidebarSection };
               <li>
                 <a
                   href={item.href}
+                  aria-current={normalizedPath === item.href ? 'page' : undefined}
                   class:list={[
                     'block rounded-lg px-3 py-2 text-sm transition-all duration-150',
                     normalizedPath === item.href
@@ -135,10 +112,11 @@ export type { SidebarItem, SidebarSection };
       <ul class="space-y-1">
         <li>
           <a
-            href="/docs/api"
+            href="/docs/api/"
+            aria-current={normalizedPath === '/docs/api/' ? 'page' : undefined}
             class:list={[
               'block rounded-lg px-3 py-2 text-sm transition-all duration-150',
-              normalizedPath === '/docs/api'
+              normalizedPath === '/docs/api/'
                 ? 'bg-primary/10 font-semibold text-primary border-l-2 border-primary'
                 : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100',
             ]}
@@ -160,6 +138,7 @@ export type { SidebarItem, SidebarSection };
               <li>
                 <a
                   href={item.href}
+                  aria-current={normalizedPath === item.href ? 'page' : undefined}
                   class:list={[
                     'block rounded-lg px-3 py-1.5 text-sm transition-all duration-150',
                     normalizedPath === item.href
@@ -213,6 +192,7 @@ export type { SidebarItem, SidebarSection };
               <li>
                 <a
                   href={item.href}
+                  aria-current={normalizedPath === item.href ? 'page' : undefined}
                   class:list={[
                     'block rounded-lg px-3 py-2 text-sm transition-all duration-150',
                     normalizedPath === item.href
@@ -237,10 +217,11 @@ export type { SidebarItem, SidebarSection };
       <ul class="space-y-1">
         <li>
           <a
-            href="/docs/api"
+            href="/docs/api/"
+            aria-current={normalizedPath === '/docs/api/' ? 'page' : undefined}
             class:list={[
               'block rounded-lg px-3 py-2 text-sm transition-all duration-150',
-              normalizedPath === '/docs/api'
+              normalizedPath === '/docs/api/'
                 ? 'bg-primary/10 font-semibold text-primary border-l-2 border-primary'
                 : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100',
             ]}
@@ -262,6 +243,7 @@ export type { SidebarItem, SidebarSection };
               <li>
                 <a
                   href={item.href}
+                  aria-current={normalizedPath === item.href ? 'page' : undefined}
                   class:list={[
                     'block rounded-lg px-3 py-1.5 text-sm transition-all duration-150',
                     normalizedPath === item.href

@@ -5,32 +5,43 @@ description: A walkthrough of different loading methods.
 
 # Loading Documents
 
-In this guide, we'll take a look at how to load documents with Cheerio and when
-to use the different loading methods.
+Before you can query a document, Cheerio has to parse it. Which method you reach
+for depends on where the markup comes from and whether you know its character
+encoding.
 
 :::tip
 
-If you're familiar with jQuery, then this step will be new to you. jQuery
-operates on the one, baked-in DOM. With Cheerio, we need to pass in the HTML
-document.
+If you're coming from jQuery, this step is new. jQuery operates on the one
+baked-in DOM of the page it runs on; with Cheerio you pass in the document
+yourself.
 
 :::
 
-:::danger[Availability of methods]
+| Method                          | Input                  | Use it when                                     |
+| ------------------------------- | ---------------------- | ----------------------------------------------- |
+| [`load`](#load)                 | string                 | You already have the markup as a string.        |
+| [`loadBuffer`](#loadbuffer)     | `Buffer`               | You have raw bytes and the encoding is unknown. |
+| [`stringStream`](#stringstream) | stream of decoded text | You're streaming and already know the encoding. |
+| [`decodeStream`](#decodestream) | stream of raw bytes    | You're streaming and the encoding is unknown.   |
+| [`fromURL`](#fromurl)           | URL                    | You want Cheerio to fetch the page for you.     |
 
-The `loadBuffer`, `stringStream`, `decodeStream`, and `fromURL` methods are not
-available in the browser environment. Instead, use the `load` method to parse
-HTML strings.
+The methods that accept bytes — `loadBuffer` and `decodeStream` — run the
+[HTML encoding sniffing algorithm](https://html.spec.whatwg.org/multipage/parsing.html#determining-the-character-encoding),
+so they will pick up a `<meta charset>` or a byte order mark. Prefer them
+whenever you can't be sure the source is UTF-8.
+
+:::danger[Browser environments]
+
+Only `load` is available in the browser. `loadBuffer`, `stringStream`,
+`decodeStream`, and `fromURL` rely on Node.js APIs and are not included in the
+browser build.
 
 :::
 
 ## `load`
 
-The load method is the most basic way to parse an HTML or XML document with
-Cheerio. It takes a string containing the document as its argument and returns a
-Cheerio object that you can use to traverse and manipulate the document.
-
-Here's an example of how to use the load method:
+`load` takes a string containing the document and returns a `$` function you can
+use to traverse and manipulate it.
 
 ```js
 import * as cheerio from 'cheerio';
@@ -41,11 +52,11 @@ console.log($('h1').text());
 // Output: Hello, world!
 ```
 
-:::tip
+:::tip[Parsing fragments]
 
-Similar to web browser contexts, `load` will introduce `<html>`, `<head>`, and
-`<body>` elements if they are not already present. You can set `load`'s third
-argument to `false` to disable this.
+Like a browser, `load` adds `<html>`, `<head>`, and `<body>` elements if they
+aren't already present. Pass `false` as the third argument to parse the input as
+a fragment instead:
 
 ```js
 const $ = cheerio.load('<ul id="fruits">...</ul>', null, false);
@@ -54,6 +65,9 @@ $.html();
 //=> '<ul id="fruits">...</ul>'
 ```
 
+See [Configuring Cheerio](/docs/advanced/configuring-cheerio#fragment-mode) for
+details.
+
 :::
 
 Learn more about the `load` method in the
@@ -61,24 +75,18 @@ Learn more about the `load` method in the
 
 ## `loadBuffer`
 
-The `loadBuffer` method is similar to the `load` method, but it takes a buffer
-containing the document as its argument instead of a string. Cheerio will run
-the HTML encoding sniffing algorithm to determine the encoding of the document.
-This is useful when you have the document in binary form, such as when you're
-reading it from a file or receiving it over a network connection.
-
-Here's an example of how to use the `loadBuffer` method:
+`loadBuffer` works like `load`, but takes a `Buffer` instead of a string. Cheerio
+determines the encoding from the bytes themselves, which makes it the right
+choice for files and network responses whose encoding you don't control.
 
 ```js
 import * as cheerio from 'cheerio';
-import * as fs from 'fs';
+import * as fs from 'node:fs';
 
-const buffer = fs.readFileSync('document.html');
-
-const $ = cheerio.loadBuffer(buffer);
+// The file may be UTF-8, ISO-8859-1, … — Cheerio works it out.
+const $ = cheerio.loadBuffer(fs.readFileSync('document.html'));
 
 console.log($('title').text());
-// Output: Hello, world!
 ```
 
 Learn more about the `loadBuffer` method in the
@@ -86,50 +94,52 @@ Learn more about the `loadBuffer` method in the
 
 ## `stringStream`
 
-When loading an HTML document from a stream and the encoding is known, you can
-use the `stringStream` method to parse it into a Cheerio object.
+`stringStream` returns a writable stream that parses the document as it arrives.
+Use it when the encoding is already known, so the stream can be decoded to text
+before Cheerio sees it.
 
 ```js
 import * as cheerio from 'cheerio';
-import * as fs from 'fs';
+import * as fs from 'node:fs';
 
 const writeStream = cheerio.stringStream({}, (err, $) => {
   if (err) {
     // Handle error
+    return;
   }
 
   console.log($('title').text());
-  // Output: Hello, world!
 });
 
 fs.createReadStream('document.html', { encoding: 'utf8' }).pipe(writeStream);
 ```
+
+The first argument holds [Cheerio's options](/docs/api/interfaces/CheerioOptions);
+the second is a callback that receives the finished document.
 
 Learn more about the `stringStream` method in the
 [API documentation](/docs/api/functions/stringStream).
 
 ## `decodeStream`
 
-When loading an HTML document from a stream and the encoding is not known, you
-can use the `decodeStream` method to parse it into a Cheerio object. This method
-runs the HTML encoding sniffing algorithm to determine the encoding of the
-document.
-
-Here's an example of how to use the `decodeStream` method:
+`decodeStream` is the streaming counterpart to `loadBuffer`: it accepts raw bytes
+and runs the encoding sniffing algorithm before parsing. Reach for it when
+streaming a document of unknown encoding.
 
 ```js
 import * as cheerio from 'cheerio';
-import * as fs from 'fs';
+import * as fs from 'node:fs';
 
 const writeStream = cheerio.decodeStream({}, (err, $) => {
   if (err) {
     // Handle error
+    return;
   }
 
   console.log($('title').text());
-  // Output: Hello, world!
 });
 
+// Note: no `encoding` option — the bytes are passed through as-is.
 fs.createReadStream('document.html').pipe(writeStream);
 ```
 
@@ -138,9 +148,8 @@ Learn more about the `decodeStream` method in the
 
 ## `fromURL`
 
-The `fromURL` method allows you to load a document from a URL. This method is
-asynchronous, so you need to use `await` (or a `then` block) to access the
-resulting Cheerio object.
+`fromURL` is the one loader that fetches for you. It is asynchronous, so `await`
+the result:
 
 ```js
 import * as cheerio from 'cheerio';
@@ -148,14 +157,50 @@ import * as cheerio from 'cheerio';
 const $ = await cheerio.fromURL('https://example.com');
 ```
 
+It does rather more than a bare `fetch` would, and the details are worth
+knowing:
+
+- **Redirects** are followed, up to five of them.
+- **Non-2xx responses reject** with an `undici` `ResponseError` carrying the
+  status code, rather than handing you an error page to parse.
+- **Non-markup responses reject** with a `RangeError`. If the `Content-Type` is
+  neither HTML nor XML, `fromURL` refuses rather than parsing a PDF as HTML.
+- **XML mode is chosen for you** from that same `Content-Type`, so an
+  `application/xml` response is parsed as XML without your asking.
+- **The encoding** comes from the `charset` parameter of the `Content-Type` when
+  present, and from sniffing the bytes otherwise.
+- **`baseURI` is set to the final URL** — after redirects. That is what lets
+  `prop('href')` and [`extract`](/docs/basics/extract) hand you absolute links.
+
+### Customizing the request
+
+Pass `requestOptions` to control the request. These go to
+[`undici`'s `stream` method](https://undici.nodejs.org/#/docs/api/Dispatcher?id=dispatcherstreamoptions-factory-callback):
+
+```js
+const $ = await cheerio.fromURL('https://example.com', {
+  requestOptions: {
+    method: 'GET',
+    headers: {
+      'user-agent': 'my-scraper/1.0 (+https://example.com/bot)',
+    },
+  },
+});
+```
+
+:::warning[`requestOptions` overrides, it doesn't merge]
+
+Two things to watch for:
+
+- **`method` is not defaulted.** Supplying `requestOptions` without it fails
+  with `method must be a string`, so always include it.
+- **`headers` is all-or-nothing.** Omit it and you keep Cheerio's default
+  `Accept` header; supply it and yours replaces that default outright, rather
+  than being added to it.
+
+:::
+
 Learn more about the `fromURL` method in the
-[API documentation](/docs/api/functions/fromURL).
-
-## Conclusion
-
-Cheerio provides several methods for loading HTML documents and parsing them
-into a DOM structure. These methods are useful for different scenarios,
-depending on the type and source of the HTML data. Users are encouraged to read
-through each of these methods and pick the one that best suits their needs.
-
-<!-- Based on ChatGPT with the prompt: Write a guide in Markdown for loading documents with Cheerio, explaining when to use `load`, `loadBuffer`, `stringStream`, `decodeStream`, and `fromURL`. Methods that deal with binary data run the HTML encoding sniffing algorithm and are recommended when the encoding is not known. The guide should be ready to be published on Cheerio's website. Use modern JavaScript with imports in the examples. -->
+[API documentation](/docs/api/functions/fromURL), and see
+[Security](/docs/advanced/security) before pointing it at a URL that came from a
+user.

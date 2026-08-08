@@ -3,9 +3,21 @@ import { Image } from 'astro:assets';
 import logo from '@/assets/orange-c.svg';
 
 const navItems = [
-  { label: 'Learn', href: '/docs/intro', match: (p: string) => p.startsWith('/docs/') && !p.startsWith('/docs/api') },
-  { label: 'API', href: '/docs/api', match: (p: string) => p.startsWith('/docs/api') },
-  { label: 'Blog', href: '/blog', match: (p: string) => p.startsWith('/blog') },
+  {
+    label: 'Learn',
+    href: '/docs/intro/',
+    match: (p: string) => p.startsWith('/docs/') && !p.startsWith('/docs/api'),
+  },
+  {
+    label: 'API',
+    href: '/docs/api/',
+    match: (p: string) => p.startsWith('/docs/api'),
+  },
+  {
+    label: 'Blog',
+    href: '/blog/',
+    match: (p: string) => p.startsWith('/blog'),
+  },
 ];
 
 const currentPath = Astro.url.pathname;
@@ -131,6 +143,7 @@ const currentPath = Astro.url.pathname;
         apiKey: '9d30ee79d65ccc63b95e693124e05405',
         indexName: 'crawler_cheerio',
         container: '#docsearch',
+        insights: true,
       });
     }
   }

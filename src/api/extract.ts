@@ -16,6 +16,7 @@ interface ExtractDescriptor {
 
 type ExtractValue = string | ExtractDescriptor | [string | ExtractDescriptor];
 
+/** Descriptor map used by {@link extract}. */
 export type ExtractMap = Record<string, ExtractValue>;
 
 type ExtractedValue<V extends ExtractValue> = V extends [
@@ -34,6 +35,7 @@ type ExtractedValue<V extends ExtractValue> = V extends [
         : never
       : never;
 
+/** Result type computed from an {@link ExtractMap}. */
 export type ExtractedMap<M extends ExtractMap> = {
   [key in keyof M]: ExtractedValue<M[key]>;
 };
