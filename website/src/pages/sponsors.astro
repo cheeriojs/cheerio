@@ -1,0 +1,115 @@
+---
+import { Heart } from '@lucide/astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import sponsorsData from '../../sponsors.json';
+
+interface Sponsor {
+  name: string;
+  image: string;
+  /** Sponsors that never set a website on their profile have no URL. */
+  url: string | null;
+}
+
+/*
+ * Logos come from whatever URL a sponsor has on their profile, so they are
+ * rendered as plain images rather than through `astro:assets` — that would
+ * mean adding every new sponsor's domain to `image.remotePatterns`.
+ *
+ * Sizes constrain the height and let the width follow, so that wordmarks stay
+ * legible instead of being squeezed into a square alongside the round avatars.
+ */
+/** `sponsored` marks these as paid links, per Google's guidance on link schemes. */
+const SPONSOR_REL = 'sponsored noopener noreferrer';
+
+const tiers = (
+  [
+    { key: 'headliner', title: 'Headlining Sponsors', size: 'h-14 max-w-48' },
+    { key: 'sponsor', title: 'Sponsors', size: 'h-11 max-w-40' },
+    { key: 'professional', title: 'Professional', size: 'h-9 max-w-36' },
+    { key: 'backer', title: 'Backers', size: 'h-9 max-w-36' },
+  ] as const
+)
+  .map((tier) => ({ ...tier, sponsors: sponsorsData[tier.key] as Sponsor[] }))
+  .filter((tier) => tier.sponsors.length > 0);
+---
+
+<BaseLayout
+  title="Sponsors"
+  description="The companies and individuals who fund Cheerio's development."
+>
+  <section class="relative overflow-hidden bg-slate-50 py-20 dark:bg-slate-800/50">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(232,140,31,0.05),transparent_70%)]"></div>
+
+    <div class="relative mx-auto max-w-5xl px-6">
+      <div class="animate-fade-up text-center">
+        <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Thank you</p>
+        <h1 class="font-display text-4xl text-slate-900 dark:text-white">
+          Cheerio's Sponsors
+        </h1>
+        <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-600 dark:text-slate-400">
+          Cheerio is free and open source. These companies and individuals fund its
+          development and support, and let maintainers spend more time on the project.
+        </p>
+      </div>
+
+      {
+        tiers.map((tier, index) => (
+          <div class:list={['animate-fade-up mt-16', index > 0 && 'animation-delay-100']}>
+            <h2 class="mb-8 text-center text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400">
+              {tier.title}
+            </h2>
+            <div class="flex flex-wrap items-center justify-center gap-6">
+              {tier.sponsors.map((sponsor) => (
+                <a
+                  href={sponsor.url ?? undefined}
+                  target={sponsor.url ? '_blank' : undefined}
+                  rel={sponsor.url ? SPONSOR_REL : undefined}
+                  class="group flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-6 py-4 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-primary/40"
+                >
+                  <img
+                    src={sponsor.image}
+                    alt={`${sponsor.name} logo`}
+                    class:list={['w-auto rounded-lg object-contain', tier.size]}
+                    loading="lazy"
+                  />
+                  <span class="font-medium text-slate-700 transition-colors group-hover:text-slate-900 dark:text-slate-300 dark:group-hover:text-white">
+                    {sponsor.name}
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+
+      <div class="animate-fade-up animation-delay-400 mt-20 text-center">
+        <h2 class="font-display text-2xl text-slate-900 dark:text-white">
+          Does your company use Cheerio?
+        </h2>
+        <p class="mx-auto mt-4 max-w-xl text-slate-600 dark:text-slate-400">
+          Sponsorships are what keep Cheerio maintained. Every tier gets your logo here
+          and in our README, with a link back to your site.
+        </p>
+        <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <a
+            href="https://github.com/sponsors/cheeriojs"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-6 py-2.5 text-sm font-medium text-primary transition-all duration-300 hover:border-primary/50 hover:bg-primary/10 dark:text-primary-light"
+          >
+            <Heart class="h-5 w-5" fill="currentColor" stroke-width={0} />
+            GitHub Sponsors
+          </a>
+          <a
+            href="https://opencollective.com/cheerio"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 rounded-full border border-slate-300 px-6 py-2.5 text-sm font-medium text-slate-700 transition-all duration-300 hover:border-slate-400 dark:border-slate-600 dark:text-slate-300 dark:hover:border-slate-500"
+          >
+            Open Collective
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

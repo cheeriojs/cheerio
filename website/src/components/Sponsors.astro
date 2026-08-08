@@ -58,7 +58,7 @@ const headliners = sponsorsData.headliner as Sponsor[];
       }
     </div>
 
-    <div class="animate-fade-up animation-delay-400 mt-10 text-center">
+    <div class="animate-fade-up animation-delay-400 mt-10 flex flex-col items-center justify-center gap-4 text-center sm:flex-row">
       <a
         href="https://github.com/sponsors/cheeriojs"
         target="_blank"
@@ -67,6 +67,12 @@ const headliners = sponsorsData.headliner as Sponsor[];
       >
         <Heart class="h-5 w-5" fill="currentColor" stroke-width={0} />
         Become a sponsor
+      </a>
+      <a
+        href="/sponsors/"
+        class="text-sm font-medium text-slate-600 transition-colors hover:text-primary dark:text-slate-400"
+      >
+        See all sponsors
       </a>
     </div>
   </div>
