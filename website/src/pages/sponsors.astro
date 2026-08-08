@@ -56,8 +56,11 @@ const tiers = (
               {tier.title}
             </h2>
             <div class="flex flex-wrap items-center justify-center gap-6">
-              {tier.sponsors.map((sponsor) => (
-                <a
+              {tier.sponsors.map((sponsor) => {
+                // Sponsors without a usable URL get a card, but not a link.
+                const Card = sponsor.href ? 'a' : 'div';
+                return (
+                <Card
                   href={sponsor.href}
                   target={sponsor.href ? '_blank' : undefined}
                   rel={sponsor.href ? SPONSOR_REL : undefined}
@@ -72,8 +75,9 @@ const tiers = (
                   <span class="font-medium text-slate-700 transition-colors group-hover:text-slate-900 dark:text-slate-300 dark:group-hover:text-white">
                     {sponsor.name}
                   </span>
-                </a>
-              ))}
+                </Card>
+                );
+              })}
             </div>
           </div>
         ))
