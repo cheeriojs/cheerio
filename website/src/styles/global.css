@@ -529,4 +529,13 @@ h6 {
     opacity: 1;
     transform: none;
   }
+
+  /*
+   * The grain overlay is a separate case: it loops forever, so it matters most
+   * here — but it is purely decorative, and forcing the end state the rule
+   * above applies would change how it looks. Just stop it moving.
+   */
+  .grain::before {
+    animation: none;
+  }
 }

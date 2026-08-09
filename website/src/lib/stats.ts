@@ -3,11 +3,15 @@
  *
  * These are the most persuasive numbers on the site, so they must not silently
  * vanish when GitHub or npm rate-limits a CI build. Fetch failures fall back to
- * the committed floors below — a slightly stale number beats no number, and
- * both only ever go up.
+ * the committed values below — a slightly understated number beats no number.
  */
 
-/** Conservative floors, refreshed whenever someone happens to notice. */
+/*
+ * Deliberately conservative, so a fallback build understates rather than
+ * overstates. Monthly downloads move in both directions, so these are not a
+ * floor the real figures are guaranteed to sit above — just a safe stand-in.
+ * Refresh whenever someone happens to notice.
+ */
 const FALLBACK_STARS = 30_000;
 const FALLBACK_DOWNLOADS = 110_000_000;
 
