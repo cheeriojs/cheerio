@@ -185,8 +185,8 @@ function stringify(obj: Record<string, string>): string {
   );
 }
 
-// Matches styles that could nest a `;` or `:` inside a value or a comment
-const nestableValue = /["'()[\]{}]|\/\*/;
+// Matches styles that could nest a `;` or `:` in a value, an escape or a comment
+const nestableValue = /["'()[\]{}\\]|\/\*/;
 
 // The closing character of each block a value may open
 const blockEnd = new Map([
@@ -251,6 +251,15 @@ function parseNested(obj: Record<string, string>, styles: string): void {
       // Skip the character after a backslash, so `"\""` stays a single string
       if (char === '\\') i += 1;
       else if (char === quote) quote = '';
+      continue;
+    }
+
+    /*
+     * An escape covers the character after it, so the `)` in `url(a\)b)` ends
+     * nothing and the `;` in `a: b\;c` does not separate declarations.
+     */
+    if (char === '\\') {
+      i += 1;
       continue;
     }
 

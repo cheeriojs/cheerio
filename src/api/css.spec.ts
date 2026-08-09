@@ -181,6 +181,34 @@ describe('$(...)', () => {
         });
       });
 
+      it('should not end a block at an escaped closing bracket', () => {
+        const el = cheerio(
+          String.raw`<li style="background: url(foo\);bar:baz); color: blue;">`,
+        );
+        expect(el.css()).toStrictEqual({
+          background: String.raw`url(foo\);bar:baz)`,
+          color: 'blue',
+        });
+      });
+
+      it('should not open a string at an escaped quote', () => {
+        const el = cheerio(
+          String.raw`<li style="--a: b\&quot;c; color: blue;">`,
+        );
+        expect(el.css()).toStrictEqual({
+          '--a': String.raw`b\"c`,
+          color: 'blue',
+        });
+      });
+
+      it('should not split declarations at an escaped semicolon', () => {
+        const el = cheerio(String.raw`<li style="--a: red\;; color: blue;">`);
+        expect(el.css()).toStrictEqual({
+          '--a': String.raw`red\;`,
+          color: 'blue',
+        });
+      });
+
       it('should not treat separators inside brackets and braces as separators', () => {
         const el = cheerio(
           '<li style="--theme: { fg: red; bg: blue }; grid-template-columns: [a;b] 1fr; color: black;">',
