@@ -186,6 +186,61 @@ function stringify(obj: Record<string, string>): string {
 }
 
 /**
+ * Split `styles` into declarations, ignoring semicolons that appear inside a
+ * quoted string or a function such as `url()`.
+ *
+ * @private
+ * @category CSS
+ * @param styles - Styles to be split.
+ * @returns The declarations, separators excluded.
+ */
+function splitDeclarations(styles: string): string[] {
+  const declarations: string[] = [];
+  let start = 0;
+  let quote: string | null = null;
+  let depth = 0;
+
+  for (let i = 0; i < styles.length; i++) {
+    const char = styles[i];
+
+    if (char === '\\') {
+      // Skip the escaped character.
+      i += 1;
+      continue;
+    }
+
+    if (quote) {
+      if (char === quote) quote = null;
+      continue;
+    }
+
+    if (char === '"' || char === "'") {
+      quote = char;
+      continue;
+    }
+
+    if (char === '(') {
+      depth += 1;
+      continue;
+    }
+
+    if (char === ')') {
+      if (depth > 0) depth -= 1;
+      continue;
+    }
+
+    if (char === ';' && depth === 0) {
+      declarations.push(styles.slice(start, i));
+      start = i + 1;
+    }
+  }
+
+  declarations.push(styles.slice(start));
+
+  return declarations;
+}
+
+/**
  * Parse `styles`.
  *
  * @private
@@ -202,7 +257,7 @@ function parse(styles: string): Record<string, string> {
 
   let key: string | undefined;
 
-  for (const str of styles.split(';')) {
+  for (const str of splitDeclarations(styles)) {
     const n = str.indexOf(':');
     // If there is no :, or if it is the first/last character, add to the previous item's value
     if (n < 1 || n === str.length - 1) {
