@@ -883,6 +883,9 @@ export function remove<T extends AnyNode>(
  * //   </ul>
  * ```
  *
+ * If more than one element is selected, every element but the last one is
+ * replaced with a copy of `content`, as a node can only exist in one place.
+ *
  * @param content - Replacement for matched elements.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/replaceWith/}
@@ -891,6 +894,8 @@ export function replaceWith<T extends AnyNode>(
   this: Cheerio<T>,
   content: AcceptedElems<AnyNode>,
 ): Cheerio<T> {
+  const lastIdx = this.length - 1;
+
   return domEach(this, (el, i) => {
     const { parent } = el;
     if (!parent) {
@@ -900,7 +905,11 @@ export function replaceWith<T extends AnyNode>(
     const siblings: AnyNode[] = parent.children;
     const cont =
       typeof content === 'function' ? content.call(el, i, el) : content;
-    const dom = this._makeDomArray(cont);
+    /*
+     * A node can only be in one place, so every element but the last one is
+     * replaced with a copy of the content, as in `_insert`.
+     */
+    const dom = this._makeDomArray(cont, i < lastIdx);
 
     /*
      * In the case that `dom` contains nodes that already exist in other

@@ -1574,6 +1574,56 @@ describe('$(...)', () => {
       expect($fruits.children()[1]).toBe($('.apple')[0]);
     });
 
+    it('(elem) : should replace every selected element with a copy', () => {
+      const $plum = $('<li class="plum">Plum</li>');
+
+      $fruits.children().replaceWith($plum);
+
+      const children = $fruits.children();
+      expect(children).toHaveLength(3);
+      expect($('.plum')).toHaveLength(3);
+      // Only the last element receives the original node
+      expect(children[0]).not.toBe($plum[0]);
+      expect(children[1]).not.toBe($plum[0]);
+      expect(children[2]).toBe($plum[0]);
+    });
+
+    it('(elem) : should copy the descendants of the replacement', () => {
+      const $plum = $('<li class="plum">Plum <b>!</b></li>');
+
+      $fruits.children().replaceWith($plum);
+
+      expect($.html($fruits)).toBe(
+        `<ul id="fruits">${'<li class="plum">Plum <b>!</b></li>'.repeat(3)}</ul>`,
+      );
+      // The copies are distinct nodes, not shared references
+      expect($('.plum b')).toHaveLength(3);
+      expect($('.plum b')[0]).not.toBe($('.plum b')[1]);
+    });
+
+    it('(Array) : should replace every selected element with a copy of the array', () => {
+      const more = $(
+        '<li class="plum">Plum</li><li class="grape">Grape</li>',
+      ).get();
+
+      $fruits.children().replaceWith(more);
+
+      expect($fruits.children()).toHaveLength(6);
+      expect($('.plum')).toHaveLength(3);
+      expect($('.grape')).toHaveLength(3);
+      expect($fruits.children()[4]).toBe(more[0]);
+      expect($fruits.children()[5]).toBe(more[1]);
+    });
+
+    it('(fn) : should replace every selected element with a copy of the returned node', () => {
+      const $plum = $('<li class="plum">Plum</li>');
+
+      $fruits.children().replaceWith(() => $plum);
+
+      expect($('.plum')).toHaveLength(3);
+      expect($fruits.children()[2]).toBe($plum[0]);
+    });
+
     it('(elem) : should NOP if removed', () => {
       const $pear = $('.pear');
       const $plum = $('<li class="plum">Plum</li>');
