@@ -33,6 +33,13 @@ function formatCount(n: number): string {
   return n.toString();
 }
 
+/*
+ * A stalled connection is the likeliest way these requests fail, and without a
+ * deadline of our own the build would sit and wait on it. Give up quickly and
+ * use the fallback: nothing here is worth holding a build for.
+ */
+const REQUEST_TIMEOUT_MS = 5000;
+
 async function fetchCount(
   url: string,
   pick: (json: unknown) => number | undefined,
@@ -44,6 +51,7 @@ async function fetchCount(
         Accept: 'application/json',
         'User-Agent': 'cheerio-website',
       },
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
     });
     if (!res.ok) return fallback;
     const value = pick(await res.json());
