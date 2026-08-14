@@ -897,12 +897,6 @@ export function replaceWith<T extends AnyNode>(
   const lastIdx = this.length - 1;
 
   return domEach(this, (el, i) => {
-    const { parent } = el;
-    if (!parent) {
-      return;
-    }
-
-    const siblings: AnyNode[] = parent.children;
     const cont =
       typeof content === 'function' ? content.call(el, i, el) : content;
     /*
@@ -911,11 +905,20 @@ export function replaceWith<T extends AnyNode>(
      */
     const dom = this._makeDomArray(cont, i < lastIdx);
 
+    const { parent } = el;
+    const siblings: AnyNode[] | undefined = parent?.children;
+
     /*
      * In the case that `dom` contains nodes that already exist in other
-     * structures, ensure those nodes are properly removed.
+     * structures, ensure those nodes are properly removed. jQuery does this
+     * even when the element was removed from the document: the replacement
+     * is consumed, although there is nowhere to insert it.
      */
     updateDOM(dom, null);
+
+    if (!(parent && siblings)) {
+      return;
+    }
 
     const index = siblings.indexOf(el);
 

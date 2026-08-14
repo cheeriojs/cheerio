@@ -1624,6 +1624,25 @@ describe('$(...)', () => {
       expect($fruits.children()[2]).toBe($plum[0]);
     });
 
+    it('(elem) : should consume the replacement when the last element was removed', () => {
+      const $children = $fruits.children();
+      const $plum = $('<li class="plum">Plum</li>');
+
+      $children.last().remove();
+      $children.replaceWith($plum);
+
+      /*
+       * jQuery replaces the remaining elements with copies and still consumes
+       * the original: it is detached from its old position even though its
+       * target no longer has a parent to insert it under.
+       */
+      expect($fruits.children()).toHaveLength(2);
+      expect($('.plum')).toHaveLength(2);
+      expect($fruits.children()[0]).not.toBe($plum[0]);
+      expect($fruits.children()[1]).not.toBe($plum[0]);
+      expect($plum[0].parent).toBe(null);
+    });
+
     it('(elem) : should NOP if removed', () => {
       const $pear = $('.pear');
       const $plum = $('<li class="plum">Plum</li>');
