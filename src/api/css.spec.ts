@@ -133,6 +133,36 @@ describe('$(...)', () => {
           'url(data:image/png;base64,iVBORw0KGgo)',
         );
       });
+
+      it('should not split on a semicolon inside a function (#5410)', () => {
+        const el = cheerio(
+          '<div style="background:url(data:image/svg+xml;utf8,<svg xmlns=http://www.w3.org/2000/svg/>)"></div>',
+        );
+        expect(el.css()).toStrictEqual({
+          background:
+            'url(data:image/svg+xml;utf8,<svg xmlns=http://www.w3.org/2000/svg/>)',
+        });
+
+        el.css('color', 'red');
+        expect(el.attr('style')).toBe(
+          'background: url(data:image/svg+xml;utf8,<svg xmlns=http://www.w3.org/2000/svg/>); color: red;',
+        );
+      });
+
+      it('should not split on a semicolon inside a quoted value (#5410)', () => {
+        const el = cheerio(`<li style="content: 'a;b:c'">`);
+        expect(el.css()).toStrictEqual({ content: "'a;b:c'" });
+      });
+
+      it('should not split on a semicolon inside a quoted url (#5410)', () => {
+        const el = cheerio('<div></div>').attr(
+          'style',
+          `background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'/>")`,
+        );
+        expect(el.css('background')).toBe(
+          `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'/>")`,
+        );
+      });
     });
   });
 });
