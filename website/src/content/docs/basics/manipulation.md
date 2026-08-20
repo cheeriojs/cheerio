@@ -209,6 +209,17 @@ selection with the given element.
 $('li').replaceWith('<li>Item</li>');
 ```
 
+When the argument is an existing element, every element in the selection but
+the last one is replaced with a copy of it, as a node can only exist in one
+place:
+
+```js
+const $item = $('<li>Item</li>');
+
+// Every `li` is replaced; the last one receives `$item` itself
+$('li').replaceWith($item);
+```
+
 Note that the `replaceWith()` method removes the element from the document and
 replaces it with the given element or HTML string. If you want to keep the
 element and modify its contents, you can use the `html()` or `text()` methods
