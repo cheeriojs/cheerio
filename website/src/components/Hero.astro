@@ -30,7 +30,7 @@ $.html();
 
   <div class="relative z-10 mx-auto max-w-7xl px-6">
     <!--
-      `min-w-0` on both columns: grid items default to `min-width: auto`, so
+      Both columns need `min-w-0`. Grid items default to `min-width: auto`, so
       without it the code block's longest line sets the track width and pushes
       the whole hero wider than a phone screen.
     -->
@@ -64,9 +64,9 @@ $.html();
         </div>
 
         <!--
-          The wordmark and the capability line are one heading: the brand keeps
-          its visual weight, but the heading a search engine or a first-time
-          visitor reads actually says what the library does.
+          The wordmark and the capability line form one heading. The brand keeps
+          its visual weight, and the heading a search engine or a first-time
+          visitor reads says what the library does.
         -->
         <h1 class="animate-fade-up animation-delay-100 mb-5">
           <span class="block font-display text-5xl tracking-tight text-white sm:text-6xl md:text-7xl">
@@ -80,7 +80,7 @@ $.html();
 
         <p class="animate-fade-up animation-delay-200 mb-8 max-w-xl leading-relaxed text-slate-400 lg:mx-0 mx-auto">
           Parse a document, query it with the CSS selectors you already know,
-          change it, and render it back out — with no browser engine in sight.
+          change it, and render it back out. No browser required.
         </p>
 
         <div class="animate-fade-up animation-delay-300 flex flex-col items-center gap-4 sm:flex-row lg:justify-start justify-center">
@@ -125,9 +125,9 @@ $.html();
       </div>
 
       <!--
-        Right column: the example. Shown at every width — on a library's
-        landing page the code is the clearest explanation there is, and hiding
-        it below `lg` left small screens with nothing but adjectives.
+        Right column holds the example, at every width. On a library's landing
+        page the code is the clearest explanation there is. Hiding it below
+        `lg` left small screens with nothing but adjectives.
       -->
       <div class="animate-slide-in-right animation-delay-400 min-w-0">
         <div class="relative">

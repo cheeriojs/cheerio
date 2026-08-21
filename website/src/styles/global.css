@@ -518,7 +518,7 @@ h6 {
  * The landing page animates a couple of dozen elements into place. Anyone who
  * has asked for less motion gets the finished state instead. These animations
  * start at `opacity: 0`, so they have to be pinned to their end state rather
- * than simply switched off.
+ * than switched off.
  */
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up,
@@ -531,9 +531,9 @@ h6 {
   }
 
   /*
-   * The grain overlay is a separate case: it loops forever, so it matters most
-   * here — but it is purely decorative, and forcing the end state the rule
-   * above applies would change how it looks. Just stop it moving.
+   * The grain overlay gets its own rule. It loops forever, so it matters most
+   * here, but it is decorative. Forcing the end state the rule above applies
+   * would change how it looks, so only stop it moving.
    */
   .grain::before {
     animation: none;

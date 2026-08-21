@@ -3,14 +3,14 @@
  *
  * These are the most persuasive numbers on the site, so they must not silently
  * vanish when GitHub or npm rate-limits a CI build. Fetch failures fall back to
- * the committed values below — a slightly understated number beats no number.
+ * the committed values below. A slightly understated number beats no number.
  */
 
 /*
  * Deliberately conservative, so a fallback build understates rather than
  * overstates. Monthly downloads move in both directions, so these are not a
- * floor the real figures are guaranteed to sit above — just a safe stand-in.
- * Refresh whenever someone happens to notice.
+ * floor the real figures are guaranteed to sit above. They are a safe
+ * stand-in. Refresh whenever someone happens to notice.
  */
 const FALLBACK_STARS = 30_000;
 const FALLBACK_DOWNLOADS = 110_000_000;
@@ -35,8 +35,8 @@ function formatCount(n: number): string {
 
 /*
  * A stalled connection is the likeliest way these requests fail, and without a
- * deadline of our own the build would sit and wait on it. Give up quickly and
- * use the fallback: nothing here is worth holding a build for.
+ * deadline of our own the build would sit and wait on it. Nothing here is
+ * worth holding a build for, so give up and use the fallback.
  */
 const REQUEST_TIMEOUT_MS = 5000;
 
