@@ -49,6 +49,23 @@ body {
   font-family: var(--font-sans);
 }
 
+/*
+ * JetBrains Mono fuses `//=>` into `/⇒`, which makes the output comments in
+ * our examples read as a typo. Nothing here benefits from ligatures, so turn
+ * them off wherever code is shown.
+ */
+code,
+pre,
+kbd,
+samp,
+.font-mono {
+  font-variant-ligatures: none;
+  font-feature-settings:
+    "liga" 0,
+    "clig" 0,
+    "calt" 0;
+}
+
 h1,
 h2,
 h3,
@@ -492,5 +509,33 @@ h6 {
 
   .admonition code {
     background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* ─── Reduced motion ─── */
+
+/*
+ * The landing page animates a couple of dozen elements into place. Anyone who
+ * has asked for less motion gets the finished state instead. These animations
+ * start at `opacity: 0`, so they have to be pinned to their end state rather
+ * than switched off.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-fade-in,
+  .animate-slide-in-right,
+  .animate-float {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  /*
+   * The grain overlay gets its own rule. It loops forever, so it matters most
+   * here, but it is decorative. Forcing the end state the rule above applies
+   * would change how it looks, so only stop it moving.
+   */
+  .grain::before {
+    animation: none;
   }
 }
