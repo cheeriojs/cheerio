@@ -264,8 +264,15 @@ function splitDeclarations(styles: string): string[] {
     }
     if (
       ch === 47 /* Slash */ &&
+      depth === 0 &&
       styles.charCodeAt(i + 1) === 42 /* Asterisk */
     ) {
+      /*
+       * Comment recognition is limited to top level: CSS never recognizes
+       * comments inside url() tokens, where the marker is data, and
+       * semicolons inside parentheses are already ignored via the depth
+       * counter.
+       */
       inComment = true;
       i++;
       continue;

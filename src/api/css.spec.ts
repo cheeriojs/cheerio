@@ -148,6 +148,15 @@ describe('$(...)', () => {
         );
       });
 
+      it('should treat comment markers inside url() as data', () => {
+        const el = cheerio('<div></div>');
+        el.attr('style', 'background: url(https://host/*); color: red');
+        expect(el.css()).toStrictEqual({
+          background: 'url(https://host/*)',
+          color: 'red',
+        });
+      });
+
       it('should not split on semicolons inside quoted strings', () => {
         const el = cheerio('<div></div>');
         el.attr('style', "content: 'a;b'; color: red");
