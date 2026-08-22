@@ -202,7 +202,7 @@ function parse(styles: string): Record<string, string> {
 
   let key: string | undefined;
 
-  for (const str of styles.split(';')) {
+  for (const str of splitDeclarations(styles)) {
     const n = str.indexOf(':');
     // If there is no :, or if it is the first/last character, add to the previous item's value
     if (n < 1 || n === str.length - 1) {
@@ -217,4 +217,85 @@ function parse(styles: string): Record<string, string> {
   }
 
   return obj;
+}
+
+/**
+ * Split a style attribute into declarations at top-level semicolons only.
+ * Semicolons inside quoted strings or inside parentheses (such as data URIs
+ * in `url(...)`) do not terminate a declaration.
+ *
+ * @private
+ * @category CSS
+ * @param styles - The style attribute value.
+ * @returns The individual declarations.
+ */
+function splitDeclarations(styles: string): string[] {
+  const declarations: string[] = [];
+  let start = 0;
+  let quote: string | undefined;
+  let inComment = false;
+  let depth = 0;
+
+  for (let i = 0; i < styles.length; i++) {
+    const ch = styles.charCodeAt(i);
+
+    if (inComment) {
+      if (
+        ch === 42 /* Asterisk */ &&
+        styles.charCodeAt(i + 1) === 47 /* Slash */
+      ) {
+        inComment = false;
+        i++;
+      }
+      continue;
+    }
+    if (quote !== undefined) {
+      if (ch === 92 /* Backslash */) {
+        i++;
+      } else if (styles[i] === quote) {
+        quote = undefined;
+      }
+      continue;
+    }
+    if (ch === 92 /* Backslash */) {
+      // An escaped character is data, not structure.
+      i++;
+      continue;
+    }
+    if (
+      ch === 47 /* Slash */ &&
+      depth === 0 &&
+      styles.charCodeAt(i + 1) === 42 /* Asterisk */
+    ) {
+      /*
+       * Comment recognition is limited to top level: CSS never recognizes
+       * comments inside url() tokens, where the marker is data, and
+       * semicolons inside parentheses are already ignored via the depth
+       * counter.
+       */
+      inComment = true;
+      i++;
+      continue;
+    }
+    if (ch === 34 /* Double quote */ || ch === 39 /* Single quote */) {
+      quote = styles[i];
+      continue;
+    }
+    if (ch === 40 /* Opening parenthesis */) {
+      depth++;
+      continue;
+    }
+    if (ch === 41 /* Closing parenthesis */) {
+      if (depth > 0) depth--;
+      continue;
+    }
+    if (ch === 59 /* Semicolon */ && depth === 0) {
+      declarations.push(styles.slice(start, i));
+      start = i + 1;
+    }
+  }
+
+  declarations.push(styles.slice(start));
+
+  return declarations;
 }
