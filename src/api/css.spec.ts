@@ -133,6 +133,26 @@ describe('$(...)', () => {
           'url(data:image/png;base64,iVBORw0KGgo)',
         );
       });
+
+      it('should not split data URIs whose tail contains a colon (#5410)', () => {
+        const background =
+          'url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'/>")';
+        const el = cheerio('<div></div>');
+        el.attr('style', `background:${background}`);
+        expect(el.css()).toStrictEqual({ background });
+
+        el.css('color', 'red');
+        expect(el.css()).toStrictEqual({ background, color: 'red' });
+        expect(el.attr('style')).toStrictEqual(
+          `background: ${background}; color: red;`,
+        );
+      });
+
+      it('should not split on semicolons inside quoted strings', () => {
+        const el = cheerio('<div></div>');
+        el.attr('style', "content: 'a;b'; color: red");
+        expect(el.css()).toStrictEqual({ content: "'a;b'", color: 'red' });
+      });
     });
   });
 });
