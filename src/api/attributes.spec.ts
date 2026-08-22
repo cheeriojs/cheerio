@@ -783,6 +783,21 @@ describe('$(...)', () => {
       expect(obj).toBeInstanceOf($);
     });
 
+    it('(KEY) : should remove regardless of case in HTML documents', () => {
+      const $fruits = $('#fruits');
+      expect($fruits.attr('id')).not.toBeUndefined();
+      $fruits.removeAttr('ID');
+      expect($fruits.attr('id')).toBeUndefined();
+    });
+
+    it('(KEY) : should stay case-sensitive in XML documents', () => {
+      const $xml = load('<food ID="fruits" id="other"/>', { xml: true });
+      const $food = $xml('food');
+      $food.removeAttr('ID');
+      expect($food.attr('ID')).toBeUndefined();
+      expect($food.attr('id')).toBe('other');
+    });
+
     it('(key) : should skip text nodes', () => {
       const $text = load(mixedText);
       const $body = $text($text('body')[0].children);
