@@ -153,6 +153,24 @@ describe('$(...)', () => {
         el.attr('style', "content: 'a;b'; color: red");
         expect(el.css()).toStrictEqual({ content: "'a;b'", color: 'red' });
       });
+
+      it('should not track parentheses inside comments', () => {
+        const el = cheerio('<div></div>');
+        el.attr('style', 'color: red/*(*/; background: blue');
+        expect(el.css()).toStrictEqual({
+          color: 'red/*(*/',
+          background: 'blue',
+        });
+      });
+
+      it('should treat escaped characters as data', () => {
+        const el = cheerio('<div></div>');
+        el.attr('style', 'font-family: foo\\(bar; color: red');
+        expect(el.css()).toStrictEqual({
+          'font-family': 'foo\\(bar',
+          color: 'red',
+        });
+      });
     });
   });
 });

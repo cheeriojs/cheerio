@@ -233,17 +233,41 @@ function splitDeclarations(styles: string): string[] {
   const declarations: string[] = [];
   let start = 0;
   let quote: string | undefined;
+  let inComment = false;
   let depth = 0;
 
   for (let i = 0; i < styles.length; i++) {
     const ch = styles.charCodeAt(i);
 
+    if (inComment) {
+      if (
+        ch === 42 /* Asterisk */ &&
+        styles.charCodeAt(i + 1) === 47 /* Slash */
+      ) {
+        inComment = false;
+        i++;
+      }
+      continue;
+    }
     if (quote !== undefined) {
       if (ch === 92 /* Backslash */) {
         i++;
       } else if (styles[i] === quote) {
         quote = undefined;
       }
+      continue;
+    }
+    if (ch === 92 /* Backslash */) {
+      // An escaped character is data, not structure.
+      i++;
+      continue;
+    }
+    if (
+      ch === 47 /* Slash */ &&
+      styles.charCodeAt(i + 1) === 42 /* Asterisk */
+    ) {
+      inComment = true;
+      i++;
       continue;
     }
     if (ch === 34 /* Double quote */ || ch === 39 /* Single quote */) {
