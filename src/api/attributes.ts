@@ -875,18 +875,29 @@ export function removeAttr<T extends AnyNode>(
   name: string,
 ): Cheerio<T> {
   const attrNames = splitNames(name);
+  const { xmlMode } = this.options;
 
   for (const attrName of attrNames) {
-    /*
-     * HTML attribute names are ASCII case-insensitive, and htmlparser2
-     * lowercases them at parse time, so lowercase the lookup to match.
-     * XML attribute names are case-sensitive and are left untouched.
-     */
-    const normalizedName = this.options.xmlMode
-      ? attrName
-      : attrName.toLowerCase();
     domEach(this, (elem) => {
-      if (isTag(elem)) removeAttribute(elem, normalizedName);
+      if (!isTag(elem)) return;
+      if (xmlMode) {
+        removeAttribute(elem, attrName);
+        return;
+      }
+      /*
+       * HTML attribute names are ASCII case-insensitive, but the stored
+       * names are not uniformly lowercase: parse5 preserves the adjusted
+       * case of foreign-content attributes such as `viewBox` on SVG, and
+       * `attr()` stores caller-provided names verbatim. Remove by
+       * case-insensitive comparison against the stored keys instead of
+       * assuming a lowercase store.
+       */
+      const lowerName = attrName.toLowerCase();
+      for (const key of Object.keys(elem.attribs)) {
+        if (key.toLowerCase() === lowerName) {
+          removeAttribute(elem, key);
+        }
+      }
     });
   }
 

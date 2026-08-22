@@ -790,6 +790,21 @@ describe('$(...)', () => {
       expect($fruits.attr('id')).toBeUndefined();
     });
 
+    it('(key) : should remove case-preserved SVG attributes', () => {
+      const $svg = load('<svg viewBox="0 0 10 10"></svg>');
+      expect($svg('svg').attr('viewBox')).toBe('0 0 10 10');
+      $svg('svg').removeAttr('viewBox');
+      expect($svg('svg').attr('viewBox')).toBeUndefined();
+    });
+
+    it('(KEY) : should remove attributes created with mixed case via attr()', () => {
+      const $el = $('.apple');
+      $el.attr('DATA-X', 'value');
+      $el.removeAttr('DATA-X');
+      expect($el.attr('DATA-X')).toBeUndefined();
+      expect($el.attr('data-x')).toBeUndefined();
+    });
+
     it('(KEY) : should stay case-sensitive in XML documents', () => {
       const $xml = load('<food ID="fruits" id="other"/>', { xml: true });
       const $food = $xml('food');
