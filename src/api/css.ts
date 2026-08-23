@@ -221,8 +221,9 @@ function parse(styles: string): Record<string, string> {
 
 /**
  * Split a style attribute into declarations at top-level semicolons only.
- * Semicolons inside quoted strings or inside parentheses (such as data URIs
- * in `url(...)`) do not terminate a declaration.
+ * Semicolons inside quoted strings, comments, or any block (parentheses such
+ * as data URIs in `url(...)`, braces, brackets) do not terminate a
+ * declaration.
  *
  * @private
  * @category CSS
@@ -234,6 +235,7 @@ function splitDeclarations(styles: string): string[] {
   let start = 0;
   let quote: string | undefined;
   let inComment = false;
+  let urlDepth = 0;
   let depth = 0;
 
   for (let i = 0; i < styles.length; i++) {
@@ -263,29 +265,46 @@ function splitDeclarations(styles: string): string[] {
       continue;
     }
     if (
+      urlDepth === 0 &&
       ch === 47 /* Slash */ &&
-      depth === 0 &&
       styles.charCodeAt(i + 1) === 42 /* Asterisk */
     ) {
       /*
-       * Comment recognition is limited to top level: CSS never recognizes
-       * comments inside url() tokens, where the marker is data, and
-       * semicolons inside parentheses are already ignored via the depth
-       * counter.
+       * Comments are recognized everywhere except inside an unquoted
+       * `url()` token, where CSS treats the characters as part of the URL.
        */
       inComment = true;
       i++;
       continue;
     }
-    if (ch === 34 /* Double quote */ || ch === 39 /* Single quote */) {
+    if (
+      urlDepth === 0 &&
+      (ch === 34 /* Double quote */ || ch === 39) /* Single quote */
+    ) {
       quote = styles[i];
       continue;
     }
     if (ch === 40 /* Opening parenthesis */) {
       depth++;
+      // `url(` starts a URL token unless the value is a quoted string,
+      // which the quote branch above handles as an ordinary string.
+      if (urlDepth === 0 && isUrlToken(styles, i)) {
+        urlDepth = depth;
+      }
       continue;
     }
     if (ch === 41 /* Closing parenthesis */) {
+      if (depth > 0) {
+        if (urlDepth === depth) urlDepth = 0;
+        depth--;
+      }
+      continue;
+    }
+    if (ch === 123 /* Opening brace */ || ch === 91 /* Opening bracket */) {
+      depth++;
+      continue;
+    }
+    if (ch === 125 /* Closing brace */ || ch === 93 /* Closing bracket */) {
       if (depth > 0) depth--;
       continue;
     }
@@ -298,4 +317,26 @@ function splitDeclarations(styles: string): string[] {
   declarations.push(styles.slice(start));
 
   return declarations;
+}
+
+const WHITESPACE_RE = /\s/;
+
+/**
+ * Whether the opening parenthesis at `index` begins an unquoted `url()` token.
+ *
+ * @private
+ * @category CSS
+ * @param styles - The style attribute value.
+ * @param index - Index of the opening parenthesis.
+ * @returns Whether this parenthesis opens a URL token.
+ */
+function isUrlToken(styles: string, index: number): boolean {
+  if (index < 3 || styles.slice(index - 3, index).toLowerCase() !== 'url') {
+    return false;
+  }
+  // A quoted url("...") is a normal string, handled by the quote branch.
+  let next = index + 1;
+  while (next < styles.length && WHITESPACE_RE.test(styles[next])) next++;
+  const nextCh = styles.charCodeAt(next);
+  return nextCh !== 34 /* Double quote */ && nextCh !== 39 /* Single quote */;
 }

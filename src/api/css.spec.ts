@@ -148,6 +148,36 @@ describe('$(...)', () => {
         );
       });
 
+      it('should recognize comments inside non-url functions', () => {
+        const el = cheerio('<div></div>');
+        el.attr('style', 'width: calc(1px + /* ( */ 2px); color: red');
+        expect(el.css()).toStrictEqual({
+          width: 'calc(1px + /* ( */ 2px)',
+          color: 'red',
+        });
+      });
+
+      it('should not enter quote mode from an apostrophe in a comment', () => {
+        const el = cheerio('<div></div>');
+        el.attr('style', "width: calc(100% /* it's 100 */); color: red");
+        expect(el.css()).toStrictEqual({
+          width: "calc(100% /* it's 100 */)",
+          color: 'red',
+        });
+      });
+
+      it('should not split inside braces or brackets', () => {
+        const el = cheerio('<div></div>');
+        el.attr(
+          'style',
+          '--theme: { color: red; background: blue }; margin: 0',
+        );
+        expect(el.css()).toStrictEqual({
+          '--theme': '{ color: red; background: blue }',
+          margin: '0',
+        });
+      });
+
       it('should treat comment markers inside url() as data', () => {
         const el = cheerio('<div></div>');
         el.attr('style', 'background: url(https://host/*); color: red');
