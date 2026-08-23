@@ -178,6 +178,24 @@ describe('$(...)', () => {
         });
       });
 
+      it('should not treat a function whose name ends in url as url()', () => {
+        const el = cheerio('<div></div>');
+        el.attr('style', '--x: myurl(/* ( */ value); color: red');
+        expect(el.css()).toStrictEqual({
+          '--x': 'myurl(/* ( */ value)',
+          color: 'red',
+        });
+      });
+
+      it('should still recognize an uppercase URL() token', () => {
+        const el = cheerio('<div></div>');
+        el.attr('style', 'background: URL(https://host/*); color: red');
+        expect(el.css()).toStrictEqual({
+          background: 'URL(https://host/*)',
+          color: 'red',
+        });
+      });
+
       it('should treat comment markers inside url() as data', () => {
         const el = cheerio('<div></div>');
         el.attr('style', 'background: url(https://host/*); color: red');

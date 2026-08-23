@@ -320,6 +320,22 @@ function splitDeclarations(styles: string): string[] {
 }
 
 const WHITESPACE_RE = /\s/;
+const ASCII_IDENTIFIER_RE = /[\w-]/;
+
+/**
+ * Whether `char` can appear in a CSS identifier: letters, digits, hyphen,
+ * underscore, an escape, or any non-ASCII character.
+ *
+ * @private
+ * @category CSS
+ * @param char - The character to test.
+ * @returns Whether the character is part of an identifier.
+ */
+function isIdentifierChar(char: string): boolean {
+  return (
+    ASCII_IDENTIFIER_RE.test(char) || char === '\\' || char.charCodeAt(0) >= 128
+  );
+}
 
 /**
  * Whether the opening parenthesis at `index` begins an unquoted `url()` token.
@@ -332,6 +348,14 @@ const WHITESPACE_RE = /\s/;
  */
 function isUrlToken(styles: string, index: number): boolean {
   if (index < 3 || styles.slice(index - 3, index).toLowerCase() !== 'url') {
+    return false;
+  }
+  /*
+   * The three characters before `(` must be the whole function name, not the
+   * tail of a longer one: `myurl(` and `noturl(` are ordinary functions whose
+   * contents follow the normal comment rules.
+   */
+  if (index > 3 && isIdentifierChar(styles[index - 4])) {
     return false;
   }
   // A quoted url("...") is a normal string, handled by the quote branch.
