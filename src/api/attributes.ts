@@ -885,6 +885,11 @@ export function removeAttr<T extends AnyNode>(
        * elements only. XML documents and foreign content (SVG/MathML,
        * where parse5 preserves adjusted case such as `viewBox`) are
        * case-sensitive, so they keep exact matching.
+       *
+       * `namespace` is only populated by parse5. The htmlparser2-backed
+       * entry points (including `cheerio/slim`) lowercase every parsed
+       * attribute name, foreign content included, so there is no
+       * preserved case to protect and folding stays consistent there.
        */
       if (xmlMode || (elem.namespace && elem.namespace !== HTML_NAMESPACE)) {
         removeAttribute(elem, attrName);
