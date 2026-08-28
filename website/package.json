@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.5",
-    "@astrojs/react": "^6.0.2",
+    "@astrojs/react": "^6.0.4",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
     "@codesandbox/sandpack-react": "^2.20.0",
