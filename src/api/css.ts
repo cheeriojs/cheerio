@@ -187,7 +187,7 @@ function stringify(obj: Record<string, string>): string {
 
 /**
  * Split `styles` into declarations, ignoring semicolons that appear inside a
- * quoted string or a function such as `url()`.
+ * comment, a quoted string, or a function such as `url()`.
  *
  * @private
  * @category CSS
@@ -198,10 +198,19 @@ function splitDeclarations(styles: string): string[] {
   const declarations: string[] = [];
   let start = 0;
   let quote: string | null = null;
+  let comment = false;
   let depth = 0;
 
   for (let i = 0; i < styles.length; i++) {
     const char = styles[i];
+
+    if (comment) {
+      if (char === '*' && styles[i + 1] === '/') {
+        comment = false;
+        i += 1;
+      }
+      continue;
+    }
 
     if (char === '\\') {
       // Skip the escaped character.
@@ -211,6 +220,14 @@ function splitDeclarations(styles: string): string[] {
 
     if (quote) {
       if (char === quote) quote = null;
+      continue;
+    }
+
+    // A comment can hold an unbalanced quote or a semicolon, so it has to be
+    // skipped before either is interpreted.
+    if (char === '/' && styles[i + 1] === '*') {
+      comment = true;
+      i += 1;
       continue;
     }
 

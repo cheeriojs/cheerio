@@ -163,6 +163,23 @@ describe('$(...)', () => {
           `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'/>")`,
         );
       });
+
+      it('should not split on a semicolon inside a comment', () => {
+        const el = cheerio(
+          '<li style="color: red /* ; ignored */; margin: 0">',
+        );
+        expect(el.css()).toStrictEqual({
+          color: 'red /* ; ignored */',
+          margin: '0',
+        });
+      });
+
+      it('should not treat a quote inside a comment as opening a string', () => {
+        const el = cheerio(
+          `<li style="color: red /* don't split */; margin: 0">`,
+        );
+        expect(el.css('margin')).toBe('0');
+      });
     });
   });
 });
