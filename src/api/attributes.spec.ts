@@ -461,6 +461,16 @@ describe('$(...)', () => {
       expect($xml.prop('checked')).toBe('checked');
       expect($xml.prop('disabled')).toBe('yes');
     });
+
+    it('(key, value) : should keep the name case when setting in XML mode', () => {
+      const $xml = $.load('<Item />', { xml: true });
+      const item = $xml('Item');
+
+      item.prop('camelCase', 'yes');
+
+      expect(item.attr('camelCase')).toBe('yes');
+      expect($xml.xml()).toBe('<Item camelCase="yes"/>');
+    });
   });
 
   describe('.data', () => {

@@ -308,6 +308,7 @@ function setProp(el: Element, name: string, value: unknown, xmlMode?: boolean) {
           ? ''
           : null
         : `${value as string}`,
+      xmlMode,
     );
   }
 }
