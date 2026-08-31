@@ -186,6 +186,26 @@ describe('$(...)', () => {
       expect($pear).toBeInstanceOf($);
     });
 
+    it('(KEY) : should get an attr case-insensitively (#5257)', () => {
+      const $el = load('<div class="test"></div>')('div');
+      expect($el.attr('CLASS')).toBe('test');
+    });
+
+    it('(KEY, value) : should set an attr case-insensitively (#5257)', () => {
+      const $el = load('<div class="test"></div>')('div');
+      $el.attr('CLASS', 'changed');
+
+      expect($el.attr('class')).toBe('changed');
+      expect($el.prop('outerHTML')).toBe('<div class="changed"></div>');
+    });
+
+    it('(KEY) : should keep attribute names case-sensitive in XML mode (#5257)', () => {
+      const $xml = load('<Foo BAR="1"/>', { xml: true })('Foo');
+
+      expect($xml.attr('BAR')).toBe('1');
+      expect($xml.attr('bar')).toBeUndefined();
+    });
+
     it("(bool) shouldn't treat boolean attributes differently in XML mode", () => {
       const $xml = $.load('<input checked=checked disabled=yes />', {
         xml: true,
@@ -440,6 +460,16 @@ describe('$(...)', () => {
 
       expect($xml.prop('checked')).toBe('checked');
       expect($xml.prop('disabled')).toBe('yes');
+    });
+
+    it('(key, value) : should keep the name case when setting in XML mode', () => {
+      const $xml = $.load('<Item />', { xml: true });
+      const item = $xml('Item');
+
+      item.prop('camelCase', 'yes');
+
+      expect(item.attr('camelCase')).toBe('yes');
+      expect($xml.xml()).toBe('<Item camelCase="yes"/>');
     });
   });
 
@@ -762,6 +792,24 @@ describe('$(...)', () => {
       expect($fruits.attr('id')).not.toBeUndefined();
       $fruits.removeAttr('id');
       expect($fruits.attr('id')).toBeUndefined();
+    });
+
+    it('(KEY) : should remove an attr case-insensitively (#5257)', () => {
+      const $fruits = $('#fruits');
+      expect($fruits.attr('id')).not.toBeUndefined();
+      $fruits.removeAttr('ID');
+      expect($fruits.attr('id')).toBeUndefined();
+    });
+
+    it('(KEY) : should keep attribute names case-sensitive in XML mode (#5257)', () => {
+      const $xml = load('<Foo BAR="1"/>', { xml: true });
+      const $foo = $xml('Foo');
+
+      $foo.removeAttr('bar');
+      expect($foo.attr('BAR')).toBe('1');
+
+      $foo.removeAttr('BAR');
+      expect($foo.attr('BAR')).toBeUndefined();
     });
 
     it('(key key) : should remove multiple attrs', () => {
