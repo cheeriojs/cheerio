@@ -88,6 +88,20 @@ describe('$(...)', () => {
       expect(el.attr('style')).toBe('--my-var: 1; --other-var: 2;');
     });
 
+    it('(prop): should treat custom properties as case sensitive', () => {
+      const el = cheerio(
+        '<li style="--Theme-Color: red; --theme-color: blue;">',
+      );
+      expect(el.css('--Theme-Color')).toBe('red');
+      expect(el.css('--theme-color')).toBe('blue');
+    });
+
+    it('(prop, val): should not fold a custom property onto another casing', () => {
+      const el = cheerio('<li style="--theme-color: blue;">');
+      el.css('--Theme-Color', 'red');
+      expect(el.attr('style')).toBe('--theme-color: blue; --Theme-Color: red;');
+    });
+
     it('(prop): should not mangle embedded urls', () => {
       const el = cheerio(
         '<li style="background-image:url(http://example.com/img.png);">',

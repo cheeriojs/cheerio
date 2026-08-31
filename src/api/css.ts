@@ -6,8 +6,12 @@ const rUpperCase = /[A-Z]/g;
 
 /**
  * Hyphenates a camel cased property name, so `backgroundColor` addresses the
- * same declaration as `background-color`. Names that are already hyphenated
- * and custom properties hold no upper case letters and pass through untouched.
+ * same declaration as `background-color`. Already hyphenated names hold no
+ * upper case letters and pass through untouched.
+ *
+ * Custom properties are exempt: their names are case sensitive, so `--Theme`
+ * and `--theme` are two different declarations and neither may be folded into
+ * the other.
  *
  * @private
  * @category CSS
@@ -15,6 +19,8 @@ const rUpperCase = /[A-Z]/g;
  * @returns The name as it appears in a `style` attribute.
  */
 function hyphenate(name: string): string {
+  if (name.startsWith('--')) return name;
+
   return name.replace(rUpperCase, (char) => `-${char.toLowerCase()}`);
 }
 
