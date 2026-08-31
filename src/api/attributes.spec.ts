@@ -797,6 +797,34 @@ describe('$(...)', () => {
 
       expect($text('body').html()).toBe(mixedText);
     });
+
+    it('(KEY) : should be case-insensitive in HTML mode', () => {
+      const $html = load('<div class="test"></div>');
+      $html('div').removeAttr('CLASS');
+      expect($html('div').attr('class')).toBeUndefined();
+    });
+
+    it('(KEY) : should remain case-sensitive in XML mode', () => {
+      const $xml = load('<Foo Bar="x"></Foo>', { xmlMode: true });
+      // A differently-cased name must not remove the attribute in XML mode.
+      $xml('Foo').removeAttr('BAR');
+      expect($xml('Foo').attr('Bar')).toBe('x');
+      // The exact name still removes it.
+      $xml('Foo').removeAttr('Bar');
+      expect($xml('Foo').attr('Bar')).toBeUndefined();
+    });
+
+    it('(KEY) : should keep the case of adjusted SVG attributes', () => {
+      // The HTML parser preserves the camel case of `viewBox` and friends.
+      const $svg = load(
+        '<svg viewBox="0 0 10 10" gradientTransform="a"></svg>',
+      );
+      $svg('svg').removeAttr('viewBox');
+      expect($svg('svg').attr('viewBox')).toBeUndefined();
+      // A folded name must not match the adjusted attribute either.
+      $svg('svg').removeAttr('gradienttransform');
+      expect($svg('svg').attr('gradientTransform')).toBe('a');
+    });
   });
 
   describe('.hasClass', () => {
