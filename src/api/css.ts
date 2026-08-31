@@ -2,6 +2,22 @@ import { type AnyNode, type Element, isTag } from 'domhandler';
 import type { Cheerio } from '../cheerio.js';
 import { domEach } from '../utils.js';
 
+const rUpperCase = /[A-Z]/g;
+
+/**
+ * Hyphenates a camel cased property name, so `backgroundColor` addresses the
+ * same declaration as `background-color`. Names that are already hyphenated
+ * and custom properties hold no upper case letters and pass through untouched.
+ *
+ * @private
+ * @category CSS
+ * @param name - Name of the property.
+ * @returns The name as it appears in a `style` attribute.
+ */
+function hyphenate(name: string): string {
+  return name.replace(rUpperCase, (char) => `-${char.toLowerCase()}`);
+}
+
 /**
  * Get the value of a style property for the first element in the set of matched
  * elements.
@@ -108,14 +124,15 @@ function setCss(
 ) {
   if (typeof prop === 'string') {
     const styles = getCss(el);
+    const name = hyphenate(prop);
 
     const val =
-      typeof value === 'function' ? value.call(el, idx, styles[prop]) : value;
+      typeof value === 'function' ? value.call(el, idx, styles[name]) : value;
 
     if (val === '') {
-      delete styles[prop];
+      delete styles[name];
     } else if (val != null) {
-      styles[prop] = val;
+      styles[name] = val;
     }
 
     el.attribs['style'] = stringify(styles);
@@ -156,13 +173,15 @@ function getCss(
 
   const styles = parse(el.attribs['style']);
   if (typeof prop === 'string') {
-    return styles[prop];
+    return styles[hyphenate(prop)];
   }
   if (Array.isArray(prop)) {
     const newStyles: Record<string, string> = {};
     for (const item of prop) {
-      if (styles[item] != null) {
-        newStyles[item] = styles[item];
+      const value = styles[hyphenate(item)];
+      if (value != null) {
+        // Keyed by the name the caller asked for, as jQuery does.
+        newStyles[item] = value;
       }
     }
     return newStyles;
