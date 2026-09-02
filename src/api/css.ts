@@ -185,6 +185,129 @@ function stringify(obj: Record<string, string>): string {
   );
 }
 
+// Matches styles that could nest a `;` or `:` in a value, an escape or a comment
+const nestableValue = /["'()[\]{}\\]|\/\*/;
+
+// The closing character of each block a value may open
+const blockEnd = new Map([
+  ['(', ')'],
+  ['[', ']'],
+  ['{', '}'],
+]);
+const blockEnds = new Set(blockEnd.values());
+
+/**
+ * Add the declaration `str` to `obj`.
+ *
+ * @private
+ * @category CSS
+ * @param obj - The styles parsed so far.
+ * @param key - The property of the preceding declaration, if any.
+ * @param str - The declaration to add.
+ * @param n - The index of the colon separating property from value, or `-1`.
+ * @returns The property to treat as preceding the next declaration.
+ */
+function addDeclaration(
+  obj: Record<string, string>,
+  key: string | undefined,
+  str: string,
+  n: number,
+): string | undefined {
+  // If there is no :, or if it is the first/last character, add to the previous item's value
+  if (n < 1 || n === str.length - 1) {
+    const trimmed = str.trimEnd();
+    if (trimmed.length > 0 && key !== undefined) {
+      obj[key] += `;${trimmed}`;
+    }
+    return key;
+  }
+
+  const prop = str.slice(0, n).trim();
+  obj[prop] = str.slice(n + 1).trim();
+  return prop;
+}
+
+/**
+ * Parse the declarations of `styles`, skipping over strings, blocks and
+ * comments, so that a `;` or `:` inside a value such as
+ * `url(data:image/png;base64,…)` does not separate declarations.
+ *
+ * @private
+ * @category CSS
+ * @param obj - The object to add the parsed declarations to.
+ * @param styles - Styles to be parsed.
+ */
+function parseNested(obj: Record<string, string>, styles: string): void {
+  const blocks: string[] = [];
+  let key: string | undefined;
+  let start = 0;
+  let colon = -1;
+  let quote = '';
+
+  for (let i = 0; i < styles.length; i++) {
+    const char = styles[i];
+
+    if (quote) {
+      // Skip the character after a backslash, so `"\""` stays a single string
+      if (char === '\\') i += 1;
+      else if (char === quote) quote = '';
+      continue;
+    }
+
+    /*
+     * An escape covers the character after it, so the `)` in `url(a\)b)` ends
+     * nothing and the `;` in `a: b\;c` does not separate declarations.
+     */
+    if (char === '\\') {
+      i += 1;
+      continue;
+    }
+
+    // A comment may hold anything, including an unbalanced quote or bracket
+    if (char === '/' && styles[i + 1] === '*') {
+      const end = styles.indexOf('*/', i + 2);
+      i = end === -1 ? styles.length : end + 1;
+      continue;
+    }
+
+    if (char === '"' || char === "'") {
+      quote = char;
+      continue;
+    }
+
+    const end = blockEnd.get(char);
+    if (end !== undefined) {
+      blocks.push(end);
+      continue;
+    }
+
+    if (blockEnds.has(char)) {
+      /*
+       * Close the innermost block this ends, so an unbalanced `[` in `url(a[b)`
+       * does not swallow the rest. A character that ends nothing is part of the
+       * value, as in `a: b)`.
+       */
+      const open = blocks.lastIndexOf(char);
+      if (open !== -1) blocks.length = open;
+      continue;
+    }
+
+    if (blocks.length > 0) continue;
+
+    if (char === ':') {
+      if (colon < 0) colon = i;
+    } else if (char === ';') {
+      const str = styles.slice(start, i);
+      key = addDeclaration(obj, key, str, colon < 0 ? -1 : colon - start);
+      start = i + 1;
+      colon = -1;
+    }
+  }
+
+  const str = styles.slice(start);
+  addDeclaration(obj, key, str, colon < 0 ? -1 : colon - start);
+}
+
 /**
  * Parse `styles`.
  *
@@ -200,20 +323,15 @@ function parse(styles: string): Record<string, string> {
 
   const obj: Record<string, string> = {};
 
+  if (nestableValue.test(styles)) {
+    parseNested(obj, styles);
+    return obj;
+  }
+
   let key: string | undefined;
 
   for (const str of styles.split(';')) {
-    const n = str.indexOf(':');
-    // If there is no :, or if it is the first/last character, add to the previous item's value
-    if (n < 1 || n === str.length - 1) {
-      const trimmed = str.trimEnd();
-      if (trimmed.length > 0 && key !== undefined) {
-        obj[key] += `;${trimmed}`;
-      }
-    } else {
-      key = str.slice(0, n).trim();
-      obj[key] = str.slice(n + 1).trim();
-    }
+    key = addDeclaration(obj, key, str, str.indexOf(':'));
   }
 
   return obj;
