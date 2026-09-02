@@ -102,6 +102,15 @@ describe('$(...)', () => {
       expect(el.attr('style')).toBe('--theme-color: blue; --Theme-Color: red;');
     });
 
+    it('(prop, val): should prefix lowercase vendor CSSOM names', () => {
+      const el = cheerio('<li>');
+      el.css('webkitTextStrokeWidth', '1px');
+      el.css('msOverflowStyle', 'none');
+      expect(el.attr('style')).toBe(
+        '-webkit-text-stroke-width: 1px; -ms-overflow-style: none;',
+      );
+    });
+
     it('(prop): should not mangle embedded urls', () => {
       const el = cheerio(
         '<li style="background-image:url(http://example.com/img.png);">',

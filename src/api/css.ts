@@ -21,7 +21,11 @@ const rUpperCase = /[A-Z]/g;
 function hyphenate(name: string): string {
   if (name.startsWith('--')) return name;
 
-  return name.replace(rUpperCase, (char) => `-${char.toLowerCase()}`);
+  const hyphenated = name.replace(rUpperCase, (char) => `-${char.toLowerCase()}`);
+  // CSSOM spellings like webkitTextStrokeWidth omit the leading dash.
+  return /^(webkit|moz|ms|o)-/i.test(hyphenated)
+    ? `-${hyphenated}`
+    : hyphenated;
 }
 
 /**
