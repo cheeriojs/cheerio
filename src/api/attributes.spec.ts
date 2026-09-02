@@ -654,6 +654,28 @@ describe('$(...)', () => {
       }
     });
 
+    it('() : should store a derived __proto__ key as an own property', () => {
+      /*
+       * `data-__proto__` derives the literal key `__proto__`. Assigning it
+       * normally would hit the inherited setter and swap the data object's
+       * prototype instead of creating the key. A browser's `dataset` lists it
+       * as an own enumerable property with the raw value, verified in Chrome.
+       */
+      const $el = load(
+        `<div data-__proto__='{"admin":true}' data-x="1"></div>`,
+      )('div');
+      const data = $el.data();
+
+      expect(Object.keys(data)).toStrictEqual(['__proto__', 'x']);
+      expect(Object.hasOwn(data, '__proto__')).toBe(true);
+      expect(data).not.toHaveProperty('admin');
+      expect(({} as Record<string, unknown>)['admin']).toBeUndefined();
+
+      const fresh = load('<div data-__proto__="polluted"></div>')('div');
+
+      expect(fresh.data('__proto__')).toBe('polluted');
+    });
+
     it('() : every reported key should read back through .data(key)', () => {
       /*
        * The keys `.data()` hands back have to be usable with `.data(key)`, or
