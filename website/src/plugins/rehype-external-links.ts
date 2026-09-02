@@ -16,7 +16,7 @@ function visitExternalLink(node: Element): void {
   // Check if it's an external link (starts with http:// or https://)
   if (href.startsWith('http://') || href.startsWith('https://')) {
     node.properties.target = '_blank';
-    node.properties.rel = 'noopener noreferrer';
+    node.properties.rel = ['noopener', 'noreferrer'];
   }
 }
 
