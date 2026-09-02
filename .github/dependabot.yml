@@ -8,6 +8,11 @@ updates:
     versioning-strategy: increase
     cooldown:
       default-days: 7
+    groups:
+      parse5:
+        patterns:
+          - 'parse5'
+          - 'parse5-*'
   - package-ecosystem: npm
     directory: '/website'
     schedule:
