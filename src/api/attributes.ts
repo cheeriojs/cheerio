@@ -854,7 +854,11 @@ function removeAttribute(elem: Element, name: string) {
  * @returns - Split names.
  */
 function splitNames(names?: string): string[] {
-  return names ? names.trim().split(rspace) : [];
+  if (!names) return [];
+  // ASCII-only trim: String.prototype.trim also strips a non-breaking space
+  // and the Unicode space separators, which are part of a class name here.
+  const trimmed = names.replace(/^[\t\n\f\r ]+|[\t\n\f\r ]+$/g, '');
+  return trimmed ? trimmed.split(rspace) : [];
 }
 
 /**

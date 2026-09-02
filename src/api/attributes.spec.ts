@@ -873,6 +873,43 @@ describe('$(...)', () => {
       }
     });
 
+    it('should keep non-ASCII whitespace out of the mutator split too', () => {
+      // splitNames drives addClass, removeClass and toggleClass, so a token
+      // containing a non-breaking space must travel through them whole.
+      const $add = load('<p></p>')('p');
+      $add.addClass('a\u00A0b');
+
+      expect($add.attr('class')).toBe('a\u00A0b');
+      expect($add.hasClass('a\u00A0b')).toBe(true);
+
+      const $remove = load('<p class="a\u00A0b other"></p>')('p');
+      $remove.removeClass('a\u00A0b');
+
+      expect($remove.attr('class')).toBe('other');
+
+      const $toggle = load('<p class="a\u00A0b"></p>')('p');
+      $toggle.toggleClass('a\u00A0b');
+
+      expect($toggle.attr('class')).toBe('');
+    });
+
+    it('should not trim non-ASCII whitespace from a class token edge', () => {
+      /*
+       * toggleClass splits its argument with rspace but the element's classes
+       * with splitNames. With a Unicode-aware trim in splitNames the two
+       * disagreed on a token with a leading non-breaking space: the element
+       * side saw 'a', the argument side saw the full token, and the toggle
+       * added a duplicate instead of removing the class.
+       */
+      const $p = load('<p class="\u00A0a"></p>')('p');
+
+      expect($p.hasClass('\u00A0a')).toBe(true);
+
+      $p.toggleClass('\u00A0a');
+
+      expect($p.attr('class')).toBe('');
+    });
+
     it('should treat a non-breaking space as part of the class name', () => {
       const $p = load('<p class="a\u{A0}b"></p>')('p');
 
