@@ -111,6 +111,20 @@ describe('$(...)', () => {
       );
     });
 
+    it('(prop, val): should not prefix an already-hyphenated vendor-like name', () => {
+      const el = cheerio('<li style="webkit-text-stroke-width: 2px;">');
+      expect(el.css('webkit-text-stroke-width')).toBe('2px');
+      el.css('webkit-text-stroke-width', '3px');
+      expect(el.attr('style')).toBe('webkit-text-stroke-width: 3px;');
+    });
+
+    it('(prop): should map cssFloat to float', () => {
+      const el = cheerio('<li style="float: left;">');
+      expect(el.css('cssFloat')).toBe('left');
+      el.css('cssFloat', 'right');
+      expect(el.attr('style')).toBe('float: right;');
+    });
+
     it('(prop): should not mangle embedded urls', () => {
       const el = cheerio(
         '<li style="background-image:url(http://example.com/img.png);">',
