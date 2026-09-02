@@ -11,7 +11,13 @@ import type { Cheerio } from '../cheerio.js';
 import { text } from '../static.js';
 import { camelCase, cssCase, domEach } from '../utils.js';
 
-const rspace = /\s+/;
+/*
+ * The class attribute is split on ASCII whitespace, per the HTML spec.
+ * `\s` is wider than that: it also matches a vertical tab, a non-breaking
+ * space and the Unicode space separators, none of which a browser treats as
+ * a boundary.
+ */
+const rspace = /[\t\n\f\r ]+/;
 const dataAttrPrefix = 'data-';
 
 // Attributes that are booleans

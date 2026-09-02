@@ -842,6 +842,45 @@ describe('$(...)', () => {
     });
   });
 
+  describe('class separators', () => {
+    /*
+     * The class attribute is split on ASCII whitespace only. Verified against
+     * `element.classList` in Chrome.
+     */
+    const asciiWhitespace = ['\t', '\n', '\f', '\r', ' '];
+    const notWhitespace = [
+      '\v',
+      '\u{A0}',
+      '\u{1680}',
+      '\u{2000}',
+      '\u{2028}',
+      '\u{2029}',
+      '\u{202F}',
+      '\u{205F}',
+      '\u{3000}',
+      '\u{FEFF}',
+    ];
+
+    it('should split on ASCII whitespace', () => {
+      for (const ch of asciiWhitespace) {
+        expect(load(`<p class="a${ch}b"></p>`)('p').hasClass('b')).toBe(true);
+      }
+    });
+
+    it('should not split on other whitespace', () => {
+      for (const ch of notWhitespace) {
+        expect(load(`<p class="a${ch}b"></p>`)('p').hasClass('b')).toBe(false);
+      }
+    });
+
+    it('should treat a non-breaking space as part of the class name', () => {
+      const $p = load('<p class="a\u{A0}b"></p>')('p');
+
+      expect($p.hasClass('a\u{A0}b')).toBe(true);
+      expect($p.hasClass('a')).toBe(false);
+    });
+  });
+
   describe('.addClass', () => {
     let $: CheerioAPI;
 
