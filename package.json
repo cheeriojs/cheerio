@@ -114,7 +114,7 @@
     "dom-serializer": "^3.1.1",
     "domhandler": "^6.0.1",
     "domutils": "^4.0.2",
-    "encoding-sniffer": "^0.2.1",
+    "encoding-sniffer": "^1.0.2",
     "htmlparser2": "^12.0.0",
     "parse5": "^8.0.1",
     "parse5-htmlparser2-tree-adapter": "^8.0.1",
