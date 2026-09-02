@@ -4,9 +4,8 @@
  * @module cheerio/attributes
  */
 
-import { type AnyNode, type Element, isTag } from 'domhandler';
+import { type AnyNode, type Element, isDocument, isTag } from 'domhandler';
 import { innerText, textContent } from 'domutils';
-import { ElementType } from 'htmlparser2';
 import type { Cheerio } from '../cheerio.js';
 import { text } from '../static.js';
 import { camelCase, cssCase, domEach } from '../utils.js';
@@ -473,7 +472,7 @@ export function prop<T extends AnyNode>(
       }
 
       case 'outerHTML': {
-        if (el.type === ElementType.Root) return this.html();
+        if (isDocument(el)) return this.html();
         return this.clone().wrap('<container />').parent().html();
       }
 

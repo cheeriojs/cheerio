@@ -15,7 +15,6 @@ import {
   Text,
 } from 'domhandler';
 import { removeElement } from 'domutils';
-import { ElementType } from 'htmlparser2';
 import type { Cheerio } from '../cheerio.js';
 import { update as updateDOM } from '../parse.js';
 import { text as staticText } from '../static.js';
@@ -589,7 +588,7 @@ export function wrapAll<T extends AnyNode>(
     let elInsertLocation: Element | undefined;
 
     for (let i = 0; i < wrap.length; i++) {
-      if (wrap[i].type === ElementType.Tag) {
+      if (isTag(wrap[i])) {
         elInsertLocation = wrap[i] as Element;
       }
     }
@@ -602,7 +601,7 @@ export function wrapAll<T extends AnyNode>(
      */
     while (elInsertLocation && j < elInsertLocation.children.length) {
       const child = elInsertLocation.children[j];
-      if (child.type === ElementType.Tag) {
+      if (isTag(child)) {
         elInsertLocation = child;
         j = 0;
       } else {
