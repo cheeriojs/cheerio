@@ -37,7 +37,7 @@
     "@astrojs/check": "^0.9.10",
     "@astrojs/markdown-remark": "^7.2.4",
     "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.4",
+    "@types/react-dom": "^19.2.5",
     "mdast-util-to-string": "^4.0.0",
     "typedoc": "^0.28.20",
     "typedoc-plugin-markdown": "^4.12.0",
