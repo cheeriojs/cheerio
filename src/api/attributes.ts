@@ -812,7 +812,9 @@ export function val<T extends AnyNode>(
       const option = this.find('option:selected');
 
       return this.attr('multiple')
-        ? option.toArray().map((el) => text(el.children))
+        ? option
+            .toArray()
+            .map((el) => getAttr(el, 'value', this.options.xmlMode) ?? '')
         : option.attr('value');
     }
     case 'button':
