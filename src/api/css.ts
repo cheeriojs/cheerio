@@ -20,16 +20,19 @@ const rUpperCase = /[A-Z]/g;
  */
 function hyphenate(name: string): string {
   if (name.startsWith('--')) return name;
-  // CSSOM uses cssFloat (IE: styleFloat) for the float property.
   if (name === 'cssFloat' || name === 'styleFloat') return 'float';
+  /*
+   * Already-hyphenated names are declaration names. Leave them alone so a
+   * leftover capital does not insert another dash (`background-Color` must
+   * still match `background-Color`, not `background--color`).
+   */
+  if (name.includes('-')) return name;
 
   const hyphenated = name.replace(rUpperCase, (char) => `-${char.toLowerCase()}`);
-  // CSSOM spellings like webkitTextStrokeWidth omit the leading dash.
-  // Only do that for camelCase input. An already-hyphenated name such as
-  // webkit-text-stroke-width or a non-vendor name that merely starts with
-  // o-/ms- after folding must stay as written.
-  if (name.includes('-')) return hyphenated;
-
+  /*
+   * CSSOM spellings like webkitTextStrokeWidth omit the leading dash. Only
+   * add it for camelCase input.
+   */
   return /^(webkit|moz|ms|o)-/i.test(hyphenated)
     ? `-${hyphenated}`
     : hyphenated;

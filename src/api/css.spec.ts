@@ -125,6 +125,13 @@ describe('$(...)', () => {
       expect(el.attr('style')).toBe('float: right;');
     });
 
+    it('(prop): should keep a mixed-case hyphenated name as written', () => {
+      const el = cheerio('<li style="background-Color: red;">');
+      expect(el.css('background-Color')).toBe('red');
+      el.css('background-Color', 'blue');
+      expect(el.attr('style')).toBe('background-Color: blue;');
+    });
+
     it('(prop): should not mangle embedded urls', () => {
       const el = cheerio(
         '<li style="background-image:url(http://example.com/img.png);">',
