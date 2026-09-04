@@ -123,7 +123,7 @@
     "whatwg-mimetype": "^5.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.10",
+    "@biomejs/biome": "^2.5.11",
     "@eslint/compat": "^2.1.0",
     "@feedic/eslint-config": "^0.5.0",
     "@imgix/js-core": "^3.8.0",
