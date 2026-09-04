@@ -10,7 +10,13 @@ import type { Cheerio } from '../cheerio.js';
 import { text } from '../static.js';
 import { camelCase, cssCase, domEach } from '../utils.js';
 
-const rspace = /\s+/;
+/*
+ * The class attribute is split on ASCII whitespace, per the HTML spec.
+ * `\s` is wider than that: it also matches a vertical tab, a non-breaking
+ * space and the Unicode space separators, none of which a browser treats as
+ * a boundary.
+ */
+const rspace = /[\t\n\f\r ]+/;
 const dataAttrPrefix = 'data-';
 
 // Attributes that are booleans
@@ -847,7 +853,11 @@ function removeAttribute(elem: Element, name: string) {
  * @returns - Split names.
  */
 function splitNames(names?: string): string[] {
-  return names ? names.trim().split(rspace) : [];
+  if (!names) return [];
+  // ASCII-only trim: String.prototype.trim also strips a non-breaking space
+  // and the Unicode space separators, which are part of a class name here.
+  const trimmed = names.replace(/^[\t\n\f\r ]+|[\t\n\f\r ]+$/g, '');
+  return trimmed ? trimmed.split(rspace) : [];
 }
 
 /**
