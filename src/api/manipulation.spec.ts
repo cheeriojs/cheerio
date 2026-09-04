@@ -1760,6 +1760,19 @@ describe('$(...)', () => {
       expect(tested).toBe(3);
     });
 
+    it('(Cheerio object) : should copy the content for each element in selection', () => {
+      const $fruits = $('li');
+      const $durian = $('<div class="durian">Durian</div>');
+      $fruits.html($durian);
+      expect($('.durian')).toHaveLength(3);
+      $fruits.each(function () {
+        expect($(this).children()).toHaveLength(1);
+        expect($(this).html()).toBe('<div class="durian">Durian</div>');
+      });
+      // The last target receives the original node
+      expect($fruits.last().children()[0]).toBe($durian[0]);
+    });
+
     it('(html) : should skip text nodes', () => {
       const $text = load(mixedText);
       const $body = $text($text('body')[0].children);

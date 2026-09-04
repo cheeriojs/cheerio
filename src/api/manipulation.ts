@@ -992,14 +992,20 @@ export function html<T extends AnyNode>(
     return this._render(el.children);
   }
 
-  return domEach(this, (el) => {
+  const lastIdx = this.length - 1;
+
+  return domEach(this, (el, i) => {
     if (!hasChildren(el)) return;
     for (const child of el.children) {
       child.next = child.prev = child.parent = null;
     }
 
+    /*
+     * Nodes passed in a Cheerio instance are moved, so clone them for all
+     * targets but the last to give each target its own copy.
+     */
     const content = isCheerio(str)
-      ? str.toArray()
+      ? this._makeDomArray(str, i < lastIdx)
       : this._parse(`${str}`, this.options, false, el).children;
 
     updateDOM(content, el);
