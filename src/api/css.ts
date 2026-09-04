@@ -202,7 +202,7 @@ function parse(styles: string): Record<string, string> {
 
   let key: string | undefined;
 
-  for (const str of styles.split(';')) {
+  for (const str of splitDeclarations(styles)) {
     const n = str.indexOf(':');
     // If there is no :, or if it is the first/last character, add to the previous item's value
     if (n < 1 || n === str.length - 1) {
@@ -217,4 +217,150 @@ function parse(styles: string): Record<string, string> {
   }
 
   return obj;
+}
+
+/**
+ * Split a style attribute into declarations at top-level semicolons only.
+ * Semicolons inside quoted strings, comments, or any block (parentheses such
+ * as data URIs in `url(...)`, braces, brackets) do not terminate a
+ * declaration.
+ *
+ * @private
+ * @category CSS
+ * @param styles - The style attribute value.
+ * @returns The individual declarations.
+ */
+function splitDeclarations(styles: string): string[] {
+  const declarations: string[] = [];
+  let start = 0;
+  let quote: string | undefined;
+  let inComment = false;
+  let urlDepth = 0;
+  let depth = 0;
+
+  for (let i = 0; i < styles.length; i++) {
+    const ch = styles.charCodeAt(i);
+
+    if (inComment) {
+      if (
+        ch === 42 /* Asterisk */ &&
+        styles.charCodeAt(i + 1) === 47 /* Slash */
+      ) {
+        inComment = false;
+        i++;
+      }
+      continue;
+    }
+    if (quote !== undefined) {
+      if (ch === 92 /* Backslash */) {
+        i++;
+      } else if (styles[i] === quote) {
+        quote = undefined;
+      }
+      continue;
+    }
+    if (ch === 92 /* Backslash */) {
+      // An escaped character is data, not structure.
+      i++;
+      continue;
+    }
+    if (
+      urlDepth === 0 &&
+      ch === 47 /* Slash */ &&
+      styles.charCodeAt(i + 1) === 42 /* Asterisk */
+    ) {
+      /*
+       * Comments are recognized everywhere except inside an unquoted
+       * `url()` token, where CSS treats the characters as part of the URL.
+       */
+      inComment = true;
+      i++;
+      continue;
+    }
+    if (
+      urlDepth === 0 &&
+      (ch === 34 /* Double quote */ || ch === 39) /* Single quote */
+    ) {
+      quote = styles[i];
+      continue;
+    }
+    if (ch === 40 /* Opening parenthesis */) {
+      depth++;
+      // `url(` starts a URL token unless the value is a quoted string,
+      // which the quote branch above handles as an ordinary string.
+      if (urlDepth === 0 && isUrlToken(styles, i)) {
+        urlDepth = depth;
+      }
+      continue;
+    }
+    if (ch === 41 /* Closing parenthesis */) {
+      if (depth > 0) {
+        if (urlDepth === depth) urlDepth = 0;
+        depth--;
+      }
+      continue;
+    }
+    if (ch === 123 /* Opening brace */ || ch === 91 /* Opening bracket */) {
+      depth++;
+      continue;
+    }
+    if (ch === 125 /* Closing brace */ || ch === 93 /* Closing bracket */) {
+      if (depth > 0) depth--;
+      continue;
+    }
+    if (ch === 59 /* Semicolon */ && depth === 0) {
+      declarations.push(styles.slice(start, i));
+      start = i + 1;
+    }
+  }
+
+  declarations.push(styles.slice(start));
+
+  return declarations;
+}
+
+const WHITESPACE_RE = /\s/;
+const ASCII_IDENTIFIER_RE = /[\w-]/;
+
+/**
+ * Whether `char` can appear in a CSS identifier: letters, digits, hyphen,
+ * underscore, an escape, or any non-ASCII character.
+ *
+ * @private
+ * @category CSS
+ * @param char - The character to test.
+ * @returns Whether the character is part of an identifier.
+ */
+function isIdentifierChar(char: string): boolean {
+  return (
+    ASCII_IDENTIFIER_RE.test(char) || char === '\\' || char.charCodeAt(0) >= 128
+  );
+}
+
+/**
+ * Whether the opening parenthesis at `index` begins an unquoted `url()` token.
+ *
+ * @private
+ * @category CSS
+ * @param styles - The style attribute value.
+ * @param index - Index of the opening parenthesis.
+ * @returns Whether this parenthesis opens a URL token.
+ */
+function isUrlToken(styles: string, index: number): boolean {
+  if (index < 3 || styles.slice(index - 3, index).toLowerCase() !== 'url') {
+    return false;
+  }
+  /*
+   * The three characters before `(` must be the whole function name, not the
+   * tail of a longer one: `myurl(` and `noturl(` are ordinary functions whose
+   * contents follow the normal comment rules.
+   */
+  if (index > 3 && isIdentifierChar(styles[index - 4])) {
+    return false;
+  }
+  // A quoted url("...") is a normal string, handled by the quote branch.
+  let next = index + 1;
+  while (next < styles.length && WHITESPACE_RE.test(styles[next])) next++;
+  const nextCh = styles.charCodeAt(next);
+  return nextCh !== 34 /* Double quote */ && nextCh !== 39 /* Single quote */;
 }
