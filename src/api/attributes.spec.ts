@@ -631,6 +631,75 @@ describe('$(...)', () => {
       });
     });
 
+    it('() : should derive keys the way a browser derives dataset keys', () => {
+      /*
+       * Only a hyphen followed by an ASCII lower-case letter starts a new word.
+       * Verified against `element.dataset` in Chrome.
+       */
+      const expected: [string, string[]][] = [
+        ['data-plain-key', ['plainKey']],
+        ['data-foo_bar', ['foo_bar']],
+        ['data-a.b', ['a.b']],
+        ['data-foo-1', ['foo-1']],
+        ['data-foo-', ['foo-']],
+        ['data-foo--bar', ['foo-Bar']],
+      ];
+
+      for (const [attr, keys] of expected) {
+        const actual = Object.keys(
+          load(`<div ${attr}="v"></div>`)('div').data(),
+        );
+
+        expect(actual).toStrictEqual(keys);
+      }
+    });
+
+    it('() : should store a derived __proto__ key as an own property', () => {
+      /*
+       * `data-__proto__` derives the literal key `__proto__`. Assigning it
+       * normally would hit the inherited setter and swap the data object's
+       * prototype instead of creating the key. A browser's `dataset` lists it
+       * as an own enumerable property with the raw value, verified in Chrome.
+       */
+      const $el = load(
+        `<div data-__proto__='{"admin":true}' data-x="1"></div>`,
+      )('div');
+      const data = $el.data();
+
+      expect(Object.keys(data)).toStrictEqual(['__proto__', 'x']);
+      expect(Object.hasOwn(data, '__proto__')).toBe(true);
+      expect(data).not.toHaveProperty('admin');
+      expect(({} as Record<string, unknown>)['admin']).toBeUndefined();
+
+      const fresh = load('<div data-__proto__="polluted"></div>')('div');
+
+      expect(fresh.data('__proto__')).toBe('polluted');
+    });
+
+    it('() : every reported key should read back through .data(key)', () => {
+      /*
+       * The keys `.data()` hands back have to be usable with `.data(key)`, or
+       * the two halves of the API disagree.
+       */
+      const attrs = [
+        'data-plain-key',
+        'data-foo_bar',
+        'data-a.b',
+        'data-foo-1',
+        'data-foo-',
+        'data-foo--bar',
+      ];
+
+      for (const attr of attrs) {
+        const html = `<div ${attr}="v"></div>`;
+        const keys = Object.keys(load(html)('div').data());
+
+        for (const key of keys) {
+          expect(load(html)('div').data(key)).toBe('v');
+        }
+      }
+    });
+
     it('(key, value) : should skip text nodes', () => {
       const $text = load(mixedText);
       const $body = $text($text('body')[0].children);
