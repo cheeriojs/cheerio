@@ -2,6 +2,42 @@ import { type AnyNode, type Element, isTag } from 'domhandler';
 import type { Cheerio } from '../cheerio.js';
 import { domEach } from '../utils.js';
 
+const rUpperCase = /[A-Z]/g;
+
+/**
+ * Hyphenates a camel cased property name, so `backgroundColor` addresses the
+ * same declaration as `background-color`. Already hyphenated names hold no
+ * upper case letters and pass through untouched.
+ *
+ * Custom properties are exempt: their names are case sensitive, so `--Theme`
+ * and `--theme` are two different declarations and neither may be folded into
+ * the other.
+ *
+ * @private
+ * @category CSS
+ * @param name - Name of the property.
+ * @returns The name as it appears in a `style` attribute.
+ */
+function hyphenate(name: string): string {
+  if (name.startsWith('--')) return name;
+  if (name === 'cssFloat' || name === 'styleFloat') return 'float';
+  /*
+   * Already-hyphenated names are declaration names. Leave them alone so a
+   * leftover capital does not insert another dash (`background-Color` must
+   * still match `background-Color`, not `background--color`).
+   */
+  if (name.includes('-')) return name;
+
+  const hyphenated = name.replace(rUpperCase, (char) => `-${char.toLowerCase()}`);
+  /*
+   * CSSOM spellings like webkitTextStrokeWidth omit the leading dash. Only
+   * add it for camelCase input.
+   */
+  return /^(webkit|moz|ms|o)-/i.test(hyphenated)
+    ? `-${hyphenated}`
+    : hyphenated;
+}
+
 /**
  * Get the value of a style property for the first element in the set of matched
  * elements.
@@ -108,14 +144,15 @@ function setCss(
 ) {
   if (typeof prop === 'string') {
     const styles = getCss(el);
+    const name = hyphenate(prop);
 
     const val =
-      typeof value === 'function' ? value.call(el, idx, styles[prop]) : value;
+      typeof value === 'function' ? value.call(el, idx, styles[name]) : value;
 
     if (val === '') {
-      delete styles[prop];
+      delete styles[name];
     } else if (val != null) {
-      styles[prop] = val;
+      styles[name] = val;
     }
 
     el.attribs['style'] = stringify(styles);
@@ -156,13 +193,15 @@ function getCss(
 
   const styles = parse(el.attribs['style']);
   if (typeof prop === 'string') {
-    return styles[prop];
+    return styles[hyphenate(prop)];
   }
   if (Array.isArray(prop)) {
     const newStyles: Record<string, string> = {};
     for (const item of prop) {
-      if (styles[item] != null) {
-        newStyles[item] = styles[item];
+      const value = styles[hyphenate(item)];
+      if (value != null) {
+        // Keyed by the name the caller asked for, as jQuery does.
+        newStyles[item] = value;
       }
     }
     return newStyles;
