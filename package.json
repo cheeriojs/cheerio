@@ -127,7 +127,7 @@
     "@eslint/compat": "^2.1.0",
     "@feedic/eslint-config": "^0.5.0",
     "@imgix/js-core": "^3.8.0",
-    "@octokit/graphql": "^9.0.4",
+    "@octokit/graphql": "^9.0.5",
     "@types/jsdom": "^30.0.0",
     "@types/node": "^26.4.0",
     "@types/whatwg-mimetype": "^5.0.0",
