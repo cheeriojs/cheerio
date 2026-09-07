@@ -3,10 +3,23 @@ import * as utils from './utils.js';
 
 describe('util functions', () => {
   it('camelCase function test', () => {
-    expect(utils.camelCase('cheerio.js')).toBe('cheerioJs');
-    expect(utils.camelCase('camel-case-')).toBe('camelCase');
-    expect(utils.camelCase('__directory__')).toBe('_directory_');
-    expect(utils.camelCase('_one-two.three')).toBe('OneTwoThree');
+    /*
+     * Only a hyphen followed by an ASCII lower-case letter is a word boundary,
+     * matching how a browser derives `dataset` keys from `data-*` attributes.
+     */
+    expect(utils.camelCase('camel-case')).toBe('camelCase');
+    expect(utils.camelCase('one-two-three')).toBe('oneTwoThree');
+    expect(utils.camelCase('-foo')).toBe('Foo');
+    expect(utils.camelCase('foo--bar')).toBe('foo-Bar');
+
+    /*
+     * Everything else is left alone, including dots, underscores, a trailing
+     * hyphen and a hyphen before a digit.
+     */
+    expect(utils.camelCase('cheerio.js')).toBe('cheerio.js');
+    expect(utils.camelCase('__directory__')).toBe('__directory__');
+    expect(utils.camelCase('camel-case-')).toBe('camelCase-');
+    expect(utils.camelCase('foo-1')).toBe('foo-1');
   });
 
   it('isCheerio function test', () => {
