@@ -39,6 +39,34 @@ describe('$(...)', () => {
       expect($('form#disabled').serializeArray()).toStrictEqual([]);
     });
 
+    it('() : should not get form controls inside a disabled fieldset', () => {
+      const $form = cheerio.load(
+        '<form><fieldset disabled><input name="a" value="1"></fieldset><input name="b" value="2"></form>',
+      )('form');
+      expect($form.serializeArray()).toStrictEqual([{ name: 'b', value: '2' }]);
+    });
+
+    it("() : should get form controls inside a disabled fieldset's first legend", () => {
+      const $form = cheerio.load(
+        '<form><fieldset disabled><legend><input name="l" value="1"></legend><input name="a" value="2"></fieldset></form>',
+      )('form');
+      expect($form.serializeArray()).toStrictEqual([{ name: 'l', value: '1' }]);
+    });
+
+    it('() : should not get form controls inside later legends of a disabled fieldset', () => {
+      const $form = cheerio.load(
+        '<form><fieldset disabled><legend></legend><legend><input name="l2" value="1"></legend></fieldset></form>',
+      )('form');
+      expect($form.serializeArray()).toStrictEqual([]);
+    });
+
+    it('() : should not get form controls inside a fieldset nested in a disabled fieldset', () => {
+      const $form = cheerio.load(
+        '<form><fieldset disabled><fieldset><legend><input name="n" value="1"></legend></fieldset></fieldset></form>',
+      )('form');
+      expect($form.serializeArray()).toStrictEqual([]);
+    });
+
     it('() : should not get form controls with the wrong type', () => {
       expect($('form#submit').serializeArray()).toStrictEqual([
         {
