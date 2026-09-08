@@ -119,7 +119,7 @@
     "parse5": "^8.0.1",
     "parse5-htmlparser2-tree-adapter": "^8.0.1",
     "parse5-parser-stream": "^8.0.0",
-    "undici": "^8.10.0",
+    "undici": "^8.10.1",
     "whatwg-mimetype": "^5.0.0"
   },
   "devDependencies": {
