@@ -15,9 +15,23 @@ const dataAttrPrefix = 'data-';
 
 // Attributes that are booleans
 const rboolean =
-  /^(?:autofocus|autoplay|async|checked|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped|selected)$/i;
+  /^(?:autofocus|autoplay|async|checked|controls|defer|disabled|loop|multiple|open|readonly|required|scoped|selected)$/i;
 // Matches strings that look like JSON objects or arrays
 const rbrace = /^{[\s\S]*}$|^\[[\s\S]*]$/;
+
+/**
+ * Whether a value puts `hidden` in the `until-found` state.
+ *
+ * `hidden` is an enumerated attribute, so its keywords are matched ASCII
+ * case-insensitively — `hidden="UNTIL-FOUND"` is the same state as
+ * `hidden="until-found"`. Every other value maps to the hidden state.
+ *
+ * @param value - The attribute or prop value to test.
+ * @returns Whether the value is the `until-found` keyword.
+ */
+function isUntilFound(value: unknown): boolean {
+  return typeof value === 'string' && value.toLowerCase() === 'until-found';
+}
 
 // Tags whose `href`/`src` is resolved against `baseURI`
 const hrefTags = new Set(['a', 'link']);
@@ -65,6 +79,14 @@ function getAttr(
   }
 
   if (Object.hasOwn(elem.attribs, name)) {
+    if (!xmlMode && name === 'hidden') {
+      /*
+       * `hidden` is an enumerated rather than a boolean attribute, and
+       * enumerated keywords are matched ASCII case-insensitively.
+       */
+      return isUntilFound(elem.attribs[name]) ? 'until-found' : 'hidden';
+    }
+
     // Get the (decoded) attribute
     return !xmlMode && rboolean.test(name) ? name : elem.attribs[name];
   }
@@ -242,12 +264,22 @@ function getProp(
   name: string,
   xmlMode?: boolean,
 ): string | undefined | boolean | Element[keyof Element] {
-  return name in el
-    ? // @ts-expect-error TS doesn't like us accessing the value directly here.
-      (el[name] as string | undefined)
-    : !xmlMode && rboolean.test(name)
-      ? getAttr(el, name, false) !== undefined
-      : getAttr(el, name, xmlMode);
+  if (name in el) {
+    // @ts-expect-error TS doesn't like us accessing the value directly here.
+    return el[name] as string | undefined;
+  }
+
+  if (!xmlMode && name === 'hidden') {
+    const value = getAttr(el, name, false);
+
+    return value === 'until-found' ? 'until-found' : value !== undefined;
+  }
+
+  if (!xmlMode && rboolean.test(name)) {
+    return getAttr(el, name, false) !== undefined;
+  }
+
+  return getAttr(el, name, xmlMode);
 }
 
 /**
@@ -263,17 +295,20 @@ function setProp(el: Element, name: string, value: unknown, xmlMode?: boolean) {
   if (name in el) {
     // @ts-expect-error Overriding value
     el[name] = value;
-  } else {
-    setAttr(
-      el,
-      name,
-      !xmlMode && rboolean.test(name)
-        ? value
-          ? ''
-          : null
-        : `${value as string}`,
-    );
+    return;
   }
+
+  if (!xmlMode && name === 'hidden') {
+    setAttr(el, name, isUntilFound(value) ? 'until-found' : value ? '' : null);
+    return;
+  }
+
+  if (!xmlMode && rboolean.test(name)) {
+    setAttr(el, name, value ? '' : null);
+    return;
+  }
+
+  setAttr(el, name, `${value as string}`);
 }
 
 interface StyleProp {
