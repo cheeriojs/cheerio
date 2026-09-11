@@ -1180,5 +1180,24 @@ describe('$(...)', () => {
         ).toStrictEqual(testAgainst);
       }
     });
+
+    it('(class) : should remove every occurrence of a duplicated class', () => {
+      // `removeClass` already does this, so `toggleClass` should agree with it.
+      const $p = load('<p class="a a b"></p>')('p');
+
+      $p.toggleClass('a');
+
+      expect($p.attr('class')).toBe('b');
+    });
+
+    it('(class) : should agree with removeClass on the same input', () => {
+      const toggled = load('<p class="x x y x"></p>')('p');
+      const removed = load('<p class="x x y x"></p>')('p');
+
+      toggled.toggleClass('x');
+      removed.removeClass('x');
+
+      expect(toggled.attr('class')).toBe(removed.attr('class'));
+    });
   });
 });
