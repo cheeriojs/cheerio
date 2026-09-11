@@ -96,6 +96,19 @@ describe('$(...)', () => {
       expect(q('.a').find(':scope')).toHaveLength(1);
     });
 
+    it('should support :scope on the document root', () => {
+      const q = load(
+        '<wrapper><collection><id value="nested"/></collection></wrapper><collection><id value="a"/></collection><collection><id value="b"/></collection>',
+        { xml: true },
+        false,
+      );
+      expect(
+        q(':scope > collection > id')
+          .map((_, el) => q(el).attr('value'))
+          .get(),
+      ).toStrictEqual(['a', 'b']);
+    });
+
     it('should query case-sensitively when in xml mode', () => {
       const q = load('<caseSenSitive allTheWay>', { xml: true });
       expect(q('caseSenSitive')).toHaveLength(1);

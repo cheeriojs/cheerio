@@ -26,6 +26,117 @@ import type { AcceptedFilters, FilterFunction } from '../types.js';
 import { domEach, isCheerio } from '../utils.js';
 
 const reContextSelector = /^\s*(?:[+~]|:scope\b)/;
+const reScopeSelector = /^\s*:scope\b/;
+const reWhitespace = /\s/;
+
+function getDocumentRootScopeSelector(selector: string): string | null {
+  const scopeMatch = reScopeSelector.exec(selector);
+
+  if (!scopeMatch) {
+    return null;
+  }
+
+  const afterScope = scopeMatch[0].length;
+  const afterWhitespace = findNextNonWhitespace(selector, afterScope);
+
+  if (afterWhitespace >= selector.length) {
+    return '';
+  }
+
+  if (selector[afterWhitespace] === '>') {
+    const childSelectorStart = findNextNonWhitespace(
+      selector,
+      afterWhitespace + 1,
+    );
+    const childSelectorEnd = findSelectorBoundary(selector, childSelectorStart);
+
+    if (childSelectorStart === childSelectorEnd) {
+      return null;
+    }
+
+    const childSelector = selector.slice(childSelectorStart, childSelectorEnd);
+    const remainingSelector = selector.slice(childSelectorEnd);
+
+    return `:root:is(${childSelector})${remainingSelector}`;
+  }
+
+  return afterWhitespace > afterScope ? selector.slice(afterWhitespace) : null;
+}
+
+function findNextNonWhitespace(selector: string, start: number): number {
+  let index = start;
+
+  while (index < selector.length && reWhitespace.test(selector[index])) {
+    index++;
+  }
+
+  return index;
+}
+
+function findSelectorBoundary(selector: string, start: number): number {
+  let quote: string | null = null;
+  let bracketDepth = 0;
+  let parenDepth = 0;
+
+  for (let index = start; index < selector.length; index++) {
+    const char = selector[index];
+
+    if (char === '\\') {
+      index++;
+      continue;
+    }
+
+    if (quote) {
+      if (char === quote) {
+        quote = null;
+      }
+
+      continue;
+    }
+
+    if (char === '"' || char === "'") {
+      quote = char;
+      continue;
+    }
+
+    if (char === '[') {
+      bracketDepth++;
+      continue;
+    }
+
+    if (char === ']') {
+      bracketDepth--;
+      continue;
+    }
+
+    if (bracketDepth > 0) {
+      continue;
+    }
+
+    if (char === '(') {
+      parenDepth++;
+      continue;
+    }
+
+    if (char === ')') {
+      parenDepth--;
+      continue;
+    }
+
+    if (
+      parenDepth === 0 &&
+      (char === '>' ||
+        char === '+' ||
+        char === '~' ||
+        char === ',' ||
+        reWhitespace.test(char))
+    ) {
+      return index;
+    }
+  }
+
+  return selector.length;
+}
 
 /**
  * Get the descendants of each element in the current set of matched elements,
@@ -99,6 +210,24 @@ export function _findBySelector<T extends AnyNode>(
     pseudos: this.options.pseudos,
     quirksMode: this.options.quirksMode,
   };
+
+  if (context.length === 1 && isDocument(context[0])) {
+    // `cheerio-select` only matches elements, so Document roots need special handling for `:scope`.
+    const documentRootScopeSelector = getDocumentRootScopeSelector(selector);
+
+    if (documentRootScopeSelector !== null) {
+      return this._make(
+        documentRootScopeSelector.length === 0
+          ? []
+          : select.select(
+              documentRootScopeSelector,
+              this.children().toArray(),
+              options,
+              limit,
+            ),
+      );
+    }
+  }
 
   return this._make(select.select(selector, elems, options, limit));
 }
