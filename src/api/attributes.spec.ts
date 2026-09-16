@@ -349,6 +349,131 @@ describe('$(...)', () => {
       expect($(undefined).prop('src')).toBeUndefined();
     });
 
+    it('("href") : should resolve all elements that reflect `href`', () => {
+      const $ = load(
+        `
+          <a id="1" href="a.html">link</a>
+          <area id="2" href="area.html">
+          <link id="3" href="style.css">
+          <base id="4" href="base.html">
+        `,
+        { baseURI: 'http://example.com/page/1' },
+      );
+
+      expect($('#1').prop('href')).toBe('http://example.com/page/a.html');
+      expect($('#2').prop('href')).toBe('http://example.com/page/area.html');
+      expect($('#3').prop('href')).toBe('http://example.com/page/style.css');
+      expect($('#4').prop('href')).toBe('http://example.com/page/base.html');
+    });
+
+    it('("src") : should resolve all elements that reflect `src`', () => {
+      const $ = load(
+        `
+          <script id="1" src="app.js"></script>
+          <embed id="2" src="movie.swf">
+          <track id="3" src="subs.vtt">
+          <input id="4" type="image" src="button.png">
+          <video id="5" src="movie.mp4"></video>
+        `,
+        { baseURI: 'http://example.com/page/1' },
+      );
+
+      expect($('#1').prop('src')).toBe('http://example.com/page/app.js');
+      expect($('#2').prop('src')).toBe('http://example.com/page/movie.swf');
+      expect($('#3').prop('src')).toBe('http://example.com/page/subs.vtt');
+      expect($('#4').prop('src')).toBe('http://example.com/page/button.png');
+      expect($('#5').prop('src')).toBe('http://example.com/page/movie.mp4');
+    });
+
+    it('("href"/"src") : should resolve against an in-document `<base href>`', () => {
+      const $ = load(
+        `
+          <html>
+            <head><base href="/assets/"></head>
+            <body>
+              <a id="1" href="page.html">link</a>
+              <img id="2" src="image.png">
+            </body>
+          </html>
+        `,
+        { baseURI: 'http://example.com/page/1' },
+      );
+
+      expect($('#1').prop('href')).toBe('http://example.com/assets/page.html');
+      expect($('#2').prop('src')).toBe('http://example.com/assets/image.png');
+    });
+
+    it('("href") : should resolve a relative `<base href>` against the document URL', () => {
+      const $ = load(
+        '<head><base href="sub/"></head><a href="page.html">l</a>',
+        {
+          baseURI: 'http://example.com/page/1',
+        },
+      );
+
+      expect($('a').prop('href')).toBe('http://example.com/page/sub/page.html');
+    });
+
+    it('("href") : should ignore a `<base>` without a usable href', () => {
+      const withoutHref = load('<head><base></head><a href="page.html">l</a>', {
+        baseURI: 'http://example.com/page/1',
+      });
+      expect(withoutHref('a').prop('href')).toBe(
+        'http://example.com/page/page.html',
+      );
+
+      const invalid = load(
+        '<head><base href="http://"></head><a href="page.html">l</a>',
+        { baseURI: 'http://example.com/page/1' },
+      );
+      expect(invalid('a').prop('href')).toBe(
+        'http://example.com/page/page.html',
+      );
+    });
+
+    it('("href") : should skip a `<base>` without an href', () => {
+      const $ = load(
+        '<head><base><base href="/assets/"></head><a href="p.html">l</a>',
+        { baseURI: 'http://example.com/page/1' },
+      );
+
+      expect($('a').prop('href')).toBe('http://example.com/assets/p.html');
+    });
+
+    it('("href") : should ignore `data:` and `javascript:` base URLs', () => {
+      const data = load(
+        '<head><base href="data:text/html,x"></head><a href="p.html">l</a>',
+        { baseURI: 'http://example.com/page/1' },
+      );
+      expect(data('a').prop('href')).toBe('http://example.com/page/p.html');
+
+      const javascript = load(
+        '<head><base href="javascript:0"></head><a href="p.html">l</a>',
+        { baseURI: 'http://example.com/page/1' },
+      );
+      expect(javascript('a').prop('href')).toBe(
+        'http://example.com/page/p.html',
+      );
+    });
+
+    it('("href") : should use the first `<base href>` in the document', () => {
+      const $ = load(
+        '<head><base href="/first/"><base href="/second/"></head><a href="p.html">l</a>',
+        { baseURI: 'http://example.com/page/1' },
+      );
+
+      expect($('a').prop('href')).toBe('http://example.com/first/p.html');
+    });
+
+    it('("href") : should ignore `<base>` in XML mode', () => {
+      const $ = load('<head><base href="/assets/"/></head><a href="p.html"/>', {
+        baseURI: 'http://example.com/page/1',
+        xml: true,
+      });
+
+      expect($('a').prop('href')).toBe('http://example.com/page/p.html');
+    });
+
     it('("outerHTML") : should render properly', () => {
       const outerHtml = '<div><a></a></div>';
       const $a = $(outerHtml);
