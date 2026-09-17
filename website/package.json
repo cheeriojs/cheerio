@@ -28,7 +28,7 @@
     "hastscript": "^9.0.1",
     "marked": "^18.0.12",
     "react": "^19.2.5",
-    "react-dom": "^19.2.8",
+    "react-dom": "^19.3.0",
     "remark-directive": "^4.0.0",
     "tailwindcss": "^4.3.3",
     "unist-util-visit": "^5.1.0"
@@ -37,7 +37,7 @@
     "@astrojs/check": "^0.9.10",
     "@astrojs/markdown-remark": "^7.3.0",
     "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.7",
+    "@types/react-dom": "^19.3.0",
     "mdast-util-to-string": "^4.0.0",
     "typedoc": "^0.28.20",
     "typedoc-plugin-markdown": "^4.13.0",
