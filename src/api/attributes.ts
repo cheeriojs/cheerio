@@ -552,6 +552,29 @@ function setData(
 }
 
 /**
+ * Store a parsed data value as an own property, so a derived key such as
+ * `__proto__` from `data-__proto__` cannot reach the inherited setter and
+ * change the object's prototype. A browser's `dataset` exposes that key as an
+ * own enumerable property too.
+ *
+ * @param data - The data store to write to.
+ * @param key - The derived dataset key.
+ * @param value - The parsed value.
+ */
+function setDataValue(
+  data: Record<string, unknown>,
+  key: string,
+  value: unknown,
+): void {
+  Object.defineProperty(data, key, {
+    value,
+    writable: true,
+    enumerable: true,
+    configurable: true,
+  });
+}
+
+/**
  * Read _all_ HTML5 `data-*` attributes from the equivalent HTML5 `data-*`
  * attribute, and cache the value in the node's internal data store.
  *
@@ -571,7 +594,7 @@ function readAllData(el: DataElement): unknown {
     const jsName = camelCase(domName.slice(dataAttrPrefix.length));
 
     if (!Object.hasOwn(data, jsName)) {
-      data[jsName] = parseDataValue(domValue);
+      setDataValue(data, jsName, parseDataValue(domValue));
     }
   }
 
@@ -596,7 +619,7 @@ function readData(el: DataElement, name: string): unknown {
   }
 
   if (Object.hasOwn(el.attribs, domName)) {
-    data[name] = parseDataValue(el.attribs[domName]);
+    setDataValue(data, name, parseDataValue(el.attribs[domName]));
     return data[name];
   }
 
