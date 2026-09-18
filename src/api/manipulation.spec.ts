@@ -1632,7 +1632,7 @@ describe('$(...)', () => {
       $children.replaceWith($plum);
 
       /*
-       * jQuery replaces the remaining elements with copies and still consumes
+       * As in jQuery, the remaining elements get copies and still consume
        * the original: it is detached from its old position even though its
        * target no longer has a parent to insert it under.
        */
@@ -1640,6 +1640,21 @@ describe('$(...)', () => {
       expect($('.plum')).toHaveLength(2);
       expect($fruits.children()[0]).not.toBe($plum[0]);
       expect($fruits.children()[1]).not.toBe($plum[0]);
+      expect($plum[0].parent).toBe(null);
+    });
+
+    it('(fn) : should invoke the callback for a removed final target', () => {
+      const $children = $fruits.children();
+      const $plum = $('<li class="plum">Plum</li>');
+      const indices: number[] = [];
+
+      $children.last().remove();
+      $children.replaceWith((i) => {
+        indices.push(i);
+        return $plum;
+      });
+
+      expect(indices).toStrictEqual([0, 1, 2]);
       expect($plum[0].parent).toBe(null);
     });
 
@@ -1667,6 +1682,40 @@ describe('$(...)', () => {
       $a('a').replaceWith((_, el: AnyNode) => el);
       $a('a').replaceWith(replacement);
       expect($a.html()).toBe(replacement);
+    });
+
+    it.each([0, 1, 2])(
+      '(self) : should preserve every sibling when replacing child %i with itself',
+      (index) => {
+        const children = $fruits.children().get();
+
+        $fruits
+          .children()
+          .eq(index)
+          .replaceWith((_, el: AnyNode) => el);
+
+        expect($fruits.children()).toHaveLength(children.length);
+        for (const [i, child] of children.entries()) {
+          expect($fruits.children()[i]).toBe(child);
+          expect(child.parent).toBe($fruits[0]);
+          expect(child.prev).toBe(children[i - 1] ?? null);
+          expect(child.next).toBe(children[i + 1] ?? null);
+        }
+      },
+    );
+
+    it('(self) : should preserve replacements containing the target and its siblings', () => {
+      const children = $fruits.children().get();
+
+      $fruits.children().eq(1).replaceWith(children);
+
+      expect($fruits.children()).toHaveLength(children.length);
+      for (const [i, child] of children.entries()) {
+        expect($fruits.children()[i]).toBe(child);
+        expect(child.parent).toBe($fruits[0]);
+        expect(child.prev).toBe(children[i - 1] ?? null);
+        expect(child.next).toBe(children[i + 1] ?? null);
+      }
     });
 
     it('(str) : should accept strings', () => {

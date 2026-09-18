@@ -907,6 +907,7 @@ export function replaceWith<T extends AnyNode>(
 
     const { parent } = el;
     const siblings: AnyNode[] | undefined = parent?.children;
+    const replacesSelf = dom.includes(el);
 
     /*
      * In the case that `dom` contains nodes that already exist in other
@@ -914,7 +915,11 @@ export function replaceWith<T extends AnyNode>(
      * even when the element was removed from the document: the replacement
      * is consumed, although there is nowhere to insert it.
      */
-    updateDOM(dom, null);
+    // Keep the target in place until its insertion position is known.
+    updateDOM(
+      parent && replacesSelf ? dom.filter((node) => node !== el) : dom,
+      null,
+    );
 
     if (!(parent && siblings)) {
       return;
@@ -923,9 +928,12 @@ export function replaceWith<T extends AnyNode>(
     const index = siblings.indexOf(el);
 
     // Completely remove old element
-    uniqueSplice(siblings, index, 1, dom, parent);
+    if (replacesSelf) {
+      removeElement(el);
+    }
+    uniqueSplice(siblings, index, replacesSelf ? 0 : 1, dom, parent);
 
-    if (!dom.includes(el)) {
+    if (!replacesSelf) {
       el.parent = el.prev = el.next = null;
     }
   });
