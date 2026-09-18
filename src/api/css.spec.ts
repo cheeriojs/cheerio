@@ -133,6 +133,101 @@ describe('$(...)', () => {
           'url(data:image/png;base64,iVBORw0KGgo)',
         );
       });
+
+      it('should not split data URIs whose tail contains a colon (#5410)', () => {
+        const background =
+          'url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'/>")';
+        const el = cheerio('<div></div>');
+        el.attr('style', `background:${background}`);
+        expect(el.css()).toStrictEqual({ background });
+
+        el.css('color', 'red');
+        expect(el.css()).toStrictEqual({ background, color: 'red' });
+        expect(el.attr('style')).toStrictEqual(
+          `background: ${background}; color: red;`,
+        );
+      });
+
+      it('should recognize comments inside non-url functions', () => {
+        const el = cheerio('<div></div>');
+        el.attr('style', 'width: calc(1px + /* ( */ 2px); color: red');
+        expect(el.css()).toStrictEqual({
+          width: 'calc(1px + /* ( */ 2px)',
+          color: 'red',
+        });
+      });
+
+      it('should not enter quote mode from an apostrophe in a comment', () => {
+        const el = cheerio('<div></div>');
+        el.attr('style', "width: calc(100% /* it's 100 */); color: red");
+        expect(el.css()).toStrictEqual({
+          width: "calc(100% /* it's 100 */)",
+          color: 'red',
+        });
+      });
+
+      it('should not split inside braces or brackets', () => {
+        const el = cheerio('<div></div>');
+        el.attr(
+          'style',
+          '--theme: { color: red; background: blue }; margin: 0',
+        );
+        expect(el.css()).toStrictEqual({
+          '--theme': '{ color: red; background: blue }',
+          margin: '0',
+        });
+      });
+
+      it('should not treat a function whose name ends in url as url()', () => {
+        const el = cheerio('<div></div>');
+        el.attr('style', '--x: myurl(/* ( */ value); color: red');
+        expect(el.css()).toStrictEqual({
+          '--x': 'myurl(/* ( */ value)',
+          color: 'red',
+        });
+      });
+
+      it('should still recognize an uppercase URL() token', () => {
+        const el = cheerio('<div></div>');
+        el.attr('style', 'background: URL(https://host/*); color: red');
+        expect(el.css()).toStrictEqual({
+          background: 'URL(https://host/*)',
+          color: 'red',
+        });
+      });
+
+      it('should treat comment markers inside url() as data', () => {
+        const el = cheerio('<div></div>');
+        el.attr('style', 'background: url(https://host/*); color: red');
+        expect(el.css()).toStrictEqual({
+          background: 'url(https://host/*)',
+          color: 'red',
+        });
+      });
+
+      it('should not split on semicolons inside quoted strings', () => {
+        const el = cheerio('<div></div>');
+        el.attr('style', "content: 'a;b'; color: red");
+        expect(el.css()).toStrictEqual({ content: "'a;b'", color: 'red' });
+      });
+
+      it('should not track parentheses inside comments', () => {
+        const el = cheerio('<div></div>');
+        el.attr('style', 'color: red/*(*/; background: blue');
+        expect(el.css()).toStrictEqual({
+          color: 'red/*(*/',
+          background: 'blue',
+        });
+      });
+
+      it('should treat escaped characters as data', () => {
+        const el = cheerio('<div></div>');
+        el.attr('style', 'font-family: foo\\(bar; color: red');
+        expect(el.css()).toStrictEqual({
+          'font-family': 'foo\\(bar',
+          color: 'red',
+        });
+      });
     });
   });
 });
