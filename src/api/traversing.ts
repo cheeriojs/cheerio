@@ -346,6 +346,7 @@ export function closest<T extends AnyNode>(
   }
 
   const selectOpts = {
+    ...this.options,
     xmlMode: this.options.xmlMode,
     root: this._root?.[0],
   };
@@ -824,8 +825,8 @@ export function filterArray<T>(
   return typeof match === 'string'
     ? select.filter(match, nodes as unknown as AnyNode[], {
         ...options,
-        xmlMode,
-        root,
+        xmlMode: xmlMode ?? options?.xmlMode,
+        root: root ?? options?.root,
       })
     : nodes.filter(getFilterFn<T>(match));
 }
