@@ -131,6 +131,7 @@ function _getMatcher<P>(
           selector,
           this.options.xmlMode,
           this._root?.[0],
+          this.options,
         );
       }
 
@@ -794,7 +795,13 @@ export function filter<T>(
   match: AcceptedFilters<T>,
 ): Cheerio<unknown> {
   return this._make<unknown>(
-    filterArray(this.toArray(), match, this.options.xmlMode, this._root?.[0]),
+    filterArray(
+      this.toArray(),
+      match,
+      this.options.xmlMode,
+      this._root?.[0],
+      this.options,
+    ),
   );
 }
 
@@ -805,15 +812,21 @@ export function filter<T>(
  * @param match - Selector or predicate used to keep nodes.
  * @param xmlMode - Whether selector matching should use XML mode.
  * @param root - Optional document root used for selector matching.
+ * @param options - Options used for selector matching.
  */
 export function filterArray<T>(
   nodes: T[],
   match: AcceptedFilters<T>,
   xmlMode?: boolean,
   root?: Document,
+  options?: select.Options,
 ): Element[] | T[] {
   return typeof match === 'string'
-    ? select.filter(match, nodes as unknown as AnyNode[], { xmlMode, root })
+    ? select.filter(match, nodes as unknown as AnyNode[], {
+        ...options,
+        xmlMode,
+        root,
+      })
     : nodes.filter(getFilterFn<T>(match));
 }
 

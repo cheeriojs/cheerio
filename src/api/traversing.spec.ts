@@ -174,6 +174,23 @@ describe('$(...)', () => {
   });
 
   describe('.children', () => {
+    it('should apply custom string pseudos', () => {
+      const q = load(fruits, { pseudos: { fruit: '.apple' } });
+      expect(q('ul').children(':fruit').text()).toBe('Apple');
+    });
+
+    it('should apply custom function pseudos', () => {
+      const q = load(fruits, {
+        pseudos: { fruit: (el) => el.attribs['class'] === 'apple' },
+      });
+      expect(q('ul').children(':fruit').text()).toBe('Apple');
+    });
+
+    it('should apply quirks mode to class selectors', () => {
+      const q = load(fruits, { quirksMode: true });
+      expect(q('ul').children('.APPLE').text()).toBe('Apple');
+    });
+
     it('() : should get all children', () => {
       expect($('ul').children()).toHaveLength(3);
     });
@@ -1024,6 +1041,23 @@ describe('$(...)', () => {
   });
 
   describe('.filter', () => {
+    it('should apply custom string pseudos', () => {
+      const q = load(fruits, { pseudos: { fruit: '.apple' } });
+      expect(q('li').filter(':fruit').text()).toBe('Apple');
+    });
+
+    it('should apply custom function pseudos', () => {
+      const q = load(fruits, {
+        pseudos: { fruit: (el) => el.attribs['class'] === 'apple' },
+      });
+      expect(q('li').filter(':fruit').text()).toBe('Apple');
+    });
+
+    it('should apply quirks mode to class selectors', () => {
+      const q = load(fruits, { quirksMode: true });
+      expect(q('li').filter('.APPLE').text()).toBe('Apple');
+    });
+
     it('(selector) : should reduce the set of matched elements to those that match the selector', () => {
       const pear = $('li').filter('.pear').text();
       expect(pear).toBe('Pear');
@@ -1071,6 +1105,15 @@ describe('$(...)', () => {
       // Matches jQuery, which winnows a nullish filter down to no matches.
       expect($('li').filter(null as never)).toHaveLength(0);
       expect($('li').filter(undefined as never)).toHaveLength(0);
+    });
+  });
+
+  describe('.filterArray', () => {
+    it('should preserve the XML mode and root arguments', () => {
+      const q = load('<Root><Child/></Root>', { xml: true });
+      expect(
+        q('*').filterArray(q('*').toArray(), 'Root', true, q.root()[0]),
+      ).toEqual([q('Root')[0]]);
     });
   });
 
