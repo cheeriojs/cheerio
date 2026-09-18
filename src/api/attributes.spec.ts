@@ -783,6 +783,48 @@ describe('$(...)', () => {
       expect(obj).toBeInstanceOf($);
     });
 
+    it('(KEY) : should remove regardless of case in HTML documents', () => {
+      const $fruits = $('#fruits');
+      expect($fruits.attr('id')).not.toBeUndefined();
+      $fruits.removeAttr('ID');
+      expect($fruits.attr('id')).toBeUndefined();
+    });
+
+    it('(key) : should keep SVG attribute names case-sensitive', () => {
+      const $svg = load('<svg viewBox="0 0 10 10"></svg>');
+      expect($svg('svg').attr('viewBox')).toBe('0 0 10 10');
+      // SVG attribute names are case-sensitive, so a lowercase lookup
+      // must not remove the case-preserved attribute.
+      $svg('svg').removeAttr('viewbox');
+      expect($svg('svg').attr('viewBox')).toBe('0 0 10 10');
+      $svg('svg').removeAttr('viewBox');
+      expect($svg('svg').attr('viewBox')).toBeUndefined();
+    });
+
+    it('(key) : should remove attributes created with mixed case via attr()', () => {
+      const $el = $('.apple');
+      $el.attr('DATA-X', 'value');
+      // Cross-case removal: stored uppercase, removed lowercase.
+      $el.removeAttr('data-x');
+      expect($el.attr('DATA-X')).toBeUndefined();
+      expect($el.attr('data-x')).toBeUndefined();
+    });
+
+    it('(KEY) : should fold only ASCII characters', () => {
+      const $el = $('.apple');
+      $el.attr('data-K', 'kelvin');
+      $el.removeAttr('data-k');
+      expect($el.attr('data-K')).toBe('kelvin');
+    });
+
+    it('(KEY) : should stay case-sensitive in XML documents', () => {
+      const $xml = load('<food ID="fruits" id="other"/>', { xml: true });
+      const $food = $xml('food');
+      $food.removeAttr('ID');
+      expect($food.attr('ID')).toBeUndefined();
+      expect($food.attr('id')).toBe('other');
+    });
+
     it('(key) : should skip text nodes', () => {
       const $text = load(mixedText);
       const $body = $text($text('body')[0].children);
