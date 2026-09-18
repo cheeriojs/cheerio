@@ -139,7 +139,7 @@
     "husky": "^9.1.7",
     "jquery": "^4.0.0",
     "jsdom": "^30.0.1",
-    "lint-staged": "^17.5.0",
+    "lint-staged": "^17.5.1",
     "prettier-plugin-jsdoc": "^1.8.1",
     "tinybench": "^6.2.0",
     "tshy": "^4.1.3",
