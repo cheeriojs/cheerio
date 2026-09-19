@@ -61,7 +61,8 @@ console.log('By attribute:', $('[data-kind=note]').text());
 
 `cheerio.load()` returns the `$` function used to select elements. Calling it
 returns a Cheerio selection, which has methods such as `.text()`, `.html()`, and
-`.find()`. These methods belong to the selection, not to the `$` function itself.
+`.find()`. The `$` function also has document-wide `$.text()` and `$.html()`
+helpers, but `.find()` is a method on a selection, not on `$` itself.
 
 The callback passed to `.each()` receives a raw DOM element, rather than a
 Cheerio selection. Wrap it with `$()` before calling selection methods:
