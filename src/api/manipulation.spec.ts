@@ -1574,7 +1574,7 @@ describe('$(...)', () => {
       expect($fruits.children()[1]).toBe($('.apple')[0]);
     });
 
-    it('(elem) : should replace every selected element with a copy', () => {
+    it('(elem) : should copy content for every target except the last', () => {
       const $plum = $('<li class="plum">Plum</li>');
 
       $fruits.children().replaceWith($plum);
@@ -1601,7 +1601,7 @@ describe('$(...)', () => {
       expect($('.plum b')[0]).not.toBe($('.plum b')[1]);
     });
 
-    it('(Array) : should replace every selected element with a copy of the array', () => {
+    it('(Array) : should copy content for every target except the last', () => {
       const more = $(
         '<li class="plum">Plum</li><li class="grape">Grape</li>',
       ).get();
@@ -1615,7 +1615,7 @@ describe('$(...)', () => {
       expect($fruits.children()[5]).toBe(more[1]);
     });
 
-    it('(fn) : should replace every selected element with a copy of the returned node', () => {
+    it('(fn) : should copy returned content for every target except the last', () => {
       const $plum = $('<li class="plum">Plum</li>');
 
       $fruits.children().replaceWith(() => $plum);
@@ -1703,6 +1703,32 @@ describe('$(...)', () => {
         }
       },
     );
+
+    it('(self) : should copy callback targets except the last in a selection', () => {
+      const before = $fruits.children().get();
+      const html = $.html($fruits);
+
+      $fruits.children().replaceWith((_, el: AnyNode) => el);
+
+      const after = $fruits.children().get();
+      expect($.html($fruits)).toBe(html);
+      expect(after).toHaveLength(before.length);
+      expect(after.map((child, i) => child === before[i])).toStrictEqual([
+        false,
+        false,
+        true,
+      ]);
+      expect(before.map((child) => child.parent)).toStrictEqual([
+        null,
+        null,
+        $fruits[0],
+      ]);
+      for (const [i, child] of after.entries()) {
+        expect(child.parent).toBe($fruits[0]);
+        expect(child.prev).toBe(after[i - 1] ?? null);
+        expect(child.next).toBe(after[i + 1] ?? null);
+      }
+    });
 
     it('(self) : should preserve replacements containing the target and its siblings', () => {
       const children = $fruits.children().get();

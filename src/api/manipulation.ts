@@ -885,6 +885,9 @@ export function remove<T extends AnyNode>(
  *
  * If more than one element is selected, every element but the last one is
  * replaced with a copy of `content`, as a node can only exist in one place.
+ * This also applies to nodes returned by a callback, including the target itself.
+ * If the last selected element has no parent, the original replacement nodes
+ * are detached from their previous location without being inserted.
  *
  * @param content - Replacement for matched elements.
  * @returns The instance itself.

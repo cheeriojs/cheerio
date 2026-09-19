@@ -220,6 +220,11 @@ const $item = $('<li>Item</li>');
 $('li').replaceWith($item);
 ```
 
+The same copying rule applies to nodes returned by a callback, even when the
+callback returns the element being replaced. If the last selected element has
+already been removed, the original replacement nodes are detached from their
+previous location without being inserted. Earlier targets still receive copies.
+
 Note that the `replaceWith()` method removes the element from the document and
 replaces it with the given element or HTML string. If you want to keep the
 element and modify its contents, you can use the `html()` or `text()` methods
