@@ -21,7 +21,7 @@
     "@astrojs/sitemap": "^3.7.4",
     "@codesandbox/sandpack-react": "^2.20.0",
     "@docsearch/css": "^5.1.0",
-    "@docsearch/js": "^5.0.5",
+    "@docsearch/js": "^5.1.0",
     "@lucide/astro": "^1.45.0",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.2",
