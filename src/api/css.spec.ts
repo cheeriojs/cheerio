@@ -27,6 +27,16 @@ describe('$(...)', () => {
       expect(el.eq(1).attr('style')).toBe('color: red;');
     });
 
+    it('(prop, val): should leave other declarations untouched', () => {
+      const el = cheerio(
+        `<li style="background: url(&quot;data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg'/&gt;&quot;)">`,
+      );
+      el.css('color', 'red');
+      expect(el.attr('style')).toBe(
+        `background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'/>"); color: red;`,
+      );
+    });
+
     it('(prop, val) : should skip text nodes', () => {
       const $text = load(mixedText);
       const $body = $text($text('body')[0].children);
@@ -131,6 +141,118 @@ describe('$(...)', () => {
         );
         expect(el.css('background-image')).toStrictEqual(
           'url(data:image/png;base64,iVBORw0KGgo)',
+        );
+      });
+
+      it('should not treat semicolons inside parentheses as separators', () => {
+        const el = cheerio(
+          '<li style="background: linear-gradient(red, url(a;b:c)); color: blue;">',
+        );
+        expect(el.css()).toStrictEqual({
+          background: 'linear-gradient(red, url(a;b:c))',
+          color: 'blue',
+        });
+      });
+
+      it('should not treat semicolons inside quotes as separators', () => {
+        const el = cheerio(`<li style="content: 'a;b:c'; color: blue;">`);
+        expect(el.css()).toStrictEqual({
+          content: `'a;b:c'`,
+          color: 'blue',
+        });
+      });
+
+      it('should keep a data URI containing a colon after its semicolon', () => {
+        const el = cheerio(
+          `<li style="background: url(&quot;data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg'/&gt;&quot;)">`,
+        );
+        expect(el.css()).toStrictEqual({
+          background: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'/>")`,
+        });
+      });
+
+      it('should not end a quoted value at an escaped quote', () => {
+        const el = cheerio(
+          String.raw`<li style="content: &quot;a\&quot;;b:c&quot;; color: blue;">`,
+        );
+        expect(el.css()).toStrictEqual({
+          content: String.raw`"a\";b:c"`,
+          color: 'blue',
+        });
+      });
+
+      it('should not end a block at an escaped closing bracket', () => {
+        const el = cheerio(
+          String.raw`<li style="background: url(foo\);bar:baz); color: blue;">`,
+        );
+        expect(el.css()).toStrictEqual({
+          background: String.raw`url(foo\);bar:baz)`,
+          color: 'blue',
+        });
+      });
+
+      it('should not open a string at an escaped quote', () => {
+        const el = cheerio(
+          String.raw`<li style="--a: b\&quot;c; color: blue;">`,
+        );
+        expect(el.css()).toStrictEqual({
+          '--a': String.raw`b\"c`,
+          color: 'blue',
+        });
+      });
+
+      it('should not split declarations at an escaped semicolon', () => {
+        const el = cheerio(String.raw`<li style="--a: red\;; color: blue;">`);
+        expect(el.css()).toStrictEqual({
+          '--a': String.raw`red\;`,
+          color: 'blue',
+        });
+      });
+
+      it('should not treat separators inside brackets and braces as separators', () => {
+        const el = cheerio(
+          '<li style="--theme: { fg: red; bg: blue }; grid-template-columns: [a;b] 1fr; color: black;">',
+        );
+        expect(el.css()).toStrictEqual({
+          '--theme': '{ fg: red; bg: blue }',
+          'grid-template-columns': '[a;b] 1fr',
+          color: 'black',
+        });
+      });
+
+      it('should not read a comment as part of a value', () => {
+        const el = cheerio(
+          `<li style="color: red /* &quot; ( don't ; */; background: blue;">`,
+        );
+        expect(el.css()).toStrictEqual({
+          color: `red /* " ( don't ; */`,
+          background: 'blue',
+        });
+      });
+
+      it('should not lose declarations after an unbalanced bracket', () => {
+        const el = cheerio('<li style="background: url(a[b); color: blue;">');
+        expect(el.css()).toStrictEqual({
+          background: 'url(a[b)',
+          color: 'blue',
+        });
+      });
+
+      it('should not lose declarations after an unterminated comment', () => {
+        const el = cheerio('<li style="color: red; background: blue /* x">');
+        expect(el.css()).toStrictEqual({
+          color: 'red',
+          background: 'blue /* x',
+        });
+      });
+
+      it('(prop, val): should leave a comment untouched', () => {
+        const el = cheerio(
+          `<li style="color: red /* &quot; */; background: blue;">`,
+        );
+        el.css('margin', '0');
+        expect(el.attr('style')).toBe(
+          `color: red /* " */; background: blue; margin: 0;`,
         );
       });
     });
