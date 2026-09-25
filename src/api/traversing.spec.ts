@@ -174,6 +174,23 @@ describe('$(...)', () => {
   });
 
   describe('.children', () => {
+    it('should apply custom string pseudos', () => {
+      const q = load(fruits, { pseudos: { fruit: '.apple' } });
+      expect(q('ul').children(':fruit').text()).toBe('Apple');
+    });
+
+    it('should apply custom function pseudos', () => {
+      const q = load(fruits, {
+        pseudos: { fruit: (el) => el.attribs['class'] === 'apple' },
+      });
+      expect(q('ul').children(':fruit').text()).toBe('Apple');
+    });
+
+    it('should apply quirks mode to class selectors', () => {
+      const q = load(fruits, { quirksMode: true });
+      expect(q('ul').children('.APPLE').text()).toBe('Apple');
+    });
+
     it('() : should get all children', () => {
       expect($('ul').children()).toHaveLength(3);
     });
@@ -820,6 +837,23 @@ describe('$(...)', () => {
   });
 
   describe('.closest', () => {
+    it('should apply custom string pseudos', () => {
+      const q = load(fruits, { pseudos: { list: '#fruits' } });
+      expect(q('.apple').closest(':list').attr('id')).toBe('fruits');
+    });
+
+    it('should apply custom function pseudos', () => {
+      const q = load(fruits, {
+        pseudos: { list: (el) => el.attribs['id'] === 'fruits' },
+      });
+      expect(q('.apple').closest(':list').attr('id')).toBe('fruits');
+    });
+
+    it('should match selectors case-insensitively in quirks mode', () => {
+      const q = load(fruits, { quirksMode: true });
+      expect(q('.apple').closest('#FRUITS').attr('id')).toBe('fruits');
+    });
+
     it('() : should return an empty array', () => {
       const result = $('.orange').closest();
       expect(result).toHaveLength(0);
@@ -1024,6 +1058,23 @@ describe('$(...)', () => {
   });
 
   describe('.filter', () => {
+    it('should apply custom string pseudos', () => {
+      const q = load(fruits, { pseudos: { fruit: '.apple' } });
+      expect(q('li').filter(':fruit').text()).toBe('Apple');
+    });
+
+    it('should apply custom function pseudos', () => {
+      const q = load(fruits, {
+        pseudos: { fruit: (el) => el.attribs['class'] === 'apple' },
+      });
+      expect(q('li').filter(':fruit').text()).toBe('Apple');
+    });
+
+    it('should apply quirks mode to class selectors', () => {
+      const q = load(fruits, { quirksMode: true });
+      expect(q('li').filter('.APPLE').text()).toBe('Apple');
+    });
+
     it('(selector) : should reduce the set of matched elements to those that match the selector', () => {
       const pear = $('li').filter('.pear').text();
       expect(pear).toBe('Pear');
@@ -1071,6 +1122,55 @@ describe('$(...)', () => {
       // Matches jQuery, which winnows a nullish filter down to no matches.
       expect($('li').filter(null as never)).toHaveLength(0);
       expect($('li').filter(undefined as never)).toHaveLength(0);
+    });
+  });
+
+  describe('.filterArray', () => {
+    it('should preserve the XML mode argument', () => {
+      const q = load('<root><child/></root>', { xml: true });
+      const nodes = q('*').toArray();
+      expect(q('*').filterArray(nodes, 'ROOT', true)).toEqual([]);
+      expect(q('*').filterArray(nodes, 'ROOT', false)).toEqual([q('root')[0]]);
+    });
+
+    it('should use XML mode from the selector options when omitted', () => {
+      const q = load('<root><child/></root>', { xml: true });
+      expect(
+        q('*').filterArray(q('*').toArray(), 'ROOT', undefined, undefined, {
+          xmlMode: true,
+        }),
+      ).toEqual([]);
+    });
+
+    it('should prefer the XML mode argument over the selector options', () => {
+      const q = load('<root><child/></root>', { xml: true });
+      expect(
+        q('*').filterArray(q('*').toArray(), 'ROOT', false, undefined, {
+          xmlMode: true,
+        }),
+      ).toEqual([q('root')[0]]);
+    });
+
+    it('should use the root from the selector options when omitted', () => {
+      const q = load('<ul><li>first</li></ul>');
+      const other = load('<ul><li>second</li></ul>');
+      const nodes = [...q('li').toArray(), ...other('li').toArray()];
+      expect(
+        q('*').filterArray(nodes, 'ul:first li', undefined, undefined, {
+          root: other.root()[0],
+        }),
+      ).toEqual(other('li').toArray());
+    });
+
+    it('should prefer the root argument over the selector options', () => {
+      const q = load('<ul><li>first</li></ul>');
+      const other = load('<ul><li>second</li></ul>');
+      const nodes = [...q('li').toArray(), ...other('li').toArray()];
+      expect(
+        q('*').filterArray(nodes, 'ul:first li', undefined, other.root()[0], {
+          root: q.root()[0],
+        }),
+      ).toEqual(other('li').toArray());
     });
   });
 
