@@ -1574,6 +1574,90 @@ describe('$(...)', () => {
       expect($fruits.children()[1]).toBe($('.apple')[0]);
     });
 
+    it('(elem) : should copy content for every target except the last', () => {
+      const $plum = $('<li class="plum">Plum</li>');
+
+      $fruits.children().replaceWith($plum);
+
+      const children = $fruits.children();
+      expect(children).toHaveLength(3);
+      expect($('.plum')).toHaveLength(3);
+      // Only the last element receives the original node
+      expect(children[0]).not.toBe($plum[0]);
+      expect(children[1]).not.toBe($plum[0]);
+      expect(children[2]).toBe($plum[0]);
+    });
+
+    it('(elem) : should copy the descendants of the replacement', () => {
+      const $plum = $('<li class="plum">Plum <b>!</b></li>');
+
+      $fruits.children().replaceWith($plum);
+
+      expect($.html($fruits)).toBe(
+        `<ul id="fruits">${'<li class="plum">Plum <b>!</b></li>'.repeat(3)}</ul>`,
+      );
+      // The copies are distinct nodes, not shared references
+      expect($('.plum b')).toHaveLength(3);
+      expect($('.plum b')[0]).not.toBe($('.plum b')[1]);
+    });
+
+    it('(Array) : should copy content for every target except the last', () => {
+      const more = $(
+        '<li class="plum">Plum</li><li class="grape">Grape</li>',
+      ).get();
+
+      $fruits.children().replaceWith(more);
+
+      expect($fruits.children()).toHaveLength(6);
+      expect($('.plum')).toHaveLength(3);
+      expect($('.grape')).toHaveLength(3);
+      expect($fruits.children()[4]).toBe(more[0]);
+      expect($fruits.children()[5]).toBe(more[1]);
+    });
+
+    it('(fn) : should copy returned content for every target except the last', () => {
+      const $plum = $('<li class="plum">Plum</li>');
+
+      $fruits.children().replaceWith(() => $plum);
+
+      expect($('.plum')).toHaveLength(3);
+      expect($fruits.children()[2]).toBe($plum[0]);
+    });
+
+    it('(elem) : should consume the replacement when the last element was removed', () => {
+      const $children = $fruits.children();
+      const $plum = $('<li class="plum">Plum</li>');
+
+      $children.last().remove();
+      $children.replaceWith($plum);
+
+      /*
+       * As in jQuery, the remaining elements get copies and still consume
+       * the original: it is detached from its old position even though its
+       * target no longer has a parent to insert it under.
+       */
+      expect($fruits.children()).toHaveLength(2);
+      expect($('.plum')).toHaveLength(2);
+      expect($fruits.children()[0]).not.toBe($plum[0]);
+      expect($fruits.children()[1]).not.toBe($plum[0]);
+      expect($plum[0].parent).toBe(null);
+    });
+
+    it('(fn) : should invoke the callback for a removed final target', () => {
+      const $children = $fruits.children();
+      const $plum = $('<li class="plum">Plum</li>');
+      const indices: number[] = [];
+
+      $children.last().remove();
+      $children.replaceWith((i) => {
+        indices.push(i);
+        return $plum;
+      });
+
+      expect(indices).toStrictEqual([0, 1, 2]);
+      expect($plum[0].parent).toBe(null);
+    });
+
     it('(elem) : should NOP if removed', () => {
       const $pear = $('.pear');
       const $plum = $('<li class="plum">Plum</li>');
@@ -1598,6 +1682,66 @@ describe('$(...)', () => {
       $a('a').replaceWith((_, el: AnyNode) => el);
       $a('a').replaceWith(replacement);
       expect($a.html()).toBe(replacement);
+    });
+
+    it.each([0, 1, 2])(
+      '(self) : should preserve every sibling when replacing child %i with itself',
+      (index) => {
+        const children = $fruits.children().get();
+
+        $fruits
+          .children()
+          .eq(index)
+          .replaceWith((_, el: AnyNode) => el);
+
+        expect($fruits.children()).toHaveLength(children.length);
+        for (const [i, child] of children.entries()) {
+          expect($fruits.children()[i]).toBe(child);
+          expect(child.parent).toBe($fruits[0]);
+          expect(child.prev).toBe(children[i - 1] ?? null);
+          expect(child.next).toBe(children[i + 1] ?? null);
+        }
+      },
+    );
+
+    it('(self) : should copy callback targets except the last in a selection', () => {
+      const before = $fruits.children().get();
+      const html = $.html($fruits);
+
+      $fruits.children().replaceWith((_, el: AnyNode) => el);
+
+      const after = $fruits.children().get();
+      expect($.html($fruits)).toBe(html);
+      expect(after).toHaveLength(before.length);
+      expect(after.map((child, i) => child === before[i])).toStrictEqual([
+        false,
+        false,
+        true,
+      ]);
+      expect(before.map((child) => child.parent)).toStrictEqual([
+        null,
+        null,
+        $fruits[0],
+      ]);
+      for (const [i, child] of after.entries()) {
+        expect(child.parent).toBe($fruits[0]);
+        expect(child.prev).toBe(after[i - 1] ?? null);
+        expect(child.next).toBe(after[i + 1] ?? null);
+      }
+    });
+
+    it('(self) : should preserve replacements containing the target and its siblings', () => {
+      const children = $fruits.children().get();
+
+      $fruits.children().eq(1).replaceWith(children);
+
+      expect($fruits.children()).toHaveLength(children.length);
+      for (const [i, child] of children.entries()) {
+        expect($fruits.children()[i]).toBe(child);
+        expect(child.parent).toBe($fruits[0]);
+        expect(child.prev).toBe(children[i - 1] ?? null);
+        expect(child.next).toBe(children[i + 1] ?? null);
+      }
     });
 
     it('(str) : should accept strings', () => {
