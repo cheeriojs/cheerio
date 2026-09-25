@@ -18,7 +18,10 @@ export function isCheerio<T>(
 }
 
 /**
- * Convert a string to camel case notation.
+ * Convert a `data-*` attribute name to its `dataset` key, using the rule from
+ * the HTML spec: a hyphen followed by an ASCII lower-case letter is removed and
+ * the letter upper-cased. Any other hyphen, and every other character, is left
+ * alone.
  *
  * @private
  * @category Utils
@@ -26,7 +29,7 @@ export function isCheerio<T>(
  * @returns String in camel case notation.
  */
 export function camelCase(str: string): string {
-  return str.replace(/[._-](\w|$)/g, (_, x) => (x as string).toUpperCase());
+  return str.replace(/-([a-z])/g, (_, x) => (x as string).toUpperCase());
 }
 
 /**
