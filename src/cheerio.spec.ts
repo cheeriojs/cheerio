@@ -312,11 +312,14 @@ describe('cheerio', () => {
       ['<!DOCTYPE ht\0ml>', '<!DOCTYPE ht\u{FFFD}ml>'],
     ])('should preserve an external doctype name in %s', (input, expected) => {
       const dom = parseDocument(`${input}<html></html>`);
+      const doctype = dom.children[0];
+      expect(doctype).toBeDefined();
+      const original = { ...doctype };
       const $ = cheerio.load(dom);
-      const original = { ...dom.children[0] };
 
       expect($.html()).toBe(`${expected}<html></html>`);
-      expect({ ...dom.children[0] }).toStrictEqual(original);
+      expect(dom.children[0]).toBe(doctype);
+      expect({ ...doctype }).toStrictEqual(original);
     });
 
     it('should preserve a doctype supplied as a single node or in an array', () => {
