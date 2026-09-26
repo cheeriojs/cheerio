@@ -585,6 +585,16 @@ describe('$(...)', () => {
       expect($('li').eq(2).data('foo')).toStrictEqual('bar');
     });
 
+    it('should set data when the selection starts with a text node', () => {
+      const $ = load('<div>text<span></span></div>');
+      const contents = $('div').contents();
+
+      expect(contents.data('foo', 'bar')).toBe(contents);
+      expect($('span').data('foo')).toBe('bar');
+      expect(contents.data({ baz: 'qux' })).toBe(contents);
+      expect($('span').data('baz')).toBe('qux');
+    });
+
     it('(map) : object map should set multiple data attributes', () => {
       const { data } = $('.linth').data({
         id: 'Cailler',
