@@ -134,51 +134,37 @@ function uniqueSplice(
     spliceCount,
     ...newElems,
   ];
-  const prev = spliceIdx === 0 ? null : array[spliceIdx - 1];
-  const next =
-    spliceIdx + spliceCount >= array.length
-      ? null
-      : array[spliceIdx + spliceCount];
-
   /*
    * Before splicing in new elements, ensure they do not already appear in the
    * current array.
    */
-  for (let idx = 0; idx < newElems.length; ++idx) {
-    const node = newElems[idx];
-    const oldParent = node.parent;
-
-    if (oldParent) {
-      const oldSiblings: AnyNode[] = oldParent.children;
-      const prevIdx = oldSiblings.indexOf(node);
-
-      if (prevIdx !== -1) {
-        oldParent.children.splice(prevIdx, 1);
-        if (parent === oldParent && spliceIdx > prevIdx) {
-          spliceArgs[0]--;
-        }
+  for (const node of newElems) {
+    if (node.parent === parent) {
+      const prevIdx = array.indexOf(node);
+      if (prevIdx !== -1 && spliceArgs[0] > prevIdx) {
+        spliceArgs[0]--;
       }
     }
+    removeElement(node);
+  }
 
+  const start = spliceArgs[0];
+  const prev = start === 0 ? null : array[start - 1];
+  const next =
+    start + spliceCount >= array.length ? null : array[start + spliceCount];
+
+  for (let idx = 0; idx < newElems.length; ++idx) {
+    const node = newElems[idx];
     node.parent = parent;
-
-    if (node.prev) {
-      node.prev.next = node.next ?? null;
-    }
-
-    if (node.next) {
-      node.next.prev = node.prev ?? null;
-    }
-
     node.prev = idx === 0 ? prev : newElems[idx - 1];
     node.next = idx === newElems.length - 1 ? next : newElems[idx + 1];
   }
 
   if (prev) {
-    prev.next = newElems[0];
+    prev.next = newElems[0] ?? next;
   }
   if (next) {
-    next.prev = newElems[newElems.length - 1];
+    next.prev = newElems[newElems.length - 1] ?? prev;
   }
   return array.splice(...spliceArgs);
 }
