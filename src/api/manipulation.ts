@@ -318,11 +318,11 @@ function _wrap(
   ) {
     const lastIdx = this.length - 1;
     const lastParent = this.parents().last();
-    const wrapperContext: Cheerio<AnyNode> | null =
-      lastParent.length > 0 ? lastParent : this._root;
 
     for (let i = 0; i < this.length; i++) {
       const el = this[i];
+      const wrapperContext: Cheerio<AnyNode> | null =
+        lastParent.length > 0 || isDocument(el) ? lastParent : this._root;
 
       const wrap =
         typeof wrapper === 'function'

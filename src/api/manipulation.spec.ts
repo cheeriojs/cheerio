@@ -234,6 +234,34 @@ describe('$(...)', () => {
   });
 
   describe('.wrapInner', () => {
+    it('(document) : should ignore a selector wrapper without ancestors', () => {
+      const root = $.root();
+      const html = $.html();
+
+      expect(root.wrapInner('.orange')).toBe(root);
+      expect($.html()).toBe(html);
+    });
+
+    it('(document) : should wrap fragment contents with markup', () => {
+      const fragment = load('<p>hello</p><p>world</p>', null, false);
+      fragment.root().wrapInner('<section></section>');
+
+      expect(fragment.html()).toBe(
+        '<section><p>hello</p><p>world</p></section>',
+      );
+    });
+
+    it('(selector) : should wrap the contents of a removed element', () => {
+      const doc = load(
+        '<span>hello</span><section id="template"><b></b></section>',
+      );
+      const item = doc('span').remove();
+      item.wrapInner('#template');
+
+      expect(item.html()).toBe('<section id="template"><b>hello</b></section>');
+      expect(doc('#template').html()).toBe('<b></b>');
+    });
+
     it('(Cheerio object) : should insert the element and add selected element(s) as its parent', () => {
       const $container = $('<div class="container"></div>') as Cheerio<Element>;
       $fruits.wrapInner($container);
