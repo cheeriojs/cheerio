@@ -228,6 +228,14 @@ export function attr<T extends AnyNode>(
 }
 
 /**
+ * Fields of domhandler's `Element` that are part of cheerio's internal tree
+ * representation rather than the DOM's own property surface: `name` holds the
+ * tag name and `type` the `ElementType` enum. They shadow the HTML attributes
+ * of the same name, so `prop()` has to resolve them as attributes instead.
+ */
+const domFields = new Set(['name', 'type']);
+
+/**
  * Gets a node's prop.
  *
  * @private
@@ -242,7 +250,7 @@ function getProp(
   name: string,
   xmlMode?: boolean,
 ): string | undefined | boolean | Element[keyof Element] {
-  return name in el
+  return name in el && !domFields.has(name)
     ? // @ts-expect-error TS doesn't like us accessing the value directly here.
       (el[name] as string | undefined)
     : !xmlMode && rboolean.test(name)
@@ -256,11 +264,11 @@ function getProp(
  * @private
  * @param el - The element to set the prop on.
  * @param name - The prop's name.
- * @param value - The prop's value.
+ * @param value - The new value.
  * @param xmlMode - Disable handling of special HTML attributes.
  */
 function setProp(el: Element, name: string, value: unknown, xmlMode?: boolean) {
-  if (name in el) {
+  if (name in el && !domFields.has(name)) {
     // @ts-expect-error Overriding value
     el[name] = value;
   } else {
