@@ -257,6 +257,39 @@ describe('$(...)', () => {
       expect(imgs.prop('data-foo')).toBeUndefined();
     });
 
+    /*
+     * `name` and `type` are fields of domhandler's `Element` (the tag name and
+     * the `ElementType` enum), so `prop` has to resolve them as the HTML
+     * attributes of the same name, the way the DOM does.
+     */
+    it('(valid key) : should get the `name` attribute, not the tag name', () => {
+      const input = $('input[name=checkbox_on]');
+      expect(input.prop('name')).toBe('checkbox_on');
+      expect(input.attr('name')).toBe('checkbox_on');
+      expect($('div#fruits').prop('name')).toBeUndefined();
+    });
+
+    it('(valid key) : should get the `type` attribute, not the node type', () => {
+      const input = $('input[name=checkbox_on]');
+      expect(input.prop('type')).toBe('checkbox');
+      expect(input.attr('type')).toBe('checkbox');
+      expect($('div#fruits').prop('type')).toBeUndefined();
+    });
+
+    it('(key, value) : should set the `name` and `type` attributes', () => {
+      const input = $('input[name=checkbox_on]').clone();
+      input.prop('name', 'renamed').prop('type', 'radio');
+      expect(input.prop('name')).toBe('renamed');
+      expect(input.attr('name')).toBe('renamed');
+      expect(input.prop('type')).toBe('radio');
+      expect(input.attr('type')).toBe('radio');
+      // The tag name must be untouched.
+      expect(input.prop('tagName')).toBe('INPUT');
+      expect(input.prop('outerHTML')).toBe(
+        '<input type="radio" name="renamed" value="on" checked="">',
+      );
+    });
+
     it('(key, value) : should ignore empty collection', () => {
       expect($(undefined).prop('checked')).toBeUndefined();
       $(undefined).prop('checked', true);
