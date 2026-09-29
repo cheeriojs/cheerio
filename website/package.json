@@ -40,7 +40,7 @@
     "@types/react-dom": "^19.3.0",
     "mdast-util-to-string": "^4.0.0",
     "typedoc": "^0.28.20",
-    "typedoc-plugin-markdown": "^4.13.0",
+    "typedoc-plugin-markdown": "^4.13.1",
     "typedoc-plugin-mdn-links": "^5.1.1",
     "typescript": "^6.0.3"
   },
