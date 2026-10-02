@@ -222,6 +222,15 @@ describe('$(...)', () => {
       expect($(undefined).prop('nodeName')).toBeUndefined();
     });
 
+    it('should return undefined for the style of non-element nodes', () => {
+      const $ = load('<div>text<!--comment--></div>');
+      const contents = $('div').contents();
+
+      expect(contents.eq(0).prop('style')).toBeUndefined();
+      expect(contents.eq(1).prop('style')).toBeUndefined();
+      expect($.root().prop('style')).toBeUndefined();
+    });
+
     it('(invalid key) : invalid prop should get undefined', () => {
       expect(checkbox.prop('lol')).toBeUndefined();
       expect(checkbox.prop(4 as never)).toBeUndefined();

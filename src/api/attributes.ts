@@ -430,6 +430,7 @@ export function prop<T extends AnyNode>(
 
     switch (name) {
       case 'style': {
+        if (!isTag(el)) return;
         const property = this.css() as StyleProp;
         const keys = Object.keys(property);
         for (let i = 0; i < keys.length; i++) {
