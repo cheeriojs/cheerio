@@ -712,6 +712,18 @@ describe('$(...)', () => {
       const val = $('select#multi-valueless').val();
       expect(val).toStrictEqual(['2', '3']);
     });
+    it('(): on multiple select should prefer value attributes over text content', () => {
+      const $multi = load(
+        '<select multiple><option value="a" selected>Alpha</option><option value="b" selected>Beta</option><option value="c">Gamma</option></select>',
+      )('select');
+      expect($multi.val()).toStrictEqual(['a', 'b']);
+    });
+    it('(): on multiple select should fall back to text for valueless options', () => {
+      const $multi = load(
+        '<select multiple><option value="a" selected>Alpha</option><option selected>Beta</option></select>',
+      )('select');
+      expect($multi.val()).toStrictEqual(['a', 'Beta']);
+    });
     it('(): with no selector matches should return nothing', () => {
       const val = $('.nasty').val();
       expect(val).toBeUndefined();
