@@ -882,6 +882,12 @@ export function remove<T extends AnyNode>(
  * //   </ul>
  * ```
  *
+ * If more than one element is selected, every element but the last one is
+ * replaced with a copy of `content`, as a node can only exist in one place.
+ * This also applies to nodes returned by a callback, including the target itself.
+ * If the last selected element has no parent, the original replacement nodes
+ * are detached from their previous location without being inserted.
+ *
  * @param content - Replacement for matched elements.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/replaceWith/}
@@ -890,29 +896,46 @@ export function replaceWith<T extends AnyNode>(
   this: Cheerio<T>,
   content: AcceptedElems<AnyNode>,
 ): Cheerio<T> {
-  return domEach(this, (el, i) => {
-    const { parent } = el;
-    if (!parent) {
-      return;
-    }
+  const lastIdx = this.length - 1;
 
-    const siblings: AnyNode[] = parent.children;
+  return domEach(this, (el, i) => {
     const cont =
       typeof content === 'function' ? content.call(el, i, el) : content;
-    const dom = this._makeDomArray(cont);
+    /*
+     * A node can only be in one place, so every element but the last one is
+     * replaced with a copy of the content, as in `_insert`.
+     */
+    const dom = this._makeDomArray(cont, i < lastIdx);
+
+    const { parent } = el;
+    const siblings: AnyNode[] | undefined = parent?.children;
+    const replacesSelf = dom.includes(el);
 
     /*
      * In the case that `dom` contains nodes that already exist in other
-     * structures, ensure those nodes are properly removed.
+     * structures, ensure those nodes are properly removed. jQuery does this
+     * even when the element was removed from the document: the replacement
+     * is consumed, although there is nowhere to insert it.
      */
-    updateDOM(dom, null);
+    // Keep the target in place until its insertion position is known.
+    updateDOM(
+      parent && replacesSelf ? dom.filter((node) => node !== el) : dom,
+      null,
+    );
+
+    if (!(parent && siblings)) {
+      return;
+    }
 
     const index = siblings.indexOf(el);
 
     // Completely remove old element
-    uniqueSplice(siblings, index, 1, dom, parent);
+    if (replacesSelf) {
+      removeElement(el);
+    }
+    uniqueSplice(siblings, index, replacesSelf ? 0 : 1, dom, parent);
 
-    if (!dom.includes(el)) {
+    if (!replacesSelf) {
       el.parent = el.prev = el.next = null;
     }
   });
