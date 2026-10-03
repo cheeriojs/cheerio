@@ -290,6 +290,11 @@ describe('$(...)', () => {
       );
     });
 
+    it('(key, value) : should not set the read-only tagName alias', () => {
+      checkbox.prop('tagName', 'script');
+      expect(checkbox.prop('tagName')).toBe('INPUT');
+    });
+
     it('(key, value) : should ignore empty collection', () => {
       expect($(undefined).prop('checked')).toBeUndefined();
       $(undefined).prop('checked', true);
