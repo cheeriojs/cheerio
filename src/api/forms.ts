@@ -10,6 +10,38 @@ const r20 = /%20/g;
 const rCRLF = /\r?\n/g;
 
 /**
+ * Checks whether an element is disabled through an ancestor
+ * `<fieldset disabled>`. Browsers don't submit form controls inside a disabled
+ * fieldset, unless the control is placed inside the fieldset's first `<legend>`
+ * child.
+ *
+ * @private
+ * @param elem - Element to check.
+ * @returns Whether the element is disabled via a fieldset.
+ */
+function isDisabledViaFieldset(elem: AnyNode): boolean {
+  for (
+    let child: AnyNode = elem, { parent } = elem;
+    parent;
+    child = parent, { parent } = parent
+  ) {
+    if (
+      isTag(parent) &&
+      parent.name === 'fieldset' &&
+      Object.hasOwn(parent.attribs, 'disabled')
+    ) {
+      const legend = parent.children.find(
+        (sibling) => isTag(sibling) && sibling.name === 'legend',
+      );
+
+      if (child !== legend) return true;
+    }
+  }
+
+  return false;
+}
+
+/**
  * Encode a set of form elements as a string for submission.
  *
  * @category Forms
@@ -84,6 +116,8 @@ export function serializeArray<T extends AnyNode>(
       const $elem = this._make(elem);
       const name = $elem.attr('name');
       if (!name) return [];
+      // Skip controls that browsers disable through a `<fieldset disabled>`
+      if (isDisabledViaFieldset(elem)) return [];
       // If there is no value set (e.g. `undefined`, `null`), then default value to empty
       const value = $elem.val() ?? '';
 
