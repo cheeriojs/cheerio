@@ -1,0 +1,24 @@
+src/load-parse.ts
+  s_6bbbbbc7cea8e7::t_b35a7bbefcc448 36-39
+src/cheerio.spec.ts
+  s_6bbbbbc7cea8e7::t_f64be8cba53dc4 454-461
+  s_6bbbbbc7cea8e7::t_f541fa17f4bf25 449-453,462-463
+src/parsers/parse5-adapter.ts
+  s_6bbbbbc7cea8e7::t_9ee96f0ba9bcd6 38,44,47-50,64-66,70
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "92b4355d68bc93ab5e2438ea4ac73bc9c970e262",
+  "prompts": {},
+  "sessions": {
+    "s_6bbbbbc7cea8e7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "477ae3a9-56cd-4535-bf0f-8d24ed1686d9",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": null
+    }
+  }
+}
