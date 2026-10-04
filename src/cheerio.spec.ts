@@ -355,6 +355,14 @@ describe('cheerio', () => {
       expect(dom.html()).toBe(str);
     });
 
+    it('should keep selection options in derived selections', () => {
+      const $ = cheerio.load('', { xml: { xmlMode: false } });
+      const x = $('<x/>', null, undefined, { xml: true });
+      expect(x.clone().toString()).toBe('<x/>');
+      const y = $('<y/>', null, undefined, { xmlMode: true });
+      expect(y.clone().toString()).toBe('<y/>');
+    });
+
     it('should return a fully-qualified Function', () => {
       const $ = cheerio.load('<div>');
 

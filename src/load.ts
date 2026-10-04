@@ -154,7 +154,14 @@ export function getLoad(
         selector?: ArrayLike<T> | T | string,
         context?: BasicAcceptedElems<AnyNode> | null,
       ): Cheerio<T> {
-        const cheerio = initialize(selector, context);
+        // Keep options that were passed to `$()` for this selection.
+        const cheerio = initialize(
+          selector,
+          context,
+          undefined,
+          undefined,
+          this.options,
+        );
         cheerio.prevObject = this;
 
         return cheerio;
@@ -179,13 +186,14 @@ export function getLoad(
       context?: BasicAcceptedElems<AnyNode> | null,
       root: BasicAcceptedElems<Document> = initialRoot,
       opts?: CheerioOptions,
+      flattenedOpts?: InternalOptions,
     ): Cheerio<S extends SelectorType ? Element : T> {
       type Result = S extends SelectorType ? Element : T;
 
       // $($)
       if (selector && isCheerio<Result>(selector)) return selector;
 
-      const options = flattenOptions(opts, internalOpts);
+      const options = flattenedOpts ?? flattenOptions(opts, internalOpts);
       const r =
         typeof root === 'string'
           ? [parse(root, options, false, null)]
