@@ -14,8 +14,7 @@ import * as fs from 'node:fs/promises';
 import ImgixClient from '@imgix/js-core';
 import { graphql as githubGraphQL } from '@octokit/graphql';
 import { request } from 'undici';
-
-type Tier = 'headliner' | 'sponsor' | 'professional' | 'backer';
+import { getTierSlug, type Tier } from './sponsor-tiers.js';
 
 interface Sponsor {
   createdAt: string;
@@ -73,32 +72,6 @@ const imgix = new ImgixClient({
 });
 
 /**
- * Returns the tier ID for a given donation amount.
- *
- * @param monthlyDonation - The monthly donation in dollars.
- * @returns The ID of the tier the donation belongs to.
- */
-function getTierSlug(monthlyDonation: number): Tier | null {
-  if (monthlyDonation >= 250) {
-    return 'headliner';
-  }
-
-  if (monthlyDonation >= 100) {
-    return 'sponsor';
-  }
-
-  if (monthlyDonation >= 25) {
-    return 'professional';
-  }
-
-  if (monthlyDonation >= 5) {
-    return 'backer';
-  }
-
-  return null;
-}
-
-/**
  * Fetch order data from Open Collective using the GraphQL API.
  *
  * @returns An array of sponsors.
@@ -154,7 +127,8 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
       monthlyDonation,
       totalDonations: order.totalDonations.value * 100,
       source: 'opencollective',
-      tier: getTierSlug(monthlyDonation / 100),
+      // An active order can be increased before any payment at the new amount.
+      tier: getTierSlug(monthlyDonation / 100, order.totalDonations.value),
     };
   });
 }
