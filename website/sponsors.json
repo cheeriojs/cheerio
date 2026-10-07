@@ -1,17 +1,6 @@
 {
   "headliner": [
     {
-      "createdAt": "2026-08-06T10:56:58.926Z",
-      "name": "ScrapingBee",
-      "url": "https://www.scrapingbee.com/",
-      "image": "https://images.opencollective.com/scrapingbee/6d5dc95/logo.png",
-      "type": "ORGANIZATION",
-      "monthlyDonation": 0,
-      "totalDonations": 0,
-      "source": "opencollective",
-      "tier": "headliner"
-    },
-    {
       "createdAt": "2022-06-24",
       "name": "Github",
       "image": "https://avatars.githubusercontent.com/github",

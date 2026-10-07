@@ -154,7 +154,9 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
       monthlyDonation,
       totalDonations: order.totalDonations.value * 100,
       source: 'opencollective',
-      tier: getTierSlug(monthlyDonation / 100),
+      tier: getTierSlug(
+        Math.min(monthlyDonation / 100, order.totalDonations.value),
+      ),
     };
   });
 }
