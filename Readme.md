@@ -188,9 +188,6 @@ development and support.
 
 <!-- BEGIN SPONSORS: headliner -->
 
-<a href="https://www.scrapingbee.com/" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fscrapingbee%2F6d5dc95%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=c21a60153bbb00aade922fe9254436e6" title="ScrapingBee" alt="ScrapingBee"></img>
-          </a>
 <a href="https://github.com/" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Favatars.githubusercontent.com%2Fgithub?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=65172918690f124c0adebece30c66471" title="Github" alt="Github"></img>
           </a>
@@ -212,6 +209,9 @@ development and support.
           </a>
 <a href="https://www.rapidproxy.io/?ref=cheerio" target="_blank" rel="noopener noreferrer">
             <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fwww.rapidproxy.io%2Fstatic%2Frapidproxy%2Fimages%2Fhd_ft_public%2Frapidproxy_logo.webp?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&rect=0%2C0%2C92%2C92&s=7317259362cd11f1050c21616be6d02f" title="Rapidproxy" alt="Rapidproxy"></img>
+          </a>
+<a href="https://reddit.com/r/YouTubeBlastOff/comments/1ugsrqu/best_site_to_buy_youtube_subscribers_for_a_new" target="_blank" rel="noopener noreferrer">
+            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fbuyyoutubesubscribers%2Ff603e94%2Flogo.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=97a9ba4303173ad9fe85f45786b7d25b" title="buy youtube subscribers" alt="buy youtube subscribers"></img>
           </a>
 
 <!-- END SPONSORS -->

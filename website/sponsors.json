@@ -1,17 +1,6 @@
 {
   "headliner": [
     {
-      "createdAt": "2026-08-06T10:56:58.926Z",
-      "name": "ScrapingBee",
-      "url": "https://www.scrapingbee.com/",
-      "image": "https://images.opencollective.com/scrapingbee/6d5dc95/logo.png",
-      "type": "ORGANIZATION",
-      "monthlyDonation": 0,
-      "totalDonations": 0,
-      "source": "opencollective",
-      "tier": "headliner"
-    },
-    {
       "createdAt": "2022-06-24",
       "name": "Github",
       "image": "https://avatars.githubusercontent.com/github",
@@ -63,6 +52,17 @@
       "url": "https://www.rapidproxy.io/?ref=cheerio",
       "image": "https://www.rapidproxy.io/static/rapidproxy/images/hd_ft_public/rapidproxy_logo.webp",
       "type": "INDIVIDUAL",
+      "monthlyDonation": 0,
+      "totalDonations": 0,
+      "source": "opencollective",
+      "tier": "sponsor"
+    },
+    {
+      "createdAt": "2026-10-06T21:10:10.932Z",
+      "name": "buy youtube subscribers",
+      "url": "https://reddit.com/r/YouTubeBlastOff/comments/1ugsrqu/best_site_to_buy_youtube_subscribers_for_a_new",
+      "image": "https://images.opencollective.com/buyyoutubesubscribers/f603e94/logo.png",
+      "type": "ORGANIZATION",
       "monthlyDonation": 0,
       "totalDonations": 0,
       "source": "opencollective",
