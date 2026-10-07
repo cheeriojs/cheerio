@@ -1,0 +1,29 @@
+scripts/sponsor-tiers.ts
+  s_fdd6a5dad494bb::t_e9f244e5764adc 1
+  s_fdd6a5dad494bb::t_6aa364f00ed4ed 2-34
+scripts/sponsor-tiers.spec.ts
+  s_fdd6a5dad494bb::t_6aa364f00ed4ed 1-43
+  s_fdd6a5dad494bb::t_882b81980a720c 44-46
+scripts/fetch-sponsors.mts
+  s_fdd6a5dad494bb::t_6aa364f00ed4ed 17,130-131
+scripts/fetch-sponsors.spec.ts
+  s_fdd6a5dad494bb::t_bbd1fedc96f47d 1-8,16-34,36-37,56-83,86-91,96-102
+  s_fdd6a5dad494bb::t_49765598510986 35
+  s_fdd6a5dad494bb::t_e9f244e5764adc 9-15,38-55,84-85,92-95
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "e6e421f2a8b16c57e5117e3b277508c7bfc068f4",
+  "prompts": {},
+  "sessions": {
+    "s_fdd6a5dad494bb": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a118ae-8855-7943-98f2-2f09b47188da",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
