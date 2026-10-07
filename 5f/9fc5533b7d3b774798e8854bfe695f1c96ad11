@@ -1,0 +1,19 @@
+scripts/fetch-sponsors.mts
+  s_fdd6a5dad494bb::t_3d204c5c67ae31 17-18,75-100,157-159
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "5f9fc5533b7d3b774798e8854bfe695f1c96ad11",
+  "prompts": {},
+  "sessions": {
+    "s_fdd6a5dad494bb": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a118ae-8855-7943-98f2-2f09b47188da",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
