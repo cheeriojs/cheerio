@@ -1,0 +1,21 @@
+src/cheerio.spec.ts
+  s_6bbbbbc7cea8e7::t_fe4817f109b913 302-341
+src/parsers/parse5-adapter.ts
+  s_6bbbbbc7cea8e7::t_d94e3297353bfb 76-87
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "77e51e8846998fb5eb428f62d8d0cea7994f6507",
+  "prompts": {},
+  "sessions": {
+    "s_6bbbbbc7cea8e7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "477ae3a9-56cd-4535-bf0f-8d24ed1686d9",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
