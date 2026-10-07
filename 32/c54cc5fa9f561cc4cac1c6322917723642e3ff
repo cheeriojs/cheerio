@@ -1,0 +1,23 @@
+src/api/manipulation.spec.ts
+  s_6bbbbbc7cea8e7::t_3b50bcc0cdf108 1589-1672,1699-1758
+src/api/manipulation.ts
+  s_6bbbbbc7cea8e7::t_5edd554b5db295 904-909,918-919,921-928,930-945,952-955,957
+website/src/content/docs/basics/manipulation.md
+  s_6bbbbbc7cea8e7::t_b83b39976fcdf1 212-227
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "32c54cc5fa9f561cc4cac1c6322917723642e3ff",
+  "prompts": {},
+  "sessions": {
+    "s_6bbbbbc7cea8e7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "477ae3a9-56cd-4535-bf0f-8d24ed1686d9",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
