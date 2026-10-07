@@ -347,7 +347,6 @@ export function closest<T extends AnyNode>(
 
   const selectOpts = {
     ...this.options,
-    xmlMode: this.options.xmlMode,
     root: this._root?.[0],
   };
 
