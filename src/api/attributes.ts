@@ -802,7 +802,9 @@ export function val<T extends AnyNode>(
         const options = this.find('option');
         options.removeAttr('selected');
 
-        const values = typeof value === 'object' ? value : [value];
+        // Coerce to strings, so numbers passed from JavaScript still match.
+        const values =
+          typeof value === 'object' ? value.map(String) : [String(value)];
         for (const el of options) {
           /*
            * Resolve an option's value the same way the getter does: the

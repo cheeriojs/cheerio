@@ -769,6 +769,17 @@ describe('$(...)', () => {
       const element = $('select#multi').val(['1', '3', '4']);
       expect(element.val()).toHaveLength(3);
     });
+    it('(value): on select should match numbers against option values', () => {
+      const $select = load(
+        '<select><option value="1">a</option><option value="2">b</option></select>',
+      )('select');
+      expect($select.val(2 as never).val()).toBe('2');
+      expect(
+        $('select#multi')
+          .val([2, 4] as never)
+          .val(),
+      ).toStrictEqual(['2', '4']);
+    });
   });
 
   describe('.removeAttr', () => {
