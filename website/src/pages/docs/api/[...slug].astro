@@ -18,10 +18,12 @@ export async function getStaticPaths() {
 }
 
 const { doc } = Astro.props;
-const { Content, headings } = await render(doc);
-const h1 = headings.find((h) => h.depth === 1);
+const { Content, headings, remarkPluginFrontmatter } = await render(doc);
 const title =
-  doc.data.title || h1?.text || doc.data.sidebar_label || 'API Documentation';
+  doc.data.title ||
+  remarkPluginFrontmatter.title ||
+  doc.data.sidebar_label ||
+  'API Documentation';
 ---
 
 <DocsLayout title={title} description={doc.data.description} headings={headings} sourceFile={doc.filePath} wide>

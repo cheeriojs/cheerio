@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { formatDate } from '@/lib/blog';
 
 interface Props {
   title: string;
@@ -15,13 +16,7 @@ const {
   author,
 } = Astro.props;
 
-const formattedDate = date
-  ? date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
-  : null;
+const formattedDate = date ? formatDate(date) : null;
 ---
 
 <BaseLayout title={title} description={description}>
@@ -29,7 +24,7 @@ const formattedDate = date
     {/* Editorial header */}
     <header class="mb-10 border-b border-slate-200 pb-8 dark:border-slate-700/50">
       <a
-        href="/blog"
+        href="/blog/"
         class="mb-4 inline-flex items-center gap-1.5 text-sm font-medium text-slate-400 transition-colors hover:text-primary dark:text-slate-500 dark:hover:text-primary"
       >
         <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">

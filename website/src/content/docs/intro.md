@@ -5,113 +5,97 @@ sidebar_label: Introduction
 
 # Welcome to Cheerio!
 
-Let's get a quick overview of **Cheerio in less than 5 minutes**.
+Cheerio parses HTML and XML, and gives you a jQuery-like API for traversing and
+manipulating the result. This page takes you from installation to your first
+scrape in about five minutes.
 
-## Getting Started
+:::note[Cheerio is not a web browser]
 
-Let's install Cheerio and its dependencies.
+Cheerio parses markup and provides an API for working with the resulting data
+structure. It does not interpret that markup the way a browser does:
+there is no visual rendering, no CSS, no loading of external resources, and no
+JavaScript execution. That is what makes Cheerio **much faster** than
+browser-based tools — but it also means content that a single-page app renders
+on the client won't be there.
 
-### Setting up Node.js
+If you need any of that, reach for browser automation such as
+[Puppeteer](https://github.com/puppeteer/puppeteer) or
+[Playwright](https://github.com/microsoft/playwright), or a DOM emulation
+project like [jsdom](https://github.com/jsdom/jsdom).
 
-To install Cheerio, you will need to have Node.js installed on your system.
+:::
 
-- Download the latest version of [Node.js](https://nodejs.org/en/download/):
-  - When installing Node.js, you are recommended to check all checkboxes related
-    to dependencies.
+## Installation
 
-### Installing Cheerio
+Cheerio runs on Node.js 22.19 or later. Once you have
+[Node.js](https://nodejs.org/en/download/) installed, add Cheerio to your
+project:
 
-Once you have set up Node.js, you can use the following command to install
-Cheerio:
-
-```bash npm2yarn
+```bash
 npm install cheerio
 ```
 
-### Importing Cheerio
-
-Once Cheerio is installed, you can import it into your JavaScript code using the
-`import` statement:
+Then import it:
 
 ```js
 import * as cheerio from 'cheerio';
 ```
 
-If you are on an older environment (or prefer using CommonJS), you can use the
-`require` function:
+If you prefer CommonJS, `require` works too:
 
 ```js
 const cheerio = require('cheerio');
 ```
 
-## Using Cheerio
+## Loading a document
 
-After importing Cheerio, you can start using it to manipulate and scrape web
-page data.
-
-### Loading a Document
-
-The easiest way of loading HTML is to use the `load` function:
+Every Cheerio session starts by loading a document. The simplest way is `load`,
+which takes a string of markup:
 
 ```js
 const $ = cheerio.load('<h2 class="title">Hello world</h2>');
 ```
 
-This will load the HTML string into Cheerio and return a `Cheerio` object. You
-can then use this object to traverse the DOM and manipulate the data.
+`load` returns a `$` function that you use to query the document, just like
+jQuery's `$`.
 
-Learn more about [loading documents](/docs/basics/loading).
+Cheerio can also load documents from buffers, streams, and URLs — see
+[loading documents](/docs/basics/loading) for the full list.
 
-:::note
+## Selecting elements
 
-**Cheerio is not a web browser.** Cheerio parses markup and provides an API for
-traversing/manipulating the resulting data structure. It does not interpret the
-result as a web browser does. Specifically, it does _not_ produce a visual
-rendering, apply CSS, load external resources, or execute JavaScript which is
-common for a SPA (single page application). This makes Cheerio **much, much
-faster than other solutions**. If your use case requires any of this
-functionality, you should consider browser automation software like
-[Puppeteer](https://github.com/puppeteer/puppeteer) and
-[Playwright](https://github.com/microsoft/playwright) or DOM emulation projects
-like [JSDom](https://github.com/jsdom/jsdom).
-
-:::
-
-### Selecting Elements
-
-Once you have loaded a document, you can use the returned function to select
-elements from the document.
-
-Here, we will select the `h2` element with the class `title`, and then get the
-text from it:
+Call `$` with a [CSS selector](/docs/basics/selecting) to find elements. Here we
+select the `<h2>` with the class `title` and read its text:
 
 ```js
 $('h2.title').text(); // "Hello world"
 ```
 
-Learn more about [selecting elements](/docs/basics/selecting).
+## Traversing the DOM
 
-### Traversing the DOM
-
-The `$` function returns a `Cheerio` object, which is similar to an array of DOM
-elements. It is possible to use this object as a starting point to further
-traverse the DOM. For example, you can use the `find` function to select
-elements within the selected elements:
+`$` returns a `Cheerio` object — a list of matched elements with methods for
+moving around the document. For example, `find` searches within the current
+selection:
 
 ```js
-$('h2.title').find('.subtitle').text();
+const $ = cheerio.load(`
+  <div class="post">
+    <h2 class="title">Hello world</h2>
+    <p class="subtitle">Nice to meet you</p>
+  </div>
+`);
+
+$('.post').find('.subtitle').text(); // "Nice to meet you"
 ```
 
-There are many other functions that can be used to traverse the DOM. Learn more
-about [traversing the DOM](/docs/basics/traversing).
+There are methods for moving up, down, and sideways through the tree, plus a
+range of filters. See [traversing the DOM](/docs/basics/traversing).
 
-### Manipulating Elements
+## Manipulating elements
 
-Once you have selected an element, you can use the `Cheerio` object to
-manipulate the element.
-
-Here, we will select the `h2` element with the class `title`, and then change
-the text inside it. We also add a new `h3` element to the document:
+The same methods that read values also write them. Passing an argument to
+`text()` replaces the text content, and methods like `after()` insert new
+markup:
 
 ```js
 $('h2.title').text('Hello there!');
@@ -119,4 +103,5 @@ $('h2.title').text('Hello there!');
 $('h2').after('<h3>How are you?</h3>');
 ```
 
-Learn more about [manipulating elements](/docs/basics/manipulation).
+Call `$.html()` at any point to serialize the document back to a string. See
+[manipulating elements](/docs/basics/manipulation) for the full set of methods.

@@ -21,17 +21,6 @@
       "totalDonations": 0,
       "source": "manual",
       "tier": "headliner"
-    },
-    {
-      "createdAt": "2026-01-21",
-      "name": "HasData",
-      "image": "https://hasdata.com/favicon.svg",
-      "url": "https://hasdata.com",
-      "type": "ORGANIZATION",
-      "monthlyDonation": 0,
-      "totalDonations": 0,
-      "source": "manual",
-      "tier": "headliner"
     }
   ],
   "sponsor": [
@@ -52,6 +41,17 @@
       "url": "https://Nieuwe-Casinos.net",
       "image": "https://images.opencollective.com/nieuwecasinos/c67d423/logo.png",
       "type": "ORGANIZATION",
+      "monthlyDonation": 0,
+      "totalDonations": 0,
+      "source": "opencollective",
+      "tier": "sponsor"
+    },
+    {
+      "createdAt": "2026-08-07T08:06:17.232Z",
+      "name": "Rapidproxy",
+      "url": "https://www.rapidproxy.io/?ref=cheerio",
+      "image": "https://www.rapidproxy.io/static/rapidproxy/images/hd_ft_public/rapidproxy_logo.webp",
+      "type": "INDIVIDUAL",
       "monthlyDonation": 0,
       "totalDonations": 0,
       "source": "opencollective",

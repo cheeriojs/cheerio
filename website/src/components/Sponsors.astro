@@ -1,15 +1,13 @@
 ---
 import { Image } from 'astro:assets';
 import { Heart } from '@lucide/astro';
+import { SPONSOR_REL, type Sponsor, sponsorHref } from '@/lib/sponsors';
 import sponsorsData from '../../sponsors.json';
 
-interface Sponsor {
-  name: string;
-  image: string;
-  url: string;
-}
-
-const headliners = sponsorsData.headliner as Sponsor[];
+const headliners = (sponsorsData.headliner as Sponsor[]).map((sponsor) => ({
+  ...sponsor,
+  href: sponsorHref(sponsor.url),
+}));
 ---
 
 <section class="relative overflow-hidden bg-slate-50 py-20 dark:bg-slate-800/50">
@@ -26,11 +24,14 @@ const headliners = sponsorsData.headliner as Sponsor[];
 
     <div class="animate-fade-up animation-delay-200 flex flex-wrap items-center justify-center gap-6">
       {
-        headliners.map((sponsor) => (
-          <a
-            href={sponsor.url}
-            target="_blank"
-            rel="noopener noreferrer"
+        headliners.map((sponsor) => {
+          // Sponsors without a usable URL get a card, but not a link.
+          const Card = sponsor.href ? 'a' : 'div';
+          return (
+          <Card
+            href={sponsor.href}
+            target={sponsor.href ? '_blank' : undefined}
+            rel={sponsor.href ? SPONSOR_REL : undefined}
             class="group flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-6 py-4 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-primary/40"
           >
             {sponsor.image.endsWith('.svg') ? (
@@ -53,12 +54,13 @@ const headliners = sponsorsData.headliner as Sponsor[];
             <span class="font-medium text-slate-700 transition-colors group-hover:text-slate-900 dark:text-slate-300 dark:group-hover:text-white">
               {sponsor.name}
             </span>
-          </a>
-        ))
+          </Card>
+          );
+        })
       }
     </div>
 
-    <div class="animate-fade-up animation-delay-400 mt-10 text-center">
+    <div class="animate-fade-up animation-delay-400 mt-10 flex flex-col items-center justify-center gap-4 text-center sm:flex-row">
       <a
         href="https://github.com/sponsors/cheeriojs"
         target="_blank"
@@ -67,6 +69,12 @@ const headliners = sponsorsData.headliner as Sponsor[];
       >
         <Heart class="h-5 w-5" fill="currentColor" stroke-width={0} />
         Become a sponsor
+      </a>
+      <a
+        href="/sponsors/"
+        class="text-sm font-medium text-slate-600 transition-colors hover:text-primary dark:text-slate-400"
+      >
+        See all sponsors
       </a>
     </div>
   </div>

@@ -5,15 +5,19 @@ import logo from '@/assets/orange-c.svg';
 const navItems = [
   {
     label: 'Learn',
-    href: '/docs/intro',
+    href: '/docs/intro/',
     match: (p: string) => p.startsWith('/docs/') && !p.startsWith('/docs/api'),
   },
   {
     label: 'API',
-    href: '/docs/api',
+    href: '/docs/api/',
     match: (p: string) => p.startsWith('/docs/api'),
   },
-  { label: 'Blog', href: '/blog', match: (p: string) => p.startsWith('/blog') },
+  {
+    label: 'Blog',
+    href: '/blog/',
+    match: (p: string) => p.startsWith('/blog'),
+  },
 ];
 
 const currentPath = Astro.url.pathname;
@@ -126,7 +130,7 @@ const currentPath = Astro.url.pathname;
 <script>
   // Initialize DocSearch — re-run after each View Transition navigation.
   // Use a global guard to ensure the swap listener is registered only once.
-  import docsearch from '@docsearch/js';
+  import docsearch from '@docsearch/js/docsearch';
   import '@docsearch/css';
 
   function initDocSearch() {
@@ -137,7 +141,7 @@ const currentPath = Astro.url.pathname;
       docsearch({
         appId: 'NRR2XU4QSP',
         apiKey: '9d30ee79d65ccc63b95e693124e05405',
-        indexName: 'crawler_cheerio',
+        indices: ['crawler_cheerio'],
         container: '#docsearch',
         insights: true,
       });

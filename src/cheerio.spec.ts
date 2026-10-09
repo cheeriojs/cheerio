@@ -1,5 +1,5 @@
 import type { AnyNode, Element } from 'domhandler';
-import { parseDOM } from 'htmlparser2';
+import { parseDocument } from 'htmlparser2';
 import { describe, expect, it } from 'vitest';
 import { cheerio, food, fruits, noscript } from './__fixtures__/fixtures.js';
 import type { Cheerio } from './index.js';
@@ -293,14 +293,14 @@ describe('cheerio', () => {
     });
 
     it('should allow loading a pre-parsed DOM', () => {
-      const dom = parseDOM(food);
+      const dom = parseDocument(food).children;
       const $ = cheerio.load(dom);
 
       expect($('ul')).toHaveLength(3);
     });
 
     it('should allow loading a single element', () => {
-      const el = parseDOM(food)[0];
+      const el = parseDocument(food).children[0];
       const $ = cheerio.load(el);
 
       expect($('ul')).toHaveLength(3);

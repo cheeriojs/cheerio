@@ -1,12 +1,13 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.4.11/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.5.7/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
     "useIgnoreFile": true
   },
   "files": {
-    "ignoreUnknown": true
+    "ignoreUnknown": true,
+    "includes": ["**", "!benchmark/documents"]
   },
   "formatter": {
     "enabled": true,
@@ -21,7 +22,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "complexity": {
         "useLiteralKeys": "off",
         "noArguments": "off",
@@ -58,7 +59,6 @@
       "suspicious": {
         "noAssignInExpressions": "off",
         "noConfusingVoidType": "off",
-        "noConstEnum": "off",
         "noExplicitAny": "off",
         "noImplicitAnyLet": "off",
         "noShadowRestrictedNames": "off",

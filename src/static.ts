@@ -86,10 +86,7 @@ export function html(
    * Sometimes `$.html()` is used without preloading html,
    * so fallback non-existing options to the default ones.
    */
-  const opts = {
-    ...this?._options,
-    ...flattenOptions(options),
-  };
+  const opts = flattenOptions(options, this?._options);
 
   return render(this, toRender, opts);
 }
@@ -272,7 +269,7 @@ export function merge<T>(
     return;
   }
   let newLength = arr1.length;
-  const len = +arr2.length;
+  const len = arr2.length;
 
   for (let i = 0; i < len; i++) {
     arr1[newLength++] = arr2[i];
@@ -298,6 +295,11 @@ function isArrayLike(item: unknown): item is ArrayLike<unknown> {
     item === null ||
     !('length' in item) ||
     typeof item.length !== 'number' ||
+    /*
+     * Not an array's `.length`: `item` is an arbitrary object being validated,
+     * so this property really can be negative.
+     */
+    // eslint-disable-next-line unicorn/no-impossible-length-comparison
     item.length < 0
   ) {
     return false;

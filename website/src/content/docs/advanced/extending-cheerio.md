@@ -5,20 +5,16 @@ description: Create custom pseudo-classes and plugins.
 
 # Extending Cheerio
 
-Cheerio already provides many ways of working with documents, but sometimes you
-may want to add custom functionality. This guide will cover two approaches:
-adding custom CSS pseudo elements and writing plugins for Cheerio.
+Cheerio has two extension points: you can teach its selector engine new
+pseudo-classes, and you can add your own methods to the `Cheerio` prototype.
 
 ## Adding Custom CSS Pseudo-Classes
 
-The `pseudos` option is the extension point for adding pseudo-classes. It is a
-map from names to either strings of functions.
+The `pseudos` option maps pseudo-class names to either a string or a function:
 
-- A string value is a selector that the element must match to be selected.
-- A function is called with the element as its first argument, and optional
-  parameters as the second. If it returns true, the element is selected.
-
-Here is an example of using the pseudos option:
+- A **string** is a selector the element must match to be selected.
+- A **function** is called with the element as its first argument and the
+  pseudo-class's parameter as its second. Return `true` to select the element.
 
 ```js
 const $ = cheerio.load('<div class="foo"></div><div data-bar="boo"></div>', {
@@ -37,20 +33,24 @@ $('div:bar(baz)').length; // 0
 
 ## Writing Plugins for Cheerio
 
-Once you have loaded a document, you may extend the prototype or the equivalent
-`fn` property with custom plugin methods. Here is an example:
+Every loaded document has its own `Cheerio` prototype, reachable as `$.prototype`
+or its alias `$.fn`. Adding a method there makes it available on every selection
+from that document — and only that one, so plugins don't leak between documents.
 
 ```js
 const $ = cheerio.load('<html><body>Hello, <b>world</b>!</body></html>');
-$.prototype.logHtml = function () {
+
+$.fn.logHtml = function () {
   console.log(this.html());
 };
 
 $('body').logHtml(); // logs "Hello, <b>world</b>!" to the console
 ```
 
-If you're using TypeScript, you should add a type definition for your new
-method:
+Inside the method, `this` is the current selection, so the full Cheerio API is
+available to you.
+
+If you're using TypeScript, declare the method so the compiler knows about it:
 
 ```ts
 declare module 'cheerio' {

@@ -221,4 +221,18 @@ describe('fromURL', () => {
     );
     expect($('a').prop('href')).toBe(`http://localhost:${port}/final/link`);
   });
+
+  it('should set `baseURI` to the requested URL when there is no redirect', async () => {
+    const port = await createTestServer(
+      'text/html',
+      '<a id="relative" href="link">relative</a><a id="rooted" href="/link">rooted</a>',
+    );
+
+    const $ = await cheerio.fromURL(`http://localhost:${port}/dir/page`);
+
+    expect($('#relative').prop('href')).toBe(
+      `http://localhost:${port}/dir/link`,
+    );
+    expect($('#rooted').prop('href')).toBe(`http://localhost:${port}/link`);
+  });
 });

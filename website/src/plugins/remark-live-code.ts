@@ -1,6 +1,8 @@
 import type { Code, Parent, Root } from 'mdast';
 import { visit } from 'unist-util-visit';
 
+const whitespaceRe = /\s+/;
+
 interface MdxJsxAttribute {
   type: 'mdxJsxAttribute';
   name: string;
@@ -19,36 +21,48 @@ function visitLiveCode(
   index: number | undefined,
   parent: Parent | undefined,
 ): void {
-  // Check if the code block has 'live' in its meta
-  if (node.meta?.includes('live') && index !== undefined && parent) {
-    // Transform the code node into an MDX JSX element
-    const code = node.value;
+  if (index === undefined || !parent) return;
 
-    /*
-     * Create an mdxJsxFlowElement node for the LiveCode component
-     * with client:visible for lazy hydration
-     */
-    const jsxNode: MdxJsxFlowElement = {
-      type: 'mdxJsxFlowElement',
-      name: 'LiveCode',
-      attributes: [
-        {
-          type: 'mdxJsxAttribute',
-          name: 'code',
-          value: code,
-        },
-        {
-          type: 'mdxJsxAttribute',
-          name: 'client:visible',
-          value: null,
-        },
-      ],
-      children: [],
-    };
+  /*
+   * Meta is treated as space-separated tokens, so `live` matches as a whole
+   * word and a meta like `livewire` is left alone. A quoted value containing
+   * spaces would tokenize oddly, but nothing here uses one.
+   */
+  const meta = node.meta?.split(whitespaceRe).filter(Boolean) ?? [];
+  if (!meta.includes('live')) return;
 
-    // Replace the code node with the JSX node
-    parent.children.splice(index, 1, jsxNode as unknown as Code);
-  }
+  const code = node.value;
+
+  /*
+   * Drop only the `live` marker, leaving any other meta (highlight ranges, a
+   * title, …) for the highlighter. The block then stays a normal code block and
+   * becomes the child of `LiveCode`, so it is what readers see until they ask
+   * for an editor — no Sandpack, no third-party bundler, and it still renders
+   * without JavaScript.
+   */
+  const rest = meta.filter((token) => token !== 'live').join(' ');
+  node.meta = rest || null;
+
+  const jsxNode: MdxJsxFlowElement = {
+    type: 'mdxJsxFlowElement',
+    name: 'LiveCode',
+    attributes: [
+      // The raw source, handed to the editor once the reader opens one.
+      {
+        type: 'mdxJsxAttribute',
+        name: 'code',
+        value: code,
+      },
+      {
+        type: 'mdxJsxAttribute',
+        name: 'client:visible',
+        value: null,
+      },
+    ],
+    children: [node],
+  };
+
+  parent.children[index] = jsxNode as unknown as Code;
 }
 
 function transformer(tree: Root): void {
@@ -56,14 +70,17 @@ function transformer(tree: Root): void {
 }
 
 /**
- * Remark plugin to transform code blocks with 'live' meta into LiveCode
- * components.
+ * Remark plugin to wrap code blocks with 'live' meta in a LiveCode component.
+ *
+ * The original code block is preserved as a child, so it is syntax-highlighted
+ * and readable on its own; the component only layers an "Edit & run" affordance
+ * on top of it.
  *
  * Usage in markdown:
  *
- * ```js
+ * ```js live
  * const $ = cheerio.load('<h1>Hello</h1>');
- * return <>{$('h1').text()}</>;
+ * console.log($('h1').text());
  * ```
  *
  * @returns A transformer function.

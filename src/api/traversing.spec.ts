@@ -174,6 +174,23 @@ describe('$(...)', () => {
   });
 
   describe('.children', () => {
+    it('should apply custom string pseudos', () => {
+      const q = load(fruits, { pseudos: { fruit: '.apple' } });
+      expect(q('ul').children(':fruit').text()).toBe('Apple');
+    });
+
+    it('should apply custom function pseudos', () => {
+      const q = load(fruits, {
+        pseudos: { fruit: (el) => el.attribs['class'] === 'apple' },
+      });
+      expect(q('ul').children(':fruit').text()).toBe('Apple');
+    });
+
+    it('should apply quirks mode to class selectors', () => {
+      const q = load(fruits, { quirksMode: true });
+      expect(q('ul').children('.APPLE').text()).toBe('Apple');
+    });
+
     it('() : should get all children', () => {
       expect($('ul').children()).toHaveLength(3);
     });
@@ -385,6 +402,13 @@ describe('$(...)', () => {
       const elems = $drinks.eq(0).nextUntil($until);
       expect(elems).toHaveLength(2);
     });
+
+    it('(function) : should reset the index for each starting element', () => {
+      const elems = $('.apple, .carrot', food).nextUntil((i) => i === 1);
+      expect(elems).toHaveLength(2);
+      expect(elems[0].attribs).toHaveProperty('class', 'orange');
+      expect(elems[1].attribs).toHaveProperty('class', 'sweetcorn');
+    });
   });
 
   describe('.prev', () => {
@@ -566,6 +590,13 @@ describe('$(...)', () => {
       const $until = $([$drinks[0], $drinks[1]]);
       const elems = $drinks.eq(4).prevUntil($until);
       expect(elems).toHaveLength(2);
+    });
+
+    it('(function) : should reset the index for each starting element', () => {
+      const elems = $('.pear, .sweetcorn', food).prevUntil((i) => i === 1);
+      expect(elems).toHaveLength(2);
+      expect(elems[0].attribs).toHaveProperty('class', 'orange');
+      expect(elems[1].attribs).toHaveProperty('class', 'carrot');
     });
   });
 
@@ -759,6 +790,13 @@ describe('$(...)', () => {
       expect(result).toHaveLength(2);
       expect(result.eq(0).is('ul#vegetables')).toBe(true);
     });
+
+    it('(function) : should reset the index for each starting element', () => {
+      const result = $('.apple, .carrot').parentsUntil((i) => i === 1);
+      expect(result).toHaveLength(2);
+      expect(result[0].attribs).toHaveProperty('id', 'vegetables');
+      expect(result[1].attribs).toHaveProperty('id', 'fruits');
+    });
   });
 
   describe('.parent', () => {
@@ -799,6 +837,23 @@ describe('$(...)', () => {
   });
 
   describe('.closest', () => {
+    it('should apply custom string pseudos', () => {
+      const q = load(fruits, { pseudos: { list: '#fruits' } });
+      expect(q('.apple').closest(':list').attr('id')).toBe('fruits');
+    });
+
+    it('should apply custom function pseudos', () => {
+      const q = load(fruits, {
+        pseudos: { list: (el) => el.attribs['id'] === 'fruits' },
+      });
+      expect(q('.apple').closest(':list').attr('id')).toBe('fruits');
+    });
+
+    it('should match selectors case-insensitively in quirks mode', () => {
+      const q = load(fruits, { quirksMode: true });
+      expect(q('.apple').closest('#FRUITS').attr('id')).toBe('fruits');
+    });
+
     it('() : should return an empty array', () => {
       const result = $('.orange').closest();
       expect(result).toHaveLength(0);
@@ -832,6 +887,43 @@ describe('$(...)', () => {
       const textNode = $('.apple', food).contents().first();
       const result = textNode.closest('#food') as Cheerio<Element>;
       expect(result[0].attribs).toHaveProperty('id', 'food');
+    });
+
+    it('(fn) : should dedupe in linear time (no O(n^2) membership scan)', () => {
+      /*
+       * N distinct matches: pre-fix `set.includes` scans a growing array,
+       * giving sum(0..N-1) = O(N^2) comparisons. The fix upgrades to a Set.
+       */
+      const N = 2000;
+      const $big = load(
+        `<div>${'<div class="t"><span></span></div>'.repeat(N)}</div>`,
+      );
+      const spans = $big('span');
+      expect(spans).toHaveLength(N);
+
+      const origIncludes = Array.prototype.includes;
+      let includesWork = 0;
+      Array.prototype.includes = function (this: unknown[], ...args) {
+        includesWork += this.length;
+        return origIncludes.apply(this, args as [unknown]);
+      };
+      let result: Cheerio<AnyNode>;
+      try {
+        /*
+         * A predicate selector avoids css-select internals, so the only
+         * Array#includes in play is the dedup scan under test.
+         */
+        result = spans.closest((_i, el) => el.name === 'div');
+      } finally {
+        Array.prototype.includes = origIncludes;
+      }
+
+      expect(result).toHaveLength(N);
+      /*
+       * Fixed: 5050, the scans that happen before the Set upgrade at 100
+       * entries. Pre-fix: N*(N-1)/2, about 2M for N=2000.
+       */
+      expect(includesWork).toBeLessThan(N * 10);
     });
   });
 
@@ -935,9 +1027,54 @@ describe('$(...)', () => {
         undefined,
       ]);
     });
+
+    it('(fn) : should accumulate in linear time (no O(n^2) concat copies)', () => {
+      /*
+       * Pre-fix `elems = elems.concat(val)` copies the whole accumulator each
+       * iteration, giving sum(0..N-1) = O(N^2) work. The fix uses `push`.
+       */
+      const N = 4000;
+      const $big = load('<div></div>'.repeat(N));
+      const sel = $big('div');
+      expect(sel).toHaveLength(N);
+
+      const origConcat = Array.prototype.concat;
+      let concatWork = 0;
+      Array.prototype.concat = function (this: unknown[], ...args) {
+        concatWork += this.length;
+        return origConcat.apply(this, args) as unknown[];
+      };
+      let mapped: Cheerio<Element>;
+      try {
+        mapped = sel.map((_i, el) => el);
+      } finally {
+        Array.prototype.concat = origConcat;
+      }
+
+      expect(mapped).toHaveLength(N);
+      // Fixed: 0, as `push` replaces `concat`. Pre-fix: about 8M for N=4000.
+      expect(concatWork).toBeLessThan(N * 10);
+    });
   });
 
   describe('.filter', () => {
+    it('should apply custom string pseudos', () => {
+      const q = load(fruits, { pseudos: { fruit: '.apple' } });
+      expect(q('li').filter(':fruit').text()).toBe('Apple');
+    });
+
+    it('should apply custom function pseudos', () => {
+      const q = load(fruits, {
+        pseudos: { fruit: (el) => el.attribs['class'] === 'apple' },
+      });
+      expect(q('li').filter(':fruit').text()).toBe('Apple');
+    });
+
+    it('should apply quirks mode to class selectors', () => {
+      const q = load(fruits, { quirksMode: true });
+      expect(q('li').filter('.APPLE').text()).toBe('Apple');
+    });
+
     it('(selector) : should reduce the set of matched elements to those that match the selector', () => {
       const pear = $('li').filter('.pear').text();
       expect(pear).toBe('Pear');
@@ -979,6 +1116,61 @@ describe('$(...)', () => {
       );
 
       expect(text[0].data).toBe('b');
+    });
+
+    it('(null) : should return an empty selection rather than throwing', () => {
+      // Matches jQuery, which winnows a nullish filter down to no matches.
+      expect($('li').filter(null as never)).toHaveLength(0);
+      expect($('li').filter(undefined as never)).toHaveLength(0);
+    });
+  });
+
+  describe('.filterArray', () => {
+    it('should preserve the XML mode argument', () => {
+      const q = load('<root><child/></root>', { xml: true });
+      const nodes = q('*').toArray();
+      expect(q('*').filterArray(nodes, 'ROOT', true)).toEqual([]);
+      expect(q('*').filterArray(nodes, 'ROOT', false)).toEqual([q('root')[0]]);
+    });
+
+    it('should use XML mode from the selector options when omitted', () => {
+      const q = load('<root><child/></root>', { xml: true });
+      expect(
+        q('*').filterArray(q('*').toArray(), 'ROOT', undefined, undefined, {
+          xmlMode: true,
+        }),
+      ).toEqual([]);
+    });
+
+    it('should prefer the XML mode argument over the selector options', () => {
+      const q = load('<root><child/></root>', { xml: true });
+      expect(
+        q('*').filterArray(q('*').toArray(), 'ROOT', false, undefined, {
+          xmlMode: true,
+        }),
+      ).toEqual([q('root')[0]]);
+    });
+
+    it('should use the root from the selector options when omitted', () => {
+      const q = load('<ul><li>first</li></ul>');
+      const other = load('<ul><li>second</li></ul>');
+      const nodes = [...q('li').toArray(), ...other('li').toArray()];
+      expect(
+        q('*').filterArray(nodes, 'ul:first li', undefined, undefined, {
+          root: other.root()[0],
+        }),
+      ).toEqual(other('li').toArray());
+    });
+
+    it('should prefer the root argument over the selector options', () => {
+      const q = load('<ul><li>first</li></ul>');
+      const other = load('<ul><li>second</li></ul>');
+      const nodes = [...q('li').toArray(), ...other('li').toArray()];
+      expect(
+        q('*').filterArray(nodes, 'ul:first li', undefined, other.root()[0], {
+          root: q.root()[0],
+        }),
+      ).toEqual(other('li').toArray());
     });
   });
 
