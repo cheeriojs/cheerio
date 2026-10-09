@@ -1,0 +1,29 @@
+src/api/manipulation.spec.ts
+  s_ebff8ab049684d::t_2a6771b8ed733f 2066-2103
+src/parse.ts
+  s_3fbb77d47a4386::t_a9fb070c8a9f83 136-145,147-177,179-180,182-206,208-212,214
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "4c495a1770407c77688ea2b40061fb90e41bfaab",
+  "prompts": {},
+  "sessions": {
+    "s_3fbb77d47a4386": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a10615-81ce-7bb2-a095-ae8e9f990f13",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    },
+    "s_ebff8ab049684d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a10616-819d-7a30-8413-c0df83161957",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
