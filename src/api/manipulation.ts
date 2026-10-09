@@ -10,6 +10,7 @@ import {
   Document,
   type Element,
   hasChildren,
+  isDocument,
   isTag,
   type ParentNode,
   Text,
@@ -320,12 +321,14 @@ function _wrap(
 
     for (let i = 0; i < this.length; i++) {
       const el = this[i];
+      const wrapperContext: Cheerio<AnyNode> | null =
+        lastParent.length > 0 || isDocument(el) ? lastParent : this._root;
 
       const wrap =
         typeof wrapper === 'function'
           ? wrapper.call(el, i, el)
           : typeof wrapper === 'string' && !isHtml(wrapper)
-            ? lastParent.find(wrapper).clone()
+            ? wrapperContext?.find(wrapper).clone()
             : wrapper;
 
       const [wrapperDom] = this._makeDomArray(wrap, i < lastIdx);
@@ -404,20 +407,21 @@ export const wrap: <T extends AnyNode>(
   this: Cheerio<T>,
   wrapper: AcceptedElems<AnyNode>,
 ) => Cheerio<T> = _wrap((el, elInsertLocation, wrapperDom) => {
+  if (isDocument(el)) return;
+
   const { parent } = el;
-
-  if (!parent) return;
-
-  const siblings: AnyNode[] = parent.children;
-  const index = siblings.indexOf(el);
+  const index = parent ? parent.children.indexOf(el) : 0;
 
   updateDOM([el], elInsertLocation);
-  /*
-   * The previous operation removed the current element from the `siblings`
-   * array, so the `dom` array can be inserted without removing any
-   * additional elements.
-   */
-  uniqueSplice(siblings, index, 0, wrapperDom, parent);
+  if (parent) {
+    /*
+     * The previous operation removed the current element from `parent.children`,
+     * so the wrapper can be inserted without removing any additional elements.
+     */
+    uniqueSplice(parent.children, index, 0, wrapperDom, parent);
+  } else {
+    removeElement(wrapperDom[0]);
+  }
 });
 
 /**
@@ -579,10 +583,12 @@ export function wrapAll<T extends AnyNode>(
   wrapper: AcceptedElems<T>,
 ): Cheerio<T> {
   const el = this[0];
-  if (el) {
-    const wrap: Cheerio<AnyNode> = this._make(
+  if (el && !isDocument(el)) {
+    let wrap: Cheerio<AnyNode> = this._make(
       typeof wrapper === 'function' ? wrapper.call(el, 0, el) : wrapper,
-    ).insertBefore(el);
+    );
+
+    wrap = el.parent ? wrap.insertBefore(el) : wrap.remove();
 
     // If html is given as wrapper, wrap may contain text elements
     let elInsertLocation: Element | undefined;

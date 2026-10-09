@@ -34,8 +34,61 @@ describe('$(...)', () => {
     });
 
     it('(document) : should ignore document node', () => {
+      const html = $.html();
       $.root().wrap('<a></a>');
       expect($.root()[0]).toHaveProperty('type', 'root');
+      expect($.root()[0].parent).toBeNull();
+      expect($.html()).toBe(html);
+    });
+
+    it('(html) : should wrap a removed element', () => {
+      const $apple = $('.apple').remove();
+      const result = $apple.wrap('<section><b></b></section>');
+
+      expect(result).toBe($apple);
+      expect($apple.parent().parent().prop('outerHTML')).toBe(
+        '<section><b><li class="apple">Apple</li></b></section>',
+      );
+      expect($apple.parent().children()[0]).toBe($apple[0]);
+      expect($fruits.find('.apple')).toHaveLength(0);
+    });
+
+    it('(fn) : should wrap removed elements separately', () => {
+      const $children = $fruits.children().remove();
+      const $wrapper = $('<section><b></b></section>');
+
+      $children.wrap(() => $wrapper);
+
+      expect($children.parents('section')).toHaveLength(3);
+      $children.each((_, el) => {
+        expect($(el).parent().is('b')).toBe(true);
+        expect($(el).parent().children()[0]).toBe(el);
+      });
+      expect($fruits.children()).toHaveLength(0);
+    });
+
+    it('(Cheerio object) : should detach an existing wrapper for removed elements', () => {
+      const $wrapper = $('<section><b></b></section>').appendTo($fruits);
+      const $children = $fruits.children('li').remove();
+
+      $children.wrap($wrapper);
+
+      expect($children.parents('section')).toHaveLength(3);
+      expect($wrapper[0].parent).toBeNull();
+      expect($wrapper[0].prev).toBeNull();
+      expect($wrapper[0].next).toBeNull();
+      expect($fruits.children()).toHaveLength(0);
+    });
+
+    it('(selector) : should wrap a removed element with a copy from the document', () => {
+      const $apple = $('.apple').remove();
+
+      $apple.wrap('.orange');
+
+      expect($apple.parent().hasClass('orange')).toBe(true);
+      expect($apple.parent().children()[0]).toBe($apple[0]);
+      expect($('.orange')).toHaveLength(1);
+      expect($('.apple')).toHaveLength(0);
     });
 
     it('(element) : should insert the element and add selected element(s) as its child', () => {
@@ -181,6 +234,34 @@ describe('$(...)', () => {
   });
 
   describe('.wrapInner', () => {
+    it('(document) : should ignore a selector wrapper without ancestors', () => {
+      const root = $.root();
+      const html = $.html();
+
+      expect(root.wrapInner('.orange')).toBe(root);
+      expect($.html()).toBe(html);
+    });
+
+    it('(document) : should wrap fragment contents with markup', () => {
+      const fragment = load('<p>hello</p><p>world</p>', null, false);
+      fragment.root().wrapInner('<section></section>');
+
+      expect(fragment.html()).toBe(
+        '<section><p>hello</p><p>world</p></section>',
+      );
+    });
+
+    it('(selector) : should wrap the contents of a removed element', () => {
+      const doc = load(
+        '<span>hello</span><section id="template"><b></b></section>',
+      );
+      const item = doc('span').remove();
+      item.wrapInner('#template');
+
+      expect(item.html()).toBe('<section id="template"><b>hello</b></section>');
+      expect(doc('#template').html()).toBe('<b></b>');
+    });
+
     it('(Cheerio object) : should insert the element and add selected element(s) as its parent', () => {
       const $container = $('<div class="container"></div>') as Cheerio<Element>;
       $fruits.wrapInner($container);
@@ -429,6 +510,59 @@ describe('$(...)', () => {
     beforeEach(() => {
       doc = load(divcontainers);
       $inner = doc('.inner');
+    });
+
+    it('(document) : should ignore document node', () => {
+      const html = doc.html();
+      doc.root().wrapAll('<section></section>');
+
+      expect(doc.root()[0].parent).toBeNull();
+      expect(doc.html()).toBe(html);
+    });
+
+    it('(html) : should wrap removed elements together', () => {
+      const elements = $inner.toArray();
+      $inner.remove();
+      const result = $inner.wrapAll('<section><b></b></section>');
+
+      expect(result).toBe($inner);
+      expect($inner.parent()).toHaveLength(1);
+      expect($inner.parent().is('b')).toBe(true);
+      $inner
+        .parent()
+        .children()
+        .each((i, el) => {
+          expect(el).toBe(elements[i]);
+        });
+      expect($inner.parent().parent().is('section')).toBe(true);
+      expect(doc('.container').children()).toHaveLength(0);
+    });
+
+    it('(fn) : should wrap a selection starting with a removed element', () => {
+      const first = $inner.eq(0).remove();
+      const second = $inner.eq(1);
+      const selection = first.add(second);
+
+      selection.wrapAll(() => '<section></section>');
+
+      expect(selection.parent()).toHaveLength(1);
+      expect(selection.parent().is('section')).toBe(true);
+      expect(selection.parent().children().toArray()).toEqual([
+        first[0],
+        second[0],
+      ]);
+      expect(doc('.inner')).toHaveLength(2);
+    });
+
+    it('(Cheerio object) : should detach an existing wrapper for removed elements', () => {
+      const $wrapper = doc('#new');
+      $inner.remove().wrapAll($wrapper);
+
+      expect($inner.parents('#new')[0]).toBe($wrapper[0]);
+      expect($wrapper[0].parent).toBeNull();
+      expect($wrapper[0].prev).toBeNull();
+      expect($wrapper[0].next).toBeNull();
+      expect(doc('.inner')).toHaveLength(0);
     });
 
     it('(Cheerio object) : should insert the element and wrap elements with it', () => {
