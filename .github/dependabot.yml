@@ -9,6 +9,10 @@ updates:
     cooldown:
       default-days: 7
     groups:
+      vitest:
+        patterns:
+          - 'vitest'
+          - '@vitest/coverage-*'
       parse5:
         patterns:
           - 'parse5'
