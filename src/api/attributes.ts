@@ -666,8 +666,7 @@ export function data<T extends AnyNode>(
   this: Cheerio<T>,
 ): Record<string, unknown>;
 /**
- * Method for setting data attributes, for only the first element in the matched
- * set.
+ * Method for setting data attributes on every element in the matched set.
  *
  * @category Attributes
  * @example
@@ -690,8 +689,8 @@ export function data<T extends AnyNode>(
   value: unknown,
 ): Cheerio<T>;
 /**
- * Method for setting multiple data attributes at once, for only the first
- * element in the matched set.
+ * Method for setting multiple data attributes at once on every element in the
+ * matched set.
  *
  * @category Attributes
  * @example
@@ -716,6 +715,16 @@ export function data<T extends AnyNode>(
   name?: string | Record<string, unknown>,
   value?: unknown,
 ): unknown {
+  // Set the value (with attr map support)
+  if (name != null && (typeof name === 'object' || value !== undefined)) {
+    return domEach(this, (el) => {
+      if (isTag(el)) {
+        if (typeof name === 'object') setData(el, name);
+        else setData(el, name, value);
+      }
+    });
+  }
+
   const elem = this[0];
 
   if (!(elem && isTag(elem))) return;
@@ -726,17 +735,6 @@ export function data<T extends AnyNode>(
   // Return the entire data object if no data specified
   if (name == null) {
     return readAllData(dataEl);
-  }
-
-  // Set the value (with attr map support)
-  if (typeof name === 'object' || value !== undefined) {
-    domEach(this, (el) => {
-      if (isTag(el)) {
-        if (typeof name === 'object') setData(el, name);
-        else setData(el, name, value);
-      }
-    });
-    return this;
   }
 
   return readData(dataEl, name);
