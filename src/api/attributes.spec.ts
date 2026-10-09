@@ -179,6 +179,25 @@ describe('$(...)', () => {
       expect($pear).toBeInstanceOf($);
     });
 
+    it('(key, value) : should remove attributes when called with undefined value', () => {
+      const $pear = $('.pear').attr('foo', 'bar');
+      expect($pear.attr('foo')).toBe('bar');
+      $pear.attr('foo', undefined);
+      expect($pear.attr('foo')).toBeUndefined();
+    });
+
+    it('(map) : should remove attributes with undefined values', () => {
+      const $pear = $('.pear').attr({
+        foo: 'bar',
+        style: 'color:red',
+      });
+      expect($pear.attr('foo')).toBe('bar');
+      expect($pear.attr('style')).toBe('color:red');
+      $pear.attr({ foo: undefined, style: 'color:blue' });
+      expect($pear.attr('foo')).toBeUndefined();
+      expect($pear.attr('style')).toBe('color:blue');
+    });
+
     it('(chaining) setting attr to undefined returns a $', () => {
       const $pear = $('.pear').attr('foo', undefined);
       expect($('.pear')).toHaveLength(1);
