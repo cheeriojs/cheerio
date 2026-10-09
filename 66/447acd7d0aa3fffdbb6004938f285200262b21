@@ -1,0 +1,23 @@
+.github/dependabot.yml
+  s_cdf7d3feeacb5b::t_a9feedc5457c19 12-15
+package-lock.json
+  s_cdf7d3feeacb5b::t_cc24466087fec9 33,98-100,118-120,124,134-136,140-141,2157-2159,2164-2170,2176-2177,2216-2238,2338-2340,4532-4534,4538-4539,5930-5932
+package.json
+  s_cdf7d3feeacb5b::t_301812756549dc 134
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "66447acd7d0aa3fffdbb6004938f285200262b21",
+  "prompts": {},
+  "sessions": {
+    "s_cdf7d3feeacb5b": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12099-9640-7912-a885-2718c69285cc",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
