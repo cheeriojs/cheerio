@@ -25,7 +25,6 @@
     "@lucide/astro": "^1.50.0",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.5",
-    "hastscript": "^9.0.1",
     "marked": "^18.0.14",
     "react": "^19.2.5",
     "react-dom": "^19.3.0",
@@ -36,6 +35,8 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@astrojs/markdown-remark": "^7.3.1",
+    "@types/hast": "^3.0.5",
+    "@types/mdast": "^4.0.4",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.3.0",
     "mdast-util-to-string": "^4.0.0",
