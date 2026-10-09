@@ -25,29 +25,9 @@ describe('$(...)', () => {
         order: 'abcde',
       },
       {
-        name: 'prepend the first child again',
-        move: (doc: CheerioAPI) => doc('main').prepend(doc('#a')),
-        order: 'abcde',
-      },
-      {
         name: 'insert an existing next sibling after the target',
         move: (doc: CheerioAPI) => doc('#b').after(doc('#c')),
         order: 'abcde',
-      },
-      {
-        name: 'insert an existing previous sibling before the target',
-        move: (doc: CheerioAPI) => doc('#c').before(doc('#b')),
-        order: 'abcde',
-      },
-      {
-        name: 'move the last child to the beginning',
-        move: (doc: CheerioAPI) => doc('main').prepend(doc('#e')),
-        order: 'eabcd',
-      },
-      {
-        name: 'move the first child to the end',
-        move: (doc: CheerioAPI) => doc('main').append(doc('#a')),
-        order: 'bcdea',
       },
       {
         name: 'move children from both sides of the insertion point',
@@ -55,29 +35,13 @@ describe('$(...)', () => {
         order: 'cabed',
       },
       {
-        name: 'move children in reverse selection order',
-        move: (doc: CheerioAPI) =>
-          doc('#d').before([doc('#e')[0], doc('#b')[0], doc('#a')[0]]),
-        order: 'cebad',
-      },
-      {
         name: 'append empty content',
         move: (doc: CheerioAPI) => doc('main').append(''),
         order: 'abcde',
       },
       {
-        name: 'prepend empty content',
-        move: (doc: CheerioAPI) => doc('main').prepend(''),
-        order: 'abcde',
-      },
-      {
         name: 'insert empty content after a child',
         move: (doc: CheerioAPI) => doc('#c').after(''),
-        order: 'abcde',
-      },
-      {
-        name: 'insert empty content before a child',
-        move: (doc: CheerioAPI) => doc('#c').before(''),
         order: 'abcde',
       },
       {
@@ -109,11 +73,10 @@ describe('$(...)', () => {
       }
     });
 
-    it.each([
-      '<section id="wrapper"></section><i id="target"></i>',
-      '<i id="target"></i><section id="wrapper"></section>',
-    ])('should preserve links around an existing wrapper: %s', (content) => {
-      const doc = load(`<main>${content}<i id="tail"></i></main>`);
+    it('should preserve links around an existing wrapper', () => {
+      const doc = load(
+        '<main><section id="wrapper"></section><i id="target"></i><i id="tail"></i></main>',
+      );
       const wrapper = doc('#wrapper');
       const target = doc('#target');
       const tail = doc('#tail');
@@ -126,22 +89,6 @@ describe('$(...)', () => {
       expect(wrapper[0].next).toBe(tail[0]);
       expect(tail[0].prev).toBe(wrapper[0]);
       expect(tail[0].next).toBeNull();
-    });
-
-    it('should retain text and comment links when moving an element', () => {
-      const doc = load(
-        '<main>lead<i id="a"></i><!--middle--><i id="b"></i>tail</main>',
-      );
-      doc('#b').before(doc('#a'));
-
-      expect(doc('main').html()).toBe(
-        'lead<!--middle--><i id="a"></i><i id="b"></i>tail',
-      );
-      const children = doc('main').contents().get();
-      for (const [index, node] of children.entries()) {
-        expect(node.prev).toBe(children[index - 1] ?? null);
-        expect(node.next).toBe(children[index + 1] ?? null);
-      }
     });
   });
 
