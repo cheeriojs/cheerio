@@ -326,7 +326,7 @@ export function prop<T extends AnyNode>(
 // biome-ignore lint/style/useUnifiedTypeSignatures: Separate overloads needed for accurate docs
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
-  name: 'tagName' | 'nodeName',
+  name: 'tagName' | 'nodeName' | 'name' | 'type',
 ): string | undefined;
 /**
  * Resolve `href` or `src` of supported elements. Requires the `baseURI` option
