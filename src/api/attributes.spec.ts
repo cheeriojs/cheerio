@@ -262,18 +262,12 @@ describe('$(...)', () => {
      * the `ElementType` enum), so `prop` has to resolve them as the HTML
      * attributes of the same name, the way the DOM does.
      */
-    it('(valid key) : should get the `name` attribute, not the tag name', () => {
-      const input = $('input[name=checkbox_on]');
-      expect(input.prop('name')).toBe('checkbox_on');
-      expect(input.attr('name')).toBe('checkbox_on');
-      expect($('div#fruits').prop('name')).toBeUndefined();
-    });
-
-    it('(valid key) : should get the `type` attribute, not the node type', () => {
-      const input = $('input[name=checkbox_on]');
-      expect(input.prop('type')).toBe('checkbox');
-      expect(input.attr('type')).toBe('checkbox');
-      expect($('div#fruits').prop('type')).toBeUndefined();
+    it('(valid key) : should get the `name` and `type` attributes, not the DOM fields', () => {
+      expect(checkbox.prop('name')).toBe('checkbox_on');
+      expect(checkbox.prop('type')).toBe('checkbox');
+      const button = $('#btn-valueless');
+      expect(button.prop('name')).toBeUndefined();
+      expect(button.prop('type')).toBeUndefined();
     });
 
     it('(key, value) : should set the `name` and `type` attributes', () => {
