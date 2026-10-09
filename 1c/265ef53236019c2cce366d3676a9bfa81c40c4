@@ -1,0 +1,21 @@
+website/src/components/Sponsors.astro
+  s_02afa971d0d31a::t_0088af0e3195ab 26-27,30,58-60,78
+website/src/components/Hero.astro
+  s_02afa971d0d31a::t_3d4afe300b6be8 125,129,133,167,183
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "1c265ef53236019c2cce366d3676a9bfa81c40c4",
+  "prompts": {},
+  "sessions": {
+    "s_02afa971d0d31a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fb429626-bfbe-4d99-8728-8a32026f6366",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
