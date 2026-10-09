@@ -260,7 +260,7 @@ function getProp(
  * @param xmlMode - Disable handling of special HTML attributes.
  */
 function setProp(el: Element, name: string, value: unknown, xmlMode?: boolean) {
-  if (name === 'tagName') return;
+  if (name === 'tagName' || name === 'nodeName') return;
   if (name in el && name !== 'name' && name !== 'type') {
     // @ts-expect-error Overriding value
     el[name] = value;

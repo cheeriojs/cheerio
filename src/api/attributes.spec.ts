@@ -284,9 +284,11 @@ describe('$(...)', () => {
       );
     });
 
-    it('(key, value) : should not set the read-only tagName alias', () => {
+    it('(key, value) : should not set the read-only tagName and nodeName aliases', () => {
       checkbox.prop('tagName', 'script');
+      checkbox.prop('nodeName', 'script');
       expect(checkbox.prop('tagName')).toBe('INPUT');
+      expect(checkbox.attr('nodeName')).toBeUndefined();
     });
 
     it('(key, value) : should ignore empty collection', () => {
