@@ -1141,8 +1141,18 @@ export function toggleClass<T extends AnyNode, R extends ArrayLike<T>>(
       if (state >= 0 && index === -1) {
         elementClasses.push(classNames[j]);
       } else if (state <= 0 && index !== -1) {
-        // Otherwise remove but only if the item exists
-        elementClasses.splice(index, 1);
+        /*
+         * Otherwise remove, but only if the item exists. Every occurrence goes,
+         * not just the first, so a duplicated class does not survive the
+         * toggle. This matches `removeClass` and what a browser does. It is
+         * done in place rather than by re-running this iteration, because that
+         * would re-enter the branch above and add the class straight back.
+         */
+        for (let k = elementClasses.length - 1; k >= 0; k--) {
+          if (elementClasses[k] === classNames[j]) {
+            elementClasses.splice(k, 1);
+          }
+        }
       }
     }
 
