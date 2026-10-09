@@ -129,11 +129,6 @@ function uniqueSplice(
   newElems: AnyNode[],
   parent: ParentNode,
 ): AnyNode[] {
-  const spliceArgs: Parameters<AnyNode[]['splice']> = [
-    spliceIdx,
-    spliceCount,
-    ...newElems,
-  ];
   /*
    * Before splicing in new elements, ensure they do not already appear in the
    * current array.
@@ -141,17 +136,18 @@ function uniqueSplice(
   for (const node of newElems) {
     if (node.parent === parent) {
       const prevIdx = array.indexOf(node);
-      if (prevIdx !== -1 && spliceArgs[0] > prevIdx) {
-        spliceArgs[0]--;
+      if (prevIdx !== -1 && spliceIdx > prevIdx) {
+        spliceIdx--;
       }
     }
     removeElement(node);
   }
 
-  const start = spliceArgs[0];
-  const prev = start === 0 ? null : array[start - 1];
+  const prev = spliceIdx === 0 ? null : array[spliceIdx - 1];
   const next =
-    start + spliceCount >= array.length ? null : array[start + spliceCount];
+    spliceIdx + spliceCount >= array.length
+      ? null
+      : array[spliceIdx + spliceCount];
 
   for (let idx = 0; idx < newElems.length; ++idx) {
     const node = newElems[idx];
@@ -166,7 +162,7 @@ function uniqueSplice(
   if (next) {
     next.prev = newElems[newElems.length - 1] ?? prev;
   }
-  return array.splice(...spliceArgs);
+  return array.splice(spliceIdx, spliceCount, ...newElems);
 }
 
 /**
