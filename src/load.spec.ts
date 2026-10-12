@@ -2,6 +2,38 @@ import { describe, expect, it } from 'vitest';
 import { load } from './index.js';
 
 describe('.load', () => {
+  it.each(['hello', 'a < b & c', ''])(
+    '(node) : should accept a CDATA node containing %j',
+    (content) => {
+      const $ = load(`<root><![CDATA[${content}]]></root>`, {
+        xmlMode: true,
+      });
+      const node = $('root').contents()[0];
+      const $node = $(node);
+
+      expect($node).toHaveLength(1);
+      expect($node[0]).toBe(node);
+      expect($node.text()).toBe(content);
+      expect($node.parent()[0]).toBe($('root')[0]);
+    },
+  );
+
+  it('(node) : should wrap CDATA nodes while iterating over XML contents', () => {
+    const $ = load(
+      '<root>before<![CDATA[a < b]]><child>inside</child>after</root>',
+      { xmlMode: true },
+    );
+    const texts: string[] = [];
+
+    $('root')
+      .contents()
+      .each(function () {
+        texts.push($(this).text());
+      });
+
+    expect(texts).toEqual(['before', 'a < b', 'inside', 'after']);
+  });
+
   it('(html) : should retain original root after creating a new node', () => {
     const $ = load('<body><ul id="fruits"></ul></body>');
     expect($('body')).toHaveLength(1);
