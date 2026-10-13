@@ -57,6 +57,18 @@ describe('$(...)', () => {
       ]);
     });
 
+    it('() : should omit disabled selected options and option groups', () => {
+      const $ = cheerio.load(
+        '<form><select name="choice" multiple>' +
+          '<option selected disabled value="a">a</option>' +
+          '<optgroup disabled><option selected value="b">b</option></optgroup>' +
+          '<option selected value="c">c</option></select></form>',
+      );
+      expect($('form').serializeArray()).toStrictEqual([
+        { name: 'choice', value: 'c' },
+      ]);
+    });
+
     it('() : should not get unnamed form controls', () => {
       expect($('form#unnamed').serializeArray()).toStrictEqual([
         {
