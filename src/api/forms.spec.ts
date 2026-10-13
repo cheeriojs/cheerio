@@ -57,6 +57,19 @@ describe('$(...)', () => {
       ]);
     });
 
+    it('() : should strip whitespace from valueless selected options', () => {
+      expect(
+        $(
+          '<form><select name="fruit"><option>Apple</option><option selected>\n  Red   Orange\n</option></select></form>',
+        ).serializeArray(),
+      ).toStrictEqual([
+        {
+          name: 'fruit',
+          value: 'Red Orange',
+        },
+      ]);
+    });
+
     it('() : should not get unnamed form controls', () => {
       expect($('form#unnamed').serializeArray()).toStrictEqual([
         {

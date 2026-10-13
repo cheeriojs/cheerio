@@ -18,10 +18,25 @@ const rboolean =
   /^(?:autofocus|autoplay|async|checked|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped|selected)$/i;
 // Matches strings that look like JSON objects or arrays
 const rbrace = /^{[\s\S]*}$|^\[[\s\S]*]$/;
+// Matches runs of characters that are not ASCII whitespace
+const rnotwhite = /[^\t\n\f\r ]+/g;
 
 // Tags whose `href`/`src` is resolved against `baseURI`
 const hrefTags = new Set(['a', 'link']);
 const srcTags = new Set(['img', 'iframe', 'audio', 'video', 'source']);
+
+/**
+ * Gets the text of an `option` the way the DOM does: its text content with
+ * ASCII whitespace stripped and collapsed.
+ *
+ * @private
+ * @param elem - The `option` element.
+ * @returns The option's text.
+ * @see {@link https://html.spec.whatwg.org/multipage/form-elements.html#dom-option-text}
+ */
+function getOptionText(elem: Element): string {
+  return text(elem.children).match(rnotwhite)?.join(' ') ?? '';
+}
 
 /**
  * Gets a node's attribute. For boolean attributes, it will return the value's
@@ -71,7 +86,7 @@ function getAttr(
 
   // Mimic the DOM and return text content as value for `option's`
   if (elem.name === 'option' && name === 'value') {
-    return text(elem.children);
+    return getOptionText(elem);
   }
 
   // Mimic DOM with default value for radios/checkboxes
@@ -813,7 +828,7 @@ export function val<T extends AnyNode>(
            * directly instead of building a selector, so values containing
            * characters such as `"` or `\` are matched literally.
            */
-          const optionValue = el.attribs['value'] ?? text(el.children);
+          const optionValue = el.attribs['value'] ?? getOptionText(el);
           if (values.includes(optionValue)) {
             el.attribs['selected'] = '';
           }
