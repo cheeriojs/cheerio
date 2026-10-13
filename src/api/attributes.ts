@@ -86,7 +86,7 @@ function getAttr(
 
   // Mimic the DOM and return text content as value for `option's`
   if (elem.name === 'option' && name === 'value') {
-    return getOptionText(elem);
+    return xmlMode ? text(elem.children) : getOptionText(elem);
   }
 
   // Mimic DOM with default value for radios/checkboxes
@@ -828,8 +828,8 @@ export function val<T extends AnyNode>(
            * directly instead of building a selector, so values containing
            * characters such as `"` or `\` are matched literally.
            */
-          const optionValue = el.attribs['value'] ?? getOptionText(el);
-          if (values.includes(optionValue)) {
+          const optionValue = getAttr(el, 'value', this.options.xmlMode);
+          if (optionValue !== undefined && values.includes(optionValue)) {
             el.attribs['selected'] = '';
           }
         }
