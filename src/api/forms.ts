@@ -85,7 +85,11 @@ export function serializeArray<T extends AnyNode>(
       const name = $elem.attr('name');
       if (!name) return [];
       // If there is no value set (e.g. `undefined`, `null`), then default value to empty
-      const value = $elem.val() ?? '';
+      const selectedValue = $elem.val();
+      if (isTag(elem) && elem.name === 'select' && selectedValue == null) {
+        return [];
+      }
+      const value = selectedValue ?? '';
 
       // If we have an array of values (e.g. `<select multiple>`), return an array of key/value pairs
       if (Array.isArray(value)) {
