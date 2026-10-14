@@ -14,7 +14,6 @@ import {
   isTag,
 } from 'domhandler';
 import {
-  compareDocumentPosition,
   getChildren,
   getSiblings,
   nextElementSibling,
@@ -386,14 +385,43 @@ export function closest<T extends AnyNode>(
     }
   });
 
-  set.sort((a, b) => {
-    const position = compareDocumentPosition(a, b);
-    // DocumentPosition.PRECEDING and FOLLOWING are the 2 and 4 bits.
-    if (position & 2) return -1;
-    if (position & 4) return 1;
-    return 0;
+  if (set.length < 2) return this._make(set);
+
+  // Cache sibling positions only for parents needed to compare these matches.
+  const siblingIndices = new Map<AnyNode, number>();
+  const getSiblingIndex = (node: AnyNode): number => {
+    const index = siblingIndices.get(node);
+    if (index !== undefined) return index;
+    if (!node.parent) return 0;
+    const { children } = node.parent;
+    for (let i = 0; i < children.length; i++) {
+      siblingIndices.set(children[i], i);
+    }
+    return siblingIndices.get(node) ?? -1;
+  };
+  const positions = set.map((node) => {
+    const path: AnyNode[] = [];
+    for (
+      let ancestor: AnyNode | null = node;
+      ancestor;
+      ancestor = ancestor.parent
+    ) {
+      path.push(ancestor);
+    }
+    return { node, path };
   });
-  return this._make(set);
+  positions.sort(({ path: a }, { path: b }) => {
+    let i = a.length - 1;
+    let j = b.length - 1;
+    if (a[i] !== b[j]) return 0;
+    while (i >= 0 && j >= 0 && a[i] === b[j]) {
+      i--;
+      j--;
+    }
+    if (i < 0 || j < 0) return a.length - b.length;
+    return getSiblingIndex(a[i]) - getSiblingIndex(b[j]);
+  });
+  return this._make(positions.map(({ node }) => node));
 }
 
 /**

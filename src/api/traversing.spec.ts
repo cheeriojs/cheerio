@@ -886,6 +886,15 @@ describe('$(...)', () => {
       ]);
     });
 
+    it('should place an ancestor before a matching descendant', () => {
+      const q = load('<div id="a"><div id="b"></div></div>');
+      const result = q([q('#b')[0], q('#a')[0]]).closest('div');
+      expect(result.map((_, el) => q(el).attr('id')).get()).toStrictEqual([
+        'a',
+        'b',
+      ]);
+    });
+
     it('should sort and deduplicate ancestors from a reversed selection', () => {
       const q = load(
         '<div id="a"><span></span><span></span></div><div id="b"><span></span></div>',
@@ -922,10 +931,16 @@ describe('$(...)', () => {
       expect(spans).toHaveLength(N);
 
       const origIncludes = Array.prototype.includes;
+      const origIndexOf = Array.prototype.indexOf;
       let includesWork = 0;
+      let indexOfWork = 0;
       Array.prototype.includes = function (this: unknown[], ...args) {
         includesWork += this.length;
         return origIncludes.apply(this, args as [unknown]);
+      };
+      Array.prototype.indexOf = function (this: unknown[], ...args) {
+        indexOfWork += this.length;
+        return origIndexOf.apply(this, args as [unknown]);
       };
       let result: Cheerio<AnyNode>;
       try {
@@ -936,6 +951,7 @@ describe('$(...)', () => {
         result = spans.closest((_i, el) => el.name === 'div');
       } finally {
         Array.prototype.includes = origIncludes;
+        Array.prototype.indexOf = origIndexOf;
       }
 
       expect(result).toHaveLength(N);
@@ -944,6 +960,7 @@ describe('$(...)', () => {
        * entries. Pre-fix: N*(N-1)/2, about 2M for N=2000.
        */
       expect(includesWork).toBeLessThan(N * 10);
+      expect(indexOfWork).toBeLessThan(N * 10);
     });
   });
 
