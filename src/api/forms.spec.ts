@@ -10,6 +10,146 @@ describe('$(...)', () => {
   });
 
   describe('.serializeArray', () => {
+    it('() : should include explicitly associated controls in document order', () => {
+      $ = cheerio.load(`
+        <input form="owner" name="before" value="1">
+        <form id="owner"><input name="inside" value="2"></form>
+        <textarea form="owner" name="after">3</textarea>
+        <select form="owner" name="choice"><option value="4" selected>Four</option></select>
+      `);
+
+      expect($('#owner').serializeArray()).toStrictEqual([
+        { name: 'before', value: '1' },
+        { name: 'inside', value: '2' },
+        { name: 'after', value: '3' },
+        { name: 'choice', value: '4' },
+      ]);
+      expect($('#owner').serialize()).toBe(
+        'before=1&inside=2&after=3&choice=4',
+      );
+    });
+
+    it('() : should use explicit form ownership instead of ancestry', () => {
+      $ = cheerio.load(`
+        <form id="first">
+          <input name="own" value="1">
+          <input form="second" name="reassigned" value="2">
+        </form>
+        <form id="second"></form>
+      `);
+
+      expect($('#first').serializeArray()).toStrictEqual([
+        { name: 'own', value: '1' },
+      ]);
+      expect($('#second').serializeArray()).toStrictEqual([
+        { name: 'reassigned', value: '2' },
+      ]);
+    });
+
+    it('() : should not fall back to ancestry for unmatched form attributes', () => {
+      $ = cheerio.load(`
+        <div id="not-a-form"></div>
+        <form id="owner">
+          <input form="" name="empty" value="1">
+          <input form="missing" name="missing" value="2">
+          <input form="not-a-form" name="nonform" value="3">
+          <input form="OWNER" name="case" value="4">
+          <input name="own" value="5">
+        </form>
+      `);
+
+      expect($('#owner').serializeArray()).toStrictEqual([
+        { name: 'own', value: '5' },
+      ]);
+    });
+
+    it('() : should use the first element with the matching ID', () => {
+      $ = cheerio.load(`
+        <div id="blocked"></div>
+        <form id="blocked"><input form="blocked" name="blocked" value="1"></form>
+        <form id="duplicate"></form>
+        <form id="duplicate"><input name="own" value="2"></form>
+        <input form="duplicate" name="external" value="3">
+      `);
+
+      expect($('form#blocked').serializeArray()).toStrictEqual([]);
+      const duplicates = $('form#duplicate');
+      expect(duplicates.first().serializeArray()).toStrictEqual([
+        { name: 'external', value: '3' },
+      ]);
+      expect(duplicates.last().serializeArray()).toStrictEqual([
+        { name: 'own', value: '2' },
+      ]);
+    });
+
+    it('() : should keep individually selected controls independent of form ownership', () => {
+      $ = cheerio.load('<input form="missing" name="individual" value="1">');
+
+      expect($('input').serializeArray()).toStrictEqual([
+        { name: 'individual', value: '1' },
+      ]);
+    });
+
+    it('() : should keep XML form serialization limited to descendants', () => {
+      $ = cheerio.load(
+        '<root><form id="owner"><input form="missing" name="inside" value="1"/></form><input form="owner" name="outside" value="2"/></root>',
+        { xmlMode: true },
+      );
+
+      expect($('form').serializeArray()).toStrictEqual([
+        { name: 'inside', value: '1' },
+      ]);
+    });
+
+    it('() : should serialize ordinary controls in a detached form', () => {
+      const form = $(
+        '<form><input name="detached" value="1"><input form="missing" name="explicit" value="2"><input form="" name="empty" value="3"><input form="other" name="other" value="4"></form>',
+      ).remove();
+
+      expect(form.serializeArray()).toStrictEqual([
+        { name: 'detached', value: '1' },
+        { name: 'explicit', value: '2' },
+        { name: 'empty', value: '3' },
+        { name: 'other', value: '4' },
+      ]);
+    });
+
+    it('() : should find the nearest form after moving controls', () => {
+      $ = cheerio.load('<form id="outer"></form><form id="inner"></form>');
+      $('#inner').append('<input name="nested" value="1">');
+      $('#outer').append($('#inner'));
+
+      expect($('#outer').serializeArray()).toStrictEqual([]);
+      expect($('#inner').serializeArray()).toStrictEqual([
+        { name: 'nested', value: '1' },
+      ]);
+    });
+
+    it('() : should match form IDs literally rather than as selectors', () => {
+      $ = cheerio.load(`
+        <form id="owner['special']"></form>
+        <input form="owner['special']" name="literal" value="1">
+      `);
+
+      expect($('form').serializeArray()).toStrictEqual([
+        { name: 'literal', value: '1' },
+      ]);
+    });
+
+    it('() : should apply successful control filtering to external controls', () => {
+      $ = cheerio.load(`
+        <form id="owner"></form>
+        <input form="owner" name="disabled" value="1" disabled>
+        <input form="owner" name="submit" value="2" type="submit">
+        <input form="owner" name="unchecked" value="3" type="checkbox">
+        <input form="owner" name="checked" value="4" type="checkbox" checked>
+      `);
+
+      expect($('#owner').serializeArray()).toStrictEqual([
+        { name: 'checked', value: '4' },
+      ]);
+    });
+
     it('() : should get form controls', () => {
       expect($('form#simple').serializeArray()).toStrictEqual([
         {

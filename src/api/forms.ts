@@ -1,4 +1,5 @@
-import { type AnyNode, isTag } from 'domhandler';
+import { type AnyNode, type Element, isDocument, isTag } from 'domhandler';
+import { getElementById } from 'domutils';
 import type { Cheerio } from '../cheerio.js';
 
 /*
@@ -8,6 +9,45 @@ import type { Cheerio } from '../cheerio.js';
 const submittableSelector = 'input,select,textarea,keygen';
 const r20 = /%20/g;
 const rCRLF = /\r?\n/g;
+
+/**
+ * Find the controls owned by a form in its current tree.
+ *
+ * @private
+ * @param $form - Selection containing the form.
+ * @param form - Form whose controls should be selected.
+ * @returns The form's controls in tree order.
+ */
+function getFormControls($form: Cheerio<AnyNode>, form: Element): AnyNode[] {
+  if ($form.options.xmlMode) {
+    return $form.find(submittableSelector).toArray();
+  }
+
+  let root: AnyNode = form;
+  while (root.parent) root = root.parent;
+
+  const connected = isDocument(root);
+  const { id } = form.attribs;
+  const isFirstIdMatch = connected && id && getElementById(id, root) === form;
+
+  return $form
+    ._make(root)
+    .find(submittableSelector)
+    .filter((_, control) => {
+      const { form: formId } = control.attribs;
+      if (connected && formId !== undefined) {
+        return Boolean(isFirstIdMatch && formId === id);
+      }
+
+      let { parent } = control;
+      while (parent) {
+        if (isTag(parent) && parent.name === 'form') return parent === form;
+        ({ parent } = parent);
+      }
+      return false;
+    })
+    .toArray();
+}
 
 /**
  * Encode a set of form elements as a string for submission.
@@ -39,6 +79,8 @@ export function serialize<T extends AnyNode>(this: Cheerio<T>): string {
 
 /**
  * Encode a set of form elements as an array of names and values.
+ * When a form is selected, controls in its document can be associated with it
+ * using the `form` attribute instead of being descendants of the form.
  *
  * @category Forms
  * @example
@@ -61,7 +103,7 @@ export function serializeArray<T extends AnyNode>(
   return this.map((_, elem) => {
     const $elem = this._make(elem);
     if (isTag(elem) && elem.name === 'form') {
-      return $elem.find(submittableSelector).toArray();
+      return getFormControls($elem, elem);
     }
     return $elem.filter(submittableSelector).toArray();
   })
