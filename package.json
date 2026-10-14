@@ -140,7 +140,7 @@
     "jquery": "^4.0.0",
     "jsdom": "^30.1.2",
     "lint-staged": "^17.6.0",
-    "tinybench": "^6.2.0",
+    "tinybench": "^6.2.1",
     "tshy": "^4.1.3",
     "tsx": "^4.23.15",
     "typescript": "^6.0.3",
