@@ -14,6 +14,7 @@ import {
   isTag,
 } from 'domhandler';
 import {
+  compareDocumentPosition,
   getChildren,
   getSiblings,
   nextElementSibling,
@@ -359,7 +360,7 @@ export function closest<T extends AnyNode>(
    * Dedup: a linear scan is cheapest for the small result sets `closest`
    * usually produces. Once the set grows past `dedupThreshold` we switch to a
    * Set, so a pathological input with many distinct matches stays O(n) instead
-   * of O(n^2). `set` always preserves document order.
+   * of O(n^2).
    */
   const dedupThreshold = 100;
   let seen: Set<AnyNode> | undefined;
@@ -385,6 +386,13 @@ export function closest<T extends AnyNode>(
     }
   });
 
+  set.sort((a, b) => {
+    const position = compareDocumentPosition(a, b);
+    // DocumentPosition.PRECEDING and FOLLOWING are the 2 and 4 bits.
+    if (position & 2) return -1;
+    if (position & 4) return 1;
+    return 0;
+  });
   return this._make(set);
 }
 
