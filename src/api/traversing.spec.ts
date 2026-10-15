@@ -878,6 +878,35 @@ describe('$(...)', () => {
       expect(result).toHaveLength(2);
     });
 
+    it('(selector) : should return self matches in document order from a reversed selection', () => {
+      const result = $('.pear').prevAll().closest('li');
+      expect(result.map((_, el) => $(el).attr('class')).get()).toStrictEqual([
+        'apple',
+        'orange',
+      ]);
+    });
+
+    it('(selector) : should place an ancestor before a matching descendant', () => {
+      const q = load('<div id="a"><div id="b"></div></div>');
+      const result = q([q('#b')[0], q('#a')[0]]).closest('div');
+      expect(result.map((_, el) => q(el).attr('id')).get()).toStrictEqual([
+        'a',
+        'b',
+      ]);
+    });
+
+    it('(selector) : should sort and deduplicate ancestors from a reversed selection', () => {
+      const q = load(
+        '<div id="a"><span></span><span></span></div><div id="b"><span></span></div>',
+      );
+      const spans = q('span').get();
+      const result = q([spans[2], spans[1], spans[0]]).closest('div');
+      expect(result.map((_, el) => q(el).attr('id')).get()).toStrictEqual([
+        'a',
+        'b',
+      ]);
+    });
+
     it('() : should not break if the selector does not have any results', () => {
       const result = $('.saladbar', food).closest('ul');
       expect(result).toHaveLength(0);
