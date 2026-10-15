@@ -1,5 +1,10 @@
-import { type AnyNode, type Element, isDocument, isTag } from 'domhandler';
-import { getElementById } from 'domutils';
+import {
+  type AnyNode,
+  type Element,
+  hasChildren,
+  isDocument,
+  isTag,
+} from 'domhandler';
 import type { Cheerio } from '../cheerio.js';
 
 /*
@@ -11,42 +16,48 @@ const r20 = /%20/g;
 const rCRLF = /\r?\n/g;
 
 /**
- * Find the controls owned by a form in its current tree.
+ * Group controls by their owner with one traversal of the current HTML tree.
  *
  * @private
- * @param $form - Selection containing the form.
- * @param form - Form whose controls should be selected.
- * @returns The form's controls in tree order.
+ * @param root - Root of the forms' current tree.
+ * @returns Controls in tree order, grouped by form.
  */
-function getFormControls($form: Cheerio<AnyNode>, form: Element): AnyNode[] {
-  if ($form.options.xmlMode) {
-    return $form.find(submittableSelector).toArray();
+function getFormControls(root: AnyNode): Map<Element, Element[]> {
+  const connected = isDocument(root);
+  const firstById = new Map<string, Element>();
+  const controls: [Element, Element | undefined][] = [];
+  const pending: [AnyNode, Element | undefined][] = [[root, undefined]];
+
+  while (pending.length > 0) {
+    const [node, ancestor] = pending.pop()!;
+    let owner = ancestor;
+    if (isTag(node)) {
+      const { id } = node.attribs;
+      if (id && !firstById.has(id)) firstById.set(id, node);
+      if (node.name === 'form') owner = node;
+      else if (['input', 'select', 'textarea', 'keygen'].includes(node.name)) {
+        controls.push([node, owner]);
+      }
+    }
+    if (hasChildren(node)) {
+      for (let i = node.children.length - 1; i >= 0; i--) {
+        pending.push([node.children[i], owner]);
+      }
+    }
   }
 
-  let root: AnyNode = form;
-  while (root.parent) root = root.parent;
-
-  const connected = isDocument(root);
-  const { id } = form.attribs;
-  const isFirstIdMatch = connected && id && getElementById(id, root) === form;
-
-  return $form
-    ._make(root)
-    .find(submittableSelector)
-    .filter((_, control) => {
-      const { form: formId } = control.attribs;
-      if (connected && formId !== undefined) {
-        return Boolean(isFirstIdMatch && formId === id);
-      }
-
-      let { parent } = control;
-      while (parent) {
-        if (isTag(parent) && parent.name === 'form') return parent === form;
-        ({ parent } = parent);
-      }
-      return false;
-    })
-    .toArray();
+  const byOwner = new Map<Element, Element[]>();
+  for (const [control, ancestor] of controls) {
+    const { form: formId } = control.attribs;
+    const owner =
+      connected && formId !== undefined ? firstById.get(formId) : ancestor;
+    if (owner?.name === 'form') {
+      const owned = byOwner.get(owner);
+      if (owned) owned.push(control);
+      else byOwner.set(owner, [control]);
+    }
+  }
+  return byOwner;
 }
 
 /**
@@ -99,11 +110,24 @@ export function serializeArray<T extends AnyNode>(
   name: string;
   value: string;
 }[] {
+  // Cache only within this call so later DOM mutations are reflected.
+  const controlsByRoot = new Map<AnyNode, Map<Element, Element[]>>();
+
   // Resolve all form elements from either forms or collections of form elements
   return this.map((_, elem) => {
     const $elem = this._make(elem);
     if (isTag(elem) && elem.name === 'form') {
-      return getFormControls($elem, elem);
+      if (this.options.xmlMode) {
+        return $elem.find(submittableSelector).toArray();
+      }
+      let root: AnyNode = elem;
+      while (root.parent) root = root.parent;
+      let controls = controlsByRoot.get(root);
+      if (!controls) {
+        controls = getFormControls(root);
+        controlsByRoot.set(root, controls);
+      }
+      return controls.get(elem) ?? [];
     }
     return $elem.filter(submittableSelector).toArray();
   })

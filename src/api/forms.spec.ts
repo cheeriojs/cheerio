@@ -10,6 +10,91 @@ describe('$(...)', () => {
   });
 
   describe('.serializeArray', () => {
+    it('() : should resolve ownership once per tree for many selected forms', () => {
+      $ = cheerio.load(
+        '<div id="sentinel"></div>' +
+          Array.from(
+            { length: 40 },
+            (_, i) =>
+              `<form id="f${i}"></form><input form="f${i}" name="n${i}" value="${i}">`,
+          ).join(''),
+      );
+      const selected = $('form');
+      const sentinel = $('#sentinel')[0];
+      let idReads = 0;
+      let associationReads = 0;
+      Object.defineProperty(sentinel.attribs, 'id', {
+        get() {
+          idReads++;
+          return 'sentinel';
+        },
+      });
+      $('input').each((i, control) => {
+        Object.defineProperty(control.attribs, 'form', {
+          get() {
+            associationReads++;
+            return `f${i}`;
+          },
+        });
+      });
+
+      expect(selected.serializeArray()).toStrictEqual(
+        Array.from({ length: 40 }, (_, i) => ({
+          name: `n${i}`,
+          value: `${i}`,
+        })),
+      );
+      expect(idReads).toBe(1);
+      expect(associationReads).toBe(40);
+    });
+
+    it('() : should recompute IDs and owners after mutations between calls', () => {
+      $ = cheerio.load(
+        '<div id="blocked"></div><form id="blocked"></form><form id="other"></form><input form="blocked" name="external" value="1">',
+      );
+      const selected = $('form');
+      expect(selected.serializeArray()).toStrictEqual([]);
+      $('div').remove();
+      expect(selected.serializeArray()).toStrictEqual([
+        { name: 'external', value: '1' },
+      ]);
+      $('input').attr('form', 'other');
+      expect(selected.first().serializeArray()).toStrictEqual([]);
+      expect(selected.last().serializeArray()).toStrictEqual([
+        { name: 'external', value: '1' },
+      ]);
+      selected.last().append($('input').removeAttr('form'));
+      expect(selected.serializeArray()).toStrictEqual([
+        { name: 'external', value: '1' },
+      ]);
+    });
+
+    it('() : should keep roots independent and preserve selection order and duplicates', () => {
+      const first = cheerio.load(
+        '<form id="same"></form><input form="same" name="first" value="1">',
+      );
+      const second = cheerio.load(
+        '<form id="same"></form><input form="same" name="second" value="2">',
+      );
+      const detached = $(
+        '<section><form id="same"><input form="missing" name="detached" value="3"></form></section>',
+      ).remove();
+      const selected = $([
+        second('form')[0],
+        first('form')[0],
+        detached.find('form')[0],
+        first('form')[0],
+        second('input')[0],
+      ]);
+      expect(selected.serializeArray()).toStrictEqual([
+        { name: 'second', value: '2' },
+        { name: 'first', value: '1' },
+        { name: 'detached', value: '3' },
+        { name: 'first', value: '1' },
+        { name: 'second', value: '2' },
+      ]);
+    });
+
     it('() : should include explicitly associated controls in document order', () => {
       $ = cheerio.load(`
         <input form="owner" name="before" value="1">
