@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { cheerio, forms } from '../__fixtures__/fixtures.js';
 import type { CheerioAPI } from '../index.js';
+import { load as loadSlim } from '../slim.js';
 
 describe('$(...)', () => {
   let $: CheerioAPI;
@@ -10,6 +11,98 @@ describe('$(...)', () => {
   });
 
   describe('.serializeArray', () => {
+    it('() : should exclude template contents from document form ownership', () => {
+      $ = cheerio.load(`
+        <template><input form="owner" name="draft" value="1"></template>
+        <form id="owner"><input name="live" value="2">
+          <template><input name="nested" value="3"></template>
+        </form>
+        <template><div id="owner"></div></template>
+        <input form="owner" name="external" value="4">
+      `);
+
+      expect($('#owner').serializeArray()).toStrictEqual([
+        { name: 'live', value: '2' },
+        { name: 'external', value: '4' },
+      ]);
+      expect($('input[name="draft"]').serializeArray()).toStrictEqual([
+        { name: 'draft', value: '1' },
+      ]);
+    });
+
+    it('() : should isolate forms in template contents and nested templates', () => {
+      $ = cheerio.load(`
+        <form id="outside"></form>
+        <template><form id="inside">
+          <input form="outside" name="local" value="1">
+          <input form="missing" name="unmatched" value="2">
+          <template><input name="nested" value="3"></template>
+        </form></template>
+        <input form="inside" name="external" value="4">
+      `);
+
+      expect($('#outside').serializeArray()).toStrictEqual([]);
+      expect($('#inside').serializeArray()).toStrictEqual([
+        { name: 'local', value: '1' },
+        { name: 'unmatched', value: '2' },
+      ]);
+    });
+
+    it('() : should preserve template isolation after detaching its content fragment', () => {
+      $ = cheerio.load(
+        '<template><form id="owner"><input form="missing" name="local" value="1"></form></template>',
+      );
+      const form = $('form');
+      $('template').contents().remove();
+
+      expect(form.serializeArray()).toStrictEqual([
+        { name: 'local', value: '1' },
+      ]);
+    });
+
+    it('() : should treat parsed fragment forms as detached', () => {
+      $ = cheerio.load(
+        '<form id="owner"><input form="missing" name="local" value="1"></form><input form="owner" name="external" value="2">',
+        null,
+        false,
+      );
+
+      expect($('form').serializeArray()).toStrictEqual([
+        { name: 'local', value: '1' },
+      ]);
+    });
+
+    it('() : should retain document ownership with the HTML htmlparser2 parser', () => {
+      $ = cheerio.load(
+        '<form id="owner"><input form="missing" name="unmatched" value="1"></form><input form="owner" name="external" value="2">',
+        { xml: { xmlMode: false } },
+      );
+
+      expect($('form').serializeArray()).toStrictEqual([
+        { name: 'external', value: '2' },
+      ]);
+    });
+
+    it('() : should use each root identity across full and slim HTML loaders', () => {
+      const markup =
+        '<form id="owner"><input form="missing" name="local" value="1"></form><input form="owner" name="external" value="2">';
+      const fragment = cheerio.load(markup, null, false);
+      const slim = loadSlim(markup);
+      $ = cheerio.load(markup);
+
+      expect(
+        $([
+          fragment('form')[0],
+          slim('form')[0],
+          $('form')[0],
+        ]).serializeArray(),
+      ).toStrictEqual([
+        { name: 'local', value: '1' },
+        { name: 'external', value: '2' },
+        { name: 'external', value: '2' },
+      ]);
+    });
+
     it('() : should resolve ownership once per tree for many selected forms', () => {
       $ = cheerio.load(
         '<div id="sentinel"></div>' +

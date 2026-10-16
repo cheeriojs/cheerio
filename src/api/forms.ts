@@ -6,6 +6,7 @@ import {
   isTag,
 } from 'domhandler';
 import type { Cheerio } from '../cheerio.js';
+import { parse5FragmentRoots } from '../parse.js';
 
 /*
  * https://github.com/jquery/jquery/blob/2.1.3/src/manipulation/var/rcheckableType.js
@@ -20,16 +21,21 @@ const rCRLF = /\r?\n/g;
  *
  * @private
  * @param root - Root of the forms' current tree.
+ * @param connected - Whether this tree is an HTML document.
  * @returns Controls in tree order, grouped by form.
  */
-function getFormControls(root: AnyNode): Map<Element, Element[]> {
-  const connected = isDocument(root);
+function getFormControls(
+  root: AnyNode,
+  connected: boolean,
+): Map<Element, Element[]> {
   const firstById = new Map<string, Element>();
   const controls: [Element, Element | undefined][] = [];
   const pending: [AnyNode, Element | undefined][] = [[root, undefined]];
 
   while (pending.length > 0) {
     const [node, ancestor] = pending.pop()!;
+    // Parse5 stores template contents as a separate Document child.
+    if (node !== root && isDocument(node)) continue;
     let owner = ancestor;
     if (isTag(node)) {
       const { id } = node.attribs;
@@ -121,10 +127,14 @@ export function serializeArray<T extends AnyNode>(
         return $elem.find(submittableSelector).toArray();
       }
       let root: AnyNode = elem;
-      while (root.parent) root = root.parent;
+      while (root.parent && !isDocument(root)) root = root.parent;
       let controls = controlsByRoot.get(root);
       if (!controls) {
-        controls = getFormControls(root);
+        const connected =
+          isDocument(root) &&
+          root.parent === null &&
+          !parse5FragmentRoots.has(root);
+        controls = getFormControls(root, connected);
         controlsByRoot.set(root, controls);
       }
       return controls.get(elem) ?? [];
