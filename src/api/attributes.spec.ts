@@ -719,6 +719,21 @@ describe('$(...)', () => {
       const val = $('select#one-nested').val();
       expect(val).toBe('Option selected');
     });
+    it('(): on select with no value should strip and collapse whitespace', () => {
+      const $select = load(
+        '<select><option>\n  first\n</option><option selected> second \t option&nbsp;</option></select>',
+      )('select');
+      expect($select.val()).toBe('second option\u{A0}');
+      expect($select.find('option').eq(0).val()).toBe('first');
+      expect($select.find('option').eq(0).prop('value')).toBe('first');
+    });
+    it('(): on select with no value should keep whitespace in XML mode', () => {
+      const $select = load(
+        '<select><option selected>\n  a   b\n</option></select>',
+        { xml: true },
+      )('select');
+      expect($select.val()).toBe('\n  a   b\n');
+    });
     it('(): on option should get value', () => {
       const val = $('select#one option').eq(0).val();
       expect(val).toBe('option_not_selected');
@@ -799,6 +814,23 @@ describe('$(...)', () => {
       )('select');
       $select.val('second');
       expect($select.val()).toBe('second');
+    });
+    it('(value): on select should match a valueless option ignoring surrounding whitespace', () => {
+      const $select = load(
+        '<select><option>\n  first\n</option><option>\n  second\n</option></select>',
+      )('select');
+      $select.val('second');
+      expect($select.find('option[selected]')).toHaveLength(1);
+      expect($select.val()).toBe('second');
+    });
+    it('(value): on select should match a valueless option exactly in XML mode', () => {
+      const $select = load('<select><option>\n  a   b\n</option></select>', {
+        xml: true,
+      })('select');
+      $select.val('a b');
+      expect($select.find('option[selected]')).toHaveLength(0);
+      $select.val('\n  a   b\n');
+      expect($select.find('option[selected]')).toHaveLength(1);
     });
     it('(value): on radio should set value', () => {
       const element = $('input[name="radio"]').val('off');
