@@ -755,6 +755,22 @@ describe('$(...)', () => {
       const val = $('select#multi-valueless').val();
       expect(val).toStrictEqual(['2', '3']);
     });
+    it('(): excludes disabled selected options and disabled option groups', () => {
+      const $ = load(
+        '<select multiple><option selected disabled value="a">a</option>' +
+          '<optgroup disabled><option selected value="b">b</option></optgroup>' +
+          '<optgroup><option selected value="c">c</option></optgroup></select>',
+      );
+      expect($('select').val()).toStrictEqual(['c']);
+    });
+
+    it('(): excludes a disabled selected option from a single select', () => {
+      const $ = load(
+        '<select><option selected disabled value="a">a</option></select>',
+      );
+      expect($('select').val()).toBeUndefined();
+    });
+
     it('(): with no selector matches should return nothing', () => {
       const val = $('.nasty').val();
       expect(val).toBeUndefined();

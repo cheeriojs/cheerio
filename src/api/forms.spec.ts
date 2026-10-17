@@ -57,6 +57,38 @@ describe('$(...)', () => {
       ]);
     });
 
+    it('() : should omit disabled selected options and option groups', () => {
+      const $ = cheerio.load(
+        '<form><select name="choice" multiple>' +
+          '<option selected disabled value="a">a</option>' +
+          '<optgroup disabled><option selected value="b">b</option></optgroup>' +
+          '<option selected value="c">c</option></select></form>',
+      );
+      expect($('form').serializeArray()).toStrictEqual([
+        { name: 'choice', value: 'c' },
+      ]);
+    });
+
+    it('() : should omit a single select with only disabled options', () => {
+      const $ = cheerio.load(
+        '<form><select name="choice"><option selected disabled value="a">a</option></select></form>',
+      );
+      expect($('form').serializeArray()).toStrictEqual([]);
+      expect($('form').serialize()).toBe('');
+    });
+
+    it('() : should preserve genuinely empty text controls beside an unavailable select', () => {
+      const $ = cheerio.load(
+        '<form><select name="choice"><option selected disabled value="a">a</option></select>' +
+          '<input name="empty" value=""><textarea name="text"></textarea></form>',
+      );
+      expect($('form').serializeArray()).toStrictEqual([
+        { name: 'empty', value: '' },
+        { name: 'text', value: '' },
+      ]);
+      expect($('form').serialize()).toBe('empty=&text=');
+    });
+
     it('() : should not get unnamed form controls', () => {
       expect($('form#unnamed').serializeArray()).toStrictEqual([
         {

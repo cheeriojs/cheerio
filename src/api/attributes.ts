@@ -823,7 +823,7 @@ export function val<T extends AnyNode>(
         return this;
       }
 
-      const option = this.find('option:selected');
+      const option = this.find('option:selected:enabled');
 
       return this.attr('multiple')
         ? option.toArray().map((el) => text(el.children))
