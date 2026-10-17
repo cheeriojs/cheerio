@@ -12,9 +12,9 @@ import {
   hasChildren,
   isDocument,
   isTag,
+  type ParentNode,
 } from 'domhandler';
 import {
-  compareDocumentPosition,
   getChildren,
   getSiblings,
   nextElementSibling,
@@ -360,7 +360,7 @@ export function closest<T extends AnyNode>(
    * Dedup: a linear scan is cheapest for the small result sets `closest`
    * usually produces. Once the set grows past `dedupThreshold` we switch to a
    * Set, so a pathological input with many distinct matches stays O(n) instead
-   * of O(n^2). Matches are collected in encounter order; a document-order sort
+   * of O(n^2). Matches are collected in encounter order; `sortInDocumentOrder`
    * below restores jQuery-compatible order when the starting selection is
    * reversed.
    */
@@ -388,25 +388,75 @@ export function closest<T extends AnyNode>(
     }
   });
 
-  if (set.length < 2) {
-    return this._make(set);
+  return this._make(sortInDocumentOrder(set));
+}
+
+/**
+ * Sort already-deduplicated nodes into document order.
+ *
+ * `compareDocumentPosition` (and so `uniqueSort`) looks each node up in its
+ * parent's children with `indexOf` on every comparison, so sorting many
+ * siblings of one parent costs O(n^2 log n). Instead, every node gets a key
+ * once: the path of child indices from its root, with a parent's children
+ * indexed in a single pass the first time the parent is seen. The sort then
+ * compares keys, which is O(depth) per comparison.
+ *
+ * @param nodes - Nodes to sort, without duplicates. Sorted in place.
+ * @returns The same array, in document order.
+ */
+function sortInDocumentOrder(nodes: AnyNode[]): AnyNode[] {
+  if (nodes.length < 2) {
+    return nodes;
   }
 
-  // Already deduplicated above; sort only (uniqueSort also rescans with
-  // Array#includes, which would reintroduce O(n^2) on large result sets).
-  set.sort((a, b) => {
-    // DocumentPosition.PRECEDING = 2, FOLLOWING = 4 (domutils helpers).
-    const relative = compareDocumentPosition(a, b);
-    if (relative & 2) {
-      return -1;
+  const childIndices = new Map<ParentNode, Map<AnyNode, number>>();
+  // Nodes from different trees keep their relative encounter order.
+  const roots = new Map<AnyNode, number>();
+  const keys = new Map<AnyNode, number[]>();
+
+  function indexInParent(node: AnyNode, parent: ParentNode): number {
+    let indices = childIndices.get(parent);
+    if (!indices) {
+      indices = new Map();
+      for (let i = 0; i < parent.children.length; i++) {
+        indices.set(parent.children[i], i);
+      }
+      childIndices.set(parent, indices);
     }
-    if (relative & 4) {
-      return 1;
+    return indices.get(node) ?? -1;
+  }
+
+  for (const node of nodes) {
+    const key: number[] = [];
+    let current: AnyNode = node;
+    while (current.parent) {
+      key.push(indexInParent(current, current.parent));
+      current = current.parent;
     }
-    return 0;
+    let root = roots.get(current);
+    if (root === undefined) {
+      root = roots.size;
+      roots.set(current, root);
+    }
+    key.push(root);
+    key.reverse();
+    keys.set(node, key);
+  }
+
+  nodes.sort((a, b) => {
+    const keyA = keys.get(a)!;
+    const keyB = keys.get(b)!;
+    const length = Math.min(keyA.length, keyB.length);
+    for (let i = 0; i < length; i++) {
+      if (keyA[i] !== keyB[i]) {
+        return keyA[i] - keyB[i];
+      }
+    }
+    // An ancestor (shorter key, a prefix of the other) comes first.
+    return keyA.length - keyB.length;
   });
 
-  return this._make(set);
+  return nodes;
 }
 
 /**

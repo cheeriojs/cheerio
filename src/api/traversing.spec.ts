@@ -954,6 +954,47 @@ describe('$(...)', () => {
        */
       expect(includesWork).toBeLessThan(N * 10);
     });
+
+    it('(fn) : should sort a large reversed selection without rescanning siblings', () => {
+      /*
+       * N sibling matches in reverse order. Sorting them with
+       * `compareDocumentPosition` looks both nodes up in the shared parent's
+       * children with `indexOf` on every comparison, about N^2 log N work.
+       */
+      const N = 2000;
+      const $big = load(
+        `<div id="root">${'<div class="t"><span></span></div>'.repeat(N)}</div>`,
+      );
+      const spans = $big('span').get();
+      const expected = $big('.t').get();
+      spans.reverse();
+
+      const origIndexOf = Array.prototype.indexOf;
+      let indexOfWork = 0;
+      Array.prototype.indexOf = function (this: unknown[], ...args) {
+        indexOfWork += this.length;
+        return origIndexOf.apply(this, args as [unknown]);
+      };
+      let result: Cheerio<AnyNode>;
+      try {
+        result = $big(spans).closest((_i, el) => el.attribs['class'] === 't');
+      } finally {
+        Array.prototype.indexOf = origIndexOf;
+      }
+
+      expect(result.get()).toStrictEqual(expected);
+      expect(indexOfWork).toBeLessThan(N * 10);
+    });
+
+    it('(selector) : should order matches from separate documents by encounter', () => {
+      const a = load('<div id="a"><p></p></div>');
+      const b = load('<div id="b"><p></p></div>');
+      const result = a([b('p')[0], a('p')[0]]).closest('div');
+      expect(result.map((_, el) => a(el).attr('id')).get()).toStrictEqual([
+        'b',
+        'a',
+      ]);
+    });
   });
 
   describe('.each', () => {
