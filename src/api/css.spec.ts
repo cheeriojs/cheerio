@@ -50,6 +50,88 @@ describe('$(...)', () => {
       expect(el.attr('style')).toBe('padding: 1px;');
     });
 
+    it('(prop): should accept a camel cased property name', () => {
+      const el = cheerio('<li style="background-color: red;">');
+      expect(el.css('backgroundColor')).toBe('red');
+    });
+
+    it('([prop1, prop2]): should accept camel cased property names', () => {
+      const el = cheerio('<li style="background-color: red; font-size: 2px;">');
+      expect(el.css(['backgroundColor', 'font-size'])).toStrictEqual({
+        backgroundColor: 'red',
+        'font-size': '2px',
+      });
+    });
+
+    it('(prop, val): should hyphenate a camel cased property name', () => {
+      const el = cheerio('<li>');
+      el.css('backgroundColor', 'red');
+      expect(el.attr('style')).toBe('background-color: red;');
+    });
+
+    it('(prop, val): should not duplicate a declaration set with the other casing', () => {
+      const el = cheerio('<li style="background-color: red;">');
+      el.css('backgroundColor', 'blue');
+      expect(el.attr('style')).toBe('background-color: blue;');
+    });
+
+    it('(prop, ""): should unset a camel cased css property', () => {
+      const el = cheerio('<li style="background-color: red; margin: 0;">');
+      el.css('backgroundColor', '');
+      expect(el.attr('style')).toBe('margin: 0;');
+    });
+
+    it('(prop, val): should keep custom properties intact', () => {
+      const el = cheerio('<li style="--my-var: 1;">');
+      el.css('--other-var', '2');
+      expect(el.css('--my-var')).toBe('1');
+      expect(el.attr('style')).toBe('--my-var: 1; --other-var: 2;');
+    });
+
+    it('(prop): should treat custom properties as case sensitive', () => {
+      const el = cheerio(
+        '<li style="--Theme-Color: red; --theme-color: blue;">',
+      );
+      expect(el.css('--Theme-Color')).toBe('red');
+      expect(el.css('--theme-color')).toBe('blue');
+    });
+
+    it('(prop, val): should not fold a custom property onto another casing', () => {
+      const el = cheerio('<li style="--theme-color: blue;">');
+      el.css('--Theme-Color', 'red');
+      expect(el.attr('style')).toBe('--theme-color: blue; --Theme-Color: red;');
+    });
+
+    it('(prop, val): should prefix lowercase vendor CSSOM names', () => {
+      const el = cheerio('<li>');
+      el.css('webkitTextStrokeWidth', '1px');
+      el.css('msOverflowStyle', 'none');
+      expect(el.attr('style')).toBe(
+        '-webkit-text-stroke-width: 1px; -ms-overflow-style: none;',
+      );
+    });
+
+    it('(prop, val): should not prefix an already-hyphenated vendor-like name', () => {
+      const el = cheerio('<li style="webkit-text-stroke-width: 2px;">');
+      expect(el.css('webkit-text-stroke-width')).toBe('2px');
+      el.css('webkit-text-stroke-width', '3px');
+      expect(el.attr('style')).toBe('webkit-text-stroke-width: 3px;');
+    });
+
+    it('(prop): should map cssFloat to float', () => {
+      const el = cheerio('<li style="float: left;">');
+      expect(el.css('cssFloat')).toBe('left');
+      el.css('cssFloat', 'right');
+      expect(el.attr('style')).toBe('float: right;');
+    });
+
+    it('(prop): should keep a mixed-case hyphenated name as written', () => {
+      const el = cheerio('<li style="background-Color: red;">');
+      expect(el.css('background-Color')).toBe('red');
+      el.css('background-Color', 'blue');
+      expect(el.attr('style')).toBe('background-Color: blue;');
+    });
+
     it('(prop): should not mangle embedded urls', () => {
       const el = cheerio(
         '<li style="background-image:url(http://example.com/img.png);">',
