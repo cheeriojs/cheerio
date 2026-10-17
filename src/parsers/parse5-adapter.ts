@@ -58,7 +58,18 @@ export function renderWithParse5(dom: AnyNode | ArrayLike<AnyNode>): string {
 
   let result = '';
   for (let index = 0; index < nodes.length; index += 1) {
-    const node = nodes[index];
+    let node = nodes[index];
+    if (
+      htmlparser2Adapter.isDocumentTypeNode(node) &&
+      node['x-name'] === undefined
+    ) {
+      // External documents store the raw declaration without parse5's name metadata.
+      const document = parseDocument(`<${node.data}>`, renderOpts);
+      node =
+        document.children.find((child) =>
+          htmlparser2Adapter.isDocumentTypeNode(child),
+        ) ?? node;
+    }
     result += serializeOuter(node, renderOpts);
   }
 
