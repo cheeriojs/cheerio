@@ -995,6 +995,51 @@ describe('$(...)', () => {
         'a',
       ]);
     });
+
+    it('(selector) : should keep matches from separate documents in their interleaved slots', () => {
+      const a = load('<div id="a1"><p></p></div><div id="a2"><p></p></div>');
+      const b = load('<div id="b1"><p></p></div>');
+      const [p1, p2] = a('p').get();
+      const [pb] = b('p').get();
+      const ids = (sel: Cheerio<AnyNode>) =>
+        sel.map((_, el) => a(el).attr('id')).get();
+
+      const inOrder = a([p1, pb, p2]).closest('div');
+      expect(ids(inOrder)).toStrictEqual(['a1', 'b1', 'a2']);
+      // Each document is sorted within the slots its matches hold.
+      const reversed = a([p2, pb, p1]).closest('div');
+      expect(ids(reversed)).toStrictEqual(['a1', 'b1', 'a2']);
+    });
+
+    it('(fn) : should sort deeply nested self matches without per-match paths', () => {
+      /*
+       * N nested matches, each matching itself. Keeping a path from the root
+       * for each match would hold about N^2 / 2 entries; a comparison between
+       * neighbours should instead only walk to their common ancestor.
+       */
+      const N = 2000;
+      const $deep = load(`${'<div class="t">'.repeat(N)}${'</div>'.repeat(N)}`);
+      const divs = $deep('.t').get();
+      expect(divs).toHaveLength(N);
+      const reversed = [...divs];
+      reversed.reverse();
+
+      const origPush = Array.prototype.push;
+      let pushed = 0;
+      Array.prototype.push = function (this: unknown[], ...args: unknown[]) {
+        pushed += args.length;
+        return origPush.apply(this, args);
+      };
+      let result: Cheerio<AnyNode>;
+      try {
+        result = $deep(reversed).closest(() => true);
+      } finally {
+        Array.prototype.push = origPush;
+      }
+
+      expect(result.get()).toStrictEqual(divs);
+      expect(pushed).toBeLessThan(N * 10);
+    });
   });
 
   describe('.each', () => {

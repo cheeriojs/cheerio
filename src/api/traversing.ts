@@ -396,10 +396,15 @@ export function closest<T extends AnyNode>(
  *
  * `compareDocumentPosition` (and so `uniqueSort`) looks each node up in its
  * parent's children with `indexOf` on every comparison, so sorting many
- * siblings of one parent costs O(n^2 log n). Instead, every node gets a key
- * once: the path of child indices from its root, with a parent's children
- * indexed in a single pass the first time the parent is seen. The sort then
- * compares keys, which is O(depth) per comparison.
+ * siblings of one parent costs O(n^2 log n). Instead, a parent's children are
+ * indexed in a single pass the first time the parent is seen, and each node's
+ * depth and root are memoized, shared by every node below it. A comparison
+ * lifts the deeper node to the other's depth and walks both up to the
+ * children of their common ancestor, so it is O(depth) and stores no path.
+ *
+ * Nodes from different trees are not comparable: each tree's nodes are sorted
+ * among themselves and put back into the positions that tree's nodes held, so
+ * the trees stay interleaved in encounter order.
  *
  * @param nodes - Nodes to sort, without duplicates. Sorted in place.
  * @returns The same array, in document order.
@@ -410,9 +415,7 @@ function sortInDocumentOrder(nodes: AnyNode[]): AnyNode[] {
   }
 
   const childIndices = new Map<ParentNode, Map<AnyNode, number>>();
-  // Nodes from different trees keep their relative encounter order.
-  const roots = new Map<AnyNode, number>();
-  const keys = new Map<AnyNode, number[]>();
+  const positions = new Map<AnyNode, { depth: number; root: AnyNode }>();
 
   function indexInParent(node: AnyNode, parent: ParentNode): number {
     let indices = childIndices.get(parent);
@@ -426,35 +429,70 @@ function sortInDocumentOrder(nodes: AnyNode[]): AnyNode[] {
     return indices.get(node) ?? -1;
   }
 
-  for (const node of nodes) {
-    const key: number[] = [];
+  function positionOf(node: AnyNode): { depth: number; root: AnyNode } {
+    const unknown: AnyNode[] = [];
     let current: AnyNode = node;
-    while (current.parent) {
-      key.push(indexInParent(current, current.parent));
+    let known = positions.get(current);
+    while (!known && current.parent) {
+      unknown.push(current);
       current = current.parent;
+      known = positions.get(current);
     }
-    let root = roots.get(current);
-    if (root === undefined) {
-      root = roots.size;
-      roots.set(current, root);
+    if (!known) {
+      known = { depth: 0, root: current };
+      positions.set(current, known);
     }
-    key.push(root);
-    key.reverse();
-    keys.set(node, key);
+    // `unknown` runs from `node` up to the child of the first known node.
+    for (let i = unknown.length - 1; i >= 0; i--) {
+      known = { depth: known.depth + 1, root: known.root };
+      positions.set(unknown[i], known);
+    }
+    return known;
   }
 
-  nodes.sort((a, b) => {
-    const keyA = keys.get(a)!;
-    const keyB = keys.get(b)!;
-    const length = Math.min(keyA.length, keyB.length);
-    for (let i = 0; i < length; i++) {
-      if (keyA[i] !== keyB[i]) {
-        return keyA[i] - keyB[i];
-      }
+  function compare(a: AnyNode, b: AnyNode): number {
+    let depthA = positions.get(a)!.depth;
+    let depthB = positions.get(b)!.depth;
+    let x = a;
+    let y = b;
+    while (depthA > depthB) {
+      x = x.parent!;
+      depthA--;
     }
-    // An ancestor (shorter key, a prefix of the other) comes first.
-    return keyA.length - keyB.length;
-  });
+    while (depthB > depthA) {
+      y = y.parent!;
+      depthB--;
+    }
+    // One is an ancestor of the other: the ancestor comes first.
+    if (x === y) return a === x ? -1 : 1;
+    while (x.parent !== y.parent) {
+      x = x.parent!;
+      y = y.parent!;
+    }
+    const parent = x.parent!;
+    return indexInParent(x, parent) - indexInParent(y, parent);
+  }
+
+  // The slots each tree's nodes hold, in encounter order.
+  const trees = new Map<AnyNode, number[]>();
+  for (let i = 0; i < nodes.length; i++) {
+    const { root } = positionOf(nodes[i]);
+    const slots = trees.get(root);
+    if (slots) {
+      slots.push(i);
+    } else {
+      trees.set(root, [i]);
+    }
+  }
+
+  for (const slots of trees.values()) {
+    if (slots.length < 2) continue;
+    const sorted = slots.map((i) => nodes[i]);
+    sorted.sort(compare);
+    for (let i = 0; i < slots.length; i++) {
+      nodes[slots[i]] = sorted[i];
+    }
+  }
 
   return nodes;
 }
