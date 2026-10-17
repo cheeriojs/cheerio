@@ -1,4 +1,10 @@
-import { type AnyNode, type Element, isText, type Text } from 'domhandler';
+import {
+  type AnyNode,
+  type Element,
+  isText,
+  type ParentNode,
+  type Text,
+} from 'domhandler';
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
   cheerio,
@@ -878,6 +884,35 @@ describe('$(...)', () => {
       expect(result).toHaveLength(2);
     });
 
+    it('(selector) : should return self matches in document order from a reversed selection', () => {
+      const result = $('.pear').prevAll().closest('li');
+      expect(result.map((_, el) => $(el).attr('class')).get()).toStrictEqual([
+        'apple',
+        'orange',
+      ]);
+    });
+
+    it('(selector) : should place an ancestor before a matching descendant', () => {
+      const q = load('<div id="a"><div id="b"></div></div>');
+      const result = q([q('#b')[0], q('#a')[0]]).closest('div');
+      expect(result.map((_, el) => q(el).attr('id')).get()).toStrictEqual([
+        'a',
+        'b',
+      ]);
+    });
+
+    it('(selector) : should sort and deduplicate ancestors from a reversed selection', () => {
+      const q = load(
+        '<div id="a"><span></span><span></span></div><div id="b"><span></span></div>',
+      );
+      const spans = q('span').get();
+      const result = q([spans[2], spans[1], spans[0]]).closest('div');
+      expect(result.map((_, el) => q(el).attr('id')).get()).toStrictEqual([
+        'a',
+        'b',
+      ]);
+    });
+
     it('() : should not break if the selector does not have any results', () => {
       const result = $('.saladbar', food).closest('ul');
       expect(result).toHaveLength(0);
@@ -924,6 +959,136 @@ describe('$(...)', () => {
        * entries. Pre-fix: N*(N-1)/2, about 2M for N=2000.
        */
       expect(includesWork).toBeLessThan(N * 10);
+    });
+
+    it('(fn) : should sort a large reversed selection without rescanning siblings', () => {
+      /*
+       * N sibling matches in reverse order. Sorting them with
+       * `compareDocumentPosition` looks both nodes up in the shared parent's
+       * children with `indexOf` on every comparison, about N^2 log N work.
+       */
+      const N = 2000;
+      const $big = load(
+        `<div id="root">${'<div class="t"><span></span></div>'.repeat(N)}</div>`,
+      );
+      const spans = $big('span').get();
+      const expected = $big('.t').get();
+      spans.reverse();
+
+      const origIndexOf = Array.prototype.indexOf;
+      let indexOfWork = 0;
+      Array.prototype.indexOf = function (this: unknown[], ...args) {
+        indexOfWork += this.length;
+        return origIndexOf.apply(this, args as [unknown]);
+      };
+      let result: Cheerio<AnyNode>;
+      try {
+        result = $big(spans).closest((_i, el) => el.attribs['class'] === 't');
+      } finally {
+        Array.prototype.indexOf = origIndexOf;
+      }
+
+      expect(result.get()).toStrictEqual(expected);
+      expect(indexOfWork).toBeLessThan(N * 10);
+    });
+
+    it('(selector) : should order matches from separate documents by encounter', () => {
+      const a = load('<div id="a"><p></p></div>');
+      const b = load('<div id="b"><p></p></div>');
+      const result = a([b('p')[0], a('p')[0]]).closest('div');
+      expect(result.map((_, el) => a(el).attr('id')).get()).toStrictEqual([
+        'b',
+        'a',
+      ]);
+    });
+
+    it('(selector) : should keep matches from separate documents in their interleaved slots', () => {
+      const a = load('<div id="a1"><p></p></div><div id="a2"><p></p></div>');
+      const b = load('<div id="b1"><p></p></div>');
+      const [p1, p2] = a('p').get();
+      const [pb] = b('p').get();
+      const ids = (sel: Cheerio<AnyNode>) =>
+        sel.map((_, el) => a(el).attr('id')).get();
+
+      const inOrder = a([p1, pb, p2]).closest('div');
+      expect(ids(inOrder)).toStrictEqual(['a1', 'b1', 'a2']);
+      // Each document is sorted within the slots its matches hold.
+      const reversed = a([p2, pb, p1]).closest('div');
+      expect(ids(reversed)).toStrictEqual(['a1', 'b1', 'a2']);
+    });
+
+    it('(fn) : should sort deeply nested self matches without per-match paths', () => {
+      /*
+       * N nested matches, each matching itself. Keeping a path from the root
+       * for each match would hold about N^2 / 2 entries; a comparison between
+       * neighbours should instead only walk to their common ancestor.
+       */
+      const N = 2000;
+      const $deep = load(`${'<div class="t">'.repeat(N)}${'</div>'.repeat(N)}`);
+      const divs = $deep('.t').get();
+      expect(divs).toHaveLength(N);
+      const reversed = [...divs];
+      reversed.reverse();
+
+      const origPush = Array.prototype.push;
+      let pushed = 0;
+      Array.prototype.push = function (this: unknown[], ...args: unknown[]) {
+        pushed += args.length;
+        return origPush.apply(this, args);
+      };
+      let result: Cheerio<AnyNode>;
+      try {
+        result = $deep(reversed).closest(() => true);
+      } finally {
+        Array.prototype.push = origPush;
+      }
+
+      expect(result.get()).toStrictEqual(divs);
+      expect(pushed).toBeLessThan(N * 10);
+    });
+
+    it('(fn) : should sort deeply nested self matches in mixed order without rewalking parents', () => {
+      /*
+       * N nested matches in a scrambled order. Comparing two of them by
+       * walking parent links from the deeper one costs O(depth) per
+       * comparison, about N^2 log N parent reads in total; giving every node
+       * its position once before sorting reads each parent link a few times.
+       */
+      const N = 2000;
+      const $deep = load(`${'<div class="t">'.repeat(N)}${'</div>'.repeat(N)}`);
+      const divs = $deep('.t').get();
+      expect(divs).toHaveLength(N);
+      // 7919 is coprime with N, so this visits every index once.
+      const mixed = divs.map((_, i) => divs[(i * 7919) % N]);
+
+      let parentReads = 0;
+      const nodes: AnyNode[] = [...divs, divs[0].parent!];
+      for (const node of nodes) {
+        let { parent } = node;
+        Object.defineProperty(node, 'parent', {
+          configurable: true,
+          get() {
+            parentReads++;
+            return parent;
+          },
+          set(value: ParentNode | null) {
+            parent = value;
+          },
+        });
+      }
+      let result: Cheerio<AnyNode>;
+      try {
+        result = $deep(mixed).closest(() => true);
+      } finally {
+        for (const node of nodes) {
+          const { parent } = node;
+          delete (node as { parent?: unknown }).parent;
+          node.parent = parent;
+        }
+      }
+
+      expect(result.get()).toStrictEqual(divs);
+      expect(parentReads).toBeLessThan(N * 10);
     });
   });
 
