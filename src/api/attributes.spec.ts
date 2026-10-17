@@ -685,6 +685,29 @@ describe('$(...)', () => {
   });
 
   describe('.val', () => {
+    it('sets values according to each form control type in a mixed selection', () => {
+      const $ = cheerio.load(
+        '<input value="old"><textarea>old</textarea><select><option value="old">old</option><option value="new">new</option></select>',
+      );
+      const controls = $('input, textarea, select');
+      expect(controls.val('new')).toBe(controls);
+      expect(
+        controls.toArray().map((element) => $(element).val()),
+      ).toStrictEqual(['new', 'new', 'new']);
+      expect($('textarea').attr('value')).toBeUndefined();
+      expect($('select').attr('value')).toBeUndefined();
+    });
+
+    it('sets values when the selection starts with a non-element node', () => {
+      const $ = cheerio.load(
+        '<div>text<input value="old"><textarea>old</textarea></div>',
+      );
+      const controls = $('div').contents();
+      expect(controls.val('new')).toBe(controls);
+      expect($('input').val()).toBe('new');
+      expect($('textarea').val()).toBe('new');
+    });
+
     let $: CheerioAPI;
 
     beforeEach(() => {

@@ -787,6 +787,11 @@ export function val<T extends AnyNode>(
   value?: string | string[],
 ): string | string[] | Cheerio<T> | undefined {
   const querying = arguments.length === 0;
+  if (!querying && this.length > 1) {
+    return domEach(this, (element) => {
+      this._make(element).val(value!);
+    });
+  }
   const element = this[0];
 
   if (!(element && isTag(element))) return querying ? undefined : this;
