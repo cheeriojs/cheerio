@@ -1,4 +1,10 @@
-import { type AnyNode, type Element, isText, type Text } from 'domhandler';
+import {
+  type AnyNode,
+  type Element,
+  isText,
+  type ParentNode,
+  type Text,
+} from 'domhandler';
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
   cheerio,
@@ -1039,6 +1045,50 @@ describe('$(...)', () => {
 
       expect(result.get()).toStrictEqual(divs);
       expect(pushed).toBeLessThan(N * 10);
+    });
+
+    it('(fn) : should sort deeply nested self matches in mixed order without rewalking parents', () => {
+      /*
+       * N nested matches in a scrambled order. Comparing two of them by
+       * walking parent links from the deeper one costs O(depth) per
+       * comparison, about N^2 log N parent reads in total; giving every node
+       * its position once before sorting reads each parent link a few times.
+       */
+      const N = 2000;
+      const $deep = load(`${'<div class="t">'.repeat(N)}${'</div>'.repeat(N)}`);
+      const divs = $deep('.t').get();
+      expect(divs).toHaveLength(N);
+      // 7919 is coprime with N, so this visits every index once.
+      const mixed = divs.map((_, i) => divs[(i * 7919) % N]);
+
+      let parentReads = 0;
+      const nodes: AnyNode[] = [...divs, divs[0].parent!];
+      for (const node of nodes) {
+        let { parent } = node;
+        Object.defineProperty(node, 'parent', {
+          configurable: true,
+          get() {
+            parentReads++;
+            return parent;
+          },
+          set(value: ParentNode | null) {
+            parent = value;
+          },
+        });
+      }
+      let result: Cheerio<AnyNode>;
+      try {
+        result = $deep(mixed).closest(() => true);
+      } finally {
+        for (const node of nodes) {
+          const { parent } = node;
+          delete (node as { parent?: unknown }).parent;
+          node.parent = parent;
+        }
+      }
+
+      expect(result.get()).toStrictEqual(divs);
+      expect(parentReads).toBeLessThan(N * 10);
     });
   });
 

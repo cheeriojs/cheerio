@@ -396,11 +396,13 @@ export function closest<T extends AnyNode>(
  *
  * `compareDocumentPosition` (and so `uniqueSort`) looks each node up in its
  * parent's children with `indexOf` on every comparison, so sorting many
- * siblings of one parent costs O(n^2 log n). Instead, a parent's children are
- * indexed in a single pass the first time the parent is seen, and each node's
- * depth and root are memoized, shared by every node below it. A comparison
- * lifts the deeper node to the other's depth and walks both up to the
- * children of their common ancestor, so it is O(depth) and stores no path.
+ * siblings of one parent costs O(n^2 log n), and walking parent links in each
+ * comparison makes deeply nested matches quadratic. Instead, every node is
+ * given a document position once, before sorting: the nodes and their
+ * ancestors form a small tree (each ancestor is visited once, shared by every
+ * node below it), a parent's children are indexed in a single pass, and a
+ * pre-order walk of that tree numbers the nodes. Sorting then compares
+ * numbers.
  *
  * Nodes from different trees are not comparable: each tree's nodes are sorted
  * among themselves and put back into the positions that tree's nodes held, so
@@ -415,7 +417,9 @@ function sortInDocumentOrder(nodes: AnyNode[]): AnyNode[] {
   }
 
   const childIndices = new Map<ParentNode, Map<AnyNode, number>>();
-  const positions = new Map<AnyNode, { depth: number; root: AnyNode }>();
+  // The root of every visited node, and the visited children of each parent.
+  const roots = new Map<AnyNode, AnyNode>();
+  const visitedChildren = new Map<AnyNode, AnyNode[]>();
 
   function indexInParent(node: AnyNode, parent: ParentNode): number {
     let indices = childIndices.get(parent);
@@ -429,54 +433,44 @@ function sortInDocumentOrder(nodes: AnyNode[]): AnyNode[] {
     return indices.get(node) ?? -1;
   }
 
-  function positionOf(node: AnyNode): { depth: number; root: AnyNode } {
-    const unknown: AnyNode[] = [];
+  /**
+   * Visit `node` and its ancestors up to the first visited one.
+   *
+   * @param node - Node to visit.
+   * @returns The root of the tree `node` is in.
+   */
+  function rootOf(node: AnyNode): AnyNode {
+    const unvisited: AnyNode[] = [];
     let current: AnyNode = node;
-    let known = positions.get(current);
-    while (!known && current.parent) {
-      unknown.push(current);
+    let root = roots.get(current);
+    while (root === undefined && current.parent) {
+      unvisited.push(current);
       current = current.parent;
-      known = positions.get(current);
+      root = roots.get(current);
     }
-    if (!known) {
-      known = { depth: 0, root: current };
-      positions.set(current, known);
+    if (root === undefined) {
+      root = current;
+      roots.set(current, root);
     }
-    // `unknown` runs from `node` up to the child of the first known node.
-    for (let i = unknown.length - 1; i >= 0; i--) {
-      known = { depth: known.depth + 1, root: known.root };
-      positions.set(unknown[i], known);
+    // `unvisited` runs from `node` up to the child of the first visited node.
+    for (let i = unvisited.length - 1; i >= 0; i--) {
+      const child = unvisited[i];
+      const parent = i + 1 < unvisited.length ? unvisited[i + 1] : current;
+      roots.set(child, root);
+      const children = visitedChildren.get(parent);
+      if (children) {
+        children.push(child);
+      } else {
+        visitedChildren.set(parent, [child]);
+      }
     }
-    return known;
-  }
-
-  function compare(a: AnyNode, b: AnyNode): number {
-    let depthA = positions.get(a)!.depth;
-    let depthB = positions.get(b)!.depth;
-    let x = a;
-    let y = b;
-    while (depthA > depthB) {
-      x = x.parent!;
-      depthA--;
-    }
-    while (depthB > depthA) {
-      y = y.parent!;
-      depthB--;
-    }
-    // One is an ancestor of the other: the ancestor comes first.
-    if (x === y) return a === x ? -1 : 1;
-    while (x.parent !== y.parent) {
-      x = x.parent!;
-      y = y.parent!;
-    }
-    const parent = x.parent!;
-    return indexInParent(x, parent) - indexInParent(y, parent);
+    return root;
   }
 
   // The slots each tree's nodes hold, in encounter order.
   const trees = new Map<AnyNode, number[]>();
   for (let i = 0; i < nodes.length; i++) {
-    const { root } = positionOf(nodes[i]);
+    const root = rootOf(nodes[i]);
     const slots = trees.get(root);
     if (slots) {
       slots.push(i);
@@ -485,10 +479,32 @@ function sortInDocumentOrder(nodes: AnyNode[]): AnyNode[] {
     }
   }
 
-  for (const slots of trees.values()) {
+  const positions = new Map<AnyNode, number>();
+  for (const [root, slots] of trees) {
     if (slots.length < 2) continue;
+
+    // Number the visited part of the tree in pre-order.
+    let position = 0;
+    const stack: AnyNode[] = [root];
+    while (stack.length > 0) {
+      const node = stack.pop()!;
+      positions.set(node, position++);
+      const children = visitedChildren.get(node);
+      if (children) {
+        if (children.length > 1) {
+          const parent = node as ParentNode;
+          children.sort(
+            (a, b) => indexInParent(a, parent) - indexInParent(b, parent),
+          );
+        }
+        for (let i = children.length - 1; i >= 0; i--) {
+          stack.push(children[i]);
+        }
+      }
+    }
+
     const sorted = slots.map((i) => nodes[i]);
-    sorted.sort(compare);
+    sorted.sort((a, b) => positions.get(a)! - positions.get(b)!);
     for (let i = 0; i < slots.length; i++) {
       nodes[slots[i]] = sorted[i];
     }
