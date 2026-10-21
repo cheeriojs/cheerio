@@ -725,6 +725,37 @@ describe('$(...)', () => {
       )('select');
       expect($select.val()).toBe('\n  a   b\n');
     });
+    it('(): should exclude script descendants from valueless option values', () => {
+      const $ = load(
+        '<form><select name="fruit"><option>Other</option><option selected></option></select></form>',
+      );
+      const $option = $('option')
+        .eq(1)
+        .append(
+          ' A<script>ignored</script><span> B<svg><script>ignored</script><text> C </text></svg></span><style> D </style> &nbsp;',
+        );
+      const value = 'A B C D \u{A0}';
+
+      expect($option.attr('value')).toBe(value);
+      expect($option.prop('value')).toBe(value);
+      expect($option.val()).toBe(value);
+      expect($('select').val()).toBe(value);
+      expect($('form').serializeArray()).toStrictEqual([
+        { name: 'fruit', value },
+      ]);
+      $('select').val(value);
+      expect($('option[selected]')[0]).toBe($option[0]);
+      expect($option.find('script')).toHaveLength(2);
+    });
+    it('(): should preserve script text in XML option values', () => {
+      const $ = load(
+        '<select><option selected> A<script> B </script> C </option></select>',
+        { xml: true },
+      );
+      expect($('select').val()).toBe(' A B  C ');
+      $('select').val(' A B  C ');
+      expect($('option[selected]')).toHaveLength(1);
+    });
     it('(): on option should get value', () => {
       const val = $('select#one option').eq(0).val();
       expect(val).toBe('option_not_selected');

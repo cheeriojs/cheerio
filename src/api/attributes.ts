@@ -4,7 +4,13 @@
  * @module cheerio/attributes
  */
 
-import { type AnyNode, type Element, isDocument, isTag } from 'domhandler';
+import {
+  type AnyNode,
+  type Element,
+  isDocument,
+  isTag,
+  isText,
+} from 'domhandler';
 import { innerText, textContent } from 'domutils';
 import type { Cheerio } from '../cheerio.js';
 import { text } from '../static.js';
@@ -27,7 +33,7 @@ const srcTags = new Set(['img', 'iframe', 'audio', 'video', 'source']);
 
 /**
  * Gets the text of an `option` the way the DOM does: its text content with
- * ASCII whitespace stripped and collapsed.
+ * script descendants skipped and ASCII whitespace stripped and collapsed.
  *
  * @private
  * @param elem - The `option` element.
@@ -35,7 +41,15 @@ const srcTags = new Set(['img', 'iframe', 'audio', 'video', 'source']);
  * @see {@link https://html.spec.whatwg.org/multipage/form-elements.html#dom-option-text}
  */
 function getOptionText(elem: Element): string {
-  return text(elem.children).match(rnotwhite)?.join(' ') ?? '';
+  const collectText = (node: AnyNode): string => {
+    if (isText(node)) return node.data;
+    if (!isTag(node) || node.name === 'script') return '';
+    return node.children.map(collectText).join('');
+  };
+
+  return (
+    elem.children.map(collectText).join('').match(rnotwhite)?.join(' ') ?? ''
+  );
 }
 
 /**
@@ -86,6 +100,7 @@ function getAttr(
 
   // Mimic the DOM and return text content as value for `option's`
   if (elem.name === 'option' && name === 'value') {
+    // XML has no HTML option-text semantics; preserve its raw text content.
     return xmlMode ? text(elem.children) : getOptionText(elem);
   }
 
