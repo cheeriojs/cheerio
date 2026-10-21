@@ -26,6 +26,8 @@ const srcTags = new Set(['img', 'iframe', 'audio', 'video', 'source']);
 /**
  * Returns whether an option is disabled itself, or through a disabled ancestor
  * `optgroup`.
+ *
+ * @param option - An `option` element.
  */
 function isOptionDisabled(option: Element): boolean {
   if (option.attribs['disabled'] != null) {
