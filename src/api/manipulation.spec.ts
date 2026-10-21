@@ -1295,6 +1295,24 @@ describe('$(...)', () => {
       expect($things.eq(2).hasClass('apple')).toBe(true);
       expect($things.eq(3).hasClass('orange')).toBe(true);
     });
+    it('should keep the source element when the target is empty', () => {
+      const $result = $('li.orange').insertAfter('.missing');
+      expect($result).toHaveLength(0);
+      expect($('.orange')).toHaveLength(1);
+      expect($fruits.children()).toHaveLength(3);
+    });
+
+    it('should keep the source element for an empty Cheerio target', () => {
+      expect($('li.apple').insertAfter($('.missing'))).toHaveLength(0);
+      expect($('.apple')).toHaveLength(1);
+      expect($fruits.children()).toHaveLength(3);
+    });
+
+    it('should keep the source element for an empty string target', () => {
+      expect($('li.pear').insertAfter('')).toHaveLength(0);
+      expect($('.pear')).toHaveLength(1);
+      expect($fruits.children()).toHaveLength(3);
+    });
   });
 
   describe('.before', () => {
@@ -1578,6 +1596,24 @@ describe('$(...)', () => {
       expect($things.eq(1).hasClass('orange')).toBe(true);
       expect($things.eq(2).hasClass('apple')).toBe(true);
       expect($things.eq(3).hasClass('orange')).toBe(true);
+    });
+    it('should keep the source element when the target is empty', () => {
+      const $result = $('li.orange').insertBefore('.missing');
+      expect($result).toHaveLength(0);
+      expect($('.orange')).toHaveLength(1);
+      expect($fruits.children()).toHaveLength(3);
+    });
+
+    it('should keep the source element for an empty Cheerio target', () => {
+      expect($('li.apple').insertBefore($('.missing'))).toHaveLength(0);
+      expect($('.apple')).toHaveLength(1);
+      expect($fruits.children()).toHaveLength(3);
+    });
+
+    it('should keep the source element for an empty string target', () => {
+      expect($('li.pear').insertBefore('')).toHaveLength(0);
+      expect($('.pear')).toHaveLength(1);
+      expect($fruits.children()).toHaveLength(3);
     });
   });
 
