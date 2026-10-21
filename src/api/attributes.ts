@@ -24,6 +24,26 @@ const hrefTags = new Set(['a', 'link']);
 const srcTags = new Set(['img', 'iframe', 'audio', 'video', 'source']);
 
 /**
+ * Returns whether an option is disabled itself, or through a disabled ancestor
+ * `optgroup`.
+ */
+function isOptionDisabled(option: Element): boolean {
+  if (option.attribs['disabled'] != null) {
+    return true;
+  }
+
+  let ancestor: AnyNode | null = option.parent;
+  while (ancestor && isTag(ancestor) && ancestor.name === 'optgroup') {
+    if (ancestor.attribs['disabled'] != null) {
+      return true;
+    }
+    ancestor = ancestor.parent;
+  }
+
+  return false;
+}
+
+/**
  * Gets a node's attribute. For boolean attributes, it will return the value's
  * name should it be set.
  *
@@ -821,11 +841,19 @@ export function val<T extends AnyNode>(
         return this;
       }
 
-      const option = this.find('option:selected');
+      const selected = this.find('option:selected')
+        .toArray()
+        .filter((el) => !isOptionDisabled(el));
 
-      return this.attr('multiple')
-        ? option.toArray().map((el) => text(el.children))
-        : option.attr('value');
+      if (this.attr('multiple')) {
+        return selected.map((el) => text(el.children));
+      }
+
+      const first = selected[0];
+      if (first == null) {
+        return undefined;
+      }
+      return first.attribs['value'] ?? text(first.children);
     }
     case 'button':
     case 'input':
