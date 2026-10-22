@@ -958,7 +958,7 @@ export function has(
  * @see {@link https://api.jquery.com/first/}
  */
 export function first<T extends AnyNode>(this: Cheerio<T>): Cheerio<T> {
-  return this.length > 1 ? this._make(this[0]) : this;
+  return this._make(this.length > 0 ? this[0] : []);
 }
 
 /**
@@ -976,7 +976,7 @@ export function first<T extends AnyNode>(this: Cheerio<T>): Cheerio<T> {
  * @see {@link https://api.jquery.com/last/}
  */
 export function last<T>(this: Cheerio<T>): Cheerio<T> {
-  return this.length > 0 ? this._make(this[this.length - 1]) : this;
+  return this._make(this.length > 0 ? this[this.length - 1] : []);
 }
 
 /**
@@ -1005,9 +1005,6 @@ export function eq<T>(this: Cheerio<T>, i: number): Cheerio<T> {
    */
   // eslint-disable-next-line unicorn/no-useless-coercion
   i = +i;
-
-  // Use the first identity optimization if possible
-  if (i === 0 && this.length <= 1) return this;
 
   if (i < 0) i = this.length + i;
   return this._make(this[i] ?? []);
