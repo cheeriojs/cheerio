@@ -22,7 +22,7 @@
     "@codesandbox/sandpack-react": "^2.20.0",
     "@docsearch/css": "^5.1.2",
     "@docsearch/js": "^5.1.2",
-    "@lucide/astro": "^1.56.0",
+    "@lucide/astro": "^1.57.0",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.8",
     "marked": "^18.1.1",
