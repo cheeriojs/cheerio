@@ -27,7 +27,7 @@
     "astro": "^7.3.8",
     "marked": "^18.1.1",
     "react": "^19.2.5",
-    "react-dom": "^19.3.0",
+    "react-dom": "^19.3.1",
     "remark-directive": "^4.0.0",
     "tailwindcss": "^4.3.3",
     "unist-util-visit": "^5.1.0"
