@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
-    "@astrojs/markdown-remark": "^7.3.2",
+    "@astrojs/markdown-remark": "^7.3.3",
     "@types/hast": "^3.0.5",
     "@types/mdast": "^4.0.4",
     "@types/react": "^19.2.18",
