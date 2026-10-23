@@ -747,6 +747,15 @@ describe('$(...)', () => {
       expect($('option[selected]')[0]).toBe($option[0]);
       expect($option.find('script')).toHaveLength(2);
     });
+    it('(): should include CDATA text in valueless option values', () => {
+      const $ = load(
+        '<select><option selected> A<![CDATA[ B ]]> C </option></select>',
+        { xml: { xmlMode: false, recognizeCDATA: true } },
+      );
+      expect($('select').val()).toBe('A B C');
+      $('select').val('A B C');
+      expect($('option[selected]')).toHaveLength(1);
+    });
     it('(): should preserve script text in XML option values', () => {
       const $ = load(
         '<select><option selected> A<script> B </script> C </option></select>',

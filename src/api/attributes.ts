@@ -4,13 +4,7 @@
  * @module cheerio/attributes
  */
 
-import {
-  type AnyNode,
-  type Element,
-  isDocument,
-  isTag,
-  isText,
-} from 'domhandler';
+import { type AnyNode, type Element, isDocument, isTag } from 'domhandler';
 import { innerText, textContent } from 'domutils';
 import type { Cheerio } from '../cheerio.js';
 import { text } from '../static.js';
@@ -42,8 +36,8 @@ const srcTags = new Set(['img', 'iframe', 'audio', 'video', 'source']);
  */
 function getOptionText(elem: Element): string {
   const collectText = (node: AnyNode): string => {
-    if (isText(node)) return node.data;
-    if (!isTag(node) || node.name === 'script') return '';
+    if (!isTag(node)) return textContent(node);
+    if (node.name === 'script') return '';
     return node.children.map(collectText).join('');
   };
 
