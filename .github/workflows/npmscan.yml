@@ -1,0 +1,39 @@
+name: npmscan
+
+# Diffs both lockfiles against the PR base with npmscan.com and flags known
+# malware, new install scripts, changed tarball URLs or integrity hashes, and
+# changed overrides. Warn-only: findings never fail the check.
+
+on:
+  pull_request:
+    paths:
+      - '**/package.json'
+      - package-lock.json
+      - website/package-lock.json
+
+permissions:
+  contents: read
+
+concurrency:
+  group: npmscan-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  scan:
+    name: npmscan dependency check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: write # one report comment (fork PRs use the job summary)
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: NPMscan/npmscan-action@de14168f65640a4ed1f0e82ad3ad8c80483d360d # v1.3.0
+        with:
+          files: |
+            package-lock.json
+            website/package-lock.json
+          mode: warn
+          fail-on-error: false
