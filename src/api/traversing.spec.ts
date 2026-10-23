@@ -501,6 +501,20 @@ describe('$(...)', () => {
       expect(elems.prevAll()).toHaveLength(2);
     });
 
+    it('() : should return siblings of every element in reverse document order', () => {
+      const $food = load(food);
+      const sameParent = $food('.orange, .pear').prevAll();
+      expect(sameParent).toHaveLength(2);
+      expect(sameParent[0]).toBe($food('.orange')[0]);
+      expect(sameParent[1]).toBe($food('.apple')[0]);
+
+      const differentParents = $food('.pear, .sweetcorn').prevAll();
+      expect(differentParents).toHaveLength(3);
+      expect(differentParents[0]).toBe($food('.carrot')[0]);
+      expect(differentParents[1]).toBe($food('.orange')[0]);
+      expect(differentParents[2]).toBe($food('.apple')[0]);
+    });
+
     describe('(selector) :', () => {
       it('should filter returned elements', () => {
         const elems = $('.pear').prevAll('.apple');
@@ -538,6 +552,14 @@ describe('$(...)', () => {
     it('() : should not contain duplicate elements', () => {
       const elems = $('.orange, .pear', food);
       expect(elems.prevUntil()).toHaveLength(2);
+    });
+
+    it('() : should return siblings of every element in reverse document order', () => {
+      const $food = load(food);
+      const elems = $food('.orange, .pear').prevUntil();
+      expect(elems).toHaveLength(2);
+      expect(elems[0]).toBe($food('.orange')[0]);
+      expect(elems[1]).toBe($food('.apple')[0]);
     });
 
     it('(selector) : should return all preceding siblings until selector', () => {
@@ -595,8 +617,8 @@ describe('$(...)', () => {
     it('(function) : should reset the index for each starting element', () => {
       const elems = $('.pear, .sweetcorn', food).prevUntil((i) => i === 1);
       expect(elems).toHaveLength(2);
-      expect(elems[0].attribs).toHaveProperty('class', 'orange');
-      expect(elems[1].attribs).toHaveProperty('class', 'carrot');
+      expect(elems[0].attribs).toHaveProperty('class', 'carrot');
+      expect(elems[1].attribs).toHaveProperty('class', 'orange');
     });
   });
 
