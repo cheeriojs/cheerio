@@ -2,6 +2,25 @@ import { describe, expect, it } from 'vitest';
 import { load } from './index.js';
 
 describe('.load', () => {
+  it.each([{}, { xml: { xmlMode: false } }, { xml: true }])(
+    '(nodes) : should reuse a document supplied in an array with %j',
+    (options) => {
+      const previous = load(
+        '<html><head></head><body><p id="probe">Hello</p></body></html>',
+        options,
+      );
+      const root = previous.root()[0];
+      const html = previous('html')[0];
+      const $ = load(previous.root().get(), options);
+
+      expect($('html')).toHaveLength(1);
+      expect($('#probe').text()).toBe('Hello');
+      expect($.root()[0]).toBe(root);
+      expect(root.parent).toBe(null);
+      expect(html.parent).toBe(root);
+    },
+  );
+
   it.each(['hello', 'a < b & c', ''])(
     '(node) : should accept a CDATA node containing %j',
     (content) => {
