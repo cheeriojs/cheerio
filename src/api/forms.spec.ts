@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { cheerio, forms } from '../__fixtures__/fixtures.js';
-import type { CheerioAPI } from '../index.js';
+import { type CheerioAPI, load } from '../index.js';
 
 describe('$(...)', () => {
   let $: CheerioAPI;
@@ -53,6 +53,18 @@ describe('$(...)', () => {
         {
           name: 'fruit',
           value: 'Orange',
+        },
+      ]);
+    });
+
+    it('() : should not get disabled selected options', () => {
+      const $doc = load(
+        '<form><select name="choice" multiple><option value="a" selected disabled>a</option><optgroup disabled><option value="b" selected>b</option></optgroup><option value="c" selected>c</option></select></form>',
+      );
+      expect($doc('form').serializeArray()).toStrictEqual([
+        {
+          name: 'choice',
+          value: 'c',
         },
       ]);
     });
@@ -146,6 +158,13 @@ describe('$(...)', () => {
 
     it('() : should get multiple selected options', () => {
       expect($('form#multiple').serialize()).toBe('fruit=Apple&fruit=Orange');
+    });
+
+    it('() : should not serialize disabled selected options', () => {
+      const $doc = load(
+        '<form><select name="choice" multiple><option value="a" selected disabled>a</option><optgroup disabled><option value="b" selected>b</option></optgroup><option value="c" selected>c</option></select></form>',
+      );
+      expect($doc('form').serialize()).toBe('choice=c');
     });
 
     it("() : should encode spaces as +'s", () => {
