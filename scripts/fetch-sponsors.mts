@@ -108,27 +108,38 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
 
   const query = `{
         account(slug: "cheerio") {
-          orders(status: ACTIVE, filter: INCOMING) {
+          active: orders(status: [ACTIVE], filter: INCOMING) {
             nodes {
-              createdAt
-              fromAccount {
-                name
-                website
-                imageUrl
-                type
-              }
-              amount {
-                value
-              }
-              tier {
-                slug
-              }
-              frequency
-              totalDonations {
-                value
-              }
+              ...SponsorOrder
             }
           }
+          cancelled: orders(status: [CANCELLED], filter: INCOMING, limit: 1000) {
+            nodes {
+              ...SponsorOrder
+            }
+          }
+        }
+      }
+
+      fragment SponsorOrder on Order {
+        createdAt
+        lastChargedAt
+        fromAccount {
+          slug
+          name
+          website
+          imageUrl
+          type
+        }
+        amount {
+          value
+        }
+        tier {
+          slug
+        }
+        frequency
+        totalDonations {
+          value
         }
       }`;
 
@@ -140,7 +151,34 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
 
   const payload: any = await body.json();
 
-  return payload.data.account.orders.nodes.map((order: any): Sponsor => {
+  const { active, cancelled } = payload.data.account;
+  const activeSlugs = new Set(
+    active.nodes.map((order: any) => order.fromAccount.slug),
+  );
+
+  /*
+   * A cancelled recurring order has still paid for its current period, so keep
+   * the sponsor listed until that period is over.
+   */
+  const stillPaid = cancelled.nodes.filter((order: any) => {
+    if (!order.lastChargedAt || activeSlugs.has(order.fromAccount.slug)) {
+      return false;
+    }
+
+    const paidUntil = new Date(order.lastChargedAt);
+
+    if (order.frequency === 'MONTHLY') {
+      paidUntil.setUTCMonth(paidUntil.getUTCMonth() + 1);
+    } else if (order.frequency === 'YEARLY') {
+      paidUntil.setUTCFullYear(paidUntil.getUTCFullYear() + 1);
+    } else {
+      return false;
+    }
+
+    return paidUntil.getTime() > Date.now();
+  });
+
+  return [...active.nodes, ...stillPaid].map((order: any): Sponsor => {
     const donation = order.amount.value * 100;
     const monthlyDonation =
       order.frequency === 'YEARLY' ? Math.round(donation / 12) : donation;
@@ -270,6 +308,12 @@ const imgixOverrides = new Map([
 
 const sponsorOverrides = new Map<string, Partial<Sponsor>>([
   ['Vasy Kafidoff', { url: 'https://kafidoff.com' }],
+  [
+    'ScrapingBee',
+    {
+      url: 'https://www.scrapingbee.com/?utm_source=sponsorships&utm_medium=backlinks&utm_campaign=cheerio_js_org',
+    },
+  ],
   [
     'Rapidproxy',
     {
