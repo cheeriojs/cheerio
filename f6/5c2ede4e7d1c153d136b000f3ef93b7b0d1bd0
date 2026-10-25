@@ -1,0 +1,21 @@
+scripts/fetch-sponsors.mts
+  s_0fa12128f9a399::t_da05629c55019d 133,136
+  s_0fa12128f9a399::t_1322514333a7b8 126-132,134-135,137-149,182-188,265-266
+  s_0fa12128f9a399::t_95cc6d85abbc1b 125
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "f65c2ede4e7d1c153d136b000f3ef93b7b0d1bd0",
+  "prompts": {},
+  "sessions": {
+    "s_0fa12128f9a399": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7c265f33-6c5e-4ed0-8e39-e7227b506c43",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
