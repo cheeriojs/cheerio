@@ -208,10 +208,11 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
     stillPaid.set(slug, { order, paidUntil });
   }
 
-  const orders = [
-    ...active.nodes,
-    ...[...stillPaid.values()].map(({ order }) => order),
-  ];
+  const orders = [...active.nodes];
+
+  for (const { order } of stillPaid.values()) {
+    orders.push(order);
+  }
 
   return orders.map((order: any): Sponsor => {
     const donation = order.amount.value * 100;
