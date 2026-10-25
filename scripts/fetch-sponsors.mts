@@ -182,30 +182,38 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
 
   /*
    * A cancelled recurring order has still paid for its current period, so keep
-   * the sponsor listed until that period is over. Only the most recently
-   * charged order counts for each account.
+   * the sponsor listed until that period is over. Only the order paid furthest
+   * ahead counts for each account.
    */
-  const stillPaid = new Map<string, any>();
+  const stillPaid = new Map<string, { order: any; paidUntil: number }>();
 
   for (const order of cancelled.nodes) {
     const { slug } = order.fromAccount;
     const months =
       order.frequency === 'MONTHLY' ? 1 : order.frequency === 'YEARLY' ? 12 : 0;
 
+    if (!order.lastChargedAt || months === 0 || activeSlugs.has(slug)) {
+      continue;
+    }
+
+    const paidUntil = getPaidUntil(order.lastChargedAt, months);
+
     if (
-      !order.lastChargedAt ||
-      months === 0 ||
-      activeSlugs.has(slug) ||
-      getPaidUntil(order.lastChargedAt, months) <= Date.now() ||
-      stillPaid.get(slug)?.lastChargedAt > order.lastChargedAt
+      paidUntil <= Date.now() ||
+      paidUntil <= (stillPaid.get(slug)?.paidUntil ?? 0)
     ) {
       continue;
     }
 
-    stillPaid.set(slug, order);
+    stillPaid.set(slug, { order, paidUntil });
   }
 
-  return [...active.nodes, ...stillPaid.values()].map((order: any): Sponsor => {
+  const orders = [
+    ...active.nodes,
+    ...[...stillPaid.values()].map(({ order }) => order),
+  ];
+
+  return orders.map((order: any): Sponsor => {
     const donation = order.amount.value * 100;
     const monthlyDonation =
       order.frequency === 'YEARLY' ? Math.round(donation / 12) : donation;
