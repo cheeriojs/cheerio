@@ -132,12 +132,14 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
 
   const query = `{
         account(slug: "cheerio") {
-          active: orders(status: [ACTIVE], filter: INCOMING) {
+          active: orders(status: [ACTIVE], filter: INCOMING, limit: 1000) {
+            totalCount
             nodes {
               ...SponsorOrder
             }
           }
           cancelled: orders(status: [CANCELLED], filter: INCOMING, limit: 1000) {
+            totalCount
             nodes {
               ...SponsorOrder
             }
@@ -176,6 +178,15 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
   const payload: any = await body.json();
 
   const { active, cancelled } = payload.data.account;
+
+  // Fail loudly instead of silently dropping sponsors once a page is not enough.
+  if (
+    active.nodes.length < active.totalCount ||
+    cancelled.nodes.length < cancelled.totalCount
+  ) {
+    throw new Error('Open Collective orders exceed one page; add pagination.');
+  }
+
   const activeSlugs = new Set(
     active.nodes.map((order: any) => order.fromAccount.slug),
   );
