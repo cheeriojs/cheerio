@@ -99,6 +99,67 @@ function getTierSlug(monthlyDonation: number): Tier | null {
 }
 
 /**
+ * Returns when a recurring charge stops covering its sponsor, clamping the day
+ * to the end of shorter months (e.g. Jan 31 + 1 month is Feb 28, not Mar 3).
+ *
+ * @param chargedAt - When the order was last charged.
+ * @param months - The length of the billing period in months.
+ * @returns The end of the paid period, in milliseconds since the epoch.
+ */
+function getPaidUntil(chargedAt: string, months: number): number {
+  const date = new Date(chargedAt);
+  const day = date.getUTCDate();
+
+  date.setUTCDate(1);
+  date.setUTCMonth(date.getUTCMonth() + months);
+
+  const lastDay = new Date(
+    Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + 1, 0),
+  ).getUTCDate();
+
+  date.setUTCDate(Math.min(day, lastDay));
+
+  return date.getTime();
+}
+
+/**
+ * Returns an order's latest charge, unless it was refunded. Rejected
+ * contributions are refunded and cancelled, and must not keep their listing.
+ *
+ * @param order - The order, including its transactions.
+ * @returns The latest charge that still stands, if any.
+ */
+function getLastKeptCharge(order: any): any {
+  const transactions = order.transactions ?? [];
+  let lastCharge: any;
+
+  for (const transaction of transactions) {
+    if (
+      transaction.kind === 'CONTRIBUTION' &&
+      transaction.type === 'CREDIT' &&
+      !transaction.isRefund &&
+      (!lastCharge || transaction.createdAt > lastCharge.createdAt)
+    ) {
+      lastCharge = transaction;
+    }
+  }
+
+  return lastCharge?.isRefunded ? undefined : lastCharge;
+}
+
+/**
+ * Returns the monthly amount, in dollars, of an Open Collective order.
+ *
+ * @param order - The order.
+ * @returns The monthly amount.
+ */
+function getMonthlyAmount(order: any): number {
+  return order.frequency === 'YEARLY'
+    ? order.amount.value / 12
+    : order.amount.value;
+}
+
+/**
  * Fetch order data from Open Collective using the GraphQL API.
  *
  * @returns An array of sponsors.
@@ -108,27 +169,50 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
 
   const query = `{
         account(slug: "cheerio") {
-          orders(status: ACTIVE, filter: INCOMING) {
+          active: orders(status: [ACTIVE], filter: INCOMING, limit: 1000) {
+            totalCount
             nodes {
-              createdAt
-              fromAccount {
-                name
-                website
-                imageUrl
+              ...SponsorOrder
+            }
+          }
+          cancelled: orders(status: [CANCELLED], filter: INCOMING, limit: 1000) {
+            totalCount
+            nodes {
+              ...SponsorOrder
+              transactions {
+                kind
                 type
-              }
-              amount {
-                value
-              }
-              tier {
-                slug
-              }
-              frequency
-              totalDonations {
-                value
+                isRefund
+                isRefunded
+                amount {
+                  value
+                }
+                createdAt
               }
             }
           }
+        }
+      }
+
+      fragment SponsorOrder on Order {
+        createdAt
+        lastChargedAt
+        fromAccount {
+          slug
+          name
+          website
+          imageUrl
+          type
+        }
+        amount {
+          value
+        }
+        tier {
+          slug
+        }
+        frequency
+        totalDonations {
+          value
         }
       }`;
 
@@ -140,7 +224,83 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
 
   const payload: any = await body.json();
 
-  return payload.data.account.orders.nodes.map((order: any): Sponsor => {
+  const { active, cancelled } = payload.data.account;
+
+  // Fail loudly instead of silently dropping sponsors once a page is not enough.
+  if (
+    active.nodes.length < active.totalCount ||
+    cancelled.nodes.length < cancelled.totalCount
+  ) {
+    throw new Error('Open Collective orders exceed one page; add pagination.');
+  }
+
+  // The highest monthly amount each account currently pays via active orders.
+  const activeAmounts = new Map<string, number>();
+
+  for (const order of active.nodes) {
+    const slug = order.fromAccount?.slug;
+    const amount = Math.max(
+      activeAmounts.get(slug) ?? 0,
+      getMonthlyAmount(order),
+    );
+    activeAmounts.set(slug, amount);
+  }
+
+  /*
+   * A cancelled recurring order has still paid for its current period, so keep
+   * the sponsor listed until that period is over. Per account, the highest paid
+   * order wins — including over a smaller active order the sponsor switched to.
+   */
+  const stillPaid = new Map<string, { order: any; paidUntil: number }>();
+
+  for (const order of cancelled.nodes) {
+    if (!order.fromAccount) {
+      continue;
+    }
+
+    const { slug } = order.fromAccount;
+    const months =
+      order.frequency === 'MONTHLY' ? 1 : order.frequency === 'YEARLY' ? 12 : 0;
+
+    if (!order.lastChargedAt || months === 0) {
+      continue;
+    }
+
+    const paidUntil = getPaidUntil(order.lastChargedAt, months);
+
+    const charge = paidUntil > Date.now() && getLastKeptCharge(order);
+
+    if (!charge) {
+      continue;
+    }
+
+    // Recognize the amount that was actually charged, not a later edit.
+    order.amount = charge.amount;
+
+    const amount = getMonthlyAmount(order);
+    const current = stillPaid.get(slug);
+    const currentAmount = current ? getMonthlyAmount(current.order) : -1;
+
+    if (
+      amount <= (activeAmounts.get(slug) ?? -1) ||
+      amount < currentAmount ||
+      (amount === currentAmount && paidUntil <= current!.paidUntil)
+    ) {
+      continue;
+    }
+
+    stillPaid.set(slug, { order, paidUntil });
+  }
+
+  const orders = active.nodes.filter(
+    (order: any) => !stillPaid.has(order.fromAccount?.slug),
+  );
+
+  for (const { order } of stillPaid.values()) {
+    orders.push(order);
+  }
+
+  return orders.map((order: any): Sponsor => {
     const donation = order.amount.value * 100;
     const monthlyDonation =
       order.frequency === 'YEARLY' ? Math.round(donation / 12) : donation;
@@ -270,6 +430,12 @@ const imgixOverrides = new Map([
 
 const sponsorOverrides = new Map<string, Partial<Sponsor>>([
   ['Vasy Kafidoff', { url: 'https://kafidoff.com' }],
+  [
+    'ScrapingBee',
+    {
+      url: 'https://www.scrapingbee.com/?utm_source=sponsorships&utm_medium=backlinks&utm_campaign=cheerio_js_org',
+    },
+  ],
   [
     'Rapidproxy',
     {
