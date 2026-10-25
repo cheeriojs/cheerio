@@ -199,6 +199,10 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
   const stillPaid = new Map<string, { order: any; paidUntil: number }>();
 
   for (const order of cancelled.nodes) {
+    if (!order.fromAccount) {
+      continue;
+    }
+
     const { slug } = order.fromAccount;
     const months =
       order.frequency === 'MONTHLY' ? 1 : order.frequency === 'YEARLY' ? 12 : 0;
