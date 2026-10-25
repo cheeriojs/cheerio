@@ -123,6 +123,18 @@ function getPaidUntil(chargedAt: string, months: number): number {
 }
 
 /**
+ * Returns the monthly amount, in dollars, of an Open Collective order.
+ *
+ * @param order - The order.
+ * @returns The monthly amount.
+ */
+function getMonthlyAmount(order: any): number {
+  return order.frequency === 'YEARLY'
+    ? order.amount.value / 12
+    : order.amount.value;
+}
+
+/**
  * Fetch order data from Open Collective using the GraphQL API.
  *
  * @returns An array of sponsors.
@@ -187,16 +199,24 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
     throw new Error('Open Collective orders exceed one page; add pagination.');
   }
 
-  const activeSlugs = new Set(
-    active.nodes.map((order: any) => order.fromAccount.slug),
-  );
+  // The highest monthly amount each account currently pays via active orders.
+  const activeAmounts = new Map<string, number>();
+
+  for (const order of active.nodes) {
+    const slug = order.fromAccount?.slug;
+    const amount = Math.max(
+      activeAmounts.get(slug) ?? 0,
+      getMonthlyAmount(order),
+    );
+    activeAmounts.set(slug, amount);
+  }
 
   /*
    * A cancelled recurring order has still paid for its current period, so keep
-   * the sponsor listed until that period is over. Only the order paid furthest
-   * ahead counts for each account.
+   * the sponsor listed until that period is over. Per account, the highest paid
+   * order wins — including over a smaller active order the sponsor switched to.
    */
-  const stillPaid = new Map<string, { order: any; paidUntil: number }>();
+  const stillPaid = new Map<string, any>();
 
   for (const order of cancelled.nodes) {
     if (!order.fromAccount) {
@@ -207,25 +227,32 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
     const months =
       order.frequency === 'MONTHLY' ? 1 : order.frequency === 'YEARLY' ? 12 : 0;
 
-    if (!order.lastChargedAt || months === 0 || activeSlugs.has(slug)) {
-      continue;
-    }
-
-    const paidUntil = getPaidUntil(order.lastChargedAt, months);
-
     if (
-      paidUntil <= Date.now() ||
-      paidUntil <= (stillPaid.get(slug)?.paidUntil ?? 0)
+      !order.lastChargedAt ||
+      months === 0 ||
+      getPaidUntil(order.lastChargedAt, months) <= Date.now()
     ) {
       continue;
     }
 
-    stillPaid.set(slug, { order, paidUntil });
+    const amount = getMonthlyAmount(order);
+    const current = stillPaid.get(slug);
+
+    if (
+      amount <= (activeAmounts.get(slug) ?? -1) ||
+      (current && amount <= getMonthlyAmount(current))
+    ) {
+      continue;
+    }
+
+    stillPaid.set(slug, order);
   }
 
-  const orders = [...active.nodes];
+  const orders = active.nodes.filter(
+    (order: any) => !stillPaid.has(order.fromAccount?.slug),
+  );
 
-  for (const { order } of stillPaid.values()) {
+  for (const order of stillPaid.values()) {
     orders.push(order);
   }
 
