@@ -248,7 +248,7 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
    * the sponsor listed until that period is over. Per account, the highest paid
    * order wins — including over a smaller active order the sponsor switched to.
    */
-  const stillPaid = new Map<string, any>();
+  const stillPaid = new Map<string, { order: any; paidUntil: number }>();
 
   for (const order of cancelled.nodes) {
     if (!order.fromAccount) {
@@ -259,33 +259,36 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
     const months =
       order.frequency === 'MONTHLY' ? 1 : order.frequency === 'YEARLY' ? 12 : 0;
 
-    if (
-      !order.lastChargedAt ||
-      months === 0 ||
-      getPaidUntil(order.lastChargedAt, months) <= Date.now() ||
-      !isLastChargeKept(order)
-    ) {
+    if (!order.lastChargedAt || months === 0) {
+      continue;
+    }
+
+    const paidUntil = getPaidUntil(order.lastChargedAt, months);
+
+    if (paidUntil <= Date.now() || !isLastChargeKept(order)) {
       continue;
     }
 
     const amount = getMonthlyAmount(order);
     const current = stillPaid.get(slug);
+    const currentAmount = current ? getMonthlyAmount(current.order) : -1;
 
     if (
       amount <= (activeAmounts.get(slug) ?? -1) ||
-      (current && amount <= getMonthlyAmount(current))
+      amount < currentAmount ||
+      (amount === currentAmount && paidUntil <= current!.paidUntil)
     ) {
       continue;
     }
 
-    stillPaid.set(slug, order);
+    stillPaid.set(slug, { order, paidUntil });
   }
 
   const orders = active.nodes.filter(
     (order: any) => !stillPaid.has(order.fromAccount?.slug),
   );
 
-  for (const order of stillPaid.values()) {
+  for (const { order } of stillPaid.values()) {
     orders.push(order);
   }
 
