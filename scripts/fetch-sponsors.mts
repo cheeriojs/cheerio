@@ -123,6 +123,31 @@ function getPaidUntil(chargedAt: string, months: number): number {
 }
 
 /**
+ * Checks that an order's latest charge was not refunded. Rejected contributions
+ * are refunded and cancelled, and must not keep their listing.
+ *
+ * @param order - The order, including its transactions.
+ * @returns Whether the latest charge still stands.
+ */
+function isLastChargeKept(order: any): boolean {
+  const transactions = order.transactions ?? [];
+  let lastCharge: any;
+
+  for (const transaction of transactions) {
+    if (
+      transaction.kind === 'CONTRIBUTION' &&
+      transaction.type === 'CREDIT' &&
+      !transaction.isRefund &&
+      (!lastCharge || transaction.createdAt > lastCharge.createdAt)
+    ) {
+      lastCharge = transaction;
+    }
+  }
+
+  return lastCharge !== undefined && !lastCharge.isRefunded;
+}
+
+/**
  * Returns the monthly amount, in dollars, of an Open Collective order.
  *
  * @param order - The order.
@@ -154,6 +179,13 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
             totalCount
             nodes {
               ...SponsorOrder
+              transactions {
+                kind
+                type
+                isRefund
+                isRefunded
+                createdAt
+              }
             }
           }
         }
@@ -230,7 +262,8 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
     if (
       !order.lastChargedAt ||
       months === 0 ||
-      getPaidUntil(order.lastChargedAt, months) <= Date.now()
+      getPaidUntil(order.lastChargedAt, months) <= Date.now() ||
+      !isLastChargeKept(order)
     ) {
       continue;
     }
