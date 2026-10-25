@@ -123,13 +123,13 @@ function getPaidUntil(chargedAt: string, months: number): number {
 }
 
 /**
- * Checks that an order's latest charge was not refunded. Rejected contributions
- * are refunded and cancelled, and must not keep their listing.
+ * Returns an order's latest charge, unless it was refunded. Rejected
+ * contributions are refunded and cancelled, and must not keep their listing.
  *
  * @param order - The order, including its transactions.
- * @returns Whether the latest charge still stands.
+ * @returns The latest charge that still stands, if any.
  */
-function isLastChargeKept(order: any): boolean {
+function getLastKeptCharge(order: any): any {
   const transactions = order.transactions ?? [];
   let lastCharge: any;
 
@@ -144,7 +144,7 @@ function isLastChargeKept(order: any): boolean {
     }
   }
 
-  return lastCharge !== undefined && !lastCharge.isRefunded;
+  return lastCharge?.isRefunded ? undefined : lastCharge;
 }
 
 /**
@@ -184,6 +184,9 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
                 type
                 isRefund
                 isRefunded
+                amount {
+                  value
+                }
                 createdAt
               }
             }
@@ -265,9 +268,14 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
 
     const paidUntil = getPaidUntil(order.lastChargedAt, months);
 
-    if (paidUntil <= Date.now() || !isLastChargeKept(order)) {
+    const charge = paidUntil > Date.now() && getLastKeptCharge(order);
+
+    if (!charge) {
       continue;
     }
+
+    // Recognize the amount that was actually charged, not a later edit.
+    order.amount = charge.amount;
 
     const amount = getMonthlyAmount(order);
     const current = stillPaid.get(slug);
