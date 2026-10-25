@@ -99,6 +99,30 @@ function getTierSlug(monthlyDonation: number): Tier | null {
 }
 
 /**
+ * Returns when a recurring charge stops covering its sponsor, clamping the day
+ * to the end of shorter months (e.g. Jan 31 + 1 month is Feb 28, not Mar 3).
+ *
+ * @param chargedAt - When the order was last charged.
+ * @param months - The length of the billing period in months.
+ * @returns The end of the paid period, in milliseconds since the epoch.
+ */
+function getPaidUntil(chargedAt: string, months: number): number {
+  const date = new Date(chargedAt);
+  const day = date.getUTCDate();
+
+  date.setUTCDate(1);
+  date.setUTCMonth(date.getUTCMonth() + months);
+
+  const lastDay = new Date(
+    Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + 1, 0),
+  ).getUTCDate();
+
+  date.setUTCDate(Math.min(day, lastDay));
+
+  return date.getTime();
+}
+
+/**
  * Fetch order data from Open Collective using the GraphQL API.
  *
  * @returns An array of sponsors.
@@ -158,27 +182,30 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
 
   /*
    * A cancelled recurring order has still paid for its current period, so keep
-   * the sponsor listed until that period is over.
+   * the sponsor listed until that period is over. Only the most recently
+   * charged order counts for each account.
    */
-  const stillPaid = cancelled.nodes.filter((order: any) => {
-    if (!order.lastChargedAt || activeSlugs.has(order.fromAccount.slug)) {
-      return false;
+  const stillPaid = new Map<string, any>();
+
+  for (const order of cancelled.nodes) {
+    const { slug } = order.fromAccount;
+    const months =
+      order.frequency === 'MONTHLY' ? 1 : order.frequency === 'YEARLY' ? 12 : 0;
+
+    if (
+      !order.lastChargedAt ||
+      months === 0 ||
+      activeSlugs.has(slug) ||
+      getPaidUntil(order.lastChargedAt, months) <= Date.now() ||
+      stillPaid.get(slug)?.lastChargedAt > order.lastChargedAt
+    ) {
+      continue;
     }
 
-    const paidUntil = new Date(order.lastChargedAt);
+    stillPaid.set(slug, order);
+  }
 
-    if (order.frequency === 'MONTHLY') {
-      paidUntil.setUTCMonth(paidUntil.getUTCMonth() + 1);
-    } else if (order.frequency === 'YEARLY') {
-      paidUntil.setUTCFullYear(paidUntil.getUTCFullYear() + 1);
-    } else {
-      return false;
-    }
-
-    return paidUntil.getTime() > Date.now();
-  });
-
-  return [...active.nodes, ...stillPaid].map((order: any): Sponsor => {
+  return [...active.nodes, ...stillPaid.values()].map((order: any): Sponsor => {
     const donation = order.amount.value * 100;
     const monthlyDonation =
       order.frequency === 'YEARLY' ? Math.round(donation / 12) : donation;
