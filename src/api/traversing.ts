@@ -28,6 +28,104 @@ import { domEach, isCheerio } from '../utils.js';
 const reContextSelector = /^\s*(?:[+~]|:scope\b)/;
 
 /**
+ * Matches the positional pseudo-classes that jQuery resolves against the whole
+ * document (`:first`, `:last`, `:eq()`, `:lt()`, `:gt()`, `:even`, `:odd`, …).
+ *
+ * Evaluating them against a single element — or against the current selection —
+ * gives a different answer, so calls that ask "does this element match?" have to
+ * query the document first.
+ *
+ * @see {@link https://github.com/jquery/jquery/blob/main/src/selector/rbuggyQSA.js}
+ */
+const rePositionalSelector =
+  /:(?:even|odd|eq|gt|lt|nth|first|last)(?:\([^)]*\)|)(?=[^-]|$)/i;
+
+/**
+ * Check whether a selector contains a positional pseudo-class.
+ *
+ * The regular expression alone is not precise enough: it also matches the same
+ * text inside attribute values (`[data-x=":first"]`) and escaped identifiers
+ * (`.foo\:first`), where it is literal text rather than a pseudo-class. Those
+ * selectors do not need a document-wide lookup, so quoted, escaped and
+ * attribute sections are skipped before testing.
+ *
+ * @private
+ * @param selector - The selector to inspect.
+ * @returns Whether the selector needs document context for matching.
+ */
+function _hasPositionalSelector(selector: string): boolean {
+  if (!rePositionalSelector.test(selector)) {
+    return false;
+  }
+
+  let unquoted = '';
+  let quote: string | null = null;
+  let attributeDepth = 0;
+
+  for (let i = 0; i < selector.length; i++) {
+    const char = selector[i];
+
+    // Skip escaped characters, both inside and outside of quoted strings.
+    if (char === '\\') {
+      i += 1;
+      continue;
+    }
+
+    if (quote) {
+      if (char === quote) quote = null;
+      continue;
+    }
+
+    if (char === '"' || char === "'") {
+      quote = char;
+      continue;
+    }
+
+    if (char === '[') {
+      attributeDepth += 1;
+      continue;
+    }
+
+    if (char === ']' && attributeDepth > 0) {
+      attributeDepth -= 1;
+      continue;
+    }
+
+    if (attributeDepth === 0) {
+      unquoted += char;
+    }
+  }
+
+  return rePositionalSelector.test(unquoted);
+}
+
+/**
+ * Create a predicate that tests a single element against a selector.
+ *
+ * Selectors containing positional pseudo-classes are resolved against the
+ * document — as jQuery does — instead of against the element alone. `cheerio` is
+ * used to look up the document matches, and the result is cached for the caller.
+ *
+ * @private
+ * @param cheerio - The selection the predicate is used from.
+ * @param selector - The selector to test elements against.
+ * @param options - Options used when matching plain selectors.
+ * @returns A predicate for a single element.
+ */
+function _matcherFor(
+  cheerio: Cheerio<AnyNode>,
+  selector: string,
+  options: select.Options = cheerio.options,
+): (elem: Element) => boolean {
+  if (!_hasPositionalSelector(selector)) {
+    return (elem) => select.is(elem, selector, options);
+  }
+
+  const matched = new Set<AnyNode>(cheerio._make<AnyNode>(selector).toArray());
+  return (elem) => matched.has(elem);
+}
+
+/**
  * Get the descendants of each element in the current set of matched elements,
  * filtered by a selector, jQuery object, or element.
  *
@@ -203,7 +301,7 @@ function _matchUntil(
     // Override `matches` variable with the new target.
     matches =
       typeof selector === 'string'
-        ? (elem: Element) => select.is(elem, selector, this.options)
+        ? _matcherFor(this, selector)
         : selector
           ? getFilterFn(selector)
           : null;
@@ -352,7 +450,7 @@ export function closest<T extends AnyNode>(
 
   const selectFn =
     typeof selector === 'string'
-      ? (elem: Element) => select.is(elem, selector, selectOpts)
+      ? _matcherFor(this, selector, selectOpts)
       : getFilterFn(selector);
 
   /*
@@ -847,15 +945,26 @@ export function is<T>(
   selector?: AcceptedFilters<T>,
 ): boolean {
   const nodes = this.toArray();
-  return typeof selector === 'string'
-    ? select.some(
-        (nodes as unknown as AnyNode[]).filter(isTag),
-        selector,
-        this.options,
-      )
-    : selector
-      ? nodes.some(getFilterFn<T>(selector))
-      : false;
+
+  if (typeof selector === 'string') {
+    /*
+     * Positional selectors are document-relative: jQuery resolves them against
+     * the whole document and checks whether any element of the selection is part
+     * of the result.
+     */
+    if (_hasPositionalSelector(selector)) {
+      const matched = new Set<AnyNode>(this._make<AnyNode>(selector).toArray());
+      return nodes.some((node) => matched.has(node as AnyNode));
+    }
+
+    return select.some(
+      (nodes as unknown as AnyNode[]).filter(isTag),
+      selector,
+      this.options,
+    );
+  }
+
+  return selector ? nodes.some(getFilterFn<T>(selector)) : false;
 }
 
 /**
@@ -935,10 +1044,17 @@ export function has(
   this: Cheerio<AnyNode | Element>,
   selectorOrHaystack: string | Cheerio<Element> | Element,
 ): Cheerio<AnyNode | Element> {
+  /*
+   * `:has()` short-circuits searches, but it cannot represent positional
+   * selectors such as `:first`. Use a descendant search for those.
+   */
+  const useHasSelector =
+    typeof selectorOrHaystack === 'string' &&
+    !_hasPositionalSelector(selectorOrHaystack);
+
   return this.filter(
-    typeof selectorOrHaystack === 'string'
-      ? // Using the `:has` selector here short-circuits searches.
-        `:has(${selectorOrHaystack})`
+    useHasSelector
+      ? `:has(${selectorOrHaystack})`
       : (_, el) => this._make(el).find(selectorOrHaystack).length > 0,
   );
 }
