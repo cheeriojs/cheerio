@@ -1973,5 +1973,16 @@ describe('$(...)', () => {
       );
       expect($detached.is(':firstmatch')).toBe(true);
     });
+
+    it.each(['firstmatch', 'lastly', 'eqx', 'odd_one'])(
+      '(custom pseudo :%s) : should match detached elements in is() and closest()',
+      (name) => {
+        const $item = load('', { pseudos: { [name]: () => true } })(
+          '<li>item</li>',
+        );
+        expect($item.is(`:${name}`)).toBe(true);
+        expect($item.closest(`:${name}`)).toHaveLength(1);
+      },
+    );
   });
 });

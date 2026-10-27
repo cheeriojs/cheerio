@@ -38,7 +38,7 @@ const reContextSelector = /^\s*(?:[+~]|:scope\b)/;
  * @see {@link https://github.com/jquery/jquery/blob/main/src/selector/rbuggyQSA.js}
  */
 const rePositionalSelector =
-  /:(?:even|odd|eq|gt|lt|nth|first|last)(?:\([^)]*\)|)(?=[^-]|$)/i;
+  /:(?:even|odd|eq|gt|lt|nth|first|last)(?:\([^)]*\)|)(?![\w-])/i;
 
 /**
  * Check whether a selector contains a positional pseudo-class.
