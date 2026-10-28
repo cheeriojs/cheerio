@@ -1,0 +1,14 @@
+src/api/traversing.spec.ts
+  h_c09f8bd1046292 1433-1438
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "bf90e226e669abb581abca6b6c34651a49063766",
+  "prompts": {},
+  "humans": {
+    "h_c09f8bd1046292": {
+      "author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
