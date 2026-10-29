@@ -186,6 +186,72 @@ function stringify(obj: Record<string, string>): string {
 }
 
 /**
+ * Split a `style` attribute into individual declarations. Semicolons inside
+ * quoted strings, comments, or parentheses (as in
+ * `url("data:image/svg+xml;utf8,...")`) do not terminate a declaration.
+ *
+ * @param styles - Styles to be split.
+ * @returns The individual declarations.
+ */
+function splitDeclarations(styles: string): string[] {
+  const declarations: string[] = [];
+
+  let quote: string | undefined;
+  let depth = 0;
+  let start = 0;
+
+  for (let i = 0; i < styles.length; i++) {
+    const char = styles[i];
+
+    if (quote !== undefined) {
+      if (char === '\\') {
+        i++; // Skip the escaped character.
+      } else if (char === quote) {
+        quote = undefined;
+      }
+
+      continue;
+    }
+
+    if (char === '\\') {
+      i++; // Skip escaped characters outside of quotes, such as `\\;`.
+      continue;
+    }
+
+    if (char === '/' && styles[i + 1] === '*') {
+      // Skip CSS comments; they may contain semicolons.
+      const end = styles.indexOf('*/', i + 2);
+      i = end === -1 ? styles.length : end + 1;
+      continue;
+    }
+
+    if (char === '"' || char === "'") {
+      quote = char;
+      continue;
+    }
+
+    if (char === '(') {
+      depth++;
+      continue;
+    }
+
+    if (char === ')') {
+      if (depth > 0) depth--;
+      continue;
+    }
+
+    if (char === ';' && depth === 0) {
+      declarations.push(styles.slice(start, i));
+      start = i + 1;
+    }
+  }
+
+  declarations.push(styles.slice(start));
+
+  return declarations;
+}
+
+/**
  * Parse `styles`.
  *
  * @private
@@ -202,7 +268,7 @@ function parse(styles: string): Record<string, string> {
 
   let key: string | undefined;
 
-  for (const str of styles.split(';')) {
+  for (const str of splitDeclarations(styles)) {
     const n = str.indexOf(':');
     // If there is no :, or if it is the first/last character, add to the previous item's value
     if (n < 1 || n === str.length - 1) {
