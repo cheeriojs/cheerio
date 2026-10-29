@@ -52,7 +52,10 @@ const urlAttributeElements: Record<'href' | 'src', Set<string>> = {
  * @param fallback - The document URL, used when there is no usable `<base>`.
  * @returns The document base URL.
  */
-function documentBaseURI(elem: Element, fallback: string | URL): string | URL {
+function documentBaseURI(
+  elem: Element,
+  fallback: string | URL | undefined,
+): string | URL | undefined {
   let root: AnyNode = elem;
   while (root.parent) root = root.parent;
 
@@ -67,7 +70,7 @@ function documentBaseURI(elem: Element, fallback: string | URL): string | URL {
 
     try {
       // The base element's own href resolves against the document URL.
-      const base = new URL(href, fallback);
+      const base = new URL(href, fallback === '' ? undefined : fallback);
 
       /*
        * `data:` and `javascript:` base URLs are not allowed, and resolving
@@ -410,8 +413,8 @@ export function prop<T extends AnyNode>(
   name: 'tagName' | 'nodeName' | 'name' | 'type',
 ): string | undefined;
 /**
- * Resolve `href` or `src` of supported elements. Requires the `baseURI` option
- * to be set, and a global `URL` object to be part of the environment.
+ * Resolve `href` or `src` of supported elements using the `baseURI` option or an
+ * absolute HTML `<base href>`. Requires a global `URL` object.
  *
  * `href` is resolved for `a`, `area`, `base` and `link` elements, `src` for
  * `audio`, `embed`, `iframe`, `img`, `input`, `script`, `source`, `track` and
@@ -542,8 +545,7 @@ export function prop<T extends AnyNode>(
         if (
           typeof URL !== 'undefined' &&
           urlAttributeElements[name].has(el.tagName) &&
-          prop !== undefined &&
-          this.options.baseURI
+          prop !== undefined
         ) {
           /*
            * A `<base>` element's own `href` resolves against the document URL,
@@ -554,7 +556,13 @@ export function prop<T extends AnyNode>(
               ? this.options.baseURI
               : documentBaseURI(el, this.options.baseURI);
 
-          return new URL(prop, base).href;
+          if (base) {
+            try {
+              return new URL(prop, base).href;
+            } catch {
+              return prop;
+            }
+          }
         }
 
         return prop;

@@ -446,6 +446,100 @@ describe('$(...)', () => {
       expect($('#2').prop('src')).toBe('http://example.com/assets/image.png');
     });
 
+    it.each([undefined, ''])(
+      '("href"/"src") : should use an absolute head base without a document URL (%s)',
+      (baseURI) => {
+        const $ = load(
+          '<head><base href="https://cdn.example/assets/"></head><a href="page.html">link</a><img src="image.png">',
+          { baseURI },
+        );
+
+        expect($('a').prop('href')).toBe(
+          'https://cdn.example/assets/page.html',
+        );
+        expect($('img').prop('src')).toBe(
+          'https://cdn.example/assets/image.png',
+        );
+      },
+    );
+
+    it.each([
+      '',
+      '<base href="sub/">',
+      '<base href="http://[">',
+      '<base href="data:text/html,x">',
+      '<base href="javascript:0">',
+    ])(
+      '("href") : should keep relative links without a usable document base (%s)',
+      (head) => {
+        const $ = load(`<head>${head}</head><a href="page.html">link</a>`);
+
+        expect($('a').prop('href')).toBe('page.html');
+      },
+    );
+
+    it('("href") : should not use a later base when the first href cannot be resolved', () => {
+      const $ = load(
+        '<head><base href="sub/"><base href="https://ignored.example/"></head><a href="page.html">link</a>',
+      );
+
+      expect($('a').prop('href')).toBe('page.html');
+    });
+
+    it.each(['http://[', 'data:text/plain,x', 'javascript:0'])(
+      '("href") : should not use a second absolute base after an unusable first href (%s)',
+      (first) => {
+        const $ = load(
+          `<head><base href="${first}"><base href="https://ignored.example/"></head><a href="page.html">link</a>`,
+        );
+
+        expect($('a').prop('href')).toBe('page.html');
+      },
+    );
+
+    it('("href") : should leave an invalid URL unchanged with a document URL', () => {
+      const $ = load('<a href="http://[">link</a>', {
+        baseURI: 'https://example.com/',
+      });
+
+      expect($('a').prop('href')).toBe('http://[');
+    });
+
+    it('("href") : should leave links unchanged with an invalid document URL', () => {
+      const $ = load('<a href="page.html">link</a>', { baseURI: 'http://[' });
+
+      expect($('a').prop('href')).toBe('page.html');
+    });
+
+    it('("href") : should preserve links that cannot resolve against an opaque base', () => {
+      const $ = load(
+        '<head><base href="mailto:user@example.com"></head><a href="page.html">link</a>',
+      );
+
+      expect($('a').prop('href')).toBe('page.html');
+    });
+
+    it('("href") : should read an updated head base instead of caching it', () => {
+      const $ = load(
+        '<head><base href="https://first.example/"></head><a href="page.html">link</a>',
+      );
+
+      expect($('a').prop('href')).toBe('https://first.example/page.html');
+      $('base').attr('href', 'https://second.example/');
+      expect($('a').prop('href')).toBe('https://second.example/page.html');
+      $('base').remove();
+      expect($('a').prop('href')).toBe('page.html');
+    });
+
+    it('("href") : should leave an XML base without a caller URL uninterpreted', () => {
+      const $ = load(
+        '<head><base href="https://ignored.example/"/></head><a href="page.html"/>',
+        { xml: true },
+      );
+
+      expect($('a').prop('href')).toBe('page.html');
+    });
+
     it('("href") : should resolve a relative `<base href>` against the document URL', () => {
       const $ = load(
         '<head><base href="sub/"></head><a href="page.html">l</a>',
