@@ -125,6 +125,99 @@ describe('$(...)', () => {
         });
       });
 
+      it('should not split declarations inside quoted url() strings (#5410)', () => {
+        const el = cheerio(
+          `<div style="background:url('data:image/svg+xml;utf8,<svg xmlns=http://www.w3.org/2000/svg/>')"></div>`,
+        );
+        expect(el.css('background')).toStrictEqual(
+          "url('data:image/svg+xml;utf8,<svg xmlns=http://www.w3.org/2000/svg/>')",
+        );
+      });
+
+      it('should not corrupt the style attribute when rewriting after a data URI (#5410)', () => {
+        const el = cheerio(
+          `<div style="background:url('data:image/svg+xml;utf8,<svg xmlns=http://www.w3.org/2000/svg/>')"></div>`,
+        );
+        el.css('color', 'red');
+        expect(el.attr('style')).toStrictEqual(
+          "background: url('data:image/svg+xml;utf8,<svg xmlns=http://www.w3.org/2000/svg/>'); color: red;",
+        );
+      });
+
+      it('should not split declarations inside unquoted url() parentheses', () => {
+        const el = cheerio(
+          `<div style="background:url(data:image/svg+xml;utf8,<svg xmlns=http://www.w3.org/2000/svg/>)"></div>`,
+        );
+        expect(el.css('background')).toStrictEqual(
+          'url(data:image/svg+xml;utf8,<svg xmlns=http://www.w3.org/2000/svg/>)',
+        );
+      });
+
+      it('should not split declarations inside CSS comments', () => {
+        const el = cheerio(
+          '<div style="color: red /* a; comment */; width: 1px"></div>',
+        );
+        expect(el.css(['color', 'width'])).toStrictEqual({
+          color: 'red /* a; comment */',
+          width: '1px',
+        });
+      });
+
+      it('should not split declarations inside comments containing colons', () => {
+        const el = cheerio(
+          '<div style="color: red /* a;b: c */; width: 1px"></div>',
+        );
+        expect(el.css(['color', 'width'])).toStrictEqual({
+          color: 'red /* a;b: c */',
+          width: '1px',
+        });
+      });
+
+      it('should not split declarations inside double-quoted strings', () => {
+        const el = cheerio(
+          `<div style='content: "a; b: c"; width: 1px'></div>`,
+        );
+        expect(el.css(['content', 'width'])).toStrictEqual({
+          content: '"a; b: c"',
+          width: '1px',
+        });
+      });
+
+      it('should handle escaped quotes inside quoted strings', () => {
+        const el = cheerio(
+          String.raw`<div style="content: 'it\'s; a: b'; width: 1px"></div>`,
+        );
+        expect(el.css(['content', 'width'])).toStrictEqual({
+          content: String.raw`'it\'s; a: b'`,
+          width: '1px',
+        });
+      });
+
+      it('should not split declarations inside nested parentheses', () => {
+        const el = cheerio(
+          `<div style="background: url(data:x;y(z;a:b))"></div>`,
+        );
+        expect(el.css('background')).toStrictEqual('url(data:x;y(z;a:b))');
+      });
+
+      it('should not split declarations at escaped semicolons', () => {
+        const el = cheerio(
+          String.raw`<div style="content: \;; width: 1px"></div>`,
+        );
+        expect(el.css(['content', 'width'])).toStrictEqual({
+          content: String.raw`\;`,
+          width: '1px',
+        });
+      });
+
+      it('should not split declarations inside single-quoted strings', () => {
+        const el = cheerio('<div style="content: \'a;b\'; color: red"></div>');
+        expect(el.css(['content', 'color'])).toStrictEqual({
+          content: "'a;b'",
+          color: 'red',
+        });
+      });
+
       it('should add malformed values to previous field (#1134)', () => {
         const el = cheerio(
           '<button style="background-image: url(data:image/png;base64,iVBORw0KGgo)"></button>',
