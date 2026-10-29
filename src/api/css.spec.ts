@@ -229,3 +229,61 @@ describe('$(...)', () => {
     });
   });
 });
+
+describe('splitDeclarations regressions', () => {
+  it('should not treat /* inside an unquoted url() as a comment', () => {
+    const $ = load(`<div style="background:url(foo/*bar);color:red"></div>`);
+    expect($('div').css('background')).toBe('url(foo/*bar)');
+    expect($('div').css('color')).toBe('red');
+  });
+
+  it('should not treat an identifier ending in url as a URL token', () => {
+    const $ = load(`<div style="background:myurl(foo;bar);color:red"></div>`);
+    expect($('div').css('background')).toBe('myurl(foo;bar)');
+    expect($('div').css('color')).toBe('red');
+  });
+
+  it('should not treat a non-ASCII identifier ending in url as a URL token', () => {
+    const $ = load(`<div style="background:éurl(foo;bar);color:red"></div>`);
+    expect($('div').css('color')).toBe('red');
+  });
+
+  it('should handle escapes inside an unquoted url()', () => {
+    const $ = load(String.raw`<div style="background:url(foo\)bar;baz);color:red"></div>`);
+    expect($('div').css('color')).toBe('red');
+  });
+
+  it('should keep quoted url() arguments quoted strings', () => {
+    const $ = load(`<div style="background:url('foo;bar');color:red"></div>`);
+    expect($('div').css('background')).toBe("url('foo;bar')");
+    expect($('div').css('color')).toBe('red');
+  });
+
+  it('should skip comments containing parentheses inside functions', () => {
+    const $ = load(`<div style="width:calc(1px /* ( */ + 2px);color:red"></div>`);
+    expect($('div').css('width')).toBe('calc(1px /* ( */ + 2px)');
+    expect($('div').css('color')).toBe('red');
+  });
+
+  it('should handle nested functions', () => {
+    const $ = load(`<div style="width:calc(min(1px,2px) + 3px);color:red"></div>`);
+    expect($('div').css('width')).toBe('calc(min(1px,2px) + 3px)');
+    expect($('div').css('color')).toBe('red');
+  });
+
+  it('should end a string at an unescaped newline', () => {
+    const $ = load(`<div style='content:"bad\n;color:red'></div>`);
+    expect($('div').css('color')).toBe('red');
+  });
+
+  it('should end a string at an unescaped CRLF', () => {
+    const $ = load(`<div style='content:"bad\r\n;color:red'></div>`);
+    expect($('div').css('color')).toBe('red');
+  });
+
+  it('should continue a string across an escaped newline', () => {
+    const $ = load(String.raw`<div style='content:"a\
+;b";color:red'></div>`);
+    expect($('div').css('color')).toBe('red');
+  });
+});
