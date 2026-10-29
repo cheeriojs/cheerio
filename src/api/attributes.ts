@@ -70,7 +70,13 @@ function documentBaseURI(
 
     try {
       // The base element's own href resolves against the document URL.
-      const base = new URL(href, fallback === '' ? undefined : fallback);
+      let base: URL;
+      try {
+        base = new URL(href, fallback === '' ? undefined : fallback);
+      } catch {
+        // An invalid document URL must not discard an absolute head base.
+        base = new URL(href);
+      }
 
       /*
        * `data:` and `javascript:` base URLs are not allowed, and resolving

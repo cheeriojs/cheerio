@@ -446,8 +446,8 @@ describe('$(...)', () => {
       expect($('#2').prop('src')).toBe('http://example.com/assets/image.png');
     });
 
-    it.each([undefined, ''])(
-      '("href"/"src") : should use an absolute head base without a document URL (%s)',
+    it.each([undefined, '', 'http://[', 'not-a-url', '/relative/'])(
+      '("href"/"src") : should use an absolute head base without a valid document URL (%s)',
       (baseURI) => {
         const $ = load(
           '<head><base href="https://cdn.example/assets/"></head><a href="page.html">link</a><img src="image.png">',
@@ -509,6 +509,29 @@ describe('$(...)', () => {
       const $ = load('<a href="page.html">link</a>', { baseURI: 'http://[' });
 
       expect($('a').prop('href')).toBe('page.html');
+    });
+
+    it.each(['sub/', 'http://[', 'data:text/plain,x', 'javascript:0'])(
+      '("href") : should not try a later base with an invalid document URL (%s)',
+      (first) => {
+        const $ = load(
+          `<head><base href="${first}"><base href="https://ignored.example/"></head><a href="page.html">link</a>`,
+          { baseURI: 'not-a-url' },
+        );
+
+        expect($('a').prop('href')).toBe('page.html');
+      },
+    );
+
+    it('("href") : should preserve same-scheme base resolution with a valid document URL', () => {
+      const $ = load(
+        '<head><base href="https:sub/"></head><a href="page.html">link</a>',
+        { baseURI: 'https://example.com/root/index.html' },
+      );
+
+      expect($('a').prop('href')).toBe(
+        'https://example.com/root/sub/page.html',
+      );
     });
 
     it('("href") : should preserve links that cannot resolve against an opaque base', () => {
