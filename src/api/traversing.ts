@@ -12,6 +12,7 @@ import {
   hasChildren,
   isDocument,
   isTag,
+  type ParentNode,
 } from 'domhandler';
 import {
   getChildren,
@@ -359,7 +360,9 @@ export function closest<T extends AnyNode>(
    * Dedup: a linear scan is cheapest for the small result sets `closest`
    * usually produces. Once the set grows past `dedupThreshold` we switch to a
    * Set, so a pathological input with many distinct matches stays O(n) instead
-   * of O(n^2). `set` always preserves document order.
+   * of O(n^2). Matches are collected in encounter order; `sortInDocumentOrder`
+   * below restores jQuery-compatible order when the starting selection is
+   * reversed.
    */
   const dedupThreshold = 100;
   let seen: Set<AnyNode> | undefined;
@@ -385,7 +388,129 @@ export function closest<T extends AnyNode>(
     }
   });
 
-  return this._make(set);
+  return this._make(sortInDocumentOrder(set));
+}
+
+/**
+ * Sort already-deduplicated nodes into document order.
+ *
+ * `compareDocumentPosition` (and so `uniqueSort`) looks each node up in its
+ * parent's children with `indexOf` on every comparison, so sorting many
+ * siblings of one parent costs O(n^2 log n), and walking parent links in each
+ * comparison makes deeply nested matches quadratic. Instead, every node is
+ * given a document position once, before sorting: the nodes and their
+ * ancestors form a small tree (each ancestor is visited once, shared by every
+ * node below it), a parent's children are indexed in a single pass, and a
+ * pre-order walk of that tree numbers the nodes. Sorting then compares
+ * numbers.
+ *
+ * Nodes from different trees are not comparable: each tree's nodes are sorted
+ * among themselves and put back into the positions that tree's nodes held, so
+ * the trees stay interleaved in encounter order.
+ *
+ * @param nodes - Nodes to sort, without duplicates. Sorted in place.
+ * @returns The same array, in document order.
+ */
+function sortInDocumentOrder(nodes: AnyNode[]): AnyNode[] {
+  if (nodes.length < 2) {
+    return nodes;
+  }
+
+  const childIndices = new Map<ParentNode, Map<AnyNode, number>>();
+  // The root of every visited node, and the visited children of each parent.
+  const roots = new Map<AnyNode, AnyNode>();
+  const visitedChildren = new Map<AnyNode, AnyNode[]>();
+
+  function indexInParent(node: AnyNode, parent: ParentNode): number {
+    let indices = childIndices.get(parent);
+    if (!indices) {
+      indices = new Map();
+      for (let i = 0; i < parent.children.length; i++) {
+        indices.set(parent.children[i], i);
+      }
+      childIndices.set(parent, indices);
+    }
+    return indices.get(node) ?? -1;
+  }
+
+  /**
+   * Visit `node` and its ancestors up to the first visited one.
+   *
+   * @param node - Node to visit.
+   * @returns The root of the tree `node` is in.
+   */
+  function rootOf(node: AnyNode): AnyNode {
+    const unvisited: AnyNode[] = [];
+    let current: AnyNode = node;
+    let root = roots.get(current);
+    while (root === undefined && current.parent) {
+      unvisited.push(current);
+      current = current.parent;
+      root = roots.get(current);
+    }
+    if (root === undefined) {
+      root = current;
+      roots.set(current, root);
+    }
+    // `unvisited` runs from `node` up to the child of the first visited node.
+    for (let i = unvisited.length - 1; i >= 0; i--) {
+      const child = unvisited[i];
+      const parent = i + 1 < unvisited.length ? unvisited[i + 1] : current;
+      roots.set(child, root);
+      const children = visitedChildren.get(parent);
+      if (children) {
+        children.push(child);
+      } else {
+        visitedChildren.set(parent, [child]);
+      }
+    }
+    return root;
+  }
+
+  // The slots each tree's nodes hold, in encounter order.
+  const trees = new Map<AnyNode, number[]>();
+  for (let i = 0; i < nodes.length; i++) {
+    const root = rootOf(nodes[i]);
+    const slots = trees.get(root);
+    if (slots) {
+      slots.push(i);
+    } else {
+      trees.set(root, [i]);
+    }
+  }
+
+  const positions = new Map<AnyNode, number>();
+  for (const [root, slots] of trees) {
+    if (slots.length < 2) continue;
+
+    // Number the visited part of the tree in pre-order.
+    let position = 0;
+    const stack: AnyNode[] = [root];
+    while (stack.length > 0) {
+      const node = stack.pop()!;
+      positions.set(node, position++);
+      const children = visitedChildren.get(node);
+      if (children) {
+        if (children.length > 1) {
+          const parent = node as ParentNode;
+          children.sort(
+            (a, b) => indexInParent(a, parent) - indexInParent(b, parent),
+          );
+        }
+        for (let i = children.length - 1; i >= 0; i--) {
+          stack.push(children[i]);
+        }
+      }
+    }
+
+    const sorted = slots.map((i) => nodes[i]);
+    sorted.sort((a, b) => positions.get(a)! - positions.get(b)!);
+    for (let i = 0; i < slots.length; i++) {
+      nodes[slots[i]] = sorted[i];
+    }
+  }
+
+  return nodes;
 }
 
 /**
