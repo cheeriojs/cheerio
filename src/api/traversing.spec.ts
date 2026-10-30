@@ -878,6 +878,24 @@ describe('$(...)', () => {
       expect(result).toHaveLength(2);
     });
 
+    it('(selector) : should keep ancestors of a reversed selection in document order', () => {
+      const result = $('.pear').prevAll().closest('li');
+      expect(result.toArray().map((el) => $(el).attr('class'))).toStrictEqual([
+        'apple',
+        'orange',
+      ]);
+    });
+
+    it('(selector) : should keep ancestors of reversed items in document order', () => {
+      const [apple, orange, pear] = $('li.apple, li.orange, li.pear').toArray();
+      const result = $([pear, orange, apple]).closest('li');
+      expect(result.toArray().map((el) => $(el).attr('class'))).toStrictEqual([
+        'apple',
+        'orange',
+        'pear',
+      ]);
+    });
+
     it('() : should not break if the selector does not have any results', () => {
       const result = $('.saladbar', food).closest('ul');
       expect(result).toHaveLength(0);
