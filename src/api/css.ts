@@ -186,6 +186,136 @@ function stringify(obj: Record<string, string>): string {
 }
 
 /**
+ * Whether a code point can be part of a CSS identifier.
+ *
+ * @param char - The character to check.
+ * @returns Whether the character is an identifier code point.
+ */
+function isIdentChar(char: string): boolean {
+  const code = char.charCodeAt(0);
+  return (
+    code >= 0x80 || // Non-ASCII is always an identifier code point in CSS.
+    (code >= 0x30 && code <= 0x39) ||
+    (code >= 0x41 && code <= 0x5a) ||
+    (code >= 0x61 && code <= 0x7a) ||
+    char === '-' ||
+    char === '_' ||
+    char === '\\'
+  );
+}
+
+/**
+ * Split a `style` attribute into individual declarations. Semicolons inside
+ * quoted strings, comments, or parentheses (as in
+ * `url("data:image/svg+xml;utf8,...")`) do not terminate a declaration.
+ *
+ * @param styles - Styles to be split.
+ * @returns The individual declarations.
+ */
+function splitDeclarations(styles: string): string[] {
+  const declarations: string[] = [];
+
+  let quote: string | undefined;
+  let url = false;
+  let depth = 0;
+  let start = 0;
+
+  for (let i = 0; i < styles.length; i++) {
+    const char = styles[i];
+
+    if (url) {
+      /*
+       * Inside an unquoted url() token, content is consumed raw until the
+       * closing parenthesis; comments and quotes are not recognized there.
+       */
+      if (char === '\\') {
+        i++; // Skip the escaped character.
+      } else if (char === ')') {
+        url = false;
+      }
+
+      continue;
+    }
+
+    if (quote !== undefined) {
+      if (char === '\\') {
+        i++; // Skip the escaped character.
+      } else if (
+        char === quote ||
+        /*
+         * An unescaped newline ends a (bad) string per CSS Syntax; later
+         * declarations must not be swallowed into it.
+         */
+        ['\n', '\r', '\f'].includes(char)
+      ) {
+        quote = undefined;
+      }
+
+      continue;
+    }
+
+    if (char === '\\') {
+      i++; // Skip escaped characters outside of quotes, such as `\\;`.
+      continue;
+    }
+
+    if (char === '/' && styles[i + 1] === '*') {
+      // Skip CSS comments; they may contain semicolons.
+      const end = styles.indexOf('*/', i + 2);
+      i = end === -1 ? styles.length : end + 1;
+      continue;
+    }
+
+    if (char === '"' || char === "'") {
+      quote = char;
+      continue;
+    }
+
+    if (char === '(') {
+      /*
+       * `url(` directly after the identifier `url` starts an unquoted URL
+       * token unless its argument is quoted.
+       */
+      if (
+        i >= 3 &&
+        ['u', 'U'].includes(styles[i - 3]) &&
+        ['r', 'R'].includes(styles[i - 2]) &&
+        ['l', 'L'].includes(styles[i - 1]) &&
+        (i === 3 || !isIdentChar(styles[i - 4]))
+      ) {
+        let j = i + 1;
+
+        while (j < styles.length && [' ', '\t', '\n', '\r', '\f'].includes(styles[j])) {
+          j++;
+        }
+
+        if (styles[j] !== '"' && styles[j] !== "'") {
+          url = true;
+          continue;
+        }
+      }
+
+      depth++;
+      continue;
+    }
+
+    if (char === ')') {
+      if (depth > 0) depth--;
+      continue;
+    }
+
+    if (char === ';' && depth === 0) {
+      declarations.push(styles.slice(start, i));
+      start = i + 1;
+    }
+  }
+
+  declarations.push(styles.slice(start));
+
+  return declarations;
+}
+
+/**
  * Parse `styles`.
  *
  * @private
@@ -202,7 +332,7 @@ function parse(styles: string): Record<string, string> {
 
   let key: string | undefined;
 
-  for (const str of styles.split(';')) {
+  for (const str of splitDeclarations(styles)) {
     const n = str.indexOf(':');
     // If there is no :, or if it is the first/last character, add to the previous item's value
     if (n < 1 || n === str.length - 1) {
