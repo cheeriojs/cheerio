@@ -17,6 +17,27 @@ describe('$(...)', () => {
     $fruits = $('#fruits');
   });
 
+  describe.each(['insertBefore', 'insertAfter'] as const)('.%s', (method) => {
+    it.each(['selector', 'selection', 'array'])(
+      'preserves the source when the target %s is empty',
+      (targetType) => {
+        const source = $('.apple');
+        const originalHtml = $.html();
+        const originalParent = source[0].parent;
+        const target =
+          targetType === 'selector'
+            ? '.missing'
+            : targetType === 'selection'
+              ? $('.missing')
+              : [];
+
+        expect(source[method](target)).toHaveLength(0);
+        expect($.html()).toBe(originalHtml);
+        expect(source[0].parent).toBe(originalParent);
+      },
+    );
+  });
+
   describe('insertion sibling links', () => {
     it.each([
       {
