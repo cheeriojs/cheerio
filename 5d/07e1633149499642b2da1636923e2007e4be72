@@ -1,0 +1,21 @@
+src/api/traversing.spec.ts
+  s_4c2a81b336daa2::t_4ee25cc96d0f82 973-1038
+src/api/traversing.ts
+  s_4c2a81b336daa2::t_611211f7c8f149 118-121,141,164,169,198,258,261-262,264-266,269-275,278,280-283,287-300,302-305,307-334,348,365,700,728,757-763,771
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "5d07e1633149499642b2da1636923e2007e4be72",
+  "prompts": {},
+  "sessions": {
+    "s_4c2a81b336daa2": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18e30-5134-73e2-955f-c170a4da331a",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
