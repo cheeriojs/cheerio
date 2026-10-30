@@ -175,45 +175,36 @@ function _matchUntil(
   nextElem: (elem: AnyNode) => Element | null,
   ...postFns: ((elems: Element[]) => Element[])[]
 ) {
-  // We use a variable here that is used from within the matcher.
-  let matches: ((el: Element, i: number) => boolean) | null = null;
-
-  const innerMatcher = _getMatcher(
-    (nextElem: (elem: AnyNode) => Element | null, elems) => {
-      const matched: Element[] = [];
-
-      domEach(elems, (elem) => {
-        let i = 0;
-        for (let next; (next = nextElem(elem)); elem = next, i++) {
-          // FIXME: `matched` might still contain duplicates across starting elements.
-          if (matches?.(next, i)) break;
-          matched.push(next);
-        }
-      });
-
-      return matched;
-    },
-  )(nextElem, ...postFns);
-
   return function <T extends AnyNode>(
     this: Cheerio<T>,
     selector?: AcceptedFilters<Element> | null,
     filterSelector?: AcceptedFilters<Element>,
   ): Cheerio<Element> {
-    // Override `matches` variable with the new target.
-    matches =
+    const matches =
       typeof selector === 'string'
         ? (elem: Element) => select.is(elem, selector, this.options)
         : selector
           ? getFilterFn(selector)
           : null;
 
-    const ret = innerMatcher.call(this, filterSelector);
+    const innerMatcher = _getMatcher(
+      (nextElem: (elem: AnyNode) => Element | null, elems) => {
+        const matched: Element[] = [];
 
-    // Set `matches` to `null`, so we don't waste memory.
-    matches = null;
+        domEach(elems, (elem) => {
+          let i = 0;
+          for (let next; (next = nextElem(elem)); elem = next, i++) {
+            // FIXME: `matched` might still contain duplicates across starting elements.
+            if (matches?.(next, i)) break;
+            matched.push(next);
+          }
+        });
 
-    return ret;
+        return matched;
+      },
+    )(nextElem, ...postFns);
+
+    return innerMatcher.call(this, filterSelector);
   };
 }
 

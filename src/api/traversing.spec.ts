@@ -328,6 +328,95 @@ describe('$(...)', () => {
     });
   });
 
+  describe.each([
+    ['nextUntil', '<i id="a"></i><i id="b"></i><i id="c"></i><i id="d"></i>'],
+    ['prevUntil', '<i id="d"></i><i id="c"></i><i id="b"></i><i id="a"></i>'],
+    [
+      'parentsUntil',
+      '<div id="d"><div id="c"><div id="b"><i id="a"></i></div></div></div>',
+    ],
+  ] as const)('.%s with nested calls', (method, html) => {
+    it('should preserve the outer stop condition after a nested call', () => {
+      const $ = load(html);
+      let nestedResult: string[] = [];
+      const result = $('#a')[method]((i, el) => {
+        if (i === 0) {
+          nestedResult = $('#a')
+            [method]('#c')
+            .map((_, el) => el.attribs['id'])
+            .get();
+        }
+        return el.attribs['id'] === 'c';
+      });
+
+      expect(nestedResult).toStrictEqual(['b']);
+      expect(result.map((_, el) => el.attribs['id']).get()).toStrictEqual([
+        'b',
+      ]);
+    });
+
+    it('should preserve the outer stop condition when a nested call throws', () => {
+      const $ = load(html);
+      const error = new Error('stop traversal');
+      let caughtError: unknown;
+      const result = $('#a')[method]((i, el) => {
+        if (i === 0) {
+          try {
+            $('#a')[method](() => {
+              throw error;
+            });
+          } catch (error) {
+            caughtError = error;
+          }
+        }
+        return el.attribs['id'] === 'c';
+      });
+
+      expect(caughtError).toBe(error);
+      expect(result.map((_, el) => el.attribs['id']).get()).toStrictEqual([
+        'b',
+      ]);
+    });
+
+    it('should reset the index for each starting element across nested calls', () => {
+      const $ = load(html);
+      const indexes: number[] = [];
+      const result = $([$('#a')[0], $('#b')[0]])[method]((i) => {
+        indexes.push(i);
+        if (i === 0) $('#a')[method]('#c');
+        return i === 1;
+      });
+
+      expect(indexes).toStrictEqual([0, 1, 0, 1]);
+      expect(result.map((_, el) => el.attribs['id']).get()).toStrictEqual([
+        'b',
+        'c',
+      ]);
+    });
+
+    it('should allow subsequent calls after a stop condition throws', () => {
+      const $ = load(html);
+      expect(() =>
+        $('#a')[method](() => {
+          throw new Error('stop traversal');
+        }),
+      ).toThrow('stop traversal');
+
+      expect(
+        $('#a')
+          [method]('#c')
+          .map((_, el) => el.attribs['id'])
+          .get(),
+      ).toStrictEqual(['b']);
+      expect(
+        $('#a')
+          [method](null, '#b')
+          .map((_, el) => el.attribs['id'])
+          .get(),
+      ).toStrictEqual(['b']);
+    });
+  });
+
   describe('.nextUntil', () => {
     it('() : should return all following siblings if no selector specified', () => {
       const elems = $('.apple', food).nextUntil();
