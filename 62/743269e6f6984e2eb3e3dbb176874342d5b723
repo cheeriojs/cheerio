@@ -1,0 +1,29 @@
+src/api/manipulation.spec.ts
+  s_173ca9ea90a33e::t_83e89550a7d355 2187-2298
+src/api/manipulation.ts
+  s_98f76d2b6bcb24::t_eae2dcc0fdcc21 82,107-108,124,133,142-148,152-153,157,288-289,316-317,598-601,680,683,712,718-722,737,790,793,828-831,846
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "62743269e6f6984e2eb3e3dbb176874342d5b723",
+  "prompts": {},
+  "sessions": {
+    "s_173ca9ea90a33e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "707c2ba5-c81c-46be-ad9b-127e1a683e6c",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    },
+    "s_98f76d2b6bcb24": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18e53-39d5-7582-97c6-615c0ee221db",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
