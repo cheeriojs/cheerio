@@ -358,6 +358,21 @@ describe('$(...)', () => {
       expect(elems[0].attribs).toHaveProperty('class', 'orange');
     });
 
+    it('(positional selector) : should stop at the document match', () => {
+      const $drinks = load(drinks);
+      const elems = $drinks('.beer').nextUntil('li:last');
+      expect(elems).toHaveLength(3);
+      expect(elems[0].attribs).toHaveProperty('class', 'juice');
+      expect(elems[2].attribs).toHaveProperty('class', 'water');
+    });
+
+    it('(positional selector) : should stop at the element matched by :eq()', () => {
+      const $drinks = load(drinks);
+      const elems = $drinks('.beer').nextUntil('li:eq(2)');
+      expect(elems).toHaveLength(1);
+      expect(elems[0].attribs).toHaveProperty('class', 'juice');
+    });
+
     it('(selector) : should support selector matching multiple elements', () => {
       const elems = $('#disabled', forms).nextUntil('option, #unnamed');
       expect(elems).toHaveLength(2);
@@ -544,6 +559,21 @@ describe('$(...)', () => {
       const elems = $('.pear').prevUntil('.apple');
       expect(elems).toHaveLength(1);
       expect(elems[0].attribs).toHaveProperty('class', 'orange');
+    });
+
+    it('(positional selector) : should stop at the document match', () => {
+      const $drinks = load(drinks);
+      const elems = $drinks('.cider').prevUntil('li:first');
+      expect(elems).toHaveLength(3);
+      expect(elems[0].attribs).toHaveProperty('class', 'water');
+      expect(elems[2].attribs).toHaveProperty('class', 'juice');
+    });
+
+    it('(positional selector) : should stop at the element matched by :eq()', () => {
+      const $drinks = load(drinks);
+      const elems = $drinks('.cider').prevUntil('li:eq(2)');
+      expect(elems).toHaveLength(1);
+      expect(elems[0].attribs).toHaveProperty('class', 'water');
     });
 
     it('(selector) : should support selector matching multiple elements', () => {
@@ -735,6 +765,12 @@ describe('$(...)', () => {
       expect(fruits).toHaveLength(0);
     });
 
+    it('(positional selector) : should stop at the document match', () => {
+      const result = $('.sweetcorn').parentsUntil('ul:first');
+      expect(result).toHaveLength(1);
+      expect(result[0].attribs).toHaveProperty('id', 'vegetables');
+    });
+
     it('(selector) : Less simple parentsUntil check with selector', () => {
       const result = $('#fruits').parentsUntil('html, body');
       expect(result.eq(0).attr('id')).toBe('food');
@@ -924,6 +960,23 @@ describe('$(...)', () => {
        * entries. Pre-fix: N*(N-1)/2, about 2M for N=2000.
        */
       expect(includesWork).toBeLessThan(N * 10);
+    });
+
+    it('(positional selector) : should resolve against the document', () => {
+      const $food = load(food);
+      expect($food('.orange').closest('li:first')).toHaveLength(0);
+      expect($food('.apple').closest('li:first')).toHaveLength(1);
+      expect($food('.pear').closest('li:last')).toHaveLength(0);
+      expect($food('.sweetcorn').closest('li:last')).toHaveLength(1);
+    });
+
+    it('(quoted positional text) : should match detached elements', () => {
+      const $detached = load('')(
+        '<div data-x=":first"><span>item</span></div>',
+      );
+      expect($detached.find('span').closest('[data-x=":first"]')).toHaveLength(
+        1,
+      );
     });
   });
 
@@ -1256,6 +1309,16 @@ describe('$(...)', () => {
       const $empty = $fruits.has(fruitsEl);
 
       expect($empty).toHaveLength(0);
+    });
+
+    // Positional selectors used to throw inside `:has()`.
+    it('(positional selector) : should not throw', () => {
+      expect(() => $('#fruits').has('li:first')).not.toThrow();
+    });
+
+    it('(positional selector) : should consider descendants of each element', () => {
+      expect($('#vegetables').has('li:last')).toHaveLength(1);
+      expect($('.orange').has('li:first')).toHaveLength(0);
     });
   });
 
@@ -1871,5 +1934,55 @@ describe('$(...)', () => {
         });
       expect(result).toBe(false);
     });
+
+    it('(positional selector) : should resolve against the document', () => {
+      const $food = load(food);
+      expect($food('.apple').is('li:first')).toBe(true);
+      expect($food('.orange').is('li:first')).toBe(false);
+      expect($food('.orange').is('li:last')).toBe(false);
+      expect($food('.sweetcorn').is('li:last')).toBe(true);
+      expect($food('li').is('li:last')).toBe(true);
+    });
+
+    it('(positional selector) : should support :eq(), :even and :odd', () => {
+      const $food = load(food);
+      expect($food('.orange').is('li:eq(1)')).toBe(true);
+      expect($food('.pear').is('li:even')).toBe(true);
+      expect($food('.orange').is('li:even')).toBe(false);
+      expect($food('.orange').is('li:odd')).toBe(true);
+    });
+
+    it('(positional selector) : should support positional selectors inside :not()', () => {
+      const $food = load(food);
+      expect($food('.orange').is('li:not(:first)')).toBe(true);
+      expect($food('.apple').is('li:not(:first)')).toBe(false);
+    });
+
+    it('(quoted positional text) : should not be treated as a positional selector', () => {
+      const $detached = load('')('<li data-x=":first">item</li>');
+      expect($detached.is('[data-x=":first"]')).toBe(true);
+
+      const $list = load('<ul><li data-x=":first">a</li><li>b</li></ul>');
+      expect($list('li').is('[data-x=":first"]')).toBe(true);
+      expect($list('li').eq(1).is('[data-x=":first"]')).toBe(false);
+    });
+
+    it('(custom positional-like pseudo) : should not be treated as a positional selector', () => {
+      const $detached = load('', { pseudos: { firstmatch: () => true } })(
+        '<li>item</li>',
+      );
+      expect($detached.is(':firstmatch')).toBe(true);
+    });
+
+    it.each(['firstmatch', 'lastly', 'eqx', 'odd_one'])(
+      '(custom pseudo :%s) : should match detached elements in is() and closest()',
+      (name) => {
+        const $item = load('', { pseudos: { [name]: () => true } })(
+          '<li>item</li>',
+        );
+        expect($item.is(`:${name}`)).toBe(true);
+        expect($item.closest(`:${name}`)).toHaveLength(1);
+      },
+    );
   });
 });
