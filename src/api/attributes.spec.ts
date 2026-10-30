@@ -729,6 +729,30 @@ describe('$(...)', () => {
       const val = $('select#one-nested').val();
       expect(val).toBe('Option selected');
     });
+    it('(): on select should not get disabled options', () => {
+      const $doc = load(
+        '<select><option value="a" disabled selected>a</option><option value="b" selected>b</option></select>',
+      );
+      expect($doc('select').val()).toBe('b');
+    });
+    it('(): on select[multiple] should not get disabled options', () => {
+      const $doc = load(
+        '<select multiple><option value="a" disabled selected>a</option><option value="b" selected>b</option></select>',
+      );
+      expect($doc('select').val()).toStrictEqual(['b']);
+    });
+    it('(): on select[multiple] should not get options of disabled optgroups', () => {
+      const $doc = load(
+        '<select multiple><optgroup disabled><option value="a" selected>a</option></optgroup><option value="b" selected>b</option></select>',
+      );
+      expect($doc('select').val()).toStrictEqual(['b']);
+    });
+    it('(): on select with only disabled options selected should get undefined', () => {
+      const $doc = load(
+        '<select><option value="only" disabled selected>only</option></select>',
+      );
+      expect($doc('select').val()).toBeUndefined();
+    });
     it('(): on option should get value', () => {
       const val = $('select#one option').eq(0).val();
       expect(val).toBe('option_not_selected');
