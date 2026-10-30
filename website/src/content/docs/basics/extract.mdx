@@ -102,7 +102,16 @@ have one, which is why the example above returns the raw `/docs`.
 [`fromURL`](/docs/api/functions/fromURL) sets a URL automatically; with the
 other loaders, pass the
 [`baseURI` option](/docs/api/interfaces/CheerioOptions#baseuri) to get absolute
-URLs back.
+URLs back, unless the HTML already supplies an absolute `<base href>` in its
+`<head>`.
+
+In HTML mode, the first `<base href>` directly inside `<head>` takes precedence
+over the document URL when resolving `href` and `src` props. If that first base
+cannot be parsed or uses `data:` or `javascript:`, the document URL is used
+instead; later bases are not checked. Relative bases still need a valid document
+URL. Cheerio only looks inside `<head>`, so a base placed in the body or another
+container is not used. XML mode ignores `<base>` elements. If a URL cannot be
+resolved, its attribute value is returned unchanged.
 
 :::
 
