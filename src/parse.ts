@@ -44,6 +44,14 @@ export function getParse(
       return parser(content, options, isDocument, context);
     }
 
+    if (
+      Array.isArray(content) &&
+      content.length === 1 &&
+      checkIsDocument(content[0])
+    ) {
+      content = content[0];
+    }
+
     const doc = content as AnyNode | AnyNode[] | Document;
 
     if (!Array.isArray(doc) && checkIsDocument(doc)) {
