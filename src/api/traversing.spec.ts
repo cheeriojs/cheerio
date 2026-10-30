@@ -1416,6 +1416,28 @@ describe('$(...)', () => {
     });
   });
 
+  describe('positional traversal stack', () => {
+    for (const method of ['first', 'last', 'eq'] as const) {
+      for (const selector of ['.apple', '.missing']) {
+        it(`${method} preserves the previous selection for ${selector}`, () => {
+          const previous = $('li').filter(selector);
+          const selected =
+            method === 'eq'
+              ? previous.eq(0)
+              : method === 'first'
+                ? previous.first()
+                : previous.last();
+
+          expect(selected.toArray()).toStrictEqual(previous.toArray());
+          expect(selected.end()).toBe(previous);
+          expect(selected.end().end().toArray()).toStrictEqual(
+            $('li').toArray(),
+          );
+        });
+      }
+    }
+  });
+
   describe('.end() :', () => {
     let $fruits: Cheerio<Element>;
 
