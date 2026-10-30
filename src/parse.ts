@@ -7,6 +7,9 @@ import {
 import { removeElement } from 'domutils';
 import type { InternalOptions } from './options.js';
 
+/** Parsed fragment identities; domhandler uses Document for both root kinds. */
+export const parse5FragmentRoots: WeakSet<Document> = new WeakSet<Document>();
+
 /**
  * Get the parse function with options.
  *
