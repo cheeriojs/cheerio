@@ -1,6 +1,7 @@
 import { describe, expect, expectTypeOf, it } from 'vitest';
 import * as fixtures from '../__fixtures__/fixtures.js';
 import { load } from '../load-parse.js';
+import type { ExtractMap } from './extract.js';
 
 interface RedSelObject {
   red: string | undefined;
@@ -13,6 +14,28 @@ interface RedSelMultipleObject {
 }
 
 describe('$.extract', () => {
+  it.each<{ descriptor: ExtractMap[string]; expected: unknown }>([
+    { descriptor: 'p', expected: 'example' },
+    { descriptor: ['p'], expected: ['example'] },
+    {
+      descriptor: { selector: 'p', value: { text: 'span' } },
+      expected: { text: 'example' },
+    },
+  ])(
+    'should preserve an own __proto__ output field for $descriptor',
+    ({ descriptor, expected }) => {
+      const $ = load('<p><span>example</span></p>');
+      const result = $.extract({ ['__proto__']: descriptor });
+
+      expect(Object.hasOwn(result, '__proto__')).toBe(true);
+      expect(Object.getPrototypeOf(result)).toBe(Object.prototype);
+      expect(
+        Object.getOwnPropertyDescriptor(result, '__proto__')?.value,
+      ).toStrictEqual(expected);
+      expect(Object.keys(result)).toStrictEqual(['__proto__']);
+    },
+  );
+
   it('should return an empty object when no selectors are provided', () => {
     const $ = load(fixtures.eleven);
     const $root = $.root();

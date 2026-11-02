@@ -81,14 +81,21 @@ export function extract<M extends ExtractMap, T extends AnyNode>(
           ? (el: Element) => this._make(el).prop(value)
           : (el: Element) => this._make(el).extract(value);
 
+    let extractedValue: unknown;
     if (isArray) {
-      ret[key] = this._findBySelector(selector, Number.POSITIVE_INFINITY)
+      extractedValue = this._findBySelector(selector, Number.POSITIVE_INFINITY)
         .map((_, el) => fn(el, key, ret))
         .get();
     } else {
       const $ = this._findBySelector(selector, 1);
-      ret[key] = $.length > 0 ? fn($[0], key, ret) : undefined;
+      extractedValue = $.length > 0 ? fn($[0], key, ret) : undefined;
     }
+    Object.defineProperty(ret, key, {
+      value: extractedValue,
+      enumerable: true,
+      writable: true,
+      configurable: true,
+    });
   }
 
   return ret as ExtractedMap<M>;
