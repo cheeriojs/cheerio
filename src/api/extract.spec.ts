@@ -200,6 +200,44 @@ describe('$.extract', () => {
     ).toStrictEqual({ red: ['red=Four', 'red=Five', 'red=Nine'] });
   });
 
+  it('should preserve arrays returned by custom extraction functions', () => {
+    const $ = load(fixtures.eleven);
+    const extracted = $.extract({
+      red: [
+        {
+          selector: '.red',
+          value: (el, key) => [key, $(el).text()],
+        },
+      ],
+    });
+
+    expectTypeOf(extracted).toEqualTypeOf<{ red: string[][] }>();
+    expect(extracted).toStrictEqual({
+      red: [
+        ['red', 'Four'],
+        ['red', 'Five'],
+        ['red', 'Nine'],
+      ],
+    });
+  });
+
+  it('should preserve empty arrays returned by custom extraction functions', () => {
+    const $ = load(fixtures.eleven);
+    expect(
+      $.extract({ red: [{ selector: '.red', value: () => [] }] }),
+    ).toStrictEqual({ red: [[], [], []] });
+  });
+
+  it('should omit nullish callback results while keeping other falsy values', () => {
+    const $ = load('<i></i><i></i><i></i><i></i><i></i>');
+    const values = [null, undefined, 0, false, ''];
+    let index = 0;
+
+    expect(
+      $.extract({ values: [{ selector: 'i', value: () => values[index++] }] }),
+    ).toStrictEqual({ values: [0, false, ''] });
+  });
+
   it('should extract nested objects based on selectors', () => {
     const $ = load(fixtures.eleven);
     const $root = $.root();
