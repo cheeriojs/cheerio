@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import * as cheerio from './index.js';
 import * as utils from './utils.js';
 
 describe('util functions', () => {
@@ -39,5 +40,53 @@ describe('util functions', () => {
     expect(utils.isHtml('<!-- comment -->')).toBe(true);
     expect(utils.isHtml('<!doctype html>')).toBe(true);
     expect(utils.isHtml('<123>')).toBe(false);
+  });
+});
+
+describe('DOM node type guards', () => {
+  const $ = cheerio.load(
+    '<!DOCTYPE html><html><body><p>Hello <!-- world --></p></body></html>',
+  );
+  const [doctype, html] = $.root()[0].children;
+  const p = $('p')[0];
+  const [text, comment] = p.children;
+  const cdata = cheerio.load('<root><![CDATA[data]]></root>', {
+    xmlMode: true,
+  })('root')[0].children[0];
+
+  it('isTag', () => {
+    expect(utils.isTag(html)).toBe(true);
+    expect(utils.isTag(text)).toBe(false);
+  });
+
+  it('isText', () => {
+    expect(utils.isText(text)).toBe(true);
+    expect(utils.isText(p)).toBe(false);
+  });
+
+  it('isComment', () => {
+    expect(utils.isComment(comment)).toBe(true);
+    expect(utils.isComment(text)).toBe(false);
+  });
+
+  it('isDirective', () => {
+    expect(utils.isDirective(doctype)).toBe(true);
+    expect(utils.isDirective(html)).toBe(false);
+  });
+
+  it('isDocument', () => {
+    expect(utils.isDocument($.root()[0])).toBe(true);
+    expect(utils.isDocument(html)).toBe(false);
+  });
+
+  it('isCDATA', () => {
+    expect(utils.isCDATA(cdata)).toBe(true);
+    expect(utils.isCDATA(text)).toBe(false);
+  });
+
+  it('hasChildren', () => {
+    expect(utils.hasChildren($.root()[0])).toBe(true);
+    expect(utils.hasChildren(p)).toBe(true);
+    expect(utils.hasChildren(text)).toBe(false);
   });
 });
