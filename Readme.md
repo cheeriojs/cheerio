@@ -111,6 +111,22 @@ $('li[class=orange]').html();
 //=> Orange
 ```
 
+### Manipulation
+
+Use `before()` and `after()` to insert siblings beside selected nodes, including
+text and comment nodes returned by `contents()`:
+
+```js
+const $ = cheerio.load('<p>hello<!--marker--></p>');
+$('p').contents().before('<i>+</i>');
+$('p').html();
+//=> <i>+</i>hello<i>+</i><!--marker-->
+```
+
+Both methods also accept a callback with the selection index and current inner
+HTML. The inner-HTML argument is `undefined` for text and comment nodes; callbacks
+that need a string can use `html ?? ''`.
+
 ### Rendering
 
 When you're ready to render the document, you can call the `html` method on the

@@ -17,6 +17,40 @@ describe('$(...)', () => {
     $fruits = $('#fruits');
   });
 
+  describe.each(['before', 'after'] as const)(
+    '.%s with leaf nodes',
+    (method) => {
+      it('passes the node, index, and undefined inner HTML to callbacks', () => {
+        const $doc = load('<p>hello<!--marker--><b>world</b></p>');
+        const $targets = $doc('p').contents();
+        const calls: [AnyNode, number, string | undefined][] = [];
+
+        $targets[method](function (index, html) {
+          calls.push([this, index, html]);
+          return '<i>+</i>';
+        });
+
+        expect(calls).toStrictEqual([
+          [$targets[0], 0, undefined],
+          [$targets[1], 1, undefined],
+          [$targets[2], 2, 'world'],
+        ]);
+        expect($doc('i')).toHaveLength(3);
+      });
+
+      it('does not move insertion content when leaf targets are detached', () => {
+        const $doc = load('<p>hello<!--marker--></p><i>+</i>');
+        const $targets = $doc('p').contents().remove();
+        const $content = $doc('i');
+        const { parent } = $content[0];
+
+        expect($targets[method]($content)).toBe($targets);
+        expect($content[0].parent).toBe(parent);
+        expect($doc('p').html()).toBe('');
+      });
+    },
+  );
+
   describe('insertion sibling links', () => {
     it.each([
       {
@@ -1025,6 +1059,20 @@ describe('$(...)', () => {
       expect($('.apple').next().hasClass('grape')).toBe(true);
     });
 
+    it('(html) : should insert after text and comment nodes', () => {
+      const $doc = load('<p>hello<!--marker--><b>world</b></p>');
+      const $targets = $doc('p').contents().slice(0, 2);
+
+      expect($targets.after('<i>+</i>')).toBe($targets);
+      expect($doc('p').html()).toBe(
+        'hello<i>+</i><!--marker--><i>+</i><b>world</b>',
+      );
+      for (const target of $targets) {
+        expect(target.next?.prev).toBe(target);
+        expect(target.next?.parent).toBe(target.parent);
+      }
+    });
+
     it('(Array) : should add all elements in the array as next sibling', () => {
       const more = $(
         '<li class="plum">Plum</li><li class="grape">Grape</li>',
@@ -1093,7 +1141,7 @@ describe('$(...)', () => {
     });
 
     it('(fn) : should invoke the callback with the correct arguments and context', () => {
-      const args: [number, string][] = [];
+      const args: [number, string | undefined][] = [];
       const thisValues: AnyNode[] = [];
       const $fruits = $('#fruits').children();
 
@@ -1145,11 +1193,11 @@ describe('$(...)', () => {
       const $text = load(mixedText);
 
       $text($text('body')[0].children).after(
-        (_, content) => `<c>${content}added</c>`,
+        (_, content) => `<c>${content ?? ''}added</c>`,
       );
 
       expect($text('body').html()).toBe(
-        '<a>1</a><c>1added</c>TEXT<b>2</b><c>2added</c>',
+        '<a>1</a><c>1added</c>TEXT<c>added</c><b>2</b><c>2added</c>',
       );
     });
 
@@ -1308,6 +1356,20 @@ describe('$(...)', () => {
       expect($('.apple').prev().hasClass('grape')).toBe(true);
     });
 
+    it('(html) : should insert before text and comment nodes', () => {
+      const $doc = load('<p>hello<!--marker--><b>world</b></p>');
+      const $targets = $doc('p').contents().slice(0, 2);
+
+      expect($targets.before('<i>+</i>')).toBe($targets);
+      expect($doc('p').html()).toBe(
+        '<i>+</i>hello<i>+</i><!--marker--><b>world</b>',
+      );
+      for (const target of $targets) {
+        expect(target.prev?.next).toBe(target);
+        expect(target.prev?.parent).toBe(target.parent);
+      }
+    });
+
     it('($(...)) : should add element as previous sibling', () => {
       const $plum = $('<li class="plum">Plum</li>');
       $('.apple').before($plum);
@@ -1376,7 +1438,7 @@ describe('$(...)', () => {
     });
 
     it('(fn) : should invoke the callback with the correct arguments and context', () => {
-      const args: [number, string][] = [];
+      const args: [number, string | undefined][] = [];
       const thisValues: AnyNode[] = [];
       const $fruits = $('#fruits').children();
 
@@ -1428,11 +1490,11 @@ describe('$(...)', () => {
       const $text = load(mixedText);
 
       $text($text('body')[0].children).before(
-        (_, content) => `<c>${content}added</c>`,
+        (_, content) => `<c>${content ?? ''}added</c>`,
       );
 
       expect($text('body').html()).toBe(
-        '<c>1added</c><a>1</a>TEXT<c>2added</c><b>2</b>',
+        '<c>1added</c><a>1</a><c>added</c>TEXT<c>2added</c><b>2</b>',
       );
     });
 
