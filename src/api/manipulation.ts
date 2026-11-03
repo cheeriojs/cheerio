@@ -110,6 +110,26 @@ function _insert(
 }
 
 /**
+ * Check whether inserting `node` under `parent` would create a cycle, because
+ * `node` is `parent` itself or one of its ancestors.
+ *
+ * @private
+ * @param node - The node to be inserted.
+ * @param parent - The parent the node would be inserted under.
+ * @returns Whether the insertion would create a cycle.
+ */
+function createsCycle(node: AnyNode, parent: ParentNode): boolean {
+  for (
+    let current: ParentNode | null = parent;
+    current !== null;
+    current = current.parent
+  ) {
+    if (current === node) return true;
+  }
+  return false;
+}
+
+/**
  * Modify an array in-place, removing some number of elements and adding new
  * elements directly following them.
  *
@@ -129,6 +149,15 @@ function uniqueSplice(
   newElems: AnyNode[],
   parent: ParentNode,
 ): AnyNode[] {
+  /*
+   * A node cannot be inserted into itself or one of its own descendants, as
+   * that would create a cycle. Browsers reject such insertions with a
+   * `HierarchyRequestError` and leave the document unchanged. Skip cyclic
+   * nodes here as well, so a failed insertion never destroys existing
+   * content.
+   */
+  newElems = newElems.filter((node) => !createsCycle(node, parent));
+
   /*
    * Before splicing in new elements, ensure they do not already appear in the
    * current array.
@@ -884,6 +913,14 @@ export function replaceWith<T extends AnyNode>(
     const dom = this._makeDomArray(cont);
 
     /*
+     * Content that is the target itself or one of its ancestors cannot be
+     * inserted here; detaching it would destroy the target's subtree.
+     * Browsers reject this with a `HierarchyRequestError` and leave the
+     * document unchanged, so skip the replacement instead.
+     */
+    if (dom.some((node) => createsCycle(node, parent))) return;
+
+    /*
      * In the case that `dom` contains nodes that already exist in other
      * structures, ensure those nodes are properly removed.
      */
@@ -1093,4 +1130,4 @@ export function clone<T extends AnyNode>(this: Cheerio<T>): Cheerio<T> {
   }
 
   return this._make(clone);
-}
+  }
