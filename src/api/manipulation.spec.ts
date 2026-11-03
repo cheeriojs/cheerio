@@ -132,6 +132,34 @@ describe('$(...)', () => {
         name: 'replace a node with an ancestor',
         move: (doc: CheerioAPI) => doc('#t').replaceWith(doc('div')),
       },
+      {
+        name: 'replace a node with itself',
+        move: (doc: CheerioAPI) => doc('#t').replaceWith(doc('#t')),
+      },
+      {
+        name: 'wrap a node in itself',
+        move: (doc: CheerioAPI) => doc('#t').wrap(doc('#t')),
+      },
+      {
+        name: 'wrap a node in an ancestor',
+        move: (doc: CheerioAPI) => doc('#t').wrap(doc('div')),
+      },
+      {
+        name: 'wrap a node in a descendant',
+        move: (doc: CheerioAPI) => doc('div').wrap(doc('#t')),
+      },
+      {
+        name: 'wrap content in the element itself',
+        move: (doc: CheerioAPI) => doc('#t').wrapInner(doc('#t')),
+      },
+      {
+        name: 'wrap content in an ancestor',
+        move: (doc: CheerioAPI) => doc('#t').wrapInner(doc('div')),
+      },
+      {
+        name: 'wrap content in a descendant',
+        move: (doc: CheerioAPI) => doc('div').wrapInner(doc('#t')),
+      },
     ])('should keep the document unchanged when we $name', ({ move }) => {
       const doc = load(cyclicHtml);
       const section = doc('section')[0];
@@ -162,6 +190,18 @@ describe('$(...)', () => {
 
       expect(doc('body').html()).toBe(cyclicHtml);
       expect(doc('#t')[0]).toBe(target);
+    });
+
+    it('should keep every sibling when replacing a node with itself', () => {
+      const doc = load('<i id="a"></i><i id="b"></i><i id="c"></i>');
+      const b = doc('#b')[0];
+
+      doc('#b').replaceWith(doc('#b'));
+
+      expect(doc('body').html()).toBe(
+        '<i id="a"></i><i id="b"></i><i id="c"></i>',
+      );
+      expect(doc('#b')[0]).toBe(b);
     });
 
     it('should still clone and move existing nodes for legal targets', () => {
