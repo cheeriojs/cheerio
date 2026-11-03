@@ -136,30 +136,6 @@ describe('$(...)', () => {
         name: 'replace a node with itself',
         move: (doc: CheerioAPI) => doc('#t').replaceWith(doc('#t')),
       },
-      {
-        name: 'wrap a node in itself',
-        move: (doc: CheerioAPI) => doc('#t').wrap(doc('#t')),
-      },
-      {
-        name: 'wrap a node in an ancestor',
-        move: (doc: CheerioAPI) => doc('#t').wrap(doc('div')),
-      },
-      {
-        name: 'wrap a node in a descendant',
-        move: (doc: CheerioAPI) => doc('div').wrap(doc('#t')),
-      },
-      {
-        name: 'wrap content in the element itself',
-        move: (doc: CheerioAPI) => doc('#t').wrapInner(doc('#t')),
-      },
-      {
-        name: 'wrap content in an ancestor',
-        move: (doc: CheerioAPI) => doc('#t').wrapInner(doc('div')),
-      },
-      {
-        name: 'wrap content in a descendant',
-        move: (doc: CheerioAPI) => doc('div').wrapInner(doc('#t')),
-      },
     ])('should keep the document unchanged when we $name', ({ move }) => {
       const doc = load(cyclicHtml);
       const section = doc('section')[0];
@@ -170,6 +146,76 @@ describe('$(...)', () => {
       expect(doc('body').html()).toBe(cyclicHtml);
       expect(doc('#t')[0]).toBe(target);
       expect(target.parent).toBe(section);
+    });
+
+    it.each([
+      {
+        name: 'wrap a node in itself',
+        move: (doc: CheerioAPI) => doc('#t').wrap(doc('#t')),
+        expected: '<div><section><p id="t"><p id="t">x</p></p></section></div>',
+      },
+      {
+        name: 'wrap a node in an ancestor',
+        move: (doc: CheerioAPI) => doc('#t').wrap(doc('div')),
+        expected:
+          '<div><section><div><section><p id="t"><p id="t">x</p></p></section></div></section></div>',
+      },
+      {
+        name: 'wrap a node in a descendant',
+        move: (doc: CheerioAPI) => doc('div').wrap(doc('#t')),
+        expected: '<p id="t"><div><section><p id="t">x</p></section></div></p>',
+      },
+      {
+        name: 'wrap content in the element itself',
+        move: (doc: CheerioAPI) => doc('#t').wrapInner(doc('#t')),
+        expected: '<div><section><p id="t"><p id="t">x</p></p></section></div>',
+      },
+      {
+        name: 'wrap content in an ancestor',
+        move: (doc: CheerioAPI) => doc('#t').wrapInner(doc('div')),
+        expected:
+          '<div><section><p id="t"><div><section><p id="t">x</p></section></div></p></section></div>',
+      },
+      {
+        name: 'wrap content in a descendant',
+        move: (doc: CheerioAPI) => doc('div').wrapInner(doc('#t')),
+        expected: '<div><p id="t"><section><p id="t">x</p></section></p></div>',
+      },
+    ])(
+      'should wrap with a clone of the wrapper when we $name',
+      ({ move, expected }) => {
+        const doc = load(cyclicHtml);
+
+        move(doc);
+
+        expect(doc('body').html()).toBe(expected);
+      },
+    );
+
+    it('should keep the original ancestor wrapper in place', () => {
+      const doc = load(cyclicHtml);
+      const body = doc('body')[0];
+      const div = doc('div')[0];
+      const section = doc('section')[0];
+
+      doc('#t').wrap(doc('div'));
+
+      // Only a clone wraps the target; the original wrapper is untouched.
+      expect(div.parent).toBe(body);
+      expect(div.children).toHaveLength(1);
+      expect(div.children[0]).toBe(section);
+    });
+
+    it('should keep the original descendant wrapper in place', () => {
+      const doc = load(cyclicHtml);
+      const section = doc('section')[0];
+      const target = doc('#t')[0];
+
+      doc('div').wrap(doc('#t'));
+
+      // The original wrapper keeps its relationships; a clone wraps the div.
+      expect(target.parent).toBe(section);
+      expect(section.children).toHaveLength(1);
     });
 
     it('should still insert valid content alongside a cyclic node', () => {
