@@ -1148,4 +1148,4 @@ export function clone<T extends AnyNode>(this: Cheerio<T>): Cheerio<T> {
   }
 
   return this._make(clone);
-  }
+}
