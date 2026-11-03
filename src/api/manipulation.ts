@@ -419,6 +419,22 @@ export const wrap: <T extends AnyNode>(
 
   if (!parent) return;
 
+  const [wrapper] = wrapperDom;
+
+  /*
+   * Wrapping with the element itself, one of its ancestors, or one of its
+   * descendants would detach the element or create a cycle before the
+   * insertion can be filtered. Browsers reject such wrapping and leave the
+   * document unchanged, so skip it instead.
+   */
+  if (
+    wrapper === el ||
+    createsCycle(wrapper, parent) ||
+    createsCycle(el, wrapper)
+  ) {
+    return;
+  }
+
   const siblings: AnyNode[] = parent.children;
   const index = siblings.indexOf(el);
 
@@ -479,6 +495,16 @@ export const wrapInner: <T extends AnyNode>(
   wrapper: AcceptedElems<AnyNode>,
 ) => Cheerio<T> = _wrap((el, elInsertLocation, wrapperDom) => {
   if (!hasChildren(el)) return;
+
+  const [wrapper] = wrapperDom;
+
+  /*
+   * Wrapping the content with the element itself, one of its ancestors, or
+   * one of its descendants would detach the subtree or create a cycle.
+   * Browsers leave the document unchanged for such wrapping, so skip it.
+   */
+  if (createsCycle(wrapper, el) || createsCycle(el, wrapper)) return;
+
   updateDOM(el.children, elInsertLocation);
   updateDOM(wrapperDom, el);
 });
@@ -918,7 +944,7 @@ export function replaceWith<T extends AnyNode>(
      * Browsers reject this with a `HierarchyRequestError` and leave the
      * document unchanged, so skip the replacement instead.
      */
-    if (dom.some((node) => createsCycle(node, parent))) return;
+    if (dom.some((node) => node === el || createsCycle(node, parent))) return;
 
     /*
      * In the case that `dom` contains nodes that already exist in other
