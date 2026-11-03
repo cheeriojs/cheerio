@@ -25,7 +25,7 @@
     "@lucide/astro": "^1.61.0",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.4.2",
-    "marked": "^18.1.1",
+    "marked": "^18.1.2",
     "react": "^19.2.5",
     "react-dom": "^19.3.1",
     "remark-directive": "^4.0.0",
