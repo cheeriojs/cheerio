@@ -85,8 +85,10 @@ export function serializeArray<T extends AnyNode>(
       const name = $elem.attr('name');
       if (!name) return [];
       const value = $elem.val();
-      // A `<select>` with no eligible selected option has a `val()` of
-      // `undefined` and, like in browsers, contributes nothing to the output.
+      /*
+       * A `<select>` with no eligible selected option has a `val()` of
+       * `undefined` and, like in browsers, contributes nothing to the output.
+       */
       if (value === undefined && isTag(elem) && elem.name === 'select') {
         return [];
       }
