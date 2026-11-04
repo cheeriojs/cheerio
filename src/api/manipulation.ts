@@ -320,7 +320,6 @@ function _wrap(
     el: AnyNode,
     elInsertLocation: ParentNode,
     wrapperDom: ParentNode[],
-    wouldCycle: boolean,
   ) => void,
 ) {
   return function <T extends AnyNode>(
@@ -340,27 +339,9 @@ function _wrap(
             ? lastParent.find(wrapper).clone()
             : wrapper;
 
-      const [wrapperNode] = this._makeDomArray(wrap, i < lastIdx);
+      const [wrapperDom] = this._makeDomArray(wrap, i < lastIdx);
 
-      if (!(wrapperNode && hasChildren(wrapperNode))) continue;
-
-      let wrapperDom = wrapperNode;
-
-      /*
-       * Like jQuery, which always wraps with a clone of the wrapper: when
-       * the wrapper node would detach the element or create a cycle, wrap
-       * with a clone of it instead of moving the original node.
-       */
-      const wouldCycle =
-        wrapperDom === el ||
-        createsCycle(el, wrapperDom) ||
-        (el.parent !== null && createsCycle(wrapperDom, el.parent));
-
-      if (wouldCycle) {
-        const [clone] = this._makeDomArray(wrap, true);
-        if (!(clone && hasChildren(clone))) continue;
-        wrapperDom = clone;
-      }
+      if (!(wrapperDom && hasChildren(wrapperDom))) continue;
 
       let elInsertLocation = wrapperDom;
 
@@ -380,7 +361,7 @@ function _wrap(
         }
       }
 
-      insert(el, elInsertLocation, [wrapperDom], wouldCycle);
+      insert(el, elInsertLocation, [wrapperDom]);
     }
 
     return this;
@@ -496,15 +477,8 @@ export const wrap: <T extends AnyNode>(
 export const wrapInner: <T extends AnyNode>(
   this: Cheerio<T>,
   wrapper: AcceptedElems<AnyNode>,
-) => Cheerio<T> = _wrap((el, elInsertLocation, wrapperDom, wouldCycle) => {
-  /*
-   * Unlike `wrap`, cloning the wrapper is not a sensible fallback here:
-   * a clone of a wrapper that contains the element would nest a copy of the
-   * element inside itself. Browsers reject cyclic insertions with a
-   * `HierarchyRequestError` and leave the document unchanged, so skip instead.
-   */
-  if (!hasChildren(el) || wouldCycle) return;
-
+) => Cheerio<T> = _wrap((el, elInsertLocation, wrapperDom) => {
+  if (!hasChildren(el)) return;
   updateDOM(el.children, elInsertLocation);
   updateDOM(wrapperDom, el);
 });
@@ -1156,4 +1130,4 @@ export function clone<T extends AnyNode>(this: Cheerio<T>): Cheerio<T> {
   }
 
   return this._make(clone);
-}
+  }
