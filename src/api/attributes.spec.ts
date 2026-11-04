@@ -753,6 +753,12 @@ describe('$(...)', () => {
       );
       expect($doc('select').val()).toBeUndefined();
     });
+    it('(): on select[multiple] should get values, falling back to text', () => {
+      const $doc = load(
+        '<select multiple><option value="a" selected>Alpha</option><option selected>Beta</option></select>',
+      );
+      expect($doc('select').val()).toStrictEqual(['a', 'Beta']);
+    });
     it('(): on option should get value', () => {
       const val = $('select#one option').eq(0).val();
       expect(val).toBe('option_not_selected');

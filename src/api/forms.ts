@@ -84,21 +84,27 @@ export function serializeArray<T extends AnyNode>(
       const $elem = this._make(elem);
       const name = $elem.attr('name');
       if (!name) return [];
-      // If there is no value set (e.g. `undefined`, `null`), then default value to empty
-      const value = $elem.val() ?? '';
+      const value = $elem.val();
+      // A `<select>` with no eligible selected option has a `val()` of
+      // `undefined` and, like in browsers, contributes nothing to the output.
+      if (value === undefined && isTag(elem) && elem.name === 'select') {
+        return [];
+      }
+      // If we have no value set (e.g. `null`), then default value to empty
+      const val = value ?? '';
 
       // If we have an array of values (e.g. `<select multiple>`), return an array of key/value pairs
-      if (Array.isArray(value)) {
-        return value.map((val) =>
+      if (Array.isArray(val)) {
+        return val.map((v) =>
           /*
            * We trim replace any line endings (e.g. `\r` or `\r\n` with `\r\n`) to guarantee consistency across platforms
            * These can occur inside of `<textarea>'s`
            */
-          ({ name, value: val.replace(rCRLF, '\r\n') }),
+          ({ name, value: v.replace(rCRLF, '\r\n') }),
         );
       }
       // Otherwise (e.g. `<input type="text">`, return only one key/value pair
-      return { name, value: value.replace(rCRLF, '\r\n') };
+      return { name, value: val.replace(rCRLF, '\r\n') };
     })
     .toArray();
 }

@@ -69,6 +69,13 @@ describe('$(...)', () => {
       ]);
     });
 
+    it('() : should omit a select with no eligible selected options', () => {
+      const $doc = load(
+        '<form><select name="choice"><option value="only" disabled selected>only</option></select></form>',
+      );
+      expect($doc('form').serializeArray()).toStrictEqual([]);
+    });
+
     it('() : should not get unnamed form controls', () => {
       expect($('form#unnamed').serializeArray()).toStrictEqual([
         {

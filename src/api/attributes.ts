@@ -848,7 +848,7 @@ export function val<T extends AnyNode>(
         .filter((el) => !isOptionDisabled(el));
 
       if (this.attr('multiple')) {
-        return selected.map((el) => text(el.children));
+        return selected.map((el) => el.attribs['value'] ?? text(el.children));
       }
 
       const first = selected[0];
