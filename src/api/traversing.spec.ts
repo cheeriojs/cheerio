@@ -943,6 +943,27 @@ describe('$(...)', () => {
        */
       expect(includesWork).toBeLessThan(N * 10);
     });
+
+    it('(selector) : should sort huge result sets without quadratic position scans', () => {
+      /*
+       * Sorting via `compareDocumentPosition` scans the shared parent's
+       * child list for every comparison, which is quadratic for large
+       * sibling sets. The pre-order index walk stays linear-ish; the
+       * generous time budget only fails when the old behavior returns.
+       */
+      const N = 50_000;
+      const $big = load(
+        `<div>${'<div class="t"><span></span></div>'.repeat(N)}</div>`,
+      );
+      const start = Date.now();
+      const result = $big('span').closest('div');
+      const elapsed = Date.now() - start;
+
+      expect(result).toHaveLength(N);
+      expect(result[0]).toBe($big('div.t')[0]);
+      expect(result[N - 1]).toBe($big('div.t')[N - 1]);
+      expect(elapsed).toBeLessThan(2000);
+    });
   });
 
   describe('.each', () => {

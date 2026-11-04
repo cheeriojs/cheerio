@@ -14,7 +14,6 @@ import {
   isTag,
 } from 'domhandler';
 import {
-  compareDocumentPosition,
   getChildren,
   getSiblings,
   nextElementSibling,
@@ -387,23 +386,41 @@ export function closest<T extends AnyNode>(
   });
 
   /*
-   * The comparator masks live in domutils as a const enum, which
-   * isolatedModules cannot reach, so this file keeps local copies of the two
-   * values it needs.
+   * Sort the matches in document order. Indexing the matches with a
+   * pre-order walk of each match's root keeps this cheap even for huge
+   * sibling lists, where sorting via `compareDocumentPosition` would scan
+   * sibling arrays quadratically. Matches from different roots keep the
+   * order they were discovered in.
    */
-  const PRECEDING = 2;
-  const FOLLOWING = 4;
-
-  set.sort((a, b) => {
-    const position = compareDocumentPosition(a, b);
-    if (position & PRECEDING) {
-      return -1;
+  const docOrder = new Map<AnyNode, number>();
+  const roots: AnyNode[] = [];
+  const rootIndex = new Map<AnyNode, number>();
+  for (const el of set) {
+    let root = el;
+    while (root.parent != null) {
+      root = root.parent;
     }
-    if (position & FOLLOWING) {
-      return 1;
+    if (!rootIndex.has(root)) {
+      rootIndex.set(root, roots.length);
+      roots.push(root);
     }
-    return 0;
-  });
+    docOrder.set(el, -1);
+  }
+  let counter = 0;
+  const visit = (node: AnyNode): void => {
+    if (docOrder.get(node) === -1) {
+      docOrder.set(node, counter++);
+    }
+    if (hasChildren(node)) {
+      for (const child of node.children) {
+        visit(child);
+      }
+    }
+  };
+  for (const root of roots) {
+    visit(root);
+  }
+  set.sort((a, b) => docOrder.get(a)! - docOrder.get(b)!);
 
   return this._make(set);
 }
