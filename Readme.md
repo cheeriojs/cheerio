@@ -188,9 +188,6 @@ development and support.
 
 <!-- BEGIN SPONSORS: headliner -->
 
-<a href="https://www.scrapingbee.com/?utm_source=sponsorships&utm_medium=backlinks&utm_campaign=cheerio_js_org" target="_blank" rel="noopener noreferrer">
-            <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fscrapingbee%2F6d5dc95%2Flogo.png?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=c21a60153bbb00aade922fe9254436e6" title="ScrapingBee" alt="ScrapingBee"></img>
-          </a>
 <a href="https://github.com/" target="_blank" rel="noopener noreferrer">
             <img height="128px" width="128px" src="https://humble.imgix.net/https%3A%2F%2Favatars.githubusercontent.com%2Fgithub?ixlib=js-3.8.0&w=128&h=128&fit=fillmax&fill=solid&s=65172918690f124c0adebece30c66471" title="Github" alt="Github"></img>
           </a>
@@ -223,9 +220,7 @@ support for Cheerio and help us maintain and improve this open source project.
 
 <!-- BEGIN SPONSORS: backer -->
 
-<a href="https://kafidoff.com" target="_blank" rel="noopener noreferrer">
-            <img height="64px" width="64px" src="https://humble.imgix.net/https%3A%2F%2Fimages.opencollective.com%2Fkafidoff-vasy%2Fd7ff85c%2Favatar.png?ixlib=js-3.8.0&w=64&h=64&fit=fillmax&fill=solid&s=a41c66c2f9b1d3a7a241e425e7aa2d09" title="Vasy Kafidoff" alt="Vasy Kafidoff"></img>
-          </a>
+
 
 <!-- END SPONSORS -->
 
