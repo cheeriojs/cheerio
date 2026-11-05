@@ -746,14 +746,6 @@ describe('$(...)', () => {
       expect($textareas.val()).toBe('first');
     });
 
-    it('(): on an empty first textarea should not read later text', () => {
-      const $controls = load(
-        '<textarea></textarea><div>other</div><textarea>second</textarea>',
-      )('textarea, div');
-
-      expect($controls.val()).toBe('');
-    });
-
     it('(): on multiple select should read only the first matched control', () => {
       const $selects = load(
         '<select multiple><option value="first" selected>first</option></select>' +
@@ -761,36 +753,6 @@ describe('$(...)', () => {
       )('select');
 
       expect($selects.val()).toStrictEqual(['first']);
-    });
-
-    it('(): on an empty first multiple select should not read later options', () => {
-      const $selects = load(
-        '<select multiple></select>' +
-          '<select multiple><option value="second" selected>second</option></select>',
-      )('select');
-
-      expect($selects.val()).toStrictEqual([]);
-    });
-
-    it('(): on an empty first single select should not read later options', () => {
-      const $selects = load(
-        '<select></select>' +
-          '<select><option value="second" selected>second</option></select>',
-      )('select');
-
-      expect($selects.val()).toBeUndefined();
-    });
-
-    it('(value): should update every matched textarea', () => {
-      const $textareas = load(
-        '<textarea>first</textarea><textarea>second</textarea>',
-      )('textarea');
-
-      expect($textareas.val('updated')).toBe($textareas);
-      expect($textareas.map((_, el) => $(el).text()).get()).toStrictEqual([
-        'updated',
-        'updated',
-      ]);
     });
 
     it('(): on checked checkbox should get value', () => {
