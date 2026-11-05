@@ -1,0 +1,29 @@
+src/parsers/parse5-adapter.ts
+  s_e64df2193fde97::t_95849327d3cc5c 26,32-34
+src/api/forms.ts
+  s_e64df2193fde97::t_1bf1bafb9af7aa 120-121,126-127,129-133,135
+  s_e64df2193fde97::t_bce8ee719acb3a 137
+  s_e64df2193fde97::t_4cda51a7971236 54-57
+  s_e64df2193fde97::t_0aa1b43bcf6eed 14-15,45,52-53
+  s_e64df2193fde97::t_db1e93e24c90ea 20-23,26-27,29-30,32-35,37-38,42-44,46-47,62-65
+  s_e64df2193fde97::t_0bc547fbc61bcc 67
+src/api/forms.spec.ts
+  s_e64df2193fde97::t_dcc1956f324e67 32,37-39,41,46-47
+  s_e64df2193fde97::t_c2801a15994457 201,203,206-207,209-215
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "72b4ca9cfd3b606bba8c1ed7fe3aa96e5bb87e72",
+  "prompts": {},
+  "sessions": {
+    "s_e64df2193fde97": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7a76b968-b7fc-4655-8ee3-a29761b591f1",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
