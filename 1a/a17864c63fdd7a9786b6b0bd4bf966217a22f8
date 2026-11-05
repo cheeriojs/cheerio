@@ -1,0 +1,26 @@
+src/parsers/parse5-adapter.ts
+  s_e64df2193fde97::t_95849327d3cc5c 26,32-34
+src/api/forms.spec.ts
+  s_e64df2193fde97::t_dcc1956f324e67 32,37-39,41,46-47
+src/api/forms.ts
+  s_e64df2193fde97::t_db1e93e24c90ea 20-23,26-27,29-32,34-37,39-40,44-46,48-49,64-67
+  s_e64df2193fde97::t_0aa1b43bcf6eed 14-15,47,54-55
+  s_e64df2193fde97::t_1bf1bafb9af7aa 121-122,128-129
+  s_e64df2193fde97::t_4cda51a7971236 56-59
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "1aa17864c63fdd7a9786b6b0bd4bf966217a22f8",
+  "prompts": {},
+  "sessions": {
+    "s_e64df2193fde97": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7a76b968-b7fc-4655-8ee3-a29761b591f1",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
