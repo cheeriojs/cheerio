@@ -291,6 +291,8 @@ function isNode(obj: unknown): obj is AnyNode {
     // @ts-expect-error: TS doesn't know about the `type` property.
     obj.type === ElementType.Root ||
     // @ts-expect-error: TS doesn't know about the `type` property.
+    obj.type === ElementType.CDATA ||
+    // @ts-expect-error: TS doesn't know about the `type` property.
     obj.type === ElementType.Text ||
     // @ts-expect-error: TS doesn't know about the `type` property.
     obj.type === ElementType.Comment
