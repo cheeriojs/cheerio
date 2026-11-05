@@ -1,0 +1,23 @@
+src/api/forms.ts
+  s_7ee894c904b572::t_7943c7668cc11d 16
+  s_7ee894c904b572::t_e3d91a2ccaad2f 23-24
+  s_7ee894c904b572::t_71ea4f64debdd4 43-55
+src/api/forms.spec.ts
+  s_7ee894c904b572::t_b8fead7ba8cc96 135-162
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "18cea7aa29b099c497ab459431f5711a3815a04b",
+  "prompts": {},
+  "sessions": {
+    "s_7ee894c904b572": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2acee433-003e-448e-9854-ad7d4506a5df",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
