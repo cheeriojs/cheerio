@@ -896,6 +896,18 @@ describe('$(...)', () => {
       ]);
     });
 
+    it('(selector) : should keep discovery order for matches from different roots', () => {
+      /*
+       * `a1` and `a2` share a root; the detached `b` is its own root and
+       * sits between them in discovery order. Sorting by document position
+       * per root must not pull `a2` ahead of `b`.
+       */
+      const b = $('<b class="sep"></b>').remove()[0];
+      const [a1, a2] = $('li.apple, li.pear').toArray();
+      const result = $([a1, b, a2]).closest('li, b');
+      expect(result.toArray()).toStrictEqual([a1, b, a2]);
+    });
+
     it('() : should not break if the selector does not have any results', () => {
       const result = $('.saladbar', food).closest('ul');
       expect(result).toHaveLength(0);

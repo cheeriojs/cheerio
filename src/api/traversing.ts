@@ -389,13 +389,21 @@ export function closest<T extends AnyNode>(
    * Sort the matches in document order. Indexing the matches with a
    * pre-order walk of each match's root keeps this cheap even for huge
    * sibling lists, where sorting via `compareDocumentPosition` would scan
-   * sibling arrays quadratically. Matches from different roots keep the
-   * order they were discovered in.
+   * sibling arrays quadratically. Matches from different roots have no
+   * document order between them, so they keep the order they were
+   * discovered in.
    */
-  const docOrder = new Map<AnyNode, number>();
+  if (set.length < 2) {
+    // Nothing to sort; skip the document walk entirely.
+    return this._make(set);
+  }
+
+  const preOrder = new Map<AnyNode, number>();
+  const rootOf = new Map<AnyNode, AnyNode>();
+  const discovery = new Map<AnyNode, number>();
   const roots: AnyNode[] = [];
   const rootIndex = new Map<AnyNode, number>();
-  for (const el of set) {
+  for (const [index, el] of set.entries()) {
     let root = el;
     while (root.parent != null) {
       root = root.parent;
@@ -404,23 +412,38 @@ export function closest<T extends AnyNode>(
       rootIndex.set(root, roots.length);
       roots.push(root);
     }
-    docOrder.set(el, -1);
+    rootOf.set(el, root);
+    discovery.set(el, index);
+    preOrder.set(el, -1);
   }
   let counter = 0;
-  const visit = (node: AnyNode): void => {
-    if (docOrder.get(node) === -1) {
-      docOrder.set(node, counter++);
-    }
-    if (hasChildren(node)) {
-      for (const child of node.children) {
-        visit(child);
+  const visit = (start: AnyNode): void => {
+    /*
+     * Iterative pre-order walk: document trees can outdepth the JS call
+     * stack, so recursion is not safe here.
+     */
+    const stack: AnyNode[] = [start];
+    while (stack.length > 0) {
+      const node = stack.pop()!;
+      if (preOrder.get(node) === -1) {
+        preOrder.set(node, counter++);
+      }
+      if (hasChildren(node)) {
+        for (let i = node.children.length - 1; i >= 0; i--) {
+          stack.push(node.children[i]);
+        }
       }
     }
   };
   for (const root of roots) {
     visit(root);
   }
-  set.sort((a, b) => docOrder.get(a)! - docOrder.get(b)!);
+  set.sort((a, b) => {
+    if (rootOf.get(a) === rootOf.get(b)) {
+      return preOrder.get(a)! - preOrder.get(b)!;
+    }
+    return discovery.get(a)! - discovery.get(b)!;
+  });
 
   return this._make(set);
 }
