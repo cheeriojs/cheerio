@@ -1,0 +1,25 @@
+package-lock.json
+  s_ed3b1fa4896292::t_0e16d7a8e17c58 31,1731-1733
+package.json
+  s_ed3b1fa4896292::t_83ddc07ab5e808 132
+website/package-lock.json
+  s_ed3b1fa4896292::t_294ed6d6b9d9b1 11-12,18,30,365-367,372,395-407,431-433,437,454-477,491-493,1774-1776
+website/package.json
+  s_ed3b1fa4896292::t_bb6f60cbe07b68 18-19,25,37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "eec2367eb1f193104368e4b7ae6106ee84c6de66",
+  "prompts": {},
+  "sessions": {
+    "s_ed3b1fa4896292": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3ad36be6-5712-4167-b217-741966838d0a",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
