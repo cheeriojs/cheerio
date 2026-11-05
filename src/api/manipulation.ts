@@ -614,20 +614,28 @@ export function wrapAll<T extends AnyNode>(
  * ```
  *
  * @param elems - HTML string, DOM element, array of DOM elements or Cheerio to
- *   insert after each element in the set of matched elements.
+ *   insert after each element in the set of matched elements. A callback
+ *   receives the index and current inner HTML, or `undefined` for text and
+ *   comment nodes.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/after/}
  */
 export function after<T extends AnyNode>(
   this: Cheerio<T>,
   ...elems:
-    | [(this: AnyNode, i: number, html: string) => BasicAcceptedElems<AnyNode>]
+    | [
+        (
+          this: AnyNode,
+          i: number,
+          html: string | undefined,
+        ) => BasicAcceptedElems<AnyNode>,
+      ]
     | BasicAcceptedElems<AnyNode>[]
 ): Cheerio<T> {
   const lastIdx = this.length - 1;
 
   return domEach(this, (el, i) => {
-    if (!(hasChildren(el) && el.parent)) {
+    if (!el.parent) {
       return;
     }
 
@@ -640,7 +648,11 @@ export function after<T extends AnyNode>(
 
     const domSrc =
       typeof elems[0] === 'function'
-        ? elems[0].call(el, i, this._render(el.children))
+        ? elems[0].call(
+            el,
+            i,
+            hasChildren(el) ? this._render(el.children) : undefined,
+          )
         : (elems as BasicAcceptedElems<AnyNode>[]);
 
     const dom = this._makeDomArray(domSrc, i < lastIdx);
@@ -723,20 +735,28 @@ export function insertAfter<T extends AnyNode>(
  * ```
  *
  * @param elems - HTML string, DOM element, array of DOM elements or Cheerio to
- *   insert before each element in the set of matched elements.
+ *   insert before each element in the set of matched elements. A callback
+ *   receives the index and current inner HTML, or `undefined` for text and
+ *   comment nodes.
  * @returns The instance itself.
  * @see {@link https://api.jquery.com/before/}
  */
 export function before<T extends AnyNode>(
   this: Cheerio<T>,
   ...elems:
-    | [(this: AnyNode, i: number, html: string) => BasicAcceptedElems<AnyNode>]
+    | [
+        (
+          this: AnyNode,
+          i: number,
+          html: string | undefined,
+        ) => BasicAcceptedElems<AnyNode>,
+      ]
     | BasicAcceptedElems<AnyNode>[]
 ): Cheerio<T> {
   const lastIdx = this.length - 1;
 
   return domEach(this, (el, i) => {
-    if (!(hasChildren(el) && el.parent)) {
+    if (!el.parent) {
       return;
     }
 
@@ -749,7 +769,11 @@ export function before<T extends AnyNode>(
 
     const domSrc =
       typeof elems[0] === 'function'
-        ? elems[0].call(el, i, this._render(el.children))
+        ? elems[0].call(
+            el,
+            i,
+            hasChildren(el) ? this._render(el.children) : undefined,
+          )
         : (elems as BasicAcceptedElems<AnyNode>[]);
 
     const dom = this._makeDomArray(domSrc, i < lastIdx);
