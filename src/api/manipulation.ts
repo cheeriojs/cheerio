@@ -679,7 +679,14 @@ export function insertAfter<T extends AnyNode>(
     target = this._make<AnyNode>(target);
   }
 
-  const targets = this._makeDomArray(target).filter((el) => el.parent != null);
+  /*
+   * Targets that are also source elements would be detached by `this.remove()`
+   * below and never re-inserted, so they are excluded from the targets.
+   */
+  const sources = new Set<AnyNode>(this.toArray());
+  const targets = this._makeDomArray(target).filter(
+    (el) => el.parent != null && !sources.has(el),
+  );
   const clones: T[] = [];
 
   // An empty target must not remove the source elements.
@@ -790,8 +797,13 @@ export function insertBefore<T extends AnyNode>(
   this: Cheerio<T>,
   target: BasicAcceptedElems<AnyNode>,
 ): Cheerio<T> {
+  /*
+   * Targets that are also source elements would be detached by `this.remove()`
+   * below and never re-inserted, so they are excluded from the targets.
+   */
+  const sources = new Set<AnyNode>(this.toArray());
   const targetArr = this._make<AnyNode>(target).filter(
-    (_, el) => el.parent != null,
+    (_, el) => el.parent != null && !sources.has(el),
   );
   const clones: T[] = [];
 

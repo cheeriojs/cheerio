@@ -1320,6 +1320,29 @@ describe('$(...)', () => {
       expect($('.orange')).toHaveLength(1);
       expect($fruits.children()).toHaveLength(3);
     });
+
+    it('should keep the source elements when they are also the targets', () => {
+      expect($('li').insertAfter('li')).toHaveLength(0);
+      expect($fruits.children()).toHaveLength(3);
+      expect($('.apple')).toHaveLength(1);
+      expect($('.orange')).toHaveLength(1);
+      expect($('.pear')).toHaveLength(1);
+    });
+
+    it('should exclude source elements from the targets', () => {
+      /*
+       * `insertAfter` is a clone-based move: the source is detached and
+       * clones land after each remaining target, so the document keeps
+       * four children (the original apple stays detached).
+       */
+      const $result = $('.apple').insertAfter('li');
+      expect($result).toHaveLength(2);
+      expect($fruits.children()).toHaveLength(4);
+      expect($fruits.children().eq(0).hasClass('orange')).toBe(true);
+      expect($fruits.children().eq(1).hasClass('apple')).toBe(true);
+      expect($fruits.children().eq(2).hasClass('pear')).toBe(true);
+      expect($fruits.children().eq(3).hasClass('apple')).toBe(true);
+    });
   });
 
   describe('.before', () => {
@@ -1628,6 +1651,29 @@ describe('$(...)', () => {
       expect($('li.orange').insertBefore(detached)).toHaveLength(0);
       expect($('.orange')).toHaveLength(1);
       expect($fruits.children()).toHaveLength(3);
+    });
+
+    it('should keep the source elements when they are also the targets', () => {
+      expect($('li').insertBefore('li')).toHaveLength(0);
+      expect($fruits.children()).toHaveLength(3);
+      expect($('.apple')).toHaveLength(1);
+      expect($('.orange')).toHaveLength(1);
+      expect($('.pear')).toHaveLength(1);
+    });
+
+    it('should exclude source elements from the targets', () => {
+      /*
+       * `insertBefore` is a clone-based move: the source is detached and
+       * clones land before each remaining target, so the document keeps
+       * four children (the original pear stays detached).
+       */
+      const $result = $('.pear').insertBefore('li');
+      expect($result).toHaveLength(2);
+      expect($fruits.children()).toHaveLength(4);
+      expect($fruits.children().eq(0).hasClass('pear')).toBe(true);
+      expect($fruits.children().eq(1).hasClass('apple')).toBe(true);
+      expect($fruits.children().eq(2).hasClass('pear')).toBe(true);
+      expect($fruits.children().eq(3).hasClass('orange')).toBe(true);
     });
   });
 
