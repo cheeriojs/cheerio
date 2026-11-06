@@ -1,3 +1,12 @@
+import {
+  hasChildren,
+  isCDATA,
+  isComment,
+  isDirective,
+  isDocument,
+  isTag,
+  isText,
+} from 'domhandler';
 import { describe, expect, it } from 'vitest';
 import * as utils from './utils.js';
 
@@ -39,5 +48,17 @@ describe('util functions', () => {
     expect(utils.isHtml('<!-- comment -->')).toBe(true);
     expect(utils.isHtml('<!doctype html>')).toBe(true);
     expect(utils.isHtml('<123>')).toBe(false);
+  });
+
+  it('re-exports the DOM node type guards of domhandler', () => {
+    expect(utils).toMatchObject({
+      hasChildren,
+      isCDATA,
+      isComment,
+      isDirective,
+      isDocument,
+      isTag,
+      isText,
+    });
   });
 });

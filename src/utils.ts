@@ -1,3 +1,13 @@
+export {
+  hasChildren,
+  isCDATA,
+  isComment,
+  isDirective,
+  isDocument,
+  isTag,
+  isText,
+} from 'domhandler';
+
 import type { AnyNode } from 'domhandler';
 import type { Cheerio } from './cheerio.js';
 
