@@ -83,8 +83,9 @@ export function extract<M extends ExtractMap, T extends AnyNode>(
 
     if (isArray) {
       ret[key] = this._findBySelector(selector, Number.POSITIVE_INFINITY)
-        .map((_, el) => fn(el, key, ret))
-        .get();
+        .toArray()
+        .map((el) => fn(el, key, ret))
+        .filter((value) => value != null);
     } else {
       const $ = this._findBySelector(selector, 1);
       ret[key] = $.length > 0 ? fn($[0], key, ret) : undefined;
