@@ -222,6 +222,15 @@ describe('$(...)', () => {
       expect($(undefined).prop('nodeName')).toBeUndefined();
     });
 
+    it('should return undefined for the style of non-element nodes', () => {
+      const $ = load('<div>text<!--comment--></div>');
+      const contents = $('div').contents();
+
+      expect(contents.eq(0).prop('style')).toBeUndefined();
+      expect(contents.eq(1).prop('style')).toBeUndefined();
+      expect($.root().prop('style')).toBeUndefined();
+    });
+
     it('(invalid key) : invalid prop should get undefined', () => {
       expect(checkbox.prop('lol')).toBeUndefined();
       expect(checkbox.prop(4 as never)).toBeUndefined();
@@ -255,6 +264,40 @@ describe('$(...)', () => {
       imgs.prop('attribs', null);
       expect(imgs.prop('src')).toBeUndefined();
       expect(imgs.prop('data-foo')).toBeUndefined();
+    });
+
+    /*
+     * `name` and `type` are fields of domhandler's `Element` (the tag name and
+     * the `ElementType` enum), so `prop` has to resolve them as the HTML
+     * attributes of the same name, the way the DOM does.
+     */
+    it('(valid key) : should get the `name` and `type` attributes, not the DOM fields', () => {
+      expect(checkbox.prop('name')).toBe('checkbox_on');
+      expect(checkbox.prop('type')).toBe('checkbox');
+      const button = $('#btn-valueless');
+      expect(button.prop('name')).toBeUndefined();
+      expect(button.prop('type')).toBeUndefined();
+    });
+
+    it('(key, value) : should set the `name` and `type` attributes', () => {
+      const input = $('input[name=checkbox_on]').clone();
+      input.prop('name', 'renamed').prop('type', 'radio');
+      expect(input.prop('name')).toBe('renamed');
+      expect(input.attr('name')).toBe('renamed');
+      expect(input.prop('type')).toBe('radio');
+      expect(input.attr('type')).toBe('radio');
+      // The tag name must be untouched.
+      expect(input.prop('tagName')).toBe('INPUT');
+      expect(input.prop('outerHTML')).toBe(
+        '<input type="radio" name="renamed" value="on" checked="">',
+      );
+    });
+
+    it('(key, value) : should not set the read-only tagName and nodeName aliases', () => {
+      checkbox.prop('tagName', 'script');
+      checkbox.prop('nodeName', 'script');
+      expect(checkbox.prop('tagName')).toBe('INPUT');
+      expect(checkbox.attr('nodeName')).toBeUndefined();
     });
 
     it('(key, value) : should ignore empty collection', () => {
@@ -585,6 +628,16 @@ describe('$(...)', () => {
       expect($('li').eq(2).data('foo')).toStrictEqual('bar');
     });
 
+    it('should set data when the selection starts with a text node', () => {
+      const $ = load('<div>text<span></span></div>');
+      const contents = $('div').contents();
+
+      expect(contents.data('foo', 'bar')).toBe(contents);
+      expect($('span').data('foo')).toBe('bar');
+      expect(contents.data({ baz: 'qux' })).toBe(contents);
+      expect($('span').data('baz')).toBe('qux');
+    });
+
     it('(map) : object map should set multiple data attributes', () => {
       const { data } = $('.linth').data({
         id: 'Cailler',
@@ -736,6 +789,27 @@ describe('$(...)', () => {
       const element = $('select#one option').eq(0).val('option_changed');
       expect(element.val()).toBe('option_changed');
     });
+    it('(value): on select should select option with a double quote in its value', () => {
+      const $select = load(
+        '<select><option value="a">a</option><option value="a&quot;b">quote</option></select>',
+      )('select');
+      expect(() => $select.val('a"b')).not.toThrow();
+      expect($select.val()).toBe('a"b');
+    });
+    it('(value): on select should select option with a backslash in its value', () => {
+      const $select = load(
+        String.raw`<select><option value="a">a</option><option value="a\b">backslash</option></select>`,
+      )('select');
+      $select.val(String.raw`a\b`);
+      expect($select.val()).toBe(String.raw`a\b`);
+    });
+    it('(value): on select should select a valueless option by its text', () => {
+      const $select = load(
+        '<select><option>first</option><option>second</option></select>',
+      )('select');
+      $select.val('second');
+      expect($select.val()).toBe('second');
+    });
     it('(value): on radio should set value', () => {
       const element = $('input[name="radio"]').val('off');
       expect(element.val()).toBe('off');
@@ -747,6 +821,17 @@ describe('$(...)', () => {
     it('(values): on multiple select should set multiple values', () => {
       const element = $('select#multi').val(['1', '3', '4']);
       expect(element.val()).toHaveLength(3);
+    });
+    it('(value): on select should match numbers against option values', () => {
+      const $select = load(
+        '<select><option value="1">a</option><option value="2">b</option></select>',
+      )('select');
+      expect($select.val(2 as never).val()).toBe('2');
+      expect(
+        $('select#multi')
+          .val([2, 4] as never)
+          .val(),
+      ).toStrictEqual(['2', '4']);
     });
   });
 

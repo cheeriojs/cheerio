@@ -242,7 +242,7 @@ function getProp(
   name: string,
   xmlMode?: boolean,
 ): string | undefined | boolean | Element[keyof Element] {
-  return name in el
+  return name in el && name !== 'name' && name !== 'type'
     ? // @ts-expect-error TS doesn't like us accessing the value directly here.
       (el[name] as string | undefined)
     : !xmlMode && rboolean.test(name)
@@ -256,11 +256,12 @@ function getProp(
  * @private
  * @param el - The element to set the prop on.
  * @param name - The prop's name.
- * @param value - The prop's value.
+ * @param value - The new value.
  * @param xmlMode - Disable handling of special HTML attributes.
  */
 function setProp(el: Element, name: string, value: unknown, xmlMode?: boolean) {
-  if (name in el) {
+  if (name === 'tagName' || name === 'nodeName') return;
+  if (name in el && name !== 'name' && name !== 'type') {
     // @ts-expect-error Overriding value
     el[name] = value;
   } else {
@@ -325,7 +326,7 @@ export function prop<T extends AnyNode>(
 // biome-ignore lint/style/useUnifiedTypeSignatures: Separate overloads needed for accurate docs
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
-  name: 'tagName' | 'nodeName',
+  name: 'tagName' | 'nodeName' | 'name' | 'type',
 ): string | undefined;
 /**
  * Resolve `href` or `src` of supported elements. Requires the `baseURI` option
@@ -430,6 +431,7 @@ export function prop<T extends AnyNode>(
 
     switch (name) {
       case 'style': {
+        if (!isTag(el)) return;
         const property = this.css() as StyleProp;
         const keys = Object.keys(property);
         for (let i = 0; i < keys.length; i++) {
@@ -666,8 +668,7 @@ export function data<T extends AnyNode>(
   this: Cheerio<T>,
 ): Record<string, unknown>;
 /**
- * Method for setting data attributes, for only the first element in the matched
- * set.
+ * Method for setting data attributes on every element in the matched set.
  *
  * @category Attributes
  * @example
@@ -690,8 +691,8 @@ export function data<T extends AnyNode>(
   value: unknown,
 ): Cheerio<T>;
 /**
- * Method for setting multiple data attributes at once, for only the first
- * element in the matched set.
+ * Method for setting multiple data attributes at once on every element in the
+ * matched set.
  *
  * @category Attributes
  * @example
@@ -716,6 +717,16 @@ export function data<T extends AnyNode>(
   name?: string | Record<string, unknown>,
   value?: unknown,
 ): unknown {
+  // Set the value (with attr map support)
+  if (name != null && (typeof name === 'object' || value !== undefined)) {
+    return domEach(this, (el) => {
+      if (isTag(el)) {
+        if (typeof name === 'object') setData(el, name);
+        else setData(el, name, value);
+      }
+    });
+  }
+
   const elem = this[0];
 
   if (!(elem && isTag(elem))) return;
@@ -726,17 +737,6 @@ export function data<T extends AnyNode>(
   // Return the entire data object if no data specified
   if (name == null) {
     return readAllData(dataEl);
-  }
-
-  // Set the value (with attr map support)
-  if (typeof name === 'object' || value !== undefined) {
-    domEach(this, (el) => {
-      if (isTag(el)) {
-        if (typeof name === 'object') setData(el, name);
-        else setData(el, name, value);
-      }
-    });
-    return this;
   }
 
   return readData(dataEl, name);
@@ -799,11 +799,23 @@ export function val<T extends AnyNode>(
           return this;
         }
 
-        this.find('option').removeAttr('selected');
+        const options = this.find('option');
+        options.removeAttr('selected');
 
-        const values = typeof value === 'object' ? value : [value];
-        for (const val of values) {
-          this.find(`option[value="${val}"]`).attr('selected', '');
+        // Coerce to strings, so numbers passed from JavaScript still match.
+        const values =
+          typeof value === 'object' ? value.map(String) : [String(value)];
+        for (const el of options) {
+          /*
+           * Resolve an option's value the same way the getter does: the
+           * `value` attribute, falling back to its text content. Compare
+           * directly instead of building a selector, so values containing
+           * characters such as `"` or `\` are matched literally.
+           */
+          const optionValue = el.attribs['value'] ?? text(el.children);
+          if (values.includes(optionValue)) {
+            el.attribs['selected'] = '';
+          }
         }
 
         return this;

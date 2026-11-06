@@ -17,6 +17,81 @@ describe('$(...)', () => {
     $fruits = $('#fruits');
   });
 
+  describe('insertion sibling links', () => {
+    it.each([
+      {
+        name: 'append the last child again',
+        move: (doc: CheerioAPI) => doc('main').append(doc('#e')),
+        order: 'abcde',
+      },
+      {
+        name: 'insert an existing next sibling after the target',
+        move: (doc: CheerioAPI) => doc('#b').after(doc('#c')),
+        order: 'abcde',
+      },
+      {
+        name: 'move children from both sides of the insertion point',
+        move: (doc: CheerioAPI) => doc('#d').before(doc('#a, #b, #e')),
+        order: 'cabed',
+      },
+      {
+        name: 'append empty content',
+        move: (doc: CheerioAPI) => doc('main').append(''),
+        order: 'abcde',
+      },
+      {
+        name: 'insert empty content after a child',
+        move: (doc: CheerioAPI) => doc('#c').after(''),
+        order: 'abcde',
+      },
+      {
+        name: 'replace a child with empty content',
+        move: (doc: CheerioAPI) => doc('#c').replaceWith(''),
+        order: 'abde',
+      },
+    ])('should preserve links when we $name', ({ move, order }) => {
+      const doc = load(
+        '<main><i id="a"></i><i id="b"></i><i id="c"></i><i id="d"></i><i id="e"></i></main>',
+      );
+      const parent = doc('main')[0];
+      const original = new Map(
+        doc('main')
+          .children()
+          .get()
+          .map((node) => [doc(node).attr('id'), node]),
+      );
+
+      move(doc);
+
+      const children = doc('main').contents().get();
+      expect(children.map((node) => doc(node).attr('id')).join('')).toBe(order);
+      for (const [index, node] of children.entries()) {
+        expect(node).toBe(original.get(order[index]));
+        expect(node.parent).toBe(parent);
+        expect(node.prev).toBe(children[index - 1] ?? null);
+        expect(node.next).toBe(children[index + 1] ?? null);
+      }
+    });
+
+    it('should preserve links around an existing wrapper', () => {
+      const doc = load(
+        '<main><section id="wrapper"></section><i id="target"></i><i id="tail"></i></main>',
+      );
+      const wrapper = doc('#wrapper');
+      const target = doc('#target');
+      const tail = doc('#tail');
+
+      target.wrap(wrapper);
+
+      expect(doc('main').children().get()).toEqual([wrapper[0], tail[0]]);
+      expect(wrapper.children()[0]).toBe(target[0]);
+      expect(wrapper[0].prev).toBeNull();
+      expect(wrapper[0].next).toBe(tail[0]);
+      expect(tail[0].prev).toBe(wrapper[0]);
+      expect(tail[0].next).toBeNull();
+    });
+  });
+
   describe('.wrap', () => {
     it('(Cheerio object) : should insert the element and add selected element(s) as its child', () => {
       const $redFruits = $('<div class="red-fruits"></div>');

@@ -281,4 +281,10 @@ describe('$.extract', () => {
       $.extract({ links: [{ selector: 'li', value: 'href' }] }),
     ).toStrictEqual({ links: [] });
   });
+
+  it('should ignore inherited properties of the map', () => {
+    const $ = load(fixtures.eleven);
+    const map = Object.create({ red: '.red' }) as Record<string, string>;
+    expect($.extract(map)).toStrictEqual({});
+  });
 });

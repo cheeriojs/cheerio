@@ -68,6 +68,7 @@ export function extract<M extends ExtractMap, T extends AnyNode>(
   const ret: Record<string, unknown> = {};
 
   for (const key in map) {
+    if (!Object.hasOwn(map, key)) continue;
     const descr = map[key];
     const isArray = Array.isArray(descr);
 
