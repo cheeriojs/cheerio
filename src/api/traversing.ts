@@ -200,7 +200,8 @@ function _matchUntil(
     selector?: AcceptedFilters<Element> | null,
     filterSelector?: AcceptedFilters<Element>,
   ): Cheerio<Element> {
-    // Override `matches` variable with the new target.
+    // Stop conditions can call this method again, so restore the outer `matches`.
+    const outerMatches = matches;
     matches =
       typeof selector === 'string'
         ? (elem: Element) => select.is(elem, selector, this.options)
@@ -208,12 +209,11 @@ function _matchUntil(
           ? getFilterFn(selector)
           : null;
 
-    const ret = innerMatcher.call(this, filterSelector);
-
-    // Set `matches` to `null`, so we don't waste memory.
-    matches = null;
-
-    return ret;
+    try {
+      return innerMatcher.call(this, filterSelector);
+    } finally {
+      matches = outerMatches;
+    }
   };
 }
 
