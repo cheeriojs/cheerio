@@ -743,8 +743,9 @@ export function data<T extends AnyNode>(
 }
 
 /**
- * Method for getting the value of input, select, and textarea. Note: Support
- * for `map`, and `function` has not been added yet.
+ * Method for getting the value of the first element in the matched set (input,
+ * select, or textarea). Note: Support for `map`, and `function` has not been
+ * added yet.
  *
  * @category Attributes
  * @example
@@ -791,6 +792,7 @@ export function val<T extends AnyNode>(
 
   switch (element.name) {
     case 'textarea': {
+      if (querying) return text(element.children);
       return this.text(value as string);
     }
     case 'select': {
@@ -821,7 +823,7 @@ export function val<T extends AnyNode>(
         return this;
       }
 
-      const option = this.find('option:selected');
+      const option = this._make(element).find('option:selected');
 
       return this.attr('multiple')
         ? option.toArray().map((el) => text(el.children))
