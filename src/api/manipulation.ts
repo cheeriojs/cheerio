@@ -679,11 +679,14 @@ export function insertAfter<T extends AnyNode>(
     target = this._make<AnyNode>(target);
   }
 
+  const targets = this._makeDomArray(target);
+  if (targets.length === 0) return this._make([]);
+
   this.remove();
 
   const clones: T[] = [];
 
-  for (const el of this._makeDomArray(target)) {
+  for (const el of targets) {
     const clonedSelf = this.clone().toArray();
     const { parent } = el;
     if (!parent) {
@@ -785,6 +788,8 @@ export function insertBefore<T extends AnyNode>(
   target: BasicAcceptedElems<AnyNode>,
 ): Cheerio<T> {
   const targetArr = this._make<AnyNode>(target);
+
+  if (targetArr.length === 0) return this._make([]);
 
   this.remove();
 

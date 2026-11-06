@@ -17,6 +17,19 @@ describe('$(...)', () => {
     $fruits = $('#fruits');
   });
 
+  it.each(['insertBefore', 'insertAfter'] as const)(
+    '.%s preserves the source when the target is empty',
+    (method) => {
+      const source = $('.apple');
+      const originalHtml = $.html();
+      const originalParent = source[0].parent;
+
+      expect(source[method]('.missing')).toHaveLength(0);
+      expect($.html()).toBe(originalHtml);
+      expect(source[0].parent).toBe(originalParent);
+    },
+  );
+
   describe('insertion sibling links', () => {
     it.each([
       {
