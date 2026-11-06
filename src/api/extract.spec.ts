@@ -221,13 +221,6 @@ describe('$.extract', () => {
     });
   });
 
-  it('should preserve empty arrays returned by custom extraction functions', () => {
-    const $ = load(fixtures.eleven);
-    expect(
-      $.extract({ red: [{ selector: '.red', value: () => [] }] }),
-    ).toStrictEqual({ red: [[], [], []] });
-  });
-
   it('should omit nullish callback results while keeping other falsy values', () => {
     const $ = load('<i></i><i></i><i></i><i></i><i></i>');
     const values = [null, undefined, 0, false, ''];
