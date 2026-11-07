@@ -105,6 +105,107 @@ describe('$(...)', () => {
     });
   });
 
+  describe('cyclic insertion', () => {
+    const cyclicHtml = '<div><section><p id="t">x</p></section></div>';
+
+    it.each([
+      {
+        name: 'append itself',
+        move: (doc: CheerioAPI) => doc('#t').append(doc('#t')),
+      },
+      {
+        name: 'prepend itself',
+        move: (doc: CheerioAPI) => doc('#t').prepend(doc('#t')),
+      },
+      {
+        name: 'appendTo itself',
+        move: (doc: CheerioAPI) => doc('#t').appendTo(doc('#t')),
+      },
+      {
+        name: 'prependTo itself',
+        move: (doc: CheerioAPI) => doc('#t').prependTo(doc('#t')),
+      },
+      {
+        name: 'append an ancestor',
+        move: (doc: CheerioAPI) => doc('#t').append(doc('div')),
+      },
+      {
+        name: 'prepend an ancestor',
+        move: (doc: CheerioAPI) => doc('#t').prepend(doc('div')),
+      },
+      {
+        name: 'insert an ancestor before a descendant',
+        move: (doc: CheerioAPI) => doc('#t').before(doc('div')),
+      },
+      {
+        name: 'insert an ancestor after a descendant',
+        move: (doc: CheerioAPI) => doc('#t').after(doc('div')),
+      },
+      {
+        name: 'replace a node with an ancestor',
+        move: (doc: CheerioAPI) => doc('#t').replaceWith(doc('div')),
+      },
+      {
+        name: 'replace a node with itself',
+        move: (doc: CheerioAPI) => doc('#t').replaceWith(doc('#t')),
+      },
+    ])('should keep the document unchanged when we $name', ({ move }) => {
+      const doc = load(cyclicHtml);
+      const section = doc('section')[0];
+      const target = doc('#t')[0];
+
+      move(doc);
+
+      expect(doc('body').html()).toBe(cyclicHtml);
+      expect(doc('#t')[0]).toBe(target);
+      expect(target.parent).toBe(section);
+    });
+
+    it('should still insert valid content alongside a cyclic node', () => {
+      const doc = load(cyclicHtml);
+
+      doc('#t').append(doc('div'), '<i>ok</i>');
+
+      expect(doc('body').html()).toBe(
+        '<div><section><p id="t">x<i>ok</i></p></section></div>',
+      );
+    });
+
+    it('should keep the target when replacement content is cyclic', () => {
+      const doc = load(cyclicHtml);
+      const target = doc('#t')[0];
+
+      doc('#t').replaceWith(doc('div'));
+
+      expect(doc('body').html()).toBe(cyclicHtml);
+      expect(doc('#t')[0]).toBe(target);
+    });
+
+    it('should keep every sibling when replacing a node with itself', () => {
+      const doc = load('<i id="a"></i><i id="b"></i><i id="c"></i>');
+      const b = doc('#b')[0];
+
+      doc('#b').replaceWith(doc('#b'));
+
+      expect(doc('body').html()).toBe(
+        '<i id="a"></i><i id="b"></i><i id="c"></i>',
+      );
+      expect(doc('#b')[0]).toBe(b);
+    });
+
+    it('should still clone and move existing nodes for legal targets', () => {
+      const doc = load('<div id="a"><p id="in">x</p></div><p id="out">y</p>');
+
+      doc('p').append(doc('#a'));
+
+      // The first target receives a clone of the content...
+      expect(doc('#in').children('div')).toHaveLength(1);
+      // ... and the original node moves into the last (legal) target.
+      expect(doc('#out').children('div')).toHaveLength(1);
+      expect(doc('#out').children('div')[0].attribs['id']).toBe('a');
+    });
+  });
+
   describe('.wrap', () => {
     it('(Cheerio object) : should insert the element and add selected element(s) as its child', () => {
       const $redFruits = $('<div class="red-fruits"></div>');
