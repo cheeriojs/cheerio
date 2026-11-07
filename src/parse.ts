@@ -44,6 +44,15 @@ export function getParse(
       return parser(content, options, isDocument, context);
     }
 
+    // `load($.root().get())` passes a document in an array: use it as the root instead of moving it below a new one.
+    if (
+      Array.isArray(content) &&
+      content.length === 1 &&
+      checkIsDocument(content[0])
+    ) {
+      content = content[0];
+    }
+
     const doc = content as AnyNode | AnyNode[] | Document;
 
     if (!Array.isArray(doc) && checkIsDocument(doc)) {
