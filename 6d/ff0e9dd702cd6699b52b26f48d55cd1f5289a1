@@ -1,0 +1,25 @@
+package-lock.json
+  s_84372c3760739d::t_1b7438b6e215d8 13
+package.json
+  s_84372c3760739d::t_0328c23be1cc74 114
+src/api/traversing.spec.ts
+  s_84372c3760739d::t_aab505e208d851 1875-1897
+src/api/traversing.ts
+  s_84372c3760739d::t_4b75f3698f4add 8,30-41,224,375,731-759,763,769,774-777,942-948,1029
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "9717d23a0a95b06eecb5365f7b70f7fa4f7edfa5",
+  "prompts": {},
+  "sessions": {
+    "s_84372c3760739d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18e3f-5c16-76c1-b988-9ddfa6cadebb",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}

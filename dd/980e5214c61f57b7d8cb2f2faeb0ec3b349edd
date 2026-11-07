@@ -1,0 +1,87 @@
+src/api/manipulation.ts
+  s_2b2927e29e45c5::t_1a381c5e12b2d6 267,269-272,274,306,308-311,313
+  s_2b2927e29e45c5::t_1a0ffb5f9320b4 190,192-193
+  s_98f76d2b6bcb24::t_eae2dcc0fdcc21 132,175-177,179-180,189,653-656,740,780,794-796,798,813,871,925-926,928,943
+  s_2b2927e29e45c5::t_711358c3a94cbd 650,743-748,751,788-791,797,874-879,882,919-921,927
+  s_2b2927e29e45c5::t_28cebf7e5f1c6d 118,154,165,178,191,717,749,848,880
+  s_98abc3499f7493::t_df728d36184b5f 199
+  s_2b2927e29e45c5::t_766866d35fd7a7 784-787,915-918
+  s_2b2927e29e45c5::t_2face2278383f5 922
+  s_2b2927e29e45c5::t_b677d9923bfdf5 133-136,138
+  s_462030cdb84388::t_25351acf824486 77-91,93-96,102,119-122,137,155-156,166,183,197-198,718-721,750,849-852,881
+  s_9f467b70bfea7d::t_758415485a746d 181-182,184-185,273,312,342-343,370-371
+  s_462030cdb84388::t_97c8e932345fe8 92
+src/api/manipulation.spec.ts
+  s_095ed41ef0b287::t_823b700b3d2220 2299
+  s_9f467b70bfea7d::t_bdd5d4707e6ec2 2372,2375,2377,2387
+  s_2b2927e29e45c5::t_7100dc16280473 2349-2352,2356,2359-2363,2365-2368
+  s_9f467b70bfea7d::t_d8605d9177ee02 2394
+  s_173ca9ea90a33e::t_83e89550a7d355 2187-2298
+  s_2b2927e29e45c5::t_0b1f1bd5ebe98a 2300-2348,2355,2357,2371,2374,2376,2378-2385,2388,2390-2392,2395-2396
+  s_462030cdb84388::t_2e170b33285f4a 2373,2386,2389,2393
+  s_2b2927e29e45c5::t_a04e41a7e8ca79 2353-2354,2358,2364,2369-2370
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a8ef39b7440102231b84bbcc4c5fb963c29dc0eb",
+  "prompts": {},
+  "sessions": {
+    "s_095ed41ef0b287": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a103bb-3f62-7a10-89c3-d919fc5e30b6",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    },
+    "s_173ca9ea90a33e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "707c2ba5-c81c-46be-ad9b-127e1a683e6c",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    },
+    "s_2b2927e29e45c5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "66ddd3a8-b6f1-437d-90bd-4d4e1b571fc8",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": null
+    },
+    "s_462030cdb84388": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2d5cd2a4-cf8a-4f04-940c-542ea623cb7f",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": null
+    },
+    "s_98abc3499f7493": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a103bb-669a-74b3-b59e-3acc3bc180fe",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    },
+    "s_98f76d2b6bcb24": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18e53-39d5-7582-97c6-615c0ee221db",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    },
+    "s_9f467b70bfea7d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7aebaac1-9afc-4af6-b611-4466a00f5fa4",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": null
+    }
+  }
+}
