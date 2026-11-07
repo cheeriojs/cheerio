@@ -627,7 +627,7 @@ export function after<T extends AnyNode>(
   const lastIdx = this.length - 1;
 
   return domEach(this, (el, i) => {
-    if (!(hasChildren(el) && el.parent)) {
+    if (!el.parent) {
       return;
     }
 
@@ -640,7 +640,11 @@ export function after<T extends AnyNode>(
 
     const domSrc =
       typeof elems[0] === 'function'
-        ? elems[0].call(el, i, this._render(el.children))
+        ? elems[0].call(
+            el,
+            i,
+            this._render(hasChildren(el) ? el.children : [el]),
+          )
         : (elems as BasicAcceptedElems<AnyNode>[]);
 
     const dom = this._makeDomArray(domSrc, i < lastIdx);
@@ -739,7 +743,7 @@ export function before<T extends AnyNode>(
   const lastIdx = this.length - 1;
 
   return domEach(this, (el, i) => {
-    if (!(hasChildren(el) && el.parent)) {
+    if (!el.parent) {
       return;
     }
 
@@ -752,7 +756,11 @@ export function before<T extends AnyNode>(
 
     const domSrc =
       typeof elems[0] === 'function'
-        ? elems[0].call(el, i, this._render(el.children))
+        ? elems[0].call(
+            el,
+            i,
+            this._render(hasChildren(el) ? el.children : [el]),
+          )
         : (elems as BasicAcceptedElems<AnyNode>[]);
 
     const dom = this._makeDomArray(domSrc, i < lastIdx);
