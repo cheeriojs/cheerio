@@ -318,4 +318,28 @@ describe('$.extract', () => {
     const map = Object.create({ red: '.red' }) as Record<string, string>;
     expect($.extract(map)).toStrictEqual({});
   });
+
+  it('should support own properties named __proto__', () => {
+    const $ = load('<div><p>example</p></div>');
+
+    const map1 = JSON.parse('{"__proto__":"p"}');
+    const res1 = $.extract(map1);
+    expect(Object.hasOwn(res1, '__proto__')).toBe(true);
+    expect(res1).toHaveProperty('__proto__', 'example');
+    expect(Object.getPrototypeOf(res1)).toBe(Object.prototype);
+
+    const map2 = JSON.parse('{"__proto__":["p"]}');
+    const res2 = $.extract(map2);
+    expect(Object.hasOwn(res2, '__proto__')).toBe(true);
+    expect(res2).toHaveProperty('__proto__', ['example']);
+    expect(Object.getPrototypeOf(res2)).toBe(Object.prototype);
+
+    const map3 = JSON.parse(
+      '{"__proto__":{"selector":"div","value":{"sub":"p"}}}',
+    );
+    const res3 = $.extract(map3);
+    expect(Object.hasOwn(res3, '__proto__')).toBe(true);
+    expect(res3).toHaveProperty('__proto__', { sub: 'example' });
+    expect(Object.getPrototypeOf(res3)).toBe(Object.prototype);
+  });
 });
