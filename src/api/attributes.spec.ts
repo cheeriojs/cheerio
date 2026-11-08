@@ -194,6 +194,43 @@ describe('$(...)', () => {
       expect($xml.attr('checked')).toBe('checked');
       expect($xml.attr('disabled')).toBe('yes');
     });
+
+    it('(key) : should get attribute with uppercase name in HTML mode', () => {
+      const $html = load('<div ID="fruit" CLASS="apple" data-Foo="bar"></div>')(
+        'div',
+      );
+      expect($html.attr('ID')).toBe('fruit');
+      expect($html.attr('CLASS')).toBe('apple');
+      expect($html.attr('id')).toBe('fruit');
+      expect($html.attr('class')).toBe('apple');
+      expect($html.attr('data-foo')).toBe('bar');
+    });
+
+    it('(key) : should preserve case in xmlMode and not lowercase', () => {
+      const $xml = load('<div ID="fruit" CLASS="apple"></div>', {
+        xmlMode: true,
+      })('div');
+      expect($xml.attr('ID')).toBe('fruit');
+      expect($xml.attr('CLASS')).toBe('apple');
+      expect($xml.attr('id')).toBeUndefined();
+      expect($xml.attr('class')).toBeUndefined();
+    });
+
+    it('(key, value) : should set attribute with uppercase name in HTML mode without duplicate keys', () => {
+      const $html = load('<div ID="fruit"></div>')('div');
+      $html.attr('ID', 'apple');
+      expect($html.attr('id')).toBe('apple');
+      expect($html.attr('ID')).toBe('apple');
+      expect(Object.keys($html[0].attribs)).toEqual(['id']);
+    });
+
+    it('(key, function) : should pass the current value and set with uppercase name in HTML mode', () => {
+      const $html = load('<div ID="fruit"></div>')('div');
+      $html.attr('ID', (_i, current) => `${current}!`);
+      expect($html.attr('id')).toBe('fruit!');
+      expect($html.attr('ID')).toBe('fruit!');
+      expect(Object.keys($html[0].attribs)).toEqual(['id']);
+    });
   });
 
   describe('.prop', () => {
@@ -881,6 +918,14 @@ describe('$(...)', () => {
       $body.removeAttr('class');
 
       expect($text('body').html()).toBe(mixedText);
+    });
+
+    it('(key) : should remove attribute with uppercase name in HTML mode', () => {
+      const $html = load('<div ID="fruit" CLASS="apple"></div>')('div');
+      $html.removeAttr('ID');
+      expect($html.attr('ID')).toBeUndefined();
+      expect($html.attr('id')).toBeUndefined();
+      expect($html.attr('CLASS')).toBe('apple');
     });
   });
 

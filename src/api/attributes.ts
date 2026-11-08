@@ -64,6 +64,14 @@ function getAttr(
     return elem.attribs;
   }
 
+  /*
+   * In HTML mode, attribute names are case-insensitive, so look them up
+   * case-insensitively to match the parser's lowercased attribute names.
+   */
+  if (!xmlMode) {
+    name = name.toLowerCase();
+  }
+
   if (Object.hasOwn(elem.attribs, name)) {
     // Get the (decoded) attribute
     return !xmlMode && rboolean.test(name) ? name : elem.attribs[name];
@@ -198,26 +206,32 @@ export function attr<T extends AnyNode>(
 ): string | Cheerio<T> | undefined | Record<string, string> {
   // Set the value (with attr map support)
   if (typeof name === 'object' || value !== undefined) {
+    const { xmlMode } = this.options;
+
     if (typeof value === 'function') {
       if (typeof name !== 'string') {
         throw new TypeError('Bad combination of arguments.');
       }
+      const attrName = xmlMode ? name : name.toLowerCase();
       return domEach(this, (el, i) => {
-        if (isTag(el)) setAttr(el, name, value.call(el, i, el.attribs[name]));
+        if (isTag(el)) {
+          setAttr(el, attrName, value.call(el, i, el.attribs[attrName]));
+        }
       });
     }
+
     return domEach(this, (el) => {
       if (!isTag(el)) return;
 
       if (typeof name === 'object') {
         for (const [objName, objValue] of Object.entries(name)) {
-          setAttr(el, objName, objValue);
+          setAttr(el, xmlMode ? objName : objName.toLowerCase(), objValue);
         }
       } else {
         if (typeof name !== 'string') {
           throw new TypeError('Bad combination of arguments.');
         }
-        setAttr(el, name, value ?? null);
+        setAttr(el, xmlMode ? name : name.toLowerCase(), value ?? null);
       }
     });
   }
@@ -885,11 +899,14 @@ export function removeAttr<T extends AnyNode>(
   this: Cheerio<T>,
   name: string,
 ): Cheerio<T> {
+  const { xmlMode } = this.options;
   const attrNames = splitNames(name);
 
   for (const attrName of attrNames) {
     domEach(this, (elem) => {
-      if (isTag(elem)) removeAttribute(elem, attrName);
+      if (isTag(elem)) {
+        removeAttribute(elem, xmlMode ? attrName : attrName.toLowerCase());
+      }
     });
   }
 
