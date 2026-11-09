@@ -84,8 +84,15 @@ export function serializeArray<T extends AnyNode>(
       const $elem = this._make(elem);
       const name = $elem.attr('name');
       if (!name) return [];
-      // If there is no value set (e.g. `undefined`, `null`), then default value to empty
-      const value = $elem.val() ?? '';
+      const value = $elem.val();
+      // A select with no enabled selected option is not a successful control.
+      // Other elements without a value (e.g. an input without a `value`
+      // attribute) default to the empty string.
+      const valueString =
+        value == null && isTag(elem) && elem.name === 'select'
+          ? null
+          : (value ?? '');
+      if (valueString === null) return [];
 
       // If we have an array of values (e.g. `<select multiple>`), return an array of key/value pairs
       if (Array.isArray(value)) {
@@ -98,7 +105,7 @@ export function serializeArray<T extends AnyNode>(
         );
       }
       // Otherwise (e.g. `<input type="text">`, return only one key/value pair
-      return { name, value: value.replace(rCRLF, '\r\n') };
+      return { name, value: valueString.replace(rCRLF, '\r\n') };
     })
     .toArray();
 }
