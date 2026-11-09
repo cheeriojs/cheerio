@@ -821,7 +821,9 @@ export function val<T extends AnyNode>(
         return this;
       }
 
-      const option = this.find('option:selected');
+      // Disabled options and options in a disabled optgroup are not successful
+      // controls, so they contribute no value.
+      const option = this.find('option:selected:enabled');
 
       return this.attr('multiple')
         ? option.toArray().map((el) => text(el.children))
