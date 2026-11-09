@@ -39,6 +39,22 @@ describe('$(...)', () => {
       expect($('form#disabled').serializeArray()).toStrictEqual([]);
     });
 
+    it('() : should not get disabled selected options', () => {
+      const $form = cheerio.load(
+        '<form><select multiple name="s"><option value="a" selected disabled>a</option><optgroup disabled><option value="b" selected>b</option></optgroup><option value="c" selected>c</option></select></form>',
+      );
+      expect($form('form').serializeArray()).toStrictEqual([
+        { name: 's', value: 'c' },
+      ]);
+    });
+
+    it('() : should skip a select with only a disabled selected option', () => {
+      const $form = cheerio.load(
+        '<form><select name="s"><option value="a" selected disabled>a</option></select></form>',
+      );
+      expect($form('form').serializeArray()).toStrictEqual([]);
+    });
+
     it('() : should not get form controls with the wrong type', () => {
       expect($('form#submit').serializeArray()).toStrictEqual([
         {
@@ -142,6 +158,13 @@ describe('$(...)', () => {
 
     it('() : should not get disabled form controls', () => {
       expect($('form#disabled').serialize()).toBe('');
+    });
+
+    it('() : should not get disabled selected options', () => {
+      const $form = cheerio.load(
+        '<form><select multiple name="s"><option value="a" selected disabled>a</option><optgroup disabled><option value="b" selected>b</option></optgroup><option value="c" selected>c</option></select></form>',
+      );
+      expect($form('form').serialize()).toBe('s=c');
     });
 
     it('() : should get multiple selected options', () => {
