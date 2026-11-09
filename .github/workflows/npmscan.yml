@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: NPMscan/npmscan-action@de14168f65640a4ed1f0e82ad3ad8c80483d360d # v1.3.0
+      - uses: NPMscan/npmscan-action@e2ff8c953f1a0b536abd70b4479984137c76e1fe # v1.4.1
         with:
           files: |
             package-lock.json
