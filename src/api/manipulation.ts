@@ -649,6 +649,18 @@ export function after<T extends AnyNode>(
 
     const dom = this._makeDomArray(domSrc, i < lastIdx);
 
+    // Inserting a node into itself or its own descendants would corrupt the
+    // tree; skip instead of splicing it in.
+    for (const node of dom) {
+      for (
+        let ancestor: AnyNode | null = el;
+        ancestor;
+        ancestor = ancestor.parent
+      ) {
+        if (ancestor === node) return;
+      }
+    }
+
     // Add element after `this` element
     uniqueSplice(siblings, index + 1, 0, dom, el.parent);
   });
@@ -764,6 +776,18 @@ export function before<T extends AnyNode>(
         : (elems as BasicAcceptedElems<AnyNode>[]);
 
     const dom = this._makeDomArray(domSrc, i < lastIdx);
+
+    // Inserting a node into itself or its own descendants would corrupt the
+    // tree; skip instead of splicing it in.
+    for (const node of dom) {
+      for (
+        let ancestor: AnyNode | null = el;
+        ancestor;
+        ancestor = ancestor.parent
+      ) {
+        if (ancestor === node) return;
+      }
+    }
 
     // Add element before `el` element
     uniqueSplice(siblings, index, 0, dom, el.parent);

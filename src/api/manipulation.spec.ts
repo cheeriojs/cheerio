@@ -1038,6 +1038,19 @@ describe('$(...)', () => {
       expect($('p').html()).toBe(
         'hello<i>+</i><!--marker--><i>+</i><b>world</b>',
       );
+      const children = $('p').contents().toArray();
+      for (let i = 1; i < children.length; i++) {
+        expect(children[i].prev).toBe(children[i - 1]);
+        expect(children[i - 1].next).toBe(children[i]);
+      }
+    });
+
+    it('(elem) : should not insert a node into itself or its descendant', () => {
+      const $ = load('<div><p>1</p></div>');
+      $('p').contents().after($('div'));
+      expect($.html()).toBe(
+        '<html><head></head><body><div><p>1</p></div></body></html>',
+      );
     });
 
     it('(html) : should add element as next sibling', () => {
@@ -1329,6 +1342,11 @@ describe('$(...)', () => {
       expect($('p').html()).toBe(
         '<i>+</i>hello<i>+</i><!--marker--><b>world</b>',
       );
+      const children = $('p').contents().toArray();
+      for (let i = 1; i < children.length; i++) {
+        expect(children[i].prev).toBe(children[i - 1]);
+        expect(children[i - 1].next).toBe(children[i]);
+      }
     });
 
     it('(html) : should add element as previous sibling', () => {
