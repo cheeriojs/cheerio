@@ -1,0 +1,19 @@
+src/api/attributes.ts
+  s_3daa839fda9391::t_85ee79b3582aaf 281-291
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "4488403a9cb7e2490549cc389763ff156e5824dc",
+  "prompts": {},
+  "sessions": {
+    "s_3daa839fda9391": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5914402f-cc0c-4410-a868-66f7aac7c8ca",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
