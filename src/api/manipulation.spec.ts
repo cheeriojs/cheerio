@@ -8,6 +8,43 @@ import {
 } from '../__fixtures__/fixtures.js';
 import { type Cheerio, type CheerioAPI, load } from '../index.js';
 
+/**
+ * Sum the lengths of the arrays searched or spliced while running `fn`, as a
+ * timing-independent measure of the work done on `children` arrays.
+ *
+ * @param fn - The operation to measure.
+ * @returns The total length of the arrays the operation scanned.
+ */
+function countArrayWork(fn: () => unknown): number {
+  const origIndexOf = Array.prototype.indexOf;
+  const origLastIndexOf = Array.prototype.lastIndexOf;
+  const origSplice = Array.prototype.splice;
+  let work = 0;
+
+  Array.prototype.indexOf = function (this: unknown[], ...args) {
+    work += this.length;
+    return origIndexOf.apply(this, args);
+  };
+  Array.prototype.lastIndexOf = function (this: unknown[], ...args) {
+    work += this.length;
+    return origLastIndexOf.apply(this, args);
+  };
+  Array.prototype.splice = function (this: unknown[], ...args) {
+    work += this.length;
+    return origSplice.apply(this, args as [number, number]) as unknown[];
+  };
+
+  try {
+    fn();
+  } finally {
+    Array.prototype.indexOf = origIndexOf;
+    Array.prototype.lastIndexOf = origLastIndexOf;
+    Array.prototype.splice = origSplice;
+  }
+
+  return work;
+}
+
 describe('$(...)', () => {
   let $: CheerioAPI;
   let $fruits: Cheerio<Element>;
@@ -508,6 +545,17 @@ describe('$(...)', () => {
       $elem('#unwrap2 span').unwrap('#unwrap2');
       expect($elem('#unwrap > span').get()).toEqual(abcd);
     });
+
+    it('() : should unwrap many children in linear time', () => {
+      const N = 2000;
+      const $big = load(`<div><ul>${'<li>x</li>'.repeat(N)}</ul></div>`);
+
+      const work = countArrayWork(() => $big('li').unwrap());
+
+      expect($big('div').children('li')).toHaveLength(N);
+      // Pre-fix: about N^2 / 2, 2M for N=2000.
+      expect(work).toBeLessThan(N * 10);
+    });
   });
 
   describe('.wrapAll', () => {
@@ -801,6 +849,18 @@ describe('$(...)', () => {
       $fruits.append($plum);
       expect($plum[0].parent?.type).not.toBe('root');
       expect(parent?.childNodes).not.toContain($plum[0]);
+    });
+
+    it('($(...)) : should move many elements in linear time', () => {
+      const N = 2000;
+      const $big = load(`<ul>${'<li>x</li>'.repeat(N)}</ul><ol></ol>`);
+
+      const work = countArrayWork(() => $big('ol').append($big('li')));
+
+      expect($big('ul').children()).toHaveLength(0);
+      expect($big('ol').children()).toHaveLength(N);
+      // Pre-fix: about N^2 / 2, 2M for N=2000.
+      expect(work).toBeLessThan(N * 10);
     });
   });
 
@@ -1620,6 +1680,29 @@ describe('$(...)', () => {
       $plum.remove();
       expect($plum[0].parent).toBe(null);
       expect(root?.childNodes).not.toContain($plum[0]);
+    });
+
+    it('() : should remove many siblings in linear time', () => {
+      /*
+       * Removing siblings one at a time scans and splices the parent's
+       * `children` for each of them, which is O(n^2) work.
+       */
+      const N = 2000;
+      const $big = load(`<ul>${'<li>x</li><br>'.repeat(N)}</ul>`);
+      const ul = $big('ul')[0];
+
+      const work = countArrayWork(() => $big('br').remove());
+
+      expect(ul.children).toHaveLength(N);
+      expect(
+        ul.children.every(
+          (child, i) =>
+            child.prev === (ul.children[i - 1] ?? null) &&
+            child.next === (ul.children[i + 1] ?? null),
+        ),
+      ).toBe(true);
+      // Pre-fix: about N^2, 4M for N=2000.
+      expect(work).toBeLessThan(N * 10);
     });
   });
 
