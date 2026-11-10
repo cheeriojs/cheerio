@@ -1813,6 +1813,15 @@ describe('$(...)', () => {
   });
 
   describe('.html', () => {
+    it('should preserve template contents when reading innerHTML', () => {
+      const contents = '<b>first</b><!--between--><i>last</i>';
+      const markup = `<template>${contents}</template>`;
+      const doc = load(markup, {}, false);
+
+      expect(doc('template').html()).toBe(contents);
+      expect(doc.html()).toBe(markup);
+    });
+
     it('() : should get the innerHTML for an element', () => {
       expect($fruits.html()).toBe(
         [
@@ -1897,6 +1906,16 @@ describe('$(...)', () => {
   });
 
   describe('.toString', () => {
+    it('should keep a rendered root selection intact', () => {
+      const markup = '<p>first</p><p>last</p>';
+      const root = load(markup, {}, false).root();
+      const document = root[0];
+
+      expect(root.toString()).toBe(markup);
+      expect(root).toHaveLength(1);
+      expect(root[0]).toBe(document);
+    });
+
     it('() : should get the outerHTML for an element', () => {
       expect($fruits.toString()).toBe(fruits);
     });
