@@ -1032,6 +1032,27 @@ describe('$(...)', () => {
       expect($fruits.after()[0].tagName).toBe('ul');
     });
 
+    it('(html) : should insert after text and comment node targets', () => {
+      const $ = load('<p>hello<!--marker--><b>world</b></p>');
+      $('p').contents().slice(0, 2).after('<i>+</i>');
+      expect($('p').html()).toBe(
+        'hello<i>+</i><!--marker--><i>+</i><b>world</b>',
+      );
+      const children = $('p').contents().toArray();
+      for (let i = 1; i < children.length; i++) {
+        expect(children[i].prev).toBe(children[i - 1]);
+        expect(children[i - 1].next).toBe(children[i]);
+      }
+    });
+
+    it('(elem) : should not insert a node into itself or its descendant', () => {
+      const $ = load('<div><p>1</p></div>');
+      $('p').contents().after($('div'));
+      expect($.html()).toBe(
+        '<html><head></head><body><div><p>1</p></div></body></html>',
+      );
+    });
+
     it('(html) : should add element as next sibling', () => {
       const grape = '<li class="grape">Grape</li>';
       $('.apple').after(grape);
@@ -1162,7 +1183,7 @@ describe('$(...)', () => {
       );
 
       expect($text('body').html()).toBe(
-        '<a>1</a><c>1added</c>TEXT<b>2</b><c>2added</c>',
+        '<a>1</a><c>1added</c>TEXT<c>TEXTadded</c><b>2</b><c>2added</c>',
       );
     });
 
@@ -1315,6 +1336,19 @@ describe('$(...)', () => {
       expect($('#fruits').before()[0].tagName).toBe('ul');
     });
 
+    it('(html) : should insert before text and comment node targets', () => {
+      const $ = load('<p>hello<!--marker--><b>world</b></p>');
+      $('p').contents().slice(0, 2).before('<i>+</i>');
+      expect($('p').html()).toBe(
+        '<i>+</i>hello<i>+</i><!--marker--><b>world</b>',
+      );
+      const children = $('p').contents().toArray();
+      for (let i = 1; i < children.length; i++) {
+        expect(children[i].prev).toBe(children[i - 1]);
+        expect(children[i - 1].next).toBe(children[i]);
+      }
+    });
+
     it('(html) : should add element as previous sibling', () => {
       const grape = '<li class="grape">Grape</li>';
       $('.apple').before(grape);
@@ -1445,7 +1479,7 @@ describe('$(...)', () => {
       );
 
       expect($text('body').html()).toBe(
-        '<c>1added</c><a>1</a>TEXT<c>2added</c><b>2</b>',
+        '<c>1added</c><a>1</a><c>TEXTadded</c>TEXT<c>2added</c><b>2</b>',
       );
     });
 
