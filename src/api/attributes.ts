@@ -22,6 +22,7 @@ const rbrace = /^{[\s\S]*}$|^\[[\s\S]*]$/;
 // Tags whose `href`/`src` is resolved against `baseURI`
 const hrefTags = new Set(['a', 'link']);
 const srcTags = new Set(['img', 'iframe', 'audio', 'video', 'source']);
+const HTML_NAMESPACE = 'http://www.w3.org/1999/xhtml';
 
 /**
  * Gets a node's attribute. For boolean attributes, it will return the value's
@@ -445,7 +446,15 @@ export function prop<T extends AnyNode>(
       case 'tagName':
       case 'nodeName': {
         if (!isTag(el)) return;
-        return el.name.toUpperCase();
+        /*
+         * Only HTML elements in an HTML document are upper-cased. XML documents
+         * and SVG/MathML elements keep the name as written.
+         * See https://dom.spec.whatwg.org/#dom-element-tagname
+         */
+        return this.options.xmlMode ||
+          (el.namespace !== undefined && el.namespace !== HTML_NAMESPACE)
+          ? el.name
+          : el.name.toUpperCase();
       }
 
       case 'href':
