@@ -145,9 +145,15 @@ function _getMatcher<P>(
 }
 
 /** Matcher that adds multiple elements for each entry in the input. */
-const _matcher = _getMatcher((fn: (elem: AnyNode) => Element[], elems) =>
-  elems.toArray().flatMap((elem) => fn(elem)),
-);
+const _matcher = _getMatcher((fn: (elem: AnyNode) => Element[], elems) => {
+  // Same as `elems.toArray().flatMap(fn)`, without the intermediate arrays.
+  const matched: Element[] = [];
+  for (let i = 0; i < elems.length; i++) {
+    const elemMatches = fn(elems[i]);
+    for (const elem of elemMatches) matched.push(elem);
+  }
+  return matched;
+});
 
 /** Matcher that adds at most one element for each entry in the input. */
 const _singleMatcher = _getMatcher(
@@ -615,9 +621,14 @@ export const children: <T extends AnyNode>(
 export function contents<T extends AnyNode>(
   this: Cheerio<T>,
 ): Cheerio<AnyNode> {
-  const elems = this.toArray().flatMap((elem) =>
-    hasChildren(elem) ? elem.children : [],
-  );
+  const elems: AnyNode[] = [];
+  for (let i = 0; i < this.length; i++) {
+    const elem = this[i];
+    if (hasChildren(elem)) {
+      const { children } = elem;
+      for (let j = 0; j < children.length; j++) elems.push(children[j]);
+    }
+  }
   return this._make(elems);
 }
 
