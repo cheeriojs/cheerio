@@ -1906,6 +1906,27 @@ describe('$(...)', () => {
   });
 
   describe('.toString', () => {
+    it('should render nested documents without changing their nodes', () => {
+      const first = load('<b>first</b><!--between-->', {}, false).root()[0];
+      const second = load('<i>last</i>', {}, false).root()[0];
+      const doc = load([first, second]);
+      const root = doc.root();
+      const document = root[0];
+      const children = [...document.children];
+      const markup = '<b>first</b><!--between--><i>last</i>';
+
+      expect(root.toString()).toBe(markup);
+      expect(root.toString()).toBe(markup);
+      expect(doc.html()).toBe(markup);
+      expect(root).toHaveLength(1);
+      expect(root[0]).toBe(document);
+      expect(document.children).toHaveLength(children.length);
+      for (const [index, child] of children.entries()) {
+        expect(document.children[index]).toBe(child);
+        expect(child.parent).toBe(document);
+      }
+    });
+
     it('should keep a rendered root selection intact', () => {
       const markup = '<p>first</p><p>last</p>';
       const root = load(markup, {}, false).root();

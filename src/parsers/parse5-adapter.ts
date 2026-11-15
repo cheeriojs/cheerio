@@ -4,12 +4,7 @@ import {
   isDocument,
   type ParentNode,
 } from 'domhandler';
-import {
-  parse as parseDocument,
-  parseFragment,
-  serialize,
-  serializeOuter,
-} from 'parse5';
+import { parse as parseDocument, parseFragment, serializeOuter } from 'parse5';
 import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';
 import type { InternalOptions } from '../options.js';
 
@@ -53,7 +48,7 @@ export function renderWithParse5(dom: AnyNode | ArrayLike<AnyNode>): string {
   for (let index = 0; index < nodes.length; index += 1) {
     const node = nodes[index];
     if (isDocument(node)) {
-      result += serialize(node, renderOpts);
+      result += renderWithParse5(node.children);
       continue;
     }
     result += serializeOuter(node, renderOpts);
