@@ -237,6 +237,18 @@ describe('$(...)', () => {
     it('() : should include comment nodes', () => {
       expect($('p').contents().last()[0].type).toBe('comment');
     });
+
+    it('() : should skip holes in the selection', () => {
+      const $p = $('p');
+      delete $p[0];
+      expect($p.contents()).toHaveLength(2);
+    });
+
+    it('() : should skip holes in the children', () => {
+      const $p = $('p').first();
+      Reflect.deleteProperty($p[0].children, 0);
+      expect($p.contents()).toHaveLength(2);
+    });
   });
 
   describe('.next', () => {
@@ -746,6 +758,31 @@ describe('$(...)', () => {
       expect($parents[2]).toBe($('#food')[0]);
       expect($parents[3]).toBe($('body')[0]);
       expect($parents[4]).toBe($('html')[0]);
+    });
+  });
+
+  describe('(selection with holes)', () => {
+    beforeEach(() => {
+      $ = load(food);
+    });
+
+    it('should skip holes like a selection without them', () => {
+      const $holes = $('li');
+      delete $holes[1];
+      const $dense = $('.apple, .pear, .carrot, .sweetcorn');
+
+      for (const method of [
+        'parents',
+        'children',
+        'siblings',
+        'prevAll',
+        'nextAll',
+        'contents',
+      ] as const) {
+        expect($holes[method]().toArray()).toStrictEqual(
+          $dense[method]().toArray(),
+        );
+      }
     });
   });
 
