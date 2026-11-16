@@ -2072,5 +2072,47 @@ describe('$(...)', () => {
 
       expect($div.text()).toBe($div.clone().text());
     });
+
+    it.each([false, true])(
+      '() : should preserve sibling traversal in xml mode %s',
+      (xml) => {
+        const $ = load('<ul><li>A</li><li>B</li><li>C</li></ul>', { xml });
+        const $clone = $('li').clone();
+
+        expect($clone.eq(0).next().text()).toBe('B');
+        expect($clone.eq(2).prev().text()).toBe('B');
+        expect($clone.eq(0).nextAll().text()).toBe('BC');
+        expect($clone.eq(2).prevAll().text()).toBe('BA');
+        expect($clone.eq(0).siblings().text()).toBe('BC');
+        expect($clone.filter(':first-child').text()).toBe('A');
+        expect($clone.filter(':last-child').text()).toBe('C');
+        expect($clone.filter(':nth-child(2)').text()).toBe('B');
+
+        $clone.eq(1).remove();
+        expect($clone.eq(0).next().text()).toBe('C');
+        expect($clone.eq(2).prev().text()).toBe('A');
+        expect($('ul').text()).toBe('ABC');
+      },
+    );
+
+    it.each([false, true])(
+      '() : should link cloned text and comment nodes in xml mode %s',
+      (xml) => {
+        const $ = load('<div><i>A</i>text<!--comment--><i>B</i></div>', {
+          xml,
+        });
+        const $source = $('div').contents();
+        const $clone = $source.clone();
+
+        for (const [index, node] of $clone.toArray().entries()) {
+          expect(node).not.toBe($source[index]);
+          expect(node.prev).toBe($clone[index - 1] ?? null);
+          expect(node.next).toBe($clone[index + 1] ?? null);
+        }
+        expect($clone.eq(0).next().text()).toBe('B');
+        expect($clone.eq(3).prev().text()).toBe('A');
+        expect($clone.parent()).toHaveLength(0);
+      },
+    );
   });
 });
