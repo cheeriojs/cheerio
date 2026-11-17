@@ -144,7 +144,7 @@
     "tshy": "^4.1.4",
     "tsx": "^4.23.15",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.72.1",
+    "typescript-eslint": "^8.72.2",
     "vitest": "^5.0.3"
   },
   "engines": {
