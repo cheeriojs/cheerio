@@ -4,7 +4,7 @@ src/api/traversing.ts
   s_0f867ac6807984::t_51261befb38c75 421-422
   s_0f867ac6807984::t_5476c7833c6479 1052
   s_0f867ac6807984::t_a6e59cc256f611 960,963
-  s_8abaa648bbb41c::t_e045d47934cdaa 8,30,55-57,71-73,86,90
+  s_8abaa648bbb41c::t_e045d47934cdaa 8,30,55-57,55-56,71-73,72-73,86,90
   s_0f867ac6807984::t_0687274439b9bf 270-271
   s_8abaa648bbb41c::t_458f54ac0b53e0 33-42
   s_8abaa648bbb41c::t_49db4f4c96ff11 32
@@ -27,6 +27,8 @@ src/api/traversing.spec.ts
   s_8abaa648bbb41c::t_283baefd61f6bb 1895-1900
   s_8abaa648bbb41c::t_b5225f67849574 1945-1946,1948
   s_1f7666512be8a7::t_93a204b08ef16a 1,3,18-22,1880-1884,1886-1888,1911-1919
+  s_1f7666512be8a7::t_d4746394725647 1,3,18-22,1911-1919
+  s_1f7666512be8a7::t_91e4dc41d1f1dc 1883-1884,1886-1888
 package-lock.json
   s_8abaa648bbb41c::t_22fb4874f548dd 13
 ---
@@ -67,6 +69,14 @@ package-lock.json
         "model": "claude-opus-5-5"
       },
       "human_author": null
+    },
+    "s_95767661a1cc85": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "132261f0-671a-41a1-b513-22919685487d",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
     }
   }
 }
