@@ -1,11 +1,24 @@
 src/api/traversing.ts
   s_35d3d662d19105::t_c53c5b67905919 312-313,337-338,344,366
+  s_35d3d662d19105::t_b7e9a14df414e5 312-313,337-338,344,366
+  s_35d3d662d19105::t_71463f3b591e04 312-313,337-338,344,366
+  s_35d3d662d19105::t_c06b6bf364cd4e 312-313,337-338,344,366
+  s_35d3d662d19105::t_adcf35cd8268f1 312-313,337-338,344,366
+  s_35d3d662d19105::t_161aaa64cbe8cf 312-313,337-338,344,366
+  s_35d3d662d19105::t_6b1ead83d4fbfe 312-313,337-338,344,366
+  s_35d3d662d19105::t_b0ec5383dd5070 312-313,337-338,344,366
+  h_c09f8bd1046292 312-313,337-338,344,366
 ---
 {
   "schema_version": "authorship/3.0.0",
   "git_ai_version": "1.7.5",
   "base_commit_sha": "46f9e78a571e8d2f1161e3e0d9a86b1d2207a806",
   "prompts": {},
+  "humans": {
+    "h_c09f8bd1046292": {
+      "author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  },
   "sessions": {
     "s_35d3d662d19105": {
       "agent_id": {
