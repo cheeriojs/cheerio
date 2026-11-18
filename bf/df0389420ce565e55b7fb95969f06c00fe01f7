@@ -1,7 +1,13 @@
 src/api/traversing.spec.ts
   s_35d3d662d19105::t_a7d2cc570c0388 928-943
+  s_35d3d662d19105::t_776a86e326b166 928-943
+  s_35d3d662d19105::t_57e932d17bb75c 928-943
+  s_173ca9ea90a33e::t_4ae766865a9859 928-943
 src/api/traversing.ts
   s_35d3d662d19105::t_a08c82d74db0fa 417-426,432-433,435-440,442,447-458
+  s_35d3d662d19105::t_a46d430ce07b10 417-426,432-433,435-440,442,447-458
+  s_35d3d662d19105::t_9403a592274b68 417-426,432-433,435-440,442,447-458
+  s_173ca9ea90a33e::t_cf1a5454b7b822 417-426,432-433,435-440,442,447-458
 ---
 {
   "schema_version": "authorship/3.0.0",
@@ -9,6 +15,14 @@ src/api/traversing.ts
   "base_commit_sha": "bfdf0389420ce565e55b7fb95969f06c00fe01f7",
   "prompts": {},
   "sessions": {
+    "s_173ca9ea90a33e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "707c2ba5-c81c-46be-ad9b-127e1a683e6c",
+        "model": "unknown"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    },
     "s_35d3d662d19105": {
       "agent_id": {
         "tool": "claude",
