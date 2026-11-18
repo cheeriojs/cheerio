@@ -1,0 +1,21 @@
+src/api/traversing.spec.ts
+  s_35d3d662d19105::t_d212cadefca502 599-600,1130-1152
+src/api/traversing.ts
+  s_35d3d662d19105::t_c596e6fe179c02 522,556,601-617,619-624,647-656,658-663
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "4f1c5b60981bb91c3ac71d0f5287abf2bba9d223",
+  "prompts": {},
+  "sessions": {
+    "s_35d3d662d19105": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cf697223-3393-4e56-bd79-f8c1d20ae706",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
