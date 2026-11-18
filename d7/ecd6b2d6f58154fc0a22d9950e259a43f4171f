@@ -1,0 +1,70 @@
+package-lock.json
+  s_8abaa648bbb41c::t_22fb4874f548dd 13
+package.json
+  s_8abaa648bbb41c::t_eb0c6ce83e7ee1 114
+src/api/traversing.ts
+  s_0f867ac6807984::t_0687274439b9bf 253-254
+  s_8abaa648bbb41c::t_e045d47934cdaa 8,30,47-49,55-56,69,73
+  s_0f867ac6807984::t_601921157d371a 761-762,765,771
+  s_0f867ac6807984::t_c495acfbbf99b1 51-54,75
+  s_8abaa648bbb41c::t_49db4f4c96ff11 32
+  s_0f867ac6807984::t_51261befb38c75 404-405
+  s_0f867ac6807984::t_a6e59cc256f611 936,939
+  s_0f867ac6807984::t_5476c7833c6479 1028
+  s_8abaa648bbb41c::t_125e67f0687a86 57-68,70-72,74
+  s_8abaa648bbb41c::t_458f54ac0b53e0 33-42
+  s_8abaa648bbb41c::t_5af941c5c29c44 45-46,50
+  s_173ca9ea90a33e::t_17a43ed84a1301 43-44,778-787
+src/api/traversing.spec.ts
+  s_8abaa648bbb41c::t_4ece70b32359c7 1923
+  s_8abaa648bbb41c::t_94811356d9d031 1264-1271
+  s_0f867ac6807984::t_db2c6d0a043c6d 362,368-369
+  s_0f867ac6807984::t_f77d6a4fb1fb70 1879-1881
+  s_0f867ac6807984::t_0e9a897ad15b53 1907
+  s_0f867ac6807984::t_b2ace3e1b44e71 1898-1906,1908-1918,1920,1925-1926
+  s_0f867ac6807984::t_5092714e732b02 1919
+  s_8abaa648bbb41c::t_283baefd61f6bb 1882-1887
+  s_8abaa648bbb41c::t_f65f22159cc319 890-891
+  s_8abaa648bbb41c::t_b5225f67849574 1921-1922,1924
+  s_95767661a1cc85::t_8c5b3b53126d44 1873-1874
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d7ecd6b2d6f58154fc0a22d9950e259a43f4171f",
+  "prompts": {},
+  "sessions": {
+    "s_0f867ac6807984": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bb914a07-c0d8-481e-80ce-45164f78ed40",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    },
+    "s_173ca9ea90a33e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "707c2ba5-c81c-46be-ad9b-127e1a683e6c",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    },
+    "s_8abaa648bbb41c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2e789cca-9448-491d-bcaa-a3488f4673b4",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": null
+    },
+    "s_95767661a1cc85": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "132261f0-671a-41a1-b513-22919685487d",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
