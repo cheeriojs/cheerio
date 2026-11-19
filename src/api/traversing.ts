@@ -35,12 +35,24 @@ const reLeadingCombinator = /^(?:[>+~<]|\|\|)/;
 // Top-level elements have no element parent, even with a custom :root pseudo.
 const documentChild = ':not(* > *)';
 
+// Css-what parses these arguments as selectors and the others as raw text.
+const selectorArgumentPseudos = new Set([
+  'has',
+  'not',
+  'matches',
+  'is',
+  'where',
+  'host',
+  'host-context',
+]);
+const reNameEscape = /\\(?:([\da-f]{1,6})\s?|(\s|.))/gi;
+
 /*
  * Consume escapes, comments, and quoted values before looking for a selector
  * boundary. Keep the rest of the source for cheerio-select to parse as usual.
  */
 const reSelectorBoundaries =
-  /\\(?:[\da-f]{1,6}[ \t\n\r\f]?|[\s\S])|\/\*[\s\S]*?\*\/|"(?:\\[\s\S]|[^"\\])*"|'(?:\\[\s\S]|[^'\\])*'|(:i?contains\()|([()[\]])|([,>+~<:]|\|\||[ \t\n\r\f])/gi;
+  /\\(?:[\da-f]{1,6}[ \t\n\r\f]?|[\s\S])|\/\*[\s\S]*?\*\/|"(?:\\[\s\S]|[^"\\])*"|'(?:\\[\s\S]|[^'\\])*'|(:{1,2})((?:\\(?:[\da-f]{1,6}\s?|\s|.)|[\w\u{B0}-\u{10FFFF}-])+)\(|([()[\]])|([,>+~<:]|\|\||[ \t\n\r\f])/giu;
 
 /**
  * Find separators outside attribute selectors and functional pseudo-classes.
@@ -59,12 +71,23 @@ function* selectorBoundaries(
   let token: RegExpExecArray | null;
 
   while ((token = tokens.exec(selector))) {
-    const [, textPseudo, bracket, separator] = token;
+    const [, pseudoPrefix, pseudoName, bracket, separator] = token;
     const { index } = token;
     if (inAttribute) {
       if (bracket === ']') inAttribute = false;
-    } else if (textPseudo) {
+    } else if (pseudoPrefix) {
       if (depth === 0) yield [':', index];
+      const name = pseudoName
+        .replace(reNameEscape, (_, hex: string | undefined, char: string) => {
+          if (hex === undefined) return char;
+          const code = Number.parseInt(hex, 16);
+          return String.fromCodePoint(code <= 0x10_ff_ff ? code : 0xff_fd);
+        })
+        .toLowerCase();
+      if (pseudoPrefix === ':' && selectorArgumentPseudos.has(name)) {
+        depth += 1;
+        continue;
+      }
       textTokens.lastIndex = tokens.lastIndex;
       let parentheses = 1;
       while (parentheses && (token = textTokens.exec(selector))) {

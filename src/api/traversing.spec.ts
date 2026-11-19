@@ -206,6 +206,27 @@ describe('$(...)', () => {
       ).toHaveLength(2);
     });
 
+    it.each(['label', String.raw`l\61 bel`])(
+      'should keep custom pseudo arguments intact (%s)',
+      (name) => {
+        const value = "x'('),:scope y";
+        const q = load('<a/><b/>', {
+          xmlMode: true,
+          pseudos: { label: (_element, argument) => argument === value },
+        });
+        expect(q(`a:${name}(${value})`)).toHaveLength(1);
+        expect(q(`a:${name}(${value}), :scope > b`)).toHaveLength(2);
+      },
+    );
+
+    it.each(['not', String.raw`n\6ft`])(
+      'should respect quoted attribute values in nested selectors (%s)',
+      (name) => {
+        const q = load('<a/><a title="("/><b/>', { xmlMode: true });
+        expect(q(`a:${name}([title="("]), :scope > b`)).toHaveLength(2);
+      },
+    );
+
     it('should treat unquoted brackets in :contains() as text', () => {
       const q = load('<a id="text">[</a><b id="child"/>', { xmlMode: true });
       expect(
