@@ -38,7 +38,7 @@ const reLeadingCombinator = /^(?:[>+~<]|\|\|)/;
  * boundary. Keep the rest of the source for cheerio-select to parse as usual.
  */
 const reSelectorBoundaries =
-  /\\(?:[\da-f]{1,6}[ \t\n\r\f]?|[\s\S])|\/\*[\s\S]*?\*\/|"(?:\\[\s\S]|[^"\\])*"|'(?:\\[\s\S]|[^'\\])*'|([()[\]])|([,>+~<:]|\|\||[ \t\n\r\f])/gi;
+  /\\(?:[\da-f]{1,6}[ \t\n\r\f]?|[\s\S])|\/\*[\s\S]*?\*\/|"(?:\\[\s\S]|[^"\\])*"|'(?:\\[\s\S]|[^'\\])*'|(:i?contains\()|([()[\]])|([,>+~<:]|\|\||[ \t\n\r\f])/gi;
 
 /**
  * Find separators outside attribute selectors and functional pseudo-classes.
@@ -51,16 +51,30 @@ function* selectorBoundaries(
 ): Generator<[string, number], void> {
   let inAttribute = false;
   let depth = 0;
+  let textArgumentDepth = 0;
 
-  for (const { 1: bracket, 2: separator, index } of selector.matchAll(
-    reSelectorBoundaries,
-  )) {
-    if (bracket === '[') inAttribute = true;
-    else if (bracket === ']') inAttribute = false;
-    else if (!inAttribute) {
-      if (bracket === '(') depth += 1;
-      else if (bracket === ')') depth -= 1;
-      else if (depth === 0 && separator) yield [separator, index];
+  for (const {
+    1: textPseudo,
+    2: bracket,
+    3: separator,
+    index,
+  } of selector.matchAll(reSelectorBoundaries)) {
+    if (inAttribute) {
+      if (bracket === ']') inAttribute = false;
+    } else if (textPseudo) {
+      if (depth === 0) yield [':', index];
+      depth += 1;
+      // Unquoted text in :contains() can include square brackets.
+      textArgumentDepth ||= depth;
+    } else if (bracket === '(') {
+      depth += 1;
+    } else if (bracket === ')') {
+      if (depth === textArgumentDepth) textArgumentDepth = 0;
+      depth -= 1;
+    } else if (textArgumentDepth === 0 && bracket === '[') {
+      inAttribute = true;
+    } else if (depth === 0 && separator) {
+      yield [separator, index];
     }
   }
 }

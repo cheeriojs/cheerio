@@ -180,6 +180,15 @@ describe('$(...)', () => {
       expect(q(':scope > item:eq(1)').attr('id')).toBe('b');
     });
 
+    it('should treat unquoted brackets in :contains() as text', () => {
+      const q = load('<a id="text">[</a><b id="child"/>', { xmlMode: true });
+      expect(
+        q('a:contains([), :scope > b')
+          .map((_, el) => q(el).attr('id'))
+          .get(),
+      ).toStrictEqual(['text', 'child']);
+    });
+
     it('should consider all document descendants for a scoped positional filter', () => {
       const q = load('<section><item id="nested"/></section><item/>', {
         xmlMode: true,
