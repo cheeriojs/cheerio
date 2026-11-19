@@ -206,6 +206,20 @@ describe('$(...)', () => {
       ).toHaveLength(2);
     });
 
+    it('should preserve an escaped pseudo name without an argument', () => {
+      const q = load('<a/><b/><c><a/></c>', { xmlMode: true });
+      expect(
+        q<Element, string>(String.raw`:scope > :first-\63 hild, :scope > b`)
+          .toArray()
+          .map((el) => el.name),
+      ).toStrictEqual(['a', 'b']);
+    });
+
+    it('should preserve an escaped parenthesis in quoted pseudo text', () => {
+      const q = load('<a>(</a><b/>', { xmlMode: true });
+      expect(q(String.raw`a:contains("\("), :scope > b`)).toHaveLength(2);
+    });
+
     it.each(['label', String.raw`l\61 bel`])(
       'should keep custom pseudo arguments intact (%s)',
       (name) => {

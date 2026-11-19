@@ -52,7 +52,7 @@ const reNameEscape = /\\(?:([\da-f]{1,6})\s?|(\s|.))/gi;
  * boundary. Keep the rest of the source for cheerio-select to parse as usual.
  */
 const reSelectorBoundaries =
-  /\\(?:[\da-f]{1,6}[ \t\n\r\f]?|[\s\S])|\/\*[\s\S]*?\*\/|"(?:\\[\s\S]|[^"\\])*"|'(?:\\[\s\S]|[^'\\])*'|(:{1,2})((?:\\(?:[\da-f]{1,6}\s?|\s|.)|[\w\u{B0}-\u{10FFFF}-])+)\(|([()[\]])|([,>+~<:]|\|\||[ \t\n\r\f])/giu;
+  /\\(?:[\da-f]{1,6}[ \t\n\r\f]?|[\s\S])|\/\*[\s\S]*?\*\/|"(?:\\[\s\S]|[^"\\])*"|'(?:\\[\s\S]|[^'\\])*'|(:{1,2})((?:\\(?:[\da-f]{1,6}\s?|[\s\S])|[\w\u{B0}-\u{10FFFF}-])+)?|([()[\]])|([,>+~<]|\|\||[ \t\n\r\f])/giu;
 
 /**
  * Find separators outside attribute selectors and functional pseudo-classes.
@@ -77,6 +77,12 @@ function* selectorBoundaries(
       if (bracket === ']') inAttribute = false;
     } else if (pseudoPrefix) {
       if (depth === 0) yield [':', index];
+      /*
+       * Finish the name before looking for "(" so the regex cannot backtrack
+       * through equivalent spellings of an escape in a non-functional pseudo.
+       */
+      if (!pseudoName || selector[tokens.lastIndex] !== '(') continue;
+      tokens.lastIndex += 1;
       const name = pseudoName
         .replace(reNameEscape, (_, hex: string | undefined, char: string) => {
           if (hex === undefined) return char;
