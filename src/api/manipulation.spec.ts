@@ -1927,6 +1927,18 @@ describe('$(...)', () => {
       }
     });
 
+    it('should render deeply nested documents', () => {
+      let document = load('<p>first</p>', {}, false).root()[0];
+      for (let depth = 0; depth < 20_000; depth += 1) {
+        const empty = load('', {}, false).root()[0];
+        document = load([document, empty], {}, false).root()[0];
+      }
+
+      const render = () => load(document).root().toString();
+      expect(render).not.toThrow();
+      expect(render()).toBe('<p>first</p>');
+    });
+
     it('should keep a rendered root selection intact', () => {
       const markup = '<p>first</p><p>last</p>';
       const root = load(markup, {}, false).root();

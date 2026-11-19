@@ -48,7 +48,18 @@ export function renderWithParse5(dom: AnyNode | ArrayLike<AnyNode>): string {
   for (let index = 0; index < nodes.length; index += 1) {
     const node = nodes[index];
     if (isDocument(node)) {
-      result += renderWithParse5(node.children);
+      // A document renders as its children, nested documents included.
+      const stack: AnyNode[] = [node];
+      for (let next = stack.pop(); next; next = stack.pop()) {
+        if (isDocument(next)) {
+          const { children } = next;
+          for (let child = children.length - 1; child >= 0; child -= 1) {
+            stack.push(children[child]);
+          }
+        } else {
+          result += serializeOuter(next, renderOpts);
+        }
+      }
       continue;
     }
     result += serializeOuter(node, renderOpts);
