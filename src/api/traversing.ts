@@ -26,6 +26,144 @@ import type { AcceptedFilters, FilterFunction } from '../types.js';
 import { domEach, isCheerio } from '../utils.js';
 
 const reContextSelector = /^\s*(?:[+~]|:scope\b)/;
+const reLeadingChildCombinator = /^\s*>/;
+const reLeadingChildCombinatorWithSpaces = /^\s*>\s*/;
+const reLeadingWhitespace = /^\s/;
+
+/**
+ * Split a selector list on top-level commas, ignoring commas inside
+ * parentheses, brackets, and quotes.
+ *
+ * @param selector - The selector list to split.
+ * @returns The individual selectors.
+ */
+function splitSelectorList(selector: string): string[] {
+  const parts: string[] = [];
+  let depth = 0;
+  let quote = '';
+  let start = 0;
+
+  for (let i = 0; i < selector.length; i++) {
+    const char = selector[i];
+
+    if (quote) {
+      quote = char === quote ? '' : quote;
+      continue;
+    }
+
+    if (char === '"' || char === "'") {
+      quote = char;
+      continue;
+    }
+
+    if (char === '(' || char === '[') {
+      depth += 1;
+      continue;
+    }
+
+    if (char === ')' || char === ']') {
+      depth -= 1;
+      continue;
+    }
+
+    if (char === ',' && depth === 0) {
+      parts.push(selector.slice(start, i));
+      start = i + 1;
+    }
+  }
+
+  parts.push(selector.slice(start));
+
+  return parts;
+}
+
+/**
+ * Append `:root` to the first compound selector of `selector`.
+ *
+ * @param selector - The selector whose first compound should be constrained.
+ * @returns The selector with `:root` appended, or `undefined` if the selector
+ *   starts with a combinator.
+ */
+function appendRootToFirstCompound(selector: string): string | undefined {
+  let depth = 0;
+  let quote = '';
+
+  for (let i = 0; i < selector.length; i++) {
+    const char = selector[i];
+
+    if (quote) {
+      quote = char === quote ? '' : quote;
+      continue;
+    }
+
+    if (char === '"' || char === "'") {
+      quote = char;
+      continue;
+    }
+
+    if (char === '(' || char === '[') {
+      depth += 1;
+      continue;
+    }
+
+    if (char === ')' || char === ']') {
+      depth -= 1;
+      continue;
+    }
+
+    if (depth === 0 && '>+~ \t\n\r\f'.includes(char)) {
+      return i === 0
+        ? undefined
+        : `${selector.slice(0, i)}:root${selector.slice(i)}`;
+    }
+  }
+
+  return `${selector}:root`;
+}
+
+/**
+ * Rewrite a selector that starts with `:scope` when the scope is the
+ * document root.
+ *
+ * The selector engine requires the parent of a `>` combinator to be an
+ * element, so `:scope` can never match the document node itself: a query
+ * like `:scope > x` run against the root always returns nothing, even
+ * though the document's children are the elements the user means. When the
+ * document is the scope, a leading `:scope` is equivalent to requiring the
+ * next element to be a direct child of the document, which is exactly what
+ * `:root` expresses — an element whose parent is not an element.
+ *
+ * @param selector - The selector to rewrite.
+ * @returns The selector with a leading `:scope` resolved against the root.
+ */
+function resolveScopeAgainstRoot(selector: string): string {
+  return splitSelectorList(selector)
+    .map((group) => {
+      const trimmed = group.trim();
+
+      if (!trimmed.startsWith(':scope')) return group;
+
+      const rest = trimmed.slice(':scope'.length);
+
+      if (rest === '') return ':root';
+
+      if (reLeadingChildCombinator.test(rest)) {
+        const rewritten = appendRootToFirstCompound(
+          rest.replace(reLeadingChildCombinatorWithSpaces, ''),
+        );
+        return rewritten ?? group;
+      }
+
+      /*
+       * `:scope x` selects the descendants of the document, which is every
+       * element, so the `:scope` prefix can simply be dropped.
+       */
+      if (reLeadingWhitespace.test(rest)) return rest.trim();
+
+      return group;
+    })
+    .join(', ');
+}
 
 /**
  * Get the descendants of each element in the current set of matched elements,
@@ -84,6 +222,19 @@ export function _findBySelector<T extends AnyNode>(
 ): Cheerio<Element> {
   const context = this.toArray();
 
+  /*
+   * If the selector is relative to the scope and the scope is the document
+   * itself, `:scope` can never match: the selector engine only matches
+   * elements, never the document node. Resolve a leading `:scope` against
+   * the document root instead (see `resolveScopeAgainstRoot`).
+   */
+  const resolvedSelector =
+    reContextSelector.test(selector) &&
+    context.length === 1 &&
+    isDocument(context[0])
+      ? resolveScopeAgainstRoot(selector)
+      : selector;
+
   const elems = reContextSelector.test(selector)
     ? context
     : this.children().toArray();
@@ -100,7 +251,7 @@ export function _findBySelector<T extends AnyNode>(
     quirksMode: this.options.quirksMode,
   };
 
-  return this._make(select.select(selector, elems, options, limit));
+  return this._make(select.select(resolvedSelector, elems, options, limit));
 }
 
 /**

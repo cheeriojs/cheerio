@@ -96,6 +96,48 @@ describe('$(...)', () => {
       expect(q('.a').find(':scope')).toHaveLength(1);
     });
 
+    it('should resolve :scope against the document root (#4509)', () => {
+      const q = load(
+        '<collection><id value="a"/><relatedCollections><collection><id value="a1"/></collection></relatedCollections></collection><collection><id value="b"/></collection>',
+        { xmlMode: true },
+        false,
+      );
+      expect(
+        q(':scope > collection > id')
+          .toArray()
+          .map((el) => el.attribs['value']),
+      ).toStrictEqual(['a', 'b']);
+      expect(q(':scope > collection')).toHaveLength(2);
+      expect(q(':scope collection')).toHaveLength(3);
+      /*
+       * The scope is the document, so `:scope` on its own selects the
+       * top-level elements.
+       */
+      expect(q(':scope')).toHaveLength(2);
+      expect(q(':scope > collection, :scope > collection > id')).toHaveLength(
+        4,
+      );
+      // `:scope` keeps working when the scope is an element.
+      expect(
+        q('collection')
+          .find(':scope > id')
+          .toArray()
+          .map((el) => el.attribs['value']),
+      ).toStrictEqual(['a', 'b']);
+    });
+
+    it('should resolve :scope against the document root in document mode (#4509)', () => {
+      const q = load(
+        '<collection><id value="a"/></collection><collection><id value="b"/></collection>',
+        { xmlMode: true },
+      );
+      expect(
+        q(':scope > collection > id')
+          .toArray()
+          .map((el) => el.attribs['value']),
+      ).toStrictEqual(['a', 'b']);
+    });
+
     it('should query case-sensitively when in xml mode', () => {
       const q = load('<caseSenSitive allTheWay>', { xml: true });
       expect(q('caseSenSitive')).toHaveLength(1);
