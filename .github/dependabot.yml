@@ -1,7 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: npm
-    directory: '/'
+    directory: "/"
     schedule:
       interval: daily
     open-pull-requests-limit: 10
@@ -11,22 +11,22 @@ updates:
     groups:
       vitest:
         patterns:
-          - 'vitest'
-          - '@vitest/coverage-*'
+          - "vitest"
+          - "@vitest/coverage-*"
       parse5:
         patterns:
-          - 'parse5'
-          - 'parse5-*'
+          - "parse5"
+          - "parse5-*"
   - package-ecosystem: npm
-    directory: '/website'
+    directory: "/website"
     schedule:
       interval: daily
     open-pull-requests-limit: 4
     versioning-strategy: increase
     cooldown:
       default-days: 7
-  - package-ecosystem: 'github-actions'
-    directory: '/'
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
       interval: daily
     cooldown:
@@ -39,4 +39,4 @@ updates:
       # until the laggard catches up. Keep them in one PR.
       codeql-action:
         patterns:
-          - 'github/codeql-action*'
+          - "github/codeql-action*"

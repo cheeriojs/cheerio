@@ -8,7 +8,7 @@ on:
       - main
   schedule:
     # Weekly on Saturdays
-    - cron: '30 1 * * 6'
+    - cron: "30 1 * * 6"
 
 permissions: read-all
 

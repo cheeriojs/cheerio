@@ -2,10 +2,10 @@
 
 ## Supported Versions
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.x     | ✅ Yes             |
-| < 1.0   | ❌ No              |
+| Version | Supported |
+| ------- | --------- |
+| 1.x     | ✅ Yes    |
+| < 1.0   | ❌ No     |
 
 Only the latest release on the `1.x` branch receives security updates. If you are using an older major version, please upgrade.
 
@@ -52,7 +52,7 @@ Cheerio is an HTML/XML parsing and manipulation library for Node.js. Security is
 
 ### Out of Scope
 
-- Vulnerabilities in applications *using* cheerio that are caused by their own logic (e.g., not sanitizing cheerio output before rendering)
+- Vulnerabilities in applications _using_ cheerio that are caused by their own logic (e.g., not sanitizing cheerio output before rendering)
 - Social engineering attacks against maintainers
 
 ## Related Documents

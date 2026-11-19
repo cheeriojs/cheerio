@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
     inputs:
       reindex:
-        description: 'Start a full Algolia recrawl after deploying'
+        description: "Start a full Algolia recrawl after deploying"
         type: boolean
         default: false
 
@@ -24,7 +24,7 @@ permissions:
 
 # Allow one concurrent deployment
 concurrency:
-  group: 'pages'
+  group: "pages"
   cancel-in-progress: true
 
 jobs:
@@ -41,7 +41,7 @@ jobs:
         with:
           # Use current Node LTS version
           node-version: lts/*
-          cache: 'npm'
+          cache: "npm"
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
