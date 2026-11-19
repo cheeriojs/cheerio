@@ -32,12 +32,7 @@ describe('$(...)', () => {
       el.css('__proto__', 'q');
       expect(el.attr('style')).toBe('color: red; __proto__: q;');
       expect(el.css('__proto__')).toBe('q');
-      expect(el.css()).toStrictEqual(
-        Object.fromEntries([
-          ['color', 'red'],
-          ['__proto__', 'q'],
-        ]),
-      );
+      expect(el.css()).toStrictEqual({ color: 'red', ['__proto__']: 'q' });
     });
 
     it('([prop1, prop2]): should return the specified property values as an object', () => {
