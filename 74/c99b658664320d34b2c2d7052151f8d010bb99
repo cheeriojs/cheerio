@@ -1,0 +1,58 @@
+.github/workflows/zizmor.yml
+  s_bd3143bac9320f::t_c740d3f06b35c4 7
+INCIDENT_RESPONSE.md
+  s_bd3143bac9320f::t_c740d3f06b35c4 17-22,89
+website/src/content/docs/advanced/security.md
+  s_bd3143bac9320f::t_c740d3f06b35c4 2,19,36
+website/src/content/docs/intro.md
+  s_bd3143bac9320f::t_c740d3f06b35c4 2
+.github/dependabot.yml
+  s_bd3143bac9320f::t_c740d3f06b35c4 4,14-15,18-19,21,28-29,42
+website/src/content/docs/advanced/extending-cheerio.md
+  s_bd3143bac9320f::t_c740d3f06b35c4 2
+.github/workflows/sponsors.yml
+  s_bd3143bac9320f::t_c740d3f06b35c4 6,33,48
+.github/workflows/lint.yml
+  s_bd3143bac9320f::t_c740d3f06b35c4 6,29
+website/src/content/blog/2023-02-13-new-website.md
+  s_bd3143bac9320f::t_c740d3f06b35c4 2
+.github/workflows/dependabot-automerge.yml
+  s_bd3143bac9320f::t_c740d3f06b35c4 20,23
+website/src/content/docs/basics/loading.md
+  s_bd3143bac9320f::t_c740d3f06b35c4 2
+.github/workflows/codeql.yml
+  s_bd3143bac9320f::t_c740d3f06b35c4 1,7,12,14,37
+.github/workflows/ci.yml
+  s_bd3143bac9320f::t_c740d3f06b35c4 6,41-42,60
+.github/workflows/scorecard.yml
+  s_bd3143bac9320f::t_c740d3f06b35c4 11
+SECURITY.md
+  s_bd3143bac9320f::t_c740d3f06b35c4 5-8,55
+website/src/content/docs/basics/manipulation.md
+  s_bd3143bac9320f::t_c740d3f06b35c4 2
+.github/workflows/site.yml
+  s_bd3143bac9320f::t_c740d3f06b35c4 14,27,44
+.github/workflows/benchmark.yml
+  s_bd3143bac9320f::t_c740d3f06b35c4 6,18,31
+website/src/content/docs/advanced/configuring-cheerio.md
+  s_bd3143bac9320f::t_c740d3f06b35c4 2,107-108
+  s_bd3143bac9320f::t_80ef8775e6c8c0 106
+website/src/content/blog/2024-08-07-version-1.md
+  s_bd3143bac9320f::t_c740d3f06b35c4 2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "74c99b658664320d34b2c2d7052151f8d010bb99",
+  "prompts": {},
+  "sessions": {
+    "s_bd3143bac9320f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2dc6cf0e-20e7-4ba1-8d4b-1e1f4ff2617a",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
