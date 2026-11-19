@@ -32,6 +32,8 @@ const reSelectorPadding = /^(?:[ \t\n\r\f]+|\/\*[\s\S]*?\*\/)*/;
 const reCssWhitespace = /[ \t\n\r\f]/;
 const reCssComment = /\/\*[\s\S]*?\*\//g;
 const reLeadingCombinator = /^(?:[>+~<]|\|\|)/;
+// Top-level elements have no element parent, even with a custom :root pseudo.
+const documentChild = ':not(* > *)';
 
 /*
  * Consume escapes, comments, and quoted values before looking for a selector
@@ -51,28 +53,30 @@ function* selectorBoundaries(
 ): Generator<[string, number], void> {
   let inAttribute = false;
   let depth = 0;
-  let textArgumentDepth = 0;
+  const tokens = new RegExp(reSelectorBoundaries);
+  // Text pseudos balance parentheses but treat quotes and brackets as text.
+  const textTokens = /\\[\s\S]|[()]/g;
+  let token: RegExpExecArray | null;
 
-  for (const {
-    1: textPseudo,
-    2: bracket,
-    3: separator,
-    index,
-  } of selector.matchAll(reSelectorBoundaries)) {
+  while ((token = tokens.exec(selector))) {
+    const [, textPseudo, bracket, separator] = token;
+    const { index } = token;
     if (inAttribute) {
       if (bracket === ']') inAttribute = false;
     } else if (textPseudo) {
       if (depth === 0) yield [':', index];
-      depth += 1;
-      // Unquoted text in :contains() can include square brackets.
-      textArgumentDepth ||= depth;
-    } else if (bracket === '(') {
-      depth += 1;
-    } else if (bracket === ')') {
-      if (depth === textArgumentDepth) textArgumentDepth = 0;
-      depth -= 1;
-    } else if (textArgumentDepth === 0 && bracket === '[') {
+      textTokens.lastIndex = tokens.lastIndex;
+      let parentheses = 1;
+      while (parentheses && (token = textTokens.exec(selector))) {
+        if (token[0] === '(') parentheses += 1;
+        else if (token[0] === ')') parentheses -= 1;
+      }
+      if (parentheses) return;
+      tokens.lastIndex = textTokens.lastIndex;
+    } else if (bracket === '[') {
       inAttribute = true;
+    } else if (bracket === '(' || bracket === ')') {
+      depth += bracket === '(' ? 1 : -1;
     } else if (depth === 0 && separator) {
       yield [separator, index];
     }
@@ -92,7 +96,7 @@ function resolveScopeGroup(group: string): string {
   const rest = trimmed.slice(':scope'.length);
   const padding = reSelectorPadding.exec(rest)?.[0] ?? '';
   const selector = rest.slice(padding.length);
-  if (!selector) return ':root';
+  if (!selector) return documentChild;
 
   if (selector.startsWith('>')) {
     const tail = selector.slice(1);
@@ -105,7 +109,7 @@ function resolveScopeGroup(group: string): string {
      */
     const boundary = selectorBoundaries(target).next().value;
     const index = boundary ? boundary[1] : target.length;
-    return `${target.slice(0, index)}:root${target.slice(index)}`;
+    return `${target.slice(0, index)}${documentChild}${target.slice(index)}`;
   }
 
   // A descendant of the document can be anywhere in the candidate tree.
@@ -199,14 +203,21 @@ export function _findBySelector<T extends AnyNode>(
 
   // The selector engine matches elements; a Document cannot match :scope.
   const resolvedSelector =
-    context.length === 1 && isDocument(context[0]) && reScope.test(selector)
+    context.length === 1 &&
+    isDocument(context[0]) &&
+    this.options.pseudos?.['scope'] === undefined &&
+    reScope.test(selector)
       ? resolveScopeAgainstRoot(selector)
       : selector;
 
-  const elems =
-    resolvedSelector === selector && reContextSelector.test(selector)
+  let elems: AnyNode | AnyNode[];
+  if (resolvedSelector === selector) {
+    elems = reContextSelector.test(selector)
       ? context
       : this.children().toArray();
+  } else {
+    elems = context[0];
+  }
 
   const options = {
     context,

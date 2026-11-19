@@ -180,6 +180,32 @@ describe('$(...)', () => {
       expect(q(':scope > item:eq(1)').attr('id')).toBe('b');
     });
 
+    it('should preserve a configured scope pseudo', () => {
+      const q = load('<a/><b/>', { xmlMode: true, pseudos: { scope: 'b' } });
+      expect(
+        q(':scope')
+          .toArray()
+          .map((el) => el.name),
+      ).toEqual(['b']);
+    });
+
+    it('should keep a custom root pseudo independent of document scope', () => {
+      const q = load('<item id="top"/><box><item id="nested"/></box>', {
+        xmlMode: true,
+        pseudos: { root: () => true },
+      });
+      expect(q('missing, :scope > item')).toHaveLength(1);
+      expect(q(':scope')).toHaveLength(2);
+      expect(q(':scope > item, box > item:root')).toHaveLength(2);
+    });
+
+    it('should keep apostrophes inside unquoted text pseudos', () => {
+      const q = load("<a>Bob's</a><b>Alice's</b>", { xmlMode: true });
+      expect(
+        q("a:contains(Bob's), :scope > b:icontains(ALICE'S)"),
+      ).toHaveLength(2);
+    });
+
     it('should treat unquoted brackets in :contains() as text', () => {
       const q = load('<a id="text">[</a><b id="child"/>', { xmlMode: true });
       expect(
