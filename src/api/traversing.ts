@@ -26,143 +26,104 @@ import type { AcceptedFilters, FilterFunction } from '../types.js';
 import { domEach, isCheerio } from '../utils.js';
 
 const reContextSelector = /^\s*(?:[+~]|:scope\b)/;
-const reLeadingChildCombinator = /^\s*>/;
-const reLeadingChildCombinatorWithSpaces = /^\s*>\s*/;
-const reLeadingWhitespace = /^\s/;
+const reScope = /:scope/i;
+const reLeadingScope = /^:scope(?=$|[ \t\n\r\f>]|\/\*)/i;
+const reSelectorPadding = /^(?:[ \t\n\r\f]+|\/\*[\s\S]*?\*\/)*/;
+const reCssWhitespace = /[ \t\n\r\f]/;
+const reCssComment = /\/\*[\s\S]*?\*\//g;
+const reLeadingCombinator = /^(?:[>+~<]|\|\|)/;
+
+/*
+ * Consume escapes, comments, and quoted values before looking for a selector
+ * boundary. Keep the rest of the source for cheerio-select to parse as usual.
+ */
+const reSelectorBoundaries =
+  /\\(?:[\da-f]{1,6}[ \t\n\r\f]?|[\s\S])|\/\*[\s\S]*?\*\/|"(?:\\[\s\S]|[^"\\])*"|'(?:\\[\s\S]|[^'\\])*'|([()[\]])|([,>+~<:]|\|\||[ \t\n\r\f])/gi;
 
 /**
- * Split a selector list on top-level commas, ignoring commas inside
- * parentheses, brackets, and quotes.
+ * Find separators outside attribute selectors and functional pseudo-classes.
  *
- * @param selector - The selector list to split.
- * @returns The individual selectors.
+ * @param selector - The selector to scan.
+ * @yields {[string, number]} A separator and its offset in the selector.
  */
-function splitSelectorList(selector: string): string[] {
-  const parts: string[] = [];
+function* selectorBoundaries(
+  selector: string,
+): Generator<[string, number], void> {
+  let inAttribute = false;
   let depth = 0;
-  let quote = '';
-  let start = 0;
 
-  for (let i = 0; i < selector.length; i++) {
-    const char = selector[i];
-
-    if (quote) {
-      quote = char === quote ? '' : quote;
-      continue;
-    }
-
-    if (char === '"' || char === "'") {
-      quote = char;
-      continue;
-    }
-
-    if (char === '(' || char === '[') {
-      depth += 1;
-      continue;
-    }
-
-    if (char === ')' || char === ']') {
-      depth -= 1;
-      continue;
-    }
-
-    if (char === ',' && depth === 0) {
-      parts.push(selector.slice(start, i));
-      start = i + 1;
+  for (const { 1: bracket, 2: separator, index } of selector.matchAll(
+    reSelectorBoundaries,
+  )) {
+    if (bracket === '[') inAttribute = true;
+    else if (bracket === ']') inAttribute = false;
+    else if (!inAttribute) {
+      if (bracket === '(') depth += 1;
+      else if (bracket === ')') depth -= 1;
+      else if (depth === 0 && separator) yield [separator, index];
     }
   }
-
-  parts.push(selector.slice(start));
-
-  return parts;
 }
 
 /**
- * Append `:root` to the first compound selector of `selector`.
+ * Resolve `:scope` at the beginning of one document selector group.
  *
- * @param selector - The selector whose first compound should be constrained.
- * @returns The selector with `:root` appended, or `undefined` if the selector
- *   starts with a combinator.
+ * @param group - The selector group.
+ * @returns The selector group to pass to cheerio-select.
  */
-function appendRootToFirstCompound(selector: string): string | undefined {
-  let depth = 0;
-  let quote = '';
+function resolveScopeGroup(group: string): string {
+  const trimmed = group.replace(reSelectorPadding, '');
+  if (!reLeadingScope.test(trimmed)) return group;
 
-  for (let i = 0; i < selector.length; i++) {
-    const char = selector[i];
+  const rest = trimmed.slice(':scope'.length);
+  const padding = reSelectorPadding.exec(rest)?.[0] ?? '';
+  const selector = rest.slice(padding.length);
+  if (!selector) return ':root';
 
-    if (quote) {
-      quote = char === quote ? '' : quote;
-      continue;
-    }
+  if (selector.startsWith('>')) {
+    const tail = selector.slice(1);
+    const target = tail.replace(reSelectorPadding, '');
+    if (!target || reLeadingCombinator.test(target)) return group;
 
-    if (char === '"' || char === "'") {
-      quote = char;
-      continue;
-    }
-
-    if (char === '(' || char === '[') {
-      depth += 1;
-      continue;
-    }
-
-    if (char === ')' || char === ']') {
-      depth -= 1;
-      continue;
-    }
-
-    if (depth === 0 && '>+~ \t\n\r\f'.includes(char)) {
-      return i === 0
-        ? undefined
-        : `${selector.slice(0, i)}:root${selector.slice(i)}`;
-    }
+    /*
+     * Constrain the first compound before positional filtering. Insert before
+     * its first pseudo-class, which may be a positional filter or contain one.
+     */
+    const boundary = selectorBoundaries(target).next().value;
+    const index = boundary ? boundary[1] : target.length;
+    return `${target.slice(0, index)}:root${target.slice(index)}`;
   }
 
-  return `${selector}:root`;
+  // A descendant of the document can be anywhere in the candidate tree.
+  if (
+    reLeadingCombinator.test(selector) ||
+    !reCssWhitespace.test(padding.replace(reCssComment, ''))
+  ) {
+    return group;
+  }
+
+  // A bare positional filter searches only immediate candidates by default.
+  return selector.startsWith(':') ? `*${selector}` : selector;
 }
 
 /**
- * Rewrite a selector that starts with `:scope` when the scope is the
- * document root.
- *
- * The selector engine requires the parent of a `>` combinator to be an
- * element, so `:scope` can never match the document node itself: a query
- * like `:scope > x` run against the root always returns nothing, even
- * though the document's children are the elements the user means. When the
- * document is the scope, a leading `:scope` is equivalent to requiring the
- * next element to be a direct child of the document, which is exactly what
- * `:root` expresses — an element whose parent is not an element.
+ * Resolve leading `:scope` in each top-level document selector group.
  *
  * @param selector - The selector to rewrite.
- * @returns The selector with a leading `:scope` resolved against the root.
+ * @returns The selector list with leading document scope resolved.
  */
 function resolveScopeAgainstRoot(selector: string): string {
-  return splitSelectorList(selector)
-    .map((group) => {
-      const trimmed = group.trim();
+  const groups: string[] = [];
+  let start = 0;
 
-      if (!trimmed.startsWith(':scope')) return group;
+  for (const [separator, index] of selectorBoundaries(selector)) {
+    if (separator !== ',') continue;
+    groups.push(resolveScopeGroup(selector.slice(start, index)));
+    start = index + 1;
+  }
 
-      const rest = trimmed.slice(':scope'.length);
-
-      if (rest === '') return ':root';
-
-      if (reLeadingChildCombinator.test(rest)) {
-        const rewritten = appendRootToFirstCompound(
-          rest.replace(reLeadingChildCombinatorWithSpaces, ''),
-        );
-        return rewritten ?? group;
-      }
-
-      /*
-       * `:scope x` selects the descendants of the document, which is every
-       * element, so the `:scope` prefix can simply be dropped.
-       */
-      if (reLeadingWhitespace.test(rest)) return rest.trim();
-
-      return group;
-    })
-    .join(', ');
+  groups.push(resolveScopeGroup(selector.slice(start)));
+  return groups.join(',');
 }
 
 /**
@@ -222,22 +183,16 @@ export function _findBySelector<T extends AnyNode>(
 ): Cheerio<Element> {
   const context = this.toArray();
 
-  /*
-   * If the selector is relative to the scope and the scope is the document
-   * itself, `:scope` can never match: the selector engine only matches
-   * elements, never the document node. Resolve a leading `:scope` against
-   * the document root instead (see `resolveScopeAgainstRoot`).
-   */
+  // The selector engine matches elements; a Document cannot match :scope.
   const resolvedSelector =
-    reContextSelector.test(selector) &&
-    context.length === 1 &&
-    isDocument(context[0])
+    context.length === 1 && isDocument(context[0]) && reScope.test(selector)
       ? resolveScopeAgainstRoot(selector)
       : selector;
 
-  const elems = reContextSelector.test(selector)
-    ? context
-    : this.children().toArray();
+  const elems =
+    resolvedSelector === selector && reContextSelector.test(selector)
+      ? context
+      : this.children().toArray();
 
   const options = {
     context,

@@ -138,6 +138,60 @@ describe('$(...)', () => {
       ).toStrictEqual(['a', 'b']);
     });
 
+    it.each(['a, :scope > b', ':scope > b, a'])(
+      'should resolve document scope in each selector group (%s)',
+      (selector) => {
+        const q = load('<a/><b/>', { xmlMode: true });
+        expect(
+          q<Element, string>(selector)
+            .toArray()
+            .map((el) => el.name),
+        ).toStrictEqual(['a', 'b']);
+      },
+    );
+
+    it.each([
+      [String.raw`:scope > #a\,b`, 'a,b'],
+      [String.raw`:scope > #a\+b`, 'a+b'],
+      [String.raw`:scope > #a\>b`, 'a>b'],
+      [String.raw`:scope > #a\20 b`, 'a b'],
+      [':scope > #item\u{2003}', 'item\u{2003}'],
+      [String.raw`:scope > missing, #a\,b`, 'a,b'],
+      [':scope /* , */ > [id="a,b"]', 'a,b'],
+    ])(
+      'should preserve selector syntax in a document scope (%s)',
+      (selector, id) => {
+        const q = load(
+          '<x id="a,b"/><x id="a+b"/><x id="a>b"/><x id="a b"/><x id="item"/><x id="item\u{2003}"/>',
+          { xmlMode: true },
+        );
+        expect(
+          q<Element, string>(selector)
+            .toArray()
+            .map((el) => el.attribs['id']),
+        ).toStrictEqual([id]);
+      },
+    );
+
+    it('should check document scope before positional filters', () => {
+      const q = load('<section><item/></section><item id="a"/><item id="b"/>', {
+        xmlMode: true,
+      });
+      expect(q(':scope > item:eq(1)').attr('id')).toBe('b');
+    });
+
+    it('should consider all document descendants for a scoped positional filter', () => {
+      const q = load('<section><item id="nested"/></section><item/>', {
+        xmlMode: true,
+      });
+      expect(q(':scope :eq(1)').attr('id')).toBe('nested');
+    });
+
+    it('should not turn an incomplete document scope into a match', () => {
+      const q = load('<x/>', { xmlMode: true });
+      expect(q(':scope >')).toHaveLength(0);
+    });
+
     it('should query case-sensitively when in xml mode', () => {
       const q = load('<caseSenSitive allTheWay>', { xml: true });
       expect(q('caseSenSitive')).toHaveLength(1);
