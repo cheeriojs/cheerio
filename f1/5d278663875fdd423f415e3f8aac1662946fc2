@@ -1,0 +1,17 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "f15d278663875fdd423f415e3f8aac1662946fc2",
+  "prompts": {},
+  "sessions": {
+    "s_107bb0a07c5aec": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c4a2d7ba-dae2-424f-a39d-b9beac940f21",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
