@@ -159,11 +159,13 @@ function getCss(
     return styles[prop];
   }
   if (Array.isArray(prop)) {
-    return Object.fromEntries(
-      prop
-        .filter((item) => styles[item] != null)
-        .map((item) => [item, styles[item]]),
-    );
+    const newStyles: Record<string, string> = {};
+    for (const item of prop) {
+      if (styles[item] != null) {
+        newStyles[item] = styles[item];
+      }
+    }
+    return newStyles;
   }
   return { ...styles };
 }
