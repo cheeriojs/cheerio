@@ -96,6 +96,183 @@ describe('$(...)', () => {
       expect(q('.a').find(':scope')).toHaveLength(1);
     });
 
+    it('should resolve :scope against the document root (#4509)', () => {
+      const q = load(
+        '<collection><id value="a"/><relatedCollections><collection><id value="a1"/></collection></relatedCollections></collection><collection><id value="b"/></collection>',
+        { xmlMode: true },
+        false,
+      );
+      expect(
+        q(':scope > collection > id')
+          .toArray()
+          .map((el) => el.attribs['value']),
+      ).toStrictEqual(['a', 'b']);
+      expect(q(':scope > collection')).toHaveLength(2);
+      expect(q(':scope collection')).toHaveLength(3);
+      /*
+       * The scope is the document, so `:scope` on its own selects the
+       * top-level elements.
+       */
+      expect(q(':scope')).toHaveLength(2);
+      expect(q(':scope > collection, :scope > collection > id')).toHaveLength(
+        4,
+      );
+      // `:scope` keeps working when the scope is an element.
+      expect(
+        q('collection')
+          .find(':scope > id')
+          .toArray()
+          .map((el) => el.attribs['value']),
+      ).toStrictEqual(['a', 'b']);
+    });
+
+    it('should resolve :scope against the document root in document mode (#4509)', () => {
+      const q = load(
+        '<collection><id value="a"/></collection><collection><id value="b"/></collection>',
+        { xmlMode: true },
+      );
+      expect(
+        q(':scope > collection > id')
+          .toArray()
+          .map((el) => el.attribs['value']),
+      ).toStrictEqual(['a', 'b']);
+    });
+
+    it.each(['a, :scope > b', ':scope > b, a'])(
+      'should resolve document scope in each selector group (%s)',
+      (selector) => {
+        const q = load('<a/><b/>', { xmlMode: true });
+        expect(
+          q<Element, string>(selector)
+            .toArray()
+            .map((el) => el.name),
+        ).toStrictEqual(['a', 'b']);
+      },
+    );
+
+    it.each([
+      [String.raw`:scope > #a\,b`, 'a,b'],
+      [String.raw`:scope > #a\+b`, 'a+b'],
+      [String.raw`:scope > #a\>b`, 'a>b'],
+      [String.raw`:scope > #a\20 b`, 'a b'],
+      [':scope > #item\u{2003}', 'item\u{2003}'],
+      [String.raw`:scope > missing, #a\,b`, 'a,b'],
+      [':scope /* , */ > [id="a,b"]', 'a,b'],
+    ])(
+      'should preserve selector syntax in a document scope (%s)',
+      (selector, id) => {
+        const q = load(
+          '<x id="a,b"/><x id="a+b"/><x id="a>b"/><x id="a b"/><x id="item"/><x id="item\u{2003}"/>',
+          { xmlMode: true },
+        );
+        expect(
+          q<Element, string>(selector)
+            .toArray()
+            .map((el) => el.attribs['id']),
+        ).toStrictEqual([id]);
+      },
+    );
+
+    it('should check document scope before positional filters', () => {
+      const q = load('<section><item/></section><item id="a"/><item id="b"/>', {
+        xmlMode: true,
+      });
+      expect(q(':scope > item:eq(1)').attr('id')).toBe('b');
+    });
+
+    it('should preserve apostrophes in unquoted attribute values', () => {
+      const q = load(`<a title="Bob's"/><b title="Alice's"/>`, {
+        xmlMode: true,
+      });
+      expect(
+        q<Element, string>(`:scope > [title=Bob's], :scope > [title=Alice's]`)
+          .toArray()
+          .map((el) => el.name),
+      ).toStrictEqual(['a', 'b']);
+    });
+
+    it('should preserve a configured scope pseudo', () => {
+      const q = load('<a/><b/>', { xmlMode: true, pseudos: { scope: 'b' } });
+      expect(
+        q(':scope')
+          .toArray()
+          .map((el) => el.name),
+      ).toEqual(['b']);
+    });
+
+    it('should keep a custom root pseudo independent of document scope', () => {
+      const q = load('<item id="top"/><box><item id="nested"/></box>', {
+        xmlMode: true,
+        pseudos: { root: () => true },
+      });
+      expect(q('missing, :scope > item')).toHaveLength(1);
+      expect(q(':scope')).toHaveLength(2);
+      expect(q(':scope > item, box > item:root')).toHaveLength(2);
+    });
+
+    it('should keep apostrophes inside unquoted text pseudos', () => {
+      const q = load("<a>Bob's</a><b>Alice's</b>", { xmlMode: true });
+      expect(
+        q("a:contains(Bob's), :scope > b:icontains(ALICE'S)"),
+      ).toHaveLength(2);
+    });
+
+    it('should preserve an escaped pseudo name without an argument', () => {
+      const q = load('<a/><b/><c><a/></c>', { xmlMode: true });
+      expect(
+        q<Element, string>(String.raw`:scope > :first-\63 hild, :scope > b`)
+          .toArray()
+          .map((el) => el.name),
+      ).toStrictEqual(['a', 'b']);
+    });
+
+    it('should preserve an escaped parenthesis in quoted pseudo text', () => {
+      const q = load('<a>(</a><b/>', { xmlMode: true });
+      expect(q(String.raw`a:contains("\("), :scope > b`)).toHaveLength(2);
+    });
+
+    it.each(['label', String.raw`l\61 bel`])(
+      'should keep custom pseudo arguments intact (%s)',
+      (name) => {
+        const value = "x'('),:scope y";
+        const q = load('<a/><b/>', {
+          xmlMode: true,
+          pseudos: { label: (_element, argument) => argument === value },
+        });
+        expect(q(`a:${name}(${value})`)).toHaveLength(1);
+        expect(q(`a:${name}(${value}), :scope > b`)).toHaveLength(2);
+      },
+    );
+
+    it.each(['not', String.raw`n\6ft`])(
+      'should respect quoted attribute values in nested selectors (%s)',
+      (name) => {
+        const q = load('<a/><a title="("/><b/>', { xmlMode: true });
+        expect(q(`a:${name}([title="("]), :scope > b`)).toHaveLength(2);
+      },
+    );
+
+    it('should treat unquoted brackets in :contains() as text', () => {
+      const q = load('<a id="text">[</a><b id="child"/>', { xmlMode: true });
+      expect(
+        q('a:contains([), :scope > b')
+          .map((_, el) => q(el).attr('id'))
+          .get(),
+      ).toStrictEqual(['text', 'child']);
+    });
+
+    it('should consider all document descendants for a scoped positional filter', () => {
+      const q = load('<section><item id="nested"/></section><item/>', {
+        xmlMode: true,
+      });
+      expect(q(':scope :eq(1)').attr('id')).toBe('nested');
+    });
+
+    it('should not turn an incomplete document scope into a match', () => {
+      const q = load('<x/>', { xmlMode: true });
+      expect(q(':scope >')).toHaveLength(0);
+    });
+
     it('should query case-sensitively when in xml mode', () => {
       const q = load('<caseSenSitive allTheWay>', { xml: true });
       expect(q('caseSenSitive')).toHaveLength(1);

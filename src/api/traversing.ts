@@ -26,6 +26,181 @@ import type { AcceptedFilters, FilterFunction } from '../types.js';
 import { domEach, isCheerio } from '../utils.js';
 
 const reContextSelector = /^\s*(?:[+~]|:scope\b)/;
+const reScope = /:scope/i;
+const reLeadingScope = /^:scope(?=$|[ \t\n\r\f>]|\/\*)/i;
+const reSelectorPadding = /^(?:[ \t\n\r\f]+|\/\*[\s\S]*?\*\/)*/;
+const reCssWhitespace = /[ \t\n\r\f]/;
+const reCssComment = /\/\*[\s\S]*?\*\//g;
+const reLeadingCombinator = /^(?:[>+~<]|\|\|)/;
+// Top-level elements have no element parent, even with a custom :root pseudo.
+const documentChild = ':not(* > *)';
+
+// Css-what parses these arguments as selectors and the others as raw text.
+const selectorArgumentPseudos = new Set([
+  'has',
+  'not',
+  'matches',
+  'is',
+  'where',
+  'host',
+  'host-context',
+]);
+const reNameEscape = /\\(?:([\da-f]{1,6})\s?|(\s|.))/gi;
+
+// Find token starts. Leave comments and attribute values to their own scanners.
+const reSelectorBoundaries =
+  /\\(?:[\da-f]{1,6}[ \t\n\r\f]?|[\s\S])|\/\*|(:{1,2})((?:\\(?:[\da-f]{1,6}\s?|[\s\S])|[\w\u{B0}-\u{10FFFF}-])+)?|([()[\]])|([,>+~<]|\|\||[ \t\n\r\f])/giu;
+
+/**
+ * Skip one attribute selector without interpreting its value.
+ *
+ * @param selector - The selector to scan.
+ * @param start - The offset just after the opening square bracket.
+ * @returns The offset after the attribute, or -1 if it is unterminated.
+ */
+function endOfAttributeSelector(selector: string, start: number): number {
+  const head = /(?:\\[\s\S]|[^\\=\]])*(\]|=[ \t\n\r\f]*)/y;
+  head.lastIndex = start;
+  const match = head.exec(selector);
+  if (!match) return -1;
+  if (match[1] === ']') return head.lastIndex;
+
+  let end = head.lastIndex;
+  // Css-what recognises a quote as a delimiter only at the start of the value.
+  if (selector[end] === '"' || selector[end] === "'") {
+    const quotedValue = /"(?:\\[\s\S]|[^"\\])*"|'(?:\\[\s\S]|[^'\\])*'/y;
+    quotedValue.lastIndex = end;
+    if (!quotedValue.test(selector)) return -1;
+    end = quotedValue.lastIndex;
+  }
+
+  const tail = /(?:\\[\s\S]|[^\\\]])*\]/y;
+  tail.lastIndex = end;
+  return tail.test(selector) ? tail.lastIndex : -1;
+}
+
+/**
+ * Find separators outside attribute selectors and functional pseudo-classes.
+ *
+ * @param selector - The selector to scan.
+ * @yields {[string, number]} A separator and its offset in the selector.
+ */
+function* selectorBoundaries(
+  selector: string,
+): Generator<[string, number], void> {
+  let depth = 0;
+  const tokens = new RegExp(reSelectorBoundaries);
+  // Text pseudos balance parentheses but treat quotes and brackets as text.
+  const textTokens = /\\[\s\S]|[()]/g;
+  let token: RegExpExecArray | null;
+
+  while ((token = tokens.exec(selector))) {
+    const [, pseudoPrefix, pseudoName, bracket, separator] = token;
+    const { index } = token;
+    if (token[0] === '/*') {
+      const end = selector.indexOf('*/', tokens.lastIndex);
+      // Let cheerio-select report an unterminated comment.
+      if (end === -1) return;
+      tokens.lastIndex = end + 2;
+    } else if (pseudoPrefix) {
+      if (depth === 0) yield [':', index];
+      /*
+       * Finish the name before looking for "(" so the regex cannot backtrack
+       * through equivalent spellings of an escape in a non-functional pseudo.
+       */
+      if (!pseudoName || selector[tokens.lastIndex] !== '(') continue;
+      tokens.lastIndex += 1;
+      const name = pseudoName
+        .replace(reNameEscape, (_, hex: string | undefined, char: string) => {
+          if (hex === undefined) return char;
+          const code = Number.parseInt(hex, 16);
+          return String.fromCodePoint(code <= 0x10_ff_ff ? code : 0xff_fd);
+        })
+        .toLowerCase();
+      if (pseudoPrefix === ':' && selectorArgumentPseudos.has(name)) {
+        depth += 1;
+        continue;
+      }
+      textTokens.lastIndex = tokens.lastIndex;
+      let parentheses = 1;
+      while (parentheses && (token = textTokens.exec(selector))) {
+        if (token[0] === '(') parentheses += 1;
+        else if (token[0] === ')') parentheses -= 1;
+      }
+      if (parentheses) return;
+      tokens.lastIndex = textTokens.lastIndex;
+    } else if (bracket === '[') {
+      const end = endOfAttributeSelector(selector, tokens.lastIndex);
+      if (end === -1) return;
+      tokens.lastIndex = end;
+    } else if (bracket === '(' || bracket === ')') {
+      depth += bracket === '(' ? 1 : -1;
+    } else if (depth === 0 && separator) {
+      yield [separator, index];
+    }
+  }
+}
+
+/**
+ * Resolve `:scope` at the beginning of one document selector group.
+ *
+ * @param group - The selector group.
+ * @returns The selector group to pass to cheerio-select.
+ */
+function resolveScopeGroup(group: string): string {
+  const trimmed = group.replace(reSelectorPadding, '');
+  if (!reLeadingScope.test(trimmed)) return group;
+
+  const rest = trimmed.slice(':scope'.length);
+  const padding = reSelectorPadding.exec(rest)?.[0] ?? '';
+  const selector = rest.slice(padding.length);
+  if (!selector) return documentChild;
+
+  if (selector.startsWith('>')) {
+    const tail = selector.slice(1);
+    const target = tail.replace(reSelectorPadding, '');
+    if (!target || reLeadingCombinator.test(target)) return group;
+
+    /*
+     * Constrain the first compound before positional filtering. Insert before
+     * its first pseudo-class, which may be a positional filter or contain one.
+     */
+    const boundary = selectorBoundaries(target).next().value;
+    const index = boundary ? boundary[1] : target.length;
+    return `${target.slice(0, index)}${documentChild}${target.slice(index)}`;
+  }
+
+  // A descendant of the document can be anywhere in the candidate tree.
+  if (
+    reLeadingCombinator.test(selector) ||
+    !reCssWhitespace.test(padding.replace(reCssComment, ''))
+  ) {
+    return group;
+  }
+
+  // A bare positional filter searches only immediate candidates by default.
+  return selector.startsWith(':') ? `*${selector}` : selector;
+}
+
+/**
+ * Resolve leading `:scope` in each top-level document selector group.
+ *
+ * @param selector - The selector to rewrite.
+ * @returns The selector list with leading document scope resolved.
+ */
+function resolveScopeAgainstRoot(selector: string): string {
+  const groups: string[] = [];
+  let start = 0;
+
+  for (const [separator, index] of selectorBoundaries(selector)) {
+    if (separator !== ',') continue;
+    groups.push(resolveScopeGroup(selector.slice(start, index)));
+    start = index + 1;
+  }
+
+  groups.push(resolveScopeGroup(selector.slice(start)));
+  return groups.join(',');
+}
 
 /**
  * Get the descendants of each element in the current set of matched elements,
@@ -84,9 +259,23 @@ export function _findBySelector<T extends AnyNode>(
 ): Cheerio<Element> {
   const context = this.toArray();
 
-  const elems = reContextSelector.test(selector)
-    ? context
-    : this.children().toArray();
+  // The selector engine matches elements; a Document cannot match :scope.
+  const resolvedSelector =
+    context.length === 1 &&
+    isDocument(context[0]) &&
+    this.options.pseudos?.['scope'] === undefined &&
+    reScope.test(selector)
+      ? resolveScopeAgainstRoot(selector)
+      : selector;
+
+  let elems: AnyNode | AnyNode[];
+  if (resolvedSelector === selector) {
+    elems = reContextSelector.test(selector)
+      ? context
+      : this.children().toArray();
+  } else {
+    elems = context[0];
+  }
 
   const options = {
     context,
@@ -100,7 +289,7 @@ export function _findBySelector<T extends AnyNode>(
     quirksMode: this.options.quirksMode,
   };
 
-  return this._make(select.select(selector, elems, options, limit));
+  return this._make(select.select(resolvedSelector, elems, options, limit));
 }
 
 /**
