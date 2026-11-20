@@ -508,14 +508,19 @@ export const prev: <T extends AnyNode>(
 export const prevAll: <T extends AnyNode>(
   this: Cheerio<T>,
   selector?: AcceptedFilters<Element>,
-) => Cheerio<Element> = _matcher((elem) => {
-  const matched = [];
-  while (elem.prev) {
-    elem = elem.prev;
-    if (isTag(elem)) matched.push(elem);
-  }
-  return matched;
-}, _removeDuplicates);
+) => Cheerio<Element> = _matcher(
+  (elem) => {
+    const matched = [];
+    while (elem.prev) {
+      elem = elem.prev;
+      if (isTag(elem)) matched.push(elem);
+    }
+    return matched;
+  },
+  uniqueSort,
+  // eslint-disable-next-line unicorn/no-array-reverse
+  (elems) => elems.reverse(),
+);
 
 /**
  * Gets all the preceding siblings up to but not including the element matched
@@ -540,7 +545,9 @@ export const prevUntil: <T extends AnyNode>(
   filterSelector?: AcceptedFilters<Element>,
 ) => Cheerio<Element> = _matchUntil(
   (el) => prevElementSibling(el),
-  _removeDuplicates,
+  uniqueSort,
+  // eslint-disable-next-line unicorn/no-array-reverse
+  (elems) => elems.reverse(),
 );
 
 /**
