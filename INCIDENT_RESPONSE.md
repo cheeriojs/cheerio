@@ -14,12 +14,12 @@ This plan covers:
 
 ## Severity Levels
 
-| Severity     | Definition                                                            | Acknowledgment | Update Cadence | Target Fix    |
-| ------------ | --------------------------------------------------------------------- | -------------- | -------------- | ------------- |
-| **Critical** | Active exploitation, or RCE/supply-chain compromise                   | < 24 hours     | Daily           | < 7 days      |
-| **High**     | Easily exploitable DoS, prototype pollution, or XSS enablement        | < 72 hours     | Every 3 days    | < 14 days     |
-| **Medium**   | Issues requiring unusual configuration or limited impact              | < 1 week       | Weekly          | Next release  |
-| **Low**      | Defense-in-depth improvements, theoretical risks                      | < 2 weeks      | As needed       | Scheduled     |
+| Severity     | Definition                                                     | Acknowledgment | Update Cadence | Target Fix   |
+| ------------ | -------------------------------------------------------------- | -------------- | -------------- | ------------ |
+| **Critical** | Active exploitation, or RCE/supply-chain compromise            | < 24 hours     | Daily          | < 7 days     |
+| **High**     | Easily exploitable DoS, prototype pollution, or XSS enablement | < 72 hours     | Every 3 days   | < 14 days    |
+| **Medium**   | Issues requiring unusual configuration or limited impact       | < 1 week       | Weekly         | Next release |
+| **Low**      | Defense-in-depth improvements, theoretical risks               | < 2 weeks      | As needed      | Scheduled    |
 
 ## Response Process
 
@@ -86,4 +86,4 @@ Within **one week** of resolution:
 
 ---
 
-*Last updated: April 2026*
+_Last updated: April 2026_
