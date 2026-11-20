@@ -299,6 +299,46 @@ describe('cheerio', () => {
       expect($('ul')).toHaveLength(3);
     });
 
+    it.each([
+      ['<!DOCTYPE html>', '<!DOCTYPE html>'],
+      ['<!DoCtYpE HtMl>', '<!DOCTYPE html>'],
+      ['<!DOCTYPE\n\tHTML>', '<!DOCTYPE html>'],
+      ['<!DOCTYPE html SYSTEM "about:legacy-compat">', '<!DOCTYPE html>'],
+      [
+        '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "example.dtd">',
+        '<!DOCTYPE html>',
+      ],
+      ['<!DOCTYPE \u{0130}>', '<!DOCTYPE \u{0130}>'],
+      ['<!DOCTYPE ht\0ml>', '<!DOCTYPE ht\u{FFFD}ml>'],
+    ])('should preserve an external doctype name in %s', (input, expected) => {
+      const dom = parseDocument(`${input}<html></html>`);
+      const doctype = dom.children[0];
+      expect(doctype).toBeDefined();
+      const original = { ...doctype };
+      const $ = cheerio.load(dom);
+
+      expect($.html()).toBe(`${expected}<html></html>`);
+      expect(dom.children[0]).toBe(doctype);
+      expect({ ...doctype }).toStrictEqual(original);
+    });
+
+    it('should preserve a doctype supplied as a single node or in an array', () => {
+      const dom = parseDocument('<!DOCTYPE html><html></html>');
+
+      expect(cheerio.load(dom.children[0]).html()).toBe('<!DOCTYPE html>');
+      expect(
+        cheerio.load(parseDocument('<!DOCTYPE html>').children).html(),
+      ).toBe('<!DOCTYPE html>');
+    });
+
+    it('should keep an empty doctype name from parse5', () => {
+      const $ = cheerio.load('<!DOCTYPE><html></html>');
+
+      expect($.html()).toBe(
+        '<!DOCTYPE ><html><head></head><body></body></html>',
+      );
+    });
+
     it('should allow loading a single element', () => {
       const el = parseDocument(food).children[0];
       const $ = cheerio.load(el);
