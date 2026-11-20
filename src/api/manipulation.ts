@@ -14,9 +14,8 @@ import {
   type ParentNode,
   Text,
 } from 'domhandler';
-import { removeElement } from 'domutils';
 import type { Cheerio } from '../cheerio.js';
-import { update as updateDOM } from '../parse.js';
+import { removeElements, update as updateDOM } from '../parse.js';
 import { text as staticText } from '../static.js';
 import type { AcceptedElems, BasicAcceptedElems } from '../types.js';
 import { domEach, isCheerio, isHtml } from '../utils.js';
@@ -133,15 +132,16 @@ function uniqueSplice(
    * Before splicing in new elements, ensure they do not already appear in the
    * current array.
    */
-  for (const node of newElems) {
-    if (node.parent === parent) {
-      const prevIdx = array.indexOf(node);
-      if (prevIdx !== -1 && spliceIdx > prevIdx) {
-        spliceIdx--;
-      }
+  if (newElems.some((node) => node.parent === parent)) {
+    // Account for moved nodes that are currently before the insertion point.
+    const moved = new Set(newElems);
+    let movedBefore = 0;
+    for (let idx = 0; idx < spliceIdx; idx++) {
+      if (moved.has(array[idx])) movedBefore++;
     }
-    removeElement(node);
+    spliceIdx -= movedBefore;
   }
+  removeElements(newElems);
 
   const prev = spliceIdx === 0 ? null : array[spliceIdx - 1];
   const next =
@@ -844,10 +844,7 @@ export function remove<T extends AnyNode>(
   // Filter if we have selector
   const elems = selector ? this.filter(selector) : this;
 
-  domEach(elems, (el) => {
-    removeElement(el);
-    el.prev = el.next = el.parent = null;
-  });
+  removeElements(elems);
 
   return this;
 }

@@ -91,14 +91,14 @@ export function update(
     parent = null;
   }
 
+  // Cleanly remove existing nodes from their previous structures.
+  removeElements(
+    arr.filter((node) => node.parent && node.parent.children !== arr),
+  );
+
   // Update neighbors
   for (let i = 0; i < arr.length; i++) {
     const node = arr[i];
-
-    // Cleanly remove existing nodes from their previous structures.
-    if (node.parent && node.parent.children !== arr) {
-      removeElement(node);
-    }
 
     if (parent) {
       node.prev = arr[i - 1] || null;
@@ -111,4 +111,42 @@ export function update(
   }
 
   return parent;
+}
+
+/**
+ * Remove nodes from their parents.
+ *
+ * Every parent's `children` array is compacted once, instead of being scanned
+ * and spliced for each removed node, which would be quadratic when removing
+ * many siblings.
+ *
+ * @param nodes - The nodes to remove.
+ */
+export function removeElements(nodes: ArrayLike<AnyNode>): void {
+  if (nodes.length === 1) {
+    removeElement(nodes[0]);
+    return;
+  }
+
+  const removed = new Set<AnyNode>();
+  const parents = new Set<ParentNode>();
+
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i];
+    if (node.prev) node.prev.next = node.next;
+    if (node.next) node.next.prev = node.prev;
+    if (node.parent) {
+      parents.add(node.parent);
+      removed.add(node);
+    }
+    node.prev = node.next = node.parent = null;
+  }
+
+  for (const { children } of parents) {
+    let length = 0;
+    for (const child of children) {
+      if (!removed.has(child)) children[length++] = child;
+    }
+    children.length = length;
+  }
 }
