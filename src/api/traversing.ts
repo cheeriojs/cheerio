@@ -47,12 +47,37 @@ const selectorArgumentPseudos = new Set([
 ]);
 const reNameEscape = /\\(?:([\da-f]{1,6})\s?|(\s|.))/gi;
 
-/*
- * Consume escapes, comments, and quoted values before looking for a selector
- * boundary. Keep the rest of the source for cheerio-select to parse as usual.
- */
+// Find token starts. Leave comments and attribute values to their own scanners.
 const reSelectorBoundaries =
-  /\\(?:[\da-f]{1,6}[ \t\n\r\f]?|[\s\S])|\/\*[\s\S]*?\*\/|"(?:\\[\s\S]|[^"\\])*"|'(?:\\[\s\S]|[^'\\])*'|(:{1,2})((?:\\(?:[\da-f]{1,6}\s?|[\s\S])|[\w\u{B0}-\u{10FFFF}-])+)?|([()[\]])|([,>+~<]|\|\||[ \t\n\r\f])/giu;
+  /\\(?:[\da-f]{1,6}[ \t\n\r\f]?|[\s\S])|\/\*|(:{1,2})((?:\\(?:[\da-f]{1,6}\s?|[\s\S])|[\w\u{B0}-\u{10FFFF}-])+)?|([()[\]])|([,>+~<]|\|\||[ \t\n\r\f])/giu;
+
+/**
+ * Skip one attribute selector without interpreting its value.
+ *
+ * @param selector - The selector to scan.
+ * @param start - The offset just after the opening square bracket.
+ * @returns The offset after the attribute, or -1 if it is unterminated.
+ */
+function endOfAttributeSelector(selector: string, start: number): number {
+  const head = /(?:\\[\s\S]|[^\\=\]])*(\]|=[ \t\n\r\f]*)/y;
+  head.lastIndex = start;
+  const match = head.exec(selector);
+  if (!match) return -1;
+  if (match[1] === ']') return head.lastIndex;
+
+  let end = head.lastIndex;
+  // Css-what recognises a quote as a delimiter only at the start of the value.
+  if (selector[end] === '"' || selector[end] === "'") {
+    const quotedValue = /"(?:\\[\s\S]|[^"\\])*"|'(?:\\[\s\S]|[^'\\])*'/y;
+    quotedValue.lastIndex = end;
+    if (!quotedValue.test(selector)) return -1;
+    end = quotedValue.lastIndex;
+  }
+
+  const tail = /(?:\\[\s\S]|[^\\\]])*\]/y;
+  tail.lastIndex = end;
+  return tail.test(selector) ? tail.lastIndex : -1;
+}
 
 /**
  * Find separators outside attribute selectors and functional pseudo-classes.
@@ -63,7 +88,6 @@ const reSelectorBoundaries =
 function* selectorBoundaries(
   selector: string,
 ): Generator<[string, number], void> {
-  let inAttribute = false;
   let depth = 0;
   const tokens = new RegExp(reSelectorBoundaries);
   // Text pseudos balance parentheses but treat quotes and brackets as text.
@@ -73,8 +97,11 @@ function* selectorBoundaries(
   while ((token = tokens.exec(selector))) {
     const [, pseudoPrefix, pseudoName, bracket, separator] = token;
     const { index } = token;
-    if (inAttribute) {
-      if (bracket === ']') inAttribute = false;
+    if (token[0] === '/*') {
+      const end = selector.indexOf('*/', tokens.lastIndex);
+      // Let cheerio-select report an unterminated comment.
+      if (end === -1) return;
+      tokens.lastIndex = end + 2;
     } else if (pseudoPrefix) {
       if (depth === 0) yield [':', index];
       /*
@@ -103,7 +130,9 @@ function* selectorBoundaries(
       if (parentheses) return;
       tokens.lastIndex = textTokens.lastIndex;
     } else if (bracket === '[') {
-      inAttribute = true;
+      const end = endOfAttributeSelector(selector, tokens.lastIndex);
+      if (end === -1) return;
+      tokens.lastIndex = end;
     } else if (bracket === '(' || bracket === ')') {
       depth += bracket === '(' ? 1 : -1;
     } else if (depth === 0 && separator) {

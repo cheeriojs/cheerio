@@ -180,6 +180,17 @@ describe('$(...)', () => {
       expect(q(':scope > item:eq(1)').attr('id')).toBe('b');
     });
 
+    it('should preserve apostrophes in unquoted attribute values', () => {
+      const q = load(`<a title="Bob's"/><b title="Alice's"/>`, {
+        xmlMode: true,
+      });
+      expect(
+        q<Element, string>(`:scope > [title=Bob's], :scope > [title=Alice's]`)
+          .toArray()
+          .map((el) => el.name),
+      ).toStrictEqual(['a', 'b']);
+    });
+
     it('should preserve a configured scope pseudo', () => {
       const q = load('<a/><b/>', { xmlMode: true, pseudos: { scope: 'b' } });
       expect(
