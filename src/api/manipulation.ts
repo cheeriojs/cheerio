@@ -1093,9 +1093,7 @@ export function clone<T extends AnyNode>(this: Cheerio<T>): Cheerio<T> {
 
   // Add a root node around the cloned nodes
   const root = new Document(clone);
-  for (const node of clone) {
-    node.parent = root;
-  }
+  updateDOM(clone, root);
 
   return this._make(clone);
 }
