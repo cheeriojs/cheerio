@@ -145,9 +145,17 @@ function _getMatcher<P>(
 }
 
 /** Matcher that adds multiple elements for each entry in the input. */
-const _matcher = _getMatcher((fn: (elem: AnyNode) => Element[], elems) =>
-  elems.toArray().flatMap((elem) => fn(elem)),
-);
+const _matcher = _getMatcher((fn: (elem: AnyNode) => Element[], elems) => {
+  const matched: Element[] = [];
+  for (let i = 0; i < elems.length; i++) {
+    const elem = elems[i];
+    // Skip holes in the selection, as `flatMap` did.
+    if (elem === undefined && !(i in elems)) continue;
+    const elemMatches = fn(elem);
+    for (const match of elemMatches) matched.push(match);
+  }
+  return matched;
+});
 
 /** Matcher that adds at most one element for each entry in the input. */
 const _singleMatcher = _getMatcher(
@@ -615,9 +623,18 @@ export const children: <T extends AnyNode>(
 export function contents<T extends AnyNode>(
   this: Cheerio<T>,
 ): Cheerio<AnyNode> {
-  const elems = this.toArray().flatMap((elem) =>
-    hasChildren(elem) ? elem.children : [],
-  );
+  const elems: AnyNode[] = [];
+  for (let i = 0; i < this.length; i++) {
+    const elem = this[i];
+    if (elem === undefined && !(i in this)) continue;
+    if (hasChildren(elem)) {
+      const { children } = elem;
+      for (let j = 0; j < children.length; j++) {
+        const child = children[j];
+        if (child !== undefined || j in children) elems.push(child);
+      }
+    }
+  }
   return this._make(elems);
 }
 
