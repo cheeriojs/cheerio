@@ -194,6 +194,13 @@ describe('$(...)', () => {
       expect($xml.attr('checked')).toBe('checked');
       expect($xml.attr('disabled')).toBe('yes');
     });
+    it('(key) : should return undefined for option without value attribute', () => {
+      const $ = load(inputs);
+      // An <option> without a `value` attribute should return undefined,
+      // not the option's text content (per HTML spec / jQuery behaviour).
+      const val = $('select#one-valueless option').eq(0).attr('value');
+      expect(val).toBeUndefined();
+    });
   });
 
   describe('.prop', () => {
