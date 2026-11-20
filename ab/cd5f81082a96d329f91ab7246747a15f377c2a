@@ -1,0 +1,25 @@
+package-lock.json
+  s_d8116e88a5acf9::t_b4be2d05504e79 13
+package.json
+  s_d8116e88a5acf9::t_5acf219b7d5017 114
+src/api/traversing.spec.ts
+  s_d8116e88a5acf9::t_df6a7df32baf8b 443-453,969-975,1906-1919,2587-2655
+src/api/traversing.ts
+  s_d8116e88a5acf9::t_5fe226659bc97f 8,28-95,370-372,686-688,1111-1151,1302-1310,1395-1400
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "abcd5f81082a96d329f91ab7246747a15f377c2a",
+  "prompts": {},
+  "sessions": {
+    "s_d8116e88a5acf9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "aad6451d-3cad-412b-8710-1805246371b1",
+        "model": "unknown"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
