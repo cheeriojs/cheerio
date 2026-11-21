@@ -1,0 +1,25 @@
+package-lock.json
+  s_211924950ee41e::t_c3059f1a2c34c3 13
+package.json
+  s_211924950ee41e::t_726ebfe7abd95b 114
+src/api/traversing.spec.ts
+  s_211924950ee41e::t_d96331129757e3 460-470,986-992,1923-1936,2638-2706
+src/api/traversing.ts
+  s_211924950ee41e::t_029073dffec0d1 8,28-95,372-374,688-690,1113-1153,1304-1312,1396-1400
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "2e100265dea5e862b41b3c1b6c3ae78d0b20aeea",
+  "prompts": {},
+  "sessions": {
+    "s_211924950ee41e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3c789763-34ff-41e8-83da-209a9ba22e4f",
+        "model": "claude-mythos-5-2"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
