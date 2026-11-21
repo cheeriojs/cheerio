@@ -1,0 +1,25 @@
+src/parsers/parse5-adapter.ts
+  s_ebfc56529b7aa7::t_5423f308c2de26 7-12,16-25,41
+src/api/manipulation.spec.ts
+  s_ebfc56529b7aa7::t_5423f308c2de26 2,1838-1841
+  s_ebfc56529b7aa7::t_87826bd61da444 1817-1837
+  s_ebfc56529b7aa7::t_9e20cbb296c0a1 1842-1847
+src/api/manipulation.ts
+  s_ebfc56529b7aa7::t_5423f308c2de26 988,991-992
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "9cb4ca77d1ef8e6b01b0df49c1dadf9d5a982424",
+  "prompts": {},
+  "sessions": {
+    "s_ebfc56529b7aa7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e27ff939-ce56-4ea6-b37c-bf5e59ff5c53",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
