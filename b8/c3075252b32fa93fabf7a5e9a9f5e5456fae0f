@@ -1,0 +1,25 @@
+src/api/attributes.spec.ts
+  s_f32fc6589c9294::t_cc6d63fbd32c1b 865-873
+src/api/attributes.ts
+  s_f32fc6589c9294::t_014ce6ec8afb01 206,214,220,225-227,448,478,824-829,831,833-837,841,845-852,918,1077-1078,1089-1106
+src/api/forms.spec.ts
+  s_f32fc6589c9294::t_e23d9526620776 293-314
+src/api/forms.ts
+  s_f32fc6589c9294::t_712ff7fbb875b2 177-181
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "b8c3075252b32fa93fabf7a5e9a9f5e5456fae0f",
+  "prompts": {},
+  "sessions": {
+    "s_f32fc6589c9294": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "48db066e-02e7-4860-b2fe-e1026589694c",
+        "model": "claude-mythos-5-2"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
