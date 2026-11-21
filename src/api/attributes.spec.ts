@@ -44,6 +44,83 @@ describe('$(...)', () => {
       expect(attr).toBe('autofocus');
     });
 
+    it('(name) : should look up attribute names case-insensitively in HTML', () => {
+      const $el = cheerio('<div DATA-Foo="bar"></div>');
+
+      expect($el.attr('data-foo')).toBe('bar');
+      expect($el.attr('DATA-FOO')).toBe('bar');
+      expect($el.attr('Data-Foo')).toBe('bar');
+    });
+
+    it('(name) : should preserve attribute name case for SVG elements', () => {
+      const $el = load('<svg viewBox="0 0 1 1"></svg>');
+
+      expect($el('svg').attr('viewBox')).toBe('0 0 1 1');
+      expect($el('svg').attr('VIEWBOX')).toBeUndefined();
+
+      $el('svg').attr('viewBox', '0 0 2 2');
+      expect($el('svg')[0].attribs).toEqual({ viewBox: '0 0 2 2' });
+    });
+
+    it('(name) : should preserve attribute name case in XML mode', () => {
+      const $el = load('<Root Attr="value"/>', { xml: true });
+
+      expect($el('Root').attr('Attr')).toBe('value');
+      expect($el('Root').attr('attr')).toBeUndefined();
+    });
+
+    it('(name, value) : should lowercase attribute names in HTML', () => {
+      const $el = cheerio('<div></div>').attr(
+        'DATA-Foo',
+        'bar',
+      ) as Cheerio<Element>;
+
+      expect($el[0].attribs).toEqual({ 'data-foo': 'bar' });
+      expect($el.attr('DATA-FOO')).toBe('bar');
+    });
+
+    it('(map) : should lowercase attribute names in HTML', () => {
+      const $el = cheerio('<div></div>').attr({
+        'DATA-Foo': 'bar',
+      }) as Cheerio<Element>;
+
+      expect($el[0].attribs).toEqual({ 'data-foo': 'bar' });
+    });
+
+    it('(name, function) : should pass the current value for case-insensitive names', () => {
+      const $el = cheerio('<div DATA-Foo="bar"></div>').attr(
+        'DATA-Foo',
+        (_, value) => `${value}-baz`,
+      ) as Cheerio<Element>;
+
+      expect($el[0].attribs).toEqual({ 'data-foo': 'bar-baz' });
+    });
+
+    it('(name) : should only case-fold ASCII letters in attribute names', () => {
+      const $el = load('<div data-Ä="upper" data-ä="lower"></div>');
+
+      // HTML attribute names only fold `A` through `Z`, so these stay distinct.
+      expect($el('div').attr('data-Ä')).toBe('upper');
+      expect($el('div').attr('data-ä')).toBe('lower');
+      expect($el('div').attr('DATA-Ä')).toBe('upper');
+      expect($el('div').attr('DATA-ä')).toBe('lower');
+    });
+
+    it('(name, value) : should keep parser-preserved attribute names reachable', () => {
+      const $el = load('<div DATA-Foo="bar"></div>', {
+        xml: { xmlMode: false, lowerCaseAttributeNames: false },
+      });
+
+      expect($el('div').attr('DATA-Foo')).toBe('bar');
+      expect($el('div').attr('data-foo')).toBe('bar');
+
+      $el('div').attr('data-foo', 'baz');
+
+      // The attribute is updated in place instead of adding a second name.
+      expect(Object.keys($el('div')[0].attribs)).toEqual(['DATA-Foo']);
+      expect($el('div').attr('DATA-Foo')).toBe('baz');
+    });
+
     it('(key, value) : should set one attr', () => {
       const $pear = $('.pear').attr('id', 'pear');
       expect($('#pear')).toHaveLength(1);
@@ -861,6 +938,16 @@ describe('$(...)', () => {
       expect($apple.attr('id')).toBeUndefined();
       expect($apple.attr('class')).toBeUndefined();
       expect($apple.attr('size')).toBe('small');
+    });
+
+    it('(key) : should remove attributes case-insensitively in HTML', () => {
+      const $el = cheerio('<div CLASS="apple" id="fruit"></div>');
+
+      $el.removeAttr('Class');
+
+      expect(($el as unknown as Cheerio<Element>)[0].attribs).toEqual({
+        id: 'fruit',
+      });
     });
 
     it('(key) : should return cheerio object', () => {
