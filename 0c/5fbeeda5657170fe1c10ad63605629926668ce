@@ -1,0 +1,23 @@
+src/cheerio.spec.ts
+  s_e74cca47d8419d::t_d3adcfbcfc9aec 450-464
+src/load-parse.ts
+  s_e74cca47d8419d::t_4f416386ab1b2a 38
+src/parsers/parse5-adapter.ts
+  s_e74cca47d8419d::t_3878cb9e654fbd 37-38,44-45,48-52
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "0c5fbeeda5657170fe1c10ad63605629926668ce",
+  "prompts": {},
+  "sessions": {
+    "s_e74cca47d8419d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fe2d9978-38bf-4a4d-9408-f54136f8e693",
+        "model": "claude-mythos-5-2"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
