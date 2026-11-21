@@ -1,0 +1,21 @@
+src/api/manipulation.spec.ts
+  s_dd9b47b8063edc::t_5aed164db65985 1848-1856,1941-1983
+src/parsers/parse5-adapter.ts
+  s_dd9b47b8063edc::t_0ca9919787d3da 69,73-87
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d5be53fadefebcd60ed0c474cab00bdcac39cfef",
+  "prompts": {},
+  "sessions": {
+    "s_dd9b47b8063edc": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1fd59-8815-7f63-9928-8711392e08ad",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
