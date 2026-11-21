@@ -1,0 +1,48 @@
+src/api/traversing.spec.ts
+  s_1e164ed712020f::t_e384ec5131e8c5 1256-1258,1258,1267-1268,1272,1277,1281-1282
+  s_8abaa648bbb41c::t_94811356d9d031 1259-1266
+  s_3c1debc0ad7462::t_df9fc27eb1bc81 1269-1271,1273-1276,1278-1280
+src/api/traversing.ts
+  s_3c1debc0ad7462::t_d00632baebca64 973-989
+  s_173ca9ea90a33e::t_9ad9e431d6be17 974
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "484b93b21bf07d1dfe747c0cee6f3999a36c92af",
+  "prompts": {},
+  "sessions": {
+    "s_173ca9ea90a33e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "707c2ba5-c81c-46be-ad9b-127e1a683e6c",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    },
+    "s_1e164ed712020f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a181ec-eb1f-7320-97a4-1f5027b1d351",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    },
+    "s_3c1debc0ad7462": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "43ffcc8a-8b0a-4e51-bf70-a4d0ef22def4",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    },
+    "s_8abaa648bbb41c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2e789cca-9448-491d-bcaa-a3488f4673b4",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": null
+    }
+  }
+}
