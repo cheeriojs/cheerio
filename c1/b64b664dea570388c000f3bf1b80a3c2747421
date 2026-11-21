@@ -1,0 +1,21 @@
+src/api/manipulation.spec.ts
+  s_44ea3bb075ae4e::t_f1e7c25cc104f3 2099-2127
+src/api/manipulation.ts
+  s_44ea3bb075ae4e::t_a4d10eb7eb088a 24-25,1107-1108,1118-1119,1123-1141,1144
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "c1b64b664dea570388c000f3bf1b80a3c2747421",
+  "prompts": {},
+  "sessions": {
+    "s_44ea3bb075ae4e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6dcbbb81-8d1c-46ac-bd31-47f220447deb",
+        "model": "claude-mythos-5-2"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
