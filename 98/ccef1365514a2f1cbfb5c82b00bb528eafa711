@@ -1,0 +1,43 @@
+src/parsers/parse5-adapter.ts
+  s_ebfc56529b7aa7::t_5423f308c2de26 7-12,16-25,41
+src/api/manipulation.spec.ts
+  s_ebfc56529b7aa7::t_5423f308c2de26 2,1847-1850
+  s_ebfc56529b7aa7::t_87826bd61da444 1817-1832,1842-1846
+  s_ebfc56529b7aa7::t_9e20cbb296c0a1 1875-1880
+  s_9233def3f731db::t_5def2b24356637 1855
+  s_9233def3f731db::t_591b1f14242b8c 1833-1836,1851-1854,1856-1860,1862-1864,1867-1873
+  s_9233def3f731db::t_d3ea898a03811f 1837-1838,1841
+  s_9233def3f731db::t_f7b72385e73e60 1839-1840,1865-1866
+  s_9233def3f731db::t_c19c79b017f570 1861
+  s_9233def3f731db::t_8e8cc9d2dfd016 1874
+src/api/manipulation.ts
+  s_ebfc56529b7aa7::t_5423f308c2de26 1067
+  s_9233def3f731db::t_126af339adf256 49,52-53
+  s_9233def3f731db::t_b9b5d989d56619 29,48,54-56,59-61,63-65,67-68
+  s_9233def3f731db::t_2e15a5f3e1d70d 30-32,35-41,57-58,62,72-77
+  s_9233def3f731db::t_336e246ea749bb 24-28,33-34,42-47,50-51,66,69-71,78-101,1060,1068-1079,1082
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "98ccef1365514a2f1cbfb5c82b00bb528eafa711",
+  "prompts": {},
+  "sessions": {
+    "s_9233def3f731db": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "09fc1c85-72fd-4cef-87c6-12a70a8bd9b7",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    },
+    "s_ebfc56529b7aa7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e27ff939-ce56-4ea6-b37c-bf5e59ff5c53",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
