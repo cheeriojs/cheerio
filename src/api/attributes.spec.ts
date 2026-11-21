@@ -96,6 +96,31 @@ describe('$(...)', () => {
       expect($el[0].attribs).toEqual({ 'data-foo': 'bar-baz' });
     });
 
+    it('(name) : should only case-fold ASCII letters in attribute names', () => {
+      const $el = load('<div data-Ä="upper" data-ä="lower"></div>');
+
+      // HTML attribute names only fold `A` through `Z`, so these stay distinct.
+      expect($el('div').attr('data-Ä')).toBe('upper');
+      expect($el('div').attr('data-ä')).toBe('lower');
+      expect($el('div').attr('DATA-Ä')).toBe('upper');
+      expect($el('div').attr('DATA-ä')).toBe('lower');
+    });
+
+    it('(name, value) : should keep parser-preserved attribute names reachable', () => {
+      const $el = load('<div DATA-Foo="bar"></div>', {
+        xml: { xmlMode: false, lowerCaseAttributeNames: false },
+      });
+
+      expect($el('div').attr('DATA-Foo')).toBe('bar');
+      expect($el('div').attr('data-foo')).toBe('bar');
+
+      $el('div').attr('data-foo', 'baz');
+
+      // The attribute is updated in place instead of adding a second name.
+      expect(Object.keys($el('div')[0].attribs)).toEqual(['DATA-Foo']);
+      expect($el('div').attr('DATA-Foo')).toBe('baz');
+    });
+
     it('(key, value) : should set one attr', () => {
       const $pear = $('.pear').attr('id', 'pear');
       expect($('#pear')).toHaveLength(1);

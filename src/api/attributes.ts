@@ -26,12 +26,31 @@ const srcTags = new Set(['img', 'iframe', 'audio', 'video', 'source']);
 const htmlNamespace = 'http://www.w3.org/1999/xhtml';
 
 /**
+ * Lowercase the ASCII letters of a string, leaving all other characters
+ * untouched.
+ *
+ * HTML attribute names are matched case-insensitively for ASCII letters only:
+ * `data-Ä` and `data-ä` are two different attributes.
+ *
+ * @param value - String to lowercase.
+ * @returns The string with `A` through `Z` replaced by their lowercase form.
+ */
+function asciiLowerCase(value: string): string {
+  return value.replaceAll(/[A-Z]/g, (char) => char.toLowerCase());
+}
+
+/**
  * Get the name of an attribute as it is stored in `el.attribs`.
  *
  * Attribute names are case-insensitive for HTML elements, but case-sensitive
  * for elements in other namespaces (such as SVG or MathML), and in XML
  * documents. Elements without namespace information are treated as HTML
  * elements, matching the behavior of `htmlparser2`.
+ *
+ * An attribute that is already stored under the given name is returned
+ * unchanged, so that names kept by parsers that are configured to preserve
+ * them (for example the `lowerCaseAttributeNames: false` option of
+ * `htmlparser2`) stay reachable.
  *
  * @param el - Element the attribute belongs to.
  * @param name - Name of the attribute.
@@ -43,9 +62,22 @@ function getAttributeName(
   name: string,
   xmlMode?: boolean,
 ): string {
-  return !xmlMode && (el.namespace ?? htmlNamespace) === htmlNamespace
-    ? name.toLowerCase()
-    : name;
+  if (xmlMode || (el.namespace ?? htmlNamespace) !== htmlNamespace) {
+    return name;
+  }
+
+  if (Object.hasOwn(el.attribs, name)) {
+    return name;
+  }
+
+  const lowered = asciiLowerCase(name);
+  for (const storedName of Object.keys(el.attribs)) {
+    if (asciiLowerCase(storedName) === lowered) {
+      return storedName;
+    }
+  }
+
+  return lowered;
 }
 
 /**
@@ -124,6 +156,7 @@ function getAttr(
  * @param el - The element to set the attribute on.
  * @param name - The attribute's name.
  * @param value - The attribute's value.
+ * @param xmlMode - Whether the document is parsed as XML.
  */
 function setAttr(
   el: Element,
@@ -238,15 +271,16 @@ export function attr<T extends AnyNode>(
         throw new TypeError('Bad combination of arguments.');
       }
       return domEach(this, (el, i) => {
-        if (isTag(el)) {
-          const attrName = getAttributeName(el, name, this.options.xmlMode);
-          setAttr(
-            el,
-            name,
-            value.call(el, i, el.attribs[attrName]),
-            this.options.xmlMode,
-          );
+        if (!isTag(el)) {
+          return;
         }
+        const attrName = getAttributeName(el, name, this.options.xmlMode);
+        setAttr(
+          el,
+          name,
+          value.call(el, i, el.attribs[attrName]),
+          this.options.xmlMode,
+        );
       });
     }
     return domEach(this, (el) => {
@@ -888,6 +922,7 @@ export function val<T extends AnyNode>(
  *
  * @param elem - Node to remove attribute from.
  * @param name - Name of the attribute to remove.
+ * @param xmlMode - Whether the document is parsed as XML.
  */
 function removeAttribute(elem: Element, name: string, xmlMode?: boolean) {
   const attrName = getAttributeName(elem, name, xmlMode);
