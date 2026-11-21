@@ -1,0 +1,19 @@
+src/api/manipulation.ts
+  s_d177631ab2ae31::t_8c490c6819ec3a 1101-1102,1118-1119
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "1becc92ddef18fbfd5f8cdfeee5445c4e92b2690",
+  "prompts": {},
+  "sessions": {
+    "s_d177631ab2ae31": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "76f8037e-6be9-4053-ac85-c76d05d6142a",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
