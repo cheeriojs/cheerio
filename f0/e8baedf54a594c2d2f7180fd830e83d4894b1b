@@ -1,0 +1,19 @@
+src/api/forms.ts
+  s_6b95aedd28e28e::t_25353b91b89dbe 139-141
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "f0e8baedf54a594c2d2f7180fd830e83d4894b1b",
+  "prompts": {},
+  "sessions": {
+    "s_6b95aedd28e28e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a20085-0f18-7b43-8333-4eba5ad10368",
+        "model": "gpt-6.2-astra"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
