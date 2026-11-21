@@ -23,6 +23,31 @@ const rbrace = /^{[\s\S]*}$|^\[[\s\S]*]$/;
 const hrefTags = new Set(['a', 'link']);
 const srcTags = new Set(['img', 'iframe', 'audio', 'video', 'source']);
 
+const htmlNamespace = 'http://www.w3.org/1999/xhtml';
+
+/**
+ * Get the name of an attribute as it is stored in `el.attribs`.
+ *
+ * Attribute names are case-insensitive for HTML elements, but case-sensitive
+ * for elements in other namespaces (such as SVG or MathML), and in XML
+ * documents. Elements without namespace information are treated as HTML
+ * elements, matching the behavior of `htmlparser2`.
+ *
+ * @param el - Element the attribute belongs to.
+ * @param name - Name of the attribute.
+ * @param xmlMode - Whether the document is parsed as XML.
+ * @returns The name of the attribute as stored in `el.attribs`.
+ */
+function getAttributeName(
+  el: Element,
+  name: string,
+  xmlMode?: boolean,
+): string {
+  return !xmlMode && (el.namespace ?? htmlNamespace) === htmlNamespace
+    ? name.toLowerCase()
+    : name;
+}
+
 /**
  * Gets a node's attribute. For boolean attributes, it will return the value's
  * name should it be set.
@@ -64,13 +89,18 @@ function getAttr(
     return elem.attribs;
   }
 
-  if (Object.hasOwn(elem.attribs, name)) {
+  // Attribute names are case-insensitive for HTML elements.
+  const attrName = getAttributeName(elem, name, xmlMode);
+
+  if (Object.hasOwn(elem.attribs, attrName)) {
     // Get the (decoded) attribute
-    return !xmlMode && rboolean.test(name) ? name : elem.attribs[name];
+    return !xmlMode && rboolean.test(attrName)
+      ? attrName
+      : elem.attribs[attrName];
   }
 
   // Mimic the DOM and return text content as value for `option's`
-  if (elem.name === 'option' && name === 'value') {
+  if (elem.name === 'option' && attrName === 'value') {
     return text(elem.children);
   }
 
@@ -78,7 +108,7 @@ function getAttr(
   if (
     elem.name === 'input' &&
     (elem.attribs['type'] === 'radio' || elem.attribs['type'] === 'checkbox') &&
-    name === 'value'
+    attrName === 'value'
   ) {
     return 'on';
   }
@@ -95,11 +125,16 @@ function getAttr(
  * @param name - The attribute's name.
  * @param value - The attribute's value.
  */
-function setAttr(el: Element, name: string, value: string | null) {
+function setAttr(
+  el: Element,
+  name: string,
+  value: string | null,
+  xmlMode?: boolean,
+) {
   if (value === null) {
-    removeAttribute(el, name);
+    removeAttribute(el, name, xmlMode);
   } else {
-    el.attribs[name] = `${value}`;
+    el.attribs[getAttributeName(el, name, xmlMode)] = `${value}`;
   }
 }
 
@@ -203,7 +238,15 @@ export function attr<T extends AnyNode>(
         throw new TypeError('Bad combination of arguments.');
       }
       return domEach(this, (el, i) => {
-        if (isTag(el)) setAttr(el, name, value.call(el, i, el.attribs[name]));
+        if (isTag(el)) {
+          const attrName = getAttributeName(el, name, this.options.xmlMode);
+          setAttr(
+            el,
+            name,
+            value.call(el, i, el.attribs[attrName]),
+            this.options.xmlMode,
+          );
+        }
       });
     }
     return domEach(this, (el) => {
@@ -211,13 +254,13 @@ export function attr<T extends AnyNode>(
 
       if (typeof name === 'object') {
         for (const [objName, objValue] of Object.entries(name)) {
-          setAttr(el, objName, objValue);
+          setAttr(el, objName, objValue, this.options.xmlMode);
         }
       } else {
         if (typeof name !== 'string') {
           throw new TypeError('Bad combination of arguments.');
         }
-        setAttr(el, name, value ?? null);
+        setAttr(el, name, value ?? null, this.options.xmlMode);
       }
     });
   }
@@ -273,6 +316,7 @@ function setProp(el: Element, name: string, value: unknown, xmlMode?: boolean) {
           ? ''
           : null
         : `${value as string}`,
+      xmlMode,
     );
   }
 }
@@ -845,10 +889,11 @@ export function val<T extends AnyNode>(
  * @param elem - Node to remove attribute from.
  * @param name - Name of the attribute to remove.
  */
-function removeAttribute(elem: Element, name: string) {
-  if (!(elem.attribs && Object.hasOwn(elem.attribs, name))) return;
+function removeAttribute(elem: Element, name: string, xmlMode?: boolean) {
+  const attrName = getAttributeName(elem, name, xmlMode);
+  if (!(elem.attribs && Object.hasOwn(elem.attribs, attrName))) return;
 
-  delete elem.attribs[name];
+  delete elem.attribs[attrName];
 }
 
 /**
@@ -889,7 +934,9 @@ export function removeAttr<T extends AnyNode>(
 
   for (const attrName of attrNames) {
     domEach(this, (elem) => {
-      if (isTag(elem)) removeAttribute(elem, attrName);
+      if (isTag(elem)) {
+        removeAttribute(elem, attrName, this.options.xmlMode);
+      }
     });
   }
 
