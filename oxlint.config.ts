@@ -241,10 +241,11 @@ const config: OxlintConfig = defineConfig({
     },
     {
       files: ['src/**'],
+      // Match the files omitted by npm and tshy.
       excludeFiles: [
-        '**/*.spec.{js,jsx,ts,tsx,mjs,mts,cjs,cts}',
-        '**/__fixtures__/**',
-        '**/__tests__/**',
+        '**/*.spec.{js,ts}',
+        '**/__fixtures__/*',
+        '**/__tests__/*',
       ],
       // Published files can only use dependencies installed for consumers.
       rules: {
@@ -258,6 +259,7 @@ const config: OxlintConfig = defineConfig({
                   'Published files cannot import test fixtures or tests.',
               },
               {
+                // Source files in this layout need at most one direct parent hop.
                 regex: String.raw`^\.\.?/(?:.*/)?\.\.(?:/|$)`,
                 message: 'Use direct paths within src for published imports.',
               },
@@ -286,7 +288,7 @@ const config: OxlintConfig = defineConfig({
     },
     {
       files: ['src/*.{js,jsx,ts,tsx,mjs,mts,cjs,cts}'],
-      excludeFiles: ['**/*.spec.{js,jsx,ts,tsx,mjs,mts,cjs,cts}'],
+      excludeFiles: ['**/*.spec.{js,ts}'],
       // A parent import from a top-level source file would leave src.
       rules: { 'import/no-relative-parent-imports': 'error' },
     },
