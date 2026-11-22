@@ -1,5 +1,6 @@
 import { type AnyNode, type Element, isText, type Text } from 'domhandler';
 import { beforeEach, describe, expect, it } from 'vitest';
+
 import {
   cheerio,
   drinks,
@@ -1139,7 +1140,7 @@ describe('$(...)', () => {
 
     it('(element) : should reduce the set of matched elements to those that specified directly', () => {
       const $fruits = $('li');
-      const pear = $fruits.filter('.pear')[0];
+      const pear = $('li.pear')[0];
       expect($fruits.filter(pear)).toHaveLength(1);
     });
 
@@ -1157,11 +1158,11 @@ describe('$(...)', () => {
     });
 
     it('should also iterate over text nodes (#1867)', () => {
-      const text = $('<a>a</a>b<c></c>').filter((_, el): el is Text =>
-        isText(el),
-      );
+      const text = $('<a>a</a>b<c></c>')
+        .filter((_, el): el is Text => isText(el))
+        .get(0);
 
-      expect(text[0].data).toBe('b');
+      expect(text?.data).toBe('b');
     });
 
     it('(null) : should return an empty selection rather than throwing', () => {
@@ -1311,14 +1312,14 @@ describe('$(...)', () => {
         '<span>foo</span><span>bar</span><span>baz</span>',
       ) as Cheerio<Element>;
       const $elem = $src.first();
-      expect($elem.length).toBe(1);
+      expect($elem).toHaveProperty('length', 1);
       expect($elem[0].childNodes[0]).toHaveProperty('data', 'foo');
     });
 
     it('() : should return an empty object for an empty object', () => {
       const $src = $();
       const $first = $src.first();
-      expect($first.length).toBe(0);
+      expect($first).toHaveProperty('length', 0);
       expect($first[0]).toBeUndefined();
     });
   });
@@ -1329,14 +1330,14 @@ describe('$(...)', () => {
         '<span>foo</span><span>bar</span><span>baz</span>',
       ) as Cheerio<Element>;
       const $elem = $src.last();
-      expect($elem.length).toBe(1);
+      expect($elem).toHaveProperty('length', 1);
       expect($elem[0].childNodes[0]).toHaveProperty('data', 'baz');
     });
 
     it('() : should return an empty object for an empty object', () => {
       const $src = $();
       const $last = $src.last();
-      expect($last.length).toBe(0);
+      expect($last).toHaveProperty('length', 0);
       expect($last[0]).toBeUndefined();
     });
   });
@@ -1346,9 +1347,9 @@ describe('$(...)', () => {
       const $src = $('<span>bar</span>') as Cheerio<Element>;
       const $first = $src.first();
       const $last = $src.last();
-      expect($first.length).toBe(1);
+      expect($first).toHaveProperty('length', 1);
       expect($first[0].childNodes[0]).toHaveProperty('data', 'bar');
-      expect($last.length).toBe(1);
+      expect($last).toHaveProperty('length', 1);
       expect($last[0].childNodes[0]).toHaveProperty('data', 'bar');
       expect($first[0]).toBe($last[0]);
     });
@@ -1470,8 +1471,9 @@ describe('$(...)', () => {
     });
 
     it('returns an empty object at the end of the chain', () => {
-      expect($fruits.end().end().end()).toBeTruthy();
-      expect($fruits.end().end().end()).toHaveLength(0);
+      const $end = $fruits.end().end().end();
+      expect($end).toBeInstanceOf(Cheerio);
+      expect($end).toHaveProperty('length', 0);
     });
     it('find', () => {
       expect($fruits.find('.apple').end()).toBe($fruits);

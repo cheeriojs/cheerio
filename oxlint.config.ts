@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+
 import { defineConfig, type OxlintConfig } from 'oxlint';
 
 /**
@@ -106,7 +107,6 @@ const config: OxlintConfig = defineConfig({
       'unicorn/no-array-reduce',
       'no-await-in-loop',
       'promise/avoid-new',
-      'promise/prefer-await-to-then',
       'node/no-top-level-await',
       'node/no-sync',
       'import/no-nodejs-modules',
@@ -132,7 +132,7 @@ const config: OxlintConfig = defineConfig({
       'no-inline-comments',
       'init-declarations',
     ),
-    // Keep the established import order and module export structure.
+    // Let Oxfmt handle import order and preserve the existing module conventions.
     ...off(
       'sort-imports',
       'import/consistent-type-specifier-style',
@@ -157,19 +157,10 @@ const config: OxlintConfig = defineConfig({
       'typescript/prefer-readonly-parameter-types',
       'typescript/no-unsafe-type-assertion',
       'typescript/no-non-null-assertion',
-      'typescript/promise-function-async',
     ),
-    // Method signatures, mapped types, `{}` and type aliases are chosen for how they check and infer.
-    ...off(
-      'typescript/method-signature-style',
-      'typescript/consistent-indexed-object-style',
-      'typescript/consistent-type-definitions',
-      'typescript/ban-types',
-      'no-redeclare',
-    ),
-    // Functions converting values declare the types they convert.
-    ...off('unicorn/prefer-native-coercion-functions'),
-    // Tests use tables, assertion helpers and exact boolean comparisons.
+    // Preserve the existing method signature style.
+    ...off('typescript/method-signature-style'),
+    // Tests use tables, assertion helpers and existing setup conventions.
     ...off(
       'vitest/prefer-expect-assertions',
       'vitest/require-test-timeout',
@@ -180,10 +171,7 @@ const config: OxlintConfig = defineConfig({
       'vitest/prefer-describe-function-title',
       'vitest/prefer-to-be-truthy',
       'vitest/prefer-to-be-falsy',
-      'vitest/prefer-strict-boolean-matchers',
       'vitest/prefer-strict-equal',
-      'vitest/prefer-to-have-length',
-      'vitest/prefer-to-be',
       'vitest/prefer-expect-type-of',
       'vitest/prefer-lowercase-title',
       'vitest/padding-around-test-blocks',
@@ -207,7 +195,6 @@ const config: OxlintConfig = defineConfig({
     ...off(
       'typescript/prefer-for-of',
       'unicorn/no-array-callback-reference',
-      'unicorn/prefer-array-find',
       'unicorn/prefer-at',
       'unicorn/prefer-string-replace-all',
       'no-multi-assign',

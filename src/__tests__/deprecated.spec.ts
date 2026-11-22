@@ -4,6 +4,7 @@
  * maintained until that time.
  */
 import { beforeEach, describe, expect, it } from 'vitest';
+
 import { cheerio, food, fruits } from '../__fixtures__/fixtures.js';
 
 describe('deprecated APIs', () => {
@@ -168,7 +169,7 @@ describe('deprecated APIs', () => {
          * also deprecated.
          */
         const $ = cheerio();
-        expect($.html()).toBe(null);
+        expect($.html()).toBeNull();
       });
 
       it('(selector) : should return the outerHTML of the selected element', () => {

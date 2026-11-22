@@ -11,6 +11,7 @@
  *   node scripts/sync-algolia-crawler.mjs [--dry-run] [--reindex]
  */
 import { setTimeout as sleep } from 'node:timers/promises';
+
 import { config, crawlerId } from '../algolia-crawler.config.mjs';
 
 const endpoint = `https://crawler.algolia.com/api/1/crawlers/${crawlerId}`;

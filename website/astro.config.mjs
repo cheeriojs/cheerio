@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+
 import { unified } from '@astrojs/markdown-remark';
 import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
@@ -6,6 +7,7 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
 import remarkDirective from 'remark-directive';
+
 import { rehypeExternalLinks } from './src/plugins/rehype-external-links.ts';
 import { remarkAdmonitions } from './src/plugins/remark-admonitions.ts';
 import { remarkInternalLinks } from './src/plugins/remark-internal-links.ts';

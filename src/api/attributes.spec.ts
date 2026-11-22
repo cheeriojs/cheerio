@@ -1,5 +1,6 @@
 import type { Element } from 'domhandler';
 import { beforeEach, describe, expect, it } from 'vitest';
+
 import {
   cheerio,
   chocolates,
@@ -63,7 +64,7 @@ describe('$(...)', () => {
 
     it('(key, value) : should return an empty object for an empty object', () => {
       const $src = $().attr('key', 'value');
-      expect($src.length).toBe(0);
+      expect($src).toHaveProperty('length', 0);
       expect($src[0]).toBeUndefined();
     });
 
@@ -616,16 +617,16 @@ describe('$(...)', () => {
       expect(() => {
         a.data(4 as never, 'throw');
       }).not.toThrow();
-      expect(a.data('balls')).toStrictEqual('giandor');
-      expect(b.data('snack')).toStrictEqual('chocoletti');
+      expect(a.data('balls')).toBe('giandor');
+      expect(b.data('snack')).toBe('chocoletti');
     });
 
     it('(key, value) : should set data for all elements in the selection', () => {
       $('li').data('foo', 'bar');
 
-      expect($('li').eq(0).data('foo')).toStrictEqual('bar');
-      expect($('li').eq(1).data('foo')).toStrictEqual('bar');
-      expect($('li').eq(2).data('foo')).toStrictEqual('bar');
+      expect($('li').eq(0).data('foo')).toBe('bar');
+      expect($('li').eq(1).data('foo')).toBe('bar');
+      expect($('li').eq(2).data('foo')).toBe('bar');
     });
 
     it('should set data when the selection starts with a text node', () => {
@@ -670,7 +671,7 @@ describe('$(...)', () => {
 
       it('null', () => {
         const $el = cheerio('<div data-null="null">');
-        expect($el.data('null')).toBe(null);
+        expect($el.data('null')).toBeNull();
       });
 
       it('object', () => {
@@ -771,7 +772,7 @@ describe('$(...)', () => {
     });
     it('(invalid value): should only handle arrays when it has the attribute multiple', () => {
       const val = $('select#one').val([]);
-      expect(val).not.toBeUndefined();
+      expect(val).toBeDefined();
     });
     it('(value): on empty set should get `this`', () => {
       const $empty = $([]);
@@ -844,7 +845,7 @@ describe('$(...)', () => {
 
     it('(key) : should remove a single attr', () => {
       const $fruits = $('#fruits');
-      expect($fruits.attr('id')).not.toBeUndefined();
+      expect($fruits.attr('id')).toBeDefined();
       $fruits.removeAttr('id');
       expect($fruits.attr('id')).toBeUndefined();
     });

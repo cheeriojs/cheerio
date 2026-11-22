@@ -1,6 +1,8 @@
 import { createServer, type RequestListener, type Server } from 'node:http';
 import { Writable } from 'node:stream';
+
 import { afterEach, describe, expect, it } from 'vitest';
+
 import * as cheerio from './index.js';
 
 function noop() {
@@ -117,7 +119,7 @@ describe('decodeStream', () => {
 describe('fromURL', () => {
   let server: Server | undefined;
 
-  function createTestServer(
+  async function createTestServer(
     contentType: string,
     body: string | Buffer,
     handler: RequestListener = (_req, res) => {

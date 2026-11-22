@@ -1,9 +1,9 @@
 {
   "name": "@cheerio/website",
-  "description": "Documentation website for cheerio",
-  "type": "module",
   "version": "0.0.0",
   "private": true,
+  "description": "Documentation website for cheerio",
+  "type": "module",
   "scripts": {
     "astro": "astro",
     "build": "npm run build:api && astro build",

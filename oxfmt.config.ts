@@ -5,8 +5,8 @@ const config: OxfmtConfig = defineConfig({
   tabWidth: 2,
   singleQuote: true,
   trailingComma: 'all',
-  sortImports: false,
-  sortPackageJson: false,
+  sortImports: true,
+  sortPackageJson: true,
   embeddedLanguageFormatting: 'off',
   // Exclude Astro because Oxfmt would rewrite markup along with frontmatter.
   // MDX and SVG are outside the previous formatting scope.
@@ -17,6 +17,12 @@ const config: OxfmtConfig = defineConfig({
     '**/*.svg',
   ],
   overrides: [
+    {
+      files: ['src/**/*.ts'],
+      excludeFiles: ['**/*.spec.ts', 'src/__fixtures__/**', 'src/__tests__/**'],
+      // Preserve the published source map positions during the tooling migration.
+      options: { sortImports: false },
+    },
     {
       files: ['**/*.css', '**/*.yml', '**/*.yaml'],
       options: { singleQuote: false },

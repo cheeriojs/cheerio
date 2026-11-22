@@ -3,31 +3,42 @@
   "version": "1.2.0",
   "description": "The fast, flexible & elegant library for parsing and manipulating HTML and XML.",
   "keywords": [
+    "dom",
+    "html",
     "htmlparser",
     "jquery",
-    "selector",
-    "scraper",
     "parser",
-    "dom",
-    "xml",
-    "html"
+    "scraper",
+    "selector",
+    "xml"
   ],
   "homepage": "https://cheerio.js.org/",
   "bugs": {
     "url": "https://github.com/cheeriojs/cheerio/issues"
   },
+  "license": "MIT",
+  "author": "Matt Mueller <mattmuelle@gmail.com>",
+  "maintainers": [
+    "Felix Boehm <me@feedic.com>"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/cheeriojs/cheerio.git"
   },
   "funding": "https://github.com/cheeriojs/cheerio?sponsor=1",
-  "license": "MIT",
-  "author": "Matt Mueller <mattmuelle@gmail.com>",
-  "sideEffects": false,
-  "maintainers": [
-    "Felix Boehm <me@feedic.com>"
+  "files": [
+    "dist",
+    "src",
+    "!**/*.spec.{t,j}s",
+    "!**/__tests__/*",
+    "!**/__fixtures__/*"
   ],
   "type": "module",
+  "sideEffects": false,
+  "main": "./dist/commonjs/index.js",
+  "module": "./dist/esm/index.js",
+  "browser": "./dist/esm/browser/index.js",
+  "types": "./dist/commonjs/index.d.ts",
   "exports": {
     ".": {
       "import": {
@@ -43,7 +54,6 @@
         "default": "./dist/commonjs/index.js"
       }
     },
-    "./package.json": "./package.json",
     "./slim": {
       "import": {
         "browser": {
@@ -71,19 +81,9 @@
         "types": "./dist/commonjs/utils.d.ts",
         "default": "./dist/commonjs/utils.js"
       }
-    }
+    },
+    "./package.json": "./package.json"
   },
-  "main": "./dist/commonjs/index.js",
-  "module": "./dist/esm/index.js",
-  "browser": "./dist/esm/browser/index.js",
-  "types": "./dist/commonjs/index.d.ts",
-  "files": [
-    "dist",
-    "src",
-    "!**/*.spec.{t,j}s",
-    "!**/__tests__/*",
-    "!**/__fixtures__/*"
-  ],
   "scripts": {
     "benchmark": "node --import=tsx benchmark/benchmark.ts",
     "build": "tshy",
@@ -95,13 +95,6 @@
     "test": "npm run lint && npm run test:vi",
     "test:vi": "vitest run",
     "update-sponsors": "tsx scripts/fetch-sponsors.mts"
-  },
-  "lint-staged": {
-    "*.{js,ts}": [
-      "oxlint --fix -c oxlint.staged.config.mjs",
-      "oxfmt"
-    ],
-    "*.json": "oxfmt --no-error-on-unmatched-pattern"
   },
   "dependencies": {
     "cheerio-select": "^2.1.0",
@@ -136,23 +129,30 @@
     "typescript": "^6.0.3",
     "vitest": "^5.0.3"
   },
-  "engines": {
-    "node": ">=22.19.0"
+  "lint-staged": {
+    "*.{js,ts}": [
+      "oxlint --fix -c oxlint.staged.config.mjs",
+      "oxfmt"
+    ],
+    "*.json": "oxfmt --no-error-on-unmatched-pattern"
   },
   "tshy": {
     "esmDialects": [
       "browser"
+    ],
+    "exclude": [
+      "**/*.spec.ts",
+      "**/__fixtures__/*",
+      "**/__tests__/*"
     ],
     "exports": {
       ".": "./src/index.ts",
       "./slim": "./src/slim.ts",
       "./utils": "./src/utils.ts",
       "./package.json": "./package.json"
-    },
-    "exclude": [
-      "**/*.spec.ts",
-      "**/__fixtures__/*",
-      "**/__tests__/*"
-    ]
+    }
+  },
+  "engines": {
+    "node": ">=22.19.0"
   }
 }

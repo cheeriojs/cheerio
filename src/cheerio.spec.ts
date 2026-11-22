@@ -1,6 +1,7 @@
 import type { AnyNode, Element } from 'domhandler';
 import { parseDocument } from 'htmlparser2';
 import { describe, expect, it } from 'vitest';
+
 import { cheerio, food, fruits, noscript } from './__fixtures__/fixtures.js';
 import type { Cheerio } from './index.js';
 
@@ -18,7 +19,7 @@ function testAppleSelect($apple: ArrayLike<Element>) {
   expect($apple).toHaveLength(1);
   const apple = $apple[0];
   expect(apple.parentNode).toHaveProperty('tagName', 'ul');
-  expect(apple.prev).toBe(null);
+  expect(apple.prev).toBeNull();
   expect((apple.next as Element).attribs).toHaveProperty('class', 'orange');
   expect(apple.childNodes).toHaveLength(1);
   expect(apple.childNodes[0]).toHaveProperty('data', 'Apple');

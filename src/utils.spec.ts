@@ -8,6 +8,7 @@ import {
   isText,
 } from 'domhandler';
 import { describe, expect, it } from 'vitest';
+
 import * as utils from './utils.js';
 
 describe('util functions', () => {
