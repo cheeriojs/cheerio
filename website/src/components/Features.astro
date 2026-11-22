@@ -38,40 +38,35 @@ const features = [
 
   <div class="mx-auto max-w-6xl px-6">
     <div class="animate-fade-up mb-16 text-center">
-      <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
-        Why Cheerio?
-      </p>
+      <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Why Cheerio?</p>
       <h2 class="font-display text-4xl text-slate-900 md:text-5xl dark:text-white">
         Built for developers who ship
       </h2>
     </div>
 
     <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
-      {features.map((feature, i) => (
-        <div
-          class:list={[
-            'animate-fade-up group relative rounded-2xl border border-slate-200 bg-gradient-to-br p-8 transition-all duration-300 dark:border-slate-800',
-            feature.accent,
-            feature.border,
-            `animation-delay-${(i + 1) * 200}`,
-          ]}
-        >
+      {
+        features.map((feature, i) => (
           <div
             class:list={[
-              'mb-6 inline-flex rounded-xl bg-white p-3 shadow-sm dark:bg-slate-800',
-              feature.iconColor,
+              'animate-fade-up group relative rounded-2xl border border-slate-200 bg-gradient-to-br p-8 transition-all duration-300 dark:border-slate-800',
+              feature.accent,
+              feature.border,
+              `animation-delay-${(i + 1) * 200}`,
             ]}
           >
-            <feature.Icon class="h-8 w-8" stroke-width={1.5} />
+            <div class:list={['mb-6 inline-flex rounded-xl bg-white p-3 shadow-sm dark:bg-slate-800', feature.iconColor]}>
+              <feature.Icon class="h-8 w-8" stroke-width={1.5} />
+            </div>
+            <h3 class="mb-3 text-xl font-semibold text-slate-900 dark:text-white">
+              {feature.title}
+            </h3>
+            <p class="leading-relaxed text-slate-600 dark:text-slate-400">
+              {feature.description}
+            </p>
           </div>
-          <h3 class="mb-3 text-xl font-semibold text-slate-900 dark:text-white">
-            {feature.title}
-          </h3>
-          <p class="leading-relaxed text-slate-600 dark:text-slate-400">
-            {feature.description}
-          </p>
-        </div>
-      ))}
+        ))
+      }
     </div>
   </div>
 </section>

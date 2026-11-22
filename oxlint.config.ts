@@ -308,6 +308,11 @@ const config: OxlintConfig = defineConfig({
       ),
     },
     {
+      files: ['website/src/components/Hero.astro'],
+      // Allow the existing unbraced single-statement early return.
+      rules: { curly: ['error', 'multi-or-nest'] },
+    },
+    {
       files: ['**/*.astro'],
       // Astro frontmatter and inline scripts follow the component's scope.
       rules: off(

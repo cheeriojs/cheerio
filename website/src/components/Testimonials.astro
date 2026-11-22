@@ -81,9 +81,7 @@ tweets.forEach((tweet, i) => {
 
   <div class="mx-auto max-w-6xl px-6">
     <div class="animate-fade-up mb-16 text-center">
-      <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
-        Community
-      </p>
+      <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Community</p>
       <h2 class="font-display text-4xl text-slate-900 md:text-5xl dark:text-white">
         What developers are saying
       </h2>
@@ -91,81 +89,80 @@ tweets.forEach((tweet, i) => {
 
     <!-- Masonry-like 3-column layout -->
     <div class="hidden gap-6 md:grid md:grid-cols-3">
-      {columns.map((column, colIndex) => (
-        <div class="flex flex-col gap-6">
-          {column.map((tweet, i) => (
-            <a
-              href={
-                tweet.url ??
-                `https://twitter.com/${tweet.user}/status/${tweet.id}`
-              }
-              target="_blank"
-              rel="noopener noreferrer"
-              class="animate-fade-up group block rounded-2xl border border-slate-200 bg-slate-50/50 p-6 transition-all duration-300 hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5 dark:border-slate-800 dark:bg-slate-800/50 dark:hover:border-primary/30"
-              style={`animation-delay: ${colIndex * 100 + i * 200}ms`}
-            >
-              <div class="mb-4 flex items-start gap-3">
-                <Image
-                  src={`https://avatars.githubusercontent.com/${tweet.github}?s=88`}
-                  alt={`${tweet.name}'s avatar`}
-                  width={44}
-                  height={44}
-                  class="mt-0.5 h-11 w-11 shrink-0 rounded-full ring-2 ring-slate-100 dark:ring-slate-700"
-                  loading="lazy"
-                />
-                <div class="min-w-0 flex-1">
-                  <div class="font-semibold text-slate-900 dark:text-white">
-                    {tweet.name}
-                  </div>
-                  <div class="text-sm text-slate-500 dark:text-slate-400">
-                    {tweet.tagline}
+      {
+        columns.map((column, colIndex) => (
+          <div class="flex flex-col gap-6">
+            {column.map((tweet, i) => (
+              <a
+                href={tweet.url ?? `https://twitter.com/${tweet.user}/status/${tweet.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="animate-fade-up group block rounded-2xl border border-slate-200 bg-slate-50/50 p-6 transition-all duration-300 hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5 dark:border-slate-800 dark:bg-slate-800/50 dark:hover:border-primary/30"
+                style={`animation-delay: ${(colIndex * 100) + (i * 200)}ms`}
+              >
+                <div class="mb-4 flex items-start gap-3">
+                  <Image
+                    src={`https://avatars.githubusercontent.com/${tweet.github}?s=88`}
+                    alt={`${tweet.name}'s avatar`}
+                    width={44}
+                    height={44}
+                    class="mt-0.5 h-11 w-11 shrink-0 rounded-full ring-2 ring-slate-100 dark:ring-slate-700"
+                    loading="lazy"
+                  />
+                  <div class="min-w-0 flex-1">
+                    <div class="font-semibold text-slate-900 dark:text-white">
+                      {tweet.name}
+                    </div>
+                    <div class="text-sm text-slate-500 dark:text-slate-400">
+                      {tweet.tagline}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <p class="leading-relaxed text-slate-700 dark:text-slate-300">
-                {tweet.tweet}
-              </p>
-            </a>
-          ))}
-        </div>
-      ))}
+                <p class="leading-relaxed text-slate-700 dark:text-slate-300">
+                  {tweet.tweet}
+                </p>
+              </a>
+            ))}
+          </div>
+        ))
+      }
     </div>
 
     <!-- Mobile: single column -->
     <div class="flex flex-col gap-6 md:hidden">
-      {tweets.map((tweet, i) => (
-        <a
-          href={
-            tweet.url ?? `https://twitter.com/${tweet.user}/status/${tweet.id}`
-          }
-          target="_blank"
-          rel="noopener noreferrer"
-          class="animate-fade-up group block rounded-2xl border border-slate-200 bg-slate-50/50 p-6 transition-all duration-300 hover:border-primary/20 hover:shadow-lg dark:border-slate-800 dark:bg-slate-800/50"
-          style={`animation-delay: ${i * 100}ms`}
-        >
-          <div class="mb-4 flex items-start gap-3">
-            <Image
-              src={`https://avatars.githubusercontent.com/${tweet.github}?s=88`}
-              alt={`${tweet.name}'s avatar`}
-              width={44}
-              height={44}
-              class="mt-0.5 h-11 w-11 shrink-0 rounded-full ring-2 ring-slate-100 dark:ring-slate-700"
-              loading="lazy"
-            />
-            <div class="min-w-0 flex-1">
-              <div class="font-semibold text-slate-900 dark:text-white">
-                {tweet.name}
-              </div>
-              <div class="text-sm text-slate-500 dark:text-slate-400">
-                {tweet.tagline}
+      {
+        tweets.map((tweet, i) => (
+          <a
+            href={tweet.url ?? `https://twitter.com/${tweet.user}/status/${tweet.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="animate-fade-up group block rounded-2xl border border-slate-200 bg-slate-50/50 p-6 transition-all duration-300 hover:border-primary/20 hover:shadow-lg dark:border-slate-800 dark:bg-slate-800/50"
+            style={`animation-delay: ${i * 100}ms`}
+          >
+            <div class="mb-4 flex items-start gap-3">
+              <Image
+                src={`https://avatars.githubusercontent.com/${tweet.github}?s=88`}
+                alt={`${tweet.name}'s avatar`}
+                width={44}
+                height={44}
+                class="mt-0.5 h-11 w-11 shrink-0 rounded-full ring-2 ring-slate-100 dark:ring-slate-700"
+                loading="lazy"
+              />
+              <div class="min-w-0 flex-1">
+                <div class="font-semibold text-slate-900 dark:text-white">
+                  {tweet.name}
+                </div>
+                <div class="text-sm text-slate-500 dark:text-slate-400">
+                  {tweet.tagline}
+                </div>
               </div>
             </div>
-          </div>
-          <p class="leading-relaxed text-slate-700 dark:text-slate-300">
-            {tweet.tweet}
-          </p>
-        </a>
-      ))}
+            <p class="leading-relaxed text-slate-700 dark:text-slate-300">
+              {tweet.tweet}
+            </p>
+          </a>
+        ))
+      }
     </div>
   </div>
 </section>

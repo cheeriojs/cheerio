@@ -39,34 +39,27 @@ const tiers = (
 
     <div class="relative mx-auto max-w-5xl px-6">
       <div class="animate-fade-up text-center">
-        <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
-          Thank you
-        </p>
+        <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Thank you</p>
         <h1 class="font-display text-4xl text-slate-900 dark:text-white">
           Cheerio's Sponsors
         </h1>
         <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-600 dark:text-slate-400">
-          Cheerio is free and open source. These companies and individuals fund
-          its development and support, and let maintainers spend more time on
-          the project.
+          Cheerio is free and open source. These companies and individuals fund its
+          development and support, and let maintainers spend more time on the project.
         </p>
       </div>
 
-      {tiers.map((tier, index) => (
-        <div
-          class:list={[
-            'animate-fade-up mt-16',
-            index > 0 && 'animation-delay-100',
-          ]}
-        >
-          <h2 class="mb-8 text-center text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-            {tier.title}
-          </h2>
-          <div class="flex flex-wrap items-center justify-center gap-6">
-            {tier.sponsors.map((sponsor) => {
-              // Sponsors without a usable URL get a card, but not a link.
-              const Card = sponsor.href ? 'a' : 'div';
-              return (
+      {
+        tiers.map((tier, index) => (
+          <div class:list={['animate-fade-up mt-16', index > 0 && 'animation-delay-100']}>
+            <h2 class="mb-8 text-center text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400">
+              {tier.title}
+            </h2>
+            <div class="flex flex-wrap items-center justify-center gap-6">
+              {tier.sponsors.map((sponsor) => {
+                // Sponsors without a usable URL get a card, but not a link.
+                const Card = sponsor.href ? 'a' : 'div';
+                return (
                 <Card
                   href={sponsor.href}
                   target={sponsor.href ? '_blank' : undefined}
@@ -83,19 +76,20 @@ const tiers = (
                     {sponsor.name}
                   </span>
                 </Card>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
 
       <div class="animate-fade-up animation-delay-400 mt-20 text-center">
         <h2 class="font-display text-2xl text-slate-900 dark:text-white">
           Does your company use Cheerio?
         </h2>
         <p class="mx-auto mt-4 max-w-xl text-slate-600 dark:text-slate-400">
-          Sponsorships are what keep Cheerio maintained. Every tier gets your
-          logo here and in our README, with a link back to your site.
+          Sponsorships are what keep Cheerio maintained. Every tier gets your logo here
+          and in our README, with a link back to your site.
         </p>
         <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <a

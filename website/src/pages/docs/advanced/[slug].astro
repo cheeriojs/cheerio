@@ -21,11 +21,6 @@ const title =
   doc.id;
 ---
 
-<DocsLayout
-  title={title}
-  description={doc.data.description}
-  headings={headings}
-  sourceFile={doc.filePath}
->
+<DocsLayout title={title} description={doc.data.description} headings={headings} sourceFile={doc.filePath}>
   <Content />
 </DocsLayout>

@@ -8,19 +8,17 @@ const config: OxfmtConfig = defineConfig({
   sortImports: false,
   sortPackageJson: false,
   embeddedLanguageFormatting: 'off',
-  // Keep the existing formatter's file set. API docs and other generated
-  // files are also excluded through .gitignore.
-  ignorePatterns: ['benchmark/documents/', '**/*.mdx'],
-  associations: [{ files: ['**/*.svg'], language: 'html' }],
-  astro: true,
+  // Oxfmt formats Astro markup along with frontmatter.
+  ignorePatterns: [
+    'benchmark/documents/',
+    '**/*.astro',
+    '**/*.mdx',
+    '**/*.svg',
+  ],
   overrides: [
     {
       files: ['**/*.css', '**/*.yml', '**/*.yaml'],
       options: { singleQuote: false },
-    },
-    {
-      files: ['**/*.astro'],
-      options: { embeddedLanguageFormatting: 'auto' },
     },
   ],
 });

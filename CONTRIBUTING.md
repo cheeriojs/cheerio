@@ -23,11 +23,11 @@ care to note aspects that make Cheerio distinct.
 
 # Code Style
 
-Commit hooks lint and format staged files with Oxlint and Oxfmt. Use
-`npm run lint` to check the whole repository and `npm run format` to apply
-formatting. Install the website dependencies with `npm ci --prefix website` and
-run `npm run build` and `npm run build --prefix website` before linting a fresh
-checkout.
+Commit hooks lint staged JavaScript, TypeScript, and Astro code and format
+supported staged files. Run `npm ci` and `npm ci --prefix website` to install
+dependencies, then run `npm run build` and `npm run build --prefix website`.
+Use `npm run lint` to check the repository and `npm run format` to apply
+formatting.
 
 When implementing private functionality that isn't part of the jQuery API,
 please opt for:

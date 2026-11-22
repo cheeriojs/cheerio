@@ -26,12 +26,6 @@ const title =
   'API Documentation';
 ---
 
-<DocsLayout
-  title={title}
-  description={doc.data.description}
-  headings={headings}
-  sourceFile={doc.filePath}
-  wide
->
+<DocsLayout title={title} description={doc.data.description} headings={headings} sourceFile={doc.filePath} wide>
   <Content />
 </DocsLayout>

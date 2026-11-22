@@ -97,11 +97,12 @@
     "update-sponsors": "tsx scripts/fetch-sponsors.mts"
   },
   "lint-staged": {
-    "*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,astro}": [
+    "*.{js,mjs,cjs,jsx,ts,mts,cts,tsx}": [
       "oxlint --fix",
       "oxfmt"
     ],
-    "*.{css,json,jsonc,md,yml,yaml,svg}": "oxfmt"
+    "*.astro": "oxlint --fix",
+    "*.{css,json,jsonc,md,yml,yaml}": "oxfmt"
   },
   "dependencies": {
     "cheerio-select": "^2.1.0",
@@ -117,7 +118,6 @@
     "whatwg-mimetype": "^5.0.0"
   },
   "devDependencies": {
-    "@astrojs/compiler-rs": "^0.5.3",
     "@imgix/js-core": "^3.8.0",
     "@octokit/graphql": "^9.0.5",
     "@types/jsdom": "^30.0.0",
