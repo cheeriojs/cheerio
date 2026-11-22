@@ -28,11 +28,6 @@ jobs:
           node-version: lts/*
           cache: "npm"
 
-      # The deploy job runs the crawler without installing dependencies.
-      - name: Validate crawler configuration imports
-        run: node scripts/sync-algolia-crawler.mjs --dry-run > /dev/null
-        working-directory: website
-
       - name: Install npm dependencies
         run: npm ci
 

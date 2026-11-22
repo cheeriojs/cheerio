@@ -23,8 +23,8 @@ care to note aspects that make Cheerio distinct.
 
 # Code Style
 
-Commit hooks lint staged JavaScript, TypeScript, and Astro code and format
-supported staged files. Run `npm ci` and `npm ci --prefix website` to install
+Commit hooks lint and format staged `.js` and `.ts` files and format staged
+`.json` files. Run `npm ci` and `npm ci --prefix website` to install
 dependencies, then run `npm run build` and `npm run build --prefix website`.
 Use `npm run lint` to check the repository and `npm run format` to apply
 formatting.

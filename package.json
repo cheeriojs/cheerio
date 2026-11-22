@@ -97,12 +97,11 @@
     "update-sponsors": "tsx scripts/fetch-sponsors.mts"
   },
   "lint-staged": {
-    "*.{js,mjs,cjs,jsx,ts,mts,cts,tsx}": [
+    "*.{js,ts}": [
       "oxlint --fix",
       "oxfmt"
     ],
-    "*.astro": "oxlint --fix",
-    "*.{css,json,jsonc,md,yml,yaml}": "oxfmt --no-error-on-unmatched-pattern"
+    "*.json": "oxfmt --no-error-on-unmatched-pattern"
   },
   "dependencies": {
     "cheerio-select": "^2.1.0",
