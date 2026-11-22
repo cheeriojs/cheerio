@@ -102,7 +102,7 @@
       "oxfmt"
     ],
     "*.astro": "oxlint --fix",
-    "*.{css,json,jsonc,md,yml,yaml}": "oxfmt"
+    "*.{css,json,jsonc,md,yml,yaml}": "oxfmt --no-error-on-unmatched-pattern"
   },
   "dependencies": {
     "cheerio-select": "^2.1.0",
