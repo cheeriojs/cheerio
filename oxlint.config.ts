@@ -249,6 +249,11 @@ const config: OxlintConfig = defineConfig({
           {
             patterns: [
               {
+                regex: String.raw`^\.\.?/(?:(?:.*/)?(?:__fixtures__|__tests__)(?:/|$)|.*\.spec\.[cm]?[jt]s$)`,
+                message:
+                  'Published files cannot import test fixtures or tests.',
+              },
+              {
                 group: [
                   '**',
                   ...runtimePackages.map((name) => `!${name}`),

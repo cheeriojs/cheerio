@@ -28,6 +28,11 @@ jobs:
           node-version: lts/*
           cache: "npm"
 
+      # The deploy job runs the crawler without installing dependencies.
+      - name: Validate crawler configuration imports
+        run: node scripts/sync-algolia-crawler.mjs --dry-run > /dev/null
+        working-directory: website
+
       - name: Install npm dependencies
         run: npm ci
 
@@ -49,10 +54,6 @@ jobs:
       # repo-level lint cannot see.
       - name: Check website types
         run: npm run check
-        working-directory: website
-
-      - name: Validate crawler configuration imports
-        run: npm run sync:crawler -- --dry-run > /dev/null
         working-directory: website
 
       - name: Run lint
