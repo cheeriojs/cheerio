@@ -1,0 +1,20 @@
+package-lock.json
+  h_c09f8bd1046292 13
+package.json
+  h_c09f8bd1046292 114
+src/api/traversing.spec.ts
+  h_c09f8bd1046292 276-343
+src/api/traversing.ts
+  h_c09f8bd1046292 8-14,35,37-43,45-49,51,61-75,78-79,81-83,85-106,108,112-113,115-116,118-166,169-317,319-322,328-329,331-332,334-351,353-415,418,422,424-425,427-440,442-443,445-455,519-520,523-528
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "c843a3c8f186cb8a29081327ec88844c840fd934",
+  "prompts": {},
+  "humans": {
+    "h_c09f8bd1046292": {
+      "author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
