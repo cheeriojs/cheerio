@@ -1,0 +1,105 @@
+src/__tests__/deprecated.spec.ts
+  s_d33f7869f66cad::t_9bdc82f98e2530 172
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 7
+src/api/attributes.spec.ts
+  s_d33f7869f66cad::t_ef8baf9f1433ac 620-621,627-629,775,848
+  s_d33f7869f66cad::t_9bdc82f98e2530 674
+  s_d33f7869f66cad::t_070830bf4d499f 67
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 3
+src/api/manipulation.spec.ts
+  s_d33f7869f66cad::t_ef8baf9f1433ac 607,794,800,1254-1255,1264-1265,1275-1276,1286-1287,1294-1295,1304-1305,1538-1539,1548-1549,1559-1560,1570-1571,1578-1579,1588-1589
+  s_d33f7869f66cad::t_b92609e145a055 1219-1220,1237,1239,1256,1266,1277,1288,1296,1306,1502-1503,1520,1522,1540,1550,1561,1572,1580,1590,2103,2115
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 3
+  s_d33f7869f66cad::t_9bdc82f98e2530 1622,1655,1680,1696,1703
+src/index.spec.ts
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 3,5,122
+website/astro.config.mjs
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 2,10
+scripts/fetch-sponsors.mts
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 8
+oxfmt.config.ts
+  s_d33f7869f66cad::t_70022cd7fac697 21-25
+  s_7aa9c608efa4a4::t_06c21e3e7c9ffe 20
+  s_d33f7869f66cad::t_4435e4f666909b 8-9
+src/api/extract.spec.ts
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 2
+website/package.json
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 5-6
+website/src/content.config.ts
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 3
+src/__tests__/xml.spec.ts
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 2
+benchmark/benchmark.ts
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 3,7,10
+src/api/css.spec.ts
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 3
+  s_d33f7869f66cad::t_a80d3cb4945d9a 133
+src/utils.spec.ts
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 11
+src/cheerio.spec.ts
+  s_d33f7869f66cad::t_9bdc82f98e2530 22
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 4
+oxlint.staged.config.mjs
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 2
+src/__fixtures__/fixtures.ts
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 2
+src/api/forms.spec.ts
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 2
+src/load.spec.ts
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 2
+  s_d33f7869f66cad::t_9bdc82f98e2530 17
+website/src/components/live-code.tsx
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 9
+  s_d33f7869f66cad::t_70022cd7fac697 46
+oxlint.config.ts
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 2
+  s_d33f7869f66cad::t_a6a9f68d8ddf45 135
+  s_d33f7869f66cad::t_4435e4f666909b 161-163
+website/scripts/sync-algolia-crawler.mjs
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 14
+website/src/pages/blog/rss.xml.ts
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 3,5
+src/api/traversing.spec.ts
+  s_d33f7869f66cad::t_ef8baf9f1433ac 1143,1165
+  s_d33f7869f66cad::t_a80d3cb4945d9a 1161-1163
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 3
+  s_d33f7869f66cad::t_b92609e145a055 1315,1322,1333,1340,1350,1352
+  s_d33f7869f66cad::t_cb7ff24199f679 1474-1476
+src/parse.spec.ts
+  s_d33f7869f66cad::t_b92609e145a055 339,353,367,409,423
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 4
+  s_d33f7869f66cad::t_9bdc82f98e2530 54-56,262,266-267,274-275,279,282-283
+  s_d33f7869f66cad::t_ef8baf9f1433ac 102
+package.json
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 6-7,11-13,19-23,29-34,37-41,132-137,143-147,153-156
+  s_d33f7869f66cad::t_b1e69fa16e60db 84-85
+src/static.spec.ts
+  s_d33f7869f66cad::t_ef8baf9f1433ac 178,255-258,260-263
+  s_d33f7869f66cad::t_9bdc82f98e2530 115,119,123
+  s_d33f7869f66cad::t_3dc352c3a0e6ea 2
+  s_d33f7869f66cad::t_b92609e145a055 130
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "2f565d189e0fba1ca6f914c16f071b9179e6fdc3",
+  "prompts": {},
+  "sessions": {
+    "s_7aa9c608efa4a4": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a204e1-85ab-70a0-84d6-591b1ff66df0",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    },
+    "s_d33f7869f66cad": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a204e0-1958-7432-99f6-393003e12a31",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": null
+    }
+  }
+}
