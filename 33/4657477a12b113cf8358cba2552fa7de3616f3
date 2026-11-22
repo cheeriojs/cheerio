@@ -1,0 +1,22 @@
+oxlint.config.ts
+  s_b1a45929cbdfc7::t_06ee8b83db1080 252-255
+  s_b1a45929cbdfc7::t_2ffd339aeb0471 251
+.github/workflows/lint.yml
+  s_b1a45929cbdfc7::t_06ee8b83db1080 31-35
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "334657477a12b113cf8358cba2552fa7de3616f3",
+  "prompts": {},
+  "sessions": {
+    "s_b1a45929cbdfc7": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a203e8-0774-7ea2-abea-9c688e68608d",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
