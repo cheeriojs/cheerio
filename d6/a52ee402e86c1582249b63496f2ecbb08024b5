@@ -1,0 +1,29 @@
+src/api/traversing.spec.ts
+  s_0681077efe8140::t_a54fc99099975f 15,1225,1227,1236
+src/api/traversing.ts
+  s_f419f35da5fa57::t_6a37bfafd09a58 253
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d6a52ee402e86c1582249b63496f2ecbb08024b5",
+  "prompts": {},
+  "sessions": {
+    "s_0681077efe8140": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a2009b-ea09-7290-a999-2d3edafada50",
+        "model": "gpt-6.2-astra"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    },
+    "s_f419f35da5fa57": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "15b50931-5db3-4ee5-ab86-3e2bd7c564fe",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
