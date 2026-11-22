@@ -18,6 +18,7 @@ export { contains, merge } from './static.js';
 export type * from './types.js';
 
 import { finished, Writable } from 'node:stream';
+
 import {
   DecodeStream,
   decodeBuffer,
@@ -32,8 +33,9 @@ import { ParserStream as Parse5Stream } from 'parse5-parser-stream';
  */
 import type * as undici from 'undici';
 import { MIMEType } from 'whatwg-mimetype';
-import type { CheerioAPI } from './load.js';
+
 import { load } from './load-parse.js';
+import type { CheerioAPI } from './load.js';
 import {
   type CheerioOptions,
   flattenOptions,

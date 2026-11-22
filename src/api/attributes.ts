@@ -6,6 +6,7 @@
 
 import { type AnyNode, type Element, isDocument, isTag } from 'domhandler';
 import { innerText, textContent } from 'domutils';
+
 import type { Cheerio } from '../cheerio.js';
 import { text } from '../static.js';
 import { camelCase, cssCase, domEach } from '../utils.js';

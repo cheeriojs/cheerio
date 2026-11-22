@@ -20,6 +20,7 @@ import {
   prevElementSibling,
   uniqueSort,
 } from 'domutils';
+
 import type { Cheerio } from '../cheerio.js';
 import { contains } from '../static.js';
 import type { AcceptedFilters, FilterFunction } from '../types.js';
@@ -813,6 +814,7 @@ export function filter<T>(
  * @param xmlMode - Whether selector matching should use XML mode.
  * @param root - Optional document root used for selector matching.
  * @param options - Options used for selector matching.
+ * @returns The nodes that match the selector or predicate.
  */
 export function filterArray<T>(
   nodes: T[],

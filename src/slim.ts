@@ -6,6 +6,7 @@
 import render from 'dom-serializer';
 import type { AnyNode } from 'domhandler';
 import { parseDocument } from 'htmlparser2';
+
 import { type CheerioAPI, getLoad } from './load.js';
 import type { CheerioOptions } from './options.js';
 import { getParse } from './parse.js';

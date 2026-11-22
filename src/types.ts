@@ -43,6 +43,7 @@ export type SelectorType =
   | `${AlphaNumeric}${string}`;
 
 import type { AnyNode } from 'domhandler';
+
 import type { Cheerio } from './cheerio.js';
 
 /** Elements that can be passed to manipulation methods. */

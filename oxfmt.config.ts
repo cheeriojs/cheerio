@@ -18,12 +18,6 @@ const config: OxfmtConfig = defineConfig({
   ],
   overrides: [
     {
-      files: ['src/**/*.ts'],
-      excludeFiles: ['**/*.spec.ts', 'src/__fixtures__/**', 'src/__tests__/**'],
-      // Preserve the published source map positions during the tooling migration.
-      options: { sortImports: false },
-    },
-    {
       files: ['**/*.css', '**/*.yml', '**/*.yaml'],
       options: { singleQuote: false },
     },

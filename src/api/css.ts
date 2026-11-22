@@ -1,4 +1,5 @@
 import { type AnyNode, type Element, isTag } from 'domhandler';
+
 import type { Cheerio } from '../cheerio.js';
 import { domEach } from '../utils.js';
 

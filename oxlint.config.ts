@@ -303,11 +303,6 @@ const config: OxlintConfig = defineConfig({
       rules: off('import/no-named-as-default'),
     },
     {
-      files: ['src/load.ts', 'src/api/traversing.ts'],
-      // Preserve the public documentation during the tooling migration.
-      rules: off('jsdoc/require-returns'),
-    },
-    {
       files: ['scripts/fetch-sponsors.mts', 'website/**/*.mjs'],
       // These scripts consume dynamic sponsor and crawler API payloads.
       rules: off(

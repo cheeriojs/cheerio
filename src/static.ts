@@ -1,5 +1,6 @@
 import type { AnyNode, Document } from 'domhandler';
 import { textContent } from 'domutils';
+
 import type { ExtractedMap, ExtractMap } from './api/extract.js';
 import type { Cheerio } from './cheerio.js';
 import type { CheerioAPI } from './load.js';

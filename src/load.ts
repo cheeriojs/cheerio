@@ -1,5 +1,6 @@
 import type { AnyNode, Document, Element, ParentNode } from 'domhandler';
 import { ElementType } from 'htmlparser2';
+
 import { Cheerio } from './cheerio.js';
 import {
   type CheerioOptions,
@@ -111,6 +112,7 @@ export interface CheerioAPI extends StaticType {
  *
  * @param parse - Parser used to convert input into a document.
  * @param render - Renderer used to serialize nodes back to markup.
+ * @returns A load function that uses the supplied parser and renderer.
  */
 export function getLoad(
   parse: Cheerio<AnyNode>['_parse'],

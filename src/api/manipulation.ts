@@ -15,6 +15,7 @@ import {
   Text,
 } from 'domhandler';
 import { removeElement } from 'domutils';
+
 import type { Cheerio } from '../cheerio.js';
 import { update as updateDOM } from '../parse.js';
 import { text as staticText } from '../static.js';

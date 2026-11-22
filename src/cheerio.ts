@@ -1,4 +1,5 @@
 import type { AnyNode, Document, ParentNode } from 'domhandler';
+
 import * as Attributes from './api/attributes.js';
 import * as Css from './api/css.js';
 import * as Extract from './api/extract.js';
