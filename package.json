@@ -98,7 +98,7 @@
   },
   "lint-staged": {
     "*.{js,ts}": [
-      "oxlint --fix",
+      "oxlint --fix -c oxlint.staged.config.mjs",
       "oxfmt"
     ],
     "*.json": "oxfmt --no-error-on-unmatched-pattern"
