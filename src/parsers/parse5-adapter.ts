@@ -43,22 +43,25 @@ const renderOpts = { treeAdapter: htmlparser2Adapter };
  * @returns The rendered document.
  */
 export function renderWithParse5(dom: AnyNode | ArrayLike<AnyNode>): string {
-  /*
-   * `dom-serializer` passes over the special "root" node and renders the
-   * node's children in its place. To mimic this behavior with `parse5`, an
-   * equivalent operation must be applied to the input array.
-   */
   const nodes = 'length' in dom ? dom : [dom];
-  for (let index = 0; index < nodes.length; index += 1) {
-    const node = nodes[index];
-    if (isDocument(node)) {
-      Array.prototype.splice.call(nodes, index, 1, ...node.children);
-    }
-  }
-
   let result = '';
   for (let index = 0; index < nodes.length; index += 1) {
     const node = nodes[index];
+    if (isDocument(node)) {
+      // A document renders as its children, nested documents included.
+      const stack: AnyNode[] = [node];
+      for (let next = stack.pop(); next; next = stack.pop()) {
+        if (isDocument(next)) {
+          const { children } = next;
+          for (let child = children.length - 1; child >= 0; child -= 1) {
+            stack.push(children[child]);
+          }
+        } else {
+          result += serializeOuter(next, renderOpts);
+        }
+      }
+      continue;
+    }
     result += serializeOuter(node, renderOpts);
   }
 
