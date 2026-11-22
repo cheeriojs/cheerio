@@ -220,8 +220,6 @@ support for Cheerio and help us maintain and improve this open source project.
 
 <!-- BEGIN SPONSORS: backer -->
 
-
-
 <!-- END SPONSORS -->
 
 ## License

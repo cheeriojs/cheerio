@@ -276,7 +276,7 @@ export const parents: <T extends AnyNode>(
     return matched;
   },
   uniqueSort,
-  // eslint-disable-next-line unicorn/no-array-reverse
+  // oxlint-disable-next-line unicorn/no-array-reverse
   (elems) => elems.reverse(),
 );
 
@@ -305,7 +305,7 @@ export const parentsUntil: <T extends AnyNode>(
 ) => Cheerio<Element> = _matchUntil(
   ({ parent }) => (parent && !isDocument(parent) ? (parent as Element) : null),
   uniqueSort,
-  // eslint-disable-next-line unicorn/no-array-reverse
+  // oxlint-disable-next-line unicorn/no-array-reverse
   (elems) => elems.reverse(),
 );
 
@@ -1003,7 +1003,6 @@ export function eq<T>(this: Cheerio<T>, i: number): Cheerio<T> {
    * Not redundant: JavaScript callers pass string indices, and `eq('-1')`
    * would otherwise reach `this.length + i` as string concatenation.
    */
-  // eslint-disable-next-line unicorn/no-useless-coercion
   i = +i;
 
   // Use the first identity optimization if possible
@@ -1100,7 +1099,7 @@ export function index<T extends AnyNode>(
     $haystack = this._make<AnyNode>(selectorOrNeedle);
     needle = this[0];
   } else {
-    // eslint-disable-next-line unicorn/no-this-assignment
+    // oxlint-disable-next-line unicorn/no-this-assignment, typescript/no-this-alias
     $haystack = this;
     needle = isCheerio(selectorOrNeedle)
       ? selectorOrNeedle[0]

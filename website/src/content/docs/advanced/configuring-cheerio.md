@@ -103,9 +103,10 @@ rules `parse5` applies get in your way (`htmlparser2` is more forgiving[^1]), or
 if you are in a performance-critical situation (it is faster and the resulting
 DOM uses less memory).
 
-[^1]: "More forgiving" means `htmlparser2` has error-correcting mechanisms that
-aren't always a match for the standards observed by web browsers. This
-behavior may be useful when parsing non-HTML content.
+[^1]:
+    "More forgiving" means `htmlparser2` has error-correcting mechanisms that
+    aren't always a match for the standards observed by web browsers. This
+    behavior may be useful when parsing non-HTML content.
 
 To do that, disable `xmlMode` inside the `xml` option:
 

@@ -23,7 +23,11 @@ care to note aspects that make Cheerio distinct.
 
 # Code Style
 
-Please make sure commit hooks are run, which will enforce the code style.
+Commit hooks lint and format staged files with Oxlint and Oxfmt. Use
+`npm run lint` to check the whole repository and `npm run format` to apply
+formatting. Install the website dependencies with `npm ci --prefix website` and
+run `npm run build` and `npm run build --prefix website` before linting a fresh
+checkout.
 
 When implementing private functionality that isn't part of the jQuery API,
 please opt for:

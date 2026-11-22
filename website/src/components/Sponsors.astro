@@ -16,18 +16,19 @@ const headliners = (sponsorsData.headliner as Sponsor[]).map((sponsor) => ({
 
   <div class="relative mx-auto max-w-5xl px-6">
     <div class="animate-fade-up mb-12 text-center">
-      <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Trusted by the best</p>
+      <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+        Trusted by the best
+      </p>
       <h2 class="font-display text-4xl text-slate-900 dark:text-white">
         Supported and Backed by
       </h2>
     </div>
 
     <div class="animate-fade-up animation-delay-200 flex flex-wrap items-center justify-center gap-6">
-      {
-        headliners.map((sponsor) => {
-          // Sponsors without a usable URL get a card, but not a link.
-          const Card = sponsor.href ? 'a' : 'div';
-          return (
+      {headliners.map((sponsor) => {
+        // Sponsors without a usable URL get a card, but not a link.
+        const Card = sponsor.href ? 'a' : 'div';
+        return (
           <Card
             href={sponsor.href}
             target={sponsor.href ? '_blank' : undefined}
@@ -55,9 +56,8 @@ const headliners = (sponsorsData.headliner as Sponsor[]).map((sponsor) => ({
               {sponsor.name}
             </span>
           </Card>
-          );
-        })
-      }
+        );
+      })}
     </div>
 
     <div class="animate-fade-up animation-delay-400 mt-10 flex flex-col items-center justify-center gap-4 text-center sm:flex-row">

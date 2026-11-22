@@ -87,12 +87,8 @@
   "scripts": {
     "benchmark": "node --import=tsx benchmark/benchmark.ts",
     "build": "tshy",
-    "format": "npm run format:es && npm run format:biome",
-    "format:biome": "biome check --write .",
-    "format:es": "npm run lint:es -- --fix",
-    "lint": "npm run lint:es && npm run lint:ts && npm run lint:biome",
-    "lint:biome": "biome check .",
-    "lint:es": "eslint .",
+    "format": "oxfmt",
+    "lint": "oxlint && oxfmt --check && npm run lint:ts",
     "lint:ts": "tsc --noEmit",
     "prepare": "husky",
     "prepublishOnly": "npm run build",
@@ -101,13 +97,11 @@
     "update-sponsors": "tsx scripts/fetch-sponsors.mts"
   },
   "lint-staged": {
-    "*.js": [
-      "biome check --write",
-      "eslint --fix"
+    "*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,astro}": [
+      "oxlint --fix",
+      "oxfmt"
     ],
-    "*.{json,ts}": [
-      "biome check --write"
-    ]
+    "*.{css,json,jsonc,md,yml,yaml,svg}": "oxfmt"
   },
   "dependencies": {
     "cheerio-select": "^2.1.0",
@@ -123,28 +117,24 @@
     "whatwg-mimetype": "^5.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.6.8",
-    "@eslint/compat": "^2.1.1",
-    "@feedic/eslint-config": "^0.5.0",
+    "@astrojs/compiler-rs": "^0.5.3",
     "@imgix/js-core": "^3.8.0",
     "@octokit/graphql": "^9.0.5",
     "@types/jsdom": "^30.0.0",
     "@types/node": "^26.6.6",
     "@types/whatwg-mimetype": "^5.0.0",
     "@vitest/coverage-v8": "^5.1.1",
-    "@vitest/eslint-plugin": "^1.6.28",
-    "eslint": "^10.15.0",
-    "eslint-config-biome": "^2.1.3",
-    "globals": "^17.14.0",
     "husky": "^9.1.7",
     "jquery": "^4.1.0",
     "jsdom": "^31.0.1",
     "lint-staged": "^17.6.1",
+    "oxfmt": "^0.79.0",
+    "oxlint": "^1.94.0",
+    "oxlint-tsgolint": "^7.0.2008",
     "tinybench": "^6.2.4",
     "tshy": "^4.1.4",
     "tsx": "^4.23.15",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.73.0",
     "vitest": "^5.0.3"
   },
   "engines": {

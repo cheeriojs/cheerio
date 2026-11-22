@@ -67,19 +67,16 @@ describe('cheerio', () => {
     expect($script[0].childNodes).toHaveLength(0);
   });
 
-  // eslint-disable-next-line vitest/expect-expect
   it('should be able to select .apple with only a context', () => {
     const $apple = cheerio('.apple', fruits);
     testAppleSelect($apple);
   });
 
-  // eslint-disable-next-line vitest/expect-expect
   it('should be able to select .apple with a node as context', () => {
     const $apple = cheerio('.apple', cheerio(fruits)[0]);
     testAppleSelect($apple);
   });
 
-  // eslint-disable-next-line vitest/expect-expect
   it('should be able to select .apple with only a root', () => {
     const $apple = cheerio('.apple', null, fruits);
     testAppleSelect($apple);
@@ -124,19 +121,16 @@ describe('cheerio', () => {
     });
   });
 
-  // eslint-disable-next-line vitest/expect-expect
   it('should be able to do: cheerio("#fruits .apple")', () => {
     const $apple = cheerio('#fruits .apple', fruits);
     testAppleSelect($apple);
   });
 
-  // eslint-disable-next-line vitest/expect-expect
   it('should be able to do: cheerio("li.apple")', () => {
     const $apple = cheerio('li.apple', fruits);
     testAppleSelect($apple);
   });
 
-  // eslint-disable-next-line vitest/expect-expect
   it('should be able to select by attributes', () => {
     const $apple = cheerio('li[class=apple]', fruits);
     testAppleSelect($apple);
@@ -233,11 +227,11 @@ describe('cheerio', () => {
         };
     const $empty = cheerio(extended);
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    // oxlint-disable-next-line typescript/no-unsafe-member-access
     expect($empty.find).toBe(cheerio.prototype.find);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    // oxlint-disable-next-line typescript/no-unsafe-member-access
     expect($empty.children).toBe(cheerio.prototype.children);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    // oxlint-disable-next-line typescript/no-unsafe-member-access
     expect($empty.each).toBe(cheerio.prototype.each);
   });
 
@@ -266,8 +260,9 @@ describe('cheerio', () => {
 
     // Issue #1092
     it('should handle a character `)` in `:contains` selector', () => {
-      const result =
-        cheerio.load('<p>)aaa</p>')(String.raw`:contains('\)aaa')`);
+      const result = cheerio.load('<p>)aaa</p>')(
+        String.raw`:contains('\)aaa')`,
+      );
       expect(result).toHaveLength(3);
       expect(result.first().prop('tagName')).toBe('HTML');
       expect(result.eq(1).prop('tagName')).toBe('BODY');

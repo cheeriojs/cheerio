@@ -299,7 +299,6 @@ function isArrayLike(item: unknown): item is ArrayLike<unknown> {
      * Not an array's `.length`: `item` is an arbitrary object being validated,
      * so this property really can be negative.
      */
-    // eslint-disable-next-line unicorn/no-impossible-length-comparison
     item.length < 0
   ) {
     return false;

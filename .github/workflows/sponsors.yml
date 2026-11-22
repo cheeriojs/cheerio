@@ -41,6 +41,9 @@ jobs:
           CHEERIO_SPONSORS_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           IMGIX_TOKEN: ${{ secrets.IMGIX_TOKEN }}
 
+      - name: Format generated sponsor data
+        run: npm run format -- Readme.md website/sponsors.json
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@3ffccacd46053766916f087ce41d627c0b8cf2d1 # v8
         continue-on-error: true

@@ -323,7 +323,6 @@ export function prop<T extends AnyNode>(
  *   value.
  * @see {@link https://api.jquery.com/prop/}
  */
-// biome-ignore lint/style/useUnifiedTypeSignatures: Separate overloads needed for accurate docs
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: 'tagName' | 'nodeName' | 'name' | 'type',

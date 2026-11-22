@@ -9,6 +9,11 @@ updates:
     cooldown:
       default-days: 7
     groups:
+      oxc:
+        patterns:
+          - "oxfmt"
+          - "oxlint"
+          - "oxlint-tsgolint"
       vitest:
         patterns:
           - "vitest"

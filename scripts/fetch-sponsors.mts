@@ -4,12 +4,6 @@
  *   Adapted from
  *   https://github.com/eslint/website/blob/230e73457dcdc2353ad7934e876a5a222a17b1d7/_tools/fetch-sponsors.js.
  */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment,
-                  @typescript-eslint/no-unsafe-return,
-                  @typescript-eslint/no-unsafe-call,
-                  @typescript-eslint/no-unsafe-argument,
-                  @typescript-eslint/no-unsafe-member-access,
-                  @typescript-eslint/prefer-nullish-coalescing */
 import * as fs from 'node:fs/promises';
 import ImgixClient from '@imgix/js-core';
 import { graphql as githubGraphQL } from '@octokit/graphql';
@@ -508,7 +502,7 @@ const TIER_IMAGE_SIZES: Record<Tier, number> = {
   backer: 48,
 };
 
-for (let sectionStartIndex = 0; ; ) {
+for (let sectionStartIndex = 0; ;) {
   sectionStartIndex = readme.indexOf(
     SECTION_START_BEGINNING,
     sectionStartIndex,
