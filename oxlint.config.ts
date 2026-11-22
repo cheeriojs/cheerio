@@ -241,7 +241,11 @@ const config: OxlintConfig = defineConfig({
     },
     {
       files: ['src/**'],
-      excludeFiles: ['**/*.spec.ts', '**/__fixtures__/**', '**/__tests__/**'],
+      excludeFiles: [
+        '**/*.spec.{js,jsx,ts,tsx,mjs,mts,cjs,cts}',
+        '**/__fixtures__/**',
+        '**/__tests__/**',
+      ],
       // Published files can only use dependencies installed for consumers.
       rules: {
         'no-restricted-imports': [
@@ -249,9 +253,13 @@ const config: OxlintConfig = defineConfig({
           {
             patterns: [
               {
-                regex: String.raw`^\.\.?/(?:(?:.*/)?(?:__fixtures__|__tests__)(?:/|$)|.*\.spec\.[cm]?[jt]s$)`,
+                regex: String.raw`^\.\.?/(?:(?:.*/)?(?:__fixtures__|__tests__)(?:/|$)|.*\.spec\.[cm]?[jt]sx?$)`,
                 message:
                   'Published files cannot import test fixtures or tests.',
+              },
+              {
+                regex: String.raw`^\.\.?/(?:.*/)?\.\.(?:/|$)`,
+                message: 'Use direct paths within src for published imports.',
               },
               {
                 group: [
@@ -275,6 +283,12 @@ const config: OxlintConfig = defineConfig({
           },
         ],
       },
+    },
+    {
+      files: ['src/*.{js,jsx,ts,tsx,mjs,mts,cjs,cts}'],
+      excludeFiles: ['**/*.spec.{js,jsx,ts,tsx,mjs,mts,cjs,cts}'],
+      // A parent import from a top-level source file would leave src.
+      rules: { 'import/no-relative-parent-imports': 'error' },
     },
     {
       files: ['src/api/**', 'src/static.ts'],
