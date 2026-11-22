@@ -1,0 +1,35 @@
+package-lock.json
+  s_6b95aedd28e28e::t_1bfd2e0069f0f3 13
+package.json
+  s_6b95aedd28e28e::t_1bbc19cfb927bc 114
+src/api/traversing.spec.ts
+  s_d91c15b25425c0::t_60866f55ae77bd 15,1226,1228,1237,1258-1266,1268-1271
+src/api/traversing.ts
+  s_d91c15b25425c0::t_c1fe5f99e99629 8,24-31,33-39,270,295,604
+src/options.ts
+  s_6b95aedd28e28e::t_85bf1deab3be87 64-66
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "eb9bae1a141637a93be1e461a9e62b9ec126c397",
+  "prompts": {},
+  "sessions": {
+    "s_6b95aedd28e28e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a20085-0f18-7b43-8333-4eba5ad10368",
+        "model": "gpt-6.2-astra"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    },
+    "s_d91c15b25425c0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a20084-f2b8-71a2-8e27-9ad7da9b3667",
+        "model": "gpt-6.2-astra"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
