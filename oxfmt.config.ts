@@ -8,7 +8,8 @@ const config: OxfmtConfig = defineConfig({
   sortImports: false,
   sortPackageJson: false,
   embeddedLanguageFormatting: 'off',
-  // Oxfmt formats Astro markup along with frontmatter.
+  // Exclude Astro because Oxfmt would rewrite markup along with frontmatter.
+  // MDX and SVG are outside the previous formatting scope.
   ignorePatterns: [
     'benchmark/documents/',
     '**/*.astro',

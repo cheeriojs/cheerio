@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { defineConfig, type OxlintConfig } from 'oxlint';
 
 /**
@@ -8,6 +9,11 @@ import { defineConfig, type OxlintConfig } from 'oxlint';
  */
 const off = (...rules: string[]): Record<string, 'off'> =>
   Object.fromEntries(rules.map((rule) => [rule, 'off']));
+
+const { dependencies } = JSON.parse(
+  readFileSync(new URL('package.json', import.meta.url), 'utf8'),
+) as { dependencies: Record<string, string> };
+const runtimePackages = Object.keys(dependencies);
 
 const config: OxlintConfig = defineConfig({
   plugins: [
@@ -106,8 +112,9 @@ const config: OxlintConfig = defineConfig({
       'import/no-nodejs-modules',
       'unicorn/import-style',
     ),
-    // Async functions without `await` return their values and errors as promises.
-    ...off('require-await', 'typescript/require-await'),
+    // The type-aware rule also allows directly returning a promise in TypeScript.
+    ...off('require-await'),
+    'typescript/require-await': 'error',
     // Sizes, and orders that do not follow the code's structure.
     ...off(
       'max-params',
@@ -228,6 +235,42 @@ const config: OxlintConfig = defineConfig({
     ...off('typescript/no-unsafe-enum-assignment'),
   },
   overrides: [
+    {
+      files: ['**/*.{cjs,js,jsx,mjs}'],
+      rules: { 'no-undef': 'error' },
+    },
+    {
+      files: ['src/**'],
+      excludeFiles: ['**/*.spec.ts', '**/__fixtures__/**', '**/__tests__/**'],
+      // Published files can only use dependencies installed for consumers.
+      rules: {
+        'no-restricted-imports': [
+          'error',
+          {
+            patterns: [
+              {
+                group: [
+                  '**',
+                  ...runtimePackages.map((name) => `!${name}`),
+                  '!node:*',
+                  // Recheck paths so a package name only matches at the start.
+                  '*/**',
+                  '!./**',
+                  '!../**',
+                  '!node:*/**',
+                  ...runtimePackages
+                    .filter((name) => name.startsWith('@'))
+                    .map((name) => `!${name}`),
+                  ...runtimePackages.map((name) => `!${name}/**`),
+                ],
+                message:
+                  'Declare runtime imports in package.json dependencies.',
+              },
+            ],
+          },
+        ],
+      },
+    },
     {
       files: ['src/api/**', 'src/static.ts'],
       // These functions are bound to Cheerio instances or cheerio's querying function.

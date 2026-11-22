@@ -51,5 +51,9 @@ jobs:
         run: npm run check
         working-directory: website
 
+      - name: Validate crawler configuration imports
+        run: npm run sync:crawler -- --dry-run > /dev/null
+        working-directory: website
+
       - name: Run lint
         run: npm run lint
