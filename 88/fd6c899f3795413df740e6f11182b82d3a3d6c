@@ -1,0 +1,51 @@
+src/api/css.ts
+  s_d33f7869f66cad::t_6c8c7a32ca445c 2
+src/parsers/parse5-adapter.ts
+  s_d33f7869f66cad::t_6c8c7a32ca445c 9
+src/api/forms.ts
+  s_d33f7869f66cad::t_6c8c7a32ca445c 2
+src/api/traversing.ts
+  s_d33f7869f66cad::t_1355a97863904e 817
+  s_d33f7869f66cad::t_6c8c7a32ca445c 23
+src/index.ts
+  s_d33f7869f66cad::t_6c8c7a32ca445c 21,36,38
+src/static.ts
+  s_d33f7869f66cad::t_6c8c7a32ca445c 3
+src/types.ts
+  s_d33f7869f66cad::t_6c8c7a32ca445c 46
+src/cheerio.ts
+  s_d33f7869f66cad::t_6c8c7a32ca445c 2
+src/utils.ts
+  s_d33f7869f66cad::t_6c8c7a32ca445c 12
+src/slim.ts
+  s_d33f7869f66cad::t_6c8c7a32ca445c 9
+src/api/attributes.ts
+  s_d33f7869f66cad::t_6c8c7a32ca445c 9
+src/api/manipulation.ts
+  s_d33f7869f66cad::t_6c8c7a32ca445c 18
+src/api/extract.ts
+  s_d33f7869f66cad::t_6c8c7a32ca445c 2
+src/load.ts
+  s_d33f7869f66cad::t_1355a97863904e 115
+  s_d33f7869f66cad::t_6c8c7a32ca445c 3
+src/parse.ts
+  s_d33f7869f66cad::t_6c8c7a32ca445c 8
+src/load-parse.ts
+  s_d33f7869f66cad::t_6c8c7a32ca445c 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "88fd6c899f3795413df740e6f11182b82d3a3d6c",
+  "prompts": {},
+  "sessions": {
+    "s_d33f7869f66cad": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a204e0-1958-7432-99f6-393003e12a31",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
