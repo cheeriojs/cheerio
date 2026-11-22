@@ -8,7 +8,7 @@ on:
       - main
   schedule:
     # Weekly on Saturdays
-    - cron: '30 1 * * 6'
+    - cron: "30 1 * * 6"
 
 permissions: read-all
 
@@ -45,6 +45,6 @@ jobs:
           retention-days: 5
 
       - name: Upload to code-scanning
-        uses: github/codeql-action/upload-sarif@1fc58d04a4d4374f921bdac573c3811c240f9c26 # v4
+        uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4
         with:
           sarif_file: results.sarif

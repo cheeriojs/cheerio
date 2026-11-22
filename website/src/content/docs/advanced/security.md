@@ -1,4 +1,5 @@
 ---
+
 sidebar_position: 3
 description: Handling untrusted markup safely.
 ---
@@ -15,7 +16,7 @@ expressions, or touches the network** — the one exception being
 
 ## Cheerio is not a sanitizer
 
-This is the big one. Cheerio's output is *markup*, not *safe* markup. If you
+This is the big one. Cheerio's output is _markup_, not _safe_ markup. If you
 load a page containing `<script>` or an `onerror` attribute, those survive
 parsing and serialization intact — that is correct behaviour for a parser, and
 it means the output of `$.html()` is exactly as trustworthy as the input.
@@ -32,7 +33,7 @@ dedicated sanitizer such as
 [DOMPurify](https://github.com/cure53/DOMPurify) first.
 
 Reaching for `text()` instead of `html()` narrows the problem but does not
-remove it: `text()` strips the markup *structure*, yet the string it returns can
+remove it: `text()` strips the markup _structure_, yet the string it returns can
 still contain `<`, `>`, and `"`. Dropping that into an HTML sink builds markup
 right back up. Assign it somewhere that treats it as text — `textContent` in a
 browser, `.text()` in Cheerio — or escape it for whatever context it lands in.
