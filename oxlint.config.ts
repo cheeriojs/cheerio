@@ -280,8 +280,9 @@ const config: OxlintConfig = defineConfig({
       rules: { 'import/no-relative-parent-imports': 'error' },
     },
     {
-      files: ['src/api/**'],
-      // These functions are bound to Cheerio instances.
+      files: ['src/api/**', 'src/static.ts'],
+      // The class in cheerio.ts installs instance methods.
+      // The loader in load.ts installs helpers on the querying function.
       rules: off('oxc/no-this-in-exported-function'),
     },
     {

@@ -217,23 +217,17 @@ describe('cheerio', () => {
 
   it('(extended Array) should not interfere with prototype methods (issue #119)', () => {
     const extended: AnyNode[] = [];
-    // @ts-expect-error - Ignore for testing
-    extended.find =
-      // @ts-expect-error - Ignore for testing
-      extended.children =
-      // @ts-expect-error - Ignore for testing
-      extended.each =
-        () => {
-          /* Ignore */
-        };
+    Object.assign(extended, {
+      find: () => undefined,
+      children: () => undefined,
+      each: () => undefined,
+    });
     const $empty = cheerio(extended);
+    const prototype = cheerio.prototype as Cheerio<AnyNode>;
 
-    // oxlint-disable-next-line typescript/no-unsafe-member-access
-    expect($empty.find).toBe(cheerio.prototype.find);
-    // oxlint-disable-next-line typescript/no-unsafe-member-access
-    expect($empty.children).toBe(cheerio.prototype.children);
-    // oxlint-disable-next-line typescript/no-unsafe-member-access
-    expect($empty.each).toBe(cheerio.prototype.each);
+    expect($empty.find).toBe(prototype.find);
+    expect($empty.children).toBe(prototype.children);
+    expect($empty.each).toBe(prototype.each);
   });
 
   it('cheerio.html(null) should return a "" string', () => {

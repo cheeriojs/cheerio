@@ -222,6 +222,11 @@ function _removeDuplicates<T extends AnyNode>(elems: T[]): T[] {
   return elems.length > 1 ? [...new Set<T>(elems)] : elems;
 }
 
+function reverseUniqueSort(elems: Element[]): Element[] {
+  // oxlint-disable-next-line unicorn/no-array-reverse -- uniqueSort allocates the deduplicated array, so reversing it in place avoids a second allocation.
+  return uniqueSort(elems).reverse();
+}
+
 /**
  * Get the parent of each element in the current set of matched elements,
  * optionally filtered by a selector.
@@ -267,19 +272,14 @@ export const parent: <T extends AnyNode>(
 export const parents: <T extends AnyNode>(
   this: Cheerio<T>,
   selector?: AcceptedFilters<Element>,
-) => Cheerio<Element> = _matcher(
-  (elem) => {
-    const matched: Element[] = [];
-    while (elem.parent && !isDocument(elem.parent)) {
-      matched.push(elem.parent as Element);
-      elem = elem.parent;
-    }
-    return matched;
-  },
-  uniqueSort,
-  // oxlint-disable-next-line unicorn/no-array-reverse -- uniqueSort returns a fresh array, so reversing in place avoids another copy.
-  (elems) => elems.reverse(),
-);
+) => Cheerio<Element> = _matcher((elem) => {
+  const matched: Element[] = [];
+  while (elem.parent && !isDocument(elem.parent)) {
+    matched.push(elem.parent as Element);
+    elem = elem.parent;
+  }
+  return matched;
+}, reverseUniqueSort);
 
 /**
  * Get the ancestors of each element in the current set of matched elements, up
@@ -305,9 +305,7 @@ export const parentsUntil: <T extends AnyNode>(
   filterSelector?: AcceptedFilters<Element>,
 ) => Cheerio<Element> = _matchUntil(
   ({ parent }) => (parent && !isDocument(parent) ? (parent as Element) : null),
-  uniqueSort,
-  // oxlint-disable-next-line unicorn/no-array-reverse -- uniqueSort returns a fresh array, so reversing in place avoids another copy.
-  (elems) => elems.reverse(),
+  reverseUniqueSort,
 );
 
 /**
@@ -1101,11 +1099,10 @@ export function index<T extends AnyNode>(
     $haystack = this._make<AnyNode>(selectorOrNeedle);
     needle = this[0];
   } else {
-    // oxlint-disable-next-line unicorn/no-this-assignment, typescript/no-this-alias
-    $haystack = this;
     needle = isCheerio(selectorOrNeedle)
       ? selectorOrNeedle[0]
       : selectorOrNeedle;
+    return Array.prototype.indexOf.call(this, needle);
   }
 
   return Array.prototype.indexOf.call($haystack, needle);

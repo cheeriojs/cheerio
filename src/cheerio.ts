@@ -35,7 +35,7 @@ type MethodsType = typeof Attributes &
  * </ul>
  * ```
  */
-// oxlint-disable-next-line typescript/no-unsafe-declaration-merging -- Object.assign installs the merged interface's methods.
+// oxlint-disable-next-line typescript/no-unsafe-declaration-merging -- Object.assign below installs the methods that the merged interface declares.
 export abstract class Cheerio<T> implements ArrayLike<T> {
   length = 0;
   [index: number]: T;
@@ -49,7 +49,7 @@ export abstract class Cheerio<T> implements ArrayLike<T> {
    */
   _root: Cheerio<Document> | null;
   /** The selection this one was derived from, as set by `end()`. */
-  // oxlint-disable-next-line typescript/no-explicit-any -- The previous selection can contain a different node type.
+  // oxlint-disable-next-line typescript/no-explicit-any -- A mapped selection can change the element type, and prevObject exposes the previous selection to callers.
   prevObject: Cheerio<any> | undefined;
 
   /**

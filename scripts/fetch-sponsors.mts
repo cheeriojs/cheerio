@@ -4,7 +4,6 @@
  *   Adapted from
  *   https://github.com/eslint/website/blob/230e73457dcdc2353ad7934e876a5a222a17b1d7/_tools/fetch-sponsors.js.
  */
-/* oxlint-disable typescript/no-explicit-any, typescript/no-unsafe-argument, typescript/no-unsafe-assignment, typescript/no-unsafe-call, typescript/no-unsafe-member-access, typescript/no-unsafe-return -- The sponsor APIs return dynamic payloads. */
 
 import * as fs from 'node:fs/promises';
 
@@ -15,15 +14,78 @@ import { request } from 'undici';
 type Tier = 'headliner' | 'sponsor' | 'professional' | 'backer';
 
 interface Sponsor {
-  createdAt: string;
-  name: string;
-  image: string;
-  url: string;
-  type: 'ORGANIZATION' | 'INDIVIDUAL' | 'FUND';
+  createdAt: string | null;
+  name: string | null;
+  image: string | null;
+  url: string | null;
+  type: string;
   monthlyDonation: number;
   totalDonations: number;
   source: 'github' | 'opencollective' | 'manual';
   tier: Tier | null;
+}
+
+interface OpenCollectiveAmount {
+  value: number | null;
+}
+
+interface OpenCollectiveCharge {
+  kind: string | null;
+  type: string;
+  isRefund: boolean | null;
+  isRefunded: boolean | null;
+  createdAt: string | null;
+  amount: OpenCollectiveAmount;
+}
+
+interface OpenCollectiveOrder {
+  createdAt: string | null;
+  lastChargedAt: string | null;
+  fromAccount: {
+    slug: string;
+    name: string | null;
+    website: string | null;
+    imageUrl: string | null;
+    type: string;
+  } | null;
+  amount: OpenCollectiveAmount;
+  frequency: string | null;
+  totalDonations: OpenCollectiveAmount;
+  transactions?: (OpenCollectiveCharge | null)[] | null;
+}
+
+interface OpenCollectiveOrders {
+  totalCount: number | null;
+  nodes: (OpenCollectiveOrder | null)[] | null;
+}
+
+interface OpenCollectiveResponse {
+  data?: {
+    account: {
+      active: OpenCollectiveOrders;
+      cancelled: OpenCollectiveOrders;
+    } | null;
+  } | null;
+}
+
+interface GitHubSponsorship {
+  createdAt: string;
+  sponsor: {
+    name: string | null;
+    avatarUrl: string;
+    url: string;
+    websiteUrl: string | null;
+    isViewer?: boolean;
+  } | null;
+  tier: { monthlyPriceInDollars: number } | null;
+}
+
+interface GitHubSponsorsResponse {
+  organization: {
+    sponsorshipsAsMaintainer: {
+      nodes: (GitHubSponsorship | null)[] | null;
+    };
+  } | null;
 }
 
 const tierSponsors: Record<Tier, Sponsor[]> = {
@@ -63,8 +125,9 @@ if (!CHEERIO_SPONSORS_GITHUB_TOKEN) {
   throw new Error('Missing CHEERIO_SPONSORS_GITHUB_TOKEN.');
 }
 
-// @ts-expect-error - Types don't have a constructor
-const imgix = new ImgixClient({
+// Node exposes the CommonJS constructor as the ESM default.
+const ImgixConstructor = ImgixClient as unknown as typeof ImgixClient.default;
+const imgix = new ImgixConstructor({
   domain: 'humble.imgix.net',
   secureURLToken: IMGIX_TOKEN,
 });
@@ -126,16 +189,25 @@ function getPaidUntil(chargedAt: string, months: number): number {
  * @param order - The order, including its transactions.
  * @returns The latest charge that still stands, if any.
  */
-function getLastKeptCharge(order: any): any {
+function getLastKeptCharge(
+  order: OpenCollectiveOrder,
+): OpenCollectiveCharge | undefined {
   const transactions = order.transactions ?? [];
-  let lastCharge: any;
+  let lastCharge: OpenCollectiveCharge | undefined;
 
   for (const transaction of transactions) {
+    if (transaction === null) {
+      throw new TypeError('Open Collective order has a missing transaction.');
+    }
+
     if (
       transaction.kind === 'CONTRIBUTION' &&
       transaction.type === 'CREDIT' &&
       !transaction.isRefund &&
-      (!lastCharge || transaction.createdAt > lastCharge.createdAt)
+      (!lastCharge ||
+        (transaction.createdAt !== null &&
+          lastCharge.createdAt !== null &&
+          transaction.createdAt > lastCharge.createdAt))
     ) {
       lastCharge = transaction;
     }
@@ -150,9 +222,9 @@ function getLastKeptCharge(order: any): any {
  * @param order - The order.
  * @returns The monthly amount.
  */
-function getMonthlyAmount(order: any): number {
+function getMonthlyAmount(order: OpenCollectiveOrder): number | null {
   return order.frequency === 'YEARLY'
-    ? order.amount.value / 12
+    ? Number(order.amount.value) / 12
     : order.amount.value;
 }
 
@@ -219,26 +291,42 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
     body: JSON.stringify({ query }),
   });
 
-  const payload: any = await body.json();
+  const payload = (await body.json()) as OpenCollectiveResponse;
 
-  const { active, cancelled } = payload.data.account;
+  const account = payload.data?.account;
+  if (!account) {
+    throw new TypeError('Open Collective response is missing the account.');
+  }
+  const { active, cancelled } = account;
+  const activeOrders = active.nodes;
+  const cancelledOrders = cancelled.nodes;
+  if (!activeOrders || !cancelledOrders) {
+    throw new TypeError('Open Collective response is missing its order lists.');
+  }
 
   // Fail loudly instead of silently dropping sponsors once a page is not enough.
   if (
-    active.nodes.length < active.totalCount ||
-    cancelled.nodes.length < cancelled.totalCount
+    activeOrders.length < Number(active.totalCount) ||
+    cancelledOrders.length < Number(cancelled.totalCount)
   ) {
     throw new Error('Open Collective orders exceed one page; add pagination.');
   }
 
-  // The highest monthly amount each account currently pays via active orders.
-  const activeAmounts = new Map<string, number>();
+  if (
+    !activeOrders.every((order) => order !== null) ||
+    !cancelledOrders.every((order) => order !== null)
+  ) {
+    throw new TypeError('Open Collective response has a missing order.');
+  }
 
-  for (const order of active.nodes) {
+  // The highest monthly amount each account currently pays via active orders.
+  const activeAmounts = new Map<string | undefined, number>();
+
+  for (const order of activeOrders) {
     const slug = order.fromAccount?.slug;
     const amount = Math.max(
       activeAmounts.get(slug) ?? 0,
-      getMonthlyAmount(order),
+      Number(getMonthlyAmount(order)),
     );
     activeAmounts.set(slug, amount);
   }
@@ -248,9 +336,12 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
    * the sponsor listed until that period is over. Per account, the highest paid
    * order wins — including over a smaller active order the sponsor switched to.
    */
-  const stillPaid = new Map<string, { order: any; paidUntil: number }>();
+  const stillPaid = new Map<
+    string,
+    { order: OpenCollectiveOrder; paidUntil: number }
+  >();
 
-  for (const order of cancelled.nodes) {
+  for (const order of cancelledOrders) {
     if (!order.fromAccount) {
       continue;
     }
@@ -279,8 +370,8 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
     const currentAmount = current ? getMonthlyAmount(current.order) : -1;
 
     if (
-      amount <= (activeAmounts.get(slug) ?? -1) ||
-      amount < currentAmount ||
+      Number(amount) <= (activeAmounts.get(slug) ?? -1) ||
+      Number(amount) < Number(currentAmount) ||
       (amount === currentAmount && paidUntil <= current!.paidUntil)
     ) {
       continue;
@@ -289,30 +380,37 @@ async function fetchOpenCollectiveSponsors(): Promise<Sponsor[]> {
     stillPaid.set(slug, { order, paidUntil });
   }
 
-  const orders = active.nodes.filter(
-    (order: any) => !stillPaid.has(order.fromAccount?.slug),
+  const orders = activeOrders.filter(
+    ({ fromAccount }) => !fromAccount || !stillPaid.has(fromAccount.slug),
   );
 
   for (const { order } of stillPaid.values()) {
     orders.push(order);
   }
 
-  return orders.map((order: any): Sponsor => {
-    const donation = order.amount.value * 100;
+  return orders.map((order): Sponsor => {
+    const { fromAccount } = order;
+    const donation = Number(order.amount.value) * 100;
     const monthlyDonation =
       order.frequency === 'YEARLY' ? Math.round(donation / 12) : donation;
 
+    if (!fromAccount) {
+      throw new TypeError(
+        'Open Collective active order is missing its account.',
+      );
+    }
+
     return {
       createdAt: order.createdAt,
-      name: order.fromAccount.name,
-      url: order.fromAccount.website,
-      image: order.fromAccount.imageUrl,
-      type: order.fromAccount.type,
+      name: fromAccount.name,
+      url: fromAccount.website,
+      image: fromAccount.imageUrl,
+      type: fromAccount.type,
       monthlyDonation,
-      totalDonations: order.totalDonations.value * 100,
+      totalDonations: Number(order.totalDonations.value) * 100,
       source: 'opencollective',
       tier: getTierSlug(
-        Math.min(monthlyDonation / 100, order.totalDonations.value),
+        Math.min(monthlyDonation / 100, Number(order.totalDonations.value)),
       ),
     };
   });
@@ -331,7 +429,7 @@ function getMonthsActive(date: string): number {
  * @returns An array of sponsors.
  */
 async function fetchGitHubSponsors(): Promise<Sponsor[]> {
-  const { organization } = await githubGraphQL<any>(
+  const { organization } = await githubGraphQL<GitHubSponsorsResponse>(
     `{
       organization(login: "cheeriojs") {
         sponsorshipsAsMaintainer(first: 100) {
@@ -370,9 +468,18 @@ async function fetchGitHubSponsors(): Promise<Sponsor[]> {
     },
   );
 
-  // Return an array in the same format as Open Collective
-  return organization.sponsorshipsAsMaintainer.nodes.map(
-    ({ sponsor, tier, createdAt }: any): Sponsor => ({
+  const sponsorships = organization?.sponsorshipsAsMaintainer.nodes;
+  if (!sponsorships) {
+    throw new TypeError('GitHub response is missing its sponsorship list.');
+  }
+
+  return sponsorships.map((sponsorship): Sponsor => {
+    if (!sponsorship?.sponsor) {
+      throw new TypeError('GitHub sponsorship is missing its sponsor.');
+    }
+
+    const { sponsor, tier, createdAt } = sponsorship;
+    return {
       createdAt,
       name: sponsor.name,
       image: `${sponsor.avatarUrl}&s=128`,
@@ -383,11 +490,11 @@ async function fetchGitHubSponsors(): Promise<Sponsor[]> {
         sponsor.isViewer === undefined ? 'ORGANIZATION' : 'INDIVIDUAL',
       monthlyDonation: (tier?.monthlyPriceInDollars ?? 0) * 100,
       totalDonations:
-        getMonthsActive(createdAt) * tier?.monthlyPriceInDollars * 100,
+        getMonthsActive(createdAt) * Number(tier?.monthlyPriceInDollars) * 100,
       source: 'github',
       tier: getTierSlug(tier?.monthlyPriceInDollars ?? 0),
-    }),
-  );
+    };
+  });
 }
 
 async function fetchSponsors(): Promise<Sponsor[]> {
@@ -460,7 +567,9 @@ for (let i = 0; i < sponsors.length; i++) {
   i--;
 }
 
-sponsors.sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt));
+sponsors.sort(
+  (a, b) => Date.parse(String(a.createdAt)) - Date.parse(String(b.createdAt)),
+);
 
 // Process into a useful format
 for (const sponsor of sponsors) {
@@ -469,13 +578,15 @@ for (const sponsor of sponsors) {
     // OR if it's a 'professional' or 'backer' tier AND meets specific filtering criteria
     ((sponsor.tier === 'professional' || sponsor.tier === 'backer') &&
       (sponsor.type === 'ORGANIZATION' ||
-        MISLABELED_ORGS.test(sponsor.name) ||
-        MISLABELED_ORGS.test(sponsor.url)))
+        MISLABELED_ORGS.test(String(sponsor.name)) ||
+        MISLABELED_ORGS.test(String(sponsor.url))))
   ) {
     continue;
   }
 
-  Object.assign(sponsor, sponsorOverrides.get(sponsor.name));
+  if (sponsor.name !== null) {
+    Object.assign(sponsor, sponsorOverrides.get(sponsor.name));
+  }
 
   tierSponsors[sponsor.tier].push(sponsor);
 }
@@ -533,8 +644,13 @@ for (let sectionStartIndex = 0; ;) {
   ]
     .map((s: Sponsor) => {
       const size = TIER_IMAGE_SIZES[s.tier ?? sectionName];
+      if (s.image === null) {
+        throw new TypeError('Cannot render a README sponsor without an image.');
+      }
+      const overrides =
+        s.name === null ? undefined : imgixOverrides.get(s.name);
       // Display each sponsor's image in the README.
-      return `<a href="${s.url}" target="_blank" rel="noopener noreferrer">
+      return `<a href="${String(s.url)}" target="_blank" rel="noopener noreferrer">
             <img height="${size}px" width="${size}px" src="${imgix.buildURL(
               s.image,
               {
@@ -542,9 +658,9 @@ for (let sectionStartIndex = 0; ;) {
                 h: size,
                 fit: 'fillmax',
                 fill: 'solid',
-                ...imgixOverrides.get(s.name),
+                ...overrides,
               },
-            )}" title="${s.name}" alt="${s.name}"></img>
+            )}" title="${String(s.name)}" alt="${String(s.name)}"></img>
           </a>`;
     })
     .join('\n')}\n\n${readme.slice(sectionEndIndex)}`;

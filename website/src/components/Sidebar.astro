@@ -276,7 +276,7 @@ const normalizedPath = currentPath.endsWith('/')
       if (!overlay || !drawer) return;
       overlay.classList.remove('hidden');
       drawer.classList.remove('hidden');
-      // oxlint-disable-next-line no-unused-expressions -- Reading offsetHeight forces a reflow.
+      // oxlint-disable-next-line no-unused-expressions -- Flush layout so the drawer has an offscreen starting position before the transition to translate-x-0.
       drawer.offsetHeight;
       drawer.classList.remove('-translate-x-full');
       drawer.classList.add('translate-x-0');
