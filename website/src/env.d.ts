@@ -1,3 +1,4 @@
+// oxlint-disable-next-line typescript/triple-slash-reference -- A reference loads Astro's generated types into this ambient script.
 /// <reference path="../.astro/types.d.ts" />
 /// <reference types="astro/client" />
 

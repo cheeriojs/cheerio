@@ -1,3 +1,5 @@
+/* oxlint-disable oxc/no-this-in-exported-function -- These exported functions are bound to Cheerio's querying function. */
+
 import type { AnyNode, Document } from 'domhandler';
 import { textContent } from 'domutils';
 

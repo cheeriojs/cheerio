@@ -344,6 +344,7 @@ export function prop<T extends AnyNode>(
  */
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
+  // oxlint-disable-next-line typescript/unified-signatures -- TypeDoc documents URL resolution in a separate overload.
   name: 'href' | 'src',
 ): string | undefined;
 /**

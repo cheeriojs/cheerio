@@ -277,7 +277,7 @@ export const parents: <T extends AnyNode>(
     return matched;
   },
   uniqueSort,
-  // oxlint-disable-next-line unicorn/no-array-reverse
+  // oxlint-disable-next-line unicorn/no-array-reverse -- uniqueSort returns a fresh array, so reversing in place avoids another copy.
   (elems) => elems.reverse(),
 );
 
@@ -306,7 +306,7 @@ export const parentsUntil: <T extends AnyNode>(
 ) => Cheerio<Element> = _matchUntil(
   ({ parent }) => (parent && !isDocument(parent) ? (parent as Element) : null),
   uniqueSort,
-  // oxlint-disable-next-line unicorn/no-array-reverse
+  // oxlint-disable-next-line unicorn/no-array-reverse -- uniqueSort returns a fresh array, so reversing in place avoids another copy.
   (elems) => elems.reverse(),
 );
 

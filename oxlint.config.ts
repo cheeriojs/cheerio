@@ -280,31 +280,13 @@ const config: OxlintConfig = defineConfig({
       rules: { 'import/no-relative-parent-imports': 'error' },
     },
     {
-      files: ['src/api/**', 'src/static.ts'],
-      // These functions are bound to Cheerio instances or cheerio's querying function.
+      files: ['src/api/**'],
+      // These functions are bound to Cheerio instances.
       rules: off('oxc/no-this-in-exported-function'),
     },
     {
-      files: ['src/cheerio.ts'],
-      // Object.assign implements the interface merge; prevObject stores any node type.
-      rules: off(
-        'typescript/no-unsafe-declaration-merging',
-        'typescript/no-explicit-any',
-      ),
-    },
-    {
-      files: ['src/api/attributes.ts'],
-      // TypeDoc uses separate overloads to document distinct behaviors.
-      rules: off('typescript/unified-signatures'),
-    },
-    {
-      files: ['src/slim.ts'],
-      // The dom-serializer package exposes the same renderer as its named and default exports.
-      rules: off('import/no-named-as-default'),
-    },
-    {
-      files: ['scripts/fetch-sponsors.mts', 'website/**/*.mjs'],
-      // These scripts consume dynamic sponsor and crawler API payloads.
+      files: ['website/**/*.mjs'],
+      // These scripts consume dynamic crawler API payloads.
       rules: off(
         'typescript/no-unsafe-argument',
         'typescript/no-unsafe-assignment',
@@ -315,14 +297,9 @@ const config: OxlintConfig = defineConfig({
       ),
     },
     {
-      files: ['scripts/fetch-sponsors.mts'],
-      // The API payload shapes are dynamic.
-      rules: off('typescript/no-explicit-any'),
-    },
-    {
       files: ['website/src/env.d.ts'],
-      // Astro's ambient declarations use references and remain a script.
-      rules: off('import/unambiguous', 'typescript/triple-slash-reference'),
+      // Astro needs an ambient script. Oxlint reports this rule at byte zero, outside the inline disable's range.
+      rules: off('import/unambiguous'),
     },
     {
       files: ['**/*.spec.ts'],
@@ -352,11 +329,6 @@ const config: OxlintConfig = defineConfig({
         'unicorn/consistent-existence-index-check',
         'oxc/no-map-spread',
       ),
-    },
-    {
-      files: ['website/src/components/Hero.astro'],
-      // Allow the existing unbraced single-statement early return.
-      rules: { curly: ['error', 'multi-or-nest'] },
     },
     {
       files: ['**/*.astro'],

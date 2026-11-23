@@ -3,6 +3,7 @@
  *   way, parse5 won't be loaded, saving some memory.
  */
 
+// oxlint-disable-next-line import/no-named-as-default -- dom-serializer exposes the same renderer as a named and default export.
 import render from 'dom-serializer';
 import type { AnyNode } from 'domhandler';
 import { parseDocument } from 'htmlparser2';

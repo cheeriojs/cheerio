@@ -4,6 +4,8 @@
  *   Adapted from
  *   https://github.com/eslint/website/blob/230e73457dcdc2353ad7934e876a5a222a17b1d7/_tools/fetch-sponsors.js.
  */
+/* oxlint-disable typescript/no-explicit-any, typescript/no-unsafe-argument, typescript/no-unsafe-assignment, typescript/no-unsafe-call, typescript/no-unsafe-member-access, typescript/no-unsafe-return -- The sponsor APIs return dynamic payloads. */
+
 import * as fs from 'node:fs/promises';
 
 import ImgixClient from '@imgix/js-core';
@@ -374,6 +376,7 @@ async function fetchGitHubSponsors(): Promise<Sponsor[]> {
       createdAt,
       name: sponsor.name,
       image: `${sponsor.avatarUrl}&s=128`,
+      // oxlint-disable-next-line typescript/prefer-nullish-coalescing -- An empty website URL should also fall back to the profile URL.
       url: sponsor.websiteUrl || sponsor.url,
       type:
         // Workaround to get the type — fetch a field that only exists on users.
