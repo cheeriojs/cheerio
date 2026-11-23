@@ -1,0 +1,38 @@
+src/cheerio.spec.ts
+  s_d31a4962c6cdf9::t_e39d1794db4d9f 221-223
+  s_d31a4962c6cdf9::t_72297b3530b34b 220,224
+  s_d31a4962c6cdf9::t_12d55bc4d2d96e 226,228-230
+src/static.ts
+  s_d31a4962c6cdf9::t_12d55bc4d2d96e 1
+src/api/traversing.ts
+  s_d31a4962c6cdf9::t_fce70d4de2a7d5 275-282
+  s_d31a4962c6cdf9::t_12d55bc4d2d96e 225-229,308,1098,1101,1104
+website/src/components/Hero.astro
+  s_d31a4962c6cdf9::t_12d55bc4d2d96e 9,11
+scripts/fetch-sponsors.mts
+  s_d31a4962c6cdf9::t_d3209b0ba0c76c 28-84,122-124,186-188,190,212,281,310-313,355,362,396,437
+src/slim.ts
+  s_d31a4962c6cdf9::t_12d55bc4d2d96e 6
+website/src/env.d.ts
+  s_d31a4962c6cdf9::t_72297b3530b34b 1
+src/cheerio.ts
+  s_d31a4962c6cdf9::t_12d55bc4d2d96e 38,52
+website/src/components/Sidebar.astro
+  s_d31a4962c6cdf9::t_12d55bc4d2d96e 279
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "31318955b34b64174c0355749ddf849288e0b4c0",
+  "prompts": {},
+  "sessions": {
+    "s_d31a4962c6cdf9": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a20627-1455-7c43-936b-59d2d5b973b2",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
