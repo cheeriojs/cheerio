@@ -1,0 +1,36 @@
+src/api/traversing.ts
+  s_9df8592852b1e9::t_f0a4b52a8d2d85 280,309
+src/api/attributes.ts
+  s_9df8592852b1e9::t_a6385e7c4fded7 347
+src/slim.ts
+  s_9df8592852b1e9::t_a6385e7c4fded7 6
+website/src/env.d.ts
+  s_9df8592852b1e9::t_a6385e7c4fded7 1
+scripts/fetch-sponsors.mts
+  s_9df8592852b1e9::t_a6385e7c4fded7 7-8,379
+oxlint.config.ts
+  s_9df8592852b1e9::t_f0a4b52a8d2d85 301-302
+  s_9df8592852b1e9::t_4649db54e9cd0a 283-284,288-289
+src/static.ts
+  s_9df8592852b1e9::t_a6385e7c4fded7 1-2
+website/src/components/Hero.astro
+  s_9df8592852b1e9::t_7bbf681ff44244 10
+src/cheerio.ts
+  s_9df8592852b1e9::t_a6385e7c4fded7 38,52
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "0b504755beb29eccf42652bb1b429777595b6642",
+  "prompts": {},
+  "sessions": {
+    "s_9df8592852b1e9": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a2061d-aa34-7ef2-a982-fdc292cf073c",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
