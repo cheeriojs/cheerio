@@ -1,0 +1,41 @@
+src/slim.ts
+  s_d31a4962c6cdf9::t_12d55bc4d2d96e 6
+website/src/env.d.ts
+  s_d31a4962c6cdf9::t_72297b3530b34b 1
+website/src/components/Sidebar.astro
+  s_d31a4962c6cdf9::t_12d55bc4d2d96e 279
+scripts/fetch-sponsors.mts
+  s_d31a4962c6cdf9::t_d3209b0ba0c76c 28-45,47-78,80-84,122-124,186-188,190,212,281,310-313,362,403,444
+  s_d31a4962c6cdf9::t_010844b93784c1 46,79,294,355,363,368,372-373,376-379,455
+  s_d31a4962c6cdf9::t_edac66b7ee033e 369-371
+website/src/components/Hero.astro
+  s_d31a4962c6cdf9::t_12d55bc4d2d96e 9,11
+oxlint.config.ts
+  s_d31a4962c6cdf9::t_035eae61846a0d 284-285
+  s_d31a4962c6cdf9::t_010844b93784c1 283
+src/api/traversing.ts
+  s_d31a4962c6cdf9::t_12d55bc4d2d96e 225-229,308,1105
+  s_d31a4962c6cdf9::t_fce70d4de2a7d5 275-282
+src/cheerio.spec.ts
+  s_d31a4962c6cdf9::t_72297b3530b34b 220,224
+  s_d31a4962c6cdf9::t_e39d1794db4d9f 221-223
+  s_d31a4962c6cdf9::t_12d55bc4d2d96e 226,228-230
+src/cheerio.ts
+  s_d31a4962c6cdf9::t_12d55bc4d2d96e 38,52
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "fa5e3e0852fd49bb0d8fcb15a5ed5c67f394fb0a",
+  "prompts": {},
+  "sessions": {
+    "s_d31a4962c6cdf9": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a20627-1455-7c43-936b-59d2d5b973b2",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": null
+    }
+  }
+}
