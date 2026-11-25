@@ -1,0 +1,63 @@
+{
+  "headliner": [
+    {
+      "createdAt": "2022-06-24",
+      "name": "Github",
+      "image": "https://avatars.githubusercontent.com/github",
+      "url": "https://github.com/",
+      "type": "ORGANIZATION",
+      "monthlyDonation": 0,
+      "totalDonations": 0,
+      "source": "manual",
+      "tier": "headliner"
+    },
+    {
+      "createdAt": "2018-05-02",
+      "name": "AirBnB",
+      "image": "https://avatars.githubusercontent.com/airbnb",
+      "url": "https://www.airbnb.com/",
+      "type": "ORGANIZATION",
+      "monthlyDonation": 0,
+      "totalDonations": 0,
+      "source": "manual",
+      "tier": "headliner"
+    }
+  ],
+  "sponsor": [
+    {
+      "createdAt": "2023-12-05T16:44:08.370Z",
+      "name": "OnlineCasinosSpelen",
+      "url": "https://onlinecasinosspelen.com",
+      "image": "https://images.opencollective.com/onlinecasinosspelen/99ac6a2/logo.png",
+      "type": "ORGANIZATION",
+      "monthlyDonation": 0,
+      "totalDonations": 0,
+      "source": "opencollective",
+      "tier": "sponsor"
+    },
+    {
+      "createdAt": "2023-12-07T14:07:39.203Z",
+      "name": "Nieuwe-Casinos.net",
+      "url": "https://Nieuwe-Casinos.net",
+      "image": "https://images.opencollective.com/nieuwecasinos/c67d423/logo.png",
+      "type": "ORGANIZATION",
+      "monthlyDonation": 0,
+      "totalDonations": 0,
+      "source": "opencollective",
+      "tier": "sponsor"
+    },
+    {
+      "createdAt": "2026-08-07T08:06:17.232Z",
+      "name": "Rapidproxy",
+      "url": "https://www.rapidproxy.io/?ref=cheerio",
+      "image": "https://www.rapidproxy.io/static/rapidproxy/images/hd_ft_public/rapidproxy_logo.webp",
+      "type": "INDIVIDUAL",
+      "monthlyDonation": 0,
+      "totalDonations": 0,
+      "source": "opencollective",
+      "tier": "sponsor"
+    }
+  ],
+  "professional": [],
+  "backer": []
+}

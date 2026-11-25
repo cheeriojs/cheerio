@@ -1,0 +1,17 @@
+node_modules
+npm-debug.log
+.DS_Store
+.docusaurus
+.cache-loader
+/coverage
+/.tshy
+/.tshy-build
+/dist
+
+# Website build artifacts
+website/.astro/
+website/dist/
+website/src/content/docs/api
+
+# Agent worktrees — nested checkouts of this repo, not part of it
+.claude/worktrees/

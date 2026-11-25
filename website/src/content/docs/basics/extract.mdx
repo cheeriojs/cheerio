@@ -1,0 +1,226 @@
+---
+sidebar_label: Extracting Data
+sidebar_position: 6
+description: Extract multiple values at once.
+---
+
+import { LiveCode } from '@/components/live-code';
+
+# Extracting Data with the `extract` Method
+
+`extract` pulls several values out of a document in one call and returns them as
+a plain object. Instead of writing a chain of selections and `text()` calls, you
+describe the shape of the data you want and let Cheerio fill it in.
+
+You pass `extract` a **map**: the keys become properties on the result, and the
+values describe what to put in them.
+
+The examples below all run against this document:
+
+```js
+import * as cheerio from 'cheerio';
+
+const $ = cheerio.load(`
+  <ul>
+    <li>One</li>
+    <li>Two</li>
+    <li class="blue sel">Three</li>
+    <li class="red">Four</li>
+  </ul>
+  <ul>
+    <li class="sel">Five</li>
+    <li class="red">Six</li>
+  </ul>
+  <a href="/docs">Docs</a>
+  <a href="/blog">Blog</a>
+`);
+```
+
+## A single value
+
+The simplest descriptor is a selector string. It yields the text content of the
+**first** matching element:
+
+```js
+$.extract({ red: '.red' });
+//=> { red: 'Four' }
+```
+
+## Lists of values
+
+Wrap the descriptor in an array to collect **every** match instead:
+
+```js
+$.extract({ red: ['.red'] });
+//=> { red: ['Four', 'Six'] }
+```
+
+That one bracket is the whole difference between "the first match" and "every
+match":
+
+```js live
+const $ = cheerio.load(`
+  <ul class="fruit">
+    <li class="sel">Apple</li>
+    <li>Banana</li>
+  </ul>
+  <ul class="veg">
+    <li class="sel">Carrot</li>
+    <li>Daikon</li>
+  </ul>
+`);
+
+console.log($.extract({ selected: '.sel' }));
+console.log($.extract({ selected: ['.sel'] }));
+```
+
+## Extracting something other than text
+
+To extract an attribute or another property, replace the string with an object
+that has a `selector` and a `value`:
+
+```js
+$.extract({
+  red: '.red',
+  links: {
+    selector: 'a',
+    value: 'href',
+  },
+});
+//=> { red: 'Four', links: '/docs' }
+```
+
+`value` is passed to Cheerio's
+[`prop` method](/docs/api/classes/Cheerio#prop), so anything `prop` understands
+works here — `outerHTML`, `innerHTML`, `tagName`, `innerText`, or any attribute
+name. It defaults to `textContent`, which is why a bare selector gives you text.
+
+:::tip[Relative URLs]
+
+`href` and `src` are resolved against the document's URL. This document doesn't
+have one, which is why the example above returns the raw `/docs`.
+[`fromURL`](/docs/api/functions/fromURL) sets a URL automatically; with the
+other loaders, pass the
+[`baseURI` option](/docs/api/interfaces/CheerioOptions#baseuri) to get absolute
+URLs back.
+
+:::
+
+Descriptor objects can be wrapped in an array just like plain selectors:
+
+```js
+$.extract({
+  red: [{ selector: '.red', value: 'outerHTML' }],
+});
+//=> { red: ['<li class="red">Four</li>', '<li class="red">Six</li>'] }
+```
+
+## Nested objects
+
+Pass an object as `value` to extract a nested structure. Selectors inside it are
+evaluated **relative to the outer selection**, which makes it easy to pull
+repeated records out of a page:
+
+```js
+$.extract({
+  lists: [
+    {
+      selector: 'ul',
+      value: {
+        red: ['.red'],
+        selected: '.sel',
+      },
+    },
+  ],
+});
+//=> {
+//     lists: [
+//       { red: ['Four'], selected: 'Three' },
+//       { red: ['Six'], selected: 'Five' },
+//     ],
+//   }
+```
+
+This is the pattern you'll use most when scraping: an outer selector picks the
+repeating element, and the inner map describes one record.
+
+```js live
+const $ = cheerio.load(`
+  <ul class="fruit">
+    <li class="sel">Apple</li>
+    <li>Banana</li>
+  </ul>
+  <ul class="veg">
+    <li class="sel">Carrot</li>
+    <li>Daikon</li>
+  </ul>
+`);
+
+const data = $.extract({
+  lists: [
+    {
+      selector: 'ul',
+      value: {
+        items: ['li'],
+        selected: '.sel',
+      },
+    },
+  ],
+});
+
+console.log(JSON.stringify(data, null, 2));
+```
+
+## Computed values
+
+Finally, `value` can be a function. It's called with each selected element and
+the key it's being extracted for, and whatever it returns is used as the value:
+
+```js
+$.extract({
+  links: [
+    {
+      selector: 'a',
+      value: (el, key) => `${key}=${$(el).attr('href')}`,
+    },
+  ],
+});
+//=> { links: ['links=/docs', 'links=/blog'] }
+```
+
+## Putting it all together
+
+Here we fetch Cheerio's releases page and extract the name, date, and notes of
+each release:
+
+```js
+import * as cheerio from 'cheerio';
+
+const $ = await cheerio.fromURL(
+  'https://github.com/cheeriojs/cheerio/releases',
+);
+
+const data = $.extract({
+  releases: [
+    {
+      // First, select the individual release sections.
+      selector: 'section',
+      // Then extract the release date, name, and notes from each one.
+      value: {
+        // Selectors here run within the context of the selected section.
+        name: 'h2',
+        date: {
+          selector: 'relative-time',
+          // The actual release date is stored in the `datetime` attribute.
+          value: 'datetime',
+        },
+        notes: {
+          selector: '.markdown-body',
+          // We want the markup, not just the text.
+          value: 'innerHTML',
+        },
+      },
+    },
+  ],
+});
+```

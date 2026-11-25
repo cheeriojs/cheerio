@@ -1,0 +1,5 @@
+# Enforce Unix newlines
+* text=auto eol=lf
+
+benchmark/documents/* binary
+benchmark/jquery*.js binary

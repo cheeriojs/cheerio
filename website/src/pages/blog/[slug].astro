@@ -1,0 +1,32 @@
+---
+import { getCollection, render } from 'astro:content';
+import BlogLayout from '@/layouts/BlogLayout.astro';
+import { getPostDate } from '@/lib/blog';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const date = getPostDate(post);
+
+// Get author name (simplified - in a real app you'd look this up)
+const authorMap: Record<string, string> = {
+  fb55: 'Felix Boehm',
+};
+const authorName = post.data.authors
+  ? Array.isArray(post.data.authors)
+    ? post.data.authors.map((a: string) => authorMap[a] || a).join(', ')
+    : authorMap[post.data.authors] || post.data.authors
+  : undefined;
+---
+
+<BlogLayout title={post.data.title} date={date} author={authorName}>
+  <Content />
+</BlogLayout>
