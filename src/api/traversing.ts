@@ -14,6 +14,7 @@ import {
   isTag,
 } from 'domhandler';
 import {
+  compareDocumentPosition,
   getChildren,
   getSiblings,
   nextElementSibling,
@@ -385,7 +386,24 @@ export function closest<T extends AnyNode>(
     }
   });
 
-  return this._make(set);
+  /*
+   * The starting selection can be in any order (e.g. the reverse document
+   * order produced by `prevAll`), while jQuery returns the closest matches
+   * in document order. The set is already deduplicated, so this only sorts.
+   */
+  return this._make(
+    /*
+     * `uniqueSort` would re-scan the already deduplicated set in O(n^2);
+     * sort directly instead.
+     */
+    // eslint-disable-next-line unicorn/no-array-sort -- `toSorted` is not in the ES2022 lib types
+    set.sort((a, b) => {
+      const position = compareDocumentPosition(a, b);
+      if (position & 2) return -1; // DocumentPosition.PRECEDING
+      if (position & 4) return 1; // DocumentPosition.FOLLOWING
+      return 0;
+    }),
+  );
 }
 
 /**

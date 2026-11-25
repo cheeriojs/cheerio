@@ -924,6 +924,18 @@ describe('$(...)', () => {
       expect(result).toHaveLength(2);
     });
 
+    it('(selector) : should return matches in document order for a reversed starting selection', () => {
+      const $list = load(
+        '<ul><li class="apple"></li><li class="orange"></li><li class="pear"></li></ul>',
+      );
+      const result = $list('.pear')
+        .prevAll()
+        .closest('li')
+        .map((_, el) => $list(el).attr('class'))
+        .get();
+      expect(result).toStrictEqual(['apple', 'orange']);
+    });
+
     it('() : should not break if the selector does not have any results', () => {
       const result = $('.saladbar', food).closest('ul');
       expect(result).toHaveLength(0);
