@@ -13,9 +13,12 @@ import { camelCase, cssCase, domEach } from '../utils.js';
 const rspace = /\s+/;
 const dataAttrPrefix = 'data-';
 
-// Attributes that are booleans
+/*
+ * Attributes that are booleans. `hidden` is not one of them: it is an
+ * enumerated attribute, as `hidden="until-found"` is a state of its own.
+ */
 const rboolean =
-  /^(?:autofocus|autoplay|async|checked|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped|selected)$/i;
+  /^(?:autofocus|autoplay|async|checked|controls|defer|disabled|loop|multiple|open|readonly|required|scoped|selected)$/i;
 // Matches strings that look like JSON objects or arrays
 const rbrace = /^{[\s\S]*}$|^\[[\s\S]*]$/;
 
@@ -242,12 +245,29 @@ function getProp(
   name: string,
   xmlMode?: boolean,
 ): string | undefined | boolean | Element[keyof Element] {
-  return name in el && name !== 'name' && name !== 'type'
-    ? // @ts-expect-error TS doesn't like us accessing the value directly here.
-      (el[name] as string | undefined)
-    : !xmlMode && rboolean.test(name)
-      ? getAttr(el, name, false) !== undefined
-      : getAttr(el, name, xmlMode);
+  if (name in el && name !== 'name' && name !== 'type') {
+    // @ts-expect-error TS doesn't like us accessing the value directly here.
+    return el[name] as string | undefined;
+  }
+
+  if (!xmlMode) {
+    if (rboolean.test(name)) return getAttr(el, name, false) !== undefined;
+
+    /*
+     * `hidden` is an enumerated attribute. The DOM returns the
+     * `until-found` state as a string, and `true` for the hidden state.
+     */
+    if (name.toLowerCase() === 'hidden') {
+      const value = getAttr(el, 'hidden', false);
+      return value === undefined
+        ? false
+        : value === 'until-found'
+          ? 'until-found'
+          : true;
+    }
+  }
+
+  return getAttr(el, name, xmlMode);
 }
 
 /**
@@ -264,17 +284,32 @@ function setProp(el: Element, name: string, value: unknown, xmlMode?: boolean) {
   if (name in el && name !== 'name' && name !== 'type') {
     // @ts-expect-error Overriding value
     el[name] = value;
-  } else {
+    return;
+  }
+
+  if (!xmlMode && name.toLowerCase() === 'hidden') {
+    /* Keep the `until-found` state; `true` sets the hidden state. */
     setAttr(
       el,
-      name,
-      !xmlMode && rboolean.test(name)
-        ? value
+      'hidden',
+      value === false || value == null
+        ? null
+        : value === true
           ? ''
-          : null
-        : `${value as string}`,
+          : `${value as string}`,
     );
+    return;
   }
+
+  setAttr(
+    el,
+    name,
+    !xmlMode && rboolean.test(name)
+      ? value
+        ? ''
+        : null
+      : `${value as string}`,
+  );
 }
 
 interface StyleProp {

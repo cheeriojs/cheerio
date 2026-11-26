@@ -44,6 +44,16 @@ describe('$(...)', () => {
       expect(attr).toBe('autofocus');
     });
 
+    it('(valid key) : should keep the value of the enumerated `hidden` attribute', () => {
+      const $el = $(
+        '<div hidden="until-found"></div><div hidden></div><div></div>',
+      );
+
+      expect($el.eq(0).attr('hidden')).toBe('until-found');
+      expect($el.eq(1).attr('hidden')).toBe('');
+      expect($el.eq(2).attr('hidden')).toBeUndefined();
+    });
+
     it('(key, value) : should set one attr', () => {
       const $pear = $('.pear').attr('id', 'pear');
       expect($('#pear')).toHaveLength(1);
@@ -254,6 +264,42 @@ describe('$(...)', () => {
       checkbox.prop('checked', true);
       expect(checkbox.prop('checked')).toBe(true);
       expect(checkbox.attr('checked')).toBe('checked');
+    });
+
+    it('(valid key) : should return the `until-found` state of `hidden`', () => {
+      const $el = $(
+        '<div hidden="until-found"></div><div hidden></div><div hidden=""></div><div></div>',
+      );
+
+      expect($el.eq(0).prop('hidden')).toBe('until-found');
+      expect($el.eq(1).prop('hidden')).toBe(true);
+      expect($el.eq(2).prop('hidden')).toBe(true);
+      expect($el.eq(3).prop('hidden')).toBe(false);
+    });
+
+    it('(key, value) : should set the `until-found` state of `hidden`', () => {
+      const $el = $('<div></div>');
+
+      $el.prop('hidden', 'until-found');
+      expect($el.prop('hidden')).toBe('until-found');
+      expect($el.attr('hidden')).toBe('until-found');
+
+      $el.prop('hidden', true);
+      expect($el.prop('hidden')).toBe(true);
+      expect($el.attr('hidden')).toBe('');
+
+      $el.prop('hidden', false);
+      expect($el.prop('hidden')).toBe(false);
+      expect($el.attr('hidden')).toBeUndefined();
+    });
+
+    it("(bool) shouldn't treat `hidden` differently in XML mode", () => {
+      const $xml = $.load('<div hidden="until-found"/>', {
+        xml: true,
+      })('div');
+
+      expect($xml.attr('hidden')).toBe('until-found');
+      expect($xml.prop('hidden')).toBe('until-found');
     });
 
     it('(key, value) : should update namespace', () => {
