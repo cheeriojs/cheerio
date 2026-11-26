@@ -936,6 +936,26 @@ describe('$(...)', () => {
       expect(result).toStrictEqual(['apple', 'orange']);
     });
 
+    it('(selector) : should keep an already ordered multi-match selection in document order', () => {
+      const $list = load(
+        '<ul><li class="apple"></li><li class="orange"></li><li class="pear"></li></ul>',
+      );
+      const result = $list('.apple, .orange')
+        .closest('li')
+        .map((_, el) => $list(el).attr('class'))
+        .get();
+      expect(result).toStrictEqual(['apple', 'orange']);
+
+      const $nested = load(
+        '<div id="outer"><div id="inner"></div></div>',
+      );
+      const nested = $nested('#inner, #outer')
+        .closest('div')
+        .map((_, el) => $nested(el).attr('id'))
+        .get();
+      expect(nested).toStrictEqual(['outer', 'inner']);
+    });
+
     it('() : should not break if the selector does not have any results', () => {
       const result = $('.saladbar', food).closest('ul');
       expect(result).toHaveLength(0);
