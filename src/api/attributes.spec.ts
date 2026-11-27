@@ -215,6 +215,23 @@ describe('$(...)', () => {
       expect(checkbox.prop('nodeName')).toBe('INPUT');
     });
 
+    it('(tagName/nodeName) : should only upper-case HTML elements in an HTML document', () => {
+      const html = load(
+        '<svg><foreignObject></foreignObject></svg><math><mi>x</mi></math><div></div>',
+      );
+      expect(html('svg').prop('tagName')).toBe('svg');
+      expect(html('svg').children().prop('tagName')).toBe('foreignObject');
+      expect(html('svg').children().prop('nodeName')).toBe('foreignObject');
+      expect(html('mi').prop('tagName')).toBe('mi');
+      expect(html('div').prop('tagName')).toBe('DIV');
+      expect(html('div').prop('nodeName')).toBe('DIV');
+
+      const xml = load('<feed><Entry/><div/></feed>', { xml: true });
+      expect(xml('Entry').prop('tagName')).toBe('Entry');
+      expect(xml('Entry').prop('nodeName')).toBe('Entry');
+      expect(xml('div').prop('tagName')).toBe('div');
+    });
+
     it('(valid key) : should return on empty collection', () => {
       expect($(undefined).prop('checked')).toBeUndefined();
       expect($(undefined).prop('style')).toBeUndefined();
