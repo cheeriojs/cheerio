@@ -1032,6 +1032,44 @@ describe('$(...)', () => {
       expect($fruits.after()[0].tagName).toBe('ul');
     });
 
+    it('(html) : should insert after text and comment node targets', () => {
+      const $ = load('<p>hello<!--marker--><b>world</b>tail</p>');
+      const p = $('p')[0];
+      const contents = $('p').contents();
+      contents.slice(0, 2).after('<i>+</i>');
+      contents.eq(3).after('<i>end</i>');
+      expect($('p').html()).toBe(
+        'hello<i>+</i><!--marker--><i>+</i><b>world</b>tail<i>end</i>',
+      );
+      const children = $('p').contents().toArray();
+      expect(children[0].prev).toBeNull();
+      expect(children[children.length - 1].next).toBeNull();
+      for (const child of children) {
+        expect(child.parent).toBe(p);
+      }
+      for (let i = 1; i < children.length; i++) {
+        expect(children[i].prev).toBe(children[i - 1]);
+        expect(children[i - 1].next).toBe(children[i]);
+      }
+    });
+
+    it('(elem) : should not insert a node into itself or its descendant', () => {
+      const $ = load('<div><p>1</p></div>');
+      $('p').contents().after($('div'));
+      $('div').after($('div'));
+      expect($.html()).toBe(
+        '<html><head></head><body><div><p>1</p></div></body></html>',
+      );
+    });
+
+    it('(elem) : should preserve valid siblings when mixed with self or ancestor', () => {
+      const $ = load('<div><p>1</p></div>');
+      const $p = $('p');
+      $p.after($p, '<i>+</i>');
+      $p.contents().after($('div'), '<b>!</b>');
+      expect($('div').html()).toBe('<p>1<b>!</b></p><i>+</i>');
+    });
+
     it('(html) : should add element as next sibling', () => {
       const grape = '<li class="grape">Grape</li>';
       $('.apple').after(grape);
@@ -1162,7 +1200,31 @@ describe('$(...)', () => {
       );
 
       expect($text('body').html()).toBe(
-        '<a>1</a><c>1added</c>TEXT<b>2</b><c>2added</c>',
+        '<a>1</a><c>1added</c>TEXT<c>undefinedadded</c><b>2</b><c>2added</c>',
+      );
+    });
+
+    it('(fn) : should pass undefined html argument for text and comment targets', () => {
+      const $ = load('<p><a>1</a>TEXT<!--c--><span></span></p>');
+      const contents = $('p').contents();
+      const args: [number, string | undefined][] = [];
+      const thisValues: AnyNode[] = [];
+
+      contents.after(function (i, content) {
+        args.push([i, content]);
+        thisValues.push(this);
+        return content === undefined ? '<i>+</i>' : '';
+      });
+
+      expect(args).toStrictEqual([
+        [0, '1'],
+        [1, undefined],
+        [2, undefined],
+        [3, ''],
+      ]);
+      expect(thisValues).toStrictEqual(contents.toArray());
+      expect($('p').html()).toBe(
+        '<a>1</a>TEXT<i>+</i><!--c--><i>+</i><span></span>',
       );
     });
 
@@ -1315,6 +1377,44 @@ describe('$(...)', () => {
       expect($('#fruits').before()[0].tagName).toBe('ul');
     });
 
+    it('(html) : should insert before text and comment node targets', () => {
+      const $ = load('<p>hello<!--marker--><b>world</b>tail</p>');
+      const p = $('p')[0];
+      const contents = $('p').contents();
+      contents.slice(0, 2).before('<i>+</i>');
+      contents.eq(3).before('<i>end</i>');
+      expect($('p').html()).toBe(
+        '<i>+</i>hello<i>+</i><!--marker--><b>world</b><i>end</i>tail',
+      );
+      const children = $('p').contents().toArray();
+      expect(children[0].prev).toBeNull();
+      expect(children[children.length - 1].next).toBeNull();
+      for (const child of children) {
+        expect(child.parent).toBe(p);
+      }
+      for (let i = 1; i < children.length; i++) {
+        expect(children[i].prev).toBe(children[i - 1]);
+        expect(children[i - 1].next).toBe(children[i]);
+      }
+    });
+
+    it('(elem) : should not insert a node into itself or its descendant', () => {
+      const $ = load('<div><p>1</p></div>');
+      $('p').contents().before($('div'));
+      $('div').before($('div'));
+      expect($.html()).toBe(
+        '<html><head></head><body><div><p>1</p></div></body></html>',
+      );
+    });
+
+    it('(elem) : should preserve valid siblings when mixed with self or ancestor', () => {
+      const $ = load('<div><p>1</p></div>');
+      const $p = $('p');
+      $p.before('<i>+</i>', $p);
+      $p.contents().before($('div'), '<b>!</b>');
+      expect($('div').html()).toBe('<i>+</i><p><b>!</b>1</p>');
+    });
+
     it('(html) : should add element as previous sibling', () => {
       const grape = '<li class="grape">Grape</li>';
       $('.apple').before(grape);
@@ -1445,7 +1545,31 @@ describe('$(...)', () => {
       );
 
       expect($text('body').html()).toBe(
-        '<c>1added</c><a>1</a>TEXT<c>2added</c><b>2</b>',
+        '<c>1added</c><a>1</a><c>undefinedadded</c>TEXT<c>2added</c><b>2</b>',
+      );
+    });
+
+    it('(fn) : should pass undefined html argument for text and comment targets', () => {
+      const $ = load('<p><a>1</a>TEXT<!--c--><span></span></p>');
+      const contents = $('p').contents();
+      const args: [number, string | undefined][] = [];
+      const thisValues: AnyNode[] = [];
+
+      contents.before(function (i, content) {
+        args.push([i, content]);
+        thisValues.push(this);
+        return content === undefined ? '<i>+</i>' : '';
+      });
+
+      expect(args).toStrictEqual([
+        [0, '1'],
+        [1, undefined],
+        [2, undefined],
+        [3, ''],
+      ]);
+      expect(thisValues).toStrictEqual(contents.toArray());
+      expect($('p').html()).toBe(
+        '<a>1</a><i>+</i>TEXT<i>+</i><!--c--><span></span>',
       );
     });
 
