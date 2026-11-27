@@ -596,6 +596,70 @@ export function wrapAll<T extends AnyNode>(
   return this;
 }
 
+function isSelfOrAncestor(target: AnyNode, candidate: AnyNode): boolean {
+  for (
+    let ancestor: AnyNode | null = target;
+    ancestor;
+    ancestor = ancestor.parent
+  ) {
+    if (ancestor === candidate) return true;
+  }
+  return false;
+}
+
+type SiblingInsertCallback<T extends AnyNode> = (
+  this: AnyNode,
+  i: number,
+  html: T extends ParentNode ? string : string | undefined,
+) => BasicAcceptedElems<AnyNode>;
+
+function _insertSibling<T extends AnyNode>(
+  selection: Cheerio<T>,
+  elems: [SiblingInsertCallback<T>] | BasicAcceptedElems<AnyNode>[],
+  offset: 0 | 1,
+): Cheerio<T> {
+  const lastIdx = selection.length - 1;
+
+  return domEach(selection, (el, i) => {
+    if (!el.parent) {
+      return;
+    }
+
+    const siblings: AnyNode[] = el.parent.children;
+    const index = siblings.indexOf(el);
+
+    // If not found, move on
+    /* istanbul ignore next */
+    if (index === -1) return;
+
+    const domSrc =
+      typeof elems[0] === 'function'
+        ? (
+            elems[0] as (
+              this: AnyNode,
+              i: number,
+              html: string | undefined,
+            ) => BasicAcceptedElems<AnyNode>
+          ).call(
+            el,
+            i,
+            hasChildren(el) ? selection._render(el.children) : undefined,
+          )
+        : (elems as BasicAcceptedElems<AnyNode>[]);
+
+    const dom = selection._makeDomArray(domSrc, i < lastIdx);
+
+    /*
+     * Drop the target and its ancestors so inserting cannot create a cycle,
+     * while preserving valid siblings passed in the same call.
+     */
+    const insertable = dom.filter((node) => !isSelfOrAncestor(el, node));
+    if (insertable.length === 0) return;
+
+    uniqueSplice(siblings, index + offset, 0, insertable, el.parent);
+  });
+}
+
 /**
  * Insert content next to each element in the set of matched elements.
  *
@@ -620,50 +684,9 @@ export function wrapAll<T extends AnyNode>(
  */
 export function after<T extends AnyNode>(
   this: Cheerio<T>,
-  ...elems:
-    | [(this: AnyNode, i: number, html: string) => BasicAcceptedElems<AnyNode>]
-    | BasicAcceptedElems<AnyNode>[]
+  ...elems: [SiblingInsertCallback<T>] | BasicAcceptedElems<AnyNode>[]
 ): Cheerio<T> {
-  const lastIdx = this.length - 1;
-
-  return domEach(this, (el, i) => {
-    if (!el.parent) {
-      return;
-    }
-
-    const siblings: AnyNode[] = el.parent.children;
-    const index = siblings.indexOf(el);
-
-    // If not found, move on
-    /* istanbul ignore next */
-    if (index === -1) return;
-
-    const domSrc =
-      typeof elems[0] === 'function'
-        ? elems[0].call(
-            el,
-            i,
-            this._render(hasChildren(el) ? el.children : [el]),
-          )
-        : (elems as BasicAcceptedElems<AnyNode>[]);
-
-    const dom = this._makeDomArray(domSrc, i < lastIdx);
-
-    // Inserting a node into itself or its own descendants would corrupt the
-    // tree; skip instead of splicing it in.
-    for (const node of dom) {
-      for (
-        let ancestor: AnyNode | null = el;
-        ancestor;
-        ancestor = ancestor.parent
-      ) {
-        if (ancestor === node) return;
-      }
-    }
-
-    // Add element after `this` element
-    uniqueSplice(siblings, index + 1, 0, dom, el.parent);
-  });
+  return _insertSibling(this, elems, 1);
 }
 
 /**
@@ -748,50 +771,9 @@ export function insertAfter<T extends AnyNode>(
  */
 export function before<T extends AnyNode>(
   this: Cheerio<T>,
-  ...elems:
-    | [(this: AnyNode, i: number, html: string) => BasicAcceptedElems<AnyNode>]
-    | BasicAcceptedElems<AnyNode>[]
+  ...elems: [SiblingInsertCallback<T>] | BasicAcceptedElems<AnyNode>[]
 ): Cheerio<T> {
-  const lastIdx = this.length - 1;
-
-  return domEach(this, (el, i) => {
-    if (!el.parent) {
-      return;
-    }
-
-    const siblings: AnyNode[] = el.parent.children;
-    const index = siblings.indexOf(el);
-
-    // If not found, move on
-    /* istanbul ignore next */
-    if (index === -1) return;
-
-    const domSrc =
-      typeof elems[0] === 'function'
-        ? elems[0].call(
-            el,
-            i,
-            this._render(hasChildren(el) ? el.children : [el]),
-          )
-        : (elems as BasicAcceptedElems<AnyNode>[]);
-
-    const dom = this._makeDomArray(domSrc, i < lastIdx);
-
-    // Inserting a node into itself or its own descendants would corrupt the
-    // tree; skip instead of splicing it in.
-    for (const node of dom) {
-      for (
-        let ancestor: AnyNode | null = el;
-        ancestor;
-        ancestor = ancestor.parent
-      ) {
-        if (ancestor === node) return;
-      }
-    }
-
-    // Add element before `el` element
-    uniqueSplice(siblings, index, 0, dom, el.parent);
-  });
+  return _insertSibling(this, elems, 0);
 }
 
 /**
