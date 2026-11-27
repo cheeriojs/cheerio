@@ -18,7 +18,7 @@
     "@astrojs/mdx": "^8.1.6",
     "@astrojs/react": "^7.1.9",
     "@astrojs/rss": "^4.0.19",
-    "@astrojs/sitemap": "^3.7.5",
+    "@astrojs/sitemap": "^3.7.6",
     "@codesandbox/sandpack-react": "^2.20.0",
     "@docsearch/css": "^5.2.0",
     "@docsearch/js": "^5.2.0",
