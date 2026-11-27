@@ -1,0 +1,23 @@
+.husky/pre-commit
+  s_b1a45929cbdfc7::t_b10fd95da5441d 1
+CONTRIBUTING.md
+  s_b1a45929cbdfc7::t_d73e49b943816f 26-27
+package.json
+  s_b1a45929cbdfc7::t_9274bf7e7faca7 100,104
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "00ee6c7fd2c9fdb62170cb7830de71fd27ebd8ba",
+  "prompts": {},
+  "sessions": {
+    "s_b1a45929cbdfc7": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a203e8-0774-7ea2-abea-9c688e68608d",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}

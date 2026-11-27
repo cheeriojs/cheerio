@@ -1,0 +1,76 @@
+website/src/components/Navbar.astro
+  s_b1a45929cbdfc7::t_765b10f7ae6a20 30-31,35-49,65,76-77,84,86-100
+website/src/pages/docs/api/[...slug].astro
+  s_b1a45929cbdfc7::t_765b10f7ae6a20 29
+website/src/components/Sidebar.astro
+  s_b1a45929cbdfc7::t_765b10f7ae6a20 75-77,79-105,131-132,141,164-165,171,178-179,184-210,236-237,246
+website/src/components/Sponsors.astro
+  s_b1a45929cbdfc7::t_765b10f7ae6a20 19,26-30,58-60
+website/src/layouts/BlogLayout.astro
+  s_b1a45929cbdfc7::t_765b10f7ae6a20 30-31,35-48
+website/src/components/Features.astro
+  s_b1a45929cbdfc7::t_765b10f7ae6a20 41,48-49,52-55,58-66,68-69
+website/src/assets/orange-c.svg
+  s_b1a45929cbdfc7::t_765b10f7ae6a20 1-4,9
+website/src/components/TableOfContents.astro
+  s_b1a45929cbdfc7::t_765b10f7ae6a20 29
+website/src/pages/sponsors.astro
+  s_b1a45929cbdfc7::t_765b10f7ae6a20 42,47-48,52-62,79-81,83-84,91-92
+website/public/img/orange-c-animated.svg
+  s_b1a45929cbdfc7::t_765b10f7ae6a20 1-7,9-14,16-21,27
+website/src/pages/index.astro
+  s_b1a45929cbdfc7::t_765b10f7ae6a20 26,34-35
+website/src/pages/docs/basics/[slug].astro
+  s_b1a45929cbdfc7::t_765b10f7ae6a20 24
+website/src/components/Hero.astro
+  s_b1a45929cbdfc7::t_765b10f7ae6a20 2,9,68,81-82,84,103-104,114,130-131,150,181-182
+website/src/components/Footer.astro
+  s_b1a45929cbdfc7::t_765b10f7ae6a20 36,40-66,82
+website/src/components/Testimonials.astro
+  s_b1a45929cbdfc7::t_765b10f7ae6a20 84,92-118,121-128,133-157,160-165
+website/src/layouts/BaseLayout.astro
+  s_b1a45929cbdfc7::t_765b10f7ae6a20 31,34,44-46
+website/src/pages/blog/index.astro
+  s_b1a45929cbdfc7::t_765b10f7ae6a20 56,64,76-100,104,106-109,111-113
+website/src/pages/docs/[slug].astro
+  s_b1a45929cbdfc7::t_765b10f7ae6a20 24
+website/src/layouts/DocsLayout.astro
+  s_b1a45929cbdfc7::t_765b10f7ae6a20 60,64-66,78-79,86,102-103,112,118,120-121,126,132,135-136,140
+website/tsconfig.json
+  s_b1a45929cbdfc7::t_765b10f7ae6a20 13
+website/src/pages/docs/advanced/[slug].astro
+  s_b1a45929cbdfc7::t_765b10f7ae6a20 24
+oxlint.config.ts
+  s_1f8347817b9823::t_a469361f3298e7 311-314
+  s_1f8347817b9823::t_35cbc66a16516d 310
+CONTRIBUTING.md
+  s_b1a45929cbdfc7::t_77143c1fa924d5 26-30
+oxfmt.config.ts
+  s_b1a45929cbdfc7::t_0539684b2cdb15 11-17
+package.json
+  s_b1a45929cbdfc7::t_c50dbe54c9301f 100,104-105
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "99181e862b725ce90468e6fd6afa84488fd04900",
+  "prompts": {},
+  "sessions": {
+    "s_1f8347817b9823": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a203f0-264b-7b22-839f-506810b56908",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    },
+    "s_b1a45929cbdfc7": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a203e8-0774-7ea2-abea-9c688e68608d",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}

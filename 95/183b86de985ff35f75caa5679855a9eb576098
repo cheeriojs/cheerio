@@ -1,0 +1,44 @@
+scripts/fetch-sponsors.mts
+  s_d31a4962c6cdf9::t_d75c7e6787fd09 17-21,28-29,33,35-38,42,46-49,51-54,58-59,63,67-80,86,88,199-202,207-210,225,227,296-305,309-310,315-320,325,329,344,373-374,383,393,410,413,471-482,496-497,570-572,581-582,587-589,647-649,653,661,663
+  s_d31a4962c6cdf9::t_d3209b0ba0c76c 30,32,34,39-41,43-45,55-57,60-62,64-66,81-85,87,89-90,128-130,192-194,196,294,339-342,391,432
+  s_d31a4962c6cdf9::t_edac66b7ee033e 398-400
+  s_d31a4962c6cdf9::t_010844b93784c1 50,323,384,392,397,401-402,405-408,493
+  s_d31a4962c6cdf9::t_51bd2fa66f811a 650-651
+  s_d31a4962c6cdf9::t_a46c5b6d21114d 31,321
+oxlint.config.ts
+  s_d31a4962c6cdf9::t_035eae61846a0d 284-285
+  s_d31a4962c6cdf9::t_010844b93784c1 283
+website/src/components/Sidebar.astro
+  s_d31a4962c6cdf9::t_12d55bc4d2d96e 279
+website/src/env.d.ts
+  s_d31a4962c6cdf9::t_72297b3530b34b 1
+src/cheerio.spec.ts
+  s_d31a4962c6cdf9::t_12d55bc4d2d96e 226,228-230
+  s_d31a4962c6cdf9::t_72297b3530b34b 220,224
+  s_d31a4962c6cdf9::t_e39d1794db4d9f 221-223
+website/src/components/Hero.astro
+  s_d31a4962c6cdf9::t_12d55bc4d2d96e 9,11
+src/slim.ts
+  s_d31a4962c6cdf9::t_12d55bc4d2d96e 6
+src/api/traversing.ts
+  s_d31a4962c6cdf9::t_fce70d4de2a7d5 275-282
+  s_d31a4962c6cdf9::t_12d55bc4d2d96e 225-229,308,1105
+src/cheerio.ts
+  s_d31a4962c6cdf9::t_12d55bc4d2d96e 38,52
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "95183b86de985ff35f75caa5679855a9eb576098",
+  "prompts": {},
+  "sessions": {
+    "s_d31a4962c6cdf9": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a20627-1455-7c43-936b-59d2d5b973b2",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": null
+    }
+  }
+}
