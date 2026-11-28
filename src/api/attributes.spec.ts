@@ -737,6 +737,24 @@ describe('$(...)', () => {
       const val = $('input[type="text"]').val();
       expect(val).toBe('input_text');
     });
+
+    it('(): on textarea should read only the first matched control', () => {
+      const $textareas = load(
+        '<textarea>first</textarea><textarea>second</textarea>',
+      )('textarea');
+
+      expect($textareas.val()).toBe('first');
+    });
+
+    it('(): on multiple select should read only the first matched control', () => {
+      const $selects = load(
+        '<select multiple><option value="first" selected>first</option></select>' +
+          '<select multiple><option value="second" selected>second</option></select>',
+      )('select');
+
+      expect($selects.val()).toStrictEqual(['first']);
+    });
+
     it('(): on checked checkbox should get value', () => {
       const val = $('input[name="checkbox_on"]').val();
       expect(val).toBe('on');
