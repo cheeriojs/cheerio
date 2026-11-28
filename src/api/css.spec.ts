@@ -10,6 +10,31 @@ describe('$(...)', () => {
       expect(el.css('hai')).toBe('there');
     });
 
+    it('(prop): should not return inherited Object.prototype members', () => {
+      const el = cheerio('<li style="color: red">');
+      expect(el.css('constructor')).toBeUndefined();
+      expect(el.css('toString')).toBeUndefined();
+      expect(el.css(['constructor', 'color'])).toStrictEqual({ color: 'red' });
+    });
+
+    it('(prop, fn): should pass undefined for an unset prototype-named property', () => {
+      const el = cheerio('<li style="color: red">');
+      let seen: unknown = 'unset';
+      el.css('valueOf', (_i, old) => {
+        seen = old;
+        return 'x';
+      });
+      expect(seen).toBeUndefined();
+    });
+
+    it('(prop, value): should keep a style property named __proto__', () => {
+      const el = cheerio('<li style="color: red">');
+      el.css('__proto__', 'q');
+      expect(el.attr('style')).toBe('color: red; __proto__: q;');
+      expect(el.css('__proto__')).toBe('q');
+      expect(el.css()).toStrictEqual({ color: 'red', ['__proto__']: 'q' });
+    });
+
     it('([prop1, prop2]): should return the specified property values as an object', () => {
       const el = cheerio(
         '<li style="margin: 1px; padding: 2px; color: blue;">',

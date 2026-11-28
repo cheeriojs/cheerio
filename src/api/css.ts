@@ -107,7 +107,7 @@ function setCss(
   idx: number,
 ) {
   if (typeof prop === 'string') {
-    const styles = getCss(el);
+    const styles = parse(el.attribs['style']);
 
     const val =
       typeof value === 'function' ? value.call(el, idx, styles[prop]) : value;
@@ -167,7 +167,7 @@ function getCss(
     }
     return newStyles;
   }
-  return styles;
+  return { ...styles };
 }
 
 /**
@@ -196,9 +196,10 @@ function stringify(obj: Record<string, string>): string {
 function parse(styles: string): Record<string, string> {
   styles = (styles || '').trim();
 
-  if (!styles) return {};
+  if (!styles) return Object.create(null) as Record<string, string>;
 
-  const obj: Record<string, string> = {};
+  // No prototype, so names like `constructor` or `__proto__` are plain keys.
+  const obj = Object.create(null) as Record<string, string>;
 
   let key: string | undefined;
 
