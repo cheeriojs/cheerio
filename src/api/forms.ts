@@ -1,5 +1,12 @@
-import { type AnyNode, isTag } from 'domhandler';
+import {
+  type AnyNode,
+  type Element,
+  hasChildren,
+  isDocument,
+  isTag,
+} from 'domhandler';
 import type { Cheerio } from '../cheerio.js';
+import { parse5FragmentRoots } from '../parse.js';
 
 /*
  * https://github.com/jquery/jquery/blob/2.1.3/src/manipulation/var/rcheckableType.js
@@ -8,6 +15,56 @@ import type { Cheerio } from '../cheerio.js';
 const submittableSelector = 'input,select,textarea,keygen';
 const r20 = /%20/g;
 const rCRLF = /\r?\n/g;
+
+/**
+ * Group controls by their owner with one traversal of the current HTML tree.
+ *
+ * @private
+ * @param root - Root of the forms' current tree.
+ * @param connected - Whether this tree is an HTML document.
+ * @returns Controls in tree order, grouped by form.
+ */
+function getFormControls(
+  root: AnyNode,
+  connected: boolean,
+): Map<Element, Element[]> {
+  const firstById = new Map<string, Element>();
+  const controls: [Element, Element | undefined][] = [];
+  const pending: [AnyNode, Element | undefined][] = [[root, undefined]];
+
+  while (pending.length > 0) {
+    const [node, ancestor] = pending.pop()!;
+    // Parse5 stores template contents as a separate Document child.
+    if (node !== root && isDocument(node)) continue;
+    let owner = ancestor;
+    if (isTag(node)) {
+      const { id } = node.attribs;
+      if (id && !firstById.has(id)) firstById.set(id, node);
+      if (node.name === 'form') owner = node;
+      else if (['input', 'select', 'textarea', 'keygen'].includes(node.name)) {
+        controls.push([node, owner]);
+      }
+    }
+    if (hasChildren(node)) {
+      for (let i = node.children.length - 1; i >= 0; i--) {
+        pending.push([node.children[i], owner]);
+      }
+    }
+  }
+
+  const byOwner = new Map<Element, Element[]>();
+  for (const [control, ancestor] of controls) {
+    const { form: formId } = control.attribs;
+    const owner =
+      connected && formId !== undefined ? firstById.get(formId) : ancestor;
+    if (owner?.name === 'form') {
+      const owned = byOwner.get(owner);
+      if (owned) owned.push(control);
+      else byOwner.set(owner, [control]);
+    }
+  }
+  return byOwner;
+}
 
 /**
  * Encode a set of form elements as a string for submission.
@@ -39,6 +96,8 @@ export function serialize<T extends AnyNode>(this: Cheerio<T>): string {
 
 /**
  * Encode a set of form elements as an array of names and values.
+ * When a form is selected, controls in its document can be associated with it
+ * using the `form` attribute instead of being descendants of the form.
  *
  * @category Forms
  * @example
@@ -57,11 +116,28 @@ export function serializeArray<T extends AnyNode>(
   name: string;
   value: string;
 }[] {
+  // Cache only within this call so later DOM mutations are reflected.
+  const controlsByRoot = new Map<AnyNode, Map<Element, Element[]>>();
+
   // Resolve all form elements from either forms or collections of form elements
   return this.map((_, elem) => {
     const $elem = this._make(elem);
     if (isTag(elem) && elem.name === 'form') {
-      return $elem.find(submittableSelector).toArray();
+      if (this.options.xmlMode) {
+        return $elem.find(submittableSelector).toArray();
+      }
+      let root: AnyNode = elem;
+      while (root.parent && !isDocument(root)) root = root.parent;
+      let controls = controlsByRoot.get(root);
+      if (!controls) {
+        const connected =
+          isDocument(root) &&
+          root.parent === null &&
+          !parse5FragmentRoots.has(root);
+        controls = getFormControls(root, connected);
+        controlsByRoot.set(root, controls);
+      }
+      return controls.get(elem) ?? [];
     }
     return $elem.filter(submittableSelector).toArray();
   })

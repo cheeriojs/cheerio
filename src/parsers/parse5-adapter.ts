@@ -7,6 +7,17 @@ import {
 import { parse as parseDocument, parseFragment, serializeOuter } from 'parse5';
 import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';
 import type { InternalOptions } from '../options.js';
+import { parse5FragmentRoots } from '../parse.js';
+
+// Preserve fragment identity because domhandler represents both roots as Document.
+const adapter: typeof htmlparser2Adapter = {
+  ...htmlparser2Adapter,
+  createDocumentFragment() {
+    const fragment = htmlparser2Adapter.createDocumentFragment();
+    parse5FragmentRoots.add(fragment);
+    return fragment;
+  },
+};
 
 /**
  * Parse the content with `parse5` in the context of the given `ParentNode`.
@@ -23,15 +34,17 @@ export function parseWithParse5(
   isDocument: boolean,
   context: ParentNode | null,
 ): Document {
-  options.treeAdapter ??= htmlparser2Adapter;
+  options.treeAdapter ??= adapter;
 
   if (options.scriptingEnabled !== false) {
     options.scriptingEnabled = true;
   }
 
-  return isDocument
-    ? parseDocument(content, options)
-    : parseFragment(context, content, options);
+  if (isDocument) return parseDocument(content, options);
+
+  const fragment = parseFragment(context, content, options);
+  parse5FragmentRoots.add(fragment);
+  return fragment;
 }
 
 const renderOpts = { treeAdapter: htmlparser2Adapter };
