@@ -14,6 +14,7 @@ oxlint.config.ts
   s_b1a45929cbdfc7::t_dd7b637b1473e0 71-78,83-89,223-226,231,237-242,248-250,252-280,287-291
   s_b1a45929cbdfc7::t_06d8c5a5a79b85 2-11,13-53,55-70,79-82,90-118,123-137,141-175,221,229-230,281-283,293-295,297-300,325-327
   s_b1a45929cbdfc7::t_5a1d5572866e20 1,12,329
+  s_d31a4962c6cdf9::t_e0288ac6649076 328
 website/src/pages/docs/advanced/[slug].astro
   s_b1a45929cbdfc7::t_dd7b637b1473e0 24-29
 website/src/layouts/BaseLayout.astro
@@ -97,6 +98,14 @@ package-lock.json
       "agent_id": {
         "tool": "codex",
         "id": "01a203e8-0774-7ea2-abea-9c688e68608d",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    },
+    "s_d31a4962c6cdf9": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a20627-1455-7c43-936b-59d2d5b973b2",
         "model": "gpt-6.2-sol"
       },
       "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
