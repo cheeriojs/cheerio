@@ -26,11 +26,7 @@ export const crawlerId = 'e44e1737-35b7-4dbc-8d59-873d3fdc729c';
  * older crawls, and slashless links written straight into .astro templates,
  * which remark-internal-links does not see.
  */
-const crawlScope = [
-  'https://cheerio.js.org/**',
-  // eslint-disable-next-line unicorn/prefer-https -- deliberate: see above
-  'http://cheerio.js.org/**',
-];
+const crawlScope = ['https://cheerio.js.org/**', 'http://cheerio.js.org/**'];
 
 export const config = {
   appId: 'NRR2XU4QSP',

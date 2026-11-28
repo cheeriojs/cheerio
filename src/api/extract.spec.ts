@@ -1,4 +1,5 @@
 import { describe, expect, expectTypeOf, it } from 'vitest';
+
 import * as fixtures from '../__fixtures__/fixtures.js';
 import { load } from '../load-parse.js';
 

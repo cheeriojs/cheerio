@@ -6,6 +6,7 @@
 
 import { type AnyNode, type Element, isDocument, isTag } from 'domhandler';
 import { innerText, textContent } from 'domutils';
+
 import type { Cheerio } from '../cheerio.js';
 import { text } from '../static.js';
 import { camelCase, cssCase, domEach } from '../utils.js';
@@ -323,7 +324,6 @@ export function prop<T extends AnyNode>(
  *   value.
  * @see {@link https://api.jquery.com/prop/}
  */
-// biome-ignore lint/style/useUnifiedTypeSignatures: Separate overloads needed for accurate docs
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
   name: 'tagName' | 'nodeName' | 'name' | 'type',
@@ -344,6 +344,7 @@ export function prop<T extends AnyNode>(
  */
 export function prop<T extends AnyNode>(
   this: Cheerio<T>,
+  // oxlint-disable-next-line typescript/unified-signatures -- TypeDoc documents URL resolution in a separate overload.
   name: 'href' | 'src',
 ): string | undefined;
 /**

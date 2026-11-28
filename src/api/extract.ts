@@ -1,4 +1,5 @@
 import type { AnyNode, Element } from 'domhandler';
+
 import type { Cheerio } from '../cheerio.js';
 import type { prop } from './attributes.js';
 

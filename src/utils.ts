@@ -9,6 +9,7 @@ export {
 } from 'domhandler';
 
 import type { AnyNode } from 'domhandler';
+
 import type { Cheerio } from './cheerio.js';
 
 /**

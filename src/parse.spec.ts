@@ -1,6 +1,7 @@
 import type { Document, Element } from 'domhandler';
 import { parseDocument as parseWithHtmlparser2 } from 'htmlparser2';
 import { describe, expect, it } from 'vitest';
+
 import { getParse } from './parse.js';
 import { parseWithParse5 } from './parsers/parse5-adapter.js';
 
@@ -50,9 +51,9 @@ const directive = '<!doctype html>';
 function rootTest(root: Document) {
   expect(root).toHaveProperty('type', 'root');
 
-  expect(root.nextSibling).toBe(null);
-  expect(root.previousSibling).toBe(null);
-  expect(root.parentNode).toBe(null);
+  expect(root.nextSibling).toBeNull();
+  expect(root.previousSibling).toBeNull();
+  expect(root.parentNode).toBeNull();
 
   const child = root.childNodes[0];
   expect(child.parentNode).toBe(root);
@@ -98,7 +99,7 @@ describe('parse', () => {
         .children as Element[];
       expect(tag.type).toBe('tag');
       expect(tag.tagName).toBe('html');
-      expect(tag.childNodes).toBeTruthy();
+      expect(tag.childNodes).toBeInstanceOf(Array);
       expect(tag.childNodes[1]).toHaveProperty('tagName', 'body');
       expect((tag.childNodes[1] as Element).childNodes).toHaveLength(1);
     });
@@ -112,7 +113,6 @@ describe('parse', () => {
     it(`should handle tags with attributes: ${attributes}`, () => {
       const attrs = parse(attributes, defaultOpts, false, null)
         .children[0] as Element;
-      expect(attrs.attribs).toBeTruthy();
       expect(attrs.attribs).toHaveProperty('src', 'hello.png');
       expect(attrs.attribs).toHaveProperty('alt', 'man waving');
     });
@@ -120,7 +120,6 @@ describe('parse', () => {
     it(`should handle value-less attributes: ${noValueAttribute}`, () => {
       const attrs = parse(noValueAttribute, defaultOpts, false, null)
         .children[0] as Element;
-      expect(attrs.attribs).toBeTruthy();
       expect(attrs.attribs).toHaveProperty('disabled', '');
     });
 
@@ -260,28 +259,28 @@ describe('parse', () => {
       expect(root.lastChild).toBe(childNodes[2]);
 
       expect(childNodes[0].tagName).toBe('a');
-      expect(childNodes[0].previousSibling).toBe(null);
+      expect(childNodes[0].previousSibling).toBeNull();
       expect(childNodes[0].nextSibling).toBe(childNodes[1]);
       expect(childNodes[0].parentNode).toBe(root);
       expect(childNodes[0].childNodes).toHaveLength(0);
-      expect(childNodes[0].firstChild).toBe(null);
-      expect(childNodes[0].lastChild).toBe(null);
+      expect(childNodes[0].firstChild).toBeNull();
+      expect(childNodes[0].lastChild).toBeNull();
 
       expect(childNodes[1].tagName).toBe('span');
       expect(childNodes[1].previousSibling).toBe(childNodes[0]);
       expect(childNodes[1].nextSibling).toBe(childNodes[2]);
       expect(childNodes[1].parentNode).toBe(root);
       expect(childNodes[1].childNodes).toHaveLength(0);
-      expect(childNodes[1].firstChild).toBe(null);
-      expect(childNodes[1].lastChild).toBe(null);
+      expect(childNodes[1].firstChild).toBeNull();
+      expect(childNodes[1].lastChild).toBeNull();
 
       expect(childNodes[2].tagName).toBe('p');
       expect(childNodes[2].previousSibling).toBe(childNodes[1]);
-      expect(childNodes[2].nextSibling).toBe(null);
+      expect(childNodes[2].nextSibling).toBeNull();
       expect(childNodes[2].parentNode).toBe(root);
       expect(childNodes[2].childNodes).toHaveLength(0);
-      expect(childNodes[2].firstChild).toBe(null);
-      expect(childNodes[2].lastChild).toBe(null);
+      expect(childNodes[2].firstChild).toBeNull();
+      expect(childNodes[2].lastChild).toBeNull();
     });
 
     it('Should parse less than or equal sign sign', () => {
@@ -337,7 +336,7 @@ describe('parse', () => {
 
       const table = root.childNodes[0] as Element;
       expect(table.tagName).toBe('table');
-      expect(table.childNodes.length).toBe(1);
+      expect(table.childNodes).toHaveProperty('length', 1);
       const tbody = table.childNodes[0] as Element;
       expect(table.childNodes[0]).toHaveProperty('tagName', 'tbody');
       const tr = tbody.childNodes[0] as Element;
@@ -351,7 +350,7 @@ describe('parse', () => {
       const root = parse('<line>test</line>', defaultOpts, false, null);
       const childNodes = root.childNodes as Element[];
 
-      expect(childNodes.length).toBe(1);
+      expect(childNodes).toHaveProperty('length', 1);
       expect(childNodes[0].tagName).toBe('line');
       expect(childNodes[0].childNodes[0]).toHaveProperty('data', 'test');
     });
@@ -365,7 +364,7 @@ describe('parse', () => {
       );
       const childNodes = root.childNodes as Element[];
 
-      expect(childNodes.length).toBe(3);
+      expect(childNodes).toHaveProperty('length', 3);
 
       for (let i = 0; i < childNodes.length; i++) {
         const child = childNodes[i];
@@ -407,7 +406,7 @@ describe('parse', () => {
       const root = parse('<h2>Test</h3><div></div>', defaultOpts, false, null);
       const { childNodes } = root;
 
-      expect(childNodes.length).toBe(2);
+      expect(childNodes).toHaveProperty('length', 2);
       expect(childNodes[0]).toHaveProperty('tagName', 'h2');
       expect(childNodes[1]).toHaveProperty('tagName', 'div');
     });
@@ -421,7 +420,7 @@ describe('parse', () => {
       );
       const childNodes = root.childNodes as Element[];
 
-      expect(childNodes.length).toBe(1);
+      expect(childNodes).toHaveProperty('length', 1);
       expect(childNodes[0].tagName).toBe('pre');
       expect(childNodes[0].childNodes[0]).toHaveProperty(
         'data',

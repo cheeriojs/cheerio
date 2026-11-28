@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+
 import { load } from './index.js';
 
 describe('.load', () => {
@@ -13,7 +14,7 @@ describe('.load', () => {
     expect($('html')).toHaveLength(1);
     expect($('#probe').text()).toBe('Hello');
     expect($.root()[0]).toBe(root);
-    expect(root.parent).toBe(null);
+    expect(root.parent).toBeNull();
     expect(html.parent).toBe(root);
   });
 

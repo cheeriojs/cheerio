@@ -5,6 +5,7 @@ import {
   type ParentNode,
 } from 'domhandler';
 import { removeElement } from 'domutils';
+
 import type { InternalOptions } from './options.js';
 
 /**

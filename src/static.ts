@@ -1,5 +1,6 @@
 import type { AnyNode, Document } from 'domhandler';
 import { textContent } from 'domutils';
+
 import type { ExtractedMap, ExtractMap } from './api/extract.js';
 import type { Cheerio } from './cheerio.js';
 import type { CheerioAPI } from './load.js';
@@ -299,7 +300,6 @@ function isArrayLike(item: unknown): item is ArrayLike<unknown> {
      * Not an array's `.length`: `item` is an arbitrary object being validated,
      * so this property really can be negative.
      */
-    // eslint-disable-next-line unicorn/no-impossible-length-comparison
     item.length < 0
   ) {
     return false;

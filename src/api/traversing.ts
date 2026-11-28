@@ -20,6 +20,7 @@ import {
   prevElementSibling,
   uniqueSort,
 } from 'domutils';
+
 import type { Cheerio } from '../cheerio.js';
 import { contains } from '../static.js';
 import type { AcceptedFilters, FilterFunction } from '../types.js';
@@ -221,6 +222,11 @@ function _removeDuplicates<T extends AnyNode>(elems: T[]): T[] {
   return elems.length > 1 ? [...new Set<T>(elems)] : elems;
 }
 
+function reverseUniqueSort(elems: Element[]): Element[] {
+  // oxlint-disable-next-line unicorn/no-array-reverse -- uniqueSort allocates the deduplicated array, so reversing it in place avoids a second allocation.
+  return uniqueSort(elems).reverse();
+}
+
 /**
  * Get the parent of each element in the current set of matched elements,
  * optionally filtered by a selector.
@@ -266,19 +272,14 @@ export const parent: <T extends AnyNode>(
 export const parents: <T extends AnyNode>(
   this: Cheerio<T>,
   selector?: AcceptedFilters<Element>,
-) => Cheerio<Element> = _matcher(
-  (elem) => {
-    const matched: Element[] = [];
-    while (elem.parent && !isDocument(elem.parent)) {
-      matched.push(elem.parent as Element);
-      elem = elem.parent;
-    }
-    return matched;
-  },
-  uniqueSort,
-  // eslint-disable-next-line unicorn/no-array-reverse
-  (elems) => elems.reverse(),
-);
+) => Cheerio<Element> = _matcher((elem) => {
+  const matched: Element[] = [];
+  while (elem.parent && !isDocument(elem.parent)) {
+    matched.push(elem.parent as Element);
+    elem = elem.parent;
+  }
+  return matched;
+}, reverseUniqueSort);
 
 /**
  * Get the ancestors of each element in the current set of matched elements, up
@@ -304,9 +305,7 @@ export const parentsUntil: <T extends AnyNode>(
   filterSelector?: AcceptedFilters<Element>,
 ) => Cheerio<Element> = _matchUntil(
   ({ parent }) => (parent && !isDocument(parent) ? (parent as Element) : null),
-  uniqueSort,
-  // eslint-disable-next-line unicorn/no-array-reverse
-  (elems) => elems.reverse(),
+  reverseUniqueSort,
 );
 
 /**
@@ -813,6 +812,7 @@ export function filter<T>(
  * @param xmlMode - Whether selector matching should use XML mode.
  * @param root - Optional document root used for selector matching.
  * @param options - Options used for selector matching.
+ * @returns The nodes that match the selector or predicate.
  */
 export function filterArray<T>(
   nodes: T[],
@@ -1003,7 +1003,6 @@ export function eq<T>(this: Cheerio<T>, i: number): Cheerio<T> {
    * Not redundant: JavaScript callers pass string indices, and `eq('-1')`
    * would otherwise reach `this.length + i` as string concatenation.
    */
-  // eslint-disable-next-line unicorn/no-useless-coercion
   i = +i;
 
   // Use the first identity optimization if possible
@@ -1100,11 +1099,10 @@ export function index<T extends AnyNode>(
     $haystack = this._make<AnyNode>(selectorOrNeedle);
     needle = this[0];
   } else {
-    // eslint-disable-next-line unicorn/no-this-assignment
-    $haystack = this;
     needle = isCheerio(selectorOrNeedle)
       ? selectorOrNeedle[0]
       : selectorOrNeedle;
+    return Array.prototype.indexOf.call(this, needle);
   }
 
   return Array.prototype.indexOf.call($haystack, needle);

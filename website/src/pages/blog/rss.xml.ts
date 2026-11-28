@@ -1,7 +1,8 @@
-import { getCollection } from 'astro:content';
 import rss from '@astrojs/rss';
 import type { APIContext } from 'astro';
+import { getCollection } from 'astro:content';
 import { marked } from 'marked';
+
 import { byNewest, getPostDate } from '@/lib/blog';
 
 export async function GET(context: APIContext) {

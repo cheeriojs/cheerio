@@ -1,11 +1,13 @@
 import fs from 'node:fs/promises';
 import { Script } from 'node:vm';
+
 import type { Element } from 'domhandler';
 import { JSDOM } from 'jsdom';
 import { Bench } from 'tinybench';
+
 import type { Cheerio } from '../src/cheerio.js';
-import type { CheerioAPI } from '../src/load.js';
 import { load } from '../src/load-parse.js';
+import type { CheerioAPI } from '../src/load.js';
 
 const documentDir = new URL('documents/', import.meta.url);
 const jQuerySrc = await fs.readFile(

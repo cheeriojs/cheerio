@@ -1,5 +1,6 @@
 import type { AnyNode, Element } from 'domhandler';
 import { beforeEach, describe, expect, it } from 'vitest';
+
 import {
   divcontainers,
   fruits,
@@ -603,7 +604,7 @@ describe('$(...)', () => {
         i++;
         return '';
       });
-      expect(i).toBeFalsy();
+      expect(i).toBe(0);
 
       $new.wrapAll(function (index) {
         expect(this).toBe($new[0]);
@@ -790,13 +791,13 @@ describe('$(...)', () => {
         .children()
         .children()
         .parent();
-      expect($obj).toBeTruthy();
+      expect($obj).toHaveLength(1);
     });
 
     it('($(...)) : should remove from root element', () => {
       const $plum = $('<li class="plum">Plum</li>');
       const { parent } = $plum[0];
-      expect(parent).toBeTruthy();
+      expect(parent).toHaveProperty('type', 'root');
 
       $fruits.append($plum);
       expect($plum[0].parent?.type).not.toBe('root');
@@ -1215,8 +1216,8 @@ describe('$(...)', () => {
     it('(existing Node) : should remove existing nodes from previous locations', () => {
       $('.orange').insertAfter('.pear');
       expect($fruits.children().eq(1).hasClass('orange')).toBe(false);
-      expect($fruits.children().length).toBe(3);
-      expect($('.orange').length).toBe(1);
+      expect($fruits.children()).toHaveProperty('length', 3);
+      expect($('.orange')).toHaveProperty('length', 1);
     });
 
     it('(existing Node) : should update original direct siblings', () => {
@@ -1233,9 +1234,9 @@ describe('$(...)', () => {
       expect($('.orange').next().hasClass('apple')).toBe(true);
       expect($('.pear').next().hasClass('apple')).toBe(true);
       expect($('.pear').prev().hasClass('apple')).toBe(true);
-      expect($fruits.children().length).toBe(4);
+      expect($fruits.children()).toHaveProperty('length', 4);
       const apples = $('.apple');
-      expect(apples.length).toBe(2);
+      expect(apples).toHaveProperty('length', 2);
       expect(apples.eq(0).prev().hasClass('orange')).toBe(true);
       expect(apples.eq(1).prev().hasClass('pear')).toBe(true);
     });
@@ -1250,9 +1251,9 @@ describe('$(...)', () => {
 
     it('(single) should return the new element for chaining', () => {
       const $grape = $('<li class="grape">Grape</li>').insertAfter('.apple');
-      expect($grape.cheerio).toBeTruthy();
-      expect($grape.each).toBeTruthy();
-      expect($grape.length).toBe(1);
+      expect($grape.cheerio).toBe('[cheerio object]');
+      expect($grape.each).toBeTypeOf('function');
+      expect($grape).toHaveProperty('length', 1);
       expect($grape.hasClass('grape')).toBe(true);
     });
 
@@ -1260,9 +1261,9 @@ describe('$(...)', () => {
       const $purple = $(
         '<li class="grape">Grape</li><li class="plum">Plum</li>',
       ).insertAfter('.apple');
-      expect($purple.cheerio).toBeTruthy();
-      expect($purple.each).toBeTruthy();
-      expect($purple.length).toBe(2);
+      expect($purple.cheerio).toBe('[cheerio object]');
+      expect($purple.each).toBeTypeOf('function');
+      expect($purple).toHaveProperty('length', 2);
       expect($purple.eq(0).hasClass('grape')).toBe(true);
       expect($purple.eq(1).hasClass('plum')).toBe(true);
     });
@@ -1271,9 +1272,9 @@ describe('$(...)', () => {
       const $purple = $(
         '<li class="grape">Grape</li><li class="plum">Plum</li>',
       ).insertAfter('.apple, .pear');
-      expect($purple.cheerio).toBeTruthy();
-      expect($purple.each).toBeTruthy();
-      expect($purple.length).toBe(4);
+      expect($purple.cheerio).toBe('[cheerio object]');
+      expect($purple.each).toBeTypeOf('function');
+      expect($purple).toHaveProperty('length', 4);
       expect($purple.eq(0).hasClass('grape')).toBe(true);
       expect($purple.eq(1).hasClass('plum')).toBe(true);
       expect($purple.eq(2).hasClass('grape')).toBe(true);
@@ -1282,17 +1283,17 @@ describe('$(...)', () => {
 
     it('(single) should return the existing element for chaining', () => {
       const $pear = $('.pear').insertAfter('.apple');
-      expect($pear.cheerio).toBeTruthy();
-      expect($pear.each).toBeTruthy();
-      expect($pear.length).toBe(1);
+      expect($pear.cheerio).toBe('[cheerio object]');
+      expect($pear.each).toBeTypeOf('function');
+      expect($pear).toHaveProperty('length', 1);
       expect($pear.hasClass('pear')).toBe(true);
     });
 
     it('(single) should return the existing elements for chaining', () => {
       const $things = $('.orange, .apple').insertAfter('.pear');
-      expect($things.cheerio).toBeTruthy();
-      expect($things.each).toBeTruthy();
-      expect($things.length).toBe(2);
+      expect($things.cheerio).toBe('[cheerio object]');
+      expect($things.each).toBeTypeOf('function');
+      expect($things).toHaveProperty('length', 2);
       expect($things.eq(0).hasClass('apple')).toBe(true);
       expect($things.eq(1).hasClass('orange')).toBe(true);
     });
@@ -1300,9 +1301,9 @@ describe('$(...)', () => {
     it('(multiple) should return the existing elements for chaining', () => {
       $('<li class="grape">Grape</li>').insertAfter('.apple');
       const $things = $('.orange, .apple').insertAfter('.pear, .grape');
-      expect($things.cheerio).toBeTruthy();
-      expect($things.each).toBeTruthy();
-      expect($things.length).toBe(4);
+      expect($things.cheerio).toBe('[cheerio object]');
+      expect($things.each).toBeTypeOf('function');
+      expect($things).toHaveProperty('length', 4);
       expect($things.eq(0).hasClass('apple')).toBe(true);
       expect($things.eq(1).hasClass('orange')).toBe(true);
       expect($things.eq(2).hasClass('apple')).toBe(true);
@@ -1498,8 +1499,8 @@ describe('$(...)', () => {
     it('(existing Node) : should remove existing nodes from previous locations', () => {
       $('.pear').insertBefore('.apple');
       expect($fruits.children().eq(2).hasClass('pear')).toBe(false);
-      expect($fruits.children().length).toBe(3);
-      expect($('.pear').length).toBe(1);
+      expect($fruits.children()).toHaveProperty('length', 3);
+      expect($('.pear')).toHaveProperty('length', 1);
     });
 
     it('(existing Node) : should update original direct siblings', () => {
@@ -1516,9 +1517,9 @@ describe('$(...)', () => {
       expect($('.apple').next().hasClass('pear')).toBe(true);
       expect($('.orange').prev().hasClass('pear')).toBe(true);
       expect($('.orange').next()).toHaveLength(0);
-      expect($fruits.children().length).toBe(4);
+      expect($fruits.children()).toHaveProperty('length', 4);
       const pears = $('.pear');
-      expect(pears.length).toBe(2);
+      expect(pears).toHaveProperty('length', 2);
       expect(pears.eq(0).next().hasClass('apple')).toBe(true);
       expect(pears.eq(1).next().hasClass('orange')).toBe(true);
     });
@@ -1534,9 +1535,9 @@ describe('$(...)', () => {
 
     it('(single) should return the new element for chaining', () => {
       const $grape = $('<li class="grape">Grape</li>').insertBefore('.apple');
-      expect($grape.cheerio).toBeTruthy();
-      expect($grape.each).toBeTruthy();
-      expect($grape.length).toBe(1);
+      expect($grape.cheerio).toBe('[cheerio object]');
+      expect($grape.each).toBeTypeOf('function');
+      expect($grape).toHaveProperty('length', 1);
       expect($grape.hasClass('grape')).toBe(true);
     });
 
@@ -1544,9 +1545,9 @@ describe('$(...)', () => {
       const $purple = $(
         '<li class="grape">Grape</li><li class="plum">Plum</li>',
       ).insertBefore('.apple');
-      expect($purple.cheerio).toBeTruthy();
-      expect($purple.each).toBeTruthy();
-      expect($purple.length).toBe(2);
+      expect($purple.cheerio).toBe('[cheerio object]');
+      expect($purple.each).toBeTypeOf('function');
+      expect($purple).toHaveProperty('length', 2);
       expect($purple.eq(0).hasClass('grape')).toBe(true);
       expect($purple.eq(1).hasClass('plum')).toBe(true);
     });
@@ -1555,9 +1556,9 @@ describe('$(...)', () => {
       const $purple = $(
         '<li class="grape">Grape</li><li class="plum">Plum</li>',
       ).insertBefore('.apple, .pear');
-      expect($purple.cheerio).toBeTruthy();
-      expect($purple.each).toBeTruthy();
-      expect($purple.length).toBe(4);
+      expect($purple.cheerio).toBe('[cheerio object]');
+      expect($purple.each).toBeTypeOf('function');
+      expect($purple).toHaveProperty('length', 4);
       expect($purple.eq(0).hasClass('grape')).toBe(true);
       expect($purple.eq(1).hasClass('plum')).toBe(true);
       expect($purple.eq(2).hasClass('grape')).toBe(true);
@@ -1566,17 +1567,17 @@ describe('$(...)', () => {
 
     it('(single) should return the existing element for chaining', () => {
       const $orange = $('.orange').insertBefore('.apple');
-      expect($orange.cheerio).toBeTruthy();
-      expect($orange.each).toBeTruthy();
-      expect($orange.length).toBe(1);
+      expect($orange.cheerio).toBe('[cheerio object]');
+      expect($orange.each).toBeTypeOf('function');
+      expect($orange).toHaveProperty('length', 1);
       expect($orange.hasClass('orange')).toBe(true);
     });
 
     it('(single) should return the existing elements for chaining', () => {
       const $things = $('.orange, .pear').insertBefore('.apple');
-      expect($things.cheerio).toBeTruthy();
-      expect($things.each).toBeTruthy();
-      expect($things.length).toBe(2);
+      expect($things.cheerio).toBe('[cheerio object]');
+      expect($things.each).toBeTypeOf('function');
+      expect($things).toHaveProperty('length', 2);
       expect($things.eq(0).hasClass('orange')).toBe(true);
       expect($things.eq(1).hasClass('pear')).toBe(true);
     });
@@ -1584,9 +1585,9 @@ describe('$(...)', () => {
     it('(multiple) should return the existing elements for chaining', () => {
       $('<li class="grape">Grape</li>').insertBefore('.apple');
       const $things = $('.orange, .apple').insertBefore('.pear, .grape');
-      expect($things.cheerio).toBeTruthy();
-      expect($things.each).toBeTruthy();
-      expect($things.length).toBe(4);
+      expect($things.cheerio).toBe('[cheerio object]');
+      expect($things.each).toBeTypeOf('function');
+      expect($things).toHaveProperty('length', 4);
       expect($things.eq(0).hasClass('apple')).toBe(true);
       expect($things.eq(1).hasClass('orange')).toBe(true);
       expect($things.eq(2).hasClass('apple')).toBe(true);
@@ -1618,7 +1619,7 @@ describe('$(...)', () => {
       expect(root?.type).toBe('root');
 
       $plum.remove();
-      expect($plum[0].parent).toBe(null);
+      expect($plum[0].parent).toBeNull();
       expect(root?.childNodes).not.toContain($plum[0]);
     });
   });
@@ -1651,7 +1652,7 @@ describe('$(...)', () => {
       const $new = $('<ul></ul>');
       const $replaced = $src.find('span').replaceWith($new[0]);
       expect($new[0].parentNode).toBe($src[0]);
-      expect($replaced[0].parentNode).toBe(null);
+      expect($replaced[0].parentNode).toBeNull();
       expect($.html($src)).toBe('<h2>hi <ul></ul></h2>');
     });
 
@@ -1676,7 +1677,7 @@ describe('$(...)', () => {
       const $new = $('<div>here</div>');
       const $replaced = $src.find('span').replaceWith($new);
       expect($new[0].parentNode).toBe($src[0]);
-      expect($replaced[0].parentNode).toBe(null);
+      expect($replaced[0].parentNode).toBeNull();
       expect($.html($src)).toBe('<h2>hi <div>here</div></h2>');
     });
 
@@ -1692,14 +1693,14 @@ describe('$(...)', () => {
       const $src = $('<h2>hi <span>there</span></h2>');
       const newStr = '<div>here</div>';
       const $replaced = $src.find('span').replaceWith(newStr);
-      expect($replaced[0].parentNode).toBe(null);
+      expect($replaced[0].parentNode).toBeNull();
       expect($.html($src)).toBe('<h2>hi <div>here</div></h2>');
     });
 
     it('(str) : should replace all selected elements', () => {
       const $src = $('<b>a<br>b<br>c<br>d</b>');
       const $replaced = $src.find('br').replaceWith(' ');
-      expect($replaced[0].parentNode).toBe(null);
+      expect($replaced[0].parentNode).toBeNull();
       expect($.html($src)).toBe('<b>a b c d</b>');
     });
 
@@ -2099,7 +2100,7 @@ describe('$(...)', () => {
         '<div><span>foo</span><span>bar</span><span>baz</span></div>',
       ).children();
       const $elem = $src.clone();
-      expect($elem.length).toBe(3);
+      expect($elem).toHaveProperty('length', 3);
       expect($elem.parent()).toHaveLength(0);
       expect($elem.text()).toBe($src.text());
       $src.text('rofl');
@@ -2111,7 +2112,7 @@ describe('$(...)', () => {
         .root()
         .children();
       const $elem = $src.clone();
-      expect($elem.length).toBe(1);
+      expect($elem).toHaveProperty('length', 1);
       expect($elem.parent()).toHaveLength(0);
       expect($elem.text()).toBe($src.text());
       $src.text('rofl');

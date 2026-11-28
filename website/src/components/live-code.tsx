@@ -6,7 +6,7 @@ import { Component, lazy, type ReactNode, Suspense, useState } from 'react';
  * once a reader actually asks to edit one. Until then they get the ordinary
  * syntax-highlighted code block that the Markdown pipeline already produced.
  */
-const SandpackEditor = lazy(() => import('./sandpack-editor'));
+const SandpackEditor = lazy(async () => import('./sandpack-editor'));
 
 interface LiveCodeProps {
   /** The raw source, handed to the editor when it opens. */
@@ -43,7 +43,7 @@ class EditorBoundary extends Component<
     this.props.onError();
   }
 
-  render() {
+  render(): ReactNode {
     return this.state.failed ? null : this.props.children;
   }
 }

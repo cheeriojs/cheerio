@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
+
 import { cheerio, eleven, food } from './__fixtures__/fixtures.js';
 import type { CheerioAPI } from './index.js';
 
@@ -111,22 +112,22 @@ describe('cheerio', () => {
     const $ = cheerio.load('');
 
     it('() : returns null', () => {
-      expect($.parseHTML()).toBe(null);
+      expect($.parseHTML()).toBeNull();
     });
 
     it('(null) : returns null', () => {
-      expect($.parseHTML(null)).toBe(null);
+      expect($.parseHTML(null)).toBeNull();
     });
 
     it('("") : returns null', () => {
-      expect($.parseHTML('')).toBe(null);
+      expect($.parseHTML('')).toBeNull();
     });
 
     it('(largeHtmlString) : parses large HTML strings', () => {
       const html = '<div></div>'.repeat(10);
       const nodes = $.parseHTML(html);
 
-      expect(nodes.length).toBe(10);
+      expect(nodes).toHaveProperty('length', 10);
       expect(nodes).toBeInstanceOf(Array);
     });
 
@@ -174,7 +175,7 @@ describe('cheerio', () => {
     it('(garbageInput) : should not cause an error', () => {
       expect(
         $.parseHTML('<#if><tr><p>This is a test.</p></tr><#/if>'),
-      ).toBeTruthy();
+      ).toBeInstanceOf(Array);
     });
 
     it('(text) : should return an array that is not effected by DOM manipulation methods', () => {
@@ -251,15 +252,15 @@ describe('cheerio', () => {
     });
 
     it('(?, ?) : should gracefully reject invalid inputs', () => {
-      expect($.merge([4], 3 as never)).toBeFalsy();
-      expect($.merge({} as never, {} as never)).toBeFalsy();
-      expect($.merge([], {} as never)).toBeFalsy();
-      expect($.merge({} as never, [])).toBeFalsy();
+      expect($.merge([4], 3 as never)).toBeUndefined();
+      expect($.merge({} as never, {} as never)).toBeUndefined();
+      expect($.merge([], {} as never)).toBeUndefined();
+      expect($.merge({} as never, [])).toBeUndefined();
       const fakeArray1 = { length: 3, 0: 'a', 1: 'b', 3: 'd' };
-      expect($.merge(fakeArray1, [])).toBeFalsy();
-      expect($.merge([], fakeArray1)).toBeFalsy();
-      expect($.merge({ length: '7' } as never, [])).toBeFalsy();
-      expect($.merge({ length: -1 }, [])).toBeFalsy();
+      expect($.merge(fakeArray1, [])).toBeUndefined();
+      expect($.merge([], fakeArray1)).toBeUndefined();
+      expect($.merge({ length: '7' } as never, [])).toBeUndefined();
+      expect($.merge({ length: -1 }, [])).toBeUndefined();
     });
 
     it('(?, ?) : should no-op on invalid inputs', () => {

@@ -1,5 +1,6 @@
 import type { Element } from 'domhandler';
 import { beforeEach, describe, expect, it } from 'vitest';
+
 import { cheerio, mixedText } from '../__fixtures__/fixtures.js';
 import { type Cheerio, load } from '../index.js';
 
@@ -129,7 +130,7 @@ describe('$(...)', () => {
         const el = cheerio(
           '<button style="background-image: url(data:image/png;base64,iVBORw0KGgo)"></button>',
         );
-        expect(el.css('background-image')).toStrictEqual(
+        expect(el.css('background-image')).toBe(
           'url(data:image/png;base64,iVBORw0KGgo)',
         );
       });

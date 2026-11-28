@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+
 import { load } from '../index.js';
 import type { CheerioOptions } from '../options.js';
 

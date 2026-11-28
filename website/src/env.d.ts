@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/triple-slash-reference */
-/* eslint-disable spaced-comment */
-/* eslint-disable multiline-comment-style */
+// oxlint-disable-next-line typescript/triple-slash-reference -- Oxlint needs the generated Astro content types referenced from this ambient declaration file.
 /// <reference path="../.astro/types.d.ts" />
 /// <reference types="astro/client" />
 

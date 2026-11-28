@@ -11,6 +11,7 @@
  *   node scripts/sync-algolia-crawler.mjs [--dry-run] [--reindex]
  */
 import { setTimeout as sleep } from 'node:timers/promises';
+
 import { config, crawlerId } from '../algolia-crawler.config.mjs';
 
 const endpoint = `https://crawler.algolia.com/api/1/crawlers/${crawlerId}`;
@@ -144,7 +145,6 @@ async function sync() {
    * to on the runner — it threw "toBase64 is not a function" there. Buffer
    * works on every version this repo runs on.
    */
-  // eslint-disable-next-line unicorn/prefer-uint8array-base64
   const authorization = `Basic ${Buffer.from(`${userId}:${apiKey}`).toString('base64')}`;
 
   async function send(path, method, payload) {

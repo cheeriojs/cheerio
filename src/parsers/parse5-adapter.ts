@@ -6,6 +6,7 @@ import {
 } from 'domhandler';
 import { parse as parseDocument, parseFragment, serializeOuter } from 'parse5';
 import { adapter as htmlparser2Adapter } from 'parse5-htmlparser2-tree-adapter';
+
 import type { InternalOptions } from '../options.js';
 
 /**
