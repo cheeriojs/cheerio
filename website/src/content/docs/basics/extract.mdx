@@ -104,6 +104,10 @@ other loaders, pass the
 [`baseURI` option](/docs/api/interfaces/CheerioOptions#baseuri) to get absolute
 URLs back.
 
+In HTML mode, a `<base href>` in the document takes precedence over that URL,
+the same way a browser resolves it. XML mode ignores `<base>` and always
+resolves against `baseURI`.
+
 :::
 
 Descriptor objects can be wrapped in an array just like plain selectors:
