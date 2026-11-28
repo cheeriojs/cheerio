@@ -1,0 +1,28 @@
+oxlint.config.ts
+  s_b1a45929cbdfc7::t_14cba022754593 257
+  s_b1a45929cbdfc7::t_027d10bb634c3e 16-17,254-256,261-264
+  s_b1a45929cbdfc7::t_530d9e453c19cf 252-253,258-259,265
+  s_b1a45929cbdfc7::t_84713ef19429c4 260
+  s_b1a45929cbdfc7::t_d8170cebf4442a 1,13,15,115-117,238-251,266-273
+  s_b1a45929cbdfc7::t_83f11b8c3834c0 14
+.github/workflows/lint.yml
+  s_b1a45929cbdfc7::t_d8170cebf4442a 54-57
+oxfmt.config.ts
+  s_b1a45929cbdfc7::t_5adbba89aeaaac 11-12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "995b10710e163804a3d859c32fb12066bd14ae69",
+  "prompts": {},
+  "sessions": {
+    "s_b1a45929cbdfc7": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a203e8-0774-7ea2-abea-9c688e68608d",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
